@@ -18,4 +18,5 @@ debug
 *.exe
 *.blend
 *.pmd
+*.log
 project-build-*
