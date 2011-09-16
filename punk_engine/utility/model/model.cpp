@@ -423,8 +423,17 @@ namespace Utility
 		{
 			if (weight.find((*bone).first) != weight.end())
 			{	
-				b_id[used] = GetBoneID((*bone).first);
-				w[used] = const_cast<std::map<System::string, Weight>& >(weight)[(*bone).first];
+				//
+				// зам€н€ем найменьш уплываовую в€ршыну
+				//
+				int min = 0;
+				for (int i = 0; i < 4; i++)
+				{
+					if (w[i] < w[min])
+						min = i;
+				}
+				b_id[min] = GetBoneID((*bone).first);
+				w[min] = const_cast<std::map<System::string, Weight>& >(weight)[(*bone).first];
 				used++;
 			}
 		}

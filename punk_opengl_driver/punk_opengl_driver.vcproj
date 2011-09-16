@@ -337,6 +337,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\punk_engine\system\driver\video\opengl\glsl\normals_330.frag"
+				>
+			</File>
+			<File
+				RelativePath="..\punk_engine\system\driver\video\opengl\glsl\normals_330.vert"
+				>
+			</File>
+			<File
 				RelativePath="..\punk_engine\system\driver\video\opengl\glsl\per_vertex_lighting_330.frag"
 				>
 			</File>
@@ -346,6 +354,14 @@
 			</File>
 			<File
 				RelativePath="..\punk_engine\system\driver\video\opengl\glsl\shaders.ini"
+				>
+			</File>
+			<File
+				RelativePath="..\punk_engine\system\driver\video\opengl\glsl\skinning_330.frag"
+				>
+			</File>
+			<File
+				RelativePath="..\punk_engine\system\driver\video\opengl\glsl\skinning_330.vert"
 				>
 			</File>
 			<File

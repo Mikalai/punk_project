@@ -18,4 +18,9 @@ namespace Utility
 	{
 		return m_frame_values.ColumnCount();
 	}
+
+	int SkinAnimation::GetBonesCount() const
+	{
+		return m_animation.ColumnCount();
+	}
 }

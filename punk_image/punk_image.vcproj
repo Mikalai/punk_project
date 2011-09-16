@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\project\3rd\src\zlib\;D:\project\3rd\src\lpng154"
+				AdditionalIncludeDirectories="D:\project\3rd\src\lpng154;D:\project\3rd\src\zlib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;PUNK_IMAGE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="D:\project\3rd\src\zlib\;D:\project\3rd\src\lpng154"
+				AdditionalIncludeDirectories="D:\project\3rd\src\lpng154;D:\project\3rd\src\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;PUNK_IMAGE_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -171,6 +171,66 @@
 	<References>
 	</References>
 	<Files>
+		<Filter
+			Name="bmp"
+			>
+			<File
+				RelativePath="..\punk_engine\images\bmp\bmp.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="dds"
+			>
+			<File
+				RelativePath="..\punk_engine\images\dds\nv_dds.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="tga"
+			>
+			<File
+				RelativePath="..\punk_engine\images\tga\tga.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\punk_engine\images\tga\tga.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\punk_engine\images\config.h"
 			>

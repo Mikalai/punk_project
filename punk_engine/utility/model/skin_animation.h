@@ -28,6 +28,7 @@ namespace Utility
 		void Load(System::Buffer& buffer);
 
 		int GetFramesCount() const;
+		int GetBonesCount() const;
 
 		friend class Model;
 	};

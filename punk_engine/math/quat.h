@@ -159,9 +159,9 @@ namespace Math
 			return m_scalar*m_scalar + m_vec.SquareLength();
 		}
 
-		const wchar_t* ToString() const
+		const System::string ToString() const
 		{
-			System::string::Format(L"[%f, (%f; %f, %f)]", m_scalar, m_vec[0], m_vec[1], m_vec[2]);
+			return System::string::Format(L"[%f, (%f; %f, %f)]", m_scalar, m_vec[0], m_vec[1], m_vec[2]);
 		}
 
 		Vector3<T> Rotate(const Vector3<T>& v) const

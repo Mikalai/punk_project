@@ -273,8 +273,8 @@ def export_bones(f, object):
     #
     #   export all animation
     #
-    start_block(f, "*skeleton_animation")
     for action in bpy.data.actions:
+        start_block(f, "*skeleton_animation")
         make_offset(f)
         f.write("%s\n" % action.name)
         start = int(action.frame_range[0])
@@ -335,10 +335,10 @@ def export_bones(f, object):
             #   end bone block
             end_block(f)
             
-    #
-    #   end animation block
-    #
-    end_block(f);
+         #
+         #   end animation block
+         #
+        end_block(f);
             
     return
 #
@@ -352,8 +352,9 @@ def export_bones_weight(f, object):
             print(vert.index)
             print(group.index)
             try:
+                w = group.weight(vert.index)
                 make_offset(f);
-                f.write("%d %s %f\n" % (vert.index, group.name, group.weight(vert.index)))
+                f.write("%d %s %f\n" % (vert.index, group.name, w))
             except:
                 pass
     end_block(f)

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;d:\SDK\freetype-2.4.6\include&quot;"
+				AdditionalIncludeDirectories="&quot;D:\project\3rd\src\freetype-2.4.6\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;PUNK_UTILITY_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="punk_string.lib punk_system.lib punk_math.lib punk_image.lib freetype246MT_D.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;d:\SDK\freetype-2.4.6\objs\win32\vc2008&quot;;&quot;$(SolutionDir)$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="&quot;D:\project\3rd\lib\$(ConfigurationName)&quot;;&quot;D:\project\punk_project\vs2008\$(ConfigurationName)&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;E:\SDK\freetype-2.4.4\include&quot;"
+				AdditionalIncludeDirectories="&quot;D:\project\3rd\src\freetype-2.4.6\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;PUNK_UTILITY_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -138,7 +138,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="punk_string.lib punk_system.lib punk_math.lib punk_image.lib freetype246MT.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;E:\SDK\freetype-2.4.4\objs\win32\vc2008&quot;;&quot;$(SolutionDir)$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="&quot;D:\project\3rd\lib\$(ConfigurationName)&quot;;&quot;D:\project\punk_project\vs2008\$(ConfigurationName)&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -180,6 +180,18 @@
 			</File>
 			<File
 				RelativePath="..\punk_engine\utility\model\model.h"
+				>
+			</File>
+			<File
+				RelativePath="..\punk_engine\utility\model\skin_animation.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\punk_engine\utility\model\skin_animation.h"
+				>
+			</File>
+			<File
+				RelativePath="..\punk_engine\utility\model\skinned_mesh.h"
 				>
 			</File>
 			<File

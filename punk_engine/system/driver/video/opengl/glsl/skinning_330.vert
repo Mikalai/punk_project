@@ -49,7 +49,7 @@ void main(void)
 		weight.xyzw = weight.yzwx;
 	}
 		
-	pos = pos / pos.w;
+	//pos = pos / pos.w;
 	
 	Weights = rm_Weights;
 					 
