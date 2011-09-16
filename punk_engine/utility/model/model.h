@@ -6,23 +6,28 @@
 #include "../../system/system.h"
 #include "../../images/images.h"
 #include "../../system/string.h"
-#include "static_mesh.h"
 #include <map>
 #include <vector>
 
 namespace Utility
 {
 
+	class StaticMesh;
+	class SkinnedMesh;
+	class SkinAnimation;
+
 	struct Bone
 	{
 		System::string m_parent;
-		Math::mat4 m_matrix;
+		Math::mat4 m_matrix_local;
+		Math::mat4 m_matrix_global;
 	};
 
 	struct BoneFrame
 	{
 		Math::vec3 m_position;
 		Math::quat m_rotation;
+		Math::mat4 m_global_matrix;
 	};
 
 	struct Material
@@ -35,20 +40,25 @@ namespace Utility
 	typedef float Weight;
 	typedef int VertexIndex;
 	typedef int FaceIndex;
+	typedef System::string BoneName;
 	typedef std::vector<Math::vec3> Vertices;
 	typedef std::vector<Math::vec3> Normals;
 	typedef std::vector<std::vector<Math::vec2> > TextureFaces;
 	typedef std::vector<Math::ivec3> Faces;
 	typedef std::map<VertexIndex, std::map<System::string, Weight> > BoneWeights;
-	typedef std::map<System::string, Bone> Skeleton;
-	typedef std::map<System::string, std::map<Frame, BoneFrame> > SkeletonAnimation;
+	typedef std::map<BoneName, Bone> Skeleton;
+	typedef std::map<BoneName, std::map<Frame, BoneFrame> > SkeletonAnimation;
 	typedef Math::BoundingBox BoundingBox;
+
 	typedef std::map<System::string, Material> Materials;
+
+	typedef std::map<System::string, Math::Matrix<Math::mat4> > CookedAnimation;
 
 	struct Action
 	{
 		Frame m_start_frame;
 		Frame m_end_frame;
+		int m_key_count;
 		SkeletonAnimation m_pose;
 	};
 
@@ -90,7 +100,6 @@ namespace Utility
 	class LIB_UTILITY Model
 	{
 	public:
-
 
 
 			enum KeywordCode
@@ -140,11 +149,36 @@ namespace Utility
 		Animation m_skeleton_animation;
 		TextureFaces m_tex_coords;
 		Materials m_materials;
+		CookedAnimation m_cooked_animation;
+		std::map<System::string, Math::Matrix<float> > m_frame_value;
+
+		std::map<BoneName, std::map<Frame, BoneFrame> >::iterator m_maximum_frames;
+		std::map<BoneName, int> m_bone_index;
+
 	public:
 		void LoadPunkModel(System::string& filename);	
-		StaticMesh* CookStaticMesh();
+		StaticMesh* CookStaticMesh() const;
+		bool CookSkinnedMesh(SkinnedMesh*& mesh, Math::mat4*& bones, int& count) const;
+		bool CookAnimation(const System::string& action_name, SkinAnimation*& anim);
 
 	private:
+		void BuildBoneIndex();
+
+		/*! Calculate maximum count of frame among bong for selected action */
+		void CalculateMaximumFrameCount(const System::string& action_name);
+		/*! Returns ID of the bone */
+		int GetBoneID(const System::string& bone_name) const;
+		/// Return ID of the 
+		int GetFrameID(const System::string& action_name, const System::string& bone_name, Frame frame);
+
+		void CookAnimationMatrices();
+		Math::mat4 GetGlobalMatrix(System::string parent, System::string action, Frame frame) const;
+		void CookOneVertexWithBone(int index, float& b1, float& b2, float& b3, float& b4, float& w1, float& w2, float& w3, float& w4) const;
+		void CookBonesMatrix(Math::mat4*& bones, int& count) const;
+		
+		/// Returns global transform matrix of the bone in primary skeletone state
+		Math::mat4 GetSourceGlobalMatrix(const System::string& bone) const;
+
 		KeywordCode Parse(System::string& word);
 		bool CheckIntegrity(System::Buffer& buffer);
 		void ParseObject(System::Buffer& buffer);

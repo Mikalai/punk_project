@@ -10,6 +10,7 @@ namespace Math
 {
 	template<class T> class Matrix4x4;
 
+	/// Class to work with quaternions. Supports most of quaternions properties
 	template<class T>
 	class Quaternion
 	{
@@ -20,14 +21,23 @@ namespace Math
 		Quaternion() : m_scalar(0), m_vec(0,0,0) {}
 		Quaternion(T w, T x, T y, T z) : m_scalar(w), m_vec(x, y, z) {}
 
-		Quaternion(T angle, const Vector3<T>& axis)
+		Quaternion(T w, const Vector3<T>& vec)
 		{
-			m_scalar = std::cos(angle / 2.0);
-			m_vec[0] = axis[0] * std::sin(angle / 2.0);
-			m_vec[1] = axis[1] * std::sin(angle / 2.0);
-			m_vec[2] = axis[2] * std::sin(angle / 2.0);
+			m_scalar = w;
+			m_vec = vec;
+		}
 
-			Normalize();
+		static Quaternion<T> FromAngleAxis(T angle, const Vector3<T>& axis)
+		{
+			Quaternion<T> q;
+			q.m_scalar = std::cos(angle / 2.0);
+			q.m_vec[0] = axis[0] * std::sin(angle / 2.0);
+			q.m_vec[1] = axis[1] * std::sin(angle / 2.0);
+			q.m_vec[2] = axis[2] * std::sin(angle / 2.0);
+
+			q.Normalize();
+
+			return q;
 		}
 
 		T& Scalar()
@@ -154,6 +164,16 @@ namespace Math
 			System::string::Format(L"[%f, (%f; %f, %f)]", m_scalar, m_vec[0], m_vec[1], m_vec[2]);
 		}
 
+		Vector3<T> Rotate(const Vector3<T>& v) const
+		{
+			Quaternion<T> p(0, v[0], v[1], v[2]);
+			Quaternion<T> conj = Conjugated();
+
+			p = *this * p * conj;
+
+			return Vector3<T>(p.X(), p.Y(), p.Z());
+		}
+
 		Matrix4x4<T> ToMatrix4x4() const
 		{
 			Matrix4x4<T> m;
@@ -185,7 +205,48 @@ namespace Math
 
 			return m.Transposed();
 		}
+
+		bool operator == (const Quaternion<T>& q) const
+		{
+			return m_scalar == q.m_scalar && m_vec == q.m_vec;
+		}
+
+		Quaternion<T> operator - ()
+		{
+			return Quaternion<T>(-m_scalar, -m_vec);
+		}
+
 	};
+
+	template<class T>
+	Quaternion<T> operator + (const Quaternion<T>& q1, const Quaternion<T>& q2)
+	{
+		return Quaternion<T>(q1.m_scalar + q2.m_scalar, q1.m_vec + q2.m_vec);
+	}
+
+	template<class T>
+	Quaternion<T> operator - (const Quaternion<T>& q1, const Quaternion<T>& q2)
+	{
+		return Quaternion<T>(q1.m_scalar - q2.m_scalar, q1.m_vec - q2.m_vec);
+	}
+
+	template<class T>
+	Quaternion<T> operator * (const Quaternion<T>& q, const T& s)
+	{
+		return Quaternion<T>(q.m_scalar*s, q.m_vec*s);
+	}
+
+	template<class T>
+	Quaternion<T> operator * (const T& s, const Quaternion<T>& q)
+	{
+		return Quaternion<T>(q.m_scalar*s, q.m_vec*s);
+	}
+
+	template<class T>
+	Quaternion<T> operator / (const Quaternion<T>& q, const T& s)
+	{
+		return Quaternion<T>(q.m_scalar/s, q.m_vec/s);
+	}
 
 	template<class T>
 	Quaternion<T> operator * (const Quaternion<T>& q1, const Quaternion<T>& q2)
@@ -194,6 +255,8 @@ namespace Math
 		Vector3<T> vector = q1.Scalar() * q2.Vector() + q2.Scalar()*q1.Vector() + q1.Vector().Cross(q2.Vector());
 		return Quaternion<T>(scalar, vector[0], vector[1], vector[2]);
 	}
+
+
 
 	typedef Quaternion<float> quat;
 }

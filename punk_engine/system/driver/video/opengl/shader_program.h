@@ -29,6 +29,7 @@ public:
 	virtual bool SetUniformFloat( int loc, float value) = 0;
 	virtual bool SetUniformMatrix4f( const char * name, const float* value) = 0;
 	virtual bool SetUniformMatrix4f( int loc, const float* value) = 0;
+	virtual bool SetUniformArrayMatrix4f(int loc, int count, const float* value) = 0;
 	virtual bool SetUniformMatrix3f( const char * name, const float*  value) = 0;
 	virtual bool SetUniformMatrix3f( int loc, const float*  value) = 0;
 	virtual bool SetUniformInt( const char * name, int value) = 0;

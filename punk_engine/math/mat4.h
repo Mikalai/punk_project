@@ -713,6 +713,24 @@ namespace Math
 			m[3]*v[0] + m[7]*v[1] + m[11]*v[2] + m[15]*v[3]);
 	}
 
+	template<class T>
+	const Matrix4x4<T> operator * (const Matrix4x4<T>& m, const T& v)
+	{
+		Math::Matrix4x4<T> res;
+		for (int i = 0; i < 16; i++)
+			res[i] = m[i]*v;
+		return res;
+	}
+
+	template<class T>
+	const Matrix4x4<T> operator * (const T& v, const Matrix4x4<T>& m)
+	{
+		Math::Matrix4x4<T> res;
+		for (int i = 0; i < 16; i++)
+			res[i] = m[i]*v;
+		return res;
+	}
+
 	//
 	//	instantiation 
 	//

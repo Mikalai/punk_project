@@ -20,8 +20,7 @@
 //
 
 namespace System
-{
-
+{	
 	class PUNK_EXPORT_STRING StringError : public std::exception
 	{
 	public:
@@ -158,7 +157,14 @@ __declspec(dllexport) bool operator < (const string& s1, const wchar_t* s2);
 __declspec(dllexport) string operator + (const string& s1, const string& s2);
 __declspec(dllexport) string operator + (const string& s1, const wchar_t* s2);
 __declspec(dllexport) string operator + (const wchar_t* s1, const string& s2);
+
+	/** \class string
+		\brief This is a description of the string class
+		So simple class
+	*/
+
 }
+
 
 #endif
 

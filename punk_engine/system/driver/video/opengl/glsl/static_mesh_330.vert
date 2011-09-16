@@ -8,7 +8,6 @@ uniform mat3 uNormalMatrix;
 uniform mat4 uProjViewWorld;
 uniform mat4 uViewWorld;
 uniform vec3 uLightPosition;
-uniform vec3 uEyePosition;
 
 out vec2 Texcoord;
 out vec3 ViewDirection;
@@ -25,12 +24,12 @@ void main(void)
 	gl_Position = uProj*uView*uWorld * rm_Vertex; 
 	
 	vec4 ObjectPosition = uView * uWorld * rm_Vertex;
-	vec3 ViewDir = ObjectPosition.xyz;
-	vec3 LightDir = (uView*vec4(uLightPosition, 1.0)).xyz - ObjectPosition.xyz;
+	vec3 ViewDir = normalize(ObjectPosition.xyz);
+	vec3 LightDir = normalize((uView*vec4(uLightPosition, 1.0)).xyz - ObjectPosition.xyz);
 	
 	vec3 Normal = normalize(uNormalMatrix * rm_Normal.xyz);
 	vec3 Tangent = normalize(uNormalMatrix * rm_Tangent.xyz);
-	vec3 Binormal = rm_Tangent.w * cross(Normal, Tangent);
+	vec3 Binormal = normalize(uNormalMatrix* rm_Binormal.xyz); //normalize(rm_Tangent.w * cross(Normal, Tangent));
 	
 	ViewDirection.x = dot(Tangent, ViewDir);
 	ViewDirection.y = dot(Binormal, ViewDir);
@@ -39,6 +38,9 @@ void main(void)
 	LightDirection.x = dot(Tangent, LightDir);
 	LightDirection.y = dot(Binormal, LightDir);
 	LightDirection.z = dot(Normal, LightDir);
+	
+	ViewDirection = normalize(ViewDirection);
+	LightDirection = normalize(LightDirection);
 	
 	Texcoord = rm_Texcoord.xy; 
 }

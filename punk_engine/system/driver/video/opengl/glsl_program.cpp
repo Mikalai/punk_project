@@ -552,6 +552,13 @@ namespace OpenGL
 		return true;
 	}
 
+	bool GLSLProgram::SetUniformArrayMatrix4f(int loc, int count, const float* value)
+	{
+		glUniformMatrix4fv(loc, count, GL_FALSE, value);
+		return true;
+	}
+
+
 	GLint GLSLProgram::GetUniformLocation(const char * name)
 	{
 		GLint res = glGetUniformLocation(m_pass[m_currentPass].m_program, name);

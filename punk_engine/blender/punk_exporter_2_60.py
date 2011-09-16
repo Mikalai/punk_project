@@ -365,14 +365,6 @@ def export_bones_weight(f, object):
 def export_materials(f, materials):
     start_block(f, "*materials")
     for m in materials:
-        diffuse = []
-        normal = []
-        
-        try:
-            diffuse = m.texture_slots['diffuse']
-            normal = m.texture_slots['normal']
-        except:
-            continue
         
         start_block(f, "*name")
         make_offset(f)
@@ -381,12 +373,12 @@ def export_materials(f, materials):
         
         start_block(f, "*diffuse_map")
         make_offset(f)
-        f.write("%s\n" % diffuse.texture.image.name)
+        f.write("%s\n" % m.texture_slots['diffuse'].texture.image.name)
         end_block(f)
         
         start_block(f, "*normal_map")
         make_offset(f)
-        f.write("%s\n" % normal.texture.image.name)
+        f.write("%s\n" % m.texture_slots['normal'].texture.image.name)
         end_block(f)
     end_block(f)
     return

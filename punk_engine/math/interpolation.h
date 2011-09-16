@@ -6,9 +6,10 @@
 namespace Math
 {
 	template<typename T, typename K>
-	T linear_interpolation(const T& a, const T& b, const K& value)
+	T linear_interpolation(const T& a, const T& b, const K& k)
 	{
-		return a*k + (1-k)*b;
+		T res = b*k + (1-k)*a; 
+		return res;
 	}
 
 	template<typename T>
@@ -34,10 +35,10 @@ namespace Math
 	//
 	//	used for linear interpolation of quaternions
 	//
-	template<class T>
-	T spherical_linear_interpolation(const T& q1, const T& q2, const T& t)
+	template<class T, class U>
+	T spherical_linear_interpolation(const T& q1, const T& q2, const U& t)
 	{
-		T theta = std::acos(q1.Dot(q2));
+		U theta = std::acos(q1.Dot(q2));
 		return std::sin(theta*(1-t))/std::sin(theta)*q1 + std::sin(theta*t)/std::sin(theta)*q2;
 	}
 }

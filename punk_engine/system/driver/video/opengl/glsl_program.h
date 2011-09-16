@@ -102,8 +102,9 @@ namespace OpenGL
 		bool SetUniformFloat( int loc, float value);
 		bool SetUniformMatrix4f( const char * name, const float* value);
 		bool SetUniformMatrix4f( int loc, const float* value);
+		bool SetUniformArrayMatrix4f( int loc, int count, const float* value);
 		bool SetUniformMatrix3f( const char * name, const float*  value);
-		bool SetUniformMatrix3f( int loc, const float*  value);
+		bool SetUniformMatrix3f( int loc, const float*  value);		
 		bool SetUniformInt( const char * name, int value);
 		bool SetUniformInt( int loc, int value);
 		void GetUniformVector( const char * name, float* out);

@@ -27,7 +27,7 @@ namespace OpenGL
 	class LIB_OPENGL Driver
 	{
 	public:
-		enum Buffer {COLOR_BUFFER = 0, DEPTH_BUFFER = 2, STENCIL_BUFFER = 4};
+		enum Buffer {COLOR_BUFFER = 1, DEPTH_BUFFER = 2, STENCIL_BUFFER = 4};
 	private:
 		System::string m_path_to_textures;
 		System::Window* m_window;

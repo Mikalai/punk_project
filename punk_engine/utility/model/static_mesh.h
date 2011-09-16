@@ -15,6 +15,7 @@ namespace Utility
 
 	class LIB_UTILITY StaticMesh
 	{
+	protected:
 		unsigned m_vertex_count;
 		unsigned m_index_count;
 		unsigned m_vertex_buffer_size;

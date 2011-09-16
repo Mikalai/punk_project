@@ -69,7 +69,7 @@ namespace Math
 		m.At(1,0) = btn[0]; m.At(1,1) = btn[1]; m.At(1,2) = btn[2];
 		m.At(2,0) = nrm[0]; m.At(2,1) = nrm[1]; m.At(2,2) = nrm[2];
 
-		mm = m.Determinant();
+		mm = m.Determinant();/**/
 	}
 
 }

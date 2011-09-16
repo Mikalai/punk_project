@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "png_file.h"
 #include "error.h"
-#include "png/png.h"
+#include <png.h>
 
 namespace Image
 {
@@ -111,7 +111,7 @@ namespace Image
 		unsigned char* offset = m_rep->m_data;
 
 		// now rebuild the ImageFile
-		for (unsigned i = 0; i < height; i++ )
+		for (int i = 0; i < height; i++ )
 		{
 			png_bytep	ptr = rowPtr [i];
 
@@ -140,26 +140,26 @@ namespace Image
 							numColors = numEntries + 1;
 							pngPal    = pal;
 
-							for (int i = 0; i < numColors; i++)
-								pngPal [i].red   =
-								pngPal [i].green =
-								pngPal [i].blue  = (i * 255) / numEntries;
+							for (int z = 0; z < numColors; z++)
+								pngPal [z].red   =
+								pngPal [z].green =
+								pngPal [z].blue  = (z * 255) / numEntries;
 						}
 						else
 						{
-							for (int i = 0; i < numColors; i++ )
+							for (int z = 0; z < numColors; z++ )
 							{
-								pngPal [i].red   = (pngPal [i].red   * 255) / numEntries;
-								pngPal [i].green = (pngPal [i].green * 255) / numEntries;
-								pngPal [i].blue  = (pngPal [i].blue  * 255) / numEntries;
+								pngPal [z].red   = (pngPal [z].red   * 255) / numEntries;
+								pngPal [z].green = (pngPal [z].green * 255) / numEntries;
+								pngPal [z].blue  = (pngPal [z].blue  * 255) / numEntries;
 							}
 						}
 
-						for ( i = 0; i < width; i++ )
+						for (int z = 0; z < width; z++ )
 						{
-							int	ind = ptr [i];
+							int	ind = ptr [z];
 
-							lineBuf [i] = pngPal[ind].blue | pngPal[ind].green << 8 | pngPal[ind].red << 16;
+							lineBuf [z] = pngPal[ind].blue | pngPal[ind].green << 8 | pngPal[ind].red << 16;
 						}
 					}
 					else

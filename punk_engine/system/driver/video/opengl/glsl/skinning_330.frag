@@ -10,6 +10,8 @@ uniform sampler2D uNormalMap;
 in vec2 Texcoord;
 in vec3 ViewDirection;
 in vec3 LightDirection;
+in vec4 Weights;
+
 out vec4 FragColor;
 
 void main( void )
@@ -34,6 +36,6 @@ void main( void )
 	
 	vec4 TotalSpecular = uSpecular * (pow(RDotV, uSpecularPower));
 	
-	FragColor =  TotalAmbient + TotalDiffuse + TotalSpecular;       
-	
+	FragColor = TotalAmbient + TotalDiffuse + TotalSpecular;
+
 }

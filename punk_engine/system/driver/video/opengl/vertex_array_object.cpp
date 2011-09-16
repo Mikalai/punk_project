@@ -185,14 +185,17 @@ namespace OpenGL
 			glDisableVertexAttribArray(4);
 		}
 
-		if (code & Utility::COMPONENT_BONE)
+		if ((code & Utility::COMPONENT_BONE_ID) && (code & Utility::COMPONENT_BONE_WEIGHT))
 		{
-			glVertexAttribPointer(5, 4, GL_INT  , GL_FALSE, vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_BONE));		
+			glVertexAttribPointer(5, 4, GL_FLOAT  , GL_FALSE, vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_BONE_ID));		
+			glVertexAttribPointer(6, 4, GL_FLOAT  , GL_FALSE, vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_BONE_WEIGHT));		
 			glEnableVertexAttribArray(5);
+			glEnableVertexAttribArray(6);
 		}
 		else
 		{
 			glDisableVertexAttribArray(5);
+			glDisableVertexAttribArray(6);
 		}
 	}
 }

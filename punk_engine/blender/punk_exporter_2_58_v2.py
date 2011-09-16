@@ -1,5 +1,9 @@
+
+bone_index = {}
+
 #mesh.materials['Material'].texture_slots['bump].texture.image.name
 import bpy
+import mathutils
 
 # ExportHelper is a helper class, defines filename and
 # invoke() function which calls the file selector.
@@ -239,9 +243,13 @@ def export_bones(f, object):
         #   write bone name
         #
         
+        b_id = 0;
+        
         start_block(f, "*name")
         make_offset(f);
-        f.write("%s\n" % bone.name);
+        f.write("%s\n" % (bone.name));
+        bone_index[bone.name] = b_id
+        b_id = b_id + 1
         end_block(f);
         
         #
@@ -251,14 +259,33 @@ def export_bones(f, object):
         if bone.parent != None:
             start_block(f, "*parent")
             make_offset(f);
-            f.write("%s\n" % bone.parent.name);
+            f.write("%s\n" % (bone.parent.name));
             end_block(f);
         
         #
         #   write bone matrix
         #
         start_block(f, "*local_matrix")
-        m = bone.matrix_local
+        mm = bone.matrix
+        mm.transpose()
+        m = mathutils.Matrix()
+        m[0][0] = mm[0][0];
+        m[0][1] = mm[0][1];
+        m[0][2] = mm[0][2];
+        m[0][3] = 0;
+        m[1][0] = mm[1][0];
+        m[1][1] = mm[1][1];
+        m[1][2] = mm[1][2];
+        m[1][3] = 0;
+        m[2][0] = mm[2][0];
+        m[2][1] = mm[2][1];
+        m[2][2] = mm[2][2];
+        m[2][3] = 0;
+        m[3][0] = 0;
+        m[3][1] = 0;
+        m[3][2] = 0;
+        m[3][3] = 1;
+    
         make_offset(f)
         f.write("%f %f %f %f\n" % (m[0][0], m[0][1], m[0][2], m[0][3]))
         make_offset(f)
@@ -365,14 +392,6 @@ def export_bones_weight(f, object):
 def export_materials(f, materials):
     start_block(f, "*materials")
     for m in materials:
-        diffuse = []
-        normal = []
-        
-        try:
-            diffuse = m.texture_slots['diffuse']
-            normal = m.texture_slots['normal']
-        except:
-            continue
         
         start_block(f, "*name")
         make_offset(f)
@@ -381,12 +400,12 @@ def export_materials(f, materials):
         
         start_block(f, "*diffuse_map")
         make_offset(f)
-        f.write("%s\n" % diffuse.texture.image.name)
+        f.write("%s\n" % m.texture_slots['diffuse'].texture.image.name)
         end_block(f)
         
         start_block(f, "*normal_map")
         make_offset(f)
-        f.write("%s\n" % normal.texture.image.name)
+        f.write("%s\n" % m.texture_slots['normal'].texture.image.name)
         end_block(f)
     end_block(f)
     return
