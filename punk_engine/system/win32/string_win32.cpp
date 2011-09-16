@@ -70,7 +70,7 @@ namespace System
 	{
 		if (s1.Length() != s2.Length())
 			return false;
-		return memcmp(s1.m_rep->m_data, s2.m_rep->m_data, s1.Length()) == 0;
+		return wmemcmp(s1.m_rep->m_data, s2.m_rep->m_data, s1.Length()) == 0;
 	}
 
 	bool operator == (const string& s1, const wchar_t* s2)
