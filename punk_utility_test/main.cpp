@@ -3,11 +3,11 @@
 
 int main()
 {
-	Utility::Model mdl;
+	Utility::RawScene mdl;
 
 	try
 	{
-		mdl.LoadPunkModel(System::string("d:\\project\\punk_project\\punk_engine\\blender\\simple_anim2.pmd"));
+		mdl.OpenFile(System::string("d:\\project\\punk_project\\punk_engine\\blender\\simple_anim2.pmd"));
 	}
 	catch (Utility::UtilityError& err)
 	{

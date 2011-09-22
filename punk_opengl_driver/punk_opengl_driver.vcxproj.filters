@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="linux">
+      <UniqueIdentifier>{b6134640-42f3-4e3c-b117-b9fe38d4956f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32">
+      <UniqueIdentifier>{1333ade8-87fc-4930-b47a-c9cb1fdfc8cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nvtristrip">
+      <UniqueIdentifier>{cbdd91b4-7c86-4370-baf8-3383ae12a056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gl">
+      <UniqueIdentifier>{798ee159-107c-4509-9cff-c2adb8322dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="glsl">
+      <UniqueIdentifier>{3ecdd327-ecc0-4d32-bada-e6c6872b8fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render">
+      <UniqueIdentifier>{c8671c18-f711-4048-9a74-8ef51d2688bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\2d">
+      <UniqueIdentifier>{d2641275-1a3e-4c08-bb6b-a368128de1c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\video_driver_linux.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\video_driver_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.cpp">
+      <Filter>nvtristrip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip_objects.cpp">
+      <Filter>nvtristrip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.cpp">
+      <Filter>nvtristrip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\3d_line_render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\advanced_static_mesh.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\font_builder.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\per_vertex_render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\pipeline.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render_element.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render_state.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\slider.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\solid_render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\terrain_render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_line_render.cpp">
+      <Filter>render\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_quad_render.cpp">
+      <Filter>render\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_text_area_render.cpp">
+      <Filter>render\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\camera.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\driver.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\error.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\glsl_program.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light_manager.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\material.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.h">
+      <Filter>nvtristrip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip_objects.h">
+      <Filter>nvtristrip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.h">
+      <Filter>nvtristrip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\gl3.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\wglext.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt">
+      <Filter>nvtristrip</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\draw_normals.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\draw_normals.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\line_2d_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\line_2d_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\line_3d_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\line_3d_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\normals_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\normals_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\per_vertex_lighting_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\per_vertex_lighting_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\shaders.ini">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\skinning_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\skinning_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\solid_color_2d_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\solid_color_2d_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\solid_color_3d_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\solid_color_3d_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\static_mesh_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\static_mesh_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\terrain_330 - Copy.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\terrain_330 - Copy.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\terrain_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\terrain_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\textured_2d_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\textured_2d_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\model.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.h">
+      <Filter>win32</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\3d_line_render.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\3DElement.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\abstract_render.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\advanced_static_mesh.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\font_builder.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\per_vertex_render.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\pipeline.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\render.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\render_element.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\render_parameters.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\render_state.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\solid_render.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\terrain.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\terrain_render.h">
+      <Filter>render</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_line_render.h">
+      <Filter>render\2d</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_quad_render.h">
+      <Filter>render\2d</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_text_area_render.h">
+      <Filter>render\2d</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\camera.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\config.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\driver.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\driver_parameters.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\error.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\frame_buffer.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\glsl_program.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\light.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\light_manager.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\material.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\material.txt" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\os.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\shader_program.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\standard_shaders.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\texture2d_object.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\vbo.h" />
+  </ItemGroup>
+</Project>

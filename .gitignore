@@ -19,4 +19,11 @@ debug
 *.blend
 *.pmd
 *.log
+ipch
+_UpgradeReport_Files
+*.xml
+*.dae
+*.x
+*.sdf
+*.opensdf
 project-build-*

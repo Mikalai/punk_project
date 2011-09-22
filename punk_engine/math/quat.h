@@ -80,6 +80,12 @@ namespace Math
 			throw MathIndexOutOfRange();
 		}
 
+		void Set(T w, T x, T y, T z)
+		{
+			m_scalar = w;
+			m_vec.Set(x, y, z);
+		}
+
 		T& W() 
 		{
 			return m_scalar;
@@ -216,36 +222,42 @@ namespace Math
 			return Quaternion<T>(-m_scalar, -m_vec);
 		}
 
+		T Dot(const Quaternion<T>& q) const
+		{
+			return m_vec.Dot(q.Vector()) + m_scalar*q.Scalar();
+		}
+
+
 	};
 
 	template<class T>
 	Quaternion<T> operator + (const Quaternion<T>& q1, const Quaternion<T>& q2)
 	{
-		return Quaternion<T>(q1.m_scalar + q2.m_scalar, q1.m_vec + q2.m_vec);
+		return Quaternion<T>(q1.Scalar() + q2.Scalar(), q1.Vector() + q2.Vector());
 	}
 
 	template<class T>
 	Quaternion<T> operator - (const Quaternion<T>& q1, const Quaternion<T>& q2)
 	{
-		return Quaternion<T>(q1.m_scalar - q2.m_scalar, q1.m_vec - q2.m_vec);
+		return Quaternion<T>(q1.Scalar() - q2.Scalar(), q1.Vector() - q2.Vector());
 	}
 
 	template<class T>
 	Quaternion<T> operator * (const Quaternion<T>& q, const T& s)
 	{
-		return Quaternion<T>(q.m_scalar*s, q.m_vec*s);
+		return Quaternion<T>(q.Scalar()*s, q.Vector()*s);
 	}
 
 	template<class T>
 	Quaternion<T> operator * (const T& s, const Quaternion<T>& q)
 	{
-		return Quaternion<T>(q.m_scalar*s, q.m_vec*s);
+		return Quaternion<T>(q.Scalar()*s, q.Vector()*s);
 	}
 
 	template<class T>
 	Quaternion<T> operator / (const Quaternion<T>& q, const T& s)
 	{
-		return Quaternion<T>(q.m_scalar/s, q.m_vec/s);
+		return Quaternion<T>(q.Scalar()/s, q.Vector()/s);
 	}
 
 	template<class T>

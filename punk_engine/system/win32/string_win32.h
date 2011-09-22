@@ -92,7 +92,7 @@ public:
     string& operator += (const string& s);
     string& operator += (const wchar_t* s);
 
-    void ToANSI(char*& buffer, int& length);
+    void ToANSI(char*& buffer, int& length) const;
 
     int ToInt32() const;
 	int ToInt32FromHex() const;

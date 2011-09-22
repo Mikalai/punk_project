@@ -3,6 +3,7 @@
 
 #include "../config.h"
 #include "vertex.h"
+#include "material.h"
 
 namespace System
 {
@@ -23,6 +24,8 @@ namespace Utility
 		int m_vertex_component;
 		Vertex* m_vb;
 		unsigned* m_index;
+		unsigned m_material_id;
+		
 	public:
 		StaticMesh();
 		Vertex* GetVertexBuffer();
@@ -32,12 +35,15 @@ namespace Utility
 		unsigned GetVertexBufferSize() const;
 		unsigned GetIndexBufferSize() const;
 		unsigned GetOneVertexSize() const;
+
+		unsigned GetMaterialID() const;
+
 		int GetVertexComponentCode() const;
 
 		void Save(System::Buffer& buffer);
 		void Load(System::Buffer& buffer);
 
-		friend class Model;
+		friend class RawScene;
 	};
 }
 

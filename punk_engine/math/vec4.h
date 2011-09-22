@@ -6,6 +6,7 @@ AUTHOR: Mikalai Abramau
 #ifndef _H_VEC4_MATH
 #define _H_VEC4_MATH
 
+#include "../system/string.h"
 #include <stdio.h>
 #include <cmath>
 
@@ -480,8 +481,8 @@ namespace Math
 		return !(a == b);
 	}
 
-	template class LIB_MATH Vector4<float>;
-	template class LIB_MATH Vector4<int>;
+//	template class LIB_MATH Vector4<float>;
+//	template class LIB_MATH Vector4<int>;
 
 	typedef Vector4<float> vec4;
 	typedef Vector4<int> ivec4;

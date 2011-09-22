@@ -41,6 +41,11 @@ namespace Utility
 		return m_one_vertex_size;
 	}
 
+	unsigned StaticMesh::GetMaterialID() const
+	{
+		return m_material_id;
+	}
+
 	int StaticMesh::GetVertexComponentCode() const
 	{
 		return m_vertex_component;

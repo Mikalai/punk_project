@@ -6,6 +6,9 @@
 #include <map>
 #include "../../math/smart_matrix.h"
 #include "../../math/mat4.h"
+#include "../../math/quat.h"
+#include "scene.h"
+#include "bone.h"
 
 namespace System
 {
@@ -16,21 +19,40 @@ namespace Utility
 {
 	class Model;
 
+	struct Frame
+	{
+		int m_parent;
+		Math::quat m_rotation;
+		Math::vec3 m_position;
+	};
+
+	typedef std::vector<Bone> BonesCollection;
+
 	class LIB_UTILITY SkinAnimation
-	{		
-		Math::Matrix<float>			m_frame_values;
-		Math::Matrix<Math::mat4>	m_animation;
+	{	
+		System::string m_name;
+		BonesCollection m_rest_pose;
+		
+		float m_duration;
+		float m_tick_per_second;
+
+		Math::Matrix<float> m_time;
+		Math::Matrix<Frame> m_animation;
 
 	public:
-
-		Math::mat4 GetGlobal(int frame, int index);
 		void Save(System::Buffer& buffer);
 		void Load(System::Buffer& buffer);
 
-		int GetFramesCount() const;
 		int GetBonesCount() const;
 
-		friend class Model;
+		const Math::quat GetRotation(unsigned bone_id, unsigned frame) const;
+		const Math::vec3 GetPosition(unsigned bone_id, unsigned frame) const;
+		const Math::mat4 GetTransform(unsigned bone_id, unsigned frame) const;
+		unsigned GetFramesCount() const;
+
+		const Bone& GetBone(unsigned id) const;
+
+		friend class RawScene;
 	};
 }
 

@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_SOFT_VIDEO_BUFFER_WIN32
 #define _H_PUNK_SOFT_VIDEO_BUFFER_WIN32
 
-#include "../punk_engine/math/math.h"
+//#include "../../math/math.h"
 
 namespace Video
 {
@@ -24,9 +24,9 @@ namespace Video
 		};
 	};
 
-	typedef Math::MatrixNxM<float> DepthBuffer;
-	typedef Math::MatrixNxM<PixelRGBA> ColorBuffer;
-	typedef Math::MatrixNxM<unsigned> StencilBuffer;
+//	typedef Math::MatrixNxM<float> DepthBuffer;
+//	typedef Math::MatrixNxM<PixelRGBA> ColorBuffer;
+//	typedef Math::MatrixNxM<unsigned> StencilBuffer;
 }
 
 #endif

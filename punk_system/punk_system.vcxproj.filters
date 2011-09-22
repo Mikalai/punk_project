@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="events">
+      <UniqueIdentifier>{27095324-de86-4e7e-87a0-bc6aaf853331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="linux">
+      <UniqueIdentifier>{8c849c7c-91bd-483d-82d7-efb74179044c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32">
+      <UniqueIdentifier>{fe5e5aa9-6229-40b6-bac8-61357f2232dd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\punk_engine\system\events\event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\event_type.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\events.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\focused.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\idle_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\key_char_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\key_down_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\key_up_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\key_wchar_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_enter.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_hoover_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_leave.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_left_button_down.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_left_button_up.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_middle_button_down.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_middle_button_up.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_move_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_right_button_down.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_right_button_up.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\mouse_wheel_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\unfocused.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\events\window_resize_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\linux\clock_linux.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\linux\folder_linux.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\linux\monitor_linux.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\linux\text_file_linux.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\linux\timer_linux.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\linux\types_linux.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\linux\window_linux.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\binary_file_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\buffer_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\clock_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\config_file_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\console_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\environment_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\error_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\folder_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\keyboard_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\monitor_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\mouse_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\process_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\stack_trace_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\thread_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\timer_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\types_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\window_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\application.h" />
+    <ClInclude Include="..\punk_engine\system\binary_file.h" />
+    <ClInclude Include="..\punk_engine\system\buffer.h" />
+    <ClInclude Include="..\punk_engine\system\clock.h" />
+    <ClInclude Include="..\punk_engine\system\config.h" />
+    <ClInclude Include="..\punk_engine\system\config_file.h" />
+    <ClInclude Include="..\punk_engine\system\console.h" />
+    <ClInclude Include="..\punk_engine\system\dynamic_array.h" />
+    <ClInclude Include="..\punk_engine\system\environment.h" />
+    <ClInclude Include="..\punk_engine\system\error.h" />
+    <ClInclude Include="..\punk_engine\system\event_manager.h" />
+    <ClInclude Include="..\punk_engine\system\folder.h" />
+    <ClInclude Include="..\punk_engine\system\keyboard.h" />
+    <ClInclude Include="..\punk_engine\system\logger.h" />
+    <ClInclude Include="..\punk_engine\system\monitor.h" />
+    <ClInclude Include="..\punk_engine\system\monitor_scope.h" />
+    <ClInclude Include="..\punk_engine\system\mouse.h" />
+    <ClInclude Include="..\punk_engine\system\object.h" />
+    <ClInclude Include="..\punk_engine\system\pool.h" />
+    <ClInclude Include="..\punk_engine\system\process.h" />
+    <ClInclude Include="..\punk_engine\system\singletone.h" />
+    <ClInclude Include="..\punk_engine\system\stack_trace.h" />
+    <ClInclude Include="..\punk_engine\system\system.h" />
+    <ClInclude Include="..\punk_engine\system\thread.h" />
+    <ClInclude Include="..\punk_engine\system\timer.h" />
+    <ClInclude Include="..\punk_engine\system\types.h" />
+    <ClInclude Include="..\punk_engine\system\window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\punk_engine\system\events\events.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\focused.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\idle_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\key_char_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\key_down_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\key_up_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\key_wchar_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_enter.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_hoover_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_leave.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_left_button_down.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_left_button_up.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_middle_button_down.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_middle_button_up.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_move_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_right_button_down.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_right_button_up.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\mouse_wheel_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\unfocused.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\window_resize_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\linux\clock_linux.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\linux\folder_linux.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\linux\text_file_linux.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\linux\timer_linux.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\linux\window_linux.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\binary_file_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\buffer_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\clock_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\config_file_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\console_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\environment_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\error_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\folder_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\keyboard_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\mouse_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\process_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\stack_trace_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\thread_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\timer_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\window_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\application.cpp" />
+    <ClCompile Include="..\punk_engine\system\clock.cpp" />
+    <ClCompile Include="..\punk_engine\system\event_manager.cpp" />
+    <ClCompile Include="..\punk_engine\system\logger.cpp" />
+    <ClCompile Include="..\punk_engine\system\object.cpp" />
+    <ClCompile Include="..\punk_engine\system\pool.cpp" />
+  </ItemGroup>
+</Project>

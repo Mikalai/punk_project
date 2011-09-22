@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="bmp">
+      <UniqueIdentifier>{eac3f67f-c85d-4e94-8e37-e05f9e23aa7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dds">
+      <UniqueIdentifier>{adb2d14a-81bc-46d6-9714-0fe35ca73fa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tga">
+      <UniqueIdentifier>{f5522abb-d9cb-4d94-9552-d0dcdc852e58}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\punk_engine\images\bmp\bmp.h">
+      <Filter>bmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\dds\nv_dds.h">
+      <Filter>dds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\config.h" />
+    <ClInclude Include="..\punk_engine\images\error.h" />
+    <ClInclude Include="..\punk_engine\images\formats.h" />
+    <ClInclude Include="..\punk_engine\images\images.h" />
+    <ClInclude Include="..\punk_engine\images\png_file.h" />
+    <ClInclude Include="..\punk_engine\images\surface.h" />
+    <ClInclude Include="..\punk_engine\images\texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\punk_engine\images\tga\tga.cpp">
+      <Filter>tga</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\images\error.cpp" />
+    <ClCompile Include="..\punk_engine\images\image_file.cpp" />
+    <ClCompile Include="..\punk_engine\images\image_loader.cpp" />
+    <ClCompile Include="..\punk_engine\images\png_file.cpp" />
+    <ClCompile Include="..\punk_engine\images\surface.cpp" />
+    <ClCompile Include="..\punk_engine\images\texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="..\punk_engine\images\tga\tga.h">
+      <Filter>tga</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\punk_engine\images\image_file.h" />
+    <CustomBuildStep Include="..\punk_engine\images\image_loader.h" />
+  </ItemGroup>
+</Project>

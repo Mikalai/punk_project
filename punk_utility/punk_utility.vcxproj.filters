@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="model">
+      <UniqueIdentifier>{743eaeea-5af5-4242-a72e-06ff6710180c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\punk_engine\utility\model\bone.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\material.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\scene.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\skin_animation.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\static_mesh.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\camera.cpp" />
+    <ClCompile Include="..\punk_engine\utility\error.cpp" />
+    <ClCompile Include="..\punk_engine\utility\font_builder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\punk_engine\utility\model\bone.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\material.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\scene.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\skin_animation.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\skinned_mesh.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\static_mesh.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\vertex.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\camera.h" />
+    <ClInclude Include="..\punk_engine\utility\config.h" />
+    <ClInclude Include="..\punk_engine\utility\error.h" />
+    <ClInclude Include="..\punk_engine\utility\font_builder.h" />
+    <ClInclude Include="..\punk_engine\utility\utility.h" />
+    <ClInclude Include="..\punk_engine\utility\model\skeletone.h">
+      <Filter>model</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

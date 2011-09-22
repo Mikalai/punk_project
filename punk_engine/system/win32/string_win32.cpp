@@ -90,11 +90,12 @@ namespace System
 		return wcscmp(s1.Data(), s2) < 0;
 	}
 
-	void string::ToANSI(char*& buffer, int& size)
+	void string::ToANSI(char*& buffer, int& size) const
 	{
 		size = m_rep->m_length + 1;
 		buffer = new char[size];
-		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0); 
+		memset(buffer, 0, sizeof(char)*size);
+		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0); 		
 	}
 
 	string& string::operator+= (const wchar_t* s)
