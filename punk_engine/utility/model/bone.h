@@ -7,20 +7,25 @@
 
 namespace Utility
 {
+	typedef System::string BoneName;
+
 	class LIB_UTILITY Bone
 	{
-		int m_parent;
-		System::string m_name;
+		int        m_parent;
+		BoneName   m_parent_name;
+		BoneName   m_name;
 		Math::mat4 m_matrix;
 
 	public:
-	//	void SetParent(int parent);
 		void SetName(const System::string& name);
 		void SetMatrix(const Math::mat4& matrix);
+		void SetParent(int parent);
+		void SetParentName(const System::string& name);
 
-		const System::string& GetName() const;
+		const BoneName& GetName() const;
+		const BoneName& GetParentName() const;
 		const Math::mat4& GetMatrix() const;
-	//	int GetParent() const;
+		int GetParent() const;
 	};
 }
 

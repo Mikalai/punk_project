@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "../math/frustum.h"
+#include "../system/timer.h"
 
 namespace System
 {
@@ -14,6 +15,7 @@ namespace Utility
 	class LIB_UTILITY Camera : public Math::Frustum
 	{
 	protected:
+		System::Timer m_timer;
 		float m_mouse_sense;
 		float m_phi;
 		float m_psy;

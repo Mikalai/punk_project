@@ -10,5 +10,6 @@
 #include "font_builder.h"
 #include "error.h"
 #include "config.h"
+#include "model/punk_scene_loader.h"
 
 #endif

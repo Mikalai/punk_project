@@ -12,6 +12,11 @@ namespace Utility
 		return m_name;
 	}
 
+	const System::string& Bone::GetParentName() const
+	{
+		return m_parent_name;
+	}
+
 	void Bone::SetMatrix(const Math::mat4& matrix)
 	{
 		m_matrix = matrix;
@@ -22,4 +27,18 @@ namespace Utility
 		m_name = name;
 	}
 
+	void Bone::SetParent(int parent)
+	{
+		m_parent = parent;
+	}
+
+	void Bone::SetParentName(const System::string& pname)
+	{
+		m_parent_name = pname;
+	}
+
+	int Bone::GetParent() const
+	{
+		return m_parent;
+	}
 }

@@ -28,6 +28,16 @@ namespace Utility
 		
 	public:
 		StaticMesh();
+
+		void SetVertexCount(unsigned count);
+		void SetIndexCount(unsigned count);
+		void SetVertexBufferSize(unsigned count);
+		void SetOneVertexSize(unsigned count);
+		void SetVertexComponent(int vertex_component);
+		void SetVertexBuffer(Vertex* vb);
+		void SetIndexBuffer(unsigned* index);
+		void SetMaterialID(unsigned id);
+
 		Vertex* GetVertexBuffer();
 		unsigned* GetIndexBuffer();
 		unsigned GetIndexCount() const;
@@ -43,7 +53,6 @@ namespace Utility
 		void Save(System::Buffer& buffer);
 		void Load(System::Buffer& buffer);
 
-		friend class RawScene;
 	};
 }
 

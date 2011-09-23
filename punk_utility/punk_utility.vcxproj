@@ -91,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="..\punk_engine\utility\model\bone.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\material.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\punk_scene_loader.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\scene.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\skin_animation.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\static_mesh.cpp" />
@@ -100,9 +101,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\utility\model\bone.h" />
+    <ClInclude Include="..\punk_engine\utility\model\bone_frame.h" />
     <ClInclude Include="..\punk_engine\utility\model\material.h" />
+    <ClInclude Include="..\punk_engine\utility\model\punk_scene_loader.h" />
     <ClInclude Include="..\punk_engine\utility\model\scene.h" />
-    <ClInclude Include="..\punk_engine\utility\model\skeletone.h" />
+    <ClInclude Include="..\punk_engine\utility\model\skeleton.h" />
     <ClInclude Include="..\punk_engine\utility\model\skin_animation.h" />
     <ClInclude Include="..\punk_engine\utility\model\skinned_mesh.h" />
     <ClInclude Include="..\punk_engine\utility\model\static_mesh.h" />

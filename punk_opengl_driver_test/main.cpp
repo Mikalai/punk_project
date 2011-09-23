@@ -15,6 +15,8 @@ class Test
 	Utility::RawScene scene;
 	Utility::SkinAnimation* anim;
 
+	Utility::Model mdl;
+
 	OpenGL::VertexArrayObject* vao;
 	ShaderProgram* program;
 	Utility::Camera* camera; 
@@ -43,7 +45,7 @@ public:
 
 		try
 		{
-			scene.OpenFile(System::string("D:\\project\\punk_project\\punk_engine\\blender\\something.x"));
+			mdl.LoadPunkModel(System::string("D:\\project\\punk_project\\punk_engine\\blender\\something.pmd"));
 		}
 		catch (Utility::UtilityError& err)
 		{
@@ -55,12 +57,12 @@ public:
 		}
 
 
-		Utility::StaticMesh* mesh = scene.CookStaticMesh(L"Cube");
+		Utility::StaticMesh* mesh = mdl.CookStaticMesh();
 		Utility::SkinnedMesh* smesh;
 		
-		Utility::Material mat = scene.GetMaterial(mesh->GetMaterialID());
-		smesh = scene.CookSkinnedMesh(L"Cube");
-		anim = scene.CookSkinAnimation(L"Cube", 0);
+		Utility::Material mat = mdl.m_materials.at(L"diffuse");
+		mdl.CookSkinnedMesh(smesh, skelet, bones_count);
+		mdl.CookAnimation(L"Armature.001Action", anim);
 
 	//	scene.CookAnimation(L"ArmatureAction", anim);
 
@@ -74,7 +76,7 @@ public:
 		skin_program = driver->GetShaderProgram(L"skinning");
 
 		camera = new Utility::Camera();
-		camera->SetPosition(Math::vec3(5,10,-5));
+		camera->SetPosition(Math::vec3(5,5,-5));
 
 		m_texture_context = new OpenGL::TextureContext();
 		m_texture_context->SetDiffuseMap(driver->GetTexture2D(mat.GetDiffuseMap()));
@@ -170,28 +172,11 @@ public:
 				{
 					char buf[256];
 					sprintf(buf, "uBones[%d]", bone);
-					//Math::mat4 m = anim->GetBone(bone).GetMatrix();
-				/*	Utility::BoneFrame next_frame = anim->GetGlobal(next, bone);*/
-					Math::quat cur_rot = anim->GetRotation(bone, cur).Normalized();
-					Math::quat next_rot = anim->GetRotation(bone, next);
-					Math::vec3 cur_pos = anim->GetPosition(bone, cur);
-					Math::vec3 next_pos = anim->GetPosition(bone, next);
+	
+					Math::mat4 m = anim->GetInterpolatedTransform(bone, cur, next, t);
 
-					Math::mat4 m;// = Math::mat4::CreateRotation(1, 0, 0, 0.3);					
-
-					Math::quat q = Math::linear_interpolation(cur_rot, next_rot, t).Normalized(); //scene.m_skeleton_animation[L"test_action"].m_pose[L"bottom"][20].m_rotation.ToMatrix4x4();
-					Math::vec3 p = Math::linear_interpolation(cur_pos, next_pos, t);
-
-					
-					Math::mat4 tr = Math::mat4::CreateTranslate(p);
-					m = q.ToMatrix4x4();
-
-					m= anim->GetTransform(bone, cur);
-
-					//m[12] = p[0]; m[13] = p[1]; m[14] = p[2];
-
-					if (m[15] != 1.0)
-						throw;/**/
+				//	if (m[15] != 1.0)
+					//	throw;/**/
 
 			//		Math::mat4 src = scene.GetSourceGlobalMatrix(bone);
 					//m = anim->GetGlobal(1, 0);//scene.m_skeleton[L"bottom"  ].m_matrix_local;	
@@ -206,7 +191,7 @@ public:
 				m = Math::linear_interpolation(anim->GetGlobal(cur, 2), anim->GetGlobal(next, 2), t);
 				skin_program->SetUniformMatrix4f(skin_program->GetUniformLocation("uBones[2]"), m);*/
 
-				t += 0.0001;
+				t += 0.001;
 				if (t >= 1)
 				{
 					cur++;

@@ -5,11 +5,8 @@
 
 namespace Utility
 {
-	class Skeleton
-	{
-		Bone* m_bone;
-	public:
-	};
+	typedef std::map<BoneName, Bone> Skeleton;
+	typedef std::map<unsigned, Bone> SkeletonID;
 }
 
 #endif

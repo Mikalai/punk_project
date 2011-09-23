@@ -97,15 +97,17 @@ namespace Utility
 
 	void Camera::OnIdle(System::Event* e)
 	{
+		float dt = m_timer.GetElapsedTime();
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_forward))
-			m_position += m_direction.Normalized()*0.001f;
+			m_position += m_direction.Normalized()*dt*10.0f;
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_backward))
-			m_position -= m_direction.Normalized()*0.001f;
+			m_position -= m_direction.Normalized()*dt*10.0f;
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_left))
-			m_position += Math::vec3(0,1,0).Cross(m_direction).Normalized()*0.001f;
+			m_position += Math::vec3(0,1,0).Cross(m_direction).Normalized()*dt*10.0f;
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_right))
-			m_position -= Math::vec3(0,1,0).Cross(m_direction).Normalized()*0.001f;
+			m_position -= Math::vec3(0,1,0).Cross(m_direction).Normalized()*dt*10.0f;
 		UpdateMatrix();
+		m_timer.UpdateStartPoint();
 	}
 
 	Camera::~Camera()

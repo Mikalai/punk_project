@@ -9,6 +9,7 @@
 #include "../../math/quat.h"
 #include "scene.h"
 #include "bone.h"
+#include "skeleton.h"
 
 namespace System
 {
@@ -18,20 +19,17 @@ namespace System
 namespace Utility
 {
 	class Model;
-
+	
 	struct Frame
 	{
-		int m_parent;
 		Math::quat m_rotation;
 		Math::vec3 m_position;
 	};
 
-	typedef std::vector<Bone> BonesCollection;
-
 	class LIB_UTILITY SkinAnimation
 	{	
 		System::string m_name;
-		BonesCollection m_rest_pose;
+		SkeletonID m_rest_pose;
 		
 		float m_duration;
 		float m_tick_per_second;
@@ -48,10 +46,25 @@ namespace Utility
 		const Math::quat GetRotation(unsigned bone_id, unsigned frame) const;
 		const Math::vec3 GetPosition(unsigned bone_id, unsigned frame) const;
 		const Math::mat4 GetTransform(unsigned bone_id, unsigned frame) const;
+
+		const Math::mat4 GetInterpolatedTransform(unsigned bone_id, unsigned frame1, unsigned frame2, float t) const;
+
 		unsigned GetFramesCount() const;
+		const SkeletonID& GetRestPosition() const;
+		float GetDuration() const;
+		float GetTicksPerSecond() const;
+		const System::string GetName() const;
 
 		const Bone& GetBone(unsigned id) const;
 
+		void SetDuration(float duration);
+		void SetTicksPerSecond(float tps);
+		void SetRestPosition(SkeletonID& skeleton);
+		void SetAnimationSize(unsigned bones_count, unsigned frame_count);
+		void SetRotation(const Math::quat& rot, unsigned bone_id, unsigned frame);
+		void SetPosition(const Math::vec3& pos, unsigned bone_id, unsigned frame);
+		void SetFrameTimeValue(unsigned frame_id, float time);
+		void SetName(const System::string& name);
 		friend class RawScene;
 	};
 }

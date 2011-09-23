@@ -54,7 +54,7 @@ void main(void)
 //		weight.xyzw = weight.yzwx;
 	}
 		
-//	pos = pos / pos.w;
+	pos = pos / pos.w;
 	
 	if (pos.w > 1)
 		Weights.x = 0;

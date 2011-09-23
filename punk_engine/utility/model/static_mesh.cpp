@@ -6,6 +6,46 @@ namespace Utility
 	StaticMesh::StaticMesh() : m_vb(0), m_index(0), m_vertex_count(0), m_index_count(0), m_vertex_buffer_size(0), m_one_vertex_size(0), m_vertex_component(0)
 	{}
 
+	void StaticMesh::SetIndexBuffer(unsigned* buffer)
+	{
+		m_index = buffer;
+	}
+
+	void StaticMesh::SetIndexCount(unsigned count)
+	{
+		m_index_count = count;
+	}
+
+	void StaticMesh::SetMaterialID(unsigned id)
+	{
+		m_material_id = id;
+	}
+
+	void StaticMesh::SetOneVertexSize(unsigned size)
+	{
+		m_one_vertex_size = size;
+	}
+
+	void StaticMesh::SetVertexBuffer(Vertex* buffer)
+	{
+		m_vb = buffer;
+	}
+
+	void StaticMesh::SetVertexBufferSize(unsigned size)
+	{
+		m_vertex_buffer_size = size;
+	}
+
+	void StaticMesh::SetVertexComponent(int component)
+	{
+		m_vertex_component = component;
+	}
+
+	void StaticMesh::SetVertexCount(unsigned count)
+	{
+		m_vertex_count = count;
+	}
+
 	Vertex* StaticMesh::GetVertexBuffer()
 	{
 		return m_vb;

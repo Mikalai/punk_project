@@ -13,7 +13,7 @@
 
 namespace System
 {
-    class Timer
+	class LIB_SYSTEM Timer
     {
         double period;
 		LARGE_INTEGER startPoint;
