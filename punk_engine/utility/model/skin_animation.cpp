@@ -25,6 +25,11 @@ namespace Utility
 	//	return GetRotation(parent, frame)*res;
 	}
 
+	const Math::mat4 SkinAnimation::GetMeshOffset() const
+	{
+		return m_mesh_offset;
+	}
+
 	const Math::mat4 SkinAnimation::GetTransform(unsigned int bone_id, unsigned int frame) const
 	{
 		int parent = m_rest_pose.at(bone_id).GetParent();
@@ -36,20 +41,29 @@ namespace Utility
 
 	const Math::mat4 SkinAnimation::GetInterpolatedTransform(unsigned bone_id, unsigned frame1, unsigned frame2, float t) const
 	{
+		if (GetBone(bone_id).GetName() == L"Bone.003")
+		{
+			if (frame1 == 2)
+			{
+				int k = 0;
+				k++;
+			}
+		}
 		Math::quat q1 = GetRotation(frame1, bone_id);
 		Math::quat q2 = GetRotation(frame2, bone_id);
 		Math::vec3 p1 = GetPosition(frame1, bone_id);
 		Math::vec3 p2 = GetPosition(frame2, bone_id);
 
-		Math::quat q = Math::linear_interpolation(q1, q2, t);
+		Math::quat q = Math::cosine_interpolation(q1, q2, t);
 		q.Normalize();
 		Math::vec3 p = Math::linear_interpolation(p1, p2, t);
 
 		const Bone* b = &m_rest_pose.at(bone_id);
-		Math::mat4 res = b->GetMatrix()*q.ToMatrix4x4()*b->GetMatrix().Inversed();
+		Math::mat4 res = q.ToMatrix4x4();
 		if (b->GetParent() < 0)
 			return res;
-		res = GetInterpolatedTransform(b->GetParent(), frame1, frame2, t)*res;
+		const Bone* pb = &m_rest_pose.at(b->GetParent());
+		res = GetInterpolatedTransform(b->GetParent(), frame1, frame2, t)*m_mesh_offset.Inversed()*b->GetMatrix()*res*b->GetMatrix().Inversed()*m_mesh_offset;
 		return res;
 	}
 
@@ -91,6 +105,11 @@ namespace Utility
 	void SkinAnimation::SetName(const System::string& name)
 	{
 		m_name = name;
+	}
+
+	void SkinAnimation::SetMeshOffset(const Math::mat4& mat)
+	{
+		m_mesh_offset = mat;
 	}
 
 	void SkinAnimation::SetDuration(float duration)

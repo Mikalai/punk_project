@@ -30,7 +30,8 @@ namespace Utility
 	{	
 		System::string m_name;
 		SkeletonID m_rest_pose;
-		
+		Math::mat4 m_mesh_offset;
+
 		float m_duration;
 		float m_tick_per_second;
 
@@ -46,6 +47,7 @@ namespace Utility
 		const Math::quat GetRotation(unsigned bone_id, unsigned frame) const;
 		const Math::vec3 GetPosition(unsigned bone_id, unsigned frame) const;
 		const Math::mat4 GetTransform(unsigned bone_id, unsigned frame) const;
+		const Math::mat4 GetMeshOffset() const;
 
 		const Math::mat4 GetInterpolatedTransform(unsigned bone_id, unsigned frame1, unsigned frame2, float t) const;
 
@@ -65,6 +67,7 @@ namespace Utility
 		void SetPosition(const Math::vec3& pos, unsigned bone_id, unsigned frame);
 		void SetFrameTimeValue(unsigned frame_id, float time);
 		void SetName(const System::string& name);
+		void SetMeshOffset(const Math::mat4& mat);
 		friend class RawScene;
 	};
 }

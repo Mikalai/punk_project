@@ -1,12 +1,7 @@
 #ifndef _H_PUNK_SOLID_RENDER
 #define _H_PUNK_SOLID_RENDER
 
-#include "../math/mat4.h"
-
-#include "vertex_array_object.h"
-#include "render.h"
-
-namespace Render
+namespace OpenGL
 {
 	class LineRender3D : public AbstractRender
 	{

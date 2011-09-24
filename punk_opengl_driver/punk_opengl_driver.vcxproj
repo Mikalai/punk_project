@@ -103,8 +103,8 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip_objects.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\3d_line_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\advanced_static_mesh.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -210,8 +210,8 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\gl3.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\wglext.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\3d_line_render.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\3DElement.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

@@ -38,7 +38,8 @@ namespace Utility
 		VertexPositionNormalTextureTangentBitangent* vb;
 		mesh->SetVertexBuffer(vb = new VertexPositionNormalTextureTangentBitangent[mesh->GetVertexCount()]);
 		memset(vb, 0, sizeof(VertexPositionNormalTextureTangentBitangent)*mesh->GetVertexCount());
-
+		
+		std::vector<int> base_index;		/// contains vertex index in the source array
 		int index = 0;
 		for (unsigned i = 0; i < m_tex_coords.size(); i++)
 		{
@@ -67,6 +68,7 @@ namespace Utility
 			//vb[index].nx = n1[0];	vb[index].ny = n1[1];	vb[index].nz = n1[2];	vb[index].nw = 1.0f;
 			vb[index].u = t1[0];	vb[index].v = t1[1];	vb[index].s = 0;		vb[index].q = 0.0f;
 			vb[index].tx = tgn[0];	vb[index].ty = tgn[1];	vb[index].tz = tgn[2];	vb[index].tw = det;
+			base_index.push_back(f[0]);
 			index++;
 
 			Math::CalculateTBN(v2, v3, v1, t2, t3, t1, tgn, btn, nrm, det);
@@ -75,6 +77,7 @@ namespace Utility
 			//vb[index].nx = n2[0];	vb[index].ny = n2[1];	vb[index].nz = n2[2];	vb[index].nw = 1.0f;
 			vb[index].u = t2[0];	vb[index].v = t2[1];	vb[index].s = 0;		vb[index].q = 0.0f;
 			vb[index].tx = tgn[0];	vb[index].ty = tgn[1];	vb[index].tz = tgn[2];	vb[index].tw = det;
+			base_index.push_back(f[1]);
 			index++;
 
 			Math::CalculateTBN(v3, v1, v2, t3, t1, t2, tgn, btn, nrm, det);
@@ -83,7 +86,50 @@ namespace Utility
 			//vb[index].nx = n3[0];	vb[index].ny = n3[1];	vb[index].nz = n3[2];	vb[index].nw = 1.0f;
 			vb[index].u = t3[0];	vb[index].v = t3[1];	vb[index].s = 0;		vb[index].q = 0.0f;
 			vb[index].tx = tgn[0];	vb[index].ty = tgn[1];	vb[index].tz = tgn[2];	vb[index].tw = det;
+			base_index.push_back(f[2]);
 			index++;
+		}
+
+				/// Smooth TBN
+		std::vector<int> mask(mesh->GetVertexCount());
+		for (int i = 0; i < m_vertices.size(); i++)
+		{
+			Math::vec3 norm;
+			Math::vec3 tang;
+			Math::vec3 btan;
+			for (int j = 0; j < mesh->GetVertexCount(); j++)
+			{
+				VertexPositionNormalTextureTangentBitangent* v = static_cast<VertexPositionNormalTextureTangentBitangent*>(mesh->GetVertexBuffer()) + j;
+				if (base_index[j] == i)
+				{					
+					norm[0] += v->nx; norm[1] += v->ny; norm[2] += v->nz; 
+					tang[0] += v->tx; tang[1] += v->ty; tang[2] += v->tz; 
+					btan[0] += v->bx; btan[1] += v->by; btan[2] += v->bz; 
+				}				
+			}
+
+			norm.Normalize();
+			tang.Normalize();
+			btan.Normalize();
+			tang = (tang - norm.Dot(tang)*norm).Normalized();
+			btan = (btan - norm.Dot(btan)*norm - tang.Dot(btan)*tang).Normalized();
+
+			Math::Matrix<float> m(3,3);
+			m.At(0,0) = tang[0]; m.At(0,1) = tang[1]; m.At(0,2) = tang[2];
+			m.At(1,0) = btan[0]; m.At(1,1) = btan[1]; m.At(1,2) = btan[2];
+			m.At(2,0) = norm[0]; m.At(2,1) = norm[1]; m.At(2,2) = norm[2];
+			float w = m.Determinant();
+
+			for (int j = 0; j < mesh->GetVertexCount(); j++)
+			{	
+				VertexPositionNormalTextureTangentBitangent* v = static_cast<VertexPositionNormalTextureTangentBitangent*>(mesh->GetVertexBuffer()) + j;
+				if (base_index[j] == i)
+				{					
+					v->nx = norm[0]; v->ny = norm[1]; v->nz = norm[2]; 
+					v->tx = tang[0]; v->ty = tang[1]; v->tz = tang[2];  v->tw = w;
+					v->bx = btan[0]; v->by = btan[1]; v->bz = btan[2]; 
+				}				
+			}
 		}
 
 		mesh->SetVertexBufferSize(sizeof(VertexPositionNormalTextureTangentBitangent)*mesh->GetVertexCount());
@@ -248,33 +294,30 @@ namespace Utility
 	}
 
 
-	void Model::CookAnimationFrames() 
+	void Model::CookAnimationFrames(const System::string& action_name) 
 	{
 		//
 		//	cook anitmation
 		//
-		for (Animation::iterator action = m_skeleton_animation.begin(); action != m_skeleton_animation.end(); ++action)
+		Action *action = &m_skeleton_animation.at(action_name);
+
+		CalculateMaximumFrameCount(action_name);
+
+		m_cooked_animation[action_name].SetSize(action->m_key_count, m_skeleton.size());
+
+
+		for (SkeletonAnimation::const_iterator animation = action->m_pose.begin(); animation != action->m_pose.end(); ++animation)
 		{
-			System::string current_action_name = (*action).first;						
+			System::string bone_name = (*animation).first;
+			int bone_id = GetBoneID(bone_name);
 
-			CalculateMaximumFrameCount(current_action_name);
-
-			m_cooked_animation[current_action_name].SetSize((*action).second.m_key_count, m_skeleton.size());
-
-
-			for (SkeletonAnimation::const_iterator animation = (*action).second.m_pose.begin(); animation != (*action).second.m_pose.end(); ++animation)
+			for (FramesCollection::const_iterator frame = (*animation).second.begin(); frame != (*animation).second.end(); ++frame)
 			{
-				System::string bone_name = (*animation).first;
-				int bone_id = GetBoneID(bone_name);
+				int current_frame = (*frame).first;
+				int current_frame_id = GetFrameID(action_name, bone_id, current_frame);
 
-				for (FramesCollection::const_iterator frame = (*animation).second.begin(); frame != (*animation).second.end(); ++frame)
-				{
-					int current_frame = (*frame).first;
-					int current_frame_id = GetFrameID(current_action_name, bone_id, current_frame);
-
-					m_cooked_animation[current_action_name].At(current_frame_id, bone_id).m_position = (*frame).second.m_position;
-					m_cooked_animation[current_action_name].At(current_frame_id, bone_id).m_rotation= (*frame).second.m_rotation;
-				}
+				m_cooked_animation[action_name].At(current_frame_id, bone_id).m_position = (*frame).second.m_position;
+				m_cooked_animation[action_name].At(current_frame_id, bone_id).m_rotation= (*frame).second.m_rotation;
 			}
 		}
 	}
@@ -526,11 +569,13 @@ namespace Utility
 		}
 
 		BuildBoneIndex();
-		CookAnimationFrames();
+	///	CookAnimationFrames();
 	}
 
 	bool Model::CookAnimation(const System::string& action_name, SkinAnimation*& anim)
 	{
+		CookAnimationFrames(action_name);
+
 		anim = new SkinAnimation;
 
 		anim->SetAnimationSize(m_cooked_animation[action_name].RowCount(), m_cooked_animation[action_name].ColumnCount());
@@ -552,6 +597,7 @@ namespace Utility
 		anim->SetDuration(1);
 		anim->SetTicksPerSecond(1);		
 		anim->SetRestPosition(m_skeleton_id);
+		anim->SetMeshOffset(m_local_matrix);
 
 		return true;
 	}
@@ -713,7 +759,7 @@ namespace Utility
 	{
 		CHECK_START(buffer);
 		for (int i = 0; i < 16; i++)
-			buffer.ReadWord();
+			m_world_matrix[i] = buffer.ReadWord().ToFloat();
 		CHECK_END(buffer);
 	}
 
@@ -721,7 +767,7 @@ namespace Utility
 	{
 		CHECK_START(buffer);
 		for (int i = 0; i < 16; i++)
-			buffer.ReadWord();
+			m_local_matrix[i] = buffer.ReadWord().ToFloat();
 		CHECK_END(buffer);
 	}
 
@@ -838,6 +884,17 @@ namespace Utility
 		return res;
 	}
 
+	Math::mat4 Model::ParseBoneMatrix(System::Buffer& buffer)
+	{
+		CHECK_START(buffer);
+
+		Math::mat4 res;
+		for (int i = 0; i < 16; i++)
+			res[i] = buffer.ReadWord().ToFloat();
+		CHECK_END(buffer);
+		return res;
+	}
+
 	Math::quat Model::ParseGimbalTransform(System::Buffer& buffer)
 	{
 		CHECK_START(buffer);
@@ -877,6 +934,9 @@ namespace Utility
 			case WORD_GIMBAL_TRANSFORM:
 				//m_skeleton[name].m_gimbal_transform =
 				ParseGimbalTransform(buffer);
+				break;
+			case WORD_BONE_MATRIX:
+				m_skeleton[name].SetBoneMatrix(ParseBoneMatrix(buffer));
 				break;
 			default:
 				System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
@@ -1061,6 +1121,7 @@ namespace Utility
 		for (Skeleton::iterator bone = m_skeleton.begin(); bone != m_skeleton.end(); ++bone)
 		{
 			m_bone_index[(*bone).first] = i;
+			(*bone).second.SetName((*bone).first);
 			m_skeleton_id[i] = (*bone).second;
 			++i;
 		}

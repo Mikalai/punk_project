@@ -15,16 +15,19 @@ namespace Utility
 		BoneName   m_parent_name;
 		BoneName   m_name;
 		Math::mat4 m_matrix;
+		Math::mat4 m_bone_matrix;
 
 	public:
 		void SetName(const System::string& name);
 		void SetMatrix(const Math::mat4& matrix);
 		void SetParent(int parent);
 		void SetParentName(const System::string& name);
+		void SetBoneMatrix(const Math::mat4& matrix);
 
 		const BoneName& GetName() const;
 		const BoneName& GetParentName() const;
 		const Math::mat4& GetMatrix() const;
+		const Math::mat4& GetBoneMatrix() const;
 		int GetParent() const;
 	};
 }

@@ -12,12 +12,12 @@ namespace Math
 		return res;
 	}
 
-	template<typename T>
-	T cosine_interpolation(const T& a, const T& b, const T& value)
+	template<typename T, typename K>
+	T cosine_interpolation(const T& a, const T& b, const K& value)
 	{
-		T t = value * PI;
-		T tt = (T(1) - cosf(t)) * 0.5f;
-		return a*(T(1)-tt) + b*tt;
+		K t = value * PI;
+		K tt = (K(1) - cosf(t)) * 0.5f;
+		return a*(K(1)-tt) + b*tt;
 	}
 
 	template<typename T>

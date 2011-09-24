@@ -26,6 +26,10 @@ class Test
 	ShaderProgram* skin_program;
 	int bones_count;
 
+	OpenGL::VertexArrayObject* m_axis;
+	OpenGL::VertexArrayObject* m_bone_vao;
+	Utility::Model m_axis_mdl;
+	Utility::Model m_bone_mdl;
 	float a1;
 	float a2;
 public:
@@ -46,6 +50,8 @@ public:
 		try
 		{
 			mdl.LoadPunkModel(System::string("D:\\project\\punk_project\\punk_engine\\blender\\something.pmd"));
+			m_axis_mdl.LoadPunkModel(System::string("D:\\project\\punk_project\\punk_engine\\blender\\axis.pmd"));
+			m_bone_mdl.LoadPunkModel(System::string("D:\\project\\punk_project\\punk_engine\\blender\\bone.pmd"));
 		}
 		catch (Utility::UtilityError& err)
 		{
@@ -58,13 +64,21 @@ public:
 
 
 		Utility::StaticMesh* mesh = mdl.CookStaticMesh();
+		Utility::StaticMesh* axis_mesh = m_axis_mdl.CookStaticMesh();
+		Utility::StaticMesh* bone_mesh = m_bone_mdl.CookStaticMesh();
 		Utility::SkinnedMesh* smesh;
-		
+
 		Utility::Material mat = mdl.m_materials.at(L"diffuse");
 		mdl.CookSkinnedMesh(smesh, skelet, bones_count);
-		mdl.CookAnimation(L"Armature.001Action", anim);
+		mdl.CookAnimation(L"Run", anim);
 
-	//	scene.CookAnimation(L"ArmatureAction", anim);
+		//	scene.CookAnimation(L"ArmatureAction", anim);
+
+		m_bone_vao = new OpenGL::VertexArrayObject();
+		m_bone_vao->Create(bone_mesh->GetVertexBuffer(), bone_mesh->GetVertexBufferSize(), bone_mesh->GetIndexBuffer(), bone_mesh->GetVertexCount(), bone_mesh->GetIndexCount(), bone_mesh->GetOneVertexSize(), bone_mesh->GetVertexComponentCode());
+
+		m_axis = new OpenGL::VertexArrayObject();
+		m_axis->Create(axis_mesh->GetVertexBuffer(), axis_mesh->GetVertexBufferSize(), axis_mesh->GetIndexBuffer(), axis_mesh->GetVertexCount(), axis_mesh->GetIndexCount(), axis_mesh->GetOneVertexSize(), axis_mesh->GetVertexComponentCode());
 
 		vao = new OpenGL::VertexArrayObject();
 		vao->Create(mesh->GetVertexBuffer(), mesh->GetVertexBufferSize(), mesh->GetIndexBuffer(), mesh->GetVertexCount(), mesh->GetIndexCount(), mesh->GetOneVertexSize(), mesh->GetVertexComponentCode());
@@ -72,7 +86,7 @@ public:
 		skin_vao = new OpenGL::VertexArrayObject();
 		skin_vao->Create(smesh->GetVertexBuffer(), smesh->GetVertexBufferSize(), smesh->GetIndexBuffer(), smesh->GetVertexCount(), smesh->GetIndexCount(), smesh->GetOneVertexSize(), smesh->GetVertexComponentCode());
 
-		program = driver->GetShaderProgram(L"skinning");
+		program = driver->GetShaderProgram(L"static_mesh");
 		skin_program = driver->GetShaderProgram(L"skinning");
 
 		camera = new Utility::Camera();
@@ -87,7 +101,7 @@ public:
 
 		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Test::OnKey));
 
-		}
+	}
 
 	~Test()
 	{
@@ -112,44 +126,64 @@ public:
 	{
 		try
 		{
-			driver->ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER|OpenGL::Driver::STENCIL_BUFFER);
-
-			OpenGL::RenderContext context;
-	/*		context.Begin(program);
-			m_texture_context->Apply();
-			{
-			Math::mat4 m = Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.01, 100.0) * Math::mat4::CreateTargetCameraMatrix(Math::vec3(0,0,-5), Math::vec3(0,0,0), Math::vec3(0, 1, 0));
-
-			Math::mat4 proj = camera->GetProjectionMatrix();
-			Math::mat4 world = Math::mat4::CreateTranslate(3,3,0);
-			Math::mat4 view = camera->GetViewMatrix();
-			Math::mat3 normal = (view*world).Inversed().Transposed().RotationPart();
-			program->SetUniformMatrix4f(program->GetUniformLocation("uWorld"), world);
-			program->SetUniformMatrix4f(program->GetUniformLocation("uView"), view);
-			program->SetUniformMatrix4f(program->GetUniformLocation("uProj"), proj);
-			program->SetUniformMatrix4f(program->GetUniformLocation("uViewWorld"), view*world);
-			program->SetUniformMatrix4f(program->GetUniformLocation("uProjViewWorld"), proj*view*world);
-			program->SetUniformMatrix3f(program->GetUniformLocation("uNormalMatrix"), normal);
-			program->SetUniformVector3f(program->GetUniformLocation("uLightPosition"), Math::vec3(4, 3, 0));
-			program->SetUniformVector3f(program->GetUniformLocation("uEyePosition"), camera->GetPosition());
-			program->SetUniformVector4f(program->GetUniformLocation("uAmbient"), Math::vec4(0,0,0,1));
-			program->SetUniformVector4f(program->GetUniformLocation("uSpecular"), Math::vec4(1,1,1,1));
-			program->SetUniformVector4f(program->GetUniformLocation("uDiffuse"), Math::vec4(1,1,1,1));
-			program->SetUniformFloat(program->GetUniformLocation("uSpecularPower"), 16.0);
-			}
-			driver->Render(vao);
-			context.End();/**/
-/**/
 			static float t  = 0, a = 0;
 			static int cur = 0;
 			static int next = cur+1;
+
+			driver->ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER|OpenGL::Driver::STENCIL_BUFFER);
+
+			OpenGL::RenderContext context;
+			context.Begin(program);
+			m_texture_context->Apply();
+			{
+				Math::mat4 m = Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.01, 100.0) * Math::mat4::CreateTargetCameraMatrix(Math::vec3(0,0,-5), Math::vec3(0,0,0), Math::vec3(0, 1, 0));
+
+				Math::mat4 proj = camera->GetProjectionMatrix();
+				Math::mat4 world = Math::mat4::CreateTranslate(5,5,0);
+				Math::mat4 view = camera->GetViewMatrix();
+				Math::mat3 normal = (view*world).Inversed().Transposed().RotationPart();
+
+				program->SetUniformMatrix4f(program->GetUniformLocation("uView"), view);
+				program->SetUniformMatrix4f(program->GetUniformLocation("uProj"), proj);
+				program->SetUniformMatrix4f(program->GetUniformLocation("uViewWorld"), view*world);
+				program->SetUniformMatrix4f(program->GetUniformLocation("uProjViewWorld"), proj*view*world);
+				program->SetUniformMatrix3f(program->GetUniformLocation("uNormalMatrix"), normal);
+				program->SetUniformVector3f(program->GetUniformLocation("uLightPosition"), Math::vec3(4, 3, 0));
+				program->SetUniformVector3f(program->GetUniformLocation("uEyePosition"), camera->GetPosition());				
+				program->SetUniformVector4f(program->GetUniformLocation("uSpecular"), Math::vec4(1,1,1,1));
+				program->SetUniformVector4f(program->GetUniformLocation("uDiffuse"), Math::vec4(1,1,1,1));
+				program->SetUniformFloat(program->GetUniformLocation("uSpecularPower"), 16.0);
+
+				for (int bone = 0; bone < anim->GetBonesCount(); bone++)
+				{
+					char buf[256];
+					sprintf(buf, "uBones[%d]", bone);
+					Math::mat4 m = anim->GetInterpolatedTransform(bone, cur, next, t);
+					program->SetUniformVector4f(program->GetUniformLocation("uAmbient"), Math::vec4(bone/20.0f,(20-bone)/20.0f,bone/20.0f,1));
+					//	if (m[15] != 1.0)
+					//	throw;/**/
+
+					//		Math::mat4 src = scene.GetSourceGlobalMatrix(bone);
+					//m = anim->GetGlobal(1, 0);//scene.m_skeleton[L"bottom"  ].m_matrix_local;	
+					//m = Math::mat4::CreateRotation(1,0,0, a1);
+					const Utility::Bone& b = anim->GetBone(bone);					
+					program->SetUniformMatrix4f(program->GetUniformLocation("uWorld"), Math::mat4::CreateRotation(1,0,0,Math::PI/2)*Math::mat4::CreateTranslate(5, 0, 0)*m*b.GetMatrix()*Math::mat4::CreateRotation(1,0,0,-Math::PI/2));				
+					driver->Render(m_bone_vao);
+				}
+
+				program->SetUniformMatrix4f(program->GetUniformLocation("uWorld"), world);
+				driver->Render(m_axis);
+				context.End();/**/
+			}
+			/**/
+
 			context.Begin(skin_program);
 			m_texture_context->Apply();
 			{
 				//Math::mat4 m = Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.01, 100.0) * Math::mat4::CreateTargetCameraMatrix(Math::vec3(0,0,-5), Math::vec3(0,0,0), Math::vec3(0, 1, 0));
 
 				Math::mat4 proj = camera->GetProjectionMatrix();
-				Math::mat4 world;// = Math::mat4::CreateRotation(0, 1, 0, a);
+				Math::mat4 world = Math::mat4::CreateScaling(0.1,0.1,0.1);//*Math::mat4::CreateRotation(1, 0, 0, -Math::PI/2);
 				a+= 0.0001;
 				Math::mat4 view = camera->GetViewMatrix();
 				Math::mat3 normal = (view*world).Inversed().Transposed().RotationPart();
@@ -167,23 +201,22 @@ public:
 				skin_program->SetUniformVector4f(skin_program->GetUniformLocation("uDiffuse"), Math::vec4(1,1,1,1));
 
 				//Math::mat4 m;
-				
+
 				for (int bone = 0; bone < anim->GetBonesCount(); bone++)
 				{
 					char buf[256];
 					sprintf(buf, "uBones[%d]", bone);
-	
 					Math::mat4 m = anim->GetInterpolatedTransform(bone, cur, next, t);
 
-				//	if (m[15] != 1.0)
+					//	if (m[15] != 1.0)
 					//	throw;/**/
 
-			//		Math::mat4 src = scene.GetSourceGlobalMatrix(bone);
+					//		Math::mat4 src = scene.GetSourceGlobalMatrix(bone);
 					//m = anim->GetGlobal(1, 0);//scene.m_skeleton[L"bottom"  ].m_matrix_local;	
 					//m = Math::mat4::CreateRotation(1,0,0, a1);
 					skin_program->SetUniformMatrix4f(skin_program->GetUniformLocation(buf), m);				
 				}
-/*				//m = anim->GetGlobal(0,1); //Math::linear_interpolation(anim->GetGlobal(cur, 1), anim->GetGlobal(next, 1), t);
+				/*				//m = anim->GetGlobal(0,1); //Math::linear_interpolation(anim->GetGlobal(cur, 1), anim->GetGlobal(next, 1), t);
 				m = Math::linear_interpolation(anim->GetGlobal(cur, 1), anim->GetGlobal(next, 1), t);
 				skin_program->SetUniformMatrix4f(skin_program->GetUniformLocation("uBones[1]"), m);
 				//m = anim->GetGlobal(0,2);// Math::linear_interpolation(anim->GetGlobal(cur, 2), anim->GetGlobal(next, 2), t);
@@ -198,11 +231,6 @@ public:
 					next = cur + 1;
 					if (cur == anim->GetFramesCount() - 1)
 					{
-						next = 0;
-					}
-
-					if (cur == anim->GetFramesCount())
-					{
 						cur = 0;
 						next = 1;
 					}
@@ -215,8 +243,8 @@ public:
 			}
 			driver->Render(skin_vao);
 			context.End();
-			
-			
+
+
 			driver->SwapBuffers();	
 		}
 		catch(System::SystemError& err)

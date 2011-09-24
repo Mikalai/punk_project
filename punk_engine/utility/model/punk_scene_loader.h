@@ -80,7 +80,8 @@ namespace Utility
 			L"*normal_map",
 			L"*diffuse_map",
 			L"*materials",
-			L"*gimbal_transform"};
+			L"*gimbal_transform",
+			L"*bone_matrix"};
 
 	class LIB_UTILITY Model
 	{
@@ -119,7 +120,8 @@ namespace Utility
 				WORD_NORMAL_MAP,
 				WORD_DIFFUSE_MAP,
 				WORD_MATERIALS,
-				WORD_GIMBAL_TRANSFORM
+				WORD_GIMBAL_TRANSFORM,
+				WORD_BONE_MATRIX
 			};
 
 
@@ -141,6 +143,9 @@ namespace Utility
 
 		std::map<BoneName, std::map<Frame, BoneFrame> >::iterator m_maximum_frames;
 		std::map<BoneName, int> m_bone_index;
+	
+		Math::mat4 m_local_matrix;
+		Math::mat4 m_world_matrix;
 
 	public:
 
@@ -160,7 +165,7 @@ namespace Utility
 		/// Return ID of the 
 		int GetFrameID(const System::string& action_name, int bone_name, FrameID frame) const;
 
-		void CookAnimationFrames();
+		void CookAnimationFrames(const System::string& action_name);
 		BoneFrame GetGlobalFrame(int parent, System::string action, FrameID frame) const;
 		void CookOneVertexWithBone(int index, float& b1, float& b2, float& b3, float& b4, float& w1, float& w2, float& w3, float& w4) const;
 		void CookBonesMatrix(Math::mat4*& bones, int& count) const;
@@ -196,6 +201,7 @@ namespace Utility
 		void ParseBoneAnimationValues(System::Buffer&, Action& action, System::string& name, KeywordCode code);
 		void ParseTextureCoords(System::Buffer& buffer);
 		Math::quat ParseGimbalTransform(System::Buffer& buffer);
+		Math::mat4 ParseBoneMatrix(System::Buffer& buffer);
 
 		void ParseMeshMaterial(System::Buffer&);
 		void ParseMaterials(System::Buffer&);

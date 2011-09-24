@@ -7,6 +7,11 @@ namespace Utility
 		return m_matrix;
 	}
 
+	const Math::mat4& Bone::GetBoneMatrix() const
+	{
+		return m_bone_matrix;
+	}
+
 	const System::string& Bone::GetName() const
 	{
 		return m_name;
@@ -35,6 +40,11 @@ namespace Utility
 	void Bone::SetParentName(const System::string& pname)
 	{
 		m_parent_name = pname;
+	}
+
+	void Bone::SetBoneMatrix(const Math::mat4& m)
+	{
+		m_bone_matrix = m;
 	}
 
 	int Bone::GetParent() const
