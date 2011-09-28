@@ -28,7 +28,7 @@ namespace System
 
 		void SetType(unsigned type);
 		void SetNumber(unsigned number);
-		void Setm_id(unsigned __int64 m_id);
+		void SetID(unsigned __int64 id);
 
 		bool operator == (const Handler& handler) const;
 

@@ -124,10 +124,12 @@
     <ClInclude Include="..\punk_engine\system\win32\environment_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\error_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\folder_win32.h" />
+    <ClInclude Include="..\punk_engine\system\win32\handler_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\keyboard_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\monitor_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\mouse_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\process_win32.h" />
+    <ClInclude Include="..\punk_engine\system\win32\resource_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\stack_trace_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\thread_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\timer_win32.h" />
@@ -195,6 +197,7 @@
     <ClCompile Include="..\punk_engine\system\win32\environment_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\error_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\folder_win32.cpp" />
+    <ClCompile Include="..\punk_engine\system\win32\handler_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\keyboard_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\mouse_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\process_win32.cpp" />

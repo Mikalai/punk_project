@@ -177,6 +177,12 @@
     <ClInclude Include="..\punk_engine\system\timer.h" />
     <ClInclude Include="..\punk_engine\system\types.h" />
     <ClInclude Include="..\punk_engine\system\window.h" />
+    <ClInclude Include="..\punk_engine\system\win32\handler_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\resource_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\system\events\events.cpp">
@@ -305,5 +311,8 @@
     <ClCompile Include="..\punk_engine\system\logger.cpp" />
     <ClCompile Include="..\punk_engine\system\object.cpp" />
     <ClCompile Include="..\punk_engine\system\pool.cpp" />
+    <ClCompile Include="..\punk_engine\system\win32\handler_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

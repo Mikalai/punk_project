@@ -21,7 +21,7 @@ namespace System
 	{
 		if (this != &handler)
 		{
-			m_id = m_handler.id;
+			m_id = handler.m_id;
 		}
 		return *this;
 	}
