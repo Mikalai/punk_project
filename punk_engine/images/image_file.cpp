@@ -28,6 +28,14 @@ namespace Image
 		memcpy(m_data, rep.m_data, m_size);
 	}
 
+	void ImageFile::Rep::SetSize(unsigned size)
+	{
+		m_size = size;
+		if (m_data)
+			delete[] m_data;
+		m_data = new unsigned char[m_size];
+	}
+
 	void ImageFile::Rep::SetSize(int width, int height)
 	{
 		if (m_width == width && m_height == height)
@@ -134,6 +142,31 @@ namespace Image
 			p[2] = b;
 		}			
 	}
+
+	void ImageFile::Store(System::Buffer& buffer)
+	{
+		buffer.WriteUnsigned32(m_rep->m_size);
+		buffer.WriteBuffer((void*)m_rep->m_data, m_rep->m_size);
+		buffer.WriteUnsigned32(m_rep->m_width);
+		buffer.WriteUnsigned32(m_rep->m_height);
+		buffer.WriteUnsigned32(m_rep->m_depth);
+		buffer.WriteUnsigned32(m_rep->m_bpp);
+		buffer.WriteBuffer(&m_rep->m_format, sizeof(m_rep->m_format));
+	}
+
+	void ImageFile::Restore(System::Buffer& buffer)
+	{
+		m_rep = m_rep->GetOwnCopy();
+		m_rep->m_size = buffer.ReadUnsigned32();
+		m_rep->SetSize(m_rep->m_size);
+		buffer.ReadBuffer((void*)m_rep->m_data, m_rep->m_size);
+		m_rep->m_width = buffer.ReadUnsigned32();
+		m_rep->m_height = buffer.ReadUnsigned32();
+		m_rep->m_depth = buffer.ReadUnsigned32();
+		m_rep->m_bpp = buffer.ReadUnsigned32();
+		buffer.ReadBuffer(&m_rep->m_format, sizeof(m_rep->m_format));
+	}
+
 
 	void ImageFile::SetSize(unsigned width, unsigned height)
 	{

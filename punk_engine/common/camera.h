@@ -2,8 +2,8 @@
 #define _H_PUNK_CAMERA
 
 #include "../math/frustum.h"
-#include "../render/vertex_array_object.h"
-
+//#include "../render/vertex_array_object.h"
+/*
 namespace Common
 {
 	class Camera : public Math::Frustum
@@ -27,6 +27,6 @@ namespace Common
 		static const Camera* GetActiveCamera();
 		static void Release();
 	};
-}
+}*/
 
 #endif

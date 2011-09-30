@@ -152,7 +152,7 @@ namespace System
 		return res;
 	}
 
-	void Buffer::ReadBuffer(void*& buffer, int size)
+	void Buffer::ReadBuffer(void* buffer, int size)
 	{
 		memcpy(buffer, m_current, size);
 		m_current += size;
@@ -160,93 +160,71 @@ namespace System
 
 	void Buffer::WriteSigned32(int value)
 	{		
-		*(int*)m_current = value;		
-		if (m_current + sizeof(int) < m_buffer + m_size)
-			m_current += sizeof(int);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(&value, sizeof(value));	
 	}
 
 	void Buffer::WriteUnsigned32(unsigned value)
 	{
-		*(unsigned*)m_current = value;		
-		if (m_current + sizeof(unsigned) < m_buffer + m_size)
-			m_current += sizeof(unsigned);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(&value, sizeof(value));
 	}
 
 	void Buffer::WriteSigned16(short value)
 	{
-		*(short*)m_current = value;
-		if (m_current + sizeof(short) < m_buffer + m_size)
-			m_current += sizeof(short);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(&value, sizeof(value));
 	}
 
 	void Buffer::WriteUnsigned16(unsigned short value)
 	{
-		*(unsigned short*)m_current = value;		
-		if (m_current + sizeof(unsigned short) < m_buffer + m_size)
-			m_current += sizeof(unsigned short);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(&value, sizeof(value));
 	}
 
 	void Buffer::WriteSigned8(signed char value)
 	{
-		*(signed char*)m_current = value;
-		if (m_current + sizeof(signed char) < m_buffer + m_size)
-			m_current += sizeof(signed char);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(&value, sizeof(value));
 	}
 
 	void Buffer::WriteUnsigned8(unsigned char value)
 	{
-		*(unsigned char*)m_current = value;		
-		if (m_current + sizeof(unsigned char) < m_buffer + m_size)
-			m_current += sizeof(unsigned char);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(&value, sizeof(value));
 	}
 
 	void Buffer::WriteString(const string& value)
 	{
-		CopyMemory(m_current, value.Data(), (value.Length())*sizeof(wchar_t));		
-		if (m_current + value.Length()*sizeof(wchar_t) < m_buffer + m_size)
-			m_current = m_current + (value.Length())*sizeof(wchar_t);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		unsigned len = value.Length();
+		WriteData(&len, sizeof(len));
+		WriteData((void*)value.Data(), sizeof(wchar_t)*len);
 	}
 
 	void Buffer::WriteReal32(float value)
 	{
-		*(float*)m_current = value;
-		if (m_current + sizeof(float) < m_buffer + m_size)
-			m_current += sizeof(float);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(&value, sizeof(value));
 	}
 
 	void Buffer::WriteReal64(double value)
 	{
-		*(double*)m_current = value;
-		if (m_current + sizeof(double) < m_buffer + m_size)
-			m_current += sizeof(double);
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(&value, sizeof(value));
 	}
 
 	void Buffer::WriteBuffer(const void* buffer, int size)
 	{
-		if (m_current + size < m_buffer + m_size)
-		{
-			memcpy(m_current, buffer, size);
-			m_current += size;
-		}
-		else
-			Logger::GetInstance()->WriteError(L"Buffer overflow", LOG_LOCATION);
+		WriteData(buffer, size);
+	}
+
+	void Buffer::Resize(unsigned new_size)
+	{
+		unsigned char* tmp = new unsigned char[new_size];
+		memcpy_s(tmp, new_size, m_buffer, m_size);
+		m_current = tmp + (m_current - m_buffer);
+		delete[] m_buffer;
+		m_buffer = tmp;
+		m_size = new_size;		
+	}
+
+	void Buffer::WriteData(const void* data, unsigned size)
+	{
+		if (m_current + sizeof(double) >= m_buffer + m_size)
+			Resize(m_size*2);
+		memcpy(m_current, data, size);
+		m_current += size;
 	}
 }

@@ -25,6 +25,7 @@
     <ClInclude Include="..\punk_engine\images\png_file.h" />
     <ClInclude Include="..\punk_engine\images\surface.h" />
     <ClInclude Include="..\punk_engine\images\texture.h" />
+    <ClInclude Include="..\punk_engine\images\storage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\images\tga\tga.cpp">
@@ -36,6 +37,7 @@
     <ClCompile Include="..\punk_engine\images\png_file.cpp" />
     <ClCompile Include="..\punk_engine\images\surface.cpp" />
     <ClCompile Include="..\punk_engine\images\texture.cpp" />
+    <ClCompile Include="..\punk_engine\images\storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuildStep Include="..\punk_engine\images\tga\tga.h">

@@ -8,6 +8,7 @@ Description: Contains a Texture2D class
 #define _H_PUNK_TEXTURE_2D
 
 #include "config.h"
+#include "../../../../system/resource.h"
 #include "../../../../images/formats.h"
 
 namespace Image

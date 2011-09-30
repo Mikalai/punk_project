@@ -2,14 +2,39 @@
 #define _H_PUNK_RESOURCE_WIN32
 
 #include "clock_win32.h"
-#include "handler_win32.h"
+#include "handle_win32.h"
 #include "static_string.h"
 #include <time.h>
 #include <memory>
 
 namespace System
 {
-	enum ResourceCodes 
+	template<class T>
+	class Resource
+	{
+	protected:
+		Handle m_handler;
+		string m_path_to_storage;
+		time_t m_last_access;
+		T* m_resource;
+
+	public:
+
+		T* Get();
+
+		const Handle GetHandle() const;
+		void SetHandle(Handle handle);
+
+		time_t GetLastTimeAccess() const;
+
+		void SetPathToStorage(const string& path);
+		const string& GetPathToStorage() const;
+
+		virtual void DropToHdd() = 0;
+		virtual void RestoreFromHdd() = 0;
+	};
+
+	/*enum ResourceCodes 
 	{
 		//
 		//	Engine resources
@@ -65,7 +90,7 @@ namespace System
 		}
 
 		~Resource();
-	}
+	}*/
 }
 
 #endif

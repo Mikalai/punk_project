@@ -12,6 +12,11 @@ namespace System
 	{
 	}
 
+	ConfigFile::~ConfigFile()
+	{
+		Close();
+	}
+
 	void ConfigFile::Open(const System::string &filename)
 	{
 		DWORD result;

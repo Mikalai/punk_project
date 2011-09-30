@@ -37,7 +37,7 @@ namespace System
 		string ReadWord();
 		float ReadReal32();
 		double ReadReal64();
-		void ReadBuffer(void*& buffer, int size);
+		void ReadBuffer(void* buffer, int size);
 
 		void WriteSigned32(int value);
 		void WriteUnsigned32(unsigned value);
@@ -49,6 +49,10 @@ namespace System
 		void WriteReal32(float value);
 		void WriteReal64(double value);
 		void WriteBuffer(const void* buffer, int size);
+
+	private:
+		void Resize(unsigned new_size);
+		void WriteData(const void* data, unsigned size);	
 	};
 }
 

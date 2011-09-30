@@ -105,10 +105,12 @@
     </CustomBuildStep>
     <ClInclude Include="..\punk_engine\images\images.h" />
     <ClInclude Include="..\punk_engine\images\png_file.h" />
+    <ClInclude Include="..\punk_engine\images\storage.h" />
     <ClInclude Include="..\punk_engine\images\surface.h" />
     <ClInclude Include="..\punk_engine\images\texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\punk_engine\images\storage.cpp" />
     <ClCompile Include="..\punk_engine\images\tga\tga.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

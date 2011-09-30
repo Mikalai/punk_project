@@ -9,6 +9,7 @@
 
 #include "config.h"
 #include "formats.h"
+#include "../system/buffer.h"
 
 namespace Image
 {
@@ -31,6 +32,7 @@ namespace Image
 			Rep(const Rep& rep);
 			~Rep();
 			void SetSize(int width, int height);
+			void SetSize(unsigned size);
 			Rep* GetOwnCopy();
 		};
 
@@ -47,6 +49,9 @@ namespace Image
 		virtual void Load(const wchar_t* file) = 0;
 		virtual void Save(const wchar_t* file) = 0;
 
+		void Store(System::Buffer& buffer);
+		void Restore(System::Buffer& buffer);
+
 		unsigned GetWidth() const;
 		unsigned GetHeight() const;
 		unsigned GetChannels() const;
@@ -61,6 +66,8 @@ namespace Image
 		const void* Lock() const;
 		void Unlock(void* p);
 		void Unlock(const void* p) const;
+
+		
 	};
 }
 

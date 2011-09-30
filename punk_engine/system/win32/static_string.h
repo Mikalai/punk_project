@@ -391,7 +391,7 @@ stack_basic_string<Size1> operator + (const wchar_t* s1, const stack_basic_strin
     return res;
 }*/
 
-typedef stack_basic_string<1024> string;
+//typedef stack_basic_string<1024> string;
 }
 
 #endif

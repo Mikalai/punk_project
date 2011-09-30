@@ -10,6 +10,9 @@
     <Filter Include="win32">
       <UniqueIdentifier>{fe5e5aa9-6229-40b6-bac8-61357f2232dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{74c35c54-a432-45a7-a45f-70c579e9e22b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\events\event.h">
@@ -177,12 +180,23 @@
     <ClInclude Include="..\punk_engine\system\timer.h" />
     <ClInclude Include="..\punk_engine\system\types.h" />
     <ClInclude Include="..\punk_engine\system\window.h" />
-    <ClInclude Include="..\punk_engine\system\win32\handler_win32.h">
-      <Filter>win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\punk_engine\system\win32\resource_win32.h">
       <Filter>win32</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\system\scene_graph.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\region.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\resource.h" />
+    <ClInclude Include="..\punk_engine\system\win32\resource_manager_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\win32\handle_win32.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\handle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\system\events\events.cpp">
@@ -311,7 +325,7 @@
     <ClCompile Include="..\punk_engine\system\logger.cpp" />
     <ClCompile Include="..\punk_engine\system\object.cpp" />
     <ClCompile Include="..\punk_engine\system\pool.cpp" />
-    <ClCompile Include="..\punk_engine\system\win32\handler_win32.cpp">
+    <ClCompile Include="..\punk_engine\system\win32\handle_win32.cpp">
       <Filter>win32</Filter>
     </ClCompile>
   </ItemGroup>

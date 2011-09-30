@@ -14,6 +14,7 @@ namespace System
 		HKEY m_key;
 	public:
 		ConfigFile();
+		~ConfigFile();
 		void Open(const string& filename);
 		void Close();
 		string ReadOptionString(const string& option);

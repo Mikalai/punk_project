@@ -25,5 +25,7 @@
 #include "logger.h"
 #include "config_file.h"
 #include "stack_trace.h"
+#include "handle.h"
+#include "resource.h"
 
 #endif 
