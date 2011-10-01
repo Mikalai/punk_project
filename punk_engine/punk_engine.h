@@ -9,5 +9,6 @@
 #include "utility\utility.h"
 #include "scene\scene.h"
 #include "gui\gui.h"
+#include "render\render.h"
 
 #endif

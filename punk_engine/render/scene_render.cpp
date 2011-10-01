@@ -1,3 +1,4 @@
+#include "../system/system.h"
 #include "scene_render.h"
 
 namespace Render
@@ -7,12 +8,13 @@ namespace Render
 		switch(desc.Type())
 		{
 		case System::RESOURCE_GUI:
+			System::Logger::GetInstance()->WriteMessage(System::string::Format(L"Rendering a something like a widget with instance number %d", desc.Number()));
 			//RenderGUIElement(System::ResourceManager::Get
 			break;
 		}
 	}
 
-	void SceneRender::Render(const Scene::SceneGraph& graph)
+	void SceneRender::Renderer(const Scene::SceneGraph& graph)
 	{
 
 	}

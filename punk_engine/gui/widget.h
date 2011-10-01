@@ -110,9 +110,6 @@ namespace GUI
 
 		Widget* GetFocused(int x, int y);
 
-//		static void SetVideoDriver(Driver::Video* driver);
-	//	static void ShutDownGUI();
-
 		/*********************************************************************/
 		/*	Handlers
 		/*********************************************************************/

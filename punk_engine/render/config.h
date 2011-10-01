@@ -3,9 +3,9 @@
 
 #ifdef _WIN32
 #ifdef PUNK_RENDER_EXPORTS
-#define LIB_GUI __declspec(dllexport)
+#define LIB_RENDER __declspec(dllexport)
 #else
-#define LIB_GUI __declspec(dllimport)
+#define LIB_RENDER __declspec(dllimport)
 #endif
 #endif
 

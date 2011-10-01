@@ -28,10 +28,32 @@ namespace Scene
 		System::Descriptor m_parent;					// parent region. it can be anything that can contain anything
 		Hierarchy m_scene;		// children. It can be another scene graph or a simple object
 		Child_Parent m_hash;
+
+		template<class T>
+		void internal_visit(System::Descriptor& parent, T visitor)
+		{							
+			Collection& col = m_scene.at(parent);
+			for (Collection::iterator i = col.begin(); i != col.end(); ++i)
+			{				
+				visitor(*i);
+				
+				Hierarchy::iterator col_iter = m_scene.lower_bound(*i);
+				if (col_iter != m_scene.end())	
+					internal_visit(*i, visitor);
+			}
+		}
+
 	public:
 
 		SceneGraph();
 		~SceneGraph();
+
+		template<class T>
+		void Visit(T visitor)
+		{
+			System::Descriptor desc = System::Descriptor::Null();
+			internal_visit<T>(desc, visitor);
+		}
 
 		void AddInstance(System::Descriptor parent, System::Descriptor instance);
 
