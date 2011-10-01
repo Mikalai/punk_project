@@ -119,6 +119,7 @@
     <ClInclude Include="..\punk_engine\system\linux\window_linux.h" />
     <ClInclude Include="..\punk_engine\system\region.h" />
     <ClInclude Include="..\punk_engine\system\resource.h" />
+    <ClInclude Include="..\punk_engine\system\resource_manager.h" />
     <ClInclude Include="..\punk_engine\system\scene_graph.h" />
     <ClInclude Include="..\punk_engine\system\win32\binary_file_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\buffer_win32.h" />

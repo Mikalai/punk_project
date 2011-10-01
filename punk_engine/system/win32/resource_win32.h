@@ -9,32 +9,8 @@
 
 namespace System
 {
-	template<class T>
-	class Resource
-	{
-	protected:
-		Handle m_handler;
-		string m_path_to_storage;
-		time_t m_last_access;
-		T* m_resource;
 
-	public:
-
-		T* Get();
-
-		const Handle GetHandle() const;
-		void SetHandle(Handle handle);
-
-		time_t GetLastTimeAccess() const;
-
-		void SetPathToStorage(const string& path);
-		const string& GetPathToStorage() const;
-
-		virtual void DropToHdd() = 0;
-		virtual void RestoreFromHdd() = 0;
-	};
-
-	/*enum ResourceCodes 
+	enum ResourceCodes 
 	{
 		//
 		//	Engine resources
@@ -43,54 +19,117 @@ namespace System
 		RESOURCE_MESH		= 2,
 		RESOURCE_AUDIO		= 3,
 		RESOURCE_FONT		= 4,
+		RESOURCE_IMAGE		= 5,
 		//
 		//	User resources starts from here
 		RESOURCE_USER = 256
 	};
 
-	template<class T, class Code>
-	class Resource : private HandlerSetter<T, Code>
+	class BaseResource
 	{
-		std::auto_ptr<T> m_object;		
+	protected:
+		Handle m_handler;
 		time_t m_last_access;
-		string m_location;
-		bool m_is_available;
+
+	public:
+		virtual ~BaseResource()
+		{
+		}
+
+		const Handle GetHandle() const
+		{
+			return m_handler;
+		}
+
+		void SetHandle(Handle handle)
+		{
+			m_handler = handle;
+		}
+
+		time_t GetLastTimeAccess() const
+		{
+			return m_last_access;
+		}
+
+		void SetPathToStorage(const string& path)
+		{
+		}
+
+		const string& GetPathToStorage() const
+		{
+			return string();
+		}		
+	};
+
+	template<class T>
+	class Resource : public BaseResource
+	{
+	protected:
+		T* m_resource;
 	public:
 
-		operator T* ()
+		Resource()
 		{
-			return m_object.get();
+			m_resource = new T();
 		}
 
-		operator const T* () const
+		Resource(const Resource& res)
 		{
-			return m_object.get();
+			m_handler = res.m_handler;
+			m_last_access = res.m_last_access;
+			m_resource = res.m_resource;
 		}
 
-		void Unload()
+		Resource& operator = (const Resource& res)
 		{
-			m_object.reset();
+			if (this != &res)
+			{
+				m_handler = res.m_handler;
+				m_last_access = res.m_last_access;
+				m_resource = res.m_resource;
+			}
+			return *this;
 		}
 
-		void Load()
+		virtual ~Resource()
 		{
-			m_object.reset(new T());
-			m_object.get()->Load(m_location);
+			delete m_resource;
+			m_resource = 0;
 		}
 
-		void SetLocation(const string& location)
+		T* Get()
 		{
-			m_location = location;
+			if (!m_resource)
+				RestoreFromHdd();
+
+			time(&m_last_access);
+
+			return m_resource;
 		}
 
-		template<class T2, class Code2>
-		bool operator < (const Resource<T2, Code2>& r)
+		void DropToHdd()
 		{
-			return m_last_access < r.m_last_access;
+			System::Buffer buffer;
+			m_resource->Store(buffer);
+			System::string filename = System::string::Convert(m_handler.Id());
+			System::BinaryFile::Save(filename, buffer);
+			delete m_resource;
+			m_resource = 0;
 		}
 
-		~Resource();
-	}*/
+		void RestoreFromHdd()
+		{
+			System::Buffer buffer;
+
+			if (m_resource)
+				throw System::SystemError(L"Nothing to restore. Resource was not dropped to hdd");
+
+			System::string filename = System::string::Convert(m_handler.Id());
+			System::BinaryFile::Load(filename, buffer);
+			m_resource = new T();
+			m_resource->Restore(buffer);
+		}
+	};
 }
 
 #endif

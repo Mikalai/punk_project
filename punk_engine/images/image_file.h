@@ -46,8 +46,8 @@ namespace Image
 
 		virtual ~ImageFile();
 
-		virtual void Load(const wchar_t* file) = 0;
-		virtual void Save(const wchar_t* file) = 0;
+		virtual void Load(const wchar_t* file) {}
+		virtual void Save(const wchar_t* file) {}
 
 		void Store(System::Buffer& buffer);
 		void Restore(System::Buffer& buffer);

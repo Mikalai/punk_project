@@ -197,6 +197,7 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\handle.h" />
+    <ClInclude Include="..\punk_engine\system\resource_manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\system\events\events.cpp">

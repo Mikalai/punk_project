@@ -14,7 +14,7 @@ namespace System
 
 	ConfigFile::~ConfigFile()
 	{
-		Close();
+		//Close();
 	}
 
 	void ConfigFile::Open(const System::string &filename)

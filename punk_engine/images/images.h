@@ -5,5 +5,6 @@
 #include "png_file.h"
 #include "config.h"
 #include "error.h"
+#include "storage.h"
 
 #endif

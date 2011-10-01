@@ -222,8 +222,14 @@ namespace System
 
 	void Buffer::WriteData(const void* data, unsigned size)
 	{
+		if (m_buffer == 0)
+		{
+			m_buffer = new unsigned char[size];
+			m_current = m_buffer;
+		}
+
 		if (m_current + sizeof(double) >= m_buffer + m_size)
-			Resize(m_size*2);
+			Resize(m_size+2*size);
 		memcpy(m_current, data, size);
 		m_current += size;
 	}

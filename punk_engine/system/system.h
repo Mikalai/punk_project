@@ -27,5 +27,6 @@
 #include "stack_trace.h"
 #include "handle.h"
 #include "resource.h"
+#include "resource_manager.h"
 
 #endif 
