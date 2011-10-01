@@ -26,4 +26,5 @@ _UpgradeReport_Files
 *.x
 *.sdf
 *.opensdf
+*.filters
 project-build-*

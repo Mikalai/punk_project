@@ -70,6 +70,20 @@ namespace System
 		return (const void*)m_buffer;
 	}
 
+	unsigned __int64 Buffer::ReadUnsigned64()
+	{
+		unsigned __int64 res = *(unsigned __int64*)(m_current);
+		m_current += sizeof(unsigned __int64);
+		return res;
+	}
+
+	__int64 Buffer::ReadSigned64()
+	{
+		__int64 res = *(__int64*)(m_current);
+		m_current += sizeof(__int64);
+		return res;
+	}
+
 	int Buffer::ReadSigned32()
 	{
 		int res = *(int*)(m_current);
@@ -158,6 +172,16 @@ namespace System
 		m_current += size;
 	}
 
+	void Buffer::WriteUnsigned64(unsigned __int64 value)
+	{
+		WriteData(&value, sizeof(value));
+	}
+
+	void Buffer::WriteSigned64(__int64 value)
+	{
+		WriteData(&value, sizeof(value));
+	}
+
 	void Buffer::WriteSigned32(int value)
 	{		
 		WriteData(&value, sizeof(value));	
@@ -228,7 +252,7 @@ namespace System
 			m_current = m_buffer;
 		}
 
-		if (m_current + sizeof(double) >= m_buffer + m_size)
+		if (m_current + size >= m_buffer + m_size)
 			Resize(m_size+2*size);
 		memcpy(m_current, data, size);
 		m_current += size;

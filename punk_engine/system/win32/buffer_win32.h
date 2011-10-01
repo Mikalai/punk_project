@@ -32,6 +32,8 @@ namespace System
 		unsigned short ReadUnsigned16();
 		signed char ReadSigned8();
 		unsigned char ReadUnsigned8();
+		__int64 ReadSigned64();
+		unsigned __int64 ReadUnsigned64();
 		string ReadString();
 		string ReadLine();
 		string ReadWord();
@@ -39,6 +41,8 @@ namespace System
 		double ReadReal64();
 		void ReadBuffer(void* buffer, int size);
 
+		void WriteSigned64(__int64 value);
+		void WriteUnsigned64(unsigned __int64 value);
 		void WriteSigned32(int value);
 		void WriteUnsigned32(unsigned value);
 		void WriteSigned16(short value);

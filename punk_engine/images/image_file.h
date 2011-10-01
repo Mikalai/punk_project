@@ -49,8 +49,8 @@ namespace Image
 		virtual void Load(const wchar_t* file) {}
 		virtual void Save(const wchar_t* file) {}
 
-		void Store(System::Buffer& buffer);
-		void Restore(System::Buffer& buffer);
+		virtual void Store(System::Buffer& buffer);
+		virtual void Restore(System::Buffer& buffer);
 
 		unsigned GetWidth() const;
 		unsigned GetHeight() const;

@@ -110,6 +110,7 @@ namespace System
 		void DropToHdd()
 		{
 			System::Buffer buffer;
+			buffer.WriteUnsigned64(m_handler.Id());
 			m_resource->Store(buffer);
 			System::string filename = System::string::Convert(m_handler.Id());
 			System::BinaryFile::Save(filename, buffer);
@@ -126,6 +127,7 @@ namespace System
 
 			System::string filename = System::string::Convert(m_handler.Id());
 			System::BinaryFile::Load(filename, buffer);
+			m_handler.SetID(buffer.ReadUnsigned64());
 			m_resource = new T();
 			m_resource->Restore(buffer);
 		}
