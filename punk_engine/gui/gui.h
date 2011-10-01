@@ -8,7 +8,7 @@
 #define _H_PUNK_GUI
 
 #include "widget.h"
-#include "manager.h"
+/*#include "manager.h"
 #include "static_text_area.h"
 #include "button.h"
 #include "int_watcher.h"
@@ -17,5 +17,6 @@
 #include "vertical_scrollbar.h"
 #include "console.h"
 #include "list_box.h"
+*/
 
 #endif

@@ -3,21 +3,21 @@
 namespace System
 {
 
-	Handle::Handle(unsigned __int64 code) throw()
+	Descriptor::Descriptor(unsigned __int64 code) throw()
 	{
 		m_id = code;
 	}
 
-	Handle::Handle(unsigned type, unsigned number) throw()
+	Descriptor::Descriptor(unsigned type, unsigned number) throw()
 	{
 		m_object_type_code = type;
 		m_object_instance_number = number;
 	}
 
-	Handle::Handle(const Handle &handler) throw() : m_id(handler.m_id)
+	Descriptor::Descriptor(const Descriptor &handler) throw() : m_id(handler.m_id)
 	{}
 
-	Handle& Handle::operator = (const Handle& handler) throw()
+	Descriptor& Descriptor::operator = (const Descriptor& handler) throw()
 	{
 		if (this != &handler)
 		{
@@ -26,42 +26,42 @@ namespace System
 		return *this;
 	}
 
-	Handle::operator unsigned __int64 () const
+	Descriptor::operator unsigned __int64 () const
 	{
 		return m_id;
 	}
 
-	unsigned Handle::Type() const
+	unsigned Descriptor::Type() const
 	{
 		return m_object_type_code;
 	}
 
-	unsigned Handle::Number() const
+	unsigned Descriptor::Number() const
 	{
 		return m_object_instance_number;
 	}
 
-	unsigned __int64 Handle::Id() const
+	unsigned __int64 Descriptor::Id() const
 	{
 		return m_id;
 	}
 
-	void Handle::SetType(unsigned type)
+	void Descriptor::SetType(unsigned type)
 	{
 		m_object_type_code = type;
 	}
 
-	void Handle::SetNumber(unsigned number)
+	void Descriptor::SetNumber(unsigned number)
 	{
 		m_object_instance_number = number;
 	}
 
-	void Handle::SetID(unsigned __int64 id)
+	void Descriptor::SetID(unsigned __int64 id)
 	{
 		m_id = id;
 	}
 
-	bool Handle::operator == (const Handle& handler) const
+	bool Descriptor::operator == (const Descriptor& handler) const
 	{
 		return m_id == handler.m_id;
 	}

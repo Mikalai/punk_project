@@ -2,8 +2,8 @@
 #define _H_PUNK_QUAD
 
 #include <queue>
-#include "../abstract_render.h"
-#include "../../driver/video/driver.h"
+//#include "../abstract_render.h"
+//#include "../../driver/video/driver.h"
 
 namespace Render
 {

@@ -19,7 +19,7 @@ namespace System
 	class ResourceManager
 	{
 		static unsigned m_instance_id;		
-		typedef std::map<Handle, BaseResource* > ResourceCollection;
+		typedef std::map<Descriptor, BaseResource* > ResourceCollection;
 		ResourceCollection m_resources;
 	
 		ResourceManager& operator = (const ResourceManager&);
@@ -47,24 +47,24 @@ namespace System
 			m_resources.clear();
 		}
 
-		Handle AllocateResource()
+		Descriptor AllocateResource()
 		{
 			T* res = new T();
-			res->SetHandle(Handle(U, m_instance_id));
+			res->SetHandle(Descriptor(U, m_instance_id));
 			m_instance_id++;
 			m_resources[res->GetHandle()] = res;
 			return res->GetHandle();
 		}
 
 		//! Starts controlling manager created somewhere
-		Handle ManageResource(BaseResource* res)
+		Descriptor ManageResource(BaseResource* res)
 		{
-			res->SetHandle(Handle(U, m_instance_id++));
+			res->SetHandle(Descriptor(U, m_instance_id++));
 			m_resources[res->GetHandle()] = res;
 			return res->GetHandle();
 		}
 
-		T* GetResource(Handle h)
+		T* GetResource(Descriptor h)
 		{
 			T* res = static_cast<T*>(m_resources.at(h));
 			return res;
@@ -73,21 +73,21 @@ namespace System
 
 
 		/*! Manual dropping selected resource to hdd */
-		void DropResourceToHdd(Handle h)
+		void DropResourceToHdd(Descriptor h)
 		{
 			T* res = GetResource(h);
 			res->DropToHdd();
 		}
 
 		/*! Restore resource from hdd */
-		void RestoreResourceFromHdd(Handle h)
+		void RestoreResourceFromHdd(Descriptor h)
 		{
 			T* res = GetResource(h);
 			res->RestoreFromHdd();
 		}
 
 		/*! This will completely destroy resource. It will not be able to restore it any moder */
-		void DestroyResource(Handle h)
+		void DestroyResource(Descriptor h)
 		{
 			m_resources.erase(h);
 		}
@@ -97,14 +97,24 @@ namespace System
 		{
 			time_t now;
 			time(&now);
-			for (ResourceCollection::iterator i = m_resources.begin(); i != m_resource.end(); ++i)
+			for (ResourceCollection::iterator i = m_resources.begin(); i != m_resources.end(); ++i)
 			{
-				T* res = *i;
+				T* res = static_cast<T*>((*i).second);
 				if (difftime(now, res->GetLastTimeAccess()) > m_gc_time)
 				{
 					res->DropToHdd();
 				}
 			}
+		}
+
+		void SetGCTime(unsigned time_s)
+		{
+			m_gc_time = time_s;
+		}
+
+		unsigned GetGCTime() const
+		{
+			return m_gc_time;
 		}
 	};
 

@@ -980,7 +980,7 @@ void NvStripifier::CreateStrips(const NvStripInfoVec& allStrips, IntVec& stripIn
 		int nStripFaceCount = strip->m_faces.size();
 		assert(nStripFaceCount > 0);
 
-		// Handle the first face in the strip
+		// Descriptor the first face in the strip
 		{
 			NvFaceInfo tFirstFace(strip->m_faces[0]->m_v0, strip->m_faces[0]->m_v1, strip->m_faces[0]->m_v2);
 

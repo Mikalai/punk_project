@@ -118,6 +118,12 @@ namespace System
 	const long EVENT_KEY_WCHAR			= 0x0011;
 	const long EVENT_MOUSE_HOOVER		= 0x0012;
 	const long EVENT_LAST_EVENT			= 0x0013;
+
+	const long EVENT_INSTANCE_CHANGED_LOCATION = 0x0014;
+	const long EVENT_INSTANCE_DESTROYED = 0x0015;
+	const long EVENT_INSTANCE_CHANGED_PARENT = 0x0016;
+	const long EVENT_INSTANCE_APPEARED = 0x0017;
+
 }
 
 #endif // EVENT_TYPE_H

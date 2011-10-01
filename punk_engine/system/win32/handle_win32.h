@@ -5,7 +5,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM Handle
+	class LIB_SYSTEM Descriptor
 	{
 		union
 		{
@@ -18,11 +18,11 @@ namespace System
 		};
 
 	public:
-		explicit Handle(unsigned __int64 code) throw();
-		Handle() : m_id(0) {}
-		Handle(unsigned type, unsigned number) throw();
-		Handle(const Handle& handler) throw();
-		Handle& operator = (const Handle& handler) throw();
+		explicit Descriptor(unsigned __int64 code) throw();
+		Descriptor() : m_id(0) {}
+		Descriptor(unsigned type, unsigned number) throw();
+		Descriptor(const Descriptor& handler) throw();
+		Descriptor& operator = (const Descriptor& handler) throw();
 		operator unsigned __int64 () const;
 		unsigned Type() const;
 		unsigned Number() const;
@@ -32,11 +32,11 @@ namespace System
 		void SetNumber(unsigned number);
 		void SetID(unsigned __int64 id);
 
-		bool operator == (const Handle& handler) const;
+		bool operator == (const Descriptor& handler) const;
 
-		static const Handle Null()
+		static const Descriptor Null()
 		{
-			return Handle(0,0);
+			return Descriptor(0,0);
 		}
 	};
 }

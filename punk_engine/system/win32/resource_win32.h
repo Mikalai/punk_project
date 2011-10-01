@@ -20,6 +20,8 @@ namespace System
 		RESOURCE_AUDIO		= 3,
 		RESOURCE_FONT		= 4,
 		RESOURCE_IMAGE		= 5,
+		RESOURCE_SCENE_GRAPH = 6,
+		RESOURCE_GUI		= 7,
 		//
 		//	User resources starts from here
 		RESOURCE_USER = 256
@@ -28,7 +30,7 @@ namespace System
 	class BaseResource
 	{
 	protected:
-		Handle m_handler;
+		Descriptor m_handler;
 		time_t m_last_access;
 
 	public:
@@ -36,12 +38,12 @@ namespace System
 		{
 		}
 
-		const Handle GetHandle() const
+		const Descriptor GetHandle() const
 		{
 			return m_handler;
 		}
 
-		void SetHandle(Handle handle)
+		void SetHandle(Descriptor handle)
 		{
 			m_handler = handle;
 		}
@@ -100,7 +102,10 @@ namespace System
 		T* Get()
 		{
 			if (!m_resource)
+			{
+				System::Logger::GetInstance()->WriteMessage(System::string::Format(L"Resource %s is not in memory. Restoring...", System::string(typeid(T).name()).Data()));
 				RestoreFromHdd();
+			}
 
 			time(&m_last_access);
 

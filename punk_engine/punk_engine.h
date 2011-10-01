@@ -7,5 +7,7 @@
 #include "system\system.h"
 #include "system\string.h"
 #include "utility\utility.h"
+#include "scene\scene.h"
+#include "gui\gui.h"
 
 #endif

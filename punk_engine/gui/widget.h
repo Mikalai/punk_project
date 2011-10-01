@@ -1,20 +1,21 @@
 #ifndef _H_PUNK_GUI_WIDGET
 #define _H_PUNK_GUI_WIDGET
 
-#include "../system/allocator.h"
-#include "../driver/video/opengl/driver.h"
 #include <vector>
 #include "../system/system.h"
-#include "../render/2d/2d_quad_render.h"
+#include "../system/string.h"
+#include "config.h"
 
 namespace GUI
 {
-	class Widget
+	class LIB_GUI Widget
 	{
 	public:
+
 		enum ColorType {ACTIVE_COLOR = 1, INACTIVE_COLOR, TEXT_ACTIVE_COLOR, TEXT_INACTIVE_COLOR};
+
 	protected:
-		Render::QuadRender *m_quadRender;
+
 		int m_width;
 		int m_height;
 		int m_x, m_y;
@@ -37,14 +38,18 @@ namespace GUI
 		System::string m_text;
 		System::string m_font;
 
-		Widget* m_parent;
+		//Widget* m_parent;
 		
-		std::vector<Widget*> m_children;
+		//std::vector<Widget*> m_children;
+
+		System::Descriptor m_text_texture;
+		System::Descriptor m_background_texture;
 	
 		/******************************************************************/
 		/*			LIST OF HANDLERS
 		/******************************************************************/
 	protected:
+
 		System::Handler m_OnLeftClick;
 		System::Handler m_OnRightClick;
 		System::Handler m_OnMiddleClick;
@@ -54,20 +59,20 @@ namespace GUI
 		System::Handler m_OnKeyDown;
 		System::Handler m_OnKeyUp;
 		System::Handler m_OnWheel;
+
 	protected:
-		virtual void RenderTextToTexture();
-		Driver::Texture2D* m_backGroundTexture;
-		Driver::Texture2D m_textTexture;
+//		virtual void RenderTextToTexture();
+
 	public:
 
-		Widget(int x = 0, int y = 0, int width = 100, int height = 100, Widget *parent = 0);
+		Widget(int x = 0, int y = 0, int width = 100, int height = 100);
 		
 		void RemoveChild(Widget* child);
 		void AddChild(Widget* child);
 
 		virtual ~Widget();
 
-		virtual void Render();
+	//	virtual void Render();
 
 		void SetWidth(int width);
 		void SetHeight(int height);
@@ -81,9 +86,9 @@ namespace GUI
 		bool IsEnabled() const;
 		void Show(bool isVisible);
 		void Enable(bool isEnabled);
-		void SetParent(Widget* parent);
-		Widget* GetParent();
-		const Widget* GetParent() const;
+	//	void SetParent(Widget* parent);
+		//Widget* GetParent();
+		//const Widget* GetParent() const;
 		void FixPosition(bool isFixed);
 		bool IsFixedPosition() const;
 		void SetSize(int x, int y, int width, int height);
@@ -91,7 +96,8 @@ namespace GUI
 		void SetText(const char* text);
 		void SetFont(const char* fontName);
 		void SetTextSize(int size);
-		void SetBackGroundTexture(Driver::Texture2D* texture);
+		void SetBackGroundTexture(System::Descriptor texture);
+
 		const System::string& GetText() const;
 		void SetFocuse(bool isFocused);
 
@@ -104,8 +110,8 @@ namespace GUI
 
 		Widget* GetFocused(int x, int y);
 
-		static void SetVideoDriver(Driver::Video* driver);
-		static void ShutDownGUI();
+//		static void SetVideoDriver(Driver::Video* driver);
+	//	static void ShutDownGUI();
 
 		/*********************************************************************/
 		/*	Handlers
