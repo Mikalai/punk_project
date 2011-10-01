@@ -3,6 +3,7 @@
 
 #include <map>
 #include <algorithm>
+#include "../singletone.h"
 #include "window_win32.h"
 #include "../error.h"
 #include "config_file_win32.h"
@@ -10,13 +11,14 @@
 
 namespace System
 {
+	SingletoneInterface(ResourceManager, LIB_SYSTEM);
+
 	/*!
 		This class is going to be used to manipulate resources. The idea
 		is to create such way of resource controlling that it will be 
 		easy to store, restore game state at any place
 	*/
-	template<class T, unsigned U>
-	class ResourceManager
+	class LIB_SYSTEM ResourceManager : public Singletone(ResourceManager)
 	{
 		static unsigned m_instance_id;		
 		typedef std::map<Descriptor, BaseResource* > ResourceCollection;
@@ -26,6 +28,11 @@ namespace System
 		ResourceManager(const ResourceManager&);
 
 		unsigned m_gc_time;
+
+		BaseResource* get_resource(Descriptor desc)
+		{
+			return m_resources.at(desc);
+		}
 
 	public:
 
@@ -47,6 +54,7 @@ namespace System
 			m_resources.clear();
 		}
 
+		template<class T>
 		Descriptor AllocateResource()
 		{
 			T* res = new T();
@@ -57,6 +65,7 @@ namespace System
 		}
 
 		//! Starts controlling manager created somewhere
+		template<unsigned U>
 		Descriptor ManageResource(BaseResource* res)
 		{
 			res->SetHandle(Descriptor(U, m_instance_id++));
@@ -64,9 +73,10 @@ namespace System
 			return res->GetHandle();
 		}
 
+		template<class T>
 		T* GetResource(Descriptor h)
 		{
-			T* res = static_cast<T*>(m_resources.at(h));
+			T* res = static_cast<T*>(get_resource(h));
 			return res;
 		}
 
@@ -75,14 +85,15 @@ namespace System
 		/*! Manual dropping selected resource to hdd */
 		void DropResourceToHdd(Descriptor h)
 		{
-			T* res = GetResource(h);
+			BaseResource* res = get_resource(h);
 			res->DropToHdd();
 		}
 
 		/*! Restore resource from hdd */
+
 		void RestoreResourceFromHdd(Descriptor h)
 		{
-			T* res = GetResource(h);
+			BaseResource* res = get_resource(h);
 			res->RestoreFromHdd();
 		}
 
@@ -99,7 +110,7 @@ namespace System
 			time(&now);
 			for (ResourceCollection::iterator i = m_resources.begin(); i != m_resources.end(); ++i)
 			{
-				T* res = static_cast<T*>((*i).second);
+				BaseResource* res = (*i).second;
 				if (difftime(now, res->GetLastTimeAccess()) > m_gc_time)
 				{
 					res->DropToHdd();
@@ -116,10 +127,7 @@ namespace System
 		{
 			return m_gc_time;
 		}
-	};
-
-	template<class T, unsigned U>
-	unsigned ResourceManager<T, U>::m_instance_id = 1;
+	};	
 }
 
 #endif

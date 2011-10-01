@@ -207,6 +207,7 @@
     <ClCompile Include="..\punk_engine\system\win32\keyboard_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\mouse_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\process_win32.cpp" />
+    <ClCompile Include="..\punk_engine\system\win32\resource_manager_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\stack_trace_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\thread_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\timer_win32.cpp" />

@@ -7,7 +7,7 @@
 namespace Storage
 {
 	typedef System::Resource<Scene::SceneGraph> SceneGraphResource;
-	typedef System::ResourceManager<SceneGraphResource, System::RESOURCE_SCENE_GRAPH> SceneGraphManager;
+//	typedef System::ResourceManager<SceneGraphResource, System::RESOURCE_SCENE_GRAPH> SceneGraphManager;
 }
 
 #endif

@@ -329,5 +329,8 @@
     <ClCompile Include="..\punk_engine\system\win32\handle_win32.cpp">
       <Filter>win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\system\win32\resource_manager_win32.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

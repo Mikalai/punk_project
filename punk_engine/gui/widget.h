@@ -110,6 +110,10 @@ namespace GUI
 
 		Widget* GetFocused(int x, int y);
 
+		void Store(System::Buffer& buffer) {}
+		void Restore(System::Buffer& buffer) {}
+		
+
 		/*********************************************************************/
 		/*	Handlers
 		/*********************************************************************/

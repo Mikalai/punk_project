@@ -61,6 +61,10 @@ namespace System
 		{
 			return string();
 		}		
+
+		virtual void DropToHdd() {}
+
+		virtual void RestoreFromHdd() {}
 	};
 
 	template<class T>
@@ -112,7 +116,7 @@ namespace System
 			return m_resource;
 		}
 
-		void DropToHdd()
+		virtual void DropToHdd()
 		{
 			System::Buffer buffer;
 			buffer.WriteUnsigned64(m_handler.Id());
@@ -123,7 +127,7 @@ namespace System
 			m_resource = 0;
 		}
 
-		void RestoreFromHdd()
+		virtual void RestoreFromHdd()
 		{
 			System::Buffer buffer;
 
