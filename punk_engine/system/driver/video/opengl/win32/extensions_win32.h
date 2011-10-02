@@ -13,6 +13,10 @@ namespace OpenGL
 {
 	class Driver;
 
+	extern PFNGLGETBUFFERPARAMETERI64VPROC glGetBufferParameteri64v;
+	extern PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv;
+	extern PFNGLGETBUFFERPARAMETERUI64VNVPROC glGetBufferParameterui64v;
+	extern PFNGLGETBUFFERPOINTERVPROC glGetBufferPointerv;
 	extern PFNWGLGETEXTENSIONSSTRINGARBPROC wglGetExtensionStringARB;
 	extern PFNGLTEXPARAMETERFPROC glTexParameterf;
 	extern PFNGLBINDTEXTUREPROC glBindTexture;

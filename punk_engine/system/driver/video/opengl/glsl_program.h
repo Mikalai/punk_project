@@ -74,7 +74,8 @@ namespace OpenGL
 			unsigned m_program;
 			unsigned m_vertexShader;
 			unsigned m_fragmentShader;
-			Pass() : m_program(0), m_vertexShader(0), m_fragmentShader(0) {}
+			unsigned m_geometryShader;
+			Pass() : m_program(0), m_vertexShader(0), m_fragmentShader(0), m_geometryShader(0) {}
 		};
 
 		Pass* m_pass;
@@ -85,8 +86,8 @@ namespace OpenGL
 		GLSLProgram  ();
 		~GLSLProgram ();
 		static void Init();
-		virtual void CreateFromFile( const System::string& vertexFileName, const System::string& fragmentFileName );
-		virtual void CreateFromMemory( const System::Buffer& vertexSource, const System::Buffer& fragmentSource);
+		virtual void CreateFromFile( const System::string& vertexFileName, const System::string& fragmentFileName, const System::string& geometryFileName);
+		virtual void CreateFromMemory( const System::Buffer& vertexSource, const System::Buffer& fragmentSource, const System::Buffer& geometrySource);
 		virtual void CreateFromRFX(const System::string& fileName, const System::string& effectGroup, const System::string& effectName);
 		virtual void Clear();
 		virtual int GetPassCount() const;

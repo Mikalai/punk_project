@@ -22,6 +22,7 @@ namespace System
 		RESOURCE_IMAGE		= 5,
 		RESOURCE_SCENE_GRAPH = 6,
 		RESOURCE_GUI		= 7,
+		RESOURCE_VAO		= 8,
 		//
 		//	User resources starts from here
 		RESOURCE_USER = 256
@@ -32,10 +33,26 @@ namespace System
 	protected:
 		Descriptor m_handler;
 		time_t m_last_access;
+		unsigned long m_used_count;
 
 	public:
 		virtual ~BaseResource()
 		{
+		}
+
+		void AddRef()
+		{
+			InterlockedIncrement(&m_used_count);
+		}
+
+		void Release()
+		{
+			InterlockedDecrement(&m_used_count);
+		}
+
+		unsigned long GetRefCount()
+		{
+			return m_used_count;
 		}
 
 		const Descriptor GetHandle() const

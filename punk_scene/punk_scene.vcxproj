@@ -91,6 +91,28 @@
     <ClCompile Include="..\punk_engine\scene\events\parent_changed_event.cpp" />
     <ClCompile Include="..\punk_engine\scene\scene_graph.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\punk_image\punk_image.vcxproj">
+      <Project>{99655fda-833d-4add-ad3c-00192ea76d93}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\punk_math\punk_math.vcxproj">
+      <Project>{8a1d848d-79cb-4c55-a858-20babe41fecc}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\punk_string\punk_string.vcxproj">
+      <Project>{3fb1a00a-35a2-4b24-a841-d76ba10d7d62}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\punk_system\punk_system.vcxproj">
+      <Project>{eb5a7d9c-3afc-4b9f-9931-81d030c509d4}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\punk_utility\punk_utility.vcxproj">
+      <Project>{b18777c9-81ea-473d-a21b-816947b323e4}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

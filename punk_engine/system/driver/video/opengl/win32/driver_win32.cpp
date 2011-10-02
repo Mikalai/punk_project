@@ -320,13 +320,14 @@ namespace OpenGL
 		{
 			System::string name = buffer.ReadWord();
 			System::string vertex = buffer.ReadWord();
-			System::string fragment = buffer.ReadWord();			
+			System::string fragment = buffer.ReadWord();	
+			System::string geometry = buffer.ReadWord();
 
 			GLSLProgram* p = new GLSLProgram;
 			
 			try
 			{
-				p->CreateFromFile(path+vertex, path+fragment);
+				p->CreateFromFile(path+vertex, path+fragment, geometry == L"null" ? L"null" : path+geometry);
 			}
 			catch(...)
 			{
@@ -410,14 +411,40 @@ namespace OpenGL
 		mgr->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Driver::OnKeyPress));
 	}
 
-	void Driver::RenderQuad(float x, float y, float width, float height)
+	void Driver::RenderQuad()
 	{
-		m_quad->Render();
+		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(m_quad_desc);
+		VertexArrayObject* vao = vao_res->Get();
+
+		vao->Render();
+
+		vao_res->Release();
+		//m_quad->Render();
+	}
+
+	void Driver::RenderString(const System::string& text)
+	{
+	}
+
+	void Driver::Render(System::Descriptor desc)
+	{
+		if (desc.Type() != System::RESOURCE_VAO)
+			return;
+
+		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(desc);
+		VertexArrayObject* vao = vao_res->Get();
+
+		vao->Render();
+
+		vao_res->Release();
 	}
 
 	void Driver::InitInternalVertexBuffers()
 	{
-		m_quad = new VertexArrayObject;
-		m_quad->CreateQuad();
+		System::ResourceManager::GetInstance()->DestroyResource(m_quad_desc);
+		System::ResourceManager::GetInstance()->DestroyResource(m_point_desc);
+		m_quad_desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());
+		m_point_desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());
 	}
 }
+

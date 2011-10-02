@@ -1,6 +1,7 @@
 #ifdef _WIN32
 
 #include <map>
+#include "../../../../system.h"
 #include "../config.h"
 #include "../error.h"
 #include "../../../../string.h"
@@ -43,7 +44,8 @@ namespace OpenGL
 		std::map<System::string, Texture2D*> m_textures;
 		std::multimap<RenderContext*, std::multimap<TextureContext*, VertexArrayObject*> > m_render_queue;
 
-		VertexArrayObject* m_quad;
+		System::Descriptor m_quad_desc;
+		System::Descriptor m_point_desc;
 
 	private:
 		void ReadConfig();
@@ -66,8 +68,9 @@ namespace OpenGL
 		void SetRenderState(const State* state);
 		void SetRenderEffect(const Effect* effect);
 		void Render(VertexArrayObject* object);
-		void RenderQuad(float x, float y, float with, float height);
-		void RenderString(float x, float y, float width, float height, const System::string& s);
+		void RenderQuad();
+		void RenderString(const System::string& s);
+		void Render(System::Descriptor desc);
 		::ShaderProgram* GetShaderProgram(const System::string& name);
 		Texture2D* GetTexture2D(const System::string& texture);
 	};

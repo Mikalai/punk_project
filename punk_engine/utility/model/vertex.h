@@ -38,6 +38,11 @@ namespace Utility
 		}
 	};
 
+	struct VertexPosition : public Vertex
+	{
+		float x, y, z, w;
+	};
+
 	struct VertexPositionTexture : public Vertex
 	{
 		float x, y, z, w;

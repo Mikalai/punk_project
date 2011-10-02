@@ -9,6 +9,10 @@ Description: Load OpenGL functions
 
 namespace OpenGL
 {
+	PFNGLGETBUFFERPARAMETERI64VPROC glGetBufferParameteri64v;
+	PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv;
+	PFNGLGETBUFFERPARAMETERUI64VNVPROC glGetBufferParameterui64v;
+	PFNGLGETBUFFERPOINTERVPROC glGetBufferPointerv;
 	PFNGLTEXPARAMETERIPROC glTexParameteri;
 	PFNGLPIXELSTOREIPROC glPixelStorei;
 	PFNGLPIXELSTOREFPROC glPixelStoref;
@@ -324,5 +328,9 @@ namespace OpenGL
 		glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)driver->GetProcAddress("glGenerateMipmap");
 		glTexSubImage2D = (PFNGLTEXSUBIMAGE2DPROC)driver->GetProcAddress("glTexSubImage2D");
 		glPolygonMode = (PFNGLPOLYGONMODEPROC)driver->GetProcAddress("glPolygonMode");
+		glGetBufferParameteri64v = (PFNGLGETBUFFERPARAMETERI64VPROC)driver->GetProcAddress("glGetBufferParameteri64v");
+		glGetBufferParameteriv = (PFNGLGETBUFFERPARAMETERIVPROC)driver->GetProcAddress("glGetBufferParameteriv");
+		glGetBufferParameterui64v = (PFNGLGETBUFFERPARAMETERUI64VNVPROC)driver->GetProcAddress("glGetBufferParameterui64v");
+		glGetBufferPointerv = (PFNGLGETBUFFERPOINTERVPROC)driver->GetProcAddress("glGetBufferPointerv");
 	}
 }

@@ -260,12 +260,18 @@ namespace OpenGL
 		pass.m_vertexShader = vertexShader;
 	}
 
-	void GLSLProgram::CreateFromFile(const System::string& vertexFileName, const System::string& fragmentFileName )
+	void GLSLProgram::CreateFromFile(const System::string& vertexFileName, const System::string& fragmentFileName, const System::string& geometryFileName)
 	{
 		System::Buffer vertexShaderData;
 		System::Buffer fragmentShaderData;
+		System::Buffer geometryShaderData;
 		System::BinaryFile::Load(vertexFileName, vertexShaderData);
 		System::BinaryFile::Load(fragmentFileName, fragmentShaderData); 
+
+		if (geometryFileName != L"null")
+		{
+			System::BinaryFile::Load(geometryFileName, geometryShaderData);
+		}
 
 		m_numPasses = 1;
 		if (m_pass)
@@ -290,6 +296,15 @@ namespace OpenGL
 			if (!LoadShader(m_pass[0].m_fragmentShader, fragmentShaderData))
 				throw System::SystemError(L"Can't create fragment shader" + LOG_LOCATION_STRING);
 
+			if (geometryShaderData.GetSize() != 0)
+			{
+				m_pass[0].m_geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+				if (!LoadShader(m_pass[0].m_geometryShader, geometryShaderData))
+					throw System::SystemError(L"Can't create geometry shader" + LOG_LOCATION_STRING);
+				glAttachShader(m_pass[0].m_program, m_pass[0].m_geometryShader);
+			}
+
+
 			// attach shaders to m_program object
 			glAttachShader(m_pass[0].m_program, m_pass[0].m_vertexShader);
 			glAttachShader(m_pass[0].m_program, m_pass[0].m_fragmentShader);
@@ -306,7 +321,7 @@ namespace OpenGL
 			//      return false;
 	}
 
-	void GLSLProgram::CreateFromMemory(const System::Buffer& vertexBufferData, const System::Buffer& fragmentBufferData)
+	void GLSLProgram::CreateFromMemory(const System::Buffer& vertexBufferData, const System::Buffer& fragmentBufferData, const System::Buffer& geometryBufferData)
 	{
 		m_ok = false;
 		m_numPasses = 1;
@@ -321,7 +336,7 @@ namespace OpenGL
 		// create a vertex shader object and a fragment shader object
 		m_pass[0].m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		m_pass[0].m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
+		
 		System::Logger::GetInstance()->WriteMessage(L"Loading vertex shader\n");
 
 		if (!LoadShader(m_pass[0].m_vertexShader, vertexBufferData))
@@ -332,6 +347,14 @@ namespace OpenGL
 		if (!LoadShader(m_pass[0].m_fragmentShader, fragmentBufferData))
 			throw System::SystemError(L"Can't create fragment shader" + LOG_LOCATION_STRING);
 
+		if (geometryBufferData.GetSize() != 0)
+		{
+			m_pass[0].m_geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+			if (!LoadShader(m_pass[0].m_geometryShader, geometryBufferData))
+				throw System::SystemError(L"Can't create geometry shader" + LOG_LOCATION_STRING);
+			glAttachShader(m_pass[0].m_program, m_pass[0].m_geometryShader);
+		}
+
 		// attach shaders to m_program object
 		glAttachShader(m_pass[0].m_program, m_pass[0].m_vertexShader);
 		glAttachShader(m_pass[0].m_program, m_pass[0].m_fragmentShader);
@@ -339,10 +362,10 @@ namespace OpenGL
 		System::Logger::GetInstance()->WriteMessage(L"Linking programs");
 
 		// link the m_program object and print out the info m_log
-		glBindAttribLocation(m_pass[0].m_program, 0, "rm_Vertex");
-		glBindAttribLocation(m_pass[0].m_program, 1, "rm_Normal");
-		glBindAttribLocation(m_pass[0].m_program, 2, "rm_Texcoord0");
-		glBindAttribLocation(m_pass[0].m_program, 3, "rm_Flags");
+	//	glBindAttribLocation(m_pass[0].m_program, 0, "rm_Vertex");
+//		glBindAttribLocation(m_pass[0].m_program, 1, "rm_Normal");
+	//	glBindAttribLocation(m_pass[0].m_program, 2, "rm_Texcoord0");
+		//glBindAttribLocation(m_pass[0].m_program, 3, "rm_Flags");
 
 		glLinkProgram(m_pass[0].m_program);
 

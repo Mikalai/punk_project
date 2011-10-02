@@ -19,11 +19,16 @@ namespace OpenGL
 		GLuint m_index_buffer;
 		GLuint m_vertex_array;
 		GLuint m_index_count;
+		GLenum m_primitive_type;
+		int m_code;
+		unsigned m_vertex_size;
 
 	private:
-		void InitPointers(int code, int vertex_size);
+		void InitPointers(int code);
 
+		void Create(void* vertex_buffer, unsigned vsize, void* index_buffer, unsigned isize);
 	public:
+		VertexArrayObject();
 		~VertexArrayObject();
 		void Bind() const;
 		void Unbind() const;
@@ -31,6 +36,12 @@ namespace OpenGL
 		void Render();
 		bool Create(const Utility::Vertex* cpu_buffer, int buffer_size, const unsigned* index, int vertex_count, int index_count, int vertex_size, int code);
 		bool CreateQuad();
+		bool CreateSinglePoint();
+
+		void Clear();
+
+		void Store(System::Buffer& buffer);
+		void Restore(System::Buffer& buffer);
 	};
 }
 

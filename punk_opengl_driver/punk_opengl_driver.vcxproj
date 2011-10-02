@@ -330,6 +330,7 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\quad_330.geom" />
     <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt" />
     <None Include="..\punk_engine\system\driver\video\opengl\glsl\draw_normals.frag" />
     <None Include="..\punk_engine\system\driver\video\opengl\glsl\draw_normals.vert" />

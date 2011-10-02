@@ -20,8 +20,11 @@ namespace System
 	*/
 	class LIB_SYSTEM ResourceManager : public Singletone(ResourceManager)
 	{
+		typedef unsigned Type;
+		typedef unsigned Number;
+		typedef std::map<Number, BaseResource*> OneTypeResourceCollection;
 		static unsigned m_instance_id;		
-		typedef std::map<Descriptor, BaseResource* > ResourceCollection;
+		typedef std::map<Type, OneTypeResourceCollection> ResourceCollection;
 		ResourceCollection m_resources;
 	
 		ResourceManager& operator = (const ResourceManager&);
@@ -31,7 +34,7 @@ namespace System
 
 		BaseResource* get_resource(Descriptor desc)
 		{
-			return m_resources.at(desc);
+			return m_resources.at(desc.Type()).at(desc.Number());
 		}
 
 	public:
@@ -50,7 +53,8 @@ namespace System
 		~ResourceManager()
 		{
 			for (ResourceCollection::iterator i = m_resources.begin(); i != m_resources.end(); ++i)
-				delete (*i).second;
+				for (OneTypeResourceCollection::iterator j = (*i).second.begin(); j != (*i).second.end(); j++)
+					delete (*j).second;
 			m_resources.clear();
 		}
 
@@ -60,7 +64,7 @@ namespace System
 			T* res = new T();
 			res->SetHandle(Descriptor(U, m_instance_id));
 			m_instance_id++;
-			m_resources[res->GetHandle()] = res;
+			m_resources[res->GetHandle().Type()][res->GetHandle().Number()] = res;
 			return res->GetHandle();
 		}
 
@@ -69,14 +73,15 @@ namespace System
 		Descriptor ManageResource(BaseResource* res)
 		{
 			res->SetHandle(Descriptor(U, m_instance_id++));
-			m_resources[res->GetHandle()] = res;
+			m_resources[res->GetHandle().Type()][res->GetHandle().Number()] = res;
 			return res->GetHandle();
 		}
 
 		template<class T>
-		T* GetResource(Descriptor h)
+		Resource<T>* GetResource(Descriptor h)
 		{
-			T* res = static_cast<T*>(get_resource(h));
+			Resource<T>* res = static_cast<Resource<T>*>(get_resource(h));
+			res->AddRef();
 			return res;
 		}
 
@@ -100,6 +105,8 @@ namespace System
 		/*! This will completely destroy resource. It will not be able to restore it any moder */
 		void DestroyResource(Descriptor h)
 		{
+			BaseResource* res = get_resource(h);
+			delete res;
 			m_resources.erase(h);
 		}
 		
@@ -110,10 +117,14 @@ namespace System
 			time(&now);
 			for (ResourceCollection::iterator i = m_resources.begin(); i != m_resources.end(); ++i)
 			{
-				BaseResource* res = (*i).second;
-				if (difftime(now, res->GetLastTimeAccess()) > m_gc_time)
+				for (OneTypeResourceCollection::iterator j = (*i).second.begin(); j != (*i).second.end(); ++j)
 				{
-					res->DropToHdd();
+					BaseResource* res = (*j).second;
+					if (difftime(now, res->GetLastTimeAccess()) > m_gc_time)
+					{
+						if (res->GetRefCount() == 0)
+							res->DropToHdd();
+					}
 				}
 			}
 		}

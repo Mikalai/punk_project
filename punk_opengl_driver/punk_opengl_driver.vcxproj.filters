@@ -217,6 +217,9 @@
       <Filter>glsl</Filter>
     </None>
     <None Include="..\punk_engine\system\driver\video\opengl\model.txt" />
+    <None Include="..\punk_engine\system\driver\video\opengl\glsl\quad_330.geom">
+      <Filter>glsl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.h">

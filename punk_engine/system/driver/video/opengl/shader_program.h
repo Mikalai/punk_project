@@ -14,8 +14,8 @@ class ShaderProgram
 public:
 	virtual void Bind(int passNumber = 0) = 0;
 	virtual void Unbind() = 0;
-	virtual void CreateFromFile(const System::string& vertexProgramFileName, const System::string& fragmentProgramFileName) = 0;
-	virtual void CreateFromMemory(const System::Buffer& vertexProgram, const System::Buffer& fragmentProgram) = 0;
+	virtual void CreateFromFile(const System::string& vertexProgramFileName, const System::string& fragmentProgramFileName, const System::string& geometryProgramFileName) = 0;
+	virtual void CreateFromMemory(const System::Buffer& vertexProgram, const System::Buffer& fragmentProgram, const System::Buffer& geometryProgramFileName) = 0;
 	virtual void CreateFromRFX(const System::string& fileName, const System::string& effectGroup, const System::string& effectName) = 0;
 	virtual void Clear() = 0;
 	virtual int GetPassCount() const = 0;
