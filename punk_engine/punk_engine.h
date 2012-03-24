@@ -10,5 +10,6 @@
 #include "scene\scene.h"
 #include "gui\gui.h"
 #include "render\render.h"
+#include "system\application\application.h"
 
 #endif

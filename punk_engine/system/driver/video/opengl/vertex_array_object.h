@@ -3,16 +3,17 @@
 
 #include "gl/gl3.h"
 #include "config.h"
+#include "../../../buffer.h"
 
 namespace Utility
 {
 	struct Vertex;
 }
 
+class ShaderProgram;
+
 namespace OpenGL
 {
-	class ShaderProgram;
-
 	class LIB_OPENGL VertexArrayObject
 	{						
 		GLuint m_vertex_buffer;		
@@ -24,7 +25,9 @@ namespace OpenGL
 		unsigned m_vertex_size;
 
 	private:
-		void InitPointers(int code);
+
+		template<class T>
+		inline void InitPointers(int code);
 
 		void Create(void* vertex_buffer, unsigned vsize, void* index_buffer, unsigned isize);
 	public:

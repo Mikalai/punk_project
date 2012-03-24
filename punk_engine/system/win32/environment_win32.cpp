@@ -3,15 +3,45 @@
 
 namespace System
 {
-	string Environment::GetCurrentDirectory()
+	string Environment::GetCurrentFolder()
 	{
 		wchar_t buffer[MAX_PATH];
-		::GetCurrentDirectoryW(MAX_PATH, buffer);
+		::GetCurrentDirectory(MAX_PATH, buffer);
 		return string(buffer);
 	}
 
-	void Environment::SetCurrentDirectory(const string& dir)
+	void Environment::SetCurrentFolder(const string& dir)
 	{
-		::SetCurrentDirectoryW(dir.Data());
+		::SetCurrentDirectory(dir.Data());
+	}
+
+	string Environment::GetFontFolder()
+	{
+		return GetCurrentFolder() + L"\\fonts";
+	}
+
+	string Environment::GetModelFolder()
+	{
+		return GetCurrentFolder() + L"\\models";
+	}
+
+	string Environment::GetMapFolder()
+	{
+		return GetCurrentFolder() + L"\\maps";
+	}
+
+	string Environment::GetSaveFolder()
+	{
+		return GetCurrentFolder() + L"\\saves";
+	}
+
+	string Environment::GetTexutreFolder()
+	{
+		return GetCurrentFolder() + L"\\textures";
+	}
+
+	string Environment::GetQuestFolder() 
+	{
+		return GetCurrentFolder() + L"\\quests";
 	}
 }

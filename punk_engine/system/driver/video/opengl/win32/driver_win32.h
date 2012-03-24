@@ -1,11 +1,15 @@
+#ifndef _H_PUNK_OPENGL_DRIVER_WIN32
+#define _H_PUNK_OPENGL_DRIVER_WIN32
 #ifdef _WIN32
 
 #include <map>
-#include "../../../../system.h"
+#include "../../../../handle.h"
 #include "../config.h"
 #include "../error.h"
 #include "../../../../string.h"
 #include "extensions_win32.h"
+#include "../render_context.h"
+#include "../texture_context.h"
 
 namespace System
 {
@@ -22,8 +26,6 @@ namespace OpenGL
 	class VertexArrayObject;
 	class GLSLProgram;
 	class Texture2D;
-	class TextureContext;
-	class RenderContext;
 
 	class LIB_OPENGL Driver
 	{
@@ -47,6 +49,9 @@ namespace OpenGL
 		System::Descriptor m_quad_desc;
 		System::Descriptor m_point_desc;
 
+		RenderContext m_render_context;
+		TextureContext m_texture_context;
+
 	private:
 		void ReadConfig();
 		void InitShaderPrograms();
@@ -55,6 +60,10 @@ namespace OpenGL
 		void OnKeyPress(System::Event* e);
 		void InitInternalVertexBuffers();
 	public:
+		
+		RenderContext* GetRenderContext();
+		TextureContext* GetTextureContext();
+
 		Driver();
 		void SetFullScreen(bool flag);
 		void Start(System::Window* wnd);
@@ -73,7 +82,12 @@ namespace OpenGL
 		void Render(System::Descriptor desc);
 		::ShaderProgram* GetShaderProgram(const System::string& name);
 		Texture2D* GetTexture2D(const System::string& texture);
+
+		System::Descriptor CreateStringTexture(const System::string& init_value, int width, int height, int font_size, const System::string& font_name);
+		void AlterateStringTexture(System::Descriptor desc, const System::string& value, int width, int height, int font_size, const System::string& font_name);
+
 	};
 }
 
+#endif
 #endif

@@ -9,15 +9,15 @@ namespace System
     {
 		LARGE_INTEGER li;
 		QueryPerformanceFrequency(&li);
-		period = 1.0/(double)li.QuadPart;
+		freq = li.QuadPart;
 		QueryPerformanceCounter(&startPoint);
     }
 
-    double Timer::GetElapsedTime() const
+    __int64 Timer::GetElapsedTime() const
     {
 		LARGE_INTEGER li;
 		QueryPerformanceCounter(&li);
-		return (double)(li.QuadPart - startPoint.QuadPart)*period;
+		return (double)(li.QuadPart - startPoint.QuadPart)*1000000/freq;
     }
 
     void Timer::UpdateStartPoint()

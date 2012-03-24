@@ -9,9 +9,18 @@
 
 #include "../../../system.h"
 
+const int UNIFORM_WORLD = 0;
+const int UNIFORM_VIEW  = 1;
+const int UNIFORM_PROJ = 2;
+const int UNIFORM_PROJVIEWWORLD = 3;
+const int UNIFORM_DIFFUSE_COLOR = 4;
+const int UNIFORM_RADIUS = 5;
+const int UNIFORM_DIFFUSE_MAP = 6;
+
 class ShaderProgram
 {
 public:
+	virtual int  GetLocation(int uniform) = 0;
 	virtual void Bind(int passNumber = 0) = 0;
 	virtual void Unbind() = 0;
 	virtual void CreateFromFile(const System::string& vertexProgramFileName, const System::string& fragmentProgramFileName, const System::string& geometryProgramFileName) = 0;

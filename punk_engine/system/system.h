@@ -21,7 +21,6 @@
 #include "environment.h"
 #include "window.h"
 #include "singletone.h"
-#include "application.h"
 #include "logger.h"
 #include "config_file.h"
 #include "stack_trace.h"

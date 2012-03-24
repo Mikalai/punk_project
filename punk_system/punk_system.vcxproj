@@ -96,6 +96,7 @@
     <ClInclude Include="..\punk_engine\system\events\key_down_event.h" />
     <ClInclude Include="..\punk_engine\system\events\key_up_event.h" />
     <ClInclude Include="..\punk_engine\system\events\key_wchar_event.h" />
+    <ClInclude Include="..\punk_engine\system\events\model_time_step_event.h" />
     <ClInclude Include="..\punk_engine\system\events\mouse_enter.h" />
     <ClInclude Include="..\punk_engine\system\events\mouse_hoover_event.h" />
     <ClInclude Include="..\punk_engine\system\events\mouse_leave.h" />
@@ -110,6 +111,7 @@
     <ClInclude Include="..\punk_engine\system\events\unfocused.h" />
     <ClInclude Include="..\punk_engine\system\events\window_resize_event.h" />
     <ClInclude Include="..\punk_engine\system\handle.h" />
+    <ClInclude Include="..\punk_engine\system\id.h" />
     <ClInclude Include="..\punk_engine\system\linux\clock_linux.h" />
     <ClInclude Include="..\punk_engine\system\linux\folder_linux.h" />
     <ClInclude Include="..\punk_engine\system\linux\monitor_linux.h" />
@@ -141,7 +143,6 @@
     <ClInclude Include="..\punk_engine\system\win32\timer_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\types_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\window_win32.h" />
-    <ClInclude Include="..\punk_engine\system\application.h" />
     <ClInclude Include="..\punk_engine\system\binary_file.h" />
     <ClInclude Include="..\punk_engine\system\buffer.h" />
     <ClInclude Include="..\punk_engine\system\clock.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="..\punk_engine\system\events\key_down_event.cpp" />
     <ClCompile Include="..\punk_engine\system\events\key_up_event.cpp" />
     <ClCompile Include="..\punk_engine\system\events\key_wchar_event.cpp" />
+    <ClCompile Include="..\punk_engine\system\events\model_time_step_event.cpp" />
     <ClCompile Include="..\punk_engine\system\events\mouse_enter.cpp" />
     <ClCompile Include="..\punk_engine\system\events\mouse_hoover_event.cpp" />
     <ClCompile Include="..\punk_engine\system\events\mouse_leave.cpp" />
@@ -190,6 +192,7 @@
     <ClCompile Include="..\punk_engine\system\events\mouse_wheel_event.cpp" />
     <ClCompile Include="..\punk_engine\system\events\unfocused.cpp" />
     <ClCompile Include="..\punk_engine\system\events\window_resize_event.cpp" />
+    <ClCompile Include="..\punk_engine\system\id.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\clock_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\folder_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\text_file_linux.cpp" />
@@ -212,7 +215,6 @@
     <ClCompile Include="..\punk_engine\system\win32\thread_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\timer_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\window_win32.cpp" />
-    <ClCompile Include="..\punk_engine\system\application.cpp" />
     <ClCompile Include="..\punk_engine\system\clock.cpp" />
     <ClCompile Include="..\punk_engine\system\event_manager.cpp" />
     <ClCompile Include="..\punk_engine\system\logger.cpp" />

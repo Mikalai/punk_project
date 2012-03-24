@@ -8,6 +8,7 @@ Description: Texture2D implementation
 #include "driver.h"
 #include "../../../../images/image_file.h"
 #include "../../../../system/system.h"
+#include "../../../../images/images.h"
 
 namespace OpenGL
 {
@@ -207,6 +208,16 @@ namespace OpenGL
 	unsigned Texture2D::GetID() const
 	{
 		return m_id;
+	}
+
+	void Texture2D::Store(System::Buffer& buffer)
+	{
+		throw System::SystemError(L"Not implemented");
+	}
+
+	void Texture2D::Restore(System::Buffer& buffer)
+	{
+		throw System::SystemError(L"Not implemented");
 	}
 
 	void Texture2D::Fill(unsigned char byte)

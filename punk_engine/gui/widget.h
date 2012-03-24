@@ -5,6 +5,7 @@
 #include "../system/system.h"
 #include "../system/string.h"
 #include "config.h"
+#include "../system/driver/video/driver.h"
 
 namespace GUI
 {
@@ -16,9 +17,10 @@ namespace GUI
 
 	protected:
 
-		int m_width;
-		int m_height;
-		int m_x, m_y;
+		float m_width;
+		float m_height;
+		float m_x, m_y;
+
 		int m_fontSize;
 		float m_activeColor[4];
 		float m_inactiveColor[4];
@@ -44,6 +46,7 @@ namespace GUI
 
 		System::Descriptor m_text_texture;
 		System::Descriptor m_background_texture;
+
 	
 		/******************************************************************/
 		/*			LIST OF HANDLERS
@@ -61,27 +64,27 @@ namespace GUI
 		System::Handler m_OnWheel;
 
 	protected:
-//		virtual void RenderTextToTexture();
+		//virtual void RenderTextToTexture();
 
 	public:
 
-		Widget(int x = 0, int y = 0, int width = 100, int height = 100);
+		Widget(float x = 0, float y = 0, float width = 1, float height = 1);
 		
 		void RemoveChild(Widget* child);
 		void AddChild(Widget* child);
 
 		virtual ~Widget();
 
-	//	virtual void Render();
+		virtual void Render(OpenGL::Driver* driver);
 
-		void SetWidth(int width);
-		void SetHeight(int height);
-		int GetWidth() const;
-		int GetHeight() const;
-		int GetX() const;
-		int GetY() const;
-		void SetX(int x);
-		void SetY(int y);
+		void SetWidth(float width);
+		void SetHeight(float height);
+		float GetWidth() const;
+		float GetHeight() const;
+		float GetX() const;
+		float GetY() const;
+		void SetX(float x);
+		void SetY(float y);
 		bool IsVisible() const;
 		bool IsEnabled() const;
 		void Show(bool isVisible);
@@ -91,9 +94,9 @@ namespace GUI
 		//const Widget* GetParent() const;
 		void FixPosition(bool isFixed);
 		bool IsFixedPosition() const;
-		void SetSize(int x, int y, int width, int height);
+		void SetSize(float x, float y, float width, float height);
 		void SetColor(ColorType type, float r, float g, float b, float a);
-		void SetText(const char* text);
+		void SetText(const System::string& text);
 		void SetFont(const char* fontName);
 		void SetTextSize(int size);
 		void SetBackGroundTexture(System::Descriptor texture);
@@ -104,11 +107,17 @@ namespace GUI
 
 		virtual bool EventHandler(System::Event* event);
 
-		bool IsPointIn(int x, int y);
+		bool IsPointIn(float x, float y);
 
 		bool SendChildren(System::Event* event);  
 
-		Widget* GetFocused(int x, int y);
+		Widget* GetFocused(float x, float y);
+
+		System::Descriptor GetBackGround() const;
+		void SetBackGround(System::Descriptor desc);
+
+		System::Descriptor GetTextTexture() const;
+		void SetTextTexture(System::Descriptor desc);
 
 		void Store(System::Buffer& buffer) {}
 		void Restore(System::Buffer& buffer) {}

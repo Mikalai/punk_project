@@ -16,19 +16,11 @@ namespace OpenGL
 			glActiveTexture(GL_TEXTURE0);
 			m_diffuse_map->Bind();
 		}
-		else
-		{
-			System::Logger::GetInstance()->WriteError(L"Can't apply diffuse map", LOG_LOCATION);
-		}
 
 		if (m_normal_map)
 		{
 			glActiveTexture(GL_TEXTURE1);
 			m_normal_map->Bind();
-		}
-		else
-		{
-			System::Logger::GetInstance()->WriteError(L"Can't apply normal map", LOG_LOCATION);
 		}
 	}
 

@@ -1,4 +1,5 @@
 #include "widget.h"
+#include "../utility/font_builder.h"
 //#include "../render/render.h"
 #include "../system/event_manager.h"
 
@@ -6,7 +7,7 @@
 
 namespace GUI
 {
-	Widget::Widget(int x, int y, int width, int height) : m_x(x),
+	Widget::Widget(float x, float y, float width, float height) : m_x(x),
 		m_y(y), 
 		m_width(width), 
 		m_height(height), 
@@ -73,17 +74,17 @@ namespace GUI
 		return !m_moveable;
 	}
 
-	void Widget::SetX(int x)
+	void Widget::SetX(float x)
 	{
 		m_x = x;
 	}
 
-	void Widget::SetY(int y)
+	void Widget::SetY(float y)
 	{
 		m_y = y;
 	}
 
-	void Widget::SetText(const char* text)
+	void Widget::SetText(const System::string& text)
 	{
 		m_text = text;
 //		RenderTextToTexture();
@@ -130,36 +131,56 @@ namespace GUI
 		c[3] = a;
 	}
 
-	int Widget::GetWidth() const
+	float Widget::GetWidth() const
 	{
 		return m_width;
 	}
 
-	int Widget::GetHeight() const
+	float Widget::GetHeight() const
 	{
 		return m_height;
 	}
 
-	int Widget::GetX() const
+	float Widget::GetX() const
 	{
 //		if (m_parent == 0)
 //			return m_x;
 		return m_x;// + m_parent->GetX();
 	}
 
-	int Widget::GetY() const
+	float Widget::GetY() const
 	{
 //		if (m_parent == 0)
 	//		return m_y;
 		return m_y;// + m_parent->GetY();
 	}
 
+	System::Descriptor Widget::GetBackGround() const
+	{
+		return m_background_texture;
+	}
+
+	System::Descriptor Widget::GetTextTexture() const
+	{
+		return m_text_texture;
+	}
+
+	void Widget::SetBackGroundTexture(System::Descriptor desc)
+	{
+		m_background_texture = desc;
+	}
+
+	void Widget::SetTextTexture(System::Descriptor desc)
+	{
+		m_text_texture = desc;
+	}
+
 /*	void Widget::RenderTextToTexture()
 	{
-		int x = 0;
-		int y = m_textTexture.GetHeight() - m_fontSize;
+	/*	int x = 0;
+		int y = m_text_texture.GetHeight() - m_fontSize;
 		m_textTexture.Fill(0);
-		Render::FontBuilder::SetCurrentFace(m_font);
+		Utility::FontBuilder::SetCurrentFace(m_font);
 		Render::FontBuilder::SetCharSize(m_fontSize, m_fontSize);
 		for (const wchar_t* a = m_text.Data(); *a; a++)
 		{ 
@@ -363,7 +384,7 @@ namespace GUI
 		return false;
 	}
 
-	Widget* Widget::GetFocused(int x, int y)
+	Widget* Widget::GetFocused(float x, float y)
 	{		
 /*		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
 		{
@@ -373,9 +394,9 @@ namespace GUI
 		return this;/**/
 	}
 
-	void Widget::SetSize(int x, int y, int width, int height)
+	void Widget::SetSize(float x, float y, float width, float height)
 	{
-//		m_x = x; m_y = y; m_width = width; m_height = height;
+		m_x = x; m_y = y; m_width = width; m_height = height;
 	//	m_textTexture.Resize(m_width, m_height);
 	}
 
@@ -388,7 +409,7 @@ namespace GUI
 		return false;
 	}
 
-	bool Widget::IsPointIn(int px, int py)
+	bool Widget::IsPointIn(float px, float py)
 	{
 		if (px < GetX() || px > GetX() + m_width)
 			return false;
@@ -397,27 +418,9 @@ namespace GUI
 		return true;
 	}
 
-/*	void Widget::Render()
+	void Widget::Render(OpenGL::Driver* driver)
 	{
-		if (m_isVisible)
-		{
-			Render::QuadRender::Parameters* p = Render::QuadRender::Parameters::Create();
-			p->m_color[0] = m_color[0]; p->m_color[1] = m_color[1]; p->m_color[2] = m_color[2]; p->m_color[3] = m_color[3];
-			p->m_x = (float)m_x;
-			p->m_y = (float)m_y;
-			p->m_width = (float)m_width;
-			p->m_height = (float)m_height;
-			//m_quadRender->SetSize(m_x, m_y, m_width, m_height);
-			//m_quadRender.SetColor(m_color[0], m_color[1], m_color[2], m_color[3]);
-			Render::RenderPipeline::GetRenderPipeline()->Add(m_quadRender, (void*)p);
-
-			for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
-			{
-				if ((*it)->IsVisible())
-					(*it)->Render();
-			}
-		}
-	}*/
+	}
 
 	bool Widget::IsVisible() const
 	{

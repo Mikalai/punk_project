@@ -1,20 +1,17 @@
-#include "../system/allocator.h"
 #include "button.h"
 #include "../render/render.h"
 
 namespace GUI
 {
-	Button::Button(int x, int y, int width, int height, const System::string& text, Widget* parent) : Widget(x,y,width,height,parent)
+	Button::Button(float x, float y, float width, float height, const System::string& text) : Widget(x,y,width,height)
 	{
 		m_text = text;
-		m_quadRender = Render::QuadRender::GetRender();
-		m_textRender = Render::TextAreaRender::GetRender();	
-		RenderTextToTexture();
+		//RenderTextToTexture();
 	}
 
 	void Button::Render()
 	{
-		Render::QuadRender::Parameters* p1 = Render::QuadRender::Parameters::Create();
+/*		Render::QuadRender::Parameters* p1 = Render::QuadRender::Parameters::Create();
 		p1->m_x = (float)GetX();
 		p1->m_y = (float)GetY();
 		p1->m_width = (float)m_width;
@@ -29,7 +26,7 @@ namespace GUI
 		p2->m_width = (float)m_width;
 		p2->m_height = (float)m_height;
 		p2->m_texture = &m_textTexture;
-		Render::RenderPipeline::GetRenderPipeline()->Add(m_textRender, (void*)p2);
+		Render::RenderPipeline::GetRenderPipeline()->Add(m_textRender, (void*)p2);*/
 	}
 
 	Button::~Button()

@@ -13,9 +13,35 @@ namespace OpenGL
 		m_cur_program->Bind();
 	}
 
+	ShaderProgram* RenderContext::GetShaderProgram()
+	{
+		return m_cur_program;
+	}
+
 	void RenderContext::End()
 	{
 		m_cur_program->Unbind();
+	}
+
+	void RenderContext::EnableBlending()
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	void RenderContext::DisableBlending()
+	{
+		glDisable(GL_BLEND);
+	}
+
+	void RenderContext::EnableDepthTest()
+	{
+		glEnable(GL_DEPTH_TEST);
+	}
+
+	void RenderContext::DisableDepthTest()
+	{
+		glDisable(GL_DEPTH_TEST);
 	}
 
 }

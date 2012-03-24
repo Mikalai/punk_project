@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vs2008", "vs2008.vcproj", "{E62FACC6-E2FF-4E8E-A478-F48C3ACE8338}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "system_test", "..\test\system\system.vcproj", "{FC88412E-077A-4E01-BDBA-4878BD0C5A53}"
@@ -44,6 +44,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_gui", "..\punk_gui\punk_gui.vcxproj", "{C6A0A370-4544-44FC-A4DE-C4BAD732BEF5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_render", "..\punk_render\punk_render.vcxproj", "{2017AC48-7768-44D7-A95D-51AFC594D3EE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_application", "..\punk_application\punk_application.vcxproj", "{1639A482-4718-40EA-8CE9-F258C52FE2D4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_logic", "..\punk_logic\punk_logic.vcxproj", "{E7BD8546-1170-486E-B6C0-F8C333263B54}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_logic_test", "..\punk_logic_test\punk_logic_test.vcxproj", "{F8BF69FA-3916-4AD4-B26A-F23CAE17279E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +145,18 @@ Global
 		{2017AC48-7768-44D7-A95D-51AFC594D3EE}.Debug|Win32.Build.0 = Debug|Win32
 		{2017AC48-7768-44D7-A95D-51AFC594D3EE}.Release|Win32.ActiveCfg = Release|Win32
 		{2017AC48-7768-44D7-A95D-51AFC594D3EE}.Release|Win32.Build.0 = Release|Win32
+		{1639A482-4718-40EA-8CE9-F258C52FE2D4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1639A482-4718-40EA-8CE9-F258C52FE2D4}.Debug|Win32.Build.0 = Debug|Win32
+		{1639A482-4718-40EA-8CE9-F258C52FE2D4}.Release|Win32.ActiveCfg = Release|Win32
+		{1639A482-4718-40EA-8CE9-F258C52FE2D4}.Release|Win32.Build.0 = Release|Win32
+		{E7BD8546-1170-486E-B6C0-F8C333263B54}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E7BD8546-1170-486E-B6C0-F8C333263B54}.Debug|Win32.Build.0 = Debug|Win32
+		{E7BD8546-1170-486E-B6C0-F8C333263B54}.Release|Win32.ActiveCfg = Release|Win32
+		{E7BD8546-1170-486E-B6C0-F8C333263B54}.Release|Win32.Build.0 = Release|Win32
+		{F8BF69FA-3916-4AD4-B26A-F23CAE17279E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F8BF69FA-3916-4AD4-B26A-F23CAE17279E}.Debug|Win32.Build.0 = Debug|Win32
+		{F8BF69FA-3916-4AD4-B26A-F23CAE17279E}.Release|Win32.ActiveCfg = Release|Win32
+		{F8BF69FA-3916-4AD4-B26A-F23CAE17279E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,22 @@
 #include "config_file_win32.h"
 #include "resource_win32.h"
 
+//
+//	LIST OF ALL RESOURCES
+//
+
+namespace OpenGL
+{
+	class Texture2D;
+	class TextTexture2D;
+}
+
+namespace GUI
+{
+	class Widget;
+	class Button;
+}
+
 namespace System
 {
 	SingletoneInterface(ResourceManager, LIB_SYSTEM);
@@ -34,6 +50,8 @@ namespace System
 
 		BaseResource* get_resource(Descriptor desc)
 		{
+			if (desc == Descriptor::Null())
+				return 0;
 			return m_resources.at(desc.Type()).at(desc.Number());
 		}
 
@@ -85,7 +103,11 @@ namespace System
 			return res;
 		}
 
-
+		template<unsigned Type>
+		void* Get(Descriptor desc)
+		{
+			throw System::SystemError("Unsupported resource");
+		}
 
 		/*! Manual dropping selected resource to hdd */
 		void DropResourceToHdd(Descriptor h)

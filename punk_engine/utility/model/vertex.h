@@ -12,8 +12,92 @@ namespace Utility
 
 	}
 
+	struct Offset
+	{
+		template<class T>
+		static int Get(VertexComponent component)
+		{
+			return T::GetOffset(component);
+		}
+	};
+
 	struct LIB_UTILITY Vertex
 	{
+	};
+
+	struct VertexPosition : public Vertex
+	{
+		float x, y, z, w;
+		
+		static int GetOffset(VertexComponent component)
+		{
+			switch(component)
+			{
+			case COMPONENT_POSITION:
+				return 0;
+			default:
+				return -1;
+			}
+		}
+	};
+
+	struct VertexPositionTexture : public Vertex
+	{
+		float x, y, z, w;
+		float u, v, s, q;
+		static int GetOffset(VertexComponent component)
+		{
+			switch(component)
+			{
+			case COMPONENT_POSITION:
+				return 0;
+			case COMPONENT_TEXTURE:
+				return 4*sizeof(float);
+			default:
+				return -1;
+			}
+		}
+	};
+
+	struct VertexPositionNormalTextureTangentBitangent : public Vertex
+	{
+		float x, y, z, w;
+		float nx, ny, nz, nw;
+		float u, v, s, q;
+		float bx, by, bz, bw;
+		float tx, ty, tz, tw;
+		
+		static int GetOffset(VertexComponent component)
+		{
+			switch(component)
+			{
+			case COMPONENT_POSITION:
+				return 0;
+			case COMPONENT_NORMAL:
+				return 4*sizeof(float);
+			case COMPONENT_TEXTURE:
+				return 8*sizeof(float);
+			case COMPONENT_BITANGENT:
+				return 12*sizeof(float);
+			case COMPONENT_TANGENT:
+				return 16*sizeof(float);
+			default:
+				return -1;
+			}
+		}
+	};
+
+
+	struct VertexPositionNormalTextureTangentBitangentBone : public Vertex
+	{
+		float x, y, z, w;
+		float nx, ny, nz, nw;
+		float u, v, s, q;
+		float bx, by, bz, bw;
+		float tx, ty, tz, tw;
+		float   b1, b2, b3, b4;
+		float w1, w2, w3, w4;
+
 		static int GetOffset(VertexComponent component)
 		{
 			switch(component)
@@ -36,38 +120,6 @@ namespace Utility
 				return -1;
 			}
 		}
-	};
-
-	struct VertexPosition : public Vertex
-	{
-		float x, y, z, w;
-	};
-
-	struct VertexPositionTexture : public Vertex
-	{
-		float x, y, z, w;
-		float u, v, s, q;
-	};
-
-	struct VertexPositionNormalTextureTangentBitangent : public Vertex
-	{
-		float x, y, z, w;
-		float nx, ny, nz, nw;
-		float u, v, s, q;
-		float bx, by, bz, bw;
-		float tx, ty, tz, tw;
-	};
-
-
-	struct VertexPositionNormalTextureTangentBitangentBone : public Vertex
-	{
-		float x, y, z, w;
-		float nx, ny, nz, nw;
-		float u, v, s, q;
-		float bx, by, bz, bw;
-		float tx, ty, tz, tw;
-		float   b1, b2, b3, b4;
-		float w1, w2, w3, w4;
 	};
 }
 

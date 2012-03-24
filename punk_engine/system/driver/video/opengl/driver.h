@@ -15,6 +15,7 @@ and handle different parameters about users video system
 #include "render_context.h"
 #include "texture_context.h"
 #include "vertex_array_object.h"
+#include "text_texture_2d.h"
 #endif
 
 #ifdef __linux__

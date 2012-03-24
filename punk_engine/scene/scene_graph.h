@@ -29,17 +29,20 @@ namespace Scene
 		Hierarchy m_scene;		// children. It can be another scene graph or a simple object
 		Child_Parent m_hash;
 
-		template<class T>
-		void internal_visit(System::Descriptor& parent, T visitor)
-		{							
+		template<class T, class U>
+		void internal_visit(System::Descriptor& parent, T visitor, U d)
+		{									
+			if (m_scene.empty())
+				return;
 			Collection& col = m_scene.at(parent);
 			for (Collection::iterator i = col.begin(); i != col.end(); ++i)
 			{				
-				visitor(*i);
+				U data = d;
+				visitor(*i, data);
 				
 				Hierarchy::iterator col_iter = m_scene.lower_bound(*i);
 				if (col_iter != m_scene.end())	
-					internal_visit(*i, visitor);
+					internal_visit(*i, visitor, data);
 			}
 		}
 
@@ -48,11 +51,12 @@ namespace Scene
 		SceneGraph();
 		~SceneGraph();
 
-		template<class T>
+		template<class T, class U>
 		void Visit(T visitor)
 		{
 			System::Descriptor desc = System::Descriptor::Null();
-			internal_visit<T>(desc, visitor);
+			U data;
+			internal_visit<T, U>(desc, visitor, data);
 		}
 
 		void AddInstance(System::Descriptor parent, System::Descriptor instance);

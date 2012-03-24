@@ -118,12 +118,20 @@ namespace Utility
 			if (data->width*data->height > 0)
 			{
 				data->buffer = new unsigned char[data->width*data->height];
+				for (int i = data->height-1; i >= 0; i--)
+				{
+					for (int j = 0; j < data->width; j++)
+					{
+						data->buffer[j+(data->height-i-1)*data->width] = slot->bitmap.buffer[j+i*data->width];
+					}
+				}
 				memcpy(data->buffer, slot->bitmap.buffer, data->width*data->height);
 			}
 			data->x_offset = slot->bitmap_left;
 			data->y_offset = slot->bitmap_top;
 			data->x_advance = slot->advance.x >> 6;
 			data->y_advance = slot->advance.y >> 6;
+
 
 			wcache[curSize][curFace][symbol] = data;
 		}
@@ -153,7 +161,7 @@ namespace Utility
 		}
 		else
 		{
-			iniFontsFile = (pathToFonts = "E:\\project\\data\\font\\") + L"fonts.ini";
+			iniFontsFile = (pathToFonts = "d:\\project\\data\\font\\");
 			conf.WriteOptionString(L"fonts", iniFontsFile);
 		}
 		conf.Close();
@@ -171,7 +179,7 @@ namespace Utility
 		while(!buffer.IsEnd())
 		{
 			System::string name = buffer.ReadWord();
-			System::string path = buffer.ReadWord();
+			System::string path = pathToFonts + buffer.ReadWord();
 			System::Logger::GetInstance()->WriteDebugMessage(L"Loading font " + path + LOG_LOCATION_STRING);
 			
 			FT_Face face;

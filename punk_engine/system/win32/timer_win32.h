@@ -15,11 +15,11 @@ namespace System
 {
 	class LIB_SYSTEM Timer
     {
-        double period;
+        __int64 freq;
 		LARGE_INTEGER startPoint;
     public:
         Timer();
-        double GetElapsedTime() const;
+        __int64 GetElapsedTime() const;
         void UpdateStartPoint();
     };
 }

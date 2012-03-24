@@ -124,6 +124,8 @@ namespace System
 	const long EVENT_INSTANCE_CHANGED_PARENT = 0x0016;
 	const long EVENT_INSTANCE_APPEARED = 0x0017;
 
+	const long EVENT_MODEL_TIME_STEP	= 0x0018;
+
 }
 
 #endif // EVENT_TYPE_H

@@ -12,7 +12,11 @@ namespace OpenGL
 	{
 		ShaderProgram* m_cur_program;
 	public:
-
+		ShaderProgram* GetShaderProgram();
+		void EnableBlending();
+		void DisableBlending();
+		void EnableDepthTest();
+		void DisableDepthTest();
 		void Begin(ShaderProgram* program);
 		void End();
 

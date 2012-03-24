@@ -44,6 +44,8 @@ namespace OpenGL
 	*/
 	class GLSLProgram : public ::ShaderProgram
 	{
+		int m_uniform_location[256];
+		void BindUniform();
 	public:
 
 		struct RenderState
@@ -86,6 +88,7 @@ namespace OpenGL
 		GLSLProgram  ();
 		~GLSLProgram ();
 		static void Init();
+		virtual int  GetLocation(int uniform);
 		virtual void CreateFromFile( const System::string& vertexFileName, const System::string& fragmentFileName, const System::string& geometryFileName);
 		virtual void CreateFromMemory( const System::Buffer& vertexSource, const System::Buffer& fragmentSource, const System::Buffer& geometrySource);
 		virtual void CreateFromRFX(const System::string& fileName, const System::string& effectGroup, const System::string& effectName);

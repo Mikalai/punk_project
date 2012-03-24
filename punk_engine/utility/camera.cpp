@@ -10,7 +10,7 @@ namespace Utility
 		m_move_left(System::PUNK_KEY_A),
 		m_move_right(System::PUNK_KEY_D)
 	{
-		System::Mouse::GetInstance()->LockInWindow(true);
+		//System::Mouse::GetInstance()->LockInWindow(true);
 		//System::Mouse::GetInstance()->Show(false);
 
 		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Camera::OnMouseMove));

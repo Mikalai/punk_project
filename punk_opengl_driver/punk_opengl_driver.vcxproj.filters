@@ -107,6 +107,7 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h">
@@ -136,6 +137,7 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt">

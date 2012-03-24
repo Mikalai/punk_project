@@ -153,7 +153,6 @@
     <ClInclude Include="..\punk_engine\system\win32\window_win32.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\application.h" />
     <ClInclude Include="..\punk_engine\system\binary_file.h" />
     <ClInclude Include="..\punk_engine\system\buffer.h" />
     <ClInclude Include="..\punk_engine\system\clock.h" />
@@ -198,6 +197,10 @@
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\handle.h" />
     <ClInclude Include="..\punk_engine\system\resource_manager.h" />
+    <ClInclude Include="..\punk_engine\system\events\model_time_step_event.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\id.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\system\events\events.cpp">
@@ -320,7 +323,6 @@
     <ClCompile Include="..\punk_engine\system\win32\window_win32.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\application.cpp" />
     <ClCompile Include="..\punk_engine\system\clock.cpp" />
     <ClCompile Include="..\punk_engine\system\event_manager.cpp" />
     <ClCompile Include="..\punk_engine\system\logger.cpp" />
@@ -332,5 +334,9 @@
     <ClCompile Include="..\punk_engine\system\win32\resource_manager_win32.cpp">
       <Filter>win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\system\events\model_time_step_event.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\id.cpp" />
   </ItemGroup>
 </Project>

@@ -172,7 +172,7 @@ namespace OpenGL
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
 	
-		InitPointers(m_code);
+		InitPointers<Utility::VertexPosition>(m_code);
 
 		glBindVertexArray(0);
 
@@ -211,7 +211,7 @@ namespace OpenGL
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
 	
-		InitPointers(m_code);
+		InitPointers<Utility::VertexPositionNormalTextureTangentBitangentBone>(m_code);
 
 		glBindVertexArray(0);
 
@@ -222,10 +222,10 @@ namespace OpenGL
 	{
 		Utility::VertexPositionTexture v[4];
 		memset(v, 0, sizeof(v));
-		v[0].x = -1; v[0].y = -1; v[0].u = 0; v[0].v = 0;
-		v[1].x = -1; v[1].y =  1; v[0].u = 0; v[0].v = 1;
-		v[2].x =  1; v[2].y =  1; v[0].u = 1; v[0].v = 1;
-		v[3].x =  1; v[3].y = -1; v[0].u = 1; v[0].v = 0;
+		v[0].x = 0; v[0].y = 0; v[0].u = 0; v[0].v = 1;
+		v[1].x = 0; v[1].y = 1; v[1].u = 0; v[1].v = 0;
+		v[2].x = 1; v[2].y = 1; v[2].u = 1; v[2].v = 0;
+		v[3].x = 1; v[3].y = 0; v[3].u = 1; v[3].v = 1;
 
 		int buffer_size = sizeof(v);
 		unsigned index[] = {0, 1, 2, 2, 3, 0};
@@ -261,7 +261,7 @@ namespace OpenGL
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
 	
-		InitPointers(m_code);
+		InitPointers<Utility::VertexPositionTexture>(m_code);
 
 		glBindVertexArray(0);
 
@@ -302,7 +302,7 @@ namespace OpenGL
 		glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
 	
-		InitPointers(code);
+		InitPointers<Utility::VertexPositionNormalTextureTangentBitangentBone>(code);
 
 		glBindVertexArray(0);
 
@@ -310,11 +310,12 @@ namespace OpenGL
 		return true;
 	}
 
-	void VertexArrayObject::InitPointers(int code)
+	template<class T>
+	inline void VertexArrayObject::InitPointers(int code)
 	{
 		if (code & Utility::COMPONENT_POSITION)
 		{
-			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_POSITION));
+			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Offset::Get<T>(Utility::COMPONENT_POSITION));
 			glEnableVertexAttribArray(0);
 		}
 		else
@@ -324,7 +325,7 @@ namespace OpenGL
 
 		if (code & Utility::COMPONENT_NORMAL)
 		{
-			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_NORMAL));
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Offset::Get<T>(Utility::COMPONENT_NORMAL));
 			glEnableVertexAttribArray(1);
 		}
 		else
@@ -334,7 +335,7 @@ namespace OpenGL
 
 		if (code & Utility::COMPONENT_TEXTURE)
 		{
-			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_TEXTURE));
+			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Offset::Get<T>(Utility::COMPONENT_TEXTURE));
 			glEnableVertexAttribArray(2);
 		}
 		else
@@ -344,7 +345,7 @@ namespace OpenGL
 
 		if (code & Utility::COMPONENT_BITANGENT)
 		{
-			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_BITANGENT));
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Offset::Get<T>(Utility::COMPONENT_BITANGENT));
 			glEnableVertexAttribArray(3);
 		}
 		else
@@ -354,7 +355,7 @@ namespace OpenGL
 
 		if (code & Utility::COMPONENT_TANGENT)
 		{
-			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_TANGENT));
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)Utility::Offset::Get<T>(Utility::COMPONENT_TANGENT));
 			glEnableVertexAttribArray(4);
 		}
 		else
@@ -364,8 +365,8 @@ namespace OpenGL
 
 		if ((code & Utility::COMPONENT_BONE_ID) && (code & Utility::COMPONENT_BONE_WEIGHT))
 		{
-			glVertexAttribPointer(5, 4, GL_FLOAT  , GL_FALSE, m_vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_BONE_ID));		
-			glVertexAttribPointer(6, 4, GL_FLOAT  , GL_FALSE, m_vertex_size, (void*)Utility::Vertex::GetOffset(Utility::COMPONENT_BONE_WEIGHT));		
+			glVertexAttribPointer(5, 4, GL_FLOAT  , GL_FALSE, m_vertex_size, (void*)Utility::Offset::Get<T>(Utility::COMPONENT_BONE_ID));		
+			glVertexAttribPointer(6, 4, GL_FLOAT  , GL_FALSE, m_vertex_size, (void*)Utility::Offset::Get<T>(Utility::COMPONENT_BONE_WEIGHT));		
 			glEnableVertexAttribArray(5);
 			glEnableVertexAttribArray(6);
 		}

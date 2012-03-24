@@ -12,8 +12,14 @@ namespace System
 	class LIB_SYSTEM Environment : public Singletone(Environment)
 	{
 	public:
-		static string GetCurrentDirectory();
-		static void SetCurrentDirectory(const string& dir);
+		static string GetCurrentFolder();
+		static void SetCurrentFolder(const string& dir);
+		static string GetFontFolder();
+		static string GetModelFolder();
+		static string GetTexutreFolder();
+		static string GetMapFolder();
+		static string GetSaveFolder();
+		static string GetQuestFolder();
 	};
 }
 

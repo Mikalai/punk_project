@@ -121,7 +121,8 @@ namespace Render
 		if (!System::g_desktop)
 			throw System::Exception(L"FATAL ERROR: g_desktop not set" + LOG_LOCATION_STRING);
 
-		Math::mat4 projViewWorld = Math::mat4::CreateOrthographicProjection(0.0f, (float)System::g_desktop->GetWidth(), (float)System::g_desktop->GetHeight(), 0.0f, -1.0f, 1.0f)*Math::mat4::CreateTranslate(p->m_x, p->m_y, 0.0f)*Math::mat4::CreateScaling(p->m_width, p->m_height, 1.0f);
+		Math::mat4 projViewWorld = Math::mat4::CreateOrthographicProjection(0.0f, (float)System::g_desktop->GetWidth(), (float)System::g_desktop->GetHeight(), 0.0f, -1.0f, 1.0f)
+			*Math::mat4::CreateTranslate(p->m_x, p->m_y, 0.0f)*Math::mat4::CreateScaling(p->m_width, p->m_height, 1.0f);
 
 		int passCount = m_program->GetPassCount();
 		for (int i = 0; i < passCount; i++)

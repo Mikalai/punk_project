@@ -21,8 +21,11 @@ namespace System
 		RESOURCE_FONT		= 4,
 		RESOURCE_IMAGE		= 5,
 		RESOURCE_SCENE_GRAPH = 6,
-		RESOURCE_GUI		= 7,
+		RESOURCE_WIDGET		= 7,
 		RESOURCE_VAO		= 8,
+		RESOURCE_LAYER		= 9,		//layer use in scene graph to make a subgraphs place
+		RESOURCE_BUTTON		= 10,
+		RESOURCE_TEXT_TEXTURE = 11,
 		//
 		//	User resources starts from here
 		RESOURCE_USER = 256
@@ -120,7 +123,7 @@ namespace System
 			m_resource = 0;
 		}
 
-		T* Get()
+		T* Lock()
 		{
 			if (!m_resource)
 			{
@@ -130,7 +133,14 @@ namespace System
 
 			time(&m_last_access);
 
+			AddRef();
+
 			return m_resource;
+		}
+
+		void Unlock()
+		{
+			Release();
 		}
 
 		virtual void DropToHdd()

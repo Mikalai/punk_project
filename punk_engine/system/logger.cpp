@@ -6,7 +6,6 @@
 #include "binary_file.h"
 #include "console.h"
 #include "clock.h"
-#include "application.h"
 #include "config_file.h"
 
 namespace System

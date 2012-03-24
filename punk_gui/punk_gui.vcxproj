@@ -56,7 +56,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>punk_string.lib;punk_system.lib;punk_math.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>punk_string.lib;punk_system.lib;punk_math.lib;punk_opengl_driver.lib;punk_scene.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,13 +74,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>punk_string.lib;punk_system.lib;punk_math.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>punk_string.lib;punk_system.lib;punk_math.lib;punk_opengl_driver.lib;punk_scene.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\punk_engine\gui\button.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\punk_engine\gui\button.cpp" />
     <ClCompile Include="..\punk_engine\gui\console.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -105,6 +103,7 @@
     <ClCompile Include="..\punk_engine\gui\static_text_area.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\gui\user_interface_control.cpp" />
     <ClCompile Include="..\punk_engine\gui\vertical_scrollbar.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -114,9 +113,7 @@
     <ClCompile Include="..\punk_engine\gui\widget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\punk_engine\gui\button.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\punk_engine\gui\button.h" />
     <ClInclude Include="..\punk_engine\gui\config.h" />
     <ClInclude Include="..\punk_engine\gui\console.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -140,6 +137,7 @@
     <ClInclude Include="..\punk_engine\gui\static_text_area.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\gui\user_interface_control.h" />
     <ClInclude Include="..\punk_engine\gui\vertical_scrollbar.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

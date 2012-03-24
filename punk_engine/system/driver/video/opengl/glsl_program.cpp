@@ -10,26 +10,46 @@
 
 namespace OpenGL
 {
-/*	namespace Shaders
+	static const char* UniformStrings[] = 
 	{
-		GLSLProgram g_TextureBumpProgram;
-		GLSLProgram g_ShowNormalProgram;
-		GLSLProgram g_ShowTangentProgram;
-		GLSLProgram g_ShowBinormalProgram;
+		"uWorl",
+		"uView", 
+		"uProj", 
+		"uProjViewWorld",
+		"uDiffuseColor",
+		"uRadius",
+		"uDiffuseMap"
+	};
+
+	/*	namespace Shaders
+	{
+	GLSLProgram g_TextureBumpProgram;
+	GLSLProgram g_ShowNormalProgram;
+	GLSLProgram g_ShowTangentProgram;
+	GLSLProgram g_ShowBinormalProgram;
 	}
-/**/
+	/**/
+
+	void GLSLProgram::BindUniform()
+	{
+		for (int i = 0; i < sizeof(UniformStrings)/sizeof(char*); i++)
+		{
+			m_uniform_location[i] = GetUniformLocation(UniformStrings[i]);
+		}
+	}
+
 	void GLSLProgram::Init()
 	{                
-	/*	if (::Driver::Video::GetDriver()->ShaderVersion >= 300)
+		/*	if (::Driver::Video::GetDriver()->ShaderVersion >= 300)
 		{                    
-			/*                    Shaders::g_TextureBumpProgram.CreateFromRFX("data/shaders/StandardShaders.rfx", "Effects", "TexturedBump");
-			Shaders::g_ShowNormalProgram.CreateFromString(Shaders::ShowNormal::vertex, ShowNormal::fragment);
-			Shaders::g_ShowBinormalProgram.CreateFromString(ShowBinormal::vertex, ShowBinormal::fragment);
-			Shaders::g_ShowTangentProgram.CreateFromString(ShowTangent::vertex, ShowTangent::fragment);*/
-	/*	}
+		/*                    Shaders::g_TextureBumpProgram.CreateFromRFX("data/shaders/StandardShaders.rfx", "Effects", "TexturedBump");
+		Shaders::g_ShowNormalProgram.CreateFromString(Shaders::ShowNormal::vertex, ShowNormal::fragment);
+		Shaders::g_ShowBinormalProgram.CreateFromString(ShowBinormal::vertex, ShowBinormal::fragment);
+		Shaders::g_ShowTangentProgram.CreateFromString(ShowTangent::vertex, ShowTangent::fragment);*/
+		/*	}
 		if (::Driver::Video::GetDriver()->ShaderVersion == 120)
 		{
-			//g_TextureBumpProgram.CreateFromFile("data/shaders/BumpVertexShader_120", "data/shaders/BumpFragmentShader_120");
+		//g_TextureBumpProgram.CreateFromFile("data/shaders/BumpVertexShader_120", "data/shaders/BumpFragmentShader_120");
 		}/**/
 	}
 
@@ -258,6 +278,8 @@ namespace OpenGL
 		pass.m_program = program;
 		pass.m_fragmentShader = fragmentShader;
 		pass.m_vertexShader = vertexShader;
+
+		BindUniform();
 	}
 
 	void GLSLProgram::CreateFromFile(const System::string& vertexFileName, const System::string& fragmentFileName, const System::string& geometryFileName)
@@ -278,47 +300,48 @@ namespace OpenGL
 			delete[] m_pass;
 		m_pass = new Pass[m_numPasses];
 
-			// check whether we should create m_program object
-			if (m_pass[0].m_program == 0 )
-				m_pass[0].m_program = glCreateProgram();
+		// check whether we should create m_program object
+		if (m_pass[0].m_program == 0 )
+			m_pass[0].m_program = glCreateProgram();
 
-			// create a vertex shader object and a fragment shader object
-			m_pass[0].m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
-			m_pass[0].m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		// create a vertex shader object and a fragment shader object
+		m_pass[0].m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		m_pass[0].m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-			System::Logger::GetInstance()->WriteMessage(L"Loading vertex shader " + vertexFileName);
+		System::Logger::GetInstance()->WriteMessage(L"Loading vertex shader " + vertexFileName);
 
-			if (!LoadShader(m_pass[0].m_vertexShader, vertexShaderData))
-				throw System::SystemError(L"Can't create vertex shader");
+		if (!LoadShader(m_pass[0].m_vertexShader, vertexShaderData))
+			throw System::SystemError(L"Can't create vertex shader");
 
-			System::Logger::GetInstance()->WriteMessage(L"Loading fragment shader " + fragmentFileName);
+		System::Logger::GetInstance()->WriteMessage(L"Loading fragment shader " + fragmentFileName);
 
-			if (!LoadShader(m_pass[0].m_fragmentShader, fragmentShaderData))
-				throw System::SystemError(L"Can't create fragment shader" + LOG_LOCATION_STRING);
+		if (!LoadShader(m_pass[0].m_fragmentShader, fragmentShaderData))
+			throw System::SystemError(L"Can't create fragment shader" + LOG_LOCATION_STRING);
 
-			if (geometryShaderData.GetSize() != 0)
-			{
-				m_pass[0].m_geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
-				if (!LoadShader(m_pass[0].m_geometryShader, geometryShaderData))
-					throw System::SystemError(L"Can't create geometry shader" + LOG_LOCATION_STRING);
-				glAttachShader(m_pass[0].m_program, m_pass[0].m_geometryShader);
-			}
+		if (geometryShaderData.GetSize() != 0)
+		{
+			m_pass[0].m_geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+			if (!LoadShader(m_pass[0].m_geometryShader, geometryShaderData))
+				throw System::SystemError(L"Can't create geometry shader" + LOG_LOCATION_STRING);
+			glAttachShader(m_pass[0].m_program, m_pass[0].m_geometryShader);
+		}
 
 
-			// attach shaders to m_program object
-			glAttachShader(m_pass[0].m_program, m_pass[0].m_vertexShader);
-			glAttachShader(m_pass[0].m_program, m_pass[0].m_fragmentShader);
+		// attach shaders to m_program object
+		glAttachShader(m_pass[0].m_program, m_pass[0].m_vertexShader);
+		glAttachShader(m_pass[0].m_program, m_pass[0].m_fragmentShader);
 
-			// link the m_program object and print out the info m_log
-/*			glBindAttribLocation(m_pass[0].m_program, 0, "rm_Vertex");
+		// link the m_program object and print out the info m_log
+		/*			glBindAttribLocation(m_pass[0].m_program, 0, "rm_Vertex");
 		glBindAttribLocation(m_pass[0].m_program, 1, "rm_Normal");
 		glBindAttribLocation(m_pass[0].m_program, 2, "rm_Texcoord0");
 		glBindAttribLocation(m_pass[0].m_program, 3, "rm_Flags");
-*/
-			glLinkProgram(m_pass[0].m_program);
+		*/
+		glLinkProgram(m_pass[0].m_program);
 
-			//  if ( !checkGlError () )     // check for errors
-			//      return false;
+		BindUniform();
+		//  if ( !checkGlError () )     // check for errors
+		//      return false;
 	}
 
 	void GLSLProgram::CreateFromMemory(const System::Buffer& vertexBufferData, const System::Buffer& fragmentBufferData, const System::Buffer& geometryBufferData)
@@ -336,7 +359,7 @@ namespace OpenGL
 		// create a vertex shader object and a fragment shader object
 		m_pass[0].m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		m_pass[0].m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		
+
 		System::Logger::GetInstance()->WriteMessage(L"Loading vertex shader\n");
 
 		if (!LoadShader(m_pass[0].m_vertexShader, vertexBufferData))
@@ -362,13 +385,15 @@ namespace OpenGL
 		System::Logger::GetInstance()->WriteMessage(L"Linking programs");
 
 		// link the m_program object and print out the info m_log
-	//	glBindAttribLocation(m_pass[0].m_program, 0, "rm_Vertex");
-//		glBindAttribLocation(m_pass[0].m_program, 1, "rm_Normal");
-	//	glBindAttribLocation(m_pass[0].m_program, 2, "rm_Texcoord0");
+		//	glBindAttribLocation(m_pass[0].m_program, 0, "rm_Vertex");
+		//		glBindAttribLocation(m_pass[0].m_program, 1, "rm_Normal");
+		//	glBindAttribLocation(m_pass[0].m_program, 2, "rm_Texcoord0");
 		//glBindAttribLocation(m_pass[0].m_program, 3, "rm_Flags");
 
 		glLinkProgram(m_pass[0].m_program);
 
+		
+		BindUniform();
 
 		GLint status;
 		glGetProgramiv(m_pass[0].m_program, GL_LINK_STATUS, &status);
@@ -383,9 +408,14 @@ namespace OpenGL
 		throw System::SystemError(L"Can't create GLSL program" + LOG_LOCATION_STRING);
 	}
 
+	int GLSLProgram::GetLocation(int uniform)
+	{
+		return m_uniform_location[uniform];
+	}
+
 	void GLSLProgram::Bind(int passNumber)
 	{
-//		CheckError();
+		//		CheckError();
 		glUseProgram(m_pass[passNumber].m_program);
 		m_currentPass = passNumber;
 		int index;
@@ -599,16 +629,16 @@ namespace OpenGL
 	bool GLSLProgram::SetTexture(const char * name, int texUnit)
 	{
 		int loc = glGetUniformLocation ( m_pass[m_currentPass].m_program, name );
-		if ( loc == -1 )
-			throw System::SystemError(L"Can't set texture: " + System::string(name) + LOG_LOCATION_STRING);
+	//	if ( loc == -1 )
+		//	throw System::SystemError(L"Can't set texture: " + System::string(name) + LOG_LOCATION_STRING);
 		glUniform1i(loc, texUnit);
 		return true;
 	}
 
 	bool GLSLProgram::SetTexture(int loc, int texUnit)
 	{
-		if ( loc < 0 )
-			throw System::SystemError(L"Can't set texture" + LOG_LOCATION_STRING);
+	//	if ( loc < 0 )
+		//	throw System::SystemError(L"Can't set texture" + LOG_LOCATION_STRING);
 		glUniform1i(loc, texUnit);
 		return true;
 	}

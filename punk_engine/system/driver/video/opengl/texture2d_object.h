@@ -9,6 +9,7 @@ Description: Contains a Texture2D class
 
 #include "config.h"
 #include "../../../../system/resource.h"
+#include "../../../../system/buffer.h"
 #include "../../../../images/formats.h"
 
 namespace Image
@@ -37,9 +38,12 @@ namespace OpenGL
 		void Unbind() const;
 
 		int GetWidth() const;
-		int GetHeight() const;
+		int GetHeight() const;		
 
 		unsigned GetID() const; 
+
+		void Store(System::Buffer& buffer);
+		void Restore(System::Buffer& buffer);
 
 	private:
 		int m_width;

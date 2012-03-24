@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\video_driver_linux.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -202,6 +203,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.h" />

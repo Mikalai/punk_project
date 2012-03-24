@@ -150,9 +150,9 @@ namespace System
 			//Sleep(10);
 			IdleEvent* e = IdleEvent::Raise();
 			e->elapsed_time_ms = timer.GetElapsedTime();
-			EventManager::GetInstance()->FixEvent(e);
-			EventManager::GetInstance()->Process();
 			timer.UpdateStartPoint();
+			EventManager::GetInstance()->FixEvent(e);
+			EventManager::GetInstance()->Process();			
 			/*std::multimap<UINT, Handler>::iterator lb = m_handlers.lower_bound(WM_IDLE);
 			std::multimap<UINT, Handler>::iterator ub = m_handlers.upper_bound(WM_IDLE);
 			for (std::multimap<UINT, Handler>::iterator i = lb; i != ub; i++)
