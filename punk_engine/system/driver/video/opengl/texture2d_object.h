@@ -12,7 +12,7 @@ Description: Contains a Texture2D class
 #include "../../../../system/buffer.h"
 #include "../../../../images/formats.h"
 
-namespace Image
+namespace ImageModule
 {
 	class ImageFile;
 }
@@ -28,9 +28,9 @@ namespace OpenGL
 		Texture2D& operator = (const Texture2D& texture);
 		~Texture2D();
 		void Resize(int width, int height);
-		void Create(int width, int height, Image::ImageFormat format, const unsigned char* data);
-		void Create(const Image::ImageFile& image);
-		void CopyFromCPU(int x, int y, int width, int height, Image::ImageFormat format, const unsigned char* data);
+		void Create(int width, int height, ImageModule::ImageFormat format, const unsigned char* data);
+		void Create(const ImageModule::ImageFile& image);
+		void CopyFromCPU(int x, int y, int width, int height, ImageModule::ImageFormat format, const unsigned char* data);
 		void Fill(unsigned char byte);
 		void Lock(void** ptr);
 		void Unlock(void* ptr);
@@ -51,7 +51,7 @@ namespace OpenGL
 		int m_format;
 		unsigned m_id;
 
-		int ToInternalFormat(Image::ImageFormat format);
+		int ToInternalFormat(ImageModule::ImageFormat format);
 	};
 }
 

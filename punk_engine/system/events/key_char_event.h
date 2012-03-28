@@ -5,7 +5,7 @@
 
 namespace System
 {
-    class LIB_SYSTEM KeyCharEvent : public Event
+    class MODULE_SYSTEM KeyCharEvent : public Event
     {
         static std::queue<KeyCharEvent*> eventPool;
         KeyCharEvent();

@@ -128,6 +128,7 @@
     <ClInclude Include="..\punk_engine\gui\int_watcher.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\gui\layout.h" />
     <ClInclude Include="..\punk_engine\gui\list_box.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

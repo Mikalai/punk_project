@@ -6,7 +6,7 @@
 namespace System
 {
 
-    class LIB_SYSTEM IdleEvent : public Event
+    class MODULE_SYSTEM IdleEvent : public Event
     {
         static std::queue<IdleEvent*> eventPool;		
 

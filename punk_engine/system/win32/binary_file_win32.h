@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM BinaryFile
+	class MODULE_SYSTEM BinaryFile
 	{
 	public:
 		static bool Load(const string& filename, Buffer& buffer);

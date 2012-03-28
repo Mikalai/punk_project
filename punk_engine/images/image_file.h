@@ -11,9 +11,9 @@
 #include "formats.h"
 #include "../system/buffer.h"
 
-namespace Image
+namespace ImageModule
 {
-	class LIB_IMAGE ImageFile
+	class MODULE_IMAGE ImageFile
 	{
 	protected:
 		struct Rep

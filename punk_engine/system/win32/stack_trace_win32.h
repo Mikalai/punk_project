@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM Stack
+	class MODULE_SYSTEM Stack
 	{
 	public:
 		Stack();

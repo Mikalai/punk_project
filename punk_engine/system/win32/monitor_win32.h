@@ -10,7 +10,7 @@
 #include "../config.h"
 #include <windows.h>
 
-class LIB_SYSTEM Monitor
+class MODULE_SYSTEM Monitor
 {
 private:
 

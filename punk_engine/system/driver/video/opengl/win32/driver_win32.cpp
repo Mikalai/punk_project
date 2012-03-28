@@ -18,6 +18,8 @@ namespace OpenGL
 			file.WriteOptionString(L"shaders", L"E:\\project\\punk_project\\punk_engine\\system\\driver\\video\\opengl\\glsl\\");
 		if (!file.IsExistOption(L"textures"))
 			file.WriteOptionString(L"textures", L"E:\\project\\data\\textures\\");
+		if (!file.IsExistOption(L"data"))
+			file.WriteOptionString(L"textures", L"E:\\project\\data\\");
 
 		m_path_to_textures = file.ReadOptionString(L"textures");
 
@@ -295,7 +297,7 @@ namespace OpenGL
 		std::map<System::string, Texture2D*>::iterator i = m_textures.find(name);
 		if (i == m_textures.end())
 		{
-			Image::PngFile png;
+			ImageModule::PngFile png;
 			try
 			{
 				png.Load((m_path_to_textures + name).Data());

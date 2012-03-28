@@ -3,9 +3,9 @@
 
 #ifdef _WIN32
 #ifdef PUNK_IMAGE_EXPORTS
-#define LIB_IMAGE __declspec(dllexport)
+#define MODULE_IMAGE __declspec(dllexport)
 #else
-#define LIB_IMAGE __declspec(dllimport)
+#define MODULE_IMAGE __declspec(dllimport)
 #endif
 #endif
 

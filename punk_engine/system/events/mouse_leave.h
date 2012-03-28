@@ -5,7 +5,7 @@
 
 namespace System
 {
-    class LIB_SYSTEM MouseLeaveEvent : public Event
+    class MODULE_SYSTEM MouseLeaveEvent : public Event
     {
         static std::queue<MouseLeaveEvent*> eventPool;
         MouseLeaveEvent();

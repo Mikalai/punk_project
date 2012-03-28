@@ -17,9 +17,9 @@ Desc: Special for making logs
 
 namespace System
 {
-	SingletoneInterface(Logger, LIB_SYSTEM)
+	SingletoneInterface(Logger, MODULE_SYSTEM)
 
-	class LIB_SYSTEM Logger : public Singletone(Logger)
+	class MODULE_SYSTEM Logger : public Singletone(Logger)
 	{	
 		static string m_filename;
 		static const int MaxMessageLength = 8192;

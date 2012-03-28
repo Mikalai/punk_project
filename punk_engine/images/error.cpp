@@ -1,6 +1,6 @@
 #include "error.h"
 
-namespace Image
+namespace ImageModule
 {
 	ImageError::ImageError() : std::exception(), m_w_what(0)
 	{

@@ -1,6 +1,7 @@
 #ifdef _WIN32
 
 #include <stdio.h>
+#include <Windows.h>
 //#include "allocator_win32.h"
 #include "window_win32.h"
 #include "../event_manager.h"
@@ -68,12 +69,7 @@ namespace System
 		return string(buf);
 	}
 
-	void Window::DrawPixel(int x, int y)
-	{
-		SetPixel(GetDC(m_windowHandle), x, y, RGB(0, 0, 0));
-	}
-
-	void Window::DrawPixel(int x, int y, int r, int g, int b)
+	void Window::DrawPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 	{
 		SetPixel(GetDC(m_windowHandle), x, y, RGB(r, g, b));
 	}

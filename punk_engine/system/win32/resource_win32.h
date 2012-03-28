@@ -31,7 +31,29 @@ namespace System
 		RESOURCE_USER = 256
 	};
 
-	class BaseResource
+	class MODULE_SYSTEM Resource
+	{
+	public:
+		virtual void Save(Buffer& buffer) const = 0;
+		virtual void Load(Buffer& buffer) = 0;				
+		virtual std::auto_ptr<Resource> Clone() const = 0;
+		virtual const Descriptor& GetDescriptor() const = 0;
+		virtual	void SetDescriptor(const Descriptor& desc) = 0;
+		virtual ~Resource() {};
+	};
+
+	class MultiResource : public Resource
+	{
+	public:
+		virtual void Save(Buffer& buffer) const = 0;
+		virtual void Load(Buffer& buffer) = 0;				
+		virtual void SetAmount(unsigned amout) = 0;
+		virtual unsigned GetAmount() const = 0;
+		virtual std::auto_ptr<Resource> Clone() const = 0;
+		virtual const Descriptor& GetDescriptor() const = 0;
+	};
+
+	/*class BaseResource
 	{
 	protected:
 		Descriptor m_handler;
@@ -79,7 +101,7 @@ namespace System
 
 		const string& GetPathToStorage() const
 		{
-			return string();
+			return string(L"WHAT THE FUCK IS THAT????!!!!");
 		}		
 
 		virtual void DropToHdd() {}
@@ -167,7 +189,7 @@ namespace System
 			m_resource = new T();
 			m_resource->Restore(buffer);
 		}
-	};
+	};*/
 }
 
 #endif

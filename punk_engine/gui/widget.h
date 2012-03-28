@@ -75,7 +75,6 @@ namespace GUI
 
 		virtual ~Widget();
 
-		virtual void Render(OpenGL::Driver* driver);
 
 		void SetWidth(float width);
 		void SetHeight(float height);

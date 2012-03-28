@@ -3,9 +3,9 @@
 
 #include "image_file.h"
 
-namespace Image
+namespace ImageModule
 {
-	class LIB_IMAGE PngFile : public ImageFile
+	class MODULE_IMAGE PngFile : public ImageFile
 	{
 
 	public:

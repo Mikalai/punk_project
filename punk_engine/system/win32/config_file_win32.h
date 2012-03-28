@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM ConfigFile
+	class MODULE_SYSTEM ConfigFile
 	{
 		ConfigFile(const ConfigFile&);
 		ConfigFile& operator = (const ConfigFile&);

@@ -10,6 +10,15 @@
     <Filter Include="tga">
       <UniqueIdentifier>{f5522abb-d9cb-4d94-9552-d0dcdc852e58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{e1a2a7e2-ab6a-426e-b72b-dec7e57ffc1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imprt_export">
+      <UniqueIdentifier>{fff715c1-7862-491f-9ac5-cda9b58d9966}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal_images">
+      <UniqueIdentifier>{a7ddbb8a-cf62-4d1f-b6af-53bb9ee9789c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\images\bmp\bmp.h">
@@ -26,6 +35,28 @@
     <ClInclude Include="..\punk_engine\images\surface.h" />
     <ClInclude Include="..\punk_engine\images\texture.h" />
     <ClInclude Include="..\punk_engine\images\storage.h" />
+    <ClInclude Include="..\punk_engine\images\image_module.h" />
+    <ClInclude Include="..\punk_engine\images\resources\rgba_image_resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\import_export\importer.h">
+      <Filter>imprt_export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\internal_images\image.h">
+      <Filter>internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\internal_images\rgba_image.h">
+      <Filter>internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\internal_images\image_impl.h">
+      <Filter>internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\import_export\png_importer.h">
+      <Filter>imprt_export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\import_export\importer_impl.h">
+      <Filter>imprt_export</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\images\tga\tga.cpp">
@@ -38,6 +69,22 @@
     <ClCompile Include="..\punk_engine\images\surface.cpp" />
     <ClCompile Include="..\punk_engine\images\texture.cpp" />
     <ClCompile Include="..\punk_engine\images\storage.cpp" />
+    <ClCompile Include="..\punk_engine\images\image_module.cpp" />
+    <ClCompile Include="..\punk_engine\images\resources\rgba_image_resource.cpp">
+      <Filter>resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\images\internal_images\image.cpp">
+      <Filter>internal_images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\images\internal_images\rgba_image.cpp">
+      <Filter>internal_images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\images\import_export\importer.cpp">
+      <Filter>imprt_export</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\images\import_export\png_importer.cpp">
+      <Filter>imprt_export</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuildStep Include="..\punk_engine\images\tga\tga.h">

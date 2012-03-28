@@ -1,7 +1,7 @@
 #include <memory.h>
 #include "image_file.h"
 
-namespace Image
+namespace ImageModule
 {
 	ImageFile::Rep::Rep() : m_data(0), 
 		m_width(0), 
@@ -74,7 +74,7 @@ namespace Image
 	{
 	}
 
-	ImageFile::ImageFile(const Image::ImageFile &file)
+	ImageFile::ImageFile(const ImageModule::ImageFile &file)
 	{
 		m_rep = file.m_rep;
 		m_rep->m_used_count++;

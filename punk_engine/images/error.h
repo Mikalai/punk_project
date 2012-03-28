@@ -4,9 +4,9 @@
 #include <exception>
 #include "config.h"
 
-namespace Image
+namespace ImageModule
 {
-	class LIB_IMAGE ImageError : public std::exception
+	class MODULE_IMAGE ImageError : public std::exception
 	{
 	public:
 		ImageError();

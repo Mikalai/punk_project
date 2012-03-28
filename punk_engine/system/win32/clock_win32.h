@@ -15,9 +15,9 @@
 
 namespace System
 {
-	SingletoneInterface(Clock, LIB_SYSTEM)
+	SingletoneInterface(Clock, MODULE_SYSTEM)
 
-	class LIB_SYSTEM Clock : public Singletone(Clock)
+	class MODULE_SYSTEM Clock : public Singletone(Clock)
     {
         static const int timeSize = 64;
         wchar_t the_time[timeSize];

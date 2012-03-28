@@ -7,9 +7,9 @@
 
 namespace System
 {
-	SingletoneInterface(Mouse, LIB_SYSTEM);
+	SingletoneInterface(Mouse, MODULE_SYSTEM);
 
-	class LIB_SYSTEM Mouse : public Singletone(Mouse)
+	class MODULE_SYSTEM Mouse : public Singletone(Mouse)
 	{
 	public:
 		enum MouseButtons { LEFT_BUTTON, RIGHT_BUTTON, MIDDLE_BUTTON };

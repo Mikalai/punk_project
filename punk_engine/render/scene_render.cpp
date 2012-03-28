@@ -34,6 +34,9 @@ namespace Render
 				data.y += b->GetY();
 			}
 			break;
+		case System::RESOURCE_MESH:
+			{				
+			}
 		}
 	}
 
@@ -73,7 +76,7 @@ namespace Render
 		int win_width = System::Window::GetInstance()->GetWidth();
 		int win_height = System::Window::GetInstance()->GetHeight();
 
-		if (button->GetTextTexture() == System::Descriptor::Null())
+		if (button->GetTextTexture() == System::Descriptor::Root())
 		{
 			System::Descriptor d = m_driver->CreateStringTexture(button->GetText(), System::Window::GetInstance()->GetWidth()*button->GetWidth(), System::Window::GetInstance()->GetHeight()*button->GetHeight(), 14, L"Courier New");
 			button->SetTextTexture(d);

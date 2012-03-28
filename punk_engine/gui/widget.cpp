@@ -418,10 +418,6 @@ namespace GUI
 		return true;
 	}
 
-	void Widget::Render(OpenGL::Driver* driver)
-	{
-	}
-
 	bool Widget::IsVisible() const
 	{
 		return m_isVisible;

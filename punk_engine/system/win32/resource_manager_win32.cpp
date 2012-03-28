@@ -2,7 +2,4 @@
 
 namespace System
 {
-	unsigned ResourceManager::m_instance_id = 1;
-
-	SingletoneImplementation(ResourceManager);
 }

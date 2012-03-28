@@ -5,7 +5,7 @@
 
 namespace System
 {
-    class LIB_SYSTEM MouseMiddleButtonDownEvent : public Event
+    class MODULE_SYSTEM MouseMiddleButtonDownEvent : public Event
     {
         static std::queue<MouseMiddleButtonDownEvent*> eventPool;
         MouseMiddleButtonDownEvent();

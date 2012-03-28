@@ -28,9 +28,9 @@ void CreateChecker(int argc, char** argv)
 	unsigned color1 = (unsigned)System::string(argv[6]).ToInt32FromHex();
 	unsigned color2 = (unsigned)System::string(argv[7]).ToInt32FromHex();
 
-	Image::PngFile png;
+	ImageModule::PngFile png;
 	png.SetSize(width, height);
-	png.SetFormat(Image::IMAGE_FORMAT_RGBA);
+	png.SetFormat(ImageModule::IMAGE_FORMAT_RGBA);
 
 	unsigned char* c1 = (unsigned char*)&color1;
 	unsigned char* c2 = (unsigned char*)&color2;

@@ -1,4 +1,5 @@
 #include "../error.h"
+#include "../../system/string.h"
 #include "static_mesh.h"
 #include "skinned_mesh.h"
 #include "skin_animation.h"
@@ -555,7 +556,7 @@ namespace Utility
 	void Model::LoadPunkModel(System::string &filename)
 	{
 		System::Buffer buffer;
-		if (!System::BinaryFile::Load(filename, buffer))
+		if (!System::BinaryFile::Load(System::Environment::GetModelFolder()+filename, buffer))
 			throw UtilityError((L"Unable to load file " + filename).Data());
 
 		while (!buffer.IsEnd())

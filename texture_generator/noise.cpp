@@ -20,9 +20,9 @@ void CreateDefaultNoise(int argc, char* argv[])
 
 	unsigned color = (unsigned)System::string(argv[8]).ToInt32FromHex();
 
-	Image::PngFile png;
+	ImageModule::PngFile png;
 	png.SetSize(width, height);
-	png.SetFormat(Image::IMAGE_FORMAT_RGBA);
+	png.SetFormat(ImageModule::IMAGE_FORMAT_RGBA);
 	Math::Noise noise;
 	noise.SetOctavesCount(octaves);
 	noise.SetPersistance(pers);
@@ -57,9 +57,9 @@ void CreateAbsInvNoise(int argc, char* argv[])
 
 	unsigned color = (unsigned)System::string(argv[8]).ToInt32FromHex();
 
-	Image::PngFile png;
+	ImageModule::PngFile png;
 	png.SetSize(width, height);
-	png.SetFormat(Image::IMAGE_FORMAT_RGBA);
+	png.SetFormat(ImageModule::IMAGE_FORMAT_RGBA);
 	Math::Noise noise;
 	noise.SetOctavesCount(octaves);
 	noise.SetPersistance(pers);
@@ -103,9 +103,9 @@ void CreateAbsNoise(int argc, char* argv[])
 
 	unsigned color = (unsigned)System::string(argv[8]).ToInt32FromHex();
 
-	Image::PngFile png;
+	ImageModule::PngFile png;
 	png.SetSize(width, height);
-	png.SetFormat(Image::IMAGE_FORMAT_RGBA);
+	png.SetFormat(ImageModule::IMAGE_FORMAT_RGBA);
 	Math::Noise noise;
 	noise.SetOctavesCount(octaves);
 	noise.SetPersistance(pers);

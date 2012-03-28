@@ -3,7 +3,7 @@
 #include "error.h"
 #include <png.h>
 
-namespace Image
+namespace ImageModule
 {
 	PngFile::PngFile() : ImageFile() 
 	{

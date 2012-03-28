@@ -144,6 +144,12 @@ namespace System
 
 	string Buffer::ReadWord()
 	{
+		//
+		//	skip spaces
+		//
+		unsigned char* p = 0;
+		for (p = m_current; (*p == '\n' || *p == '\r' || *p == '\t' || *p == ' ') && p < m_buffer + m_size; p++);		
+		m_current = p;
 		int len = 0;
 		for (unsigned char* p = m_current; *p != '\n' && *p != '\r' && *p !='\t' && *p != ' ' && p < m_buffer + m_size; p++, len++);		
 		string res((char*)m_current, len);

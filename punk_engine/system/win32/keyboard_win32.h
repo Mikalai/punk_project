@@ -6,9 +6,9 @@
 
 namespace System
 {
-	SingletoneInterface(Keyboard, LIB_SYSTEM);
+	SingletoneInterface(Keyboard, MODULE_SYSTEM);
 
-	class LIB_SYSTEM Keyboard : public Singletone(Keyboard)
+	class MODULE_SYSTEM Keyboard : public Singletone(Keyboard)
 	{
 		bool m_keys[256];
 		

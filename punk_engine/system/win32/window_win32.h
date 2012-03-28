@@ -18,9 +18,9 @@ namespace System
 {
 	LRESULT CALLBACK WindowCallBack(HWND, UINT, WPARAM, LPARAM);
 
-	SingletoneInterface(Window, LIB_SYSTEM);
+	SingletoneInterface(Window, MODULE_SYSTEM);
 
-	class LIB_SYSTEM Window : public Singletone(Window)
+	class MODULE_SYSTEM Window : public Singletone(Window)
 	{
 	public:
 		Window();
@@ -46,7 +46,7 @@ namespace System
 		operator HWND ();
 
 		void DrawPixel(int x, int y);
-		void DrawPixel(int x, int y, int r, int g, int b);
+		void DrawPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 		void DrawLine(int x1, int y1, int x2, int y2);
 		void SwapBuffer();
 	private:

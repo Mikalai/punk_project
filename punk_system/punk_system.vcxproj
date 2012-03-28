@@ -111,7 +111,6 @@
     <ClInclude Include="..\punk_engine\system\events\unfocused.h" />
     <ClInclude Include="..\punk_engine\system\events\window_resize_event.h" />
     <ClInclude Include="..\punk_engine\system\handle.h" />
-    <ClInclude Include="..\punk_engine\system\id.h" />
     <ClInclude Include="..\punk_engine\system\linux\clock_linux.h" />
     <ClInclude Include="..\punk_engine\system\linux\folder_linux.h" />
     <ClInclude Include="..\punk_engine\system\linux\monitor_linux.h" />
@@ -119,8 +118,10 @@
     <ClInclude Include="..\punk_engine\system\linux\timer_linux.h" />
     <ClInclude Include="..\punk_engine\system\linux\types_linux.h" />
     <ClInclude Include="..\punk_engine\system\linux\window_linux.h" />
+    <ClInclude Include="..\punk_engine\system\module.h" />
     <ClInclude Include="..\punk_engine\system\region.h" />
     <ClInclude Include="..\punk_engine\system\resource.h" />
+    <ClInclude Include="..\punk_engine\system\resource_factory.h" />
     <ClInclude Include="..\punk_engine\system\resource_manager.h" />
     <ClInclude Include="..\punk_engine\system\scene_graph.h" />
     <ClInclude Include="..\punk_engine\system\win32\binary_file_win32.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="..\punk_engine\system\win32\monitor_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\mouse_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\process_win32.h" />
+    <ClInclude Include="..\punk_engine\system\win32\resource_factory_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\resource_manager_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\resource_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\stack_trace_win32.h" />
@@ -192,7 +194,6 @@
     <ClCompile Include="..\punk_engine\system\events\mouse_wheel_event.cpp" />
     <ClCompile Include="..\punk_engine\system\events\unfocused.cpp" />
     <ClCompile Include="..\punk_engine\system\events\window_resize_event.cpp" />
-    <ClCompile Include="..\punk_engine\system\id.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\clock_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\folder_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\text_file_linux.cpp" />
@@ -210,6 +211,7 @@
     <ClCompile Include="..\punk_engine\system\win32\keyboard_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\mouse_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\process_win32.cpp" />
+    <ClCompile Include="..\punk_engine\system\win32\resource_factory_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\resource_manager_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\stack_trace_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\thread_win32.cpp" />

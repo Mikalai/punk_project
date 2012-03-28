@@ -16,9 +16,9 @@
 
 namespace System
 {
-	SingletoneInterface(EventManager, LIB_SYSTEM);
+	SingletoneInterface(EventManager, MODULE_SYSTEM);
 
-	class LIB_SYSTEM EventManager : public Singletone(EventManager)
+	class MODULE_SYSTEM EventManager : public Singletone(EventManager)
     {
 		bool m_events_mask[MAX_EVENTS_COUNT];
     public:

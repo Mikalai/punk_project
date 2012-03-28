@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM Process
+	class MODULE_SYSTEM Process
 	{
 		STARTUPINFOEXW m_startup_info;
 		PROCESS_INFORMATION m_process_info;

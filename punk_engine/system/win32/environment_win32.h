@@ -7,9 +7,9 @@
 
 namespace System
 {
-	SingletoneInterface(Environment, LIB_SYSTEM);
+	SingletoneInterface(Environment, MODULE_SYSTEM);
 
-	class LIB_SYSTEM Environment : public Singletone(Environment)
+	class MODULE_SYSTEM Environment : public Singletone(Environment)
 	{
 	public:
 		static string GetCurrentFolder();

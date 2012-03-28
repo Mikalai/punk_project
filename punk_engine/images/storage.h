@@ -7,7 +7,6 @@
 
 namespace Storage
 {
-	typedef System::Resource<Image::ImageFile> ImageResource;
 //	typedef System::ResourceManager<ImageResource, System::RESOURCE_IMAGE> ImageManager;
 }
 

@@ -3,9 +3,9 @@
 
 #ifdef _WIN32
 #ifdef PUNK_SYSTEM_EXPORTS
-#define LIB_SYSTEM __declspec(dllexport)
+#define MODULE_SYSTEM __declspec(dllexport)
 #else
-#define LIB_SYSTEM __declspec(dllimport)
+#define MODULE_SYSTEM __declspec(dllimport)
 #endif
 
 #pragma warning(disable : 4251)
@@ -13,7 +13,7 @@
 #endif
 
 #ifdef __linux__
-#define LIB_SYSTEM
+#define MODULE_SYSTEM
 #endif
 
 #endif

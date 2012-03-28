@@ -8,7 +8,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM Folder
+	class MODULE_SYSTEM Folder
 	{    
 		Folder(const Folder&);
 		Folder& operator = (const Folder&);

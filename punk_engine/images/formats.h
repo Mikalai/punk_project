@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_IMAGE_FORMATS
 #define _H_PUNK_IMAGE_FORMATS
 
-namespace Image
+namespace ImageModule
 {
 	enum ImageFormat { IMAGE_FORMAT_ALPHA4,
 		IMAGE_FORMAT_ALPHA8,

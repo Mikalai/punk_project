@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM Buffer
+	class MODULE_SYSTEM Buffer
 	{
 		unsigned char* m_buffer;		
 		unsigned char* m_current;

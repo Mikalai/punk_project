@@ -2,13 +2,19 @@
 #define _H_PUNK_SCENE_GRAPH
 
 #include "config.h"
-#include "../system/system.h"
-#include "../system/string.h"
-#include <vector>
-#include <set>
+#include <memory>
+
+namespace System
+{
+	class string;
+	class Buffer;
+	class Descriptor;
+}
 
 namespace Scene
 {
+	class Visitor;
+
 	/*! This class is supposed to contain the whole whole world. But instead of holding 
 		object instances themselves it contains only their handlers. While in game process
 		supposed to be happaned different events. To keep this graph up-to-date objects
@@ -20,50 +26,29 @@ namespace Scene
 	*/
 	class  LIB_SCENE SceneGraph
 	{
-	public:
-		typedef std::vector<System::Descriptor> Collection;
-		typedef std::map<System::Descriptor, Collection> Hierarchy;		
-		typedef std::map<System::Descriptor, System::Descriptor> Child_Parent;
-	private:
-		System::Descriptor m_parent;					// parent region. it can be anything that can contain anything
-		Hierarchy m_scene;		// children. It can be another scene graph or a simple object
-		Child_Parent m_hash;
-
-		template<class T, class U>
-		void internal_visit(System::Descriptor& parent, T visitor, U d)
-		{									
-			if (m_scene.empty())
-				return;
-			Collection& col = m_scene.at(parent);
-			for (Collection::iterator i = col.begin(); i != col.end(); ++i)
-			{				
-				U data = d;
-				visitor(*i, data);
-				
-				Hierarchy::iterator col_iter = m_scene.lower_bound(*i);
-				if (col_iter != m_scene.end())	
-					internal_visit(*i, visitor, data);
-			}
-		}
-
-	public:
+		static std::auto_ptr<SceneGraph> m_instance;
+		struct SceneGraphImpl;
+		std::auto_ptr<SceneGraphImpl> impl_sg;
 
 		SceneGraph();
+		SceneGraph(const SceneGraph& graph);
+		SceneGraph& operator = (const SceneGraph& graph);		
+	public:
+
+		void Visit(Visitor* visitor);
+
+		void Add(const System::Descriptor& parent, const System::Descriptor& child);		
+		bool Is_a_Parent_of_b(const System::Descriptor& a, const System::Descriptor& b);
+		bool Is_a_Child_of_b(const System::Descriptor& a, const System::Descriptor& b);
+		void RemoveChunk(const System::Descriptor& a);
+
+		void Save(System::Buffer& buffer) const;
+		void Load(System::Buffer& buffer);
+
+		static SceneGraph* Instance();
+		static void Destroy();
+		
 		~SceneGraph();
-
-		template<class T, class U>
-		void Visit(T visitor)
-		{
-			System::Descriptor desc = System::Descriptor::Null();
-			U data;
-			internal_visit<T, U>(desc, visitor, data);
-		}
-
-		void AddInstance(System::Descriptor parent, System::Descriptor instance);
-
-		void OnInstanceChangedParent(System::Event* event);
-		void OnNewInstanceAppeared(System::Event* event);
-		void OnInstanceDestroyed(System::Event* event);
 	};
 }
 

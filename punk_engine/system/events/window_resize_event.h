@@ -5,7 +5,7 @@
 
 namespace System
 {
-    class LIB_SYSTEM WindowResizeEvent : public Event
+    class MODULE_SYSTEM WindowResizeEvent : public Event
     {
         static std::queue<WindowResizeEvent*> eventPool;
         WindowResizeEvent();

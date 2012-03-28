@@ -8,7 +8,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM SystemError : public std::exception
+	class MODULE_SYSTEM SystemError : public std::exception
     {
     protected:
         string message;
@@ -23,8 +23,8 @@ namespace System
 		string CheckOSError();
     };
 
-	class LIB_SYSTEM NotImplemented : public SystemError {};
-	class LIB_SYSTEM FileNotFound : public SystemError {};
+	class MODULE_SYSTEM NotImplemented : public SystemError {};
+	class MODULE_SYSTEM FileNotFound : public SystemError {};
 }
 
 #endif

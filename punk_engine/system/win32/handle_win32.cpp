@@ -1,4 +1,5 @@
 #include "handle_win32.h"
+#include "buffer_win32.h"
 
 namespace System
 {
@@ -66,4 +67,13 @@ namespace System
 		return m_id == handler.m_id;
 	}
 
+	void Descriptor::Save(Buffer& buffer) const
+	{
+		buffer.WriteBuffer(&m_id, sizeof(m_id));
+	}
+
+	void Descriptor::Load(Buffer& buffer)
+	{
+		buffer.ReadBuffer(&m_id, sizeof(m_id));
+	}
 }

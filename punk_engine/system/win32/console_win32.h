@@ -8,9 +8,9 @@
 
 namespace System
 {
-	SingletoneInterface(Console, LIB_SYSTEM);
+	SingletoneInterface(Console, MODULE_SYSTEM);
 
-	class LIB_SYSTEM Console : public Singletone(Console)
+	class MODULE_SYSTEM Console : public Singletone(Console)
 	{
 		HANDLE hConsole;
 		COORD pos;

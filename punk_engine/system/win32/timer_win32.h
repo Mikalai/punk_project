@@ -13,7 +13,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM Timer
+	class MODULE_SYSTEM Timer
     {
         __int64 freq;
 		LARGE_INTEGER startPoint;

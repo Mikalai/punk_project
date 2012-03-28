@@ -5,13 +5,21 @@
 
 namespace System
 {
-	class LIB_SYSTEM Descriptor
+	class Buffer;
+
+	class MODULE_SYSTEM Descriptor
 	{
+	public:
+		typedef unsigned short int TypeCode;
+		typedef unsigned short int RESERVED;
+		typedef unsigned int InstanceNumberType;
+	private:
 		union
 		{
 			struct
 			{
-				unsigned int m_object_instance_number;
+				TypeCode m_object_instance_number;
+				RESERVED res;
 				unsigned int m_object_type_code;
 			};
 			unsigned __int64 m_id;
@@ -34,10 +42,13 @@ namespace System
 
 		bool operator == (const Descriptor& handler) const;
 
-		static const Descriptor Null()
+		static const Descriptor Root()
 		{
 			return Descriptor(0,0);
 		}
+
+		void Save(Buffer& buffer) const;
+		void Load(Buffer& buffer);
 	};
 }
 

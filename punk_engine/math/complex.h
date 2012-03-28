@@ -34,12 +34,12 @@ namespace Math
 			return m_real;
 		}
 
-		T& Image()
+		T& ImageModule()
 		{
 			return m_image;
 		}
 
-		const T& Image() const
+		const T& ImageModule() const
 		{
 			return m_image;
 		}
@@ -126,7 +126,7 @@ namespace Math
 	template<typename T>
 	Vector2<T> operator * (const Complex<T>& c, const Vector2<T>& v)
 	{
-		return Vector2<T>(c.Real()*v.X() - c.Image()*v.Y(), c.Real()*v.Y() + v.X()*c.Image());
+		return Vector2<T>(c.Real()*v.X() - c.ImageModule()*v.Y(), c.Real()*v.Y() + v.X()*c.ImageModule());
 	}
 
 	typedef Complex<float> complex;

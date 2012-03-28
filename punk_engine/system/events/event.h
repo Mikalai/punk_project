@@ -9,7 +9,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM Event
+	class MODULE_SYSTEM Event
     {
     public:
         int eventCode;        

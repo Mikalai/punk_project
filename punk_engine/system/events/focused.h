@@ -5,7 +5,7 @@
 
 namespace System
 {
-	class LIB_SYSTEM SetFocusedEvent : public Event
+	class MODULE_SYSTEM SetFocusedEvent : public Event
     {
         static std::queue<SetFocusedEvent*> eventPool;
         SetFocusedEvent();
