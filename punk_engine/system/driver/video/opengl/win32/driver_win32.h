@@ -27,7 +27,7 @@ namespace OpenGL
 	class GLSLProgram;
 	class Texture2D;
 
-	class LIB_OPENGL Driver
+	class MODULE_OPENGL Driver
 	{
 	public:
 		enum Buffer {COLOR_BUFFER = 1, DEPTH_BUFFER = 2, STENCIL_BUFFER = 4};

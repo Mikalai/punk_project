@@ -14,7 +14,7 @@ class ShaderProgram;
 
 namespace OpenGL
 {
-	class LIB_OPENGL VertexArrayObject
+	class MODULE_OPENGL VertexArrayObject
 	{						
 		GLuint m_vertex_buffer;		
 		GLuint m_index_buffer;

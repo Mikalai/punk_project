@@ -48,4 +48,9 @@ namespace System
 	{
 		return GetCurrentFolder() + L"\\quests\\";
 	}
+
+	const string Environment::GetShaderFolder()
+	{
+		return GetCurrentFolder() + L"\\shaders\\";
+	}
 }

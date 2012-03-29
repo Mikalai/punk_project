@@ -12,18 +12,6 @@ namespace OpenGL
 {
 	Driver::Driver()
 	{
-		System::ConfigFile file;
-		file.Open(System::Window::GetInstance()->GetTitle());
-		if (!file.IsExistOption(L"shaders"))
-			file.WriteOptionString(L"shaders", L"E:\\project\\punk_project\\punk_engine\\system\\driver\\video\\opengl\\glsl\\");
-		if (!file.IsExistOption(L"textures"))
-			file.WriteOptionString(L"textures", L"E:\\project\\data\\textures\\");
-		if (!file.IsExistOption(L"data"))
-			file.WriteOptionString(L"textures", L"E:\\project\\data\\");
-
-		m_path_to_textures = file.ReadOptionString(L"textures");
-
-		file.Close();
 	}
 
 	void Driver::ReadConfig()
@@ -79,6 +67,16 @@ namespace OpenGL
 		{
 			m_refresh_rate = m_window->GetDesktopRefreshRate();
 			conf.WriteOptionInt(L"refresh_rate", m_refresh_rate);
+		}
+
+		try
+		{
+			m_path_to_textures = conf.ReadOptionString(L"textures");
+		}
+		catch (System::FileNotFound&)
+		{
+			m_refresh_rate = m_window->GetDesktopRefreshRate();
+			conf.WriteOptionString(L"textures", L"D:\\project\\data\\textures\\");
 		}
 
 		conf.Close();
@@ -292,7 +290,7 @@ namespace OpenGL
 		return (*i).second;
 	}
 	
-	Texture2D* Driver::GetTexture2D(const System::string& name)
+/*	Texture2D* Driver::GetTexture2D(const System::string& name)
 	{
 		std::map<System::string, Texture2D*>::iterator i = m_textures.find(name);
 		if (i == m_textures.end())
@@ -313,11 +311,11 @@ namespace OpenGL
 			return t;
 		}
 		return (*i).second;
-	}
+	}*/
 
 	System::Descriptor Driver::CreateStringTexture(const System::string& init_value, int width, int height, int size, const System::string& font_name)
 	{
-		System::Descriptor desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_TEXT_TEXTURE>(new System::Resource<TextTexture2D>());
+	/*	System::Descriptor desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_TEXT_TEXTURE>(new System::Resource<TextTexture2D>());
 		auto res = System::ResourceManager::GetInstance()->GetResource<TextTexture2D>(desc);
 		auto v = res->Lock();
 
@@ -326,14 +324,14 @@ namespace OpenGL
 
 		v->RenderText(init_value, size, font_name);
 
-		res->Unlock();
-
-		return desc;
+		res->Unlock();*/
+		throw System::SystemError(L"Not implemented");
+		//return // desc;
 	}
 
 	void Driver::AlterateStringTexture(System::Descriptor desc, const System::string& init_value, int width, int height, int size, const System::string& font_name)
 	{
-		auto res = System::ResourceManager::GetInstance()->GetResource<TextTexture2D>(desc);
+/*		auto res = System::ResourceManager::GetInstance()->GetResource<TextTexture2D>(desc);
 		auto v = res->Lock();
 
 		if (v->GetWidth() != width || v->GetHeight() != height)
@@ -341,7 +339,8 @@ namespace OpenGL
 
 		v->RenderText(init_value, size, font_name);
 
-		res->Unlock();
+		res->Unlock();*/
+		throw System::SystemError(L"Not implemented");
 	}
 			
 	void Driver::Render(VertexArrayObject *object)
@@ -361,6 +360,7 @@ namespace OpenGL
 
 		while (!buffer.IsEnd())
 		{
+			unsigned code = buffer.ReadWord().ToInt32();
 			System::string name = buffer.ReadWord();
 			System::string vertex = buffer.ReadWord();
 			System::string fragment = buffer.ReadWord();	
@@ -456,13 +456,14 @@ namespace OpenGL
 
 	void Driver::RenderQuad()
 	{
-		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(m_quad_desc);
+/*		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(m_quad_desc);
 		VertexArrayObject* vao = vao_res->Lock();
 
 		vao->Render();
 
 		vao_res->Unlock();
-		//m_quad->Render();
+		//m_quad->Render();*/
+		throw System::SystemError(L"Not implemented");
 	}
 
 	void Driver::RenderString(const System::string& text)
@@ -471,7 +472,8 @@ namespace OpenGL
 
 	void Driver::Render(System::Descriptor desc)
 	{
-		if (desc.Type() != System::RESOURCE_VAO)
+		throw System::NotImplemented();
+	/*	if (desc.Type() != System::RESOURCE_VAO)
 			return;
 
 		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(desc);
@@ -479,12 +481,12 @@ namespace OpenGL
 
 		vao->Render();
 
-		vao_res->Unlock();
+		vao_res->Unlock();*/
 	}
 
 	void Driver::InitInternalVertexBuffers()
 	{
-		System::ResourceManager::GetInstance()->DestroyResource(m_quad_desc);
+	/*	System::ResourceManager::GetInstance()->DestroyResource(m_quad_desc);
 		System::ResourceManager::GetInstance()->DestroyResource(m_point_desc);
 		m_quad_desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());
 		auto vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(m_quad_desc);
@@ -494,7 +496,7 @@ namespace OpenGL
 		vao->CreateQuad();
 
 		vao_res->Unlock();		
-//		m_point_desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());
+//		m_point_desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());*/
 	}
 }
 

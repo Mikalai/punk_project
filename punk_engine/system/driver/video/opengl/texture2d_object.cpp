@@ -144,7 +144,7 @@ namespace OpenGL
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
-	void Texture2D::Create(const ImageModule::ImageFile& file)
+	/*void Texture2D::Create(const ImageModule::ImageFile& file)
 	{
 		if (m_id != 0)
 			glDeleteTextures(1, &m_id);
@@ -198,7 +198,7 @@ namespace OpenGL
 		file.Unlock(data);
 		//glGenerateMipmap(GL_Texture2D_2D);
 	}
-
+	*/
 	Texture2D::~Texture2D()
 	{
 		glDeleteTextures(1, &m_id);

@@ -22,6 +22,12 @@
     <Filter Include="render\2d">
       <UniqueIdentifier>{d2641275-1a3e-4c08-bb6b-a368128de1c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{4d8b154f-1840-40e3-bdf3-95e70e03f64a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render_context">
+      <UniqueIdentifier>{97834ba7-2c59-4eed-8ac1-1b8ef4b32215}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.cpp">
@@ -108,6 +114,10 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\module.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h">
@@ -138,6 +148,17 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\module.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\texture_2d_resource.h">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\extensions.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_transform_3d.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt">

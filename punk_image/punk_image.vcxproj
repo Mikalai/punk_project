@@ -108,19 +108,21 @@
     <ClInclude Include="..\punk_engine\images\images.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\images\image_module.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\image_module.h" />
     <ClInclude Include="..\punk_engine\images\import_export\importer.h" />
     <ClInclude Include="..\punk_engine\images\import_export\importer_impl.h" />
     <ClInclude Include="..\punk_engine\images\import_export\png_importer.h" />
+    <ClInclude Include="..\punk_engine\images\internal_images\gray_image.h" />
     <ClInclude Include="..\punk_engine\images\internal_images\image.h" />
     <ClInclude Include="..\punk_engine\images\internal_images\image_impl.h" />
     <ClInclude Include="..\punk_engine\images\internal_images\rgba_image.h" />
+    <ClInclude Include="..\punk_engine\images\internal_images\rgb_image.h" />
     <ClInclude Include="..\punk_engine\images\png_file.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\images\resources\gray_image_resource.h" />
     <ClInclude Include="..\punk_engine\images\resources\rgba_image_resource.h" />
+    <ClInclude Include="..\punk_engine\images\resources\rgb_image_resource.h" />
     <ClInclude Include="..\punk_engine\images\storage.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -132,14 +134,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\punk_engine\images\image_module.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\punk_engine\images\image_module.cpp" />
     <ClCompile Include="..\punk_engine\images\import_export\importer.cpp" />
     <ClCompile Include="..\punk_engine\images\import_export\png_importer.cpp" />
+    <ClCompile Include="..\punk_engine\images\internal_images\gray_image.cpp" />
     <ClCompile Include="..\punk_engine\images\internal_images\image.cpp" />
     <ClCompile Include="..\punk_engine\images\internal_images\rgba_image.cpp" />
+    <ClCompile Include="..\punk_engine\images\internal_images\rgb_image.cpp" />
+    <ClCompile Include="..\punk_engine\images\resources\gray_image_resource.cpp" />
     <ClCompile Include="..\punk_engine\images\resources\rgba_image_resource.cpp" />
+    <ClCompile Include="..\punk_engine\images\resources\rgb_image_resource.cpp" />
     <ClCompile Include="..\punk_engine\images\storage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>

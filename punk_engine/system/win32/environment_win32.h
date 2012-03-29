@@ -20,6 +20,7 @@ namespace System
 		static string GetMapFolder();
 		static string GetSaveFolder();
 		static string GetQuestFolder();
+		static const string GetShaderFolder();
 	};
 }
 

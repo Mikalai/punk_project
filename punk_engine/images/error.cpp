@@ -14,6 +14,6 @@ namespace ImageModule
 
 	const wchar_t * ImageError::w_what() const
 	{
-		return m_w_what;
+		return m_w_what.Data();
 	}
 }

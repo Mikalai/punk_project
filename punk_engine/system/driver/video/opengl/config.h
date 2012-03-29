@@ -4,9 +4,9 @@
 #ifdef _WIN32
 
 #ifdef PUNK_OPENGL_DRIVER_EXPORTS
-#define LIB_OPENGL __declspec(dllexport)
+#define MODULE_OPENGL __declspec(dllexport)
 #else
-#define LIB_OPENGL __declspec(dllimport)
+#define MODULE_OPENGL __declspec(dllimport)
 #endif
 
 #include <windows.h>

@@ -1,6 +1,7 @@
 #ifdef _WIN32
-
+#define NOMINMAX
 #include <stdio.h>
+#include <algorithm>
 #include <Windows.h>
 //#include "allocator_win32.h"
 #include "window_win32.h"
@@ -13,7 +14,6 @@
 
 namespace System
 {
-
 	SingletoneImplementation(Window);
 
 	Window::Window()
@@ -71,7 +71,11 @@ namespace System
 
 	void Window::DrawPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 	{
-		SetPixel(GetDC(m_windowHandle), x, y, RGB(r, g, b));
+		unsigned char rr = std::max((int)r - int(255 - a), 0);
+		unsigned char gg = std::max((int)g - int(255 - a), 0);
+		unsigned char bb = std::max((int)b - int(255 - a), 0);
+
+		SetPixel(GetDC(m_windowHandle), x, y, RGB( rr, gg, bb));
 	}
 
 	void Window::SwapBuffer()

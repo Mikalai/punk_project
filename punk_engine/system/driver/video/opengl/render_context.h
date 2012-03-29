@@ -8,7 +8,7 @@ class ShaderProgram;
 namespace OpenGL
 {
 	class Texture2D;
-	class LIB_OPENGL RenderContext
+	class MODULE_OPENGL RenderContext
 	{
 		ShaderProgram* m_cur_program;
 	public:

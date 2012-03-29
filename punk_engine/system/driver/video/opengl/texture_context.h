@@ -7,7 +7,7 @@ namespace OpenGL
 {
 	class Texture2D;
 
-	class LIB_OPENGL TextureContext
+	class MODULE_OPENGL TextureContext
 	{
 		Texture2D* m_diffuse_map;
 		Texture2D* m_normal_map;

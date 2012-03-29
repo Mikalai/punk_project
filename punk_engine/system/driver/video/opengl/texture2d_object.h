@@ -14,12 +14,12 @@ Description: Contains a Texture2D class
 
 namespace ImageModule
 {
-	class ImageFile;
+	//class ImageFile;
 }
 
 namespace OpenGL
 {
-	class LIB_OPENGL Texture2D
+	class MODULE_OPENGL Texture2D
 	{
 
 	public:
@@ -29,7 +29,7 @@ namespace OpenGL
 		~Texture2D();
 		void Resize(int width, int height);
 		void Create(int width, int height, ImageModule::ImageFormat format, const unsigned char* data);
-		void Create(const ImageModule::ImageFile& image);
+		//void Create(const ImageModule::ImageFile& image);
 		void CopyFromCPU(int x, int y, int width, int height, ImageModule::ImageFormat format, const unsigned char* data);
 		void Fill(unsigned char byte);
 		void Lock(void** ptr);

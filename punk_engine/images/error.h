@@ -3,6 +3,7 @@
 
 #include <exception>
 #include "config.h"
+#include "../system/string.h"
 
 namespace ImageModule
 {
@@ -15,7 +16,7 @@ namespace ImageModule
 
 		virtual const wchar_t* w_what() const;
 	private:
-		const wchar_t* m_w_what;
+		const System::string m_w_what;
 	};
 }
 

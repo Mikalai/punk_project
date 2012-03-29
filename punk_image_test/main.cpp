@@ -6,21 +6,39 @@
 
 class Test
 {
-	ImageModule::RGBAImage m_image;
+	ImageModule::RGBAImage m_image_rgba;
+	ImageModule::RGBImage m_image_rgb;
+	ImageModule::GrayImage m_image_gray;
 public:
 	Test()
 	{
 		ImageModule::Importer file;
-		m_image = file.LoadRGBA(L"d:\\project\\data\\textures\\checker2.png");
+		m_image_rgb = file.LoadRGB(L"d:\\project\\data\\textures\\checker.png");
+		m_image_rgba = file.LoadRGBA(L"d:\\project\\data\\textures\\rgba.png");		
+		m_image_gray = file.LoadGray(L"d:\\project\\data\\textures\\gray.png");		
 	}
 
 	void OnMouseClick(System::Event* event)
 	{
-		for (int y = 0; y < m_image.GetHeight(); ++y)
-			for (int x = 0; x < m_image.GetWidth(); ++x)
+		for (int y = 0; y < m_image_rgba.GetHeight(); ++y)
+			for (int x = 0; x < m_image_rgba.GetWidth(); ++x)
 			{				
-				const ImageModule::Image::Component* p = m_image.GetPixelComponent(x, y, 0);
-				System::Window::GetInstance()->DrawPixel(x, y, p[0], p[1], p[2], 0);			
+				const ImageModule::Image::Component* p = m_image_rgba.GetPixelComponent(x, y, 0);
+				System::Window::GetInstance()->DrawPixel(x, y, p[0], p[1], p[2], p[3]);			
+			}
+
+		for (int y = 0; y < m_image_rgb.GetHeight(); ++y)
+			for (int x = 0; x < m_image_rgb.GetWidth(); ++x)
+			{				
+				const ImageModule::Image::Component* p = m_image_rgb.GetPixelComponent(x, y, 0);
+				System::Window::GetInstance()->DrawPixel(x, m_image_rgba.GetHeight() + y, p[0], p[1], p[2], 255);			
+			}
+
+		for (int y = 0; y < m_image_gray.GetHeight(); ++y)
+			for (int x = 0; x < m_image_gray.GetWidth(); ++x)
+			{				
+				const ImageModule::Image::Component* p = m_image_gray.GetPixelComponent(x, y, 0);
+				System::Window::GetInstance()->DrawPixel(m_image_rgba.GetWidth() + x, y, p[0], p[0], p[0], 255);			
 			}
 	}
 };
