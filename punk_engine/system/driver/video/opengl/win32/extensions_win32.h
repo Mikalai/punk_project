@@ -9,6 +9,8 @@ Description: Contains declarations of OpenGL extension functions
 
 #include "../config.h"
 
+#define CHECK_GL_ERROR(X) if (glGetError() != GL_NO_ERROR) throw System::SystemError((X))
+
 namespace OpenGL
 {
 	class Driver;

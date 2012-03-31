@@ -9,16 +9,28 @@
 class Test
 {
 	OpenGL::Driver m_driver;
+	std::auto_ptr<OpenGL::RenderContextSolid3D> m_solid_context;
+	std::auto_ptr<OpenGL::QuadObject> m_quad;
 public:
 	Test()
 	{
 		m_driver.Start(System::Window::GetInstance());
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
+		m_solid_context.reset(new OpenGL::RenderContextSolid3D());
+		m_quad.reset(new OpenGL::QuadObject());
+		m_quad->Init();
 	}
 
 	void OnIdle(System::Event* event)
 	{
 		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);	
+		m_solid_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
+		m_solid_context->SetWorldMatrix(Math::mat4::CreateTranslate(0,0,-5));
+		m_solid_context->SetViewMatrix(Math::mat4::CreateIdentity());
+		m_solid_context->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
+		m_solid_context->Begin();		
+		m_quad->Render();
+		m_solid_context->End();
 		m_driver.SwapBuffers();
 	}
 };

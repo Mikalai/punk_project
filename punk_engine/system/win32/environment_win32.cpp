@@ -21,36 +21,36 @@ namespace System
 
 	string Environment::GetFontFolder()
 	{
-		return GetCurrentFolder() + L"\\fonts\\";
+		return GetCurrentFolder() + L"fonts\\";
 	}
 
 	string Environment::GetModelFolder()
 	{
-		return GetCurrentFolder() + L"\\models\\";
+		return GetCurrentFolder() + L"models\\";
 	}
 
 	string Environment::GetMapFolder()
 	{
-		return GetCurrentFolder() + L"\\maps\\";
+		return GetCurrentFolder() + L"maps\\";
 	}
 
 	string Environment::GetSaveFolder()
 	{
-		return GetCurrentFolder() + L"\\saves\\";
+		return GetCurrentFolder() + L"saves\\";
 	}
 
 	string Environment::GetTexutreFolder()
 	{
-		return GetCurrentFolder() + L"\\textures\\";
+		return GetCurrentFolder() + L"textures\\";
 	}
 
 	string Environment::GetQuestFolder() 
 	{
-		return GetCurrentFolder() + L"\\quests\\";
+		return GetCurrentFolder() + L"quests\\";
 	}
 
 	const string Environment::GetShaderFolder()
 	{
-		return GetCurrentFolder() + L"\\shaders\\";
+		return GetCurrentFolder() + L"shaders\\";
 	}
 }

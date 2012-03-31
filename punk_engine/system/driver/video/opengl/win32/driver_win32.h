@@ -8,7 +8,7 @@
 #include "../error.h"
 #include "../../../../string.h"
 #include "extensions_win32.h"
-#include "../render_context.h"
+#include "../render_context/render_context.h"
 #include "../texture_context.h"
 
 namespace System

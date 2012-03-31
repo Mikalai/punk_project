@@ -43,5 +43,4 @@ namespace OpenGL
 	{
 		glDisable(GL_DEPTH_TEST);
 	}
-
 }

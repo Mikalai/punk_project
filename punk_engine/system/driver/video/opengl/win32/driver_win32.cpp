@@ -275,6 +275,7 @@ namespace OpenGL
 			b |= GL_STENCIL_BUFFER_BIT;
 
 		glClear(b);
+		CHECK_GL_ERROR(L"Unable to clear shader");
 	}
 
 	void Driver::SetClearColor(float r, float g, float b, float a)
