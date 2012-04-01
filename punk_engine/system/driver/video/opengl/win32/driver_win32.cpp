@@ -5,7 +5,7 @@
 #include "extensions_win32.h"
 #include "../glsl_program.h"
 #include "../vertex_array_object.h"
-#include "../texture2d_object.h"
+#include "../texture2d.h"
 #include "../text_texture_2d.h"
 
 namespace OpenGL

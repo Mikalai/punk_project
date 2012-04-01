@@ -10,27 +10,56 @@ class Test
 {
 	OpenGL::Driver m_driver;
 	std::auto_ptr<OpenGL::RenderContextSolid3D> m_solid_context;
+	std::auto_ptr<OpenGL::RenderContextTextured3D> m_textured_context;
 	std::auto_ptr<OpenGL::QuadObject> m_quad;
+	ImageModule::RGBAImage m_image;
+	std::auto_ptr<OpenGL::Texture2D> m_texture;
+	std::auto_ptr<OpenGL::TextureContext> m_texture_context;
 public:
 	Test()
 	{
 		m_driver.Start(System::Window::GetInstance());
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
 		m_solid_context.reset(new OpenGL::RenderContextSolid3D());
+		m_textured_context.reset(new OpenGL::RenderContextTextured3D());
+
 		m_quad.reset(new OpenGL::QuadObject());
 		m_quad->Init();
+
+		m_image = ImageModule::Importer().LoadRGBA(System::Environment::GetTexutreFolder() + L"checker2.png");
+		m_texture.reset(new OpenGL::Texture2D(m_image));
+		m_texture_context.reset(new OpenGL::TextureContext());
+		m_texture_context->SetDiffuseMap(m_texture.release());
+
 	}
 
 	void OnIdle(System::Event* event)
 	{
 		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);	
+		m_textured_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
+		m_textured_context->SetWorldMatrix(Math::mat4::CreateTranslate(-1,0,-5));
+		m_textured_context->SetViewMatrix(Math::mat4::CreateIdentity());
+		m_textured_context->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
+		m_textured_context->Begin();		
+		m_texture_context->Bind();
+		m_quad->Bind(m_textured_context->GetSupportedVertexAttributes());
+		m_quad->Render();
+		m_quad->Unbind();
+		m_texture_context->Unbind();
+		m_textured_context->End();
+
 		m_solid_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
-		m_solid_context->SetWorldMatrix(Math::mat4::CreateTranslate(0,0,-5));
+		m_solid_context->SetWorldMatrix(Math::mat4::CreateTranslate(1,0,-5));
 		m_solid_context->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_solid_context->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
 		m_solid_context->Begin();		
+		//m_texture_context->Bind();
+		m_quad->Bind(m_solid_context->GetSupportedVertexAttributes());
 		m_quad->Render();
+		m_quad->Unbind();
+		//m_texture_context->Unbind();
 		m_solid_context->End();
+
 		m_driver.SwapBuffers();
 	}
 };

@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "../config.h"
-
+#include "../internal_images/image.h"
 namespace System
 {
 	class string;
@@ -11,16 +11,15 @@ namespace System
 
 namespace ImageModule
 {
-	class Image;
 	class RGBAImage;
 	class RGBImage;
 	class GrayImage;
 
-	class MODULE_IMAGE Importer
+	class MODULE_IMAGE Importer : public Image
 	{
-	protected:
-		struct ImporterImpl;
-		std::auto_ptr<ImporterImpl> impl_importer;
+	//protected:
+		//struct ImporterImpl;
+		//std::auto_ptr<ImporterImpl> impl_importer;
 	public:
 		Importer();
 		RGBAImage LoadRGBA(const System::string& filename);

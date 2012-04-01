@@ -1,6 +1,6 @@
 /*
 	File: OS.h
-	Author: Abramov Nickolai
+	Author: Abramau Mikalai
 	Description: Contains operating system specific headers
 */
 

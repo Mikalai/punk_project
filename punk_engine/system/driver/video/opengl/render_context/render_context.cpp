@@ -19,6 +19,11 @@ namespace OpenGL
 		return *this;
 	}
 
+	RenderContext::~RenderContext()
+	{
+		impl_rc.reset(0);
+	}
+
 	void RenderContext::Begin()
 	{
 		impl_rc->Begin();
@@ -42,5 +47,10 @@ namespace OpenGL
 	void RenderContext::SetVertexShader(Shader* shader)
 	{
 		impl_rc->m_vertex_shader = shader;
+	}
+
+	VertexAttributes RenderContext::GetSupportedVertexAttributes() const
+	{
+		return impl_rc->m_vertex_attributes;
 	}
 }

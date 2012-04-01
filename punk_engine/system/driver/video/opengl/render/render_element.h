@@ -1,6 +1,6 @@
 /*
 File: RenderElement.h
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: Abstract class of any element supposed to be rendered
 */
 

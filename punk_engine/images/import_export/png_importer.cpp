@@ -1,5 +1,5 @@
 #include "png_importer.h"
-#include "importer_impl.h"
+#include "../internal_images/image_impl.h"
 #include <png.h>
 #include <stdio.h>
 
@@ -62,7 +62,7 @@ namespace ImageModule
 		int	rowBytes = png_get_rowbytes(png_ptr, info_ptr);
 		unsigned channels = 0;
 		ImageFormat format = IMAGE_FORMAT_ALPHA;
-		impl_importer->impl_image->m_components = bpp / 8;
+		impl_image->m_components = bpp / 8;
 
 		switch ( colorType )
 		{
@@ -95,10 +95,10 @@ namespace ImageModule
 			png_destroy_read_struct ( &png_ptr, &info_ptr, (png_infopp) NULL );
 			throw ImageError(L"Can't load file: ");
 		}
-
-		impl_importer->m_format = format;
-		impl_importer->impl_image->m_components = channels;
-		impl_importer->SetSize(width, height);
+				
+		impl_image->Create(width, height, channels);
+		impl_image->m_format = format;
+		impl_image->m_components = channels;
 
 		png_bytep * rowPtr  = new png_bytep[height];
 		unsigned long     * lineBuf = new unsigned long[width];
@@ -108,7 +108,7 @@ namespace ImageModule
 
 		png_read_image ( png_ptr, rowPtr );
 
-		Image::Component* offset = impl_importer->GetData();
+		Component* offset = GetData();
 
 		// now rebuild the ImageFile
 		for (int i = 0; i < (int)height; i++ )
@@ -172,7 +172,7 @@ namespace ImageModule
 			}
 
 			unsigned char* src = (unsigned char*)lineBuf;
-			unsigned char* offset = impl_importer->GetData() + i*width*channels;	//alligned
+			unsigned char* offset = GetData() + i*width*channels;	//alligned
 			for (int k = 0; k < (int)width; k++, src += 4)
 			{
 				if (channels == 1)

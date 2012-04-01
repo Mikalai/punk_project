@@ -112,6 +112,7 @@
     <ClInclude Include="..\punk_engine\images\import_export\importer.h" />
     <ClInclude Include="..\punk_engine\images\import_export\importer_impl.h" />
     <ClInclude Include="..\punk_engine\images\import_export\png_importer.h" />
+    <ClInclude Include="..\punk_engine\images\internal_images\component.h" />
     <ClInclude Include="..\punk_engine\images\internal_images\gray_image.h" />
     <ClInclude Include="..\punk_engine\images\internal_images\image.h" />
     <ClInclude Include="..\punk_engine\images\internal_images\image_impl.h" />

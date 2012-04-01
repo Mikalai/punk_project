@@ -1,6 +1,6 @@
 /*
 File: ImageLoader.h
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: Contains function prototypes to load images. Orientation
 to opengl
 */

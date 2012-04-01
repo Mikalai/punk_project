@@ -23,11 +23,13 @@ namespace OpenGL
 	Shader& Shader::operator= (const Shader& shader)
 	{
 		Shader temp(shader);
-		ShaderImpl* t = impl_shader;
-		impl_shader = shader.impl_shader;
-		temp.impl_shader = t;
-		//std::swap(impl_shader, shader.impl_shader);
+		std::swap(impl_shader, temp.impl_shader);
 		return *this;
+	}
+
+	Shader::~Shader()
+	{
+		impl_shader.reset(0);
 	}
 
 	void Shader::CookFromString(const char* string, unsigned length)

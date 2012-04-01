@@ -3,6 +3,7 @@
 
 #include "../config.h"
 #include <memory>
+#include "../vertex_attributes.h"
 
 namespace OpenGL
 {
@@ -18,10 +19,13 @@ namespace OpenGL
 		RenderContext();
 		RenderContext(const RenderContext& rc);
 		RenderContext& operator = (const RenderContext& rc);
+		~RenderContext();
 
 		void SetVertexShader(Shader* shader);
 		void SetFragmentShader(Shader* shader);
 		void SetGeometryShader(Shader* shader);
+	
+		VertexAttributes GetSupportedVertexAttributes() const;
 
 		void Begin();
 		void End();

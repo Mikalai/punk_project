@@ -1,36 +1,45 @@
-#include "driver.h"
 #include "texture_context.h"
-#include "../../../../system/logger.h"
-#include "texture2d_object.h"
+#include "texture_context_impl.h"
 
 namespace OpenGL
 {
-	TextureContext::TextureContext() : m_diffuse_map(0), m_normal_map(0)
+	TextureContext::TextureContext() 
+		: impl_tc(new TextureContextImpl())
+	{}
+
+	TextureContext::TextureContext(const TextureContext& tc)
+		: impl_tc(new TextureContextImpl(*tc.impl_tc))
+	{}
+
+	TextureContext& TextureContext::operator= (const TextureContext& tc)
 	{
+		TextureContext temp(tc);
+		std::swap(impl_tc, temp.impl_tc);
+		return *this;
 	}
 
-	void TextureContext::Apply()
+	TextureContext::~TextureContext()
 	{
-		if (m_diffuse_map)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			m_diffuse_map->Bind();
-		}
+		impl_tc.reset(0);
+	}
 
-		if (m_normal_map)
-		{
-			glActiveTexture(GL_TEXTURE1);
-			m_normal_map->Bind();
-		}
+	void TextureContext::Bind()
+	{
+		impl_tc->Bind();
+	}
+	
+	void TextureContext::Unbind()
+	{
+		impl_tc->Unbind();
 	}
 
 	void TextureContext::SetDiffuseMap(Texture2D* map)
 	{
-		m_diffuse_map = map;
+		impl_tc->m_diffuse_map.reset(map);
 	}
 
 	void TextureContext::SetNormalMap(Texture2D* map)
 	{
-		m_normal_map = map;
+		impl_tc->m_normal_map.reset(map);
 	}
 }

@@ -1,6 +1,6 @@
 /*
 File: BoundingBox.cpp
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: Bounding box emplementation
 */
 

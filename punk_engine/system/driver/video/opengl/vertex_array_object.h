@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "config.h"
+#include "vertex_attributes.h"
 
 namespace OpenGL
 {
@@ -17,7 +18,7 @@ namespace OpenGL
 		VertexArrayObject(const VertexArrayObject& vao);
 		VertexArrayObject& operator = (const VertexArrayObject& vao);
 		virtual ~VertexArrayObject();
-		void Bind() const;
+		void Bind(VertexAttributes m_supported_by_context) const;
 		void Unbind() const;
 		int GetIndexCount() const;		
 		void Render();		

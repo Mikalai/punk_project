@@ -1,6 +1,6 @@
 /*
 File: LowLevelMath.h
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: Some math functions
 */
 

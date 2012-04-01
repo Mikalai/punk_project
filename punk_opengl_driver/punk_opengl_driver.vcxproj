@@ -92,12 +92,17 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\module.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader_solid_color.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader_transform_3d.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -199,7 +204,7 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context_old.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -219,16 +224,25 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_solid_color.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_transform_3d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\texture_2d_resource.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_bind_target.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertext_array_object_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_attributes.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.h" />
@@ -350,7 +364,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\texture2d_object.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\texture2d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\vbo.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

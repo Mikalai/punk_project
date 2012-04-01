@@ -7,6 +7,7 @@ namespace ImageModule
 		: Image()
 	{
 		impl_image->m_components = 4;
+		impl_image->m_format = IMAGE_FORMAT_RGBA;
 	}
 
 	RGBAImage::RGBAImage(const RGBAImage& image)

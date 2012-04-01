@@ -1,6 +1,6 @@
 /*
 	File: ShaderProgram.h
-	Author: Abramov Nickolai
+	Author: Abramau Mikalai
 	Description: common interface for GLSL and Cg program
 */
 

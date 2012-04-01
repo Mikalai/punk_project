@@ -11,39 +11,36 @@
 namespace ImageModule
 {
 	Importer::Importer()
-		: impl_importer(new ImporterImpl())
+		: Image()
 	{}
 
 	RGBAImage Importer::LoadRGBA(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_importer->GetComponentsCount() != 4)
+		if (impl_image->m_components != 4)
 			throw ImageError((filename + L" is not an RGBA image").Data());
 		RGBAImage rgba_image;
-		Image& image = rgba_image;
-		image = *impl_importer;
+		std::swap(rgba_image.impl_image, impl_image);
 		return rgba_image;
 	}
 
 	RGBImage Importer::LoadRGB(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_importer->GetComponentsCount() != 3)
+		if (impl_image->m_components != 3)
 			throw ImageError((filename + L" is not an RGB image").Data());
 		RGBImage rgb_image;
-		Image& image = rgb_image;
-		image = *impl_importer;
+		std::swap(rgb_image.impl_image, impl_image);
 		return rgb_image;
 	}
 
 	GrayImage Importer::LoadGray(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_importer->GetComponentsCount() != 1)
+		if (impl_image->m_components != 1)
 			throw ImageError((filename + L" is not an RGB image").Data());
 		GrayImage gray_image;
-		Image& image = gray_image;
-		image = *impl_importer;
+		std::swap(gray_image.impl_image, impl_image);
 		return gray_image;
 	}
 
@@ -54,7 +51,7 @@ namespace ImageModule
 		{
 			PngImporter importer;
 			importer.Load(filename);
-			std::swap(impl_importer, importer.impl_importer);
+			std::swap(impl_image, importer.impl_image);
 		}
 		else
 			throw ImageError(L"Unsupported file format");

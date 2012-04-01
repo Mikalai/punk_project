@@ -1,19 +1,21 @@
 #ifndef _H_PUNK_IMAGE_IMAGE_MODULE_IMAGE_IMPL
 #define _H_PUNK_IMAGE_IMAGE_MODULE_IMAGE_IMPL
 
-#include "image.h"
 #include "../error.h"
+#include "../formats.h"
+#include "component.h"
+#include "../../system/buffer.h"
+#include "../../system/handle.h"
 
 namespace ImageModule
 {
-	struct Image::ImageImpl
+	struct ImageImpl
 	{
-		typedef Image::Component Component;
-
 		unsigned m_width;
 		unsigned m_height;
 		unsigned m_components;
 		unsigned m_size;	
+		ImageFormat m_format;
 		std::vector<Component> m_data;
 		System::Descriptor m_descriptor;
 
@@ -24,6 +26,7 @@ namespace ImageModule
 			, m_size(0)
 			, m_data()
 			, m_descriptor()
+			, m_format(IMAGE_FORMAT_BAD)
 		{}
 
 		ImageImpl(const ImageImpl& impl)
@@ -33,6 +36,7 @@ namespace ImageModule
 			, m_size(impl.m_size)
 			, m_data(impl.m_data.begin(), impl.m_data.end())
 			, m_descriptor(impl.m_descriptor)
+			, m_format(impl.m_format)
 		{}
 
 		ImageImpl(int width, int height, int components)
@@ -41,6 +45,7 @@ namespace ImageModule
 			, m_components(components)
 			, m_size(m_width*m_height*m_components*sizeof(Component))
 			, m_data(m_size)
+			, m_format(IMAGE_FORMAT_BAD)
 		{
 			std::fill(m_data.begin(), m_data.end(), 0);
 		}
@@ -55,6 +60,7 @@ namespace ImageModule
 			m_components = c;
 			m_size = m_width*m_height*m_components*sizeof(Component);
 			m_data.resize(m_size);
+			m_format = IMAGE_FORMAT_BAD;
 			std::fill(m_data.begin(), m_data.end(), 0);
 		}
 
@@ -103,7 +109,7 @@ namespace ImageModule
 			return const_cast<Component*>(static_cast<const ImageImpl&>(*this).At(x, y, component));
 		}
 
-		void SetSubImage(unsigned x, unsigned y, const Image::ImageImpl& impl)
+		void SetSubImage(unsigned x, unsigned y, const ImageImpl& impl)
 		{
 			if (m_components != impl.m_components)
 				throw ImageError(L"Can't set sub image due to different components number");

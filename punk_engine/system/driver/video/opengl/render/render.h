@@ -1,6 +1,6 @@
 /*
 File: Render.h
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: Render of the scene
 */
 

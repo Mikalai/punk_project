@@ -8,11 +8,11 @@
 namespace ImageModule
 {
 	Image::Image()
-		: impl_image(new Image::ImageImpl())
+		: impl_image(new ImageImpl())
 	{}
 
 	Image::Image(const Image& image)
-		: impl_image(new Image::ImageImpl(*image.impl_image))
+		: impl_image(new ImageImpl(*image.impl_image))
 	{}
 
 	Image& Image::operator = (const Image& image)
@@ -20,6 +20,11 @@ namespace ImageModule
 		Image temp(image);
 		std::swap(impl_image, temp.impl_image);
 		return *this;
+	}
+
+	Image::~Image()
+	{
+		impl_image.reset(0);
 	}
 
 	void Image::Save(System::Buffer& buffer) const
@@ -67,23 +72,28 @@ namespace ImageModule
 		impl_image->SetSubImage(x, y, *image.impl_image);
 	}
 
-	const Image::Component* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component) const
+	const Component* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component) const
 	{			
 		return impl_image->At(x, y, component);
 	}
 
-	Image::Component* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component)
+	Component* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component)
 	{
 		return impl_image->At(x, y, component);
 	}
 
-	const Image::Component* Image::GetData() const
+	const Component* Image::GetData() const
 	{
 		return impl_image->At(0,0,0);
 	}
 
-	Image::Component* Image::GetData()
+	Component* Image::GetData()
 	{
 		return impl_image->At(0,0,0);
+	}
+
+	ImageFormat Image::GetImageFormat() const
+	{
+		return impl_image->m_format;
 	}
 }

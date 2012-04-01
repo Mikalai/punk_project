@@ -1,6 +1,6 @@
 /*
 File: BoundingBox.h
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: A bounding box
 */
 

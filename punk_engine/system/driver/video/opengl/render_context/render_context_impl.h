@@ -6,6 +6,7 @@
 #include "../gl/gl3.h"
 #include "../extensions.h"
 #include "../../../../error.h"
+#include "../vertex_attributes.h"
 
 namespace OpenGL
 {
@@ -16,6 +17,7 @@ namespace OpenGL
 		Shader* m_geometry_shader;
 		GLuint m_program;
 		bool m_was_modified;
+		VertexAttributes m_vertex_attributes;
 
 		RenderContextImpl()
 			: m_vertex_shader(nullptr)
@@ -23,6 +25,7 @@ namespace OpenGL
 			, m_geometry_shader(nullptr)
 			, m_program(0)
 			, m_was_modified(false)
+			, m_vertex_attributes(0)
 		{}
 
 		RenderContextImpl(const RenderContextImpl& impl)
@@ -31,6 +34,7 @@ namespace OpenGL
 			, m_geometry_shader(impl.m_geometry_shader)
 			, m_program(impl.m_program)
 			, m_was_modified(impl.m_was_modified)
+			, m_vertex_attributes(impl.m_vertex_attributes)
 		{}
 
 		void Begin()
@@ -300,6 +304,11 @@ namespace OpenGL
 		}
 
 		virtual void BindUniforms() 
+		{
+			throw System::SystemError(L"Not implemented");
+		}
+
+		virtual void InitAttributes()
 		{
 			throw System::SystemError(L"Not implemented");
 		}

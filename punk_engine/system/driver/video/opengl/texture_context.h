@@ -2,21 +2,27 @@
 #define _H_PUNK_TEXTURE_CONTEXT
 
 #include "config.h"
+#include <memory>
 
 namespace OpenGL
 {
 	class Texture2D;
+	struct TextureContextImpl;
 
 	class MODULE_OPENGL TextureContext
 	{
-		Texture2D* m_diffuse_map;
-		Texture2D* m_normal_map;
-
+		std::auto_ptr<TextureContextImpl> impl_tc;		
 	public:
 		TextureContext();
+		TextureContext(const TextureContext& tc);
+		TextureContext& operator = (const TextureContext& tc);
+		~TextureContext();
+
 		void SetDiffuseMap(Texture2D* map);
 		void SetNormalMap(Texture2D* map);
-		void Apply();
+
+		void Bind();	
+		void Unbind();
 	};
 }
 

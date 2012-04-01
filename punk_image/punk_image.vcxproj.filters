@@ -69,6 +69,9 @@
     <ClInclude Include="..\punk_engine\images\resources\gray_image_resource.h">
       <Filter>resources</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\images\internal_images\component.h">
+      <Filter>internal_images</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\images\tga\tga.cpp">

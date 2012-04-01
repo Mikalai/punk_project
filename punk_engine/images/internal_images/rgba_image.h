@@ -5,6 +5,11 @@
 #include "image.h"
 #include <memory>
 
+namespace System
+{
+	class string;
+}
+
 namespace ImageModule
 {
 	class MODULE_IMAGE RGBAImage : public Image

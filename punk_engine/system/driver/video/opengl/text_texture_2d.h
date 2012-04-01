@@ -2,7 +2,7 @@
 #define PUNK_TEXT_TEXTURE2D_H
 
 #include "config.h"
-#include "texture2d_object.h"
+#include "texture2d.h"
 
 namespace OpenGL
 {

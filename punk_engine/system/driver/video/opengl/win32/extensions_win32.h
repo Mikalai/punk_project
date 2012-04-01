@@ -1,6 +1,6 @@
 /*
 File: Extensions.h
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: Contains declarations of OpenGL extension functions
 */
 

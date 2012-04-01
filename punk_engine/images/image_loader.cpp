@@ -1,6 +1,6 @@
 /*
 File: ImageLoader.cpp
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: Contains rutines for loading images
 JPEG - jpeglib
 */

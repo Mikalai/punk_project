@@ -1,6 +1,6 @@
 /*
 	File: AdvancedStaticMesh.h"
-	Author: Abramov Nickolai
+	Author: Abramau Mikalai
 	Description: Contains a class to represent a geometry
 		data of static mesh with multitexture support. for
 		drawing it use register combiner, that's cool.

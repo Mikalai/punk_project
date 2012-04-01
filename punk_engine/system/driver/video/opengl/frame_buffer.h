@@ -1,6 +1,6 @@
 /*
 File: FrameBuffer.h
-Author: Abramov Nickolai
+Author: Abramau Mikalai
 Description: Calss for rendering to texture.
 Simply now i don't know what for
 frame buffer object can be used else

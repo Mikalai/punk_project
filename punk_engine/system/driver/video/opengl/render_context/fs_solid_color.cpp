@@ -1,4 +1,4 @@
-#include "shader_solid_color.h"
+#include "fs_solid_color.h"
 #include "../../../../environment.h"
 
 namespace OpenGL

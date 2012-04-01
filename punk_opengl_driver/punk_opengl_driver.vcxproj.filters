@@ -34,8 +34,11 @@
     <Filter Include="render_context\context%28logic%29">
       <UniqueIdentifier>{0c8de1f3-7f2d-4875-af94-175cc6c12cc7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="geometry_staff%28logic%29">
+    <Filter Include="geometry_context%28logic%29">
       <UniqueIdentifier>{293e6739-9dc8-416d-8413-c38164979d19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="texture_context%28logic%29">
+      <UniqueIdentifier>{c3f98e9d-257a-43ac-b91e-9a7db20d8111}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,18 +120,10 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\light.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\light_manager.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\material.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d_object.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\module.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader_solid_color.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader_transform_3d.cpp">
       <Filter>render_context\shaders%28logic%29</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.cpp">
@@ -139,13 +134,34 @@
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context_old.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp">
+      <Filter>texture_context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp">
+      <Filter>texture_context%28logic%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,20 +189,13 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\wglext.h">
       <Filter>gl</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\module.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\texture_2d_resource.h">
       <Filter>resource</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\extensions.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_transform_3d.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_solid_color.h">
       <Filter>render_context\shaders%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h">
@@ -203,22 +212,52 @@
       <Filter>render_context\shaders%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertext_array_object_impl.h">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object.h">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object_impl.h">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h">
-      <Filter>geometry_staff%28logic%29</Filter>
+      <Filter>geometry_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_attributes.h">
+      <Filter>geometry_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_bind_target.h">
+      <Filter>texture_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h">
+      <Filter>texture_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d_impl.h">
+      <Filter>texture_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h">
+      <Filter>texture_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -376,7 +415,9 @@
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\os.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\shader_program.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\standard_shaders.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\texture2d_object.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\vbo.h" />
+    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\texture2d.h">
+      <Filter>texture_context%28logic%29</Filter>
+    </CustomBuildStep>
   </ItemGroup>
 </Project>
