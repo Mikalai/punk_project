@@ -13,7 +13,7 @@
 
 namespace Math
 {    
-	class LIB_MATH Line;
+	class LIB_MATH Line3D;
 
     class LIB_MATH Plane
     {        
@@ -38,7 +38,7 @@ namespace Math
 
         Plane Transform(const mat4& matrix) const;
 
-		friend class LIB_MATH Line;
+		friend class LIB_MATH Line3D;
     };   
 }
 

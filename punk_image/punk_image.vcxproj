@@ -109,8 +109,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\images\image_module.h" />
+    <ClInclude Include="..\punk_engine\images\import_export\exporter.h" />
     <ClInclude Include="..\punk_engine\images\import_export\importer.h" />
     <ClInclude Include="..\punk_engine\images\import_export\importer_impl.h" />
+    <ClInclude Include="..\punk_engine\images\import_export\png_exporter.h" />
     <ClInclude Include="..\punk_engine\images\import_export\png_importer.h" />
     <ClInclude Include="..\punk_engine\images\internal_images\component.h" />
     <ClInclude Include="..\punk_engine\images\internal_images\gray_image.h" />
@@ -136,7 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\images\image_module.cpp" />
+    <ClCompile Include="..\punk_engine\images\import_export\exporter.cpp" />
     <ClCompile Include="..\punk_engine\images\import_export\importer.cpp" />
+    <ClCompile Include="..\punk_engine\images\import_export\png_exporter.cpp" />
     <ClCompile Include="..\punk_engine\images\import_export\png_importer.cpp" />
     <ClCompile Include="..\punk_engine\images\internal_images\gray_image.cpp" />
     <ClCompile Include="..\punk_engine\images\internal_images\image.cpp" />

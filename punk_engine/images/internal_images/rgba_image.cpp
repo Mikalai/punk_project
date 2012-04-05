@@ -8,6 +8,7 @@ namespace ImageModule
 	{
 		impl_image->m_components = 4;
 		impl_image->m_format = IMAGE_FORMAT_RGBA;
+		impl_image->m_bit_depth = 8;
 	}
 
 	RGBAImage::RGBAImage(const RGBAImage& image)

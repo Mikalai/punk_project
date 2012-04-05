@@ -10,5 +10,6 @@
 #include "internal_images\image.h"
 #include "resources\rgba_image_resource.h"
 #include "import_export\importer.h"
+#include "import_export\exporter.h"
 
 #endif

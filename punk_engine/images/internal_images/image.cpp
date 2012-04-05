@@ -62,6 +62,11 @@ namespace ImageModule
 		return impl_image->m_height;
 	}
 
+	unsigned Image::GetBitDepth() const
+	{
+		return impl_image->m_bit_depth;
+	}
+
 	void Image::SetSize(unsigned width, unsigned height)
 	{
 		impl_image->Create(width, height, impl_image->m_components);

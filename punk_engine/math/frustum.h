@@ -53,7 +53,7 @@ namespace Math
 		void SetPositionAndDirection(const vec3& position, const vec3& direction, const vec3& up);
 		void SetPosition(const vec3& position);
 
-		Classification BoxInFrustum(const BoundingBox& bbox) const;
+		Classification BoxInFrustum(const BoundingBox& m_bbox) const;
 
 		const mat4& GetProjectionMatrix() const;
 		const mat4& GetViewMatrix() const;

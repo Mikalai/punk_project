@@ -13,6 +13,8 @@ Description: A bounding box
 
 namespace Math
 {
+	class Line3D;
+
 	class LIB_MATH BoundingBox
 	{
 		mutable vec3 m_transformed_points[8];
@@ -24,11 +26,14 @@ namespace Math
 	public:
 
 		void Create(const float* data, unsigned offset, int count);
-		bool DoCrossTriangle(const float* p1, const float* p2, const float* p3) const;
+		bool DoCrossTriangle(const vec3& p1, const vec3& p2, const vec3& p3) const;
 		bool IsPointIn(const float *p) const;
+		bool DoCrossLine(const Line3D& line);
 
 		const vec3& Min() const;
 		const vec3& Max() const;
+		vec3& Min();
+		vec3& Max();
 		const vec3* TransformedPoints() const;
 
 		vec3& operator [] (int index);

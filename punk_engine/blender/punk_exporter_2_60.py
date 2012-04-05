@@ -368,17 +368,18 @@ def export_materials(f, materials):
         
         start_block(f, "*name")
         make_offset(f)
+        print(m.name)
         f.write("%s\n" % m.name)
         end_block(f)
         
         start_block(f, "*diffuse_map")
         make_offset(f)
-        f.write("%s\n" % m.texture_slots['diffuse'].texture.image.name)
+        f.write("%s\n" % m.texture_slots[0].texture.image.name)
         end_block(f)
         
         start_block(f, "*normal_map")
         make_offset(f)
-        f.write("%s\n" % m.texture_slots['normal'].texture.image.name)
+        f.write("%s\n" % m.texture_slots[0].texture.image.name)
         end_block(f)
     end_block(f)
     return

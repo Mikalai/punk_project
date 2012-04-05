@@ -62,7 +62,7 @@ namespace ImageModule
 		int	rowBytes = png_get_rowbytes(png_ptr, info_ptr);
 		unsigned channels = 0;
 		ImageFormat format = IMAGE_FORMAT_ALPHA;
-		impl_image->m_components = bpp / 8;
+		impl_image->m_bit_depth = bpp;
 
 		switch ( colorType )
 		{
@@ -99,6 +99,7 @@ namespace ImageModule
 		impl_image->Create(width, height, channels);
 		impl_image->m_format = format;
 		impl_image->m_components = channels;
+		impl_image->m_bit_depth = bpp;
 
 		png_bytep * rowPtr  = new png_bytep[height];
 		unsigned long     * lineBuf = new unsigned long[width];

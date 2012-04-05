@@ -91,15 +91,24 @@
     <ClCompile Include="..\punk_engine\math\frustum.cpp" />
     <ClCompile Include="..\punk_engine\math\functions.cpp" />
     <ClCompile Include="..\punk_engine\math\helper.cpp" />
-    <ClCompile Include="..\punk_engine\math\line.cpp" />
+    <ClCompile Include="..\punk_engine\math\line2d.cpp" />
+    <ClCompile Include="..\punk_engine\math\line3d.cpp" />
     <ClCompile Include="..\punk_engine\math\math.cpp" />
     <ClCompile Include="..\punk_engine\math\math_error.cpp" />
     <ClCompile Include="..\punk_engine\math\noise.cpp" />
+    <ClCompile Include="..\punk_engine\math\oct_tree.cpp" />
     <ClCompile Include="..\punk_engine\math\plane.cpp" />
     <ClCompile Include="..\punk_engine\math\random.cpp" />
+    <ClCompile Include="..\punk_engine\math\triangle2d.cpp" />
+    <ClCompile Include="..\punk_engine\math\triangle3d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\punk_engine\math\math_relations.h" />
+    <ClInclude Include="..\punk_engine\math\line2d.h" />
+    <ClInclude Include="..\punk_engine\math\oct_tree.h" />
     <ClInclude Include="..\punk_engine\math\region.h" />
+    <ClInclude Include="..\punk_engine\math\triangle2d.h" />
+    <ClInclude Include="..\punk_engine\math\triangle3d.h" />
     <ClInclude Include="..\punk_engine\math\type.h" />
     <ClInclude Include="..\punk_engine\math\vec2.h" />
     <ClInclude Include="..\punk_engine\math\vec3.h" />
@@ -125,7 +134,7 @@
     <ClInclude Include="..\punk_engine\math\functions.h" />
     <ClInclude Include="..\punk_engine\math\helper.h" />
     <ClInclude Include="..\punk_engine\math\interpolation.h" />
-    <ClInclude Include="..\punk_engine\math\line.h" />
+    <ClInclude Include="..\punk_engine\math\line3d.h" />
     <ClInclude Include="..\punk_engine\math\low_level_math.h" />
     <ClInclude Include="..\punk_engine\math\mat2.h" />
     <ClInclude Include="..\punk_engine\math\mat3.h" />

@@ -1,4 +1,5 @@
 #include "../error.h"
+#include <algorithm>
 #include "../../system/string.h"
 #include "static_mesh.h"
 #include "skinned_mesh.h"
@@ -782,6 +783,12 @@ namespace Utility
 			float x = buffer.ReadWord().ToFloat();
 			float y = buffer.ReadWord().ToFloat();
 			float z = buffer.ReadWord().ToFloat();
+			m_bbox.Max().X() = max(x, m_bbox.Max().X());
+			m_bbox.Max().Y() = max(y, m_bbox.Max().Y());
+			m_bbox.Max().Z() = max(z, m_bbox.Max().Z());
+			m_bbox.Min().X() = min(x, m_bbox.Min().X());
+			m_bbox.Min().Y() = min(y, m_bbox.Min().Y());
+			m_bbox.Min().Z() = min(z, m_bbox.Min().Z());
 			m_vertices.push_back(Math::vec3(x,y,z));
 		}
 		CHECK_END(buffer);
@@ -1137,5 +1144,58 @@ namespace Utility
 				(*bone).second.SetParent(GetBoneID(pname));
 			m_skeleton_id[GetBoneID((*bone).first)] = (*bone).second;
 		}
+	}
+
+	bool Model::IntersectWithRay(const Math::vec3 start, const Math::vec3 end, std::vector<Math::vec3>& points)
+	{
+		Math::OctTree::FaceList fl  = m_oct_tree.CrossAll(Math::Line3D(start, end));
+		if (fl.empty())
+			return false;
+
+		for (int tr = 0; tr < fl.size(); tr++)
+		{
+			const Math::vec3& a = m_vertices[fl[tr].X()];
+			const Math::vec3& b = m_vertices[fl[tr].Y()];
+			const Math::vec3& c = m_vertices[fl[tr].Z()];
+
+			Math::Triangle3D triangle(a, b, c);
+			Math::Line3D line(start, end);
+			float t;
+			if (Math::LineCrossTriangle(line, triangle, t) == Math::SKEW_CROSS)
+			{
+				points.push_back(line.PointAt(t));				
+			}
+		}
+		if (points.empty())
+			return false;
+		else
+			return true;
+
+		/*for (int tr = 0; tr < m_faces.size(); tr++)
+		{
+			const Math::vec3& a = m_vertices[m_faces[tr].X()];
+			const Math::vec3& b = m_vertices[m_faces[tr].Y()];
+			const Math::vec3& c = m_vertices[m_faces[tr].Z()];
+
+			Math::Triangle3D triangle(a, b, c);
+			Math::Line3D line(start, end);
+			float t;
+			if (Math::LineCrossTriangle(line, triangle, t) == Math::SKEW_CROSS)
+			{
+				points.push_back(line.PointAt(t));
+				return true;
+			}
+		}
+		return false;*/
+	}
+
+	void Model::BuildOctTree()
+	{
+		m_oct_tree.SetData(m_faces, m_vertices);
+	}
+
+	Math::OctTree& Model::GetOctTree()
+	{
+		return m_oct_tree;
 	}
 }

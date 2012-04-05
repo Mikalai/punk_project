@@ -15,6 +15,7 @@ namespace ImageModule
 		unsigned m_height;
 		unsigned m_components;
 		unsigned m_size;	
+		unsigned m_bit_depth;
 		ImageFormat m_format;
 		std::vector<Component> m_data;
 		System::Descriptor m_descriptor;
@@ -26,6 +27,7 @@ namespace ImageModule
 			, m_size(0)
 			, m_data()
 			, m_descriptor()
+			, m_bit_depth(0)
 			, m_format(IMAGE_FORMAT_BAD)
 		{}
 
@@ -36,6 +38,7 @@ namespace ImageModule
 			, m_size(impl.m_size)
 			, m_data(impl.m_data.begin(), impl.m_data.end())
 			, m_descriptor(impl.m_descriptor)
+			, m_bit_depth(impl.m_bit_depth)
 			, m_format(impl.m_format)
 		{}
 
@@ -45,6 +48,7 @@ namespace ImageModule
 			, m_components(components)
 			, m_size(m_width*m_height*m_components*sizeof(Component))
 			, m_data(m_size)
+			, m_bit_depth(0)
 			, m_format(IMAGE_FORMAT_BAD)
 		{
 			std::fill(m_data.begin(), m_data.end(), 0);
@@ -60,7 +64,8 @@ namespace ImageModule
 			m_components = c;
 			m_size = m_width*m_height*m_components*sizeof(Component);
 			m_data.resize(m_size);
-			m_format = IMAGE_FORMAT_BAD;
+			//m_bit_depth = 0;
+			//m_format = IMAGE_FORMAT_BAD;
 			std::fill(m_data.begin(), m_data.end(), 0);
 		}
 
@@ -74,7 +79,7 @@ namespace ImageModule
 			if (width_in_pixel != m_width)
 				throw ImageError(L"Impossible to copy line due to different width");
 			if (components_per_pixel != m_components)
-				throw ImageError(L"Line components per pixel count differs from image");
+				throw ImageError(L"Line3D components per pixel count differs from image");
 
 			std::copy(data, data + width_in_pixel*components_per_pixel, m_data.begin() + y*m_width*m_components);
 		}

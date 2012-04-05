@@ -8,6 +8,7 @@ namespace ImageModule
 	{
 		impl_image->m_components = 3;
 		impl_image->m_format = IMAGE_FORMAT_RGB;
+		impl_image->m_bit_depth = 8;
 	}
 
 	RGBImage::RGBImage(const RGBImage& image)

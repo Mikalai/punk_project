@@ -1,0 +1,19 @@
+#ifndef _H_PUNK_MATH_INTERSECTION_TYPE
+#define _H_PUNK_MATH_INTERSECTION_TYPE
+
+namespace Math
+{
+	enum IntersectionType { COLLINEAR, PARALLEL, SKEW, SKEW_CROSS, SKEW_NO_CROSS };
+	enum Point3DPositionClassification {POINT3D_POSITIVE, POINT3D_NEGATIVE, POINT3D_ON};
+	enum Point2DPositionClassification { 
+		POINT2D_LEFT, 
+		POINT2D_RIGHT, 
+		POINT2D_BEYOND, 
+		POINT2D_BEHIND, 
+		POINT2D_BETWEEN, 
+		POINT2D_ORIGIN, 
+		POINT2D_DESTINATION };
+
+}
+
+#endif

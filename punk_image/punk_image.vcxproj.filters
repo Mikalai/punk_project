@@ -72,6 +72,12 @@
     <ClInclude Include="..\punk_engine\images\internal_images\component.h">
       <Filter>internal_images</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\images\import_export\exporter.h">
+      <Filter>imprt_export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\images\import_export\png_exporter.h">
+      <Filter>imprt_export</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\images\tga\tga.cpp">
@@ -111,6 +117,12 @@
     </ClCompile>
     <ClCompile Include="..\punk_engine\images\resources\gray_image_resource.cpp">
       <Filter>resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\images\import_export\exporter.cpp">
+      <Filter>imprt_export</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\images\import_export\png_exporter.cpp">
+      <Filter>imprt_export</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

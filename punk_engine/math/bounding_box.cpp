@@ -1,14 +1,102 @@
 /*
 File: BoundingBox.cpp
-Author: Abramau Mikalai
+Author: Abramau Mikalai and a guy who wrote that amazing clip functions
 Description: Bounding box emplementation
 */
 
 #include "bounding_box.h"
-#include "low_level_math.h"
+#include "line3d.h"
+
+#include <algorithm>
+#include <limits>
 
 namespace Math
 {
+	bool ClipSegment(float min, float max, float a, float b, float d, float* t0, float* t1)
+	{
+		if (fabs(d) < std::numeric_limits<float>().epsilon())
+		{
+			if (d > 0.0f)
+			{
+				return !(b < min || a > max);
+			}
+			else
+			{
+				return !(a < min || b > max);
+			}
+		}
+
+		float u0, u1;
+
+		u0 = (min - a) / (d);
+		u1 = (max - a) / (d);
+
+		if (u0 > u1)
+		{
+			float temp = u0;
+			u0 = u1;
+			u1 = temp;
+		}
+
+		if (u1 < *t0 || u0 > *t1)
+		{
+			return false;
+		}
+
+		*t0 = max(u0, *t0);
+		*t1 = max(u1, *t1);
+
+		if (*t1 < *t0)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	bool ClipSegment3D(const vec3& A, const vec3& B, const vec3& Min, const vec3& Max)
+	{
+		float t0 = 0.0f, t1 = 1.0f;
+//		float S[3] = {A[0], A[1], A[2]};
+		float D[3] = {B[0]-A[0], B[1]-A[1], B[2]-A[2]};
+
+		if (!ClipSegment(Min[0], Max[0], A[0], B[0], D[0], &t0, &t1))
+		{
+			return false;
+		}
+
+		if (!ClipSegment(Min[1], Max[1], A[1], B[1], D[1], &t0, &t1))
+		{
+			return false;
+		}
+
+		if (!ClipSegment(Min[2], Max[2], A[2], B[2], D[2], &t0, &t1))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	bool ClipSegment2D(const vec2& A, const vec2& B, const vec2& Min, const vec2& Max)
+	{
+		float t0 = 0.0f, t1 = 1.0f;
+//		float S[2] = {A[0], A[1]};
+		float D[2] = {B[0]-A[0], B[1]-A[1]};
+
+		if (!ClipSegment(Min[0], Max[0], A[0], B[0], D[0], &t0, &t1))
+		{
+			return false;
+		}
+
+		if (!ClipSegment(Min[1], Max[1], A[1], B[1], D[1], &t0, &t1))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	void BoundingBox::Create(const float* data, unsigned offset, int count)
 	{
 		unsigned off = offset/sizeof(float);
@@ -65,6 +153,16 @@ namespace Math
 		return m_max;
 	}
 
+	vec3& BoundingBox::Min() 
+	{
+		return m_min;
+	}
+
+	vec3& BoundingBox::Max()
+	{
+		return m_max;
+	}
+
 	const vec3* BoundingBox::TransformedPoints() const
 	{
 		return m_transformed_points;
@@ -94,7 +192,15 @@ namespace Math
 		return m_border_points[index];
 	}
 
-	bool BoundingBox::DoCrossTriangle(const float* pp1, const float* pp2, const float* pp3) const
+	bool BoundingBox::DoCrossLine(const Line3D& line)
+	{
+		if (!ClipSegment3D(line.Origin(), line.Destination(), m_min, m_max))
+			return false;
+		else
+			return true;
+	}
+
+	bool BoundingBox::DoCrossTriangle(const vec3& pp1, const vec3& pp2, const vec3& pp3) const
 	{
 		if (pp1[0] > m_max[0] && pp2[0] > m_max[0] && pp3[0] > m_max[0])
 			return false;
@@ -116,11 +222,11 @@ namespace Math
 			IsPointIn(pp3))
 			return true;
 
-		if (Math::glClipSegment3D(pp1, pp2, m_min, m_max))
+		if (ClipSegment3D(pp1, pp2, m_min, m_max))
 			return true;
-		if (Math::glClipSegment3D(pp2, pp3, m_min, m_max))
+		if (ClipSegment3D(pp2, pp3, m_min, m_max))
 			return true;
-		if (Math::glClipSegment3D(pp3, pp1, m_min, m_max))
+		if (ClipSegment3D(pp3, pp1, m_min, m_max))
 			return true;
 
 		return false;

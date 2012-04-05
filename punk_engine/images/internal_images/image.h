@@ -32,6 +32,7 @@ namespace ImageModule
 		unsigned GetComponentsCount() const;
 		unsigned GetWidth() const;
 		unsigned GetHeight() const;
+		unsigned GetBitDepth() const;
 		void SetSize(unsigned width, unsigned height);
 		void SetSubImage(unsigned x, unsigned y, const Image& image);
 		const Component* GetPixelComponent(unsigned x, unsigned y, unsigned component) const;

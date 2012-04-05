@@ -3,6 +3,7 @@
 
 #include <memory.h>
 #include <math.h>
+#include <vector>
 #include "config.h"
 #include "vec2.h"
 #include "vec4.h"
@@ -334,7 +335,7 @@ namespace Math
 	template class LIB_MATH Vector3<int>;
 
 	typedef Vector3<float> vec3;
-	typedef Vector3<int> ivec3;
+	typedef Vector3<int> ivec3;	
 }
 
 #endif

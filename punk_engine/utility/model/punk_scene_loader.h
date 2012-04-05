@@ -140,8 +140,9 @@ namespace Utility
 		Materials m_materials;
 		CookedAnimation m_cooked_animation;
 		std::map<System::string, Math::Matrix<float> > m_frame_value;
+		Math::OctTree m_oct_tree;
 
-		std::map<BoneName, std::map<Frame, BoneFrame> >::iterator m_maximum_frames;
+		std::map<BoneName, std::map<FrameID, BoneFrame> >::iterator m_maximum_frames;
 		std::map<BoneName, int> m_bone_index;
 	
 		Math::mat4 m_local_matrix;
@@ -149,6 +150,10 @@ namespace Utility
 
 	public:
 
+		void BuildOctTree();
+		Math::OctTree& GetOctTree();
+
+		bool IntersectWithRay(const Math::vec3 start, const Math::vec3 end, std::vector<Math::vec3>& points);
 		const Math::quat Model::GetBoneLocalOrientation(int bone_name, const System::string& action, FrameID frame) const;
 		void LoadPunkModel(System::string& filename);	
 		StaticMesh* CookStaticMesh() const;

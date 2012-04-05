@@ -63,12 +63,12 @@ namespace Math
 		UpdateMatrix();
 	}
 
-	Frustum::Classification Frustum::BoxInFrustum(const BoundingBox& bbox) const
+	Frustum::Classification Frustum::BoxInFrustum(const BoundingBox& m_bbox) const
 	{
 		int in, out;
 		Classification result = INSIDE;
 
-		const vec3* point = bbox.TransformedPoints();
+		const vec3* point = m_bbox.TransformedPoints();
 
 		for (int i = 0; i < 6; i++)
 		{

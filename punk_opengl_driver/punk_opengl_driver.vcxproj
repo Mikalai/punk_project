@@ -102,6 +102,7 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -203,6 +204,7 @@
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context_old.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp" />
@@ -240,6 +242,7 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertext_array_object_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_attributes.h" />
@@ -358,6 +361,7 @@
     </CustomBuildStep>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context_old.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\shader_program.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\standard_shaders.h">

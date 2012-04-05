@@ -5,9 +5,10 @@
 #include "../system/string.h"
 #include "vec3.h"
 #include "vec4.h"
+#include "math_relations.h"
 
 namespace Math
-{
+{	  
 	template<class T>
 	class  Vector2
 	{
@@ -164,17 +165,26 @@ namespace Math
 			return System::string::Format(L"(%.3f; %.3f)", m_v[0], m_v[1]);
 		}
 
-/*		void Save(System::Buffer& buffer) const
+		Point2DPositionClassification Classify(const Vector2<T>& p0, const Vector2<T> p1)
 		{
-			buffer.WriteReal32(m_v[0]);
-			buffer.WriteReal32(m_v[1]);
+			Vector2<T> p2 = *this;
+			Vector2<T> a = p1 - p0;
+			Vector2<T> b = p2 - p0;
+			double sa = a.X() * b.Y() - b.X() - a.Y();
+			if (sa > 0.0)
+				return POINT2D_LEFT;
+			if (sa < 0.0)
+				return POINT2D_RIGHT;
+			if ((a.X() * b.X() < 0.0) || (a.Y() * b.Y() < 0.0))
+				return POINT2D_BEHIND;
+			if (a.Length() < b.Length())
+				return POINT2D_BEYOND;
+			if (p0 == p2)
+				return POINT2D_BEHIND;
+			if (p1 == p2)
+				return POINT2D_DESTINATION;
+			return POINT2D_BEHIND;            
 		}
-
-		void Load(System::Buffer& buffer)
-		{
-			m_v[0] = buffer.ReadReal32();
-			m_v[1] = buffer.ReadReal32();
-		}*/
 	};
 
 	template<class T>

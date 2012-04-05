@@ -14,7 +14,10 @@
 #include "mat4.h"
 #include "smart_matrix.h"
 #include "plane.h"
-#include "line.h"
+#include "line3d.h"
+#include "line2d.h"
+#include "triangle2d.h"
+#include "triangle3d.h"
 #include "bounding_box.h"
 #include "low_level_math.h"
 #include "interpolation.h"
@@ -25,6 +28,7 @@
 #include "noise.h"
 #include "constants.h"
 #include "helper.h"
+#include "oct_tree.h"
 #include <exception>
 
 #endif // MATH_H

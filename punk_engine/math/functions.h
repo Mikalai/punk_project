@@ -65,6 +65,18 @@ namespace Math
         return x > y ? x : y;
     }
 
+	template<class T>
+	inline T min(T a, T b, T c)
+	{
+		return min(a, min(b, c));
+	}
+
+	template<class T>
+	inline T max(T a, T b, T c)
+	{
+		return max(a, max(b, c));
+	}
+
     template<class T>
     inline T refract(T I, T N, float eta)
     {
