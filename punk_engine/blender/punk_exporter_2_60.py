@@ -183,23 +183,30 @@ def export_tex_coords(f, mesh):
     if (len(mesh.uv_textures) == 0):
         return
     
-    start_block(f, "*tex_coord")
+    for texture in mesh.uv_textures:
+        start_block(f, "*texture")    
+        start_block(f, "*name")
+        make_offset(f)
+        f.write("%s\n" % texture.name)
+        end_block(f)
         
-    #
-    #   uv1 uv2 uv3 uv4
-    #
-    for data in mesh.uv_textures[0].data:
-        make_offset(f)   
-        f.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (data.uv1[0], data.uv1[1], data.uv2[0], data.uv2[1], data.uv3[0], data.uv3[1], data.uv4[0], data.uv4[1]))
-        
-        
-    end_block(f)
+        start_block(f, "*tex_cood")        
+        #
+        #   uv1 uv2 uv3 uv4
+        #
+        for data in mesh.uv_textures[0].data:
+            make_offset(f)   
+            f.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (data.uv1[0], data.uv1[1], data.uv2[0], data.uv2[1], data.uv3[0], data.uv3[1], data.uv4[0], data.uv4[1]))               
+        end_block(f)
+        end_block(f)
     return
 
 #
 #   export mesh material
 #
 def export_mesh_material(f, mesh):
+    if (len(mesh.materials) == 0):
+        return
     start_block(f, "*material")
     make_offset(f)
     f.write("%s\n" % mesh.materials[0].name)
@@ -275,12 +282,20 @@ def export_bones(f, object):
     #
     start_block(f, "*skeleton_animation")
     for action in bpy.data.actions:
+        start_block(f, "*action")
+        start_block(f, "*name")
         make_offset(f)
         f.write("%s\n" % action.name)
-        start = int(action.frame_range[0])
-        end = int(action.frame_range[1])
-        make_offset(f)
-        f.write("%d %d\n" % (start, end))
+        end_block(f)
+        try:
+            start = int(action.frame_range[0])
+            end = int(action.frame_range[1])
+            start_block(f, "*timing")
+            make_offset(f)
+            f.write("%d %d\n" % (start, end))
+            end_block(f)    #*timing
+        except:
+            print("erorr in timings")            
         pos_x = []
         pos_y = []
         pos_z = []
@@ -290,6 +305,7 @@ def export_bones(f, object):
         rot_z = []
         was_pos = 0
         was_rot = 0
+        start_block(f, "*frames")
         for curve in action.fcurves:
             #
             #   write bone name that is affected by this curve
@@ -334,7 +350,8 @@ def export_bones(f, object):
             #
             #   end bone block
             end_block(f)
-            
+        end_block(f)    #frames
+        end_block(f)    #*action    
     #
     #   end animation block
     #
@@ -349,13 +366,17 @@ def export_bones_weight(f, object):
     mesh = object.data
     for vert in object.data.vertices:
         for group in object.vertex_groups:
-            print(vert.index)
-            print(group.index)
             try:
-                make_offset(f);
-                f.write("%d %s %f\n" % (vert.index, group.name, group.weight(vert.index)))
+                ind = vert.index
+                print(ind)
+                gr_name = group.name
+                print(gr_name)
+                weight = group.weight(ind)
+                print(weight)
+                make_offset(f)
+                f.write("%d %s %f\n" % (ind, gr_name, weight))
             except:
-                pass
+                print("found a vertex that is not in a group")
     end_block(f)
     return
 
@@ -363,24 +384,35 @@ def export_bones_weight(f, object):
 #   export all materials
 #
 def export_materials(f, materials):
+    if (len(materials) == 0):
+        return
     start_block(f, "*materials")
     for m in materials:
-        
+        start_block(f, "*material")        
         start_block(f, "*name")
         make_offset(f)
         print(m.name)
         f.write("%s\n" % m.name)
         end_block(f)
         
-        start_block(f, "*diffuse_map")
-        make_offset(f)
-        f.write("%s\n" % m.texture_slots[0].texture.image.name)
-        end_block(f)
+        try:
+            file_name = m.texture_slots[0].texture.image.name
+            start_block(f, "*diffuse_map")      
+            make_offset(f)            
+            f.write("%s\n" % file_name)
+            end_block(f)                        
+        except:
+            print("No texture found")
         
-        start_block(f, "*normal_map")
-        make_offset(f)
-        f.write("%s\n" % m.texture_slots[0].texture.image.name)
-        end_block(f)
+        try:
+            file_name = m.texture_slots[0].texture.image.name
+            start_block(f, "*normal_map")
+            make_offset(f)
+            f.write("%s\n" % file_name)
+            end_block(f)
+        except:
+            print("No texture found")
+        end_block(f)    
     end_block(f)
     return
 
@@ -396,10 +428,11 @@ def export_object(f, object):
     export_location(f, object)
     export_world_matrix(f, object)
     export_local_matrix(f, object)
-    export_mesh(f, object.data)
-    export_bones_weight(f, object)
-    export_bones(f, object)
-    
+    if object.name.find("slot") == -1:
+        export_mesh(f, object.data)
+        export_bones_weight(f, object)
+        export_bones(f, object)    
+        
     for child in object.children:
         export_object(f, child)
         

@@ -14,6 +14,23 @@ namespace Math
 		, m_cur_depth(p ? p->m_cur_depth+1 : 0)
 	{}
 
+	OctTree::OctTree(const OctTree& t)
+		: m_cur_depth(t.m_cur_depth)
+		, m_right_front_up(t.m_right_front_up.get() ? new OctTree(*t.m_right_back_up) : 0)
+		, m_right_front_down(t.m_right_front_down.get() ? new OctTree(*t.m_right_front_down) : 0)
+		, m_right_back_up(t.m_right_back_up.get() ? new OctTree(*t.m_right_back_up) : 0)
+		, m_right_back_down(t.m_right_back_down.get() ? new OctTree(*t.m_right_back_down) : 0)
+		, m_left_front_up(t.m_left_front_up.get() ? new OctTree(*t.m_left_front_up) : 0)
+		, m_left_front_down(t.m_left_front_down.get() ? new OctTree(*t.m_left_front_down) : 0)
+		, m_left_back_up(t.m_left_back_up.get() ? new OctTree(*t.m_left_back_up) : 0)
+		, m_left_back_down(t.m_left_back_down.get() ? new OctTree(*t.m_left_back_down) : 0)
+		, m_parent(m_parent)
+		, m_bbox(m_bbox)
+		, m_face_count(m_face_count)
+		, m_face_list(m_face_list)
+		, m_is_finale(m_is_finale)
+	{}
+
 	void OctTree::SetData(const OctTree::FaceList& fl, const OctTree::VertexList& vl)
 	{
 		//m_face_list = fl;

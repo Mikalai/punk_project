@@ -10,7 +10,6 @@ and handle different parameters about users video system
 
 #ifdef _WIN32
 #include "win32/driver_win32.h"
-#include "camera.h"
 #include "shader_program.h"
 #include "render_context\render_context.h"
 #include "render_context\rc_solid_color_3d.h"

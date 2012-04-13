@@ -9,7 +9,8 @@ namespace OpenGL
 		VERTEX_TANGENT = 4, 
 		VERTEX_BITANGENT = 8, 
 		VERTEX_TEXTURE_0 = 16, 
-		VERTEX_BONE = 32 // If bones present that it is supposed to be bone id and weight
+		VERTEX_BONE = 32,
+		VERTEX_FLAGS = 64// If bones present that it is supposed to be bone id and weight
 	};
 
 	typedef int VertexAttributes;

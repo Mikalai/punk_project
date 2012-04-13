@@ -88,6 +88,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\math\bounding_box.cpp" />
+    <ClCompile Include="..\punk_engine\math\camera.cpp" />
     <ClCompile Include="..\punk_engine\math\frustum.cpp" />
     <ClCompile Include="..\punk_engine\math\functions.cpp" />
     <ClCompile Include="..\punk_engine\math\helper.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\punk_engine\math\triangle3d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\punk_engine\math\camera.h" />
     <ClInclude Include="..\punk_engine\math\math_relations.h" />
     <ClInclude Include="..\punk_engine\math\line2d.h" />
     <ClInclude Include="..\punk_engine\math\oct_tree.h" />

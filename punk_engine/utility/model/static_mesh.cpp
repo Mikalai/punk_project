@@ -26,7 +26,7 @@ namespace Utility
 		m_one_vertex_size = size;
 	}
 
-	void StaticMesh::SetVertexBuffer(Vertex* buffer)
+	void StaticMesh::SetVertexBuffer(void* buffer)
 	{
 		m_vb = buffer;
 	}
@@ -46,7 +46,7 @@ namespace Utility
 		m_vertex_count = count;
 	}
 
-	Vertex* StaticMesh::GetVertexBuffer()
+	void* StaticMesh::GetVertexBuffer()
 	{
 		return m_vb;
 	}

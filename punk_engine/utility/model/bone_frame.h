@@ -8,6 +8,8 @@ namespace Utility
 		Math::quat m_rotation;
 		Math::vec3 m_position;		
 	};
+	typedef int FrameID;
+	typedef std::map<FrameID, BoneFrame> FramesCollection;
 }
 
 #endif

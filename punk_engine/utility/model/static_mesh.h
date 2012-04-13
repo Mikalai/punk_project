@@ -22,7 +22,7 @@ namespace Utility
 		unsigned m_vertex_buffer_size;
 		unsigned m_one_vertex_size;
 		int m_vertex_component;
-		Vertex* m_vb;
+		void* m_vb;
 		unsigned* m_index;
 		unsigned m_material_id;
 		
@@ -34,11 +34,11 @@ namespace Utility
 		void SetVertexBufferSize(unsigned count);
 		void SetOneVertexSize(unsigned count);
 		void SetVertexComponent(int vertex_component);
-		void SetVertexBuffer(Vertex* vb);
+		void SetVertexBuffer(void* vb);
 		void SetIndexBuffer(unsigned* index);
 		void SetMaterialID(unsigned id);
 
-		Vertex* GetVertexBuffer();
+		void* GetVertexBuffer();
 		unsigned* GetIndexBuffer();
 		unsigned GetIndexCount() const;
 		unsigned GetVertexCount() const;

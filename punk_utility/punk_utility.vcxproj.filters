@@ -64,5 +64,20 @@
     <ClInclude Include="..\punk_engine\utility\model\skeleton.h">
       <Filter>model</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\action.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\skeleton_animation.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\mesh.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\vertex_bone_weight.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\texture_faces.h">
+      <Filter>model</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

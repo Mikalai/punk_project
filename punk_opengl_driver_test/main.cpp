@@ -11,13 +11,20 @@ class Test
 	OpenGL::Driver m_driver;
 	std::auto_ptr<OpenGL::RenderContextSolid3D> m_solid_context;
 	std::auto_ptr<OpenGL::RenderContextTextured3D> m_textured_context;
+	std::auto_ptr<OpenGL::RenderContextTerrain> m_terrain_context;
 	std::auto_ptr<OpenGL::QuadObject> m_quad;
+	std::auto_ptr<OpenGL::GridObject> m_grid;
 	ImageModule::RGBAImage m_image;
+	ImageModule::GrayImage m_gray_image;
 	std::auto_ptr<OpenGL::Texture2D> m_texture;
+	std::auto_ptr<OpenGL::Texture2D> m_height_map;
 	std::auto_ptr<OpenGL::TextureContext> m_texture_context;
+	Math::Camera m_camera;
+	float x, y, z;
 public:
 	Test()
 	{
+		x = y = z = 10;
 		m_driver.Start(System::Window::GetInstance());
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
 		m_solid_context.reset(new OpenGL::RenderContextSolid3D());
@@ -26,39 +33,138 @@ public:
 		m_quad.reset(new OpenGL::QuadObject());
 		m_quad->Init();
 
+		m_grid.reset(new OpenGL::GridObject());
+		m_grid->SetWidth(1);
+		m_grid->SetHeight(1);
+		m_grid->SetHeightSlice(16);
+		m_grid->SetWidthSlice(16);
+		m_grid->Init();
+
 		m_image = ImageModule::Importer().LoadRGBA(System::Environment::GetTexutreFolder() + L"checker2.png");
+		m_gray_image = ImageModule::Importer().LoadGray(System::Environment::GetMapFolder() + L"0_0\\0_0.png");
+		m_height_map.reset(new OpenGL::Texture2D(m_gray_image));		
+
+		m_terrain_context.reset(new OpenGL::RenderContextTerrain());		
+
 		m_texture.reset(new OpenGL::Texture2D(m_image));
 		m_texture_context.reset(new OpenGL::TextureContext());
 		m_texture_context->SetDiffuseMap(m_texture.release());
+		m_texture_context->SetNormalMap(m_height_map.release());
+		m_camera.SetPositionAndDirection(Math::vec3(0,1.8, 0), Math::vec3(0, 0, 1), Math::vec3(0,1,0));
+		m_camera.SetProperties(Math::PI/4, 1.3, 1, 1000);		
 
+	}
+
+	void OnMouseMove(System::Event* event)
+	{
+		System::MouseMoveEvent& e = static_cast<System::MouseMoveEvent&>(*event);
+		m_camera.AdvanceLongitude(float(e.x - e.x_prev)*0.001f);
+		m_camera.AdvanceLatitude(float(e.y-e.y_prev)*0.001f);
+
+	}
+
+	void OnKeyDown(System::Event* event)
+	{
+		System::KeyDownEvent& e = static_cast<System::KeyDownEvent&>(*event);
+		switch (e.key)
+		{
+		case System::PUNK_KEY_A:
+			x -= 1;
+			break;
+		case System::PUNK_KEY_D:
+			x += 1;
+			break;
+		}
 	}
 
 	void OnIdle(System::Event* event)
 	{
 		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);	
+			
+/*		static Math::vec3 sun(100, 100, 100);
+		static float angle = 0;
+		
+		Math::mat4 proj = m_camera.GetProjectionMatrix();
+		Math::vec3 camera_position = m_camera.GetPosition();
+		Math::mat4 projViewWorld = m_camera.GetViewProjectionMatrix();
+		Math::mat3 normalTransform = m_camera.GetViewMatrix().RotationPart();
+
+		int passCount = 1;
+		
+		int start = -4;
+		int end = 4;
+		
+		
+
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		for (int level = 1; level < 6; level++)
+		{
+			for (int i = start; i < end; i++)
+			{
+				for (int j = start; j < end; j++)
+				{
+					Math::vec2 position((int)camera_position[0], (int)camera_position[2]);
+
+					Math::mat4 world_transform = Math::mat4::CreateTranslate(position[0], 0, position[1]);
+					//if (j == -1)
+					//continue;
+					if (level != 1)
+						if (!(j < start+2 || j >= end - 2 || i < start+2 || i >= end - 2))
+							continue;
+
+					//if (!Common::Camera::GetActiveCamera()->BoxInFrustum(m_vao->GetBoundingBox().Transform(world_transform)))
+					//continue;
+
+					m_terrain_context->SetWorldMatrix(Math::mat4::CreateIdentity());
+					m_terrain_context->SetViewMatrix(m_camera.GetViewMatrix());
+					m_terrain_context->SetProjectionMatrix(proj);
+					m_terrain_context->SetNormalTransform(normalTransform);
+					m_terrain_context->SetLightDirection(sun.Normalized());
+					m_terrain_context->SetDiffuseColor(Math::vec4(1,1,0,1));
+					m_terrain_context->SetPosition(position);
+					m_terrain_context->SetLevel(level);					
+					m_terrain_context->SetI(i);
+					m_terrain_context->SetJ(j);
+					
+					//	angle += 0.000001;
+					
+		
+
+					m_terrain_context->Begin();
+					m_texture_context->Bind();
+					m_grid->Bind(m_terrain_context->GetSupportedVertexAttributes());
+					m_grid->Render();
+					m_grid->Unbind();
+					m_texture_context->Unbind();
+					m_terrain_context->End();
+				}
+			}
+		}	*/	
+		
 		m_textured_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
-		m_textured_context->SetWorldMatrix(Math::mat4::CreateTranslate(-1,0,-5));
+		m_textured_context->SetWorldMatrix(Math::mat4::CreateTranslate(-1,0,5));
 		m_textured_context->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_textured_context->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
 		m_textured_context->Begin();		
-		m_texture_context->Bind();
+		//	m_texture_context->Bind();
 		m_quad->Bind(m_textured_context->GetSupportedVertexAttributes());
 		m_quad->Render();
 		m_quad->Unbind();
-		m_texture_context->Unbind();
+		//	m_texture_context->Unbind();
 		m_textured_context->End();
 
-		m_solid_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
+	/*	m_solid_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
 		m_solid_context->SetWorldMatrix(Math::mat4::CreateTranslate(1,0,-5));
 		m_solid_context->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_solid_context->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
 		m_solid_context->Begin();		
-		//m_texture_context->Bind();
-		m_quad->Bind(m_solid_context->GetSupportedVertexAttributes());
-		m_quad->Render();
-		m_quad->Unbind();
-		//m_texture_context->Unbind();
-		m_solid_context->End();
+		m_texture_context->Bind();
+		m_grid->Bind(m_solid_context->GetSupportedVertexAttributes());
+		m_grid->Render();
+		m_grid->Unbind();
+		m_texture_context->Unbind();
+		m_solid_context->End();*/
 
 		m_driver.SwapBuffers();
 	}
@@ -72,6 +178,8 @@ int main()
 	module.Init();
 	Test test;
 	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&test, &Test::OnIdle));
+	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&test, &Test::OnKeyDown));
+	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(&test, &Test::OnMouseMove));
 	System::Window::GetInstance()->Loop();
 
 	module.Destroy();

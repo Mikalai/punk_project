@@ -1,17 +1,19 @@
 #include <stdio.h>
-#include "../punk_engine/utility/utility.h"
+#include "../punk_engine/system/error.h"
+#include "../punk_engine/utility/model/punk_scene_loader.h"
+#include "../punk_engine/system/environment.h"
 
 int main()
 {
-	Utility::RawScene mdl;
+	Utility::Scene scene;
 
 	try
 	{
-		mdl.OpenFile(System::string("d:\\project\\punk_project\\punk_engine\\blender\\simple_anim2.pmd"));
+		scene.Load(L"animated_male2.pmd");
 	}
-	catch (Utility::UtilityError& err)
+	catch (System::SystemError& err)
 	{
-		wprintf(L"%s\n", err.w_what().Data());
+		wprintf(L"%s\n", err.Message());
 	}
 
 	return 0;

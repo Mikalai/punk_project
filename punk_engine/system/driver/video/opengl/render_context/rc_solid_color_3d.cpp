@@ -19,9 +19,7 @@ namespace OpenGL
 		Math::vec4 m_diffuse_color;
 				
 		virtual void InitAttributes()
-		{
-
-		}
+		{}
 
 		virtual void InitUniforms()
 		{

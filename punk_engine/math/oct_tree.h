@@ -35,6 +35,7 @@ namespace Math
 		bool m_is_finale;
 	public:
 		OctTree(OctTree* parent = 0);
+		OctTree(const OctTree& tree);		
 		void SetData(const FaceList& fl, const VertexList& vl);        
 		OctTree* Build(const FaceList& fl, const VertexList& vertexList);
 		FaceList Cross(const Line3D& line);

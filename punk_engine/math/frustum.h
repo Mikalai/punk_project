@@ -20,9 +20,9 @@ namespace Math
 
 		Plane m_planes[6];
 
-		Matrix4x4<float> m_projection_matrix;
-		mat4 m_view_matrix;
-		mat4 m_projection_view_matrix;
+		mutable Matrix4x4<float> m_projection_matrix;
+		mutable mat4 m_view_matrix;
+		mutable mat4 m_projection_view_matrix;
 
 		float m_fov;
 		float m_aspect;

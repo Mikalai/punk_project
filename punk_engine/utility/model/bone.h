@@ -5,9 +5,14 @@
 #include "../../math/mat4.h"
 #include "../../system/string.h"
 
+#include <map>
+
 namespace Utility
 {
 	typedef System::string BoneName;
+	typedef int BoneID;		
+	typedef float Weight;
+	typedef std::map<BoneName, Weight> BoneWeights;
 
 	class LIB_UTILITY Bone
 	{

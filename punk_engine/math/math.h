@@ -29,6 +29,7 @@
 #include "constants.h"
 #include "helper.h"
 #include "oct_tree.h"
+#include "camera.h"
 #include <exception>
 
 #endif // MATH_H

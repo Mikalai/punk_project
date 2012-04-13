@@ -111,7 +111,6 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_text_area_render.cpp">
       <Filter>render\2d</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\camera.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\driver.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\error.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer.cpp" />
@@ -162,6 +161,21 @@
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp">
       <Filter>texture_context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.cpp">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\render\terrain_render.cpp">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\grid_object.cpp">
+      <Filter>geometry_context%28logic%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +272,24 @@
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.h">
       <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\render\terrain_render.h">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object.h">
+      <Filter>geometry_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object_impl.h">
+      <Filter>geometry_context%28logic%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -400,7 +432,6 @@
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_text_area_render.h">
       <Filter>render\2d</Filter>
     </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\camera.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\config.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\driver.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\driver_parameters.h" />

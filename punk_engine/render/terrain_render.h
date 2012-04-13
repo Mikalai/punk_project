@@ -2,7 +2,7 @@
 #define _H_PUNK_TERRAIN_RENDER
 
 #include "abstract_render.h"
-#include "vertex_array_object.h"
+#include "per_vertex_render.h"
 #include "../driver/video/driver.h"
 
 #include "../math/math.h"

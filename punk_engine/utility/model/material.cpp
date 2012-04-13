@@ -27,6 +27,11 @@ namespace Utility
 		m_specular_factor = value;
 	}
 
+	void Material::SetName(const System::string& name)
+	{
+		m_name = name;
+	}
+
 	const System::string& Material::GetDiffuseMap() const
 	{
 		return m_diffuse_map;
@@ -50,5 +55,10 @@ namespace Utility
 	float Material::GetSpecularFactor() const
 	{
 		return m_specular_factor;
+	}
+
+	const System::string& Material::GetName() const
+	{
+		return m_name;
 	}
 }

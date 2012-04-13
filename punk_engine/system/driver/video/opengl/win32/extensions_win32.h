@@ -8,8 +8,9 @@ Description: Contains declarations of OpenGL extension functions
 #define _PUNK_EXTENSIONS_WIN32_H
 
 #include "../config.h"
+#include "../../../../logger.h"
 
-#define CHECK_GL_ERROR(X) if (glGetError() != GL_NO_ERROR) throw System::SystemError((X))
+#define CHECK_GL_ERROR(X) if (glGetError() != GL_NO_ERROR) System::Logger::GetInstance()->WriteWarning((X));
 
 namespace OpenGL
 {

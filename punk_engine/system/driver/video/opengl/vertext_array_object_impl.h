@@ -108,7 +108,7 @@ namespace OpenGL
 		{
 			// We should enable only those attributes that are supported by context and available in vertex buffer
 			VertexAttributes components = m_combination & supported_by_context;
-			
+
 			for (int i = 0; i < 16; ++i)
 			{
 				glDisableVertexAttribArray(i);
@@ -131,6 +131,25 @@ namespace OpenGL
 				glEnableVertexAttribArray(0);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
 				glEnableVertexAttribArray(1);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+			}
+			else if (components == (VERTEX_POSITION|VERTEX_TEXTURE_0|VERTEX_NORMAL|VERTEX_FLAGS))
+			{
+				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)0);	//	position
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*sizeof(float)));	//	normal
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(2*4*sizeof(float)));	//	texture
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(3*4*sizeof(float)));	//	texture
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glEnableVertexAttribArray(0);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(1);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(2);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(6);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
 			}
 			else if (components == (VERTEX_POSITION|VERTEX_TEXTURE_0))
@@ -246,7 +265,7 @@ namespace OpenGL
 				throw System::SystemError(L"Can't create VAO due to bad vertex buffer");
 			if (!m_index_buffer)
 				throw System::SystemError(L"Can't create VAO due to bad index buffer");
-			
+
 			if (m_vao)
 			{
 				glDeleteVertexArrays(1, &m_vao);
@@ -260,7 +279,7 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to bind vertex buffer to vao");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
 			CHECK_GL_ERROR(L"Unable to bind index buffer to vao");			
-			
+
 			glBindVertexArray(0);
 			CHECK_GL_ERROR(L"Unable to unbind vao");
 
