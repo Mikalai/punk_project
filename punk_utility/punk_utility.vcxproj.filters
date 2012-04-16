@@ -79,5 +79,14 @@
     <ClInclude Include="..\punk_engine\utility\model\texture_faces.h">
       <Filter>model</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\vertex_index.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\object.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\intersection.h">
+      <Filter>model</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

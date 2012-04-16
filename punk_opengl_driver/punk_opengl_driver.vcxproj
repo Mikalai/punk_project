@@ -96,17 +96,21 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\module.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\static_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -235,8 +239,10 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h" />
@@ -244,11 +250,14 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\texture_2d_resource.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_bind_target.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h" />
@@ -407,8 +416,8 @@
     <None Include="..\..\data\shaders\solid_color_2d_330.vert" />
     <None Include="..\..\data\shaders\solid_color_3d_330.frag" />
     <None Include="..\..\data\shaders\solid_color_3d_330.vert" />
-    <None Include="..\..\data\shaders\static_mesh_330.frag" />
-    <None Include="..\..\data\shaders\static_mesh_330.vert" />
+    <None Include="..\..\data\shaders\bump_330.frag" />
+    <None Include="..\..\data\shaders\bump_330.vert" />
     <None Include="..\..\data\shaders\terrain_330 - Copy.frag" />
     <None Include="..\..\data\shaders\terrain_330 - Copy.vert" />
     <None Include="..\..\data\shaders\terrain_330.frag" />

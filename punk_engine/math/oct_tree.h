@@ -39,7 +39,7 @@ namespace Math
 		void SetData(const FaceList& fl, const VertexList& vl);        
 		OctTree* Build(const FaceList& fl, const VertexList& vertexList);
 		FaceList Cross(const Line3D& line);
-		FaceList CrossAll(const Line3D& line);
+		FaceList CrossAll(const Line3D& line) const;
 	};
 }
 

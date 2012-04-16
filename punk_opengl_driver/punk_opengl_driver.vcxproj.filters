@@ -177,6 +177,18 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\grid_object.cpp">
       <Filter>geometry_context%28logic%29</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\static_object.cpp">
+      <Filter>geometry_context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h">
@@ -291,6 +303,21 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object_impl.h">
       <Filter>geometry_context%28logic%29</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object.h">
+      <Filter>geometry_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object_impl.h">
+      <Filter>geometry_context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt">
@@ -352,12 +379,6 @@
     <None Include="..\..\data\shaders\solid_color_3d_330.vert">
       <Filter>glsl</Filter>
     </None>
-    <None Include="..\..\data\shaders\static_mesh_330.frag">
-      <Filter>glsl</Filter>
-    </None>
-    <None Include="..\..\data\shaders\static_mesh_330.vert">
-      <Filter>glsl</Filter>
-    </None>
     <None Include="..\..\data\shaders\terrain_330 - Copy.frag">
       <Filter>glsl</Filter>
     </None>
@@ -374,6 +395,12 @@
       <Filter>glsl</Filter>
     </None>
     <None Include="..\..\data\shaders\textured_2d_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\bump_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\bump_330.frag">
       <Filter>glsl</Filter>
     </None>
   </ItemGroup>

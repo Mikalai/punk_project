@@ -23,7 +23,9 @@
 #include "vertex_bone_weight.h"
 #include "action.h"
 #include "texture_faces.h"
+#include "object.h"
 #include "skeleton_animation.h"
+#include "intersection.h"
 
 #define CHECK_START(buffer)\
 	if (!CheckIntegrity(buffer))\
@@ -124,27 +126,19 @@ namespace Utility
 		typedef std::map<System::string, Math::Matrix<BoneFrame> > CookedAnimation;
 		//	struct 
 		typedef std::map<System::string, Action> Animation;		
+		typedef std::map<System::string, Object> Objects;
 		System::string m_material;
+		Objects m_objects;
 		Math::BoundingBox m_bbox;
-		System::string m_name;
-		Vertices m_vertices;
-		Normals m_normals;
-		Faces m_faces;
-		VertexBoneWeights m_bone_weights;
 		Armature m_skeleton;
 		SkeletonID m_skeleton_id;
 		Animation m_skeleton_animation;
-		TextureMeshes m_tex_coords;
 		Materials m_materials;
 		CookedAnimation m_cooked_animation;
 		std::map<System::string, Math::Matrix<float> > m_frame_value;
-		Math::OctTree m_oct_tree;
 		std::map<BoneName, std::map<FrameID, BoneFrame> >::iterator m_maximum_frames;
 		std::map<BoneName, int> m_bone_index;
-		Math::mat4 m_local_matrix;
-		Math::mat4 m_world_matrix;
 		ArmatureCollection m_armature_collection;
-
 		SceneImpl::SceneImpl()
 		{}
 
@@ -152,23 +146,15 @@ namespace Utility
 		SceneImpl::SceneImpl(const SceneImpl& impl)
 			: m_material(impl.m_material)
 			, m_bbox(impl.m_bbox)
-			, m_name(impl.m_name)
-			, m_vertices(impl.m_vertices)
-			, m_normals(impl.m_normals)
-			, m_faces(impl.m_faces)
-			, m_bone_weights(impl.m_bone_weights)
+			, m_objects(impl.m_objects)
 			, m_skeleton(impl.m_skeleton)
 			, m_skeleton_id(impl.m_skeleton_id)
 			, m_skeleton_animation(impl.m_skeleton_animation)
-			, m_tex_coords(impl.m_tex_coords)
 			, m_materials(impl.m_materials)
 			, m_cooked_animation(impl.m_cooked_animation)
 			, m_frame_value(impl.m_frame_value)
-			, m_oct_tree(impl.m_oct_tree)
 			, m_maximum_frames(impl.m_maximum_frames)
 			, m_bone_index(impl.m_bone_index)
-			, m_local_matrix(impl.m_local_matrix)
-			, m_world_matrix(impl.m_world_matrix)
 			, m_armature_collection(impl.m_armature_collection)
 		{}
 
@@ -186,7 +172,12 @@ namespace Utility
 				switch(Parse(word))
 				{
 				case WORD_OBJECT:
-					ParseObject(buffer);
+					{
+						std::auto_ptr<Object> o(new Object);
+						ParseObject(buffer, *o);
+						Object* oo = o.release();
+						m_objects[oo->m_name] = *oo;
+					}
 					break;
 				case WORD_MATERIALS:
 					ParseMaterials(buffer);
@@ -340,7 +331,7 @@ namespace Utility
 		}
 
 		/// Perform parsing object chunk
-		void ParseObject(System::Buffer &buffer)
+		void ParseObject(System::Buffer &buffer, Object& o)
 		{
 			CHECK_START(buffer);
 
@@ -358,25 +349,25 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_NAME:
-					m_name = ParseName(buffer);
+					o.m_name = ParseName(buffer);
 					break;
 				case WORD_BOUNDING_BOX:
-					m_bbox = ParseBoundingBox(buffer);
+					o.m_bbox = ParseBoundingBox(buffer);
 					break;
 				case WORD_LOCATION:
-					ParseVector(buffer);
+					o.m_location = ParseVector(buffer);
 					break;
 				case WORD_WORLD_MATRIX:
-					m_world_matrix = ParseMatrix(buffer);
+					o.m_world_matrix = ParseMatrix(buffer);
 					break;
 				case WORD_LOCAL_MATRIX:
-					m_local_matrix = ParseMatrix(buffer);
+					o.m_local_matrix = ParseMatrix(buffer);
 					break;
 				case WORD_MESH:
-					ParseObjectMesh(buffer);
-					break;
-				case WORD_BONES_WEIGHT:
-					ParseBonesWeights(buffer);
+					{
+						o.m_mesh.reset(new Mesh());
+						ParseObjectMesh(buffer, *o.m_mesh);
+					}
 					break;
 				//case WORD_ARMATURE:
 				//	ParseBones(buffer);
@@ -393,7 +384,7 @@ namespace Utility
 			}
 		}
 
-		void ParseObjectMesh(System::Buffer& buffer)
+		void ParseObjectMesh(System::Buffer& buffer, Mesh& mesh)
 		{
 			CHECK_START(buffer);
 
@@ -410,17 +401,20 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_VERTEX_POSITION:
-					ParseVertexPosition(buffer);					
+					ParseVertexPosition(buffer, mesh.m_vertices);					
 					break;					
 				case WORD_NORMALS:
-					ParseNormals(buffer);
+					ParseNormals(buffer, mesh.m_normals);
 					break;
 				case WORD_FACES:
-					ParseFaces(buffer);
+					ParseFaces(buffer, mesh.m_faces);
+					break;
+				case WORD_BONES_WEIGHT:
+					ParseBonesWeights(buffer, mesh.m_bone_weights);
 					break;
 				case WORD_TEXTURE:
 					{
-						TextureMesh* tm = m_tex_coords.FindEmpty();
+						TextureMesh* tm = mesh.m_tex_coords.FindEmpty();
 						if (tm)
 							ParseTexture(buffer, *tm);
 						else
@@ -534,7 +528,7 @@ namespace Utility
 			return m;
 		}
 
-		void ParseVertexPosition(System::Buffer &buffer)
+		void ParseVertexPosition(System::Buffer &buffer, Vertices& v)
 		{
 			CHECK_START(buffer);
 			int count = buffer.ReadWord().ToInt32();
@@ -544,18 +538,18 @@ namespace Utility
 				float x = buffer.ReadWord().ToFloat();
 				float y = buffer.ReadWord().ToFloat();
 				float z = buffer.ReadWord().ToFloat();
-				m_bbox.Max().X() = max(x, m_bbox.Max().X());
-				m_bbox.Max().Y() = max(y, m_bbox.Max().Y());
-				m_bbox.Max().Z() = max(z, m_bbox.Max().Z());
-				m_bbox.Min().X() = min(x, m_bbox.Min().X());
-				m_bbox.Min().Y() = min(y, m_bbox.Min().Y());
-				m_bbox.Min().Z() = min(z, m_bbox.Min().Z());
-				m_vertices.push_back(Math::vec3(x,y,z));
+				//m_bbox.Max().X() = max(x, m_bbox.Max().X());
+				//m_bbox.Max().Y() = max(y, m_bbox.Max().Y());
+				//m_bbox.Max().Z() = max(z, m_bbox.Max().Z());
+				//m_bbox.Min().X() = min(x, m_bbox.Min().X());
+				//m_bbox.Min().Y() = min(y, m_bbox.Min().Y());
+				//m_bbox.Min().Z() = min(z, m_bbox.Min().Z());
+				v.push_back(Math::vec3(x,y,z));
 			}
 			CHECK_END(buffer);
 		}
 
-		void ParseNormals(System::Buffer &buffer)
+		void ParseNormals(System::Buffer &buffer, Normals& n)
 		{
 			CHECK_START(buffer);
 			int count = buffer.ReadWord().ToInt32();
@@ -565,16 +559,16 @@ namespace Utility
 				float x = buffer.ReadWord().ToFloat();
 				float y = buffer.ReadWord().ToFloat();
 				float z = buffer.ReadWord().ToFloat();
-				m_normals.push_back(Math::vec3(x,y,z));
+				n.push_back(Math::vec3(x,y,z));
 			}
 			CHECK_END(buffer);
 		}
 
-		void ParseFaces(System::Buffer& buffer)
+		void ParseFaces(System::Buffer& buffer, Faces& f)
 		{
 			CHECK_START(buffer);
 			int count = buffer.ReadWord().ToInt32();
-			m_faces.resize(count);
+			f.resize(count);
 
 			while(1)
 			{
@@ -584,26 +578,26 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_VERTEX_POSITIONS_ID:
-					ParseFaceVertexID(buffer);
+					ParseFaceVertexID(buffer, f);
 					break;
 				}
 			}
 		}
 
-		void ParseFaceVertexID(System::Buffer &buffer)
+		void ParseFaceVertexID(System::Buffer &buffer, Faces& f)
 		{
 			CHECK_START(buffer);
-			for (int i = 0; i < (int)m_faces.size(); i++)
+			for (int i = 0; i < (int)f.size(); i++)
 			{
 				buffer.ReadWord();	//skip index
-				m_faces[i].X() = buffer.ReadWord().ToInt32();
-				m_faces[i].Y() = buffer.ReadWord().ToInt32();
-				m_faces[i].Z() = buffer.ReadWord().ToInt32();
+				f[i].X() = buffer.ReadWord().ToInt32();
+				f[i].Y() = buffer.ReadWord().ToInt32();
+				f[i].Z() = buffer.ReadWord().ToInt32();
 			}
 			CHECK_END(buffer);
 		}
 
-		void ParseBonesWeights(System::Buffer& buffer)
+		void ParseBonesWeights(System::Buffer& buffer, VertexBoneWeights& w)
 		{
 			CHECK_START(buffer);
 
@@ -615,7 +609,7 @@ namespace Utility
 				int vertex_id = word.ToInt32();
 				System::string bone_name = buffer.ReadWord();
 				float weight = buffer.ReadWord().ToFloat();
-				m_bone_weights[vertex_id][bone_name] = weight;
+				w[vertex_id][bone_name] = weight;
 			}
 		}
 
@@ -883,41 +877,29 @@ namespace Utility
 			return true;
 		}
 
-		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, std::vector<Math::Vector3<float>>& points)
+		Object* FindObjectByName(const System::string& obj)
 		{
-			Math::OctTree::FaceList fl  = m_oct_tree.CrossAll(Math::Line3D(start, end));
-			if (fl.empty())
-				return false;
+			return &m_objects.at(obj);
+		}
 
-			for (int tr = 0; tr < fl.size(); tr++)
+		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res)
+		{
+			for (Objects::const_iterator i = m_objects.begin(); i != m_objects.end(); ++i)
 			{
-				const Math::vec3& a = m_vertices[fl[tr].X()];
-				const Math::vec3& b = m_vertices[fl[tr].Y()];
-				const Math::vec3& c = m_vertices[fl[tr].Z()];
-
-				Math::Triangle3D triangle(a, b, c);
-				Math::Line3D line(start, end);
-				float t;
-				if (Math::LineCrossTriangle(line, triangle, t) == Math::SKEW_CROSS)
-				{
-					points.push_back(line.PointAt(t));				
-				}
+				i->second.IntersectWithRay(start, end, res);
 			}
-			if (points.empty())
-				return false;
-			else
-				return true;
+			return !res.empty();
 		}
 
-		void BuildOctTree()
-		{
-			m_oct_tree.SetData(m_faces, m_vertices);
-		}
+		//void BuildOctTree()
+		//{
+		//	m_oct_tree.SetData(m_faces, m_vertices);
+		//}
 
-		Math::OctTree& GetOctTree()
-		{
-			return m_oct_tree;
-		}
+		//Math::OctTree& GetOctTree()
+		//{
+		//	return m_oct_tree;
+		//}
 
 		void BuildBoneIndex()
 		{
@@ -1024,43 +1006,43 @@ namespace Utility
 			return (*it).first;
 		}
 
-		StaticMesh* CookStaticMesh() const
+		StaticMesh* CookStaticMesh(Object& o) const
 		{
 			struct Vertex
 			{
 				float x, y, z, w;
 				float nx, ny, nz, nw;
-				float bx, by, bz, bw;
 				float tx, ty, tz, tw;
+				float bx, by, bz, bw;				
 				float u, v, s, q;
 			};
 
 			std::auto_ptr<StaticMesh> mesh(new StaticMesh);
-			mesh->SetIndexCount(m_faces.size()*3);
+			mesh->SetIndexCount(o.m_mesh->m_faces.size()*3);
 			mesh->SetIndexBuffer(new unsigned[mesh->GetIndexCount()]);
-			for (unsigned i = 0; i < m_faces.size()*3; i++)
+			for (unsigned i = 0; i < o.m_mesh->m_faces.size()*3; i++)
 			{
 				mesh->GetIndexBuffer()[i] = i;
 			}
-			mesh->SetVertexCount(m_faces.size()*3);
+			mesh->SetVertexCount(o.m_mesh->m_faces.size()*3);
 			Vertex* vb;
 			mesh->SetVertexBuffer(vb = new Vertex[mesh->GetVertexCount()]);
 			memset(vb, 0, sizeof(Vertex)*mesh->GetVertexCount());
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 			int index = 0;
-			for (unsigned i = 0; i < m_tex_coords[0].size(); i++)
+			for (unsigned i = 0; i < o.m_mesh->m_tex_coords[0].size(); i++)
 			{
-				const Math::ivec3& f = m_faces[i];
-				const Math::vec3& v1 = m_vertices[f[0]];
-				const Math::vec3& v2 = m_vertices[f[1]];
-				const Math::vec3& v3 = m_vertices[f[2]];
-				const Math::vec2& t1 = m_tex_coords[0][i][0];
-				const Math::vec2& t2 = m_tex_coords[0][i][1];
-				const Math::vec2& t3 = m_tex_coords[0][i][2];
-				const Math::vec3& n1 = m_normals[f[0]];
-				const Math::vec3& n2 = m_normals[f[1]];
-				const Math::vec3& n3 = m_normals[f[2]];
+				const Math::ivec3& f = o.m_mesh->m_faces[i];
+				const Math::vec3& v1 = o.m_mesh->m_vertices[f[0]];
+				const Math::vec3& v2 = o.m_mesh->m_vertices[f[1]];
+				const Math::vec3& v3 = o.m_mesh->m_vertices[f[2]];
+				const Math::vec2& t1 = o.m_mesh->m_tex_coords[0][i][0];
+				const Math::vec2& t2 = o.m_mesh->m_tex_coords[0][i][1];
+				const Math::vec2& t3 = o.m_mesh->m_tex_coords[0][i][2];
+				const Math::vec3& n1 = o.m_mesh->m_normals[f[0]];
+				const Math::vec3& n2 = o.m_mesh->m_normals[f[1]];
+				const Math::vec3& n3 = o.m_mesh->m_normals[f[2]];
 
 				Math::vec3 tgn;
 				Math::vec3 nrm;
@@ -1076,6 +1058,7 @@ namespace Utility
 				//vb[index].nx = n1[0];	vb[index].ny = n1[1];	vb[index].nz = n1[2];	vb[index].nw = 1.0f;
 				vb[index].u = t1[0];	vb[index].v = t1[1];	vb[index].s = 0;		vb[index].q = 0.0f;
 				vb[index].tx = tgn[0];	vb[index].ty = tgn[1];	vb[index].tz = tgn[2];	vb[index].tw = det;
+				vb[index].bx = btn[0];	vb[index].by = btn[1];	vb[index].bz = btn[2];	vb[index].bw = 0;
 				base_index.push_back(f[0]);
 				index++;
 
@@ -1085,6 +1068,7 @@ namespace Utility
 				//vb[index].nx = n2[0];	vb[index].ny = n2[1];	vb[index].nz = n2[2];	vb[index].nw = 1.0f;
 				vb[index].u = t2[0];	vb[index].v = t2[1];	vb[index].s = 0;		vb[index].q = 0.0f;
 				vb[index].tx = tgn[0];	vb[index].ty = tgn[1];	vb[index].tz = tgn[2];	vb[index].tw = det;
+				vb[index].bx = btn[0];	vb[index].by = btn[1];	vb[index].bz = btn[2];	vb[index].bw = 0;
 				base_index.push_back(f[1]);
 				index++;
 
@@ -1094,13 +1078,14 @@ namespace Utility
 				//vb[index].nx = n3[0];	vb[index].ny = n3[1];	vb[index].nz = n3[2];	vb[index].nw = 1.0f;
 				vb[index].u = t3[0];	vb[index].v = t3[1];	vb[index].s = 0;		vb[index].q = 0.0f;
 				vb[index].tx = tgn[0];	vb[index].ty = tgn[1];	vb[index].tz = tgn[2];	vb[index].tw = det;
+				vb[index].bx = btn[0];	vb[index].by = btn[1];	vb[index].bz = btn[2];	vb[index].bw = 0;
 				base_index.push_back(f[2]);
 				index++;
 			}
 
 			/// Smooth TBN
 			std::vector<int> mask(mesh->GetVertexCount());
-			for (int i = 0; i < m_vertices.size(); i++)
+			for (int i = 0; i < o.m_mesh->m_vertices.size(); i++)
 			{
 				Math::vec3 norm;
 				Math::vec3 tang;
@@ -1147,37 +1132,49 @@ namespace Utility
 			return mesh.release();
 		}
 
-		bool CookSkinnedMesh(Math::mat4*& bones, int& count) const
+		SkinnedMesh* CookSkinnedMesh(Object& o) const
 		{
-			std::auto_ptr<SkinnedMesh n mesh = new SkinnedMesh;
-			mesh->SetIndexCount(m_faces.size()*3);
+			if (o.m_mesh->m_bone_weights.empty())
+				return nullptr;
+			struct Vertex
+			{
+				float x, y, z, w;
+				float nx, ny, nz, nw;
+				float u, v, s, q;
+				float bx, by, bz, bw;
+				float tx, ty, tz, tw;
+				float   b1, b2, b3, b4;
+				float w1, w2, w3, w4;
+			};
+			std::auto_ptr<SkinnedMesh> mesh(new SkinnedMesh);
+			mesh->SetIndexCount(o.m_mesh->m_faces.size()*3);
 			mesh->SetIndexBuffer(new unsigned[mesh->GetIndexCount()]);
 
-			for (unsigned i = 0; i < m_faces.size()*3; i++)
+			for (unsigned i = 0; i < o.m_mesh->m_faces.size()*3; i++)
 			{
 				mesh->GetIndexBuffer()[i] = i;
 			}
 
-			mesh->SetVertexCount(m_faces.size()*3);
-			VertexPositionNormalTextureTangentBitangentBone* vb;
-			mesh->SetVertexBuffer(vb = new VertexPositionNormalTextureTangentBitangentBone[mesh->m_vertex_count]);
-			memset(vb, 0, sizeof(VertexPositionNormalTextureTangentBitangentBone)*mesh->m_vertex_count);
+			mesh->SetVertexCount(o.m_mesh->m_faces.size()*3);
+			Vertex* vb;
+			mesh->SetVertexBuffer(vb = new Vertex[mesh->GetVertexCount()]);
+			memset(vb, 0, sizeof(Vertex)*mesh->GetVertexCount());
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 
 			int index = 0;
-			for (unsigned i = 0; i < m_tex_coords.size(); i++)
+			for (unsigned i = 0; i < o.m_mesh->m_tex_coords.size(); i++)
 			{
-				const Math::ivec3& f = m_faces[i];
-				const Math::vec3& v1 = m_vertices[f[0]];
-				const Math::vec3& v2 = m_vertices[f[1]];
-				const Math::vec3& v3 = m_vertices[f[2]];
-				const Math::vec2& t1 = m_tex_coords[i][0];
-				const Math::vec2& t2 = m_tex_coords[i][1];
-				const Math::vec2& t3 = m_tex_coords[i][2];
-				const Math::vec3& n1 = m_normals[f[0]];
-				const Math::vec3& n2 = m_normals[f[1]];
-				const Math::vec3& n3 = m_normals[f[2]];			
+				const Math::ivec3& f = o.m_mesh->m_faces[i];
+				const Math::vec3& v1 = o.m_mesh->m_vertices[f[0]];
+				const Math::vec3& v2 = o.m_mesh->m_vertices[f[1]];
+				const Math::vec3& v3 = o.m_mesh->m_vertices[f[2]];
+				const Math::vec2& t1 = o.m_mesh->m_tex_coords[0][i][0];
+				const Math::vec2& t2 = o.m_mesh->m_tex_coords[0][i][1];
+				const Math::vec2& t3 = o.m_mesh->m_tex_coords[0][i][2];
+				const Math::vec3& n1 = o.m_mesh->m_normals[f[0]];
+				const Math::vec3& n2 = o.m_mesh->m_normals[f[1]];
+				const Math::vec3& n3 = o.m_mesh->m_normals[f[2]];			
 
 				Math::vec3 tgn;
 				Math::vec3 nrm;
@@ -1197,7 +1194,7 @@ namespace Utility
 
 				CookOneVertexWithBone //{}\\==>
 					(
-					f[0], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
+					o, f[0], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
 					vb[index].w1, vb[index].w2, vb[index].w3, vb[index].w4
 					);
 
@@ -1218,7 +1215,7 @@ namespace Utility
 
 				CookOneVertexWithBone //{}\\==>
 					(
-					f[1], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
+					o, f[1], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
 					vb[index].w1, vb[index].w2, vb[index].w3, vb[index].w4
 					);
 
@@ -1239,7 +1236,7 @@ namespace Utility
 
 				CookOneVertexWithBone //{}\\==>
 					(
-					f[2], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
+					o, f[2], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
 					vb[index].w1, vb[index].w2, vb[index].w3, vb[index].w4
 					);
 
@@ -1252,15 +1249,15 @@ namespace Utility
 			}
 
 			/// Smooth TBN
-			std::vector<int> mask(mesh->m_vertex_count);
-			for (int i = 0; i < m_vertices.size(); i++)
+			std::vector<int> mask(mesh->GetVertexCount());
+			for (int i = 0; i < o.m_mesh->m_vertices.size(); i++)
 			{
 				Math::vec3 norm;
 				Math::vec3 tang;
 				Math::vec3 btan;
-				for (int j = 0; j < mesh->m_vertex_count; j++)
+				for (int j = 0; j < mesh->GetVertexCount(); j++)
 				{
-					VertexPositionNormalTextureTangentBitangentBone* v = static_cast<VertexPositionNormalTextureTangentBitangentBone*>(mesh->GetVertexBuffer()) + j;
+					Vertex* v = static_cast<Vertex*>(mesh->GetVertexBuffer()) + j;
 					if (base_index[j] == i)
 					{					
 						norm[0] += v->nx; norm[1] += v->ny; norm[2] += v->nz; 
@@ -1281,9 +1278,9 @@ namespace Utility
 				m.At(2,0) = norm[0]; m.At(2,1) = norm[1]; m.At(2,2) = norm[2];
 				float w = m.Determinant();
 
-				for (int j = 0; j < mesh->m_vertex_count; j++)
+				for (int j = 0; j < mesh->GetVertexCount(); j++)
 				{	
-					VertexPositionNormalTextureTangentBitangentBone* v = static_cast<VertexPositionNormalTextureTangentBitangentBone*>(mesh->GetVertexBuffer()) + j;
+					Vertex* v = static_cast<Vertex*>(mesh->GetVertexBuffer()) + j;
 					if (base_index[j] == i)
 					{					
 						v->nx = norm[0]; v->ny = norm[1]; v->nz = norm[2]; 
@@ -1295,10 +1292,53 @@ namespace Utility
 
 			//CookBonesMatrix(bones, count);
 
-			mesh->SetVertexBufferSize(sizeof(VertexPositionNormalTextureTangentBitangentBone)*mesh->GetVertexCount());
+			mesh->SetVertexBufferSize(sizeof(Vertex)*mesh->GetVertexCount());
 			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
-			mesh->SetOneVertexSize(sizeof(VertexPositionNormalTextureTangentBitangentBone));
-			return true;
+			mesh->SetOneVertexSize(sizeof(Vertex));
+			return mesh.release();
+		}
+
+		void CookOneVertexWithBone(Object& o, int index, float& b1, float& b2, float& b3, float& b4, float& w1, float& w2, float& w3, float& w4) const
+		{
+			const BoneWeights& weights = o.m_mesh->m_bone_weights.at(index);
+
+			int b_id[4];
+			memset(b_id, 0, sizeof(b_id));
+			float w[4];
+			memset(w, 0, sizeof(w));
+			int used = 0;
+			for (BonesCollection::const_iterator bone = m_skeleton.m_bones.begin(); bone != m_skeleton.m_bones.end() && used < 4; ++bone)
+			{
+				if (weights.find((*bone).first) != weights.end())
+				{	
+					//
+					// зам€н€ем найменьш уплывовую в€ршыну
+					//
+					int min = 0;
+					for (int i = 0; i < 4; i++)
+					{
+						if (w[i] < w[min])
+							min = i;
+					}
+					b_id[min] = GetBoneID((*bone).first);
+					w[min] = weights.at((*bone).first);
+					used++;
+				}
+			}
+
+			//
+			//	normalize
+			//
+			float l = w[0] + w[1] + w[2] + w[3];
+			//		if (l == 0)
+			//			throw System::SystemError(System::string::Format(L"Unable to calculate bone weight for %d vertex", index));
+
+			if (w[0] < 0 || w[1] < 0 || w[2] < 0 || w[3] < 0)
+				throw;
+
+			w[0] /= l; w[1] /= l; w[2] /= l; w[3] /= l;
+			w1 = w[0]; w2 = w[1]; w3 = w[2]; w4 = 1.0 - w1 - w2 - w3 ;
+			b1 = b_id[0]; b2 = b_id[1]; b3 = b_id[2]; b4 = b_id[3];
 		}
 	};
 
@@ -1488,49 +1528,6 @@ namespace Utility
 	//}
 	//}/**/
 
-	//void Model::CookOneVertexWithBone(int index, float& b1, float& b2, float& b3, float& b4, float& w1, float& w2, float& w3, float& w4) const
-	//{
-	//	const std::map<System::string, Weight>& weight = const_cast<Model*>(this)->m_bone_weights[index];
-
-	//	int b_id[4];
-	//	memset(b_id, 0, sizeof(b_id));
-	//	float w[4];
-	//	memset(w, 0, sizeof(w));
-	//	int used = 0;
-	//	for (std::map<System::string, Bone>::const_iterator bone = m_skeleton.begin(); bone != m_skeleton.end() && used < 4; ++bone)
-	//	{
-	//		if (weight.find((*bone).first) != weight.end())
-	//		{	
-	//			//
-	//			// зам€н€ем найменьш уплывовую в€ршыну
-	//			//
-	//			int min = 0;
-	//			for (int i = 0; i < 4; i++)
-	//			{
-	//				if (w[i] < w[min])
-	//					min = i;
-	//			}
-	//			b_id[min] = GetBoneID((*bone).first);
-	//			w[min] = const_cast<std::map<System::string, Weight>& >(weight)[(*bone).first];
-	//			used++;
-	//		}
-	//	}
-
-	//	//
-	//	//	normalize
-	//	//
-	//	float l = w[0] + w[1] + w[2] + w[3];
-	//	//		if (l == 0)
-	//	//			throw System::SystemError(System::string::Format(L"Unable to calculate bone weight for %d vertex", index));
-
-	//	if (w[0] < 0 || w[1] < 0 || w[2] < 0 || w[3] < 0)
-	//		throw;
-
-	//	w[0] /= l; w[1] /= l; w[2] /= l; w[3] /= l;
-	//	w1 = w[0]; w2 = w[1]; w3 = w[2]; w4 = 1.0 - w1 - w2 - w3 ;
-	//	b1 = b_id[0]; b2 = b_id[1]; b3 = b_id[2]; b4 = b_id[3];
-	//}
-
 	///*	bool Model::CookSkinAnimation(const System::string& action_name, SkinAnimation*& anim)
 	//{
 	//anim = new SkinAnimation;
@@ -1606,13 +1603,21 @@ namespace Utility
 		impl_scene->Load(filename);
 	}
 
-	Math::OctTree& Scene::GetOctTree()
+	StaticMesh* Scene::CookStaticMesh(const System::string& name) const
 	{
-		return impl_scene->GetOctTree();
+		Utility::Object* obj = impl_scene->FindObjectByName(name);
+		if (!obj)
+			return nullptr;
+		return impl_scene->CookStaticMesh(*obj);
 	}
 
-	bool Scene::IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, std::vector<Math::Vector3<float>>& points)
+	/*Math::OctTree& Scene::GetOctTree()
 	{
-		return impl_scene->IntersectWithRay(start, end, points);
+		return impl_scene->GetOctTree();
+	}*/
+
+	bool Scene::IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res)
+	{
+		return impl_scene->IntersectWithRay(start, end, res);
 	}
 }

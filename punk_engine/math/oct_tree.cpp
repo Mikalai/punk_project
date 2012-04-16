@@ -129,7 +129,7 @@ namespace Math
 		return CrossAll(line);
 	}
 
-	OctTree::FaceList OctTree::CrossAll(const Line3D& line)
+	OctTree::FaceList OctTree::CrossAll(const Line3D& line) const
 	{
 		FaceList fl;
 		if (m_bbox.DoCrossLine(line))

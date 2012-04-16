@@ -28,7 +28,7 @@ namespace Math
 		void Create(const float* data, unsigned offset, int count);
 		bool DoCrossTriangle(const vec3& p1, const vec3& p2, const vec3& p3) const;
 		bool IsPointIn(const float *p) const;
-		bool DoCrossLine(const Line3D& line);
+		bool DoCrossLine(const Line3D& line) const;
 
 		const vec3& Min() const;
 		const vec3& Max() const;

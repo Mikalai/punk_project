@@ -38,8 +38,8 @@ namespace OpenGL
 	{		
 		//impl_vao->Bind();
 		//glDrawElements(GL_TRIANGLES, 600, GL_UNSIGNED_INT, 0);
-		glDrawElementsInstanced(impl_vao->m_primitive_type, impl_vao->m_index_count, GL_UNSIGNED_INT, 0, 1);
-		//glDrawElements(GL_TRIANGLES, impl_vao->m_index_count, GL_UNSIGNED_INT, 0);			
+		//glDrawElements(impl_vao->m_primitive_type, impl_vao->m_index_count, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, impl_vao->m_index_count, GL_UNSIGNED_INT, 0);			
 		//impl_vao->Unbind();
 	}
 

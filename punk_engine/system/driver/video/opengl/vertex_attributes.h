@@ -4,6 +4,7 @@
 namespace OpenGL
 {
 		enum VertexComponents {
+		VERTEX_NONE = 0,
 		VERTEX_POSITION = 1, 
 		VERTEX_NORMAL = 2, 
 		VERTEX_TANGENT = 4, 

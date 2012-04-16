@@ -6,16 +6,21 @@
 #include "../punk_engine/system/driver/video/driver.h"
 #include "../punk_engine/system/application/application.h"
 
+using namespace OpenGL;
+
 class Test
 {
 	OpenGL::Driver m_driver;
 	std::auto_ptr<OpenGL::RenderContextSolid3D> m_solid_context;
 	std::auto_ptr<OpenGL::RenderContextTextured3D> m_textured_context;
 	std::auto_ptr<OpenGL::RenderContextTerrain> m_terrain_context;
+	std::auto_ptr<OpenGL::RenderContextBumpMapping> m_bump_mapping;
 	std::auto_ptr<OpenGL::QuadObject> m_quad;
 	std::auto_ptr<OpenGL::GridObject> m_grid;
+	std::auto_ptr<OpenGL::StaticObject> m_static_vao;
+	std::auto_ptr<Utility::StaticMesh> m_static_mesh;
 	ImageModule::RGBAImage m_image;
-	ImageModule::GrayImage m_gray_image;
+	ImageModule::RGBImage m_gray_image;
 	std::auto_ptr<OpenGL::Texture2D> m_texture;
 	std::auto_ptr<OpenGL::Texture2D> m_height_map;
 	std::auto_ptr<OpenGL::TextureContext> m_texture_context;
@@ -24,11 +29,20 @@ class Test
 public:
 	Test()
 	{
+		Utility::Scene scene;
+		scene.Load(L"sphere.pmd");
+		m_static_mesh.reset(scene.CookStaticMesh(L"Icosphere"));
+
 		x = y = z = 10;
 		m_driver.Start(System::Window::GetInstance());
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
 		m_solid_context.reset(new OpenGL::RenderContextSolid3D());
 		m_textured_context.reset(new OpenGL::RenderContextTextured3D());
+		m_bump_mapping.reset(new OpenGL::RenderContextBumpMapping());
+
+		m_static_vao.reset(new OpenGL::StaticObject());
+		m_static_vao->SetStaticObject(m_static_mesh.get());
+		m_static_vao->Init();
 
 		m_quad.reset(new OpenGL::QuadObject());
 		m_quad->Init();
@@ -38,10 +52,10 @@ public:
 		m_grid->SetHeight(1);
 		m_grid->SetHeightSlice(16);
 		m_grid->SetWidthSlice(16);
-		m_grid->Init();
+		m_grid->Init();/**/
 
 		m_image = ImageModule::Importer().LoadRGBA(System::Environment::GetTexutreFolder() + L"checker2.png");
-		m_gray_image = ImageModule::Importer().LoadGray(System::Environment::GetMapFolder() + L"0_0\\0_0.png");
+		m_gray_image = ImageModule::Importer().LoadRGB(System::Environment::GetTexutreFolder() + L"bump.png");
 		m_height_map.reset(new OpenGL::Texture2D(m_gray_image));		
 
 		m_terrain_context.reset(new OpenGL::RenderContextTerrain());		
@@ -50,8 +64,8 @@ public:
 		m_texture_context.reset(new OpenGL::TextureContext());
 		m_texture_context->SetDiffuseMap(m_texture.release());
 		m_texture_context->SetNormalMap(m_height_map.release());
-		m_camera.SetPositionAndDirection(Math::vec3(0,1.8, 0), Math::vec3(0, 0, 1), Math::vec3(0,1,0));
-		m_camera.SetProperties(Math::PI/4, 1.3, 1, 1000);		
+	//	m_camera.SetPositionAndDirection(Math::vec3(0,1.8, 0), Math::vec3(0, 0, 1), Math::vec3(0,1,0));
+	//	m_camera.SetProperties(Math::PI/4, 1.3, 1, 1000);		
 
 	}
 
@@ -78,7 +92,7 @@ public:
 	}
 
 	void OnIdle(System::Event* event)
-	{
+	{		
 		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);	
 			
 /*		static Math::vec3 sun(100, 100, 100);
@@ -141,30 +155,37 @@ public:
 				}
 			}
 		}	*/	
-		
-		m_textured_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
-		m_textured_context->SetWorldMatrix(Math::mat4::CreateTranslate(-1,0,5));
-		m_textured_context->SetViewMatrix(Math::mat4::CreateIdentity());
-		m_textured_context->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
-		m_textured_context->Begin();		
-		//	m_texture_context->Bind();
-		m_quad->Bind(m_textured_context->GetSupportedVertexAttributes());
+		static float a = 0;
+		a+= 0.001;
+		m_bump_mapping->SetWorldMatrix(Math::mat4::CreateTranslate(0, 0, 0));
+		m_bump_mapping->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(2*sin(a), 2, 2*cos(a)), Math::vec3(0, 0, 0), Math::vec3(0, 1, 0)));
+		m_bump_mapping->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
+		m_bump_mapping->SetAmbientColor(Math::vec4(0,0,0,0));
+		m_bump_mapping->SetSpecularColor(Math::vec4(1,1,1,1));
+		m_bump_mapping->SetDiffuseColor(Math::vec4(1,1,1,1));
+		m_bump_mapping->SetSpecularPower(16);
+		m_bump_mapping->SetLightPosition(Math::vec3(0, 10, 0));
+		m_bump_mapping->Begin();		
+		m_texture_context->Bind();
+		m_static_vao->Bind(m_bump_mapping->GetSupportedVertexAttributes());
+		m_static_vao->Render();		
+		m_bump_mapping->SetWorldMatrix(Math::mat4::CreateTranslate(1, 0, 0));
+		m_static_vao->Render();
+		m_static_vao->Unbind();
+		m_texture_context->Unbind();
+		m_bump_mapping->End();/**/
+
+		/*m_solid_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
+		m_solid_context->SetWorldMatrix(Math::mat4::CreateIdentity());//Math::mat4::CreateTranslate(0, 0, -1));
+		m_solid_context->SetViewMatrix(Math::mat4::CreateIdentity());
+		m_solid_context->SetProjectionMatrix(Math::mat4::CreateIdentity());//Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 	
+		m_solid_context->Begin();		
+		//m_texture_context->Bind();
+		m_quad->Bind(m_solid_context->GetSupportedVertexAttributes());
 		m_quad->Render();
 		m_quad->Unbind();
-		//	m_texture_context->Unbind();
-		m_textured_context->End();
-
-	/*	m_solid_context->SetDiffuseColor(Math::vec4(1, 1, 1, 1));
-		m_solid_context->SetWorldMatrix(Math::mat4::CreateTranslate(1,0,-5));
-		m_solid_context->SetViewMatrix(Math::mat4::CreateIdentity());
-		m_solid_context->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
-		m_solid_context->Begin();		
-		m_texture_context->Bind();
-		m_grid->Bind(m_solid_context->GetSupportedVertexAttributes());
-		m_grid->Render();
-		m_grid->Unbind();
-		m_texture_context->Unbind();
-		m_solid_context->End();*/
+		//m_texture_context->Unbind();
+		m_solid_context->End();/**/
 
 		m_driver.SwapBuffers();
 	}

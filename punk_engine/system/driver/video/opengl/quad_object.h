@@ -16,7 +16,6 @@ namespace OpenGL
 
 		void SetWidth(float width);
 		void SetHeight(float height);
-
 	protected:
 		virtual void Cook();
 	};

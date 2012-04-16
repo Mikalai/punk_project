@@ -3,6 +3,7 @@
 
 #include "../config.h"
 #include <vector>
+#include "intersection.h"
 
 namespace System
 {
@@ -28,8 +29,9 @@ namespace Utility
 		~Scene();
 
 		void Load(const System::string& filename);
-		Math::OctTree& GetOctTree();
-		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, std::vector<Math::Vector3<float>>& points);
+		//Math::OctTree& GetOctTree();
+		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res);
+		StaticMesh* CookStaticMesh(const System::string& name) const;
 	};
 
 

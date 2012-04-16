@@ -4,6 +4,7 @@
 #include "opengl\driver.h"
 #include "opengl\vertex_array_object.h"
 #include "opengl\quad_object.h"
+#include "opengl\static_object.h"
 #include "opengl\point_object.h"
 #include "opengl\grid_object.h"
 #include "opengl\texture2d.h"
@@ -11,6 +12,7 @@
 #include "opengl\render_context\rc_solid_textured_3d.h"
 #include "opengl\render_context\rc_solid_color_3d.h"
 #include "opengl\render_context\rc_terrain.h"
+#include "opengl\render_context\rc_bump_mapping.h"
 
 #ifdef PUNK_USE_DIRECT3D9
 #endif

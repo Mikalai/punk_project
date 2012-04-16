@@ -192,7 +192,7 @@ namespace Math
 		return m_border_points[index];
 	}
 
-	bool BoundingBox::DoCrossLine(const Line3D& line)
+	bool BoundingBox::DoCrossLine(const Line3D& line) const
 	{
 		if (!ClipSegment3D(line.Origin(), line.Destination(), m_min, m_max))
 			return false;

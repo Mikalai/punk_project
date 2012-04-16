@@ -95,6 +95,7 @@ namespace OpenGL
 			glUseProgram(m_program);
 			CHECK_GL_ERROR(L"Unable to use shader program");
 			BindUniforms();
+			glEnable(GL_DEPTH_TEST);
 		}
 
 		void End()

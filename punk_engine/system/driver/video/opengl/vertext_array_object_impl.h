@@ -75,6 +75,8 @@ namespace OpenGL
 				m_was_modified = false;
 			}
 			glBindVertexArray(m_vao);
+			glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
 			CHECK_GL_ERROR(L"Unable to bind vertex array");
 			SetUpAttributes(supported_by_context);			
 		}
@@ -92,6 +94,8 @@ namespace OpenGL
 				glDeleteBuffers(1, &m_vertex_buffer);
 				CHECK_GL_ERROR(L"Unable to delete vertex buffer");
 			}
+			glBindVertexArray(0);
+			CHECK_GL_ERROR(L"Unable to generate vertex buffer");
 			glGenBuffers(1, &m_vertex_buffer);
 			CHECK_GL_ERROR(L"Unable to generate vertex buffer");
 			glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
@@ -102,6 +106,8 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to unbind vertex buffer");
 			m_vertex_size = vertex_size;
 			m_was_modified = true;
+			glBindVertexArray(0);
+			CHECK_GL_ERROR(L"Unable to generate vertex buffer");
 		}
 
 		void SetUpAttributes(VertexAttributes supported_by_context)
@@ -109,7 +115,7 @@ namespace OpenGL
 			// We should enable only those attributes that are supported by context and available in vertex buffer
 			VertexAttributes components = m_combination & supported_by_context;
 
-			for (int i = 0; i < 16; ++i)
+			for (int i = 0; i < 6; ++i)
 			{
 				glDisableVertexAttribArray(i);
 				CHECK_GL_ERROR(L"Unable to disable one of 16 vertex attrib arrays");
@@ -139,15 +145,15 @@ namespace OpenGL
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
 				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*sizeof(float)));	//	normal
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
-				glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(2*4*sizeof(float)));	//	texture
+				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(2*4*sizeof(float)));	//	texture
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
-				glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(3*4*sizeof(float)));	//	texture
+				glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(3*4*sizeof(float)));	//	flags
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
 				glEnableVertexAttribArray(0);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
 				glEnableVertexAttribArray(1);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
-				glEnableVertexAttribArray(2);
+				glEnableVertexAttribArray(4);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
 				glEnableVertexAttribArray(6);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
@@ -156,11 +162,11 @@ namespace OpenGL
 			{
 				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)0);	//	position
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
-				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*sizeof(float)));	//	texture_0
+				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*sizeof(float)));	//	texture_0
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
 				glEnableVertexAttribArray(0);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
-				glEnableVertexAttribArray(1);
+				glEnableVertexAttribArray(4);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
 			}
 			else if (components == (VERTEX_POSITION|VERTEX_NORMAL|VERTEX_TEXTURE_0))
@@ -169,13 +175,13 @@ namespace OpenGL
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
 				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*sizeof(float)));	//	normal
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
-				glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(2*4*sizeof(float)));	//texture_0
+				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(2*4*sizeof(float)));	//texture_0
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
 				glEnableVertexAttribArray(0);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
 				glEnableVertexAttribArray(1);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
-				glEnableVertexAttribArray(2);
+				glEnableVertexAttribArray(4);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
 			}		
 			else if (components == (VERTEX_POSITION|VERTEX_NORMAL|VERTEX_TANGENT|VERTEX_BITANGENT|VERTEX_TEXTURE_0))
@@ -245,6 +251,8 @@ namespace OpenGL
 				glDeleteBuffers(1, &m_index_buffer);
 				CHECK_GL_ERROR(L"Unable to delete index buffer");
 			}
+			glBindVertexArray(0);
+			CHECK_GL_ERROR(L"Unable to generate vertex buffer");
 			glGenBuffers(1, &m_index_buffer);
 			CHECK_GL_ERROR(L"Unable to generate index buffer");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
@@ -255,6 +263,8 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to unbind index buffer");
 			m_index_count = size / sizeof(unsigned);	// This code depends on Render when GL_UNSIGNED_INT used in glDrawElements*
 			m_was_modified = true;
+			glBindVertexArray(0);
+			CHECK_GL_ERROR(L"Unable to generate vertex buffer");
 		}
 
 		void Cook(VertexAttributes components, GLenum primitive_type)

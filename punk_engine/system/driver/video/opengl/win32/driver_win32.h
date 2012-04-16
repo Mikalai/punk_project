@@ -63,7 +63,6 @@ namespace OpenGL
 		
 		RenderContext* GetRenderContext();
 		TextureContext* GetTextureContext();
-
 		Driver();
 		void SetFullScreen(bool flag);
 		void Start(System::Window* wnd);
@@ -76,6 +75,7 @@ namespace OpenGL
 		System::Window* GetWindow();
 		void SetRenderState(const State* state);
 		void SetRenderEffect(const Effect* effect);
+		void SetViewport(float x, float y, float width, float height);
 		void Render(VertexArrayObject* object);
 		void RenderQuad();
 		void RenderString(const System::string& s);

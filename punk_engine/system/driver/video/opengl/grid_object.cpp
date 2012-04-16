@@ -88,6 +88,6 @@ namespace OpenGL
 		unsigned ibuffer_size = index.size()*sizeof(unsigned);
 		impl_vao->SetVertexBuffer(&v[0], vbuffer_size, sizeof(Vertex));
 		impl_vao->SetIndexBuffer(&index[0], ibuffer_size);
-		impl_vao->Cook(VERTEX_POSITION|VERTEX_TEXTURE_0|VERTEX_FLAGS|VERTEX_NORMAL, GL_TRIANGLES);
+		impl_vao->Cook(VERTEX_POSITION|VERTEX_TEXTURE_0|VERTEX_FLAGS|VERTEX_NORMAL, GL_TRIANGLES);/**/
 	}
 }

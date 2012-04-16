@@ -275,7 +275,7 @@ namespace OpenGL
 			b |= GL_STENCIL_BUFFER_BIT;
 
 		glClear(b);
-		CHECK_GL_ERROR(L"Unable to clear shader");
+		CHECK_GL_ERROR(L"Unable to clear shader");		
 	}
 
 	void Driver::SetClearColor(float r, float g, float b, float a)
@@ -392,6 +392,11 @@ namespace OpenGL
 		glViewport(0, 0, event->width, event->height);
 	}
 
+	void Driver::SetViewport(float x, float y, float width, float height)
+	{
+		glViewport(x, y, width, height);
+	}
+	
 	void Driver::SetFullScreen(bool flag)
 	{
 		m_fullscreen = flag;
