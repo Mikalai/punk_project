@@ -53,4 +53,14 @@ namespace OpenGL
 	{
 		throw System::SystemError(L"Not implemented");
 	}
+
+	void* VertexArrayObject::MapVertexBuffer()
+	{
+		return impl_vao->MapVertexBuffer();
+	}
+
+	void VertexArrayObject::UnmapVertexBuffer()
+	{
+		impl_vao->UnmapVertexBuffer();
+	}
 }

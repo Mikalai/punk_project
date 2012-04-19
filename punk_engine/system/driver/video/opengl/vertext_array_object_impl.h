@@ -309,6 +309,38 @@ namespace OpenGL
 				throw System::SystemError(L"Unsupported primitive type");
 			}
 		}
+
+		void* MapVertexBuffer()
+		{
+			glBindVertexArray(m_vao);
+			CHECK_GL_ERROR(L"Unable to bind vao");
+			GLvoid* buffer = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
+			CHECK_GL_ERROR(L"Unable to map buffer");
+			glBindVertexArray(0);
+			CHECK_GL_ERROR(L"Unable to unbind vao");
+			return buffer;
+		}
+
+		const void* MapVertexBuffer() const
+		{
+			glBindVertexArray(m_vao);
+			CHECK_GL_ERROR(L"Unable to bind vao");
+			GLvoid* buffer = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
+			CHECK_GL_ERROR(L"Unable to map buffer");
+			glBindVertexArray(0);
+			CHECK_GL_ERROR(L"Unable to unbind vao");
+			return buffer;			
+		}
+
+		void UnmapVertexBuffer()
+		{
+			glBindVertexArray(m_vao);
+			CHECK_GL_ERROR(L"Unable to bind vao");
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+			CHECK_GL_ERROR(L"Unable to map buffer");
+			glBindVertexArray(0);
+			CHECK_GL_ERROR(L"Unable to unbind vao");
+		}
 	};
 }
 

@@ -27,11 +27,15 @@ class Test
 	Math::Camera m_camera;
 	float x, y, z;
 public:
+	
 	Test()
 	{
 		Utility::Scene scene;
-		scene.Load(L"sphere.pmd");
-		m_static_mesh.reset(scene.CookStaticMesh(L"Icosphere"));
+		scene.Load(L"simple_house.pmd");
+		m_static_mesh.reset(scene.CookStaticMesh(L"Cube"));
+		System::Buffer buffer;
+		m_static_mesh->Save(buffer);
+		System::BinaryFile::Save(System::Environment::GetModelFolder() + L"simple_house.mesh", buffer);
 
 		x = y = z = 10;
 		m_driver.Start(System::Window::GetInstance());
@@ -54,8 +58,8 @@ public:
 		m_grid->SetWidthSlice(16);
 		m_grid->Init();/**/
 
-		m_image = ImageModule::Importer().LoadRGBA(System::Environment::GetTexutreFolder() + L"checker2.png");
-		m_gray_image = ImageModule::Importer().LoadRGB(System::Environment::GetTexutreFolder() + L"bump.png");
+		m_image = ImageModule::Importer().LoadRGBA(System::Environment::GetTexutreFolder() + L"diffuse_map.png");
+		m_gray_image = ImageModule::Importer().LoadRGB(System::Environment::GetTexutreFolder() + L"house_normal.png");
 		m_height_map.reset(new OpenGL::Texture2D(m_gray_image));		
 
 		m_terrain_context.reset(new OpenGL::RenderContextTerrain());		
@@ -158,19 +162,31 @@ public:
 		static float a = 0;
 		a+= 0.001;
 		m_bump_mapping->SetWorldMatrix(Math::mat4::CreateTranslate(0, 0, 0));
-		m_bump_mapping->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(2*sin(a), 2, 2*cos(a)), Math::vec3(0, 0, 0), Math::vec3(0, 1, 0)));
+		m_bump_mapping->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(10*sin(a), 10, 10*cos(a)), Math::vec3(0, 0, 0), Math::vec3(0, 1, 0)));
 		m_bump_mapping->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
 		m_bump_mapping->SetAmbientColor(Math::vec4(0,0,0,0));
 		m_bump_mapping->SetSpecularColor(Math::vec4(1,1,1,1));
 		m_bump_mapping->SetDiffuseColor(Math::vec4(1,1,1,1));
 		m_bump_mapping->SetSpecularPower(16);
-		m_bump_mapping->SetLightPosition(Math::vec3(0, 10, 0));
+		m_bump_mapping->SetLightPosition(Math::vec3(10, 1, 10));
 		m_bump_mapping->Begin();		
 		m_texture_context->Bind();
 		m_static_vao->Bind(m_bump_mapping->GetSupportedVertexAttributes());
+		struct Vertex
+		{
+			float x,y,z,w;
+			float nx,ny,nz,nw;
+			float tx,ty,tz,tw;
+			float bx,by,bz,bw;
+			float u, v, s, q;
+		};
+
+	//	Vertex* v = (Vertex*)m_static_vao->MapVertexBuffer();
+
 		m_static_vao->Render();		
-		m_bump_mapping->SetWorldMatrix(Math::mat4::CreateTranslate(1, 0, 0));
-		m_static_vao->Render();
+		//m_bump_mapping->SetWorldMatrix(Math::mat4::CreateTranslate(1, 0, 0));
+		/*m_bump_mapping->Begin();	
+		m_static_vao->Render();*/	
 		m_static_vao->Unbind();
 		m_texture_context->Unbind();
 		m_bump_mapping->End();/**/

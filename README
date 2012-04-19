@@ -1,4 +1,140 @@
+
+=================================================================================================================
+|			|-----|                 |              |------													    |
+|			|	  |					| /			   |                       *									|
+|			|_____|	|     | |----|  |/             |----	|----|  |----| |  |----|  /---\						|
+|			|		|	  | |    |  |\			   |		|	 |  |    | |  |	   |  |___/						|
+|			|		\_____/ |    |_ | \            |______  |    |_ \----| |  |    |_ \____						|
+|																	  |__|										|
+=================================================================================================================
+
+Wow, we are suprised that you are reading this text. But if you do than please read it as far as you can.
+What is punk_engine? Well, this is a game. A game should make an engine. We do not write an engine, we do write 
+a game. You can ask: Why don't you use some engine to make your game? We answer. We are developers. We like writing programs.
+We are not an artist or some music creator or any other staff. The goal is to write a game and during this process an engine from
+punk will become a usable opensource library.
+About the game.
+The game is an RPG with elements of economical RTS. A player have a control over a character with some skills. During
+the game skill base become wider and character can perform more staff. A player can found a base in any place on the map.
+Smart player will do it not for from resources. Size of maps are large should be large. For demo it will be 30km over 30km.
+This is a single player game without any network for now. A player can form groups of people that can leave in his base.
+Leaving there they can perform different tasks (agriculture, exploring, searching things, raid enemies, patrol, protect caravans an so on).
+Player can equip every character before assigning him to the task, or can use automatic system. Such characters are primary computer generated. But further development is defined by the player of their own AI. Total amoun of characters is limited by computational power. We think that for the first demo there will be one character controled by AI without player control. Player will be an observer their. The second demo will be with two characters one controled by player and the second controled by AI. The third demo will be a small town with different resources where character can do some job, eat food, sleep and interconnect. And the fourth demo will be a map
+with to groups of highly moralistic group and low moralistic group. The goal is to achiev balance between this groups such that neither have an advantage.
+
+Character can make brigades with leader that will do the task commonly. In the base it is possible to build different buildings (defending, living, production). 
+Time of the game is 2080-2100. When China, USA, Europe, Russia quarreled very much and made a III World War. Big trouble for the whole planet. Nuclear weapon, chemical weapon, biological weapon was used during the conflict. The territory is the 
+territory of the former Greate Dutchy Of Lithuania. So the atmosphere of the game should be hopeless, sorrowful. 
+This game supposed to be for hard core gamers, so there won't be any automatic helping staff like map with marks and
+straight obvious way of game. The player can be asked to save somebody, but not because a game designer decided that
+player will save it. He can be asked to save somebody, because simulation engine in the game simulated that a some
+people formed a group of low moralistic band that needs food and slaves with a leader ahead. And this band attacked
+another group of highly moralistic people who decided to grow food themselves. So when a player will come to the place
+a second group live he can be asked to rescue someone. And it is possible that player will never find that band cause it
+died in the winter from called or was killed by other band and there will not be specially designed place that is marked on the map.
+So, there will not be a strong storyline. Exploring the world and 
+developing a base is the mean for surviving. Some simple simulation rules can be implemented. For example if player is a warrior 
+and saved a farmer than a farmer can join the party of player. But player can also enslave a farmer if famrmer have got not 
+enough will to  carry the pressure. The more player killed farmers the more will should have a farmere to abondon. If player is 
+a warrior and don't kill farmers when they don't want to join him than they will join him when moral status of the warrior corresponds
+to the will (or some other parameter) of the farmer.
+If player is a scientist than the situation can become completely different. A scientist needs to have a gun and lot's of staff to survive
+in the inventory. He might have waste weight, and bad health but his AI is strong and he has good knowledge in creating different staff
+(like medicine, weapon and so on). Well the concpet is understandable. We need refinments and implementation.
+Game itself is real time 3rd 1st person view. While managing a base the view switched to the typical 2/3 view. The territory of the base is visible to the player. Other
+terrytory under fog of war. 
+A player maybe will have the ability to take control on any group that was send to the mission. 
 to add:
+
 1. skinning
+What for? The game needs 3D people that can walk, jump, crunch and do lot's of other different staff
+
 2. sound
-3. scene graph
+What for? Any location in the game have got some ambient sound. Besides there must be possibility to 
+play different shot sounds such as walk, shoot, voices and so on.
+
+3. Some physic integration.
+What for? Well, using some physics library tremendously reduce the amoun of staff the should be done
+to make game look pretty nice. Supposed that character control and ingame staff interaction can be made
+through set of callback function of physical engine. For now it is supposed to be Bullet engine.
+
+4. We need 3D models of people, different creatures, vehicles with textures. There are some requirenmets for the models.
+They should be made of triangles with texture coordinates. If this is a humanoid it must use a sekeleton of specific construction.
+I made such a skeleton but possible it is not a very good one, so if you exactly know how humanoid skeleton should be made
+and, at all, know hot to perform rigging well we will be glad to use you knowledge. 
+It is desirably that all the models are made in Blender 2.6 > and exported to *.pmd format. This is an exporter made by us
+special for these game. From pmd, tools that are not entirely complete, it is possible to cook .mesh files, .action files, .skeleton 
+files, .map files, .object files, .character files and some other files, that can be read by the game. All the staff you can 
+give will be availble for every one, so it is very little possibilty that you will earn any money. But we can give you 
+a promise that your name well be in credits when the game will be released.
+
+5. Ofcourse we need artists, but unfortunately for now we are unable to use the material that an artist can provide, cause we are not 
+modellers and we have got no modellers in connections that can make use of this material. But we will be glad to get any material anyway and
+use it in future. As for modellers, it is little chance to earn money, but we promise to write your name in credits.
+
+6. We need musicians. We understand in music completely nothing(. But we like listen to music, and have some opinions about it. We
+know that music can raise lot's of feelings in human's heart. And that is amazing. That is what we want. If you know how to make
+music and want to take part in this project you are completely welcomed. The requirenments for music for now the next. It should be 
+decoded using vorbis decoder (ogg). (As you can see we don't know what to say about the music more:)). So if you know how music
+should be organized and stored in games, please share you knowledge with us. Besides music we will be happy if you can
+make some special sounds like sound of walk, shoots, wind, doors we will be glad to use it here. As for modelers and artists it is very
+little possibility to earn any money, but we promise to write you name in credits.
+
+7. In the very very very close future almost yesterday we need a gui. We do not need such a heavy beast like cegui. We need a gui that
+will be tightly connected with the game and made special for this game. But still it is required to develop an interface to the video driver
+that it must support to make it possible to render gui on the screen. Gui supposed to be rendered on the top of the 3D scene. The basic staff it must
+support: 
+	- buttons. Button use texture with alpha channel to render it's content (text or image).
+	- edit lines. It should support entering one line of text. On mouse click it should capture input focus, and all keyboard input should be
+	intercepted by this edit line. Entire gui can use the mechanism of events that is already implemented. Any object can subcribe for the event
+	of definite type and event manager will send an entity of the event to it when event occured. Supposed that there would be an GUImanager that
+	will subscribe on different events it needs and will perform all the gui controll separated from other modules of the engine. One more thing. 
+	It is supposed that a basic element that will be used by gui is a square of unit size. This square can be scaled for proper size and rendered
+	by video driver with applyed texture on it. If you have better suggestion you are completely welcomed to share it.
+	- Dialog windows (or simple widgets) a gui element that can hold other gui elements. This windows should have a button that when clicked 
+	the window will be minized to a small button.
+	- Labels	
+	- Static text areas with scroll support. The purpose of this element is to render maybe rather big text blocks. Supposed that user assigns a
+	string to the element and this element should automatically split text in lines and render it. When user scrolls with mouse text should be scrolled.
+	- Pop-up windows (baloons) they are supposed to be used in game to tell player about different events and messages. It must appear on the screen and
+	after some time dissapear automatically.
+	- List box. List box should be able to store either text message or images of same size. Anyway both text and image are implemented using a texture so it doesn't 
+	matter what to display. Main thing is that the size of the element is fixed for current list box. It would be cool if there would be a support 
+	for drag-n-drop.
+	- For inventory display we need a grid list box (or some thing like that) with the possibility of scrolling and dragging and clicking with different modifiers.
+	So this is a basic staff we are going to implement in our gui. There is an old version of gui in gui folder but it ugly and for now it doesn't work. 
+	We will rewrite lot's of that staff. Maybe entirely.
+	Gui rendering supposed to be performed the next way. First RenderContext2D is selected. This contexts expectes to render geometry that consists of vertex with the
+	next fomat 
+			struct Vertex
+			{
+				float x, y, z, w;
+				float u, v, s, q;
+			};
+	Than a neccessary texture context is applied that bind diffuse texture to texture0.
+	Through the uniform parameters appropriate world matrix is applied to the vertex shader and thus guimanager can render all the elements that should be rendered for now.
+	It must be possible for the rest of the program to be subscribed to the event produced by the gui activity similar to the mechanism already implemented in the engine.
+	
+8. We must define how the world data structure is organized. Obviously that there should be a mechanism of streaming data on the fly during gameplay. Thus the world
+should be devided into regions that must be able dynamically loaded and unloaded on demand into either cpu ram or video ram. This is very important about textures and 
+vertex buffers. 
+
+9. Terrain rendering. Terrain rendering supposed to be implemented throuh the height maps. There will be one current height map with the size 1024x1024 pixels 
+that corresponds to 1024x1024 meters of real size. This texture is used to make vertex displacement in vertex shader to the corresponding height. Texture format 
+should be used 16 bits per pixel, thus available range of height for pixels will be between 0 and 65535 meters (pretty enough). Modern hardware do have support for such 
+format. If it is not than we can use RGB texture and convert height as the next r*256*256+256*g+b that is also enough. Obvoiusly we need a special tool to watch such maps and maybe perform some manipulations, preview terrain and so on. For terrain collision detection it is supposed that blender will be used with btHeight*** shape.
+
+10. Water rendering. There are a lot of articles about it but we still don't have nice implementaion of it.
+
+11. Artificial intelegence. For now we are going to implement a very simple scene with one character, completely naked without any inventory in the middle of the map
+that is completely plain and there is nothing else. It is supposed that any character has a vast amoun paramters that should influence on its behavior. For example the basic one is energy and thirst. In a called environment without protection human loose energy when it decrease to zero person dies. The same with the thirst. 
+AI itself is a class that forces character perform some actions. AI can be stupid, angry, highly moralistic or completley animalistic. AI perform math calculations and 
+puts to the queue of tasks of the character a primitive task, that is hardcoded in the game and that a character can perform. 
+
+12. Generator tools. We have a large world so we need tools to generate, towns, buildings, landscapes, rivers, rooms, roads and so on. We need an algorithm to plant automaticaly vegetation over the land. 
+
+So there are lots and lots of staff to be implemented. There are alot of experiments in this development and frankly speaking no clear view. But we have the aim. Our aim
+is a game and we will make it in the January 2013.
+
+The last. For now everywhere in this text the word "we" can be replaced with the word "I". Yep, I'm single developer for now and releaseing an interesting game is my
+aim. I am programmer with some knowledge in C++, OpenGL and Windows programming. If you are interested in this project I will be happy to get any help of you. 

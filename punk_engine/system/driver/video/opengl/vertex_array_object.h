@@ -23,6 +23,8 @@ namespace OpenGL
 		int GetIndexCount() const;		
 		void Render();		
 		void Init();
+		void* MapVertexBuffer();
+		void UnmapVertexBuffer();
 	protected:
 		virtual void Cook();		
 	};

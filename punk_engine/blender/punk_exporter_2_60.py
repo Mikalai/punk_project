@@ -164,8 +164,7 @@ def export_local_matrix(f, object):
 #   applied in the scene
 #
 def export_vertex_position(f, mesh):        
-    start_block(f, "*vertex_position")
-    
+    start_block(f, "*vertex_position")    
     make_offset(f)
     f.write("%d\n" % len(mesh.vertices))
     for vertex in mesh.vertices:
@@ -190,7 +189,7 @@ def export_tex_coords(f, mesh):
         f.write("%s\n" % texture.name)
         end_block(f)
         
-        start_block(f, "*tex_cood")        
+        start_block(f, "*tex_coord")        
         #
         #   uv1 uv2 uv3 uv4
         #
@@ -216,71 +215,81 @@ def export_mesh_material(f, mesh):
 #
 #   export only mesh
 #
-def export_mesh(f, mesh):
+def export_mesh(f, object):
     start_block(f, "*mesh")
-    export_vertex_position(f, mesh)
-    export_normals(f, mesh)
-    export_faces(f, mesh)
-    export_tex_coords(f, mesh)
-    export_mesh_material(f, mesh)
+    export_vertex_position(f, object.data)
+    export_normals(f, object.data)
+    export_faces(f, object.data)
+    export_tex_coords(f, object.data)
+    export_mesh_material(f, object.data)
+    export_bones_weight(f, object) 
     end_block(f)
     return
 
 #
 #   export bones
 #
-def export_bones(f, object):
-    armature = object.find_armature()
-    if armature == None:
+def export_bones(f):
+    armatures = bpy.data.armatures
+    if len(armatures) == 0:
         return
-    start_block(f, "*bones")    
-    make_offset(f)
-    f.write("%d\n" % len(armature.data.bones))
-    for bone in armature.data.bones:
-        #
-        #   export bone
-        #
-        start_block(f, "*bone")
-        
-        #
-        #   write bone name
-        #
+    start_block(f, "*armatures")
+    for armature in armatures:
+        start_block(f, "*armature")    
         
         start_block(f, "*name")
-        make_offset(f);
-        f.write("%s\n" % bone.name);
-        end_block(f);
+        make_offset(f)
+        f.write("%s\n" % armature.name)
+        end_block(f)    #*name
         
-        #
-        #   write bone parent
-        #
-        
-        if bone.parent != None:
-            start_block(f, "*parent")
+        for bone in armature.bones:
+            #
+            #   export bone
+            #
+            start_block(f, "*bone")
+            
+            #
+            #   write bone name
+            #
+            
+            start_block(f, "*name")
             make_offset(f);
-            f.write("%s\n" % bone.parent.name);
+            f.write("%s\n" % bone.name);
             end_block(f);
-        
-        #
-        #   write bone matrix
-        #
-        start_block(f, "*local_matrix")
-        m = bone.matrix_local
-        make_offset(f)
-        f.write("%f %f %f %f\n" % (m[0][0], m[0][1], m[0][2], m[0][3]))
-        make_offset(f)
-        f.write("%f %f %f %f\n" % (m[1][0], m[1][1], m[1][2], m[1][3]))
-        make_offset(f)
-        f.write("%f %f %f %f\n" % (m[2][0], m[2][1], m[2][2], m[2][3]))
-        make_offset(f)
-        f.write("%f %f %f %f\n\n" % (m[3][0], m[3][1], m[3][2], m[3][3]))        
-        end_block(f)
-        end_block(f)
-    end_block(f)
-    #
-    #   export all animation
-    #
-    start_block(f, "*skeleton_animation")
+            
+            #
+            #   write bone parent
+            #
+            
+            if bone.parent != None:
+                start_block(f, "*parent")
+                make_offset(f);
+                f.write("%s\n" % bone.parent.name);
+                end_block(f);
+            
+            #
+            #   write bone matrix
+            #
+            start_block(f, "*local_matrix")
+            m = bone.matrix_local
+            make_offset(f)
+            f.write("%f %f %f %f\n" % (m[0][0], m[0][1], m[0][2], m[0][3]))
+            make_offset(f)
+            f.write("%f %f %f %f\n" % (m[1][0], m[1][1], m[1][2], m[1][3]))
+            make_offset(f)
+            f.write("%f %f %f %f\n" % (m[2][0], m[2][1], m[2][2], m[2][3]))
+            make_offset(f)
+            f.write("%f %f %f %f\n\n" % (m[3][0], m[3][1], m[3][2], m[3][3]))        
+            end_block(f)    #*local_matrix
+            end_block(f)    #*bone
+        end_block(f)    #*armature
+    end_block(f)    #*armatures
+
+#
+#   export all animation
+#    
+def export_actions(f):
+    start_block(f, "*actions")
     for action in bpy.data.actions:
         start_block(f, "*action")
         start_block(f, "*name")
@@ -355,7 +364,7 @@ def export_bones(f, object):
     #
     #   end animation block
     #
-    end_block(f);
+    end_block(f) #*actions
             
     return
 #
@@ -363,7 +372,6 @@ def export_bones(f, object):
 #
 def export_bones_weight(f, object):    
     start_block(f, "*bones_weight")    
-    mesh = object.data
     for vert in object.data.vertices:
         for group in object.vertex_groups:
             try:
@@ -429,14 +437,9 @@ def export_object(f, object):
     export_world_matrix(f, object)
     export_local_matrix(f, object)
     if object.name.find("slot") == -1:
-        export_mesh(f, object.data)
-        export_bones_weight(f, object)
-        export_bones(f, object)    
-        
+        export_mesh(f, object)       
     for child in object.children:
-        export_object(f, child)
-        
-    export_materials(f, bpy.data.materials)
+        export_object(f, child)       
     end_block(f)
     return     
 
@@ -445,6 +448,9 @@ def export_model(context, filepath, anim_in_separate_file):
     f = open(filepath, 'w')
     for obj in bpy.context.selected_objects:
         export_object(f, obj)
+    export_materials(f, bpy.data.materials)
+    export_bones(f)    
+    export_actions(f)
     f.close()
     return {'FINISHED'}
 
