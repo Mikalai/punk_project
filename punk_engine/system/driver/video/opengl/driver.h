@@ -13,6 +13,10 @@ and handle different parameters about users video system
 #include "shader_program.h"
 #include "render_context\render_context.h"
 #include "render_context\rc_solid_color_3d.h"
+#include "render_context\rc_light.h"
+#include "render_context\rc_bump_mapping.h"
+
+
 #include "texture_context.h"
 #include "vertex_array_object.h"
 #include "text_texture_2d.h"

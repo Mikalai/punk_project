@@ -189,6 +189,15 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp">
       <Filter>render_context\context%28logic%29</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.cpp">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h">
@@ -317,6 +326,15 @@
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h">
       <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.h">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

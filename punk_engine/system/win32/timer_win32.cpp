@@ -13,11 +13,11 @@ namespace System
 		QueryPerformanceCounter(&startPoint);
     }
 
-    __int64 Timer::GetElapsedTime() const
+    double Timer::GetElapsedTime() const
     {
 		LARGE_INTEGER li;
 		QueryPerformanceCounter(&li);
-		return (double)(li.QuadPart - startPoint.QuadPart)*1000000/freq;
+		return (double)(li.QuadPart - startPoint.QuadPart)/(double)freq;
     }
 
     void Timer::UpdateStartPoint()

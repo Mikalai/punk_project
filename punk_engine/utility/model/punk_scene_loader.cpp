@@ -1006,6 +1006,24 @@ namespace Utility
 			return (*it).first;
 		}
 
+		int GetObjectsCount() const
+		{
+			return m_objects.size();
+		}
+
+		const System::string& GetObjectName(int index) const
+		{
+			if (index >= m_objects.size())
+				throw System::SystemError(L"Index out of range");
+			int i = 0;
+			for (Objects::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+			{
+				if (i == index)
+					return it->first;
+				i++;
+			}
+		}
+
 		StaticMesh* CookStaticMesh(Object& o) const
 		{
 			struct Vertex
@@ -1620,4 +1638,15 @@ namespace Utility
 	{
 		return impl_scene->IntersectWithRay(start, end, res);
 	}
+
+	unsigned Scene::GetObjectsCount() const
+	{
+		return impl_scene->GetObjectsCount();
+	}
+
+	const System::string& Scene::GetObjectName(int index) const
+	{
+		return impl_scene->GetObjectName(index);
+	}
+
 }

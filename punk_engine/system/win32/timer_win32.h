@@ -19,7 +19,7 @@ namespace System
 		LARGE_INTEGER startPoint;
     public:
         Timer();
-        __int64 GetElapsedTime() const;
+        double GetElapsedTime() const;
         void UpdateStartPoint();
     };
 }

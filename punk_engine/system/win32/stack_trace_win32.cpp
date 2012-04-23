@@ -7,7 +7,7 @@ namespace System
 {
 	Stack::Stack()
 	{
-		if (!SymInitialize(GetCurrentProcess(), "E:\\project\\punk_project\\vs2008\\Debug\\", TRUE))
+		if (!SymInitialize(GetCurrentProcess(), NULL, TRUE))
 			Logger::GetInstance()->WriteDebugMessage(L"Unable to find initialize debug info", LOG_LOCATION);
 	}
 

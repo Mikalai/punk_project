@@ -10,7 +10,7 @@ namespace OpenGL
 		System::ConfigFile file;
 		file.Open(System::Window::GetInstance()->GetTitle());
 		if (!file.IsExistOption(L"shaders"))
-			file.WriteOptionString(L"shaders", L"d:\\project\\punk_project\\punk_engine\\system\\driver\\video\\opengl\\glsl\\");
+			file.WriteOptionString(L"shaders", L"d:\\project\\data\\shaders\\");
 		if (!file.IsExistOption(L"textures"))
 			file.WriteOptionString(L"textures", L"d:\\project\\data\\textures\\");
 		if (!file.IsExistOption(L"data"))

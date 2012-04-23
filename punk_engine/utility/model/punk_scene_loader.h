@@ -5,15 +5,16 @@
 #include <vector>
 #include "intersection.h"
 
-namespace System
-{
-	class string;
-}
 
 namespace Math
 {
 	class OctTree;
 	template<class T> class Vector3;
+}
+
+namespace System
+{
+	class string;
 }
 
 namespace Utility
@@ -27,6 +28,9 @@ namespace Utility
 		Scene(const Scene& scene);
 		Scene& operator = (const Scene& scene);
 		~Scene();
+
+		unsigned GetObjectsCount() const;
+		const System::string& GetObjectName(int index) const;
 
 		void Load(const System::string& filename);
 		//Math::OctTree& GetOctTree();

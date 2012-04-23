@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="..\punk_engine\render\terrain_render.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\grid_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.cpp" />
@@ -97,9 +98,11 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.cpp" />
@@ -107,6 +110,7 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp" />
@@ -225,6 +229,7 @@
   <ItemGroup>
     <ClInclude Include="..\punk_engine\render\terrain_render.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\extensions.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object.h" />
@@ -240,9 +245,11 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h" />
@@ -251,6 +258,7 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.h" />

@@ -1,12 +1,12 @@
 
-=================================================================================================================
-|			|-----|                 |              |------													    |
-|			|	  |					| /			   |                       *									|
-|			|_____|	|     | |----|  |/             |----	|----|  |----| |  |----|  /---\						|
-|			|		|	  | |    |  |\			   |		|	 |  |    | |  |	   |  |___/						|
-|			|		\_____/ |    |_ | \            |______  |    |_ \----| |  |    |_ \____						|
-|																	  |__|										|
-=================================================================================================================
+=================================================================================
+|   |-----|                  |       |------                                    |
+|   |     |                  | /     |                       *                  |
+|   |_____|  |     | |----|  |/      |----    |----|  |----| |  |----|  /---\   |
+|   |        |     | |    |  |\      |        |    |  |    | |  |    |  |___/   |
+|   |        \_____/ |    |_ | \     |______  |    |_ \----| |  |    |_ \____   |
+|                                                       |__|                    |
+=================================================================================
 
 Wow, we are suprised that you are reading this text. But if you do than please read it as far as you can.
 What is punk_engine? Well, this is a game. A game should make an engine. We do not write an engine, we do write 
@@ -84,37 +84,37 @@ little possibility to earn any money, but we promise to write you name in credit
 will be tightly connected with the game and made special for this game. But still it is required to develop an interface to the video driver
 that it must support to make it possible to render gui on the screen. Gui supposed to be rendered on the top of the 3D scene. The basic staff it must
 support: 
-	- buttons. Button use texture with alpha channel to render it's content (text or image).
-	- edit lines. It should support entering one line of text. On mouse click it should capture input focus, and all keyboard input should be
-	intercepted by this edit line. Entire gui can use the mechanism of events that is already implemented. Any object can subcribe for the event
-	of definite type and event manager will send an entity of the event to it when event occured. Supposed that there would be an GUImanager that
-	will subscribe on different events it needs and will perform all the gui controll separated from other modules of the engine. One more thing. 
-	It is supposed that a basic element that will be used by gui is a square of unit size. This square can be scaled for proper size and rendered
-	by video driver with applyed texture on it. If you have better suggestion you are completely welcomed to share it.
-	- Dialog windows (or simple widgets) a gui element that can hold other gui elements. This windows should have a button that when clicked 
-	the window will be minized to a small button.
-	- Labels	
-	- Static text areas with scroll support. The purpose of this element is to render maybe rather big text blocks. Supposed that user assigns a
-	string to the element and this element should automatically split text in lines and render it. When user scrolls with mouse text should be scrolled.
-	- Pop-up windows (baloons) they are supposed to be used in game to tell player about different events and messages. It must appear on the screen and
-	after some time dissapear automatically.
-	- List box. List box should be able to store either text message or images of same size. Anyway both text and image are implemented using a texture so it doesn't 
-	matter what to display. Main thing is that the size of the element is fixed for current list box. It would be cool if there would be a support 
-	for drag-n-drop.
-	- For inventory display we need a grid list box (or some thing like that) with the possibility of scrolling and dragging and clicking with different modifiers.
-	So this is a basic staff we are going to implement in our gui. There is an old version of gui in gui folder but it ugly and for now it doesn't work. 
-	We will rewrite lot's of that staff. Maybe entirely.
-	Gui rendering supposed to be performed the next way. First RenderContext2D is selected. This contexts expectes to render geometry that consists of vertex with the
-	next fomat 
-			struct Vertex
-			{
-				float x, y, z, w;
-				float u, v, s, q;
-			};
-	Than a neccessary texture context is applied that bind diffuse texture to texture0.
-	Through the uniform parameters appropriate world matrix is applied to the vertex shader and thus guimanager can render all the elements that should be rendered for now.
-	It must be possible for the rest of the program to be subscribed to the event produced by the gui activity similar to the mechanism already implemented in the engine.
-	
+    - buttons. Button use texture with alpha channel to render it's content (text or image).
+    - edit lines. It should support entering one line of text. On mouse click it should capture input focus, and all keyboard input should be
+    intercepted by this edit line. Entire gui can use the mechanism of events that is already implemented. Any object can subcribe for the event
+    of definite type and event manager will send an entity of the event to it when event occured. Supposed that there would be an GUImanager that
+    will subscribe on different events it needs and will perform all the gui controll separated from other modules of the engine. One more thing. 
+    It is supposed that a basic element that will be used by gui is a square of unit size. This square can be scaled for proper size and rendered
+    by video driver with applyed texture on it. If you have better suggestion you are completely welcomed to share it.
+    - Dialog windows (or simple widgets) a gui element that can hold other gui elements. This windows should have a button that when clicked 
+    the window will be minized to a small button.
+    - Labels    
+    - Static text areas with scroll support. The purpose of this element is to render maybe rather big text blocks. Supposed that user assigns a
+    string to the element and this element should automatically split text in lines and render it. When user scrolls with mouse text should be scrolled.
+    - Pop-up windows (baloons) they are supposed to be used in game to tell player about different events and messages. It must appear on the screen and
+    after some time dissapear automatically.
+    - List box. List box should be able to store either text message or images of same size. Anyway both text and image are implemented using a texture so it doesn't 
+    matter what to display. Main thing is that the size of the element is fixed for current list box. It would be cool if there would be a support 
+    for drag-n-drop.
+    - For inventory display we need a grid list box (or some thing like that) with the possibility of scrolling and dragging and clicking with different modifiers.
+    So this is a basic staff we are going to implement in our gui. There is an old version of gui in gui folder but it ugly and for now it doesn't work. 
+    We will rewrite lot's of that staff. Maybe entirely.
+    Gui rendering supposed to be performed the next way. First RenderContext2D is selected. This contexts expectes to render geometry that consists of vertex with the
+    next fomat 
+            struct Vertex
+            {
+                float x, y, z, w;
+                float u, v, s, q;
+            };
+    Than a neccessary texture context is applied that bind diffuse texture to texture0.
+    Through the uniform parameters appropriate world matrix is applied to the vertex shader and thus guimanager can render all the elements that should be rendered for now.
+    It must be possible for the rest of the program to be subscribed to the event produced by the gui activity similar to the mechanism already implemented in the engine.
+    
 8. We must define how the world data structure is organized. Obviously that there should be a mechanism of streaming data on the fly during gameplay. Thus the world
 should be devided into regions that must be able dynamically loaded and unloaded on demand into either cpu ram or video ram. This is very important about textures and 
 vertex buffers. 

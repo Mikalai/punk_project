@@ -17,6 +17,7 @@ namespace Math
 	protected:
 		float m_latitude;
 		float m_longitude;
+		float m_distance;
 		void UpdateMatrix();
 	public:
 		Camera();

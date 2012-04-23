@@ -7,12 +7,14 @@ namespace Math
 		: Frustum()
 		, m_latitude(0)
 		, m_longitude(0)
+		, m_distance(5)
 	{UpdateMatrix();}
 
 	Camera::Camera(const Camera& camera)
 		: Frustum(camera)
 		, m_latitude(camera.m_latitude)
 		, m_longitude(camera.m_longitude)
+		, m_distance(camera.m_distance)
 	{UpdateMatrix();}
 
 	Camera& Camera::operator = (const Camera& camera)
@@ -69,8 +71,9 @@ namespace Math
 	}
 
 	void Camera::UpdateMatrix() 
-	{
+	{		
 		m_direction = vec3(cos(m_latitude)*sin(m_longitude), sin(m_latitude), cos(m_latitude)*cos(m_longitude));
+		m_position = vec3(cos(m_latitude)*sin(m_longitude), sin(m_latitude), cos(m_latitude)*cos(m_longitude));
 		Frustum::UpdateMatrix();
 	}
 }
