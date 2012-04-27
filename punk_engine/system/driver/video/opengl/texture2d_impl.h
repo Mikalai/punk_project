@@ -13,6 +13,15 @@ namespace OpenGL
 		GLenum m_format;
 		GLuint m_id;
 
+		Texture2DImpl()
+			: m_id(0)
+			, m_width(0)
+			, m_height(0)
+			, m_format(0)
+		{
+			//Create(64, 64, GL_RED, 0);
+		}
+
 		explicit Texture2DImpl(const ImageModule::Image& image)
 			: m_id(0)
 		{
@@ -92,6 +101,140 @@ namespace OpenGL
 			{
 				glGenerateMipmap(GL_TEXTURE_2D);
 				CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
+			}
+		}
+
+		void CopyFromCPU(int x, int y, int width, int height, GLenum format, const unsigned char* data)
+		{
+			if (x < 0)
+				return;
+			if (y < 0)
+				return;
+			if (x + width > m_width)
+				return;
+			if (y + height > m_height)
+				return;
+
+			glBindTexture(GL_TEXTURE_2D, m_id);
+			CHECK_GL_ERROR(L"Can't bind texture");
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);			
+			CHECK_GL_ERROR(L"Can't set pixel store");
+			glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, format, GL_UNSIGNED_BYTE, (void*)data);
+			CHECK_GL_ERROR(L"Can't tex sub image");
+			glBindTexture(GL_TEXTURE_2D, 0);
+			CHECK_GL_ERROR(L"Can't unbind texture");			
+		}
+
+		void Resize(int width, int height)
+		{
+			if (m_id != 0)
+			{
+				glDeleteTextures(1, &m_id);
+				CHECK_GL_ERROR(L"Can't delete texture");
+			}
+
+			m_width = width;
+			m_height = height;
+			glGenTextures(1, &m_id);
+			CHECK_GL_ERROR(L"Can't generate texture");
+			glBindTexture(GL_TEXTURE_2D, m_id);
+			CHECK_GL_ERROR(L"Can't bind texture");
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			CHECK_GL_ERROR(L"Can't pixel store i");
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			CHECK_GL_ERROR(L"Can't tex paramter f");
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			CHECK_GL_ERROR(L"Can't tex prarameter f");
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
+			CHECK_GL_ERROR(L"Can't tex image");
+			Fill(0);			
+		}
+
+		void Create(int width, int height, GLenum format, const unsigned char* data)
+		{
+			if (m_id != 0)
+			{
+				glDeleteTextures(1, &m_id);
+				CHECK_GL_ERROR(L"Can't DELETE texture");
+			}
+
+			m_width = width;
+			m_height = height;
+			m_format = format;
+			glGenTextures(1, &m_id);
+			CHECK_GL_ERROR(L"Can't generate texture");
+			glBindTexture(GL_TEXTURE_2D, m_id);
+			CHECK_GL_ERROR(L"Can't bind texture");
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			CHECK_GL_ERROR(L"Can't pixel store i");
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			CHECK_GL_ERROR(L"Can't tex parameter f");
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			CHECK_GL_ERROR(L"Can't tex parameter f");
+
+			if (m_format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
+			{
+				int w = m_width;
+				int h = m_height;
+				int offs = 0;
+				int blockSize = 8;
+				int size = ((w+3)/4)*((h+3)/4)*blockSize;
+				glCompressedTexImage2D(GL_TEXTURE_2D, 0, m_format, w, h, 0, size, data+offs);
+				CHECK_GL_ERROR(L"Can't compressed tex image 2d");		
+				offs += size;
+			}
+			else
+			{
+				if (m_format == GL_ALPHA)
+				{
+					glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
+					CHECK_GL_ERROR(L"Can't tex image 2d");
+				}
+				else if (m_format == GL_RGB)
+				{
+					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);					
+					CHECK_GL_ERROR(L"Can't tex image 2d");
+				}
+				else if (m_format == GL_RED)
+				{
+					glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+					CHECK_GL_ERROR(L"Can't tex image 2d");
+				}
+			}
+			glGenerateMipmap(GL_TEXTURE_2D);
+			CHECK_GL_ERROR(L"Can't generate mip map");
+		}
+
+		void Fill(unsigned char byte)
+		{
+			const int size = 64;
+			unsigned char data[size*size];
+			memset(data, byte, size*size);
+			glBindTexture(GL_TEXTURE_2D, m_id);
+			CHECK_GL_ERROR(L"Can't bind texture");
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			CHECK_GL_ERROR(L"Can't pixel store i");
+			for (int i = 0; i < m_height/size+1; i ++)
+			{
+				for (int j = 0; j < m_width/size+1; j ++ )
+				{
+					int width;
+					int height;
+
+					if ((j + 1) * size < m_width)
+						width = size;
+					else
+						width = size - ((j+1) * size - m_width );
+
+					if ((i+1) * size < m_height)
+						height = size;
+					else
+						height = size - ((i+1) * size - m_height);
+
+					glTexSubImage2D(GL_TEXTURE_2D, 0, j*size, i*size, width, height, m_format, GL_UNSIGNED_BYTE, (void*)data);
+					CHECK_GL_ERROR(L"Can't tex sub image 2d");
+
+				}
 			}
 		}
 

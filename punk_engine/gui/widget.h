@@ -9,6 +9,10 @@
 
 namespace GUI
 {
+	class IGUIRender;
+
+	class Manager;
+
 	class LIB_GUI Widget
 	{
 	public:
@@ -40,12 +44,11 @@ namespace GUI
 		System::string m_text;
 		System::string m_font;
 
-		//Widget* m_parent;
-		
-		//std::vector<Widget*> m_children;
+		Widget* m_parent;		
+		std::vector<Widget*> m_children;
 
-		System::Descriptor m_text_texture;
-		System::Descriptor m_background_texture;
+		OpenGL::Texture2D* m_text_texture;
+		OpenGL::Texture2D* m_background_texture;
 
 	
 		/******************************************************************/
@@ -64,8 +67,7 @@ namespace GUI
 		System::Handler m_OnWheel;
 
 	protected:
-		//virtual void RenderTextToTexture();
-
+		virtual void RenderTextToTexture();
 	public:
 
 		Widget(float x = 0, float y = 0, float width = 1, float height = 1);
@@ -88,9 +90,9 @@ namespace GUI
 		bool IsEnabled() const;
 		void Show(bool isVisible);
 		void Enable(bool isEnabled);
-	//	void SetParent(Widget* parent);
-		//Widget* GetParent();
-		//const Widget* GetParent() const;
+		void SetParent(Widget* parent);
+		Widget* GetParent();
+		const Widget* GetParent() const;
 		void FixPosition(bool isFixed);
 		bool IsFixedPosition() const;
 		void SetSize(float x, float y, float width, float height);
@@ -98,12 +100,14 @@ namespace GUI
 		void SetText(const System::string& text);
 		void SetFont(const char* fontName);
 		void SetTextSize(int size);
-		void SetBackGroundTexture(System::Descriptor texture);
+		Widget* GetChild(int index);
+		const Widget* GetChild(int index) const;
+		unsigned GetChildrenCount() const;
 
 		const System::string& GetText() const;
 		void SetFocuse(bool isFocused);
 
-
+		virtual void Render(IGUIRender* render) const;
 		virtual bool EventHandler(System::Event* event);
 
 		bool IsPointIn(float x, float y);
@@ -112,15 +116,12 @@ namespace GUI
 
 		Widget* GetFocused(float x, float y);
 
-		System::Descriptor GetBackGround() const;
-		void SetBackGround(System::Descriptor desc);
-
-		System::Descriptor GetTextTexture() const;
-		void SetTextTexture(System::Descriptor desc);
-
 		void Store(System::Buffer& buffer) {}
 		void Restore(System::Buffer& buffer) {}
 		
+		const OpenGL::Texture2D* GetTextTexture() const;
+		void SetBackgroundTexture(OpenGL::Texture2D* texture);
+		const OpenGL::Texture2D* GetBackgroundTexture() const;
 
 		/*********************************************************************/
 		/*	Handlers
@@ -134,6 +135,8 @@ namespace GUI
 		void OnKeyDown(System::Handler onKeyDown);
 		void OnKeyUp(System::Handler onKeyUp);
 		void OnWheel(System::Handler onWheel);
+
+		friend class Manager;
 	};
 }
 

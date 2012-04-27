@@ -17,6 +17,7 @@ namespace Utility
 	class LIB_UTILITY FontBuilder : public Singletone(FontBuilder)
 	{		
 	public:
+		FontBuilder();
 		void Init();
 		void SetCurrentFace(const System::string& fontName);
 		void RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer);

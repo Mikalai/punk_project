@@ -19,7 +19,7 @@ namespace System
 	{
 	protected:
 		Render::SceneRender m_render;
-		GUI::UserInterface m_user_interface;
+		GUI::Manager* m_user_interface;
 		OpenGL::Driver* m_video_driver;
 		Scene::SceneGraph m_scene_graph;
 		System::Timer m_timer;	
@@ -39,7 +39,7 @@ namespace System
 		Window* GetWindow();
 		EventManager* GetEventManager();
 		OpenGL::Driver* GetDriver();
-		GUI::UserInterface* GetUserInterface();
+		GUI::Manager* GetUserInterface();
 
 		int Run();
 		~Application();

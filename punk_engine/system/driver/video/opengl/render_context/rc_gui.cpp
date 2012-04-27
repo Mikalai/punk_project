@@ -1,6 +1,6 @@
-#include "rc_solid_textured_3d.h"
-#include "fs_solid_textured.h"
-#include "vs_transformed_textured_3d.h"
+#include "rc_gui.h"
+#include "fs_gui.h"
+#include "vs_gui.h"
 
 #include "render_context_impl.h"
 #include "../../../../../math/mat4.h"
@@ -8,11 +8,13 @@
 
 namespace OpenGL
 {
-	struct RenderContextTextured3DImpl : public RenderContextImpl
+	struct RenderContextGUIImpl : public RenderContextImpl
 	{
 		GLuint m_proj_view_world_uniform;
 		GLuint m_diffuse_color_uniform;
 		GLuint m_diffuse_map_uniform;
+		GLuint m_text_map_uniform;
+
 		Math::mat4 m_world;
 		Math::mat4 m_view;
 		Math::mat4 m_proj;
@@ -32,7 +34,8 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to get uniform location");
 			m_diffuse_map_uniform = glGetUniformLocation(m_program, "uDiffuseMap");
 			CHECK_GL_ERROR(L"Unable to get uniform location");
-
+			m_text_map_uniform = glGetUniformLocation(m_program, "uTextMap");
+			CHECK_GL_ERROR(L"Unable to get uniform location");
 		}
 
 		virtual void BindUniforms()
@@ -40,13 +43,14 @@ namespace OpenGL
 			m_proj_view_world = m_proj * m_view * m_world;
 			SetUniformMatrix4f(m_proj_view_world_uniform, &m_proj_view_world[0]);
 			SetUniformVector4f(m_diffuse_color_uniform, &m_diffuse_color[0]);
-			SetUniformInt(m_diffuse_map_uniform, 0);
+			SetUniformInt(m_diffuse_map_uniform, 1);
+			SetUniformInt(m_text_map_uniform, 0);
 			glDisable(GL_DEPTH_TEST);
 			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 
-		RenderContextTextured3DImpl()
+		RenderContextGUIImpl()
 			: RenderContextImpl()
 			, m_world()
 			, m_view()
@@ -58,7 +62,7 @@ namespace OpenGL
 			, m_proj_view_world_uniform(0)
 		{}
 
-		RenderContextTextured3DImpl::RenderContextTextured3DImpl(const RenderContextTextured3DImpl& impl)
+		RenderContextGUIImpl::RenderContextGUIImpl(const RenderContextGUIImpl& impl)
 			: RenderContextImpl(impl)
 			, m_world(impl.m_world)
 			, m_view(impl.m_view)
@@ -91,45 +95,45 @@ namespace OpenGL
 		}
 	};
 
-	RenderContextTextured3D::RenderContextTextured3D()
+	RenderContextGUI::RenderContextGUI()
 		: RenderContext()		
 	{
-		impl_rc.reset(new RenderContextTextured3DImpl());
+		impl_rc.reset(new RenderContextGUIImpl());
 
-		std::auto_ptr<Shader> vertex(new ShaderTransformTextured3D());
-		std::auto_ptr<Shader> fragment(new ShaderSolidTextured());
+		std::auto_ptr<Shader> vertex(new VertexShaderGUI());
+		std::auto_ptr<Shader> fragment(new FragmentShaderGUI());
 		SetVertexShader(vertex.release());
 		SetFragmentShader(fragment.release());
 		impl_rc->m_vertex_attributes = VERTEX_POSITION|VERTEX_TEXTURE_0;
 	}
 
-	RenderContextTextured3D::RenderContextTextured3D(const RenderContextTextured3D& rc)
+	RenderContextGUI::RenderContextGUI(const RenderContextGUI& rc)
 		: RenderContext(rc)
 	{}
 
-	RenderContextTextured3D& RenderContextTextured3D::operator= (const RenderContextTextured3D& rc)
+	RenderContextGUI& RenderContextGUI::operator= (const RenderContextGUI& rc)
 	{
 		RenderContext::operator = (rc);
 		return *this;
 	}
 
-	void RenderContextTextured3D::SetDiffuseColor(const Math::Vector4<float>& c)
+	void RenderContextGUI::SetDiffuseColor(const Math::Vector4<float>& c)
 	{
-		static_cast<RenderContextTextured3DImpl*>(impl_rc.get())->SetDiffuseColor(c);
+		static_cast<RenderContextGUIImpl*>(impl_rc.get())->SetDiffuseColor(c);
 	}
 
-	void RenderContextTextured3D::SetProjectionMatrix(const Math::Matrix4x4<float>& m)
+	void RenderContextGUI::SetProjectionMatrix(const Math::Matrix4x4<float>& m)
 	{
-		static_cast<RenderContextTextured3DImpl*>(impl_rc.get())->SetProjectionMatrix(m);
+		static_cast<RenderContextGUIImpl*>(impl_rc.get())->SetProjectionMatrix(m);
 	}
 
-	void RenderContextTextured3D::SetViewMatrix(const Math::Matrix4x4<float>& m)
+	void RenderContextGUI::SetViewMatrix(const Math::Matrix4x4<float>& m)
 	{
-		static_cast<RenderContextTextured3DImpl*>(impl_rc.get())->SetViewMatrix(m);
+		static_cast<RenderContextGUIImpl*>(impl_rc.get())->SetViewMatrix(m);
 	}
 
-	void RenderContextTextured3D::SetWorldMatrix(const Math::Matrix4x4<float>& m)
+	void RenderContextGUI::SetWorldMatrix(const Math::Matrix4x4<float>& m)
 	{
-		static_cast<RenderContextTextured3DImpl*>(impl_rc.get())->SetWorldMatrix(m);
+		static_cast<RenderContextGUIImpl*>(impl_rc.get())->SetWorldMatrix(m);
 	}
 }

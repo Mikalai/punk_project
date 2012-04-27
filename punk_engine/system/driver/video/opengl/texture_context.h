@@ -18,8 +18,8 @@ namespace OpenGL
 		TextureContext& operator = (const TextureContext& tc);
 		~TextureContext();
 
-		void SetDiffuseMap(Texture2D* map);
-		void SetNormalMap(Texture2D* map);
+		void SetTexture0(const Texture2D* map);
+		void SetTexture1(const Texture2D* map);		
 
 		void Bind();	
 		void Unbind();

@@ -21,8 +21,7 @@ namespace GUI
 		UserInterface& operator = (const UserInterface& ui);
 	
 	public:
-		
-		void SetSceneGraph(Scene::SceneGraph* sg);
+				
 		System::Descriptor CreateLayer();
 		void SetActiveLayer(System::Descriptor desc);
 		void AddElement(System::Descriptor parent, System::Descriptor element);

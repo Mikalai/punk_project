@@ -28,6 +28,11 @@ namespace Utility
 	std::map<int, std::map<void*, std::map<char, CacheData*> > > cache;
 	std::map<int, std::map<void*, std::map<wchar_t, CacheData*> > > wcache;
 
+	FontBuilder::FontBuilder()
+	{
+		Init();
+	}
+
 	void FontBuilder::SetCurrentFace(const System::string& fontName)
 	{
 		FT_Face f = fontFace[fontName];

@@ -73,6 +73,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_height_map_util", "..\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pmd_viewer", "..\pmd_viewer\pmd_viewer.vcxproj", "{2F5DC000-C534-4057-AFAB-D8B44ABBD25B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_gui_test", "..\punk_gui_test\punk_gui_test.vcxproj", "{A15999BD-FEBC-4381-8C2F-075743B636BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -189,6 +191,10 @@ Global
 		{2F5DC000-C534-4057-AFAB-D8B44ABBD25B}.Debug|Win32.Build.0 = Debug|Win32
 		{2F5DC000-C534-4057-AFAB-D8B44ABBD25B}.Release|Win32.ActiveCfg = Release|Win32
 		{2F5DC000-C534-4057-AFAB-D8B44ABBD25B}.Release|Win32.Build.0 = Release|Win32
+		{A15999BD-FEBC-4381-8C2F-075743B636BA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A15999BD-FEBC-4381-8C2F-075743B636BA}.Debug|Win32.Build.0 = Debug|Win32
+		{A15999BD-FEBC-4381-8C2F-075743B636BA}.Release|Win32.ActiveCfg = Release|Win32
+		{A15999BD-FEBC-4381-8C2F-075743B636BA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

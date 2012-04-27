@@ -26,12 +26,19 @@ namespace OpenGL
 	protected:
 		std::auto_ptr<Texture2DImpl> impl_texture_2d;
 	public:
+		Texture2D();
 		explicit Texture2D(const ImageModule::Image& image);
 		Texture2D(const Texture2D& texture);
 		Texture2D& operator = (const Texture2D& texture);
 		~Texture2D();
 		void Bind() const;
-		void Unbind() const;		
+		void Unbind() const;	
+		void Create(int width, int height, GLenum format, const unsigned char* data);
+		void CopyFromCPU(int x, int y, int width, int height, GLenum format, const unsigned char* data);
+		void Resize(int width, int height);
+		void Fill(unsigned char data);
+		int GetHeight() const;
+		int GetWidth() const;
 	};
 }
 

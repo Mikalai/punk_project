@@ -40,13 +40,13 @@ namespace OpenGL
 
 		std::vector<LocalVertex> vbuffer(4);
 		float z = 0;
-		vbuffer[0].x = -0.5;	vbuffer[0].y = -0.5;	vbuffer[0].z = z; vbuffer[0].w = 1;
+		vbuffer[0].x = 0;	vbuffer[0].y = 0;	vbuffer[0].z = z; vbuffer[0].w = 1;
 		vbuffer[0].u = 0;		vbuffer[0].v = 1;		vbuffer[0].s = 0; vbuffer[0].t = 1;
-		vbuffer[1].x = 0.5;		vbuffer[1].y = -0.5;	vbuffer[1].z = z; vbuffer[1].w = 1;
+		vbuffer[1].x = 1;		vbuffer[1].y = 0;	vbuffer[1].z = z; vbuffer[1].w = 1;
 		vbuffer[1].u = 1;		vbuffer[1].v = 1;		vbuffer[1].s = 0; vbuffer[1].t = 1;
-		vbuffer[2].x = 0.5;		vbuffer[2].y = 0.5;		vbuffer[2].z = z; vbuffer[2].w = 1;
+		vbuffer[2].x = 1;		vbuffer[2].y = 1;		vbuffer[2].z = z; vbuffer[2].w = 1;
 		vbuffer[2].u = 1;		vbuffer[2].v = 0;		vbuffer[2].s = 0; vbuffer[2].t = 1;
-		vbuffer[3].x = -0.5;	vbuffer[3].y = 0.5;		vbuffer[3].z = z; vbuffer[3].w = 1;
+		vbuffer[3].x = 0;	vbuffer[3].y = 1;		vbuffer[3].z = z; vbuffer[3].w = 1;
 		vbuffer[3].u = 0;		vbuffer[3].v = 0;		vbuffer[3].s = 0; vbuffer[3].t = 1;
 		unsigned vbuffer_size = 4*sizeof(LocalVertex);
 		unsigned ibuffer[6] = { 0, 1, 2, 2, 3, 0};

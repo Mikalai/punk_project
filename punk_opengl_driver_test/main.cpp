@@ -66,8 +66,8 @@ public:
 
 		m_texture.reset(new OpenGL::Texture2D(m_image));
 		m_texture_context.reset(new OpenGL::TextureContext());
-		m_texture_context->SetDiffuseMap(m_texture.release());
-		m_texture_context->SetNormalMap(m_height_map.release());
+		m_texture_context->SetTexture0(m_texture.release());
+		m_texture_context->SetTexture1(m_height_map.release());
 	//	m_camera.SetPositionAndDirection(Math::vec3(0,1.8, 0), Math::vec3(0, 0, 1), Math::vec3(0,1,0));
 	//	m_camera.SetProperties(Math::PI/4, 1.3, 1, 1000);		
 
@@ -321,8 +321,8 @@ int main()
 //		camera->SetPosition(Math::vec3(5,5,-5));
 //
 //		m_texture_context = new OpenGL::TextureContext();
-//		m_texture_context->SetDiffuseMap(driver->GetTexture2D(mat.GetDiffuseMap()));
-//		m_texture_context->SetNormalMap(driver->GetTexture2D(mat.GetNormalMap()));
+//		m_texture_context->SetTexture0(driver->GetTexture2D(mat.GetDiffuseMap()));
+//		m_texture_context->SetTexture1(driver->GetTexture2D(mat.GetNormalMap()));
 //
 //		a1 = 0;
 //		a2 = 0;

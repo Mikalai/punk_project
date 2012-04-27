@@ -2,12 +2,12 @@
 
 namespace Utility
 {
-	void Material::SetDiffuseMap(const System::string& map)
+	void Material::SetTexture0(const System::string& map)
 	{
 		m_diffuse_map = map;
 	}
 
-	void Material::SetNormalMap(const System::string& map)
+	void Material::SetTexture1(const System::string& map)
 	{
 		m_normal_map = map;
 	}

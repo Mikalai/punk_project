@@ -98,10 +98,12 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp" />
@@ -110,6 +112,7 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp" />
@@ -245,10 +248,12 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h" />
@@ -258,6 +263,7 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h" />
@@ -408,6 +414,8 @@
   <ItemGroup>
     <None Include="..\..\data\shaders\draw_normals.frag" />
     <None Include="..\..\data\shaders\draw_normals.vert" />
+    <None Include="..\..\data\shaders\gui_330.frag" />
+    <None Include="..\..\data\shaders\gui_330.vert" />
     <None Include="..\..\data\shaders\line_2d_330.frag" />
     <None Include="..\..\data\shaders\line_2d_330.vert" />
     <None Include="..\..\data\shaders\line_3d_330.frag" />

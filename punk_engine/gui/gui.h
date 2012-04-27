@@ -8,8 +8,8 @@
 #define _H_PUNK_GUI
 
 #include "widget.h"
-#include "button.h"
-#include "user_interface_control.h"
+#include "manager.h"
+//#include "button.h"
 /*#include "manager.h"
 #include "static_text_area.h"
 #include "int_watcher.h"

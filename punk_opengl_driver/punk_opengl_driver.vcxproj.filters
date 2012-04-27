@@ -198,6 +198,15 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp">
       <Filter>render_context\shaders%28logic%29</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.cpp">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h">
@@ -336,6 +345,15 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h">
       <Filter>render_context\shaders%28logic%29</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.h">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt">
@@ -419,6 +437,12 @@
       <Filter>glsl</Filter>
     </None>
     <None Include="..\..\data\shaders\bump_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\gui_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\gui_330.vert">
       <Filter>glsl</Filter>
     </None>
   </ItemGroup>

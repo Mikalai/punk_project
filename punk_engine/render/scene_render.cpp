@@ -11,33 +11,33 @@ namespace Render
 
 	void SceneRenderVisitor::operator() (System::Descriptor desc, Data& data)
 	{
-		System::ResourceManager* rm = System::ResourceManager::GetInstance();
-		switch(desc.Type())
-		{
-		case System::RESOURCE_WIDGET:
-			{
-				System::Resource<GUI::Widget>* rw = rm->GetResource<GUI::Widget>(desc);
-				GUI::Widget* w = rw->Lock();
-				render.WidgetRender(data.x, data.y, w);
-				rw->Unlock();
-				data.x += w->GetX();
-				data.y += w->GetY();
-			}
-			break;
-		case System::RESOURCE_BUTTON:
-			{
-				auto rb = rm->GetResource<GUI::Button>(desc);
-				auto b = rb->Lock();
-				render.ButtonRender(data.x, data.y, b);
-				rb->Lock();
-				data.x += b->GetX();
-				data.y += b->GetY();
-			}
-			break;
-		case System::RESOURCE_MESH:
-			{				
-			}
-		}
+		//System::ResourceManager* rm = System::ResourceManager::GetInstance();
+		//switch(desc.Type())
+		//{
+		//case System::RESOURCE_WIDGET:
+		//	{
+		//		System::Resource<GUI::Widget>* rw = rm->GetResource<GUI::Widget>(desc);
+		//		GUI::Widget* w = rw->Lock();
+		//		render.WidgetRender(data.x, data.y, w);
+		//		rw->Unlock();
+		//		data.x += w->GetX();
+		//		data.y += w->GetY();
+		//	}
+		//	break;
+		//case System::RESOURCE_BUTTON:
+		//	{
+		//		auto rb = rm->GetResource<GUI::Button>(desc);
+		//		auto b = rb->Lock();
+		//		render.ButtonRender(data.x, data.y, b);
+		//		rb->Lock();
+		//		data.x += b->GetX();
+		//		data.y += b->GetY();
+		//	}
+		//	break;
+		//case System::RESOURCE_MESH:
+		//	{				
+		//	}
+		//}
 	}
 
 	SceneRender::SceneRender() : m_driver(0) {}
@@ -107,7 +107,7 @@ namespace Render
 		//Math::mat4 pvw =  Math::mat4::CreateTranslate(-1+x,-1+y,0)*Math::mat4::CreateScaling(2,2,1)*Math::mat4::CreateScaling(-button->GetWidth(), -button->GetHeight(), 1);
 		sp->SetUniformMatrix4f(sp->GetLocation(UNIFORM_PROJVIEWWORLD), pvw);
 		sp->SetUniformVector4f(sp->GetLocation(UNIFORM_DIFFUSE_COLOR), Math::vec4(1,1,1,1));
-		tc->SetDiffuseMap(texture);
+		tc->SetTexture0(texture);
 		tc->Apply();
 		sp->SetTexture(sp->GetLocation(UNIFORM_DIFFUSE_MAP), 0);
 		sp->SetUniformFloat(sp->GetLocation(UNIFORM_RADIUS), 0.05);

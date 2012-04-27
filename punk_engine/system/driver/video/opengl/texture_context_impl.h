@@ -12,37 +12,41 @@ namespace OpenGL
 {
 	struct TextureContextImpl
 	{
-		std::auto_ptr<Texture2D> m_diffuse_map;
-		std::auto_ptr<Texture2D> m_normal_map;
+		const Texture2D* m_diffuse_map;
+		const Texture2D* m_normal_map;
 
 		TextureContextImpl()
-			: m_diffuse_map(0)
-			, m_normal_map(0)
+			: m_diffuse_map(nullptr)
+			, m_normal_map(nullptr)
 		{}
 
 		TextureContextImpl(const TextureContextImpl& c)
-			: m_diffuse_map(new Texture2D(*c.m_diffuse_map))
-			, m_normal_map(new Texture2D(*c.m_normal_map))
+			: m_diffuse_map(c.m_diffuse_map)
+			, m_normal_map(c.m_normal_map)
 		{}
 
 		void Bind()
 		{
-			if (m_diffuse_map.get())
+			if (m_diffuse_map)
 			{
-				glActiveTexture(GL_TEXTURE0);
+				glActiveTexture(GL_TEXTURE1);
 				m_diffuse_map->Bind();
 			}
 
-			if (m_normal_map.get())
+			if (m_normal_map)
 			{
-				glActiveTexture(GL_TEXTURE1);
+				glActiveTexture(GL_TEXTURE0);
 				m_normal_map->Bind();
 			}
 		}
 
 		void Unbind()
 		{
-			// place some usefull code here
+			for (int i = 0; i < 4; ++i)
+			{
+				glActiveTexture(GL_TEXTURE0 + i);// place some usefull code here
+				glBindTexture(GL_TEXTURE_2D, 0);
+			}
 		}
 	};
 }

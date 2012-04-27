@@ -13,7 +13,7 @@ namespace GUI
 		System::Timer m_timer;
 		int m_cursor_x;
 		bool m_showCursor;
-		Render::TextAreaRender* m_textRender;
+		//Render::TextAreaRender* m_textRender;
 		
 		TextBox(const TextBox&);
 		TextBox& operator = (const TextBox&);

@@ -2,7 +2,7 @@
 #include "../utility/font_builder.h"
 //#include "../render/render.h"
 #include "../system/event_manager.h"
-
+#include "gui_render.h"
 #include <algorithm>
 
 namespace GUI
@@ -19,7 +19,8 @@ namespace GUI
 		m_middleButtonDown(false),
 		m_moveable(false),
 		m_text("Widget"),
-		m_fontSize(12)
+		m_fontSize(12),
+		m_parent(0)
 	{
 		m_inactiveColor[0] = 0.0f;
 		m_inactiveColor[1] = 0.3f;
@@ -34,14 +35,19 @@ namespace GUI
 		m_textActiveColor[0] = m_textActiveColor[1] = m_textActiveColor[2] = m_textActiveColor[3] = 1.0f;
 		m_textInactiveColor[0] = m_textInactiveColor[1] = m_textInactiveColor[2] = m_textInactiveColor[3] = 0.95f;
 
-//		m_textTexture.Create(m_width, m_height, ImageLoader::IMAGE_FORMAT_RED, 1, 0);
+		m_text_texture = new OpenGL::Texture2D;;
+		m_text_texture->Create(m_width*System::Window::GetInstance()->GetWidth(), m_height*System::Window::GetInstance()->GetHeight(), GL_RED, 0);
+
+		m_background_texture = 0;
+
+		RenderTextToTexture();
 	}
 
 	Widget::~Widget()
 	{
 	}
 
-/*	void Widget::RemoveChild(Widget* child)
+	void Widget::RemoveChild(Widget* child)
 	{
 		std::vector<Widget*>::iterator it = std::find(m_children.begin(), m_children.end(), child);
 		if (it != m_children.end())
@@ -53,7 +59,7 @@ namespace GUI
 	{
 		m_children.push_back(child);
 	}
-
+	/*
 	Widget* Widget::GetParent()
 	{
 		return m_parent;
@@ -87,20 +93,20 @@ namespace GUI
 	void Widget::SetText(const System::string& text)
 	{
 		m_text = text;
-//		RenderTextToTexture();
+		RenderTextToTexture();
 		//m_textRender->SetText(m_text.c_str());
 	}
 
 	void Widget::SetFont(const char* font)
 	{
 		m_font = font;		
-	//	RenderTextToTexture();
+		RenderTextToTexture();
 	}
 
 	void Widget::SetTextSize(int size)
 	{
 		m_fontSize = size;
-		//RenderTextToTexture();
+		RenderTextToTexture();
 		//m_textRender->SetTextSize(size);
 	}
 
@@ -143,45 +149,65 @@ namespace GUI
 
 	float Widget::GetX() const
 	{
-//		if (m_parent == 0)
-//			return m_x;
-		return m_x;// + m_parent->GetX();
+		if (m_parent == 0)
+			return m_x;
+		return m_x + m_parent->GetX();
 	}
 
 	float Widget::GetY() const
 	{
-//		if (m_parent == 0)
-	//		return m_y;
-		return m_y;// + m_parent->GetY();
+		if (m_parent == 0)
+			return m_y;
+		return m_y + m_parent->GetY();
 	}
 
-	System::Descriptor Widget::GetBackGround() const
+	const OpenGL::Texture2D* Widget::GetBackgroundTexture() const
 	{
 		return m_background_texture;
 	}
 
-	System::Descriptor Widget::GetTextTexture() const
+	const OpenGL::Texture2D* Widget::GetTextTexture() const
 	{
 		return m_text_texture;
 	}
 
-	void Widget::SetBackGroundTexture(System::Descriptor desc)
+	void Widget::SetBackgroundTexture(OpenGL::Texture2D* texture)
 	{
-		m_background_texture = desc;
+		m_background_texture = texture;
 	}
 
-	void Widget::SetTextTexture(System::Descriptor desc)
+	void Widget::Render(IGUIRender* render) const
 	{
-		m_text_texture = desc;
+		render->RenderWidget(this);
 	}
 
-/*	void Widget::RenderTextToTexture()
+	Widget* Widget::GetChild(int index)
 	{
-	/*	int x = 0;
-		int y = m_text_texture.GetHeight() - m_fontSize;
-		m_textTexture.Fill(0);
-		Utility::FontBuilder::SetCurrentFace(m_font);
-		Render::FontBuilder::SetCharSize(m_fontSize, m_fontSize);
+		return m_children[index];
+	}
+
+	const Widget* Widget::GetChild(int index) const
+	{
+		return m_children[index];
+	}
+
+	void Widget::SetParent(Widget* widget)
+	{
+		m_parent = widget;
+	}
+
+	Widget* Widget::GetParent() 
+	{
+		return m_parent;
+	}
+
+	void Widget::RenderTextToTexture()
+	{
+		int x = 0;
+		int y = m_text_texture->GetHeight() - m_fontSize;
+		m_text_texture->Fill(0);
+		Utility::FontBuilder::GetInstance()->SetCurrentFace(m_font);
+		Utility::FontBuilder::GetInstance()->SetCharSize(m_fontSize, m_fontSize);
 		for (const wchar_t* a = m_text.Data(); *a; a++)
 		{ 
 			int width;
@@ -191,19 +217,19 @@ namespace GUI
 			int x_advance;
 			int y_advance;
 			unsigned char* buffer;
-			Render::FontBuilder::RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
-			if (x + x_offset + width >= m_textTexture.GetWidth())
+			Utility::FontBuilder::GetInstance()->RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
+			if (x + x_offset + width >= m_text_texture->GetWidth())
 			{
 				y -= m_fontSize;
 				x = 0;
 				if (y < 0)
 					return;
-			}				
-			m_textTexture.CopyFromCPU(x + x_offset, m_textTexture.GetHeight() - (y + y_offset), width, height, ImageLoader::IMAGE_FORMAT_RED, buffer);
+			}							
+			m_text_texture->CopyFromCPU(x + x_offset, m_text_texture->GetHeight() - (y + y_offset), width, height, GL_RED, buffer);			
 			x += x_advance;				
-		}
+		}/**/
 	}
-	*/
+
 	const System::string& Widget::GetText() const
 	{
 		return m_text;
@@ -386,18 +412,18 @@ namespace GUI
 
 	Widget* Widget::GetFocused(float x, float y)
 	{		
-/*		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
+		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
 		{
 			if ((*it)->IsPointIn(x, y))
 				return (*it)->GetFocused(x, y);
-		}*/
+		}
 		return this;/**/
 	}
 
 	void Widget::SetSize(float x, float y, float width, float height)
 	{
 		m_x = x; m_y = y; m_width = width; m_height = height;
-	//	m_textTexture.Resize(m_width, m_height);
+		m_text_texture->Resize(m_width, m_height);
 	}
 
 	bool Widget::SendChildren(System::Event* event)
@@ -407,6 +433,11 @@ namespace GUI
 			(*it)->EventHandler(event);
 		}*/
 		return false;
+	}
+
+	unsigned Widget::GetChildrenCount() const
+	{
+		return m_children.size();
 	}
 
 	bool Widget::IsPointIn(float px, float py)

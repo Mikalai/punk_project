@@ -17,8 +17,8 @@ namespace Utility
 		float m_specular_factor;
 		System::string m_name;
 	public:
-		void SetDiffuseMap(const System::string& map);
-		void SetNormalMap(const System::string& map);
+		void SetTexture0(const System::string& map);
+		void SetTexture1(const System::string& map);
 		void SetDiffuseColor(const Math::vec4& color);
 		void SetSpecularColor(const Math::vec4& color);
 		void SetSpecularFactor(float value);

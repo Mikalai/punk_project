@@ -54,11 +54,11 @@ namespace Utility
 		aiColor4D color;
 		raw_mat->GetTexture(aiTextureType_DIFFUSE, 0, &str);
 		System::string s = System::string(str.data);		
-		mat.SetDiffuseMap(s.Split(L"\\").back());
+		mat.SetTexture0(s.Split(L"\\").back());
 
 		raw_mat->GetTexture(aiTextureType_DIFFUSE, 1, &str);
 		s = System::string(str.data);		
-		mat.SetNormalMap(s.Split(L"\\").back());
+		mat.SetTexture1(s.Split(L"\\").back());
 
 		raw_mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
 		mat.SetDiffuseColor(Math::vec4(color.r, color.g, color.b, color.a));

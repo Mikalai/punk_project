@@ -798,14 +798,14 @@ namespace Utility
 		void ParseMaterialsDiffuseMap(System::Buffer& buffer, const System::string& name)
 		{
 			CHECK_START(buffer);
-			m_materials[name].SetDiffuseMap(buffer.ReadWord());
+			m_materials[name].SetTexture0(buffer.ReadWord());
 			CHECK_END(buffer);
 		}
 
 		void ParseMaterialsNormalMap(System::Buffer& buffer, const System::string& name)
 		{
 			CHECK_START(buffer);
-			m_materials[name].SetNormalMap(buffer.ReadWord());
+			m_materials[name].SetTexture1(buffer.ReadWord());
 			CHECK_END(buffer);
 		}
 

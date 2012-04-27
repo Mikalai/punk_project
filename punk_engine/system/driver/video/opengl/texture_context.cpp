@@ -33,13 +33,13 @@ namespace OpenGL
 		impl_tc->Unbind();
 	}
 
-	void TextureContext::SetDiffuseMap(Texture2D* map)
+	void TextureContext::SetTexture0(const Texture2D* map)
 	{
-		impl_tc->m_diffuse_map.reset(map);
+		impl_tc->m_diffuse_map = map;
 	}
 
-	void TextureContext::SetNormalMap(Texture2D* map)
+	void TextureContext::SetTexture1(const Texture2D* map)
 	{
-		impl_tc->m_normal_map.reset(map);
+		impl_tc->m_normal_map = map;
 	}
 }

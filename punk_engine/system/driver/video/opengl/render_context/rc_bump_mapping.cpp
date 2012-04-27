@@ -79,6 +79,7 @@ namespace OpenGL
 			SetUniformFloat(m_specular_power_uniform, m_specular_power);
 			SetUniformInt(m_diffuse_map_uniform, 0);
 			SetUniformInt(m_normal_map_uniform, 1);
+			glEnable(GL_DEPTH_TEST);			
 		}
 
 		RenderContextBumpMappingImpl()
