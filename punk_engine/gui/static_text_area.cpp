@@ -6,7 +6,7 @@ namespace GUI
 {
 	StaticTextArea::StaticTextArea(int x, int y, int width, int height, Widget* parent) : Widget(x, y, width, height, parent),  m_textRender(Render::TextAreaRender::GetRender())
 	{
-		//m_color[0] = m_color[1] = m_color[2] = m_color[3] = 1.0f;
+		//m_back_color[0] = m_back_color[1] = m_back_color[2] = m_back_color[3] = 1.0f;
 		//m_textRender->SetText(m_text.c_str());
 		RenderTextToTexture();
 	}
@@ -20,7 +20,7 @@ namespace GUI
 		if (m_isVisible)
 		{			
 			Render::TextAreaRender::Parameters* p = Render::TextAreaRender::Parameters::Create();
-			p->m_color[0] = m_textColor[0]; p->m_color[1] = m_textColor[1]; p->m_color[2] = m_textColor[2]; p->m_color[3] = m_textColor[3];
+			p->m_back_color[0] = m_text_color[0]; p->m_back_color[1] = m_text_color[1]; p->m_back_color[2] = m_text_color[2]; p->m_back_color[3] = m_text_color[3];
 			p->m_height = (float)m_height;
 			p->m_width = (float)m_width;
 			p->m_x = (float)GetX();

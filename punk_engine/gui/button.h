@@ -15,9 +15,12 @@ namespace GUI
 		Button(const Button&);
 		Button& operator = (const Button&);
 
+	protected:
+		virtual void OnIdle(System::IdleEvent* e);
+		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e);
 	public:
 
-		Button(float x = 0, float y = 0, float width = 0.1, float height=0.01, const System::string& text = L"Привет мир");
+		Button(float x = 0, float y = 0, float width = 0.1, float height=0.01, const System::string& text = L"Button");
 		virtual ~Button();
 
 		virtual void Render();

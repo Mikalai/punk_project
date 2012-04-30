@@ -16,6 +16,11 @@ namespace GUI
 		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_WHEEL, System::EventHandler(this, &Manager::OnMouseWheel));
 		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_HOOVER, System::EventHandler(this, &Manager::OnMouseHoover));
 		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_CHAR, System::EventHandler(this, &Manager::OnKeyChar));
+		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_WINDOW_RESIZE, System::EventHandler(this, &Manager::OnResize));
+		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Manager::OnKeyDownHandler));
+		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_UP, System::EventHandler(this, &Manager::OnKeyUpHandler));
+		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_ENTER, System::EventHandler(this, &Manager::OnMouseEnter));
+		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_LEAVE, System::EventHandler(this, &Manager::OnMouseLeave));
 	}
 
 	Manager::~Manager()
@@ -56,6 +61,20 @@ namespace GUI
 	{
 	}
 
+	void Manager::OnMouseEnter(System::Event* event)
+	{
+		System::MouseEnterEvent* e = static_cast<System::MouseEnterEvent*>(event);		
+		if (e->anyData)
+			static_cast<Widget*>(event->anyData)->OnMouseEnter(e);
+	}
+
+	void Manager::OnMouseLeave(System::Event* event)
+	{
+		System::MouseLeaveEvent* e = static_cast<System::MouseLeaveEvent*>(event);		
+		if (e->anyData)
+			static_cast<Widget*>(event->anyData)->OnMouseLeave(e);
+	}
+
 	void Manager::OnMouseLeftDown(System::Event* event)
 	{
 		System::MouseLeftButtonDownEvent* e = static_cast<System::MouseLeftButtonDownEvent*>(event);
@@ -65,14 +84,16 @@ namespace GUI
 			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
 				continue;
 
-			if ((*it)->IsPointIn(e->x, e->y))
+			if ((*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y)))
 			{
 				newFocuseWidget = (*it)->GetFocused(e->x, e->y);
+				(*it)->OnMouseLeftButtonDown(e);
 				break;
 			}
 		}
 		if (newFocuseWidget)
 		{
+			System::Logger::GetInstance()->WriteMessage(newFocuseWidget->GetText());
 			if (m_focusWidget)
 			{
 				System::SetUnFocusedEvent* unfocuseEvent = System::SetUnFocusedEvent::Raise();
@@ -96,11 +117,11 @@ namespace GUI
 		System::MouseLeftButtonUpEvent* e = static_cast<System::MouseLeftButtonUpEvent*>(event);
 		for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
 		{
-			if ((*it)->IsPointIn(e->x, e->y))
+			if ((*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y)))
 			{
 				Widget* w = (*it)->GetFocused(e->x, e->y);
 				if (w)
-					w->EventHandler(e);
+					w->OnMouseLeftButtonUp(e);
 			}
 		}
 	}
@@ -112,8 +133,8 @@ namespace GUI
 		{
 			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
 				continue;
-			bool wasIn = (*it)->IsPointIn(e->x_prev, e->y_prev);
-			bool isIn = (*it)->IsPointIn(e->x, e->y);
+			bool wasIn = (*it)->IsPointIn(Widget::WindowToViewport(e->x_prev, e->y_prev));
+			bool isIn = (*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y));
 
 			if (!wasIn && isIn)
 			{
@@ -138,10 +159,12 @@ namespace GUI
 
 	void Manager::OnIdle(System::Event* event)
 	{		
+		System::IdleEvent* e = static_cast<System::IdleEvent*>(event);
 		for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
 		{
-			(*it)->EventHandler(event);
+			(*it)->OnIdle(e);			
 		}
+
 	}
 
 	void Manager::OnKeyChar(System::Event* event)
@@ -152,7 +175,33 @@ namespace GUI
 
 	void Manager::OnResize(System::Event* event)
 	{
+		System::WindowResizeEvent* e = static_cast<System::WindowResizeEvent*>(event);
+		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); ++it)
+		{
+			(*it)->OnResize(e);			
+			for (int i = 0; i < (*it)->GetChildrenCount(); ++i)
+			{
+				(*it)->GetChild(i)->OnResize(e);
+			}
+		}
+	}
 
+	void Manager::OnKeyDownHandler(System::Event* event)
+	{
+		System::KeyDownEvent* e = static_cast<System::KeyDownEvent*>(event);
+		switch (e->key)
+		{
+		case System::PUNK_KEY_SHIFT:
+			{
+				System::Mouse::GetInstance()->Show(System::Mouse::GetInstance()->IsLocked());
+				System::Mouse::GetInstance()->LockInWindow(!System::Mouse::GetInstance()->IsLocked());				
+			}
+			break;
+		}
+	}
+
+	void Manager::OnKeyUpHandler(System::Event* event)
+	{
 	}
 
 	void Manager::SendChildren(System::Event* event)
@@ -169,27 +218,10 @@ namespace GUI
 		{
 		case System::EVENT_SET_FOCUSED:
 		case System::EVENT_SET_UNFOCUSED:
-			{
-				if (event->anyData)
-					static_cast<Widget*>(event->anyData)->EventHandler(event);
-			}
-			break;
 		case System::EVENT_MOUSE_LEAVE:
 		case System::EVENT_MOUSE_ENTER:
-			{
-				if (event->anyData)
-					static_cast<Widget*>(event->anyData)->EventHandler(event);
-			}
-			break;
 		case System::EVENT_IDLE:
-			{
-			}
-			break;
 		case System::EVENT_KEY_CHAR:				
-			{
-			
-			}
-			break;		
 		case System::EVENT_KEY_DOWN:
 			{
 				//Driver::CheckError(L"Bug checking");

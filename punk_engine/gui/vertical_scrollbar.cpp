@@ -8,9 +8,9 @@ namespace GUI
 	{
 		m_slider = new VerticalSlider(0, 20, width, height - 40, 0, 1, this);
 		m_upButton = new Button(0, height - 20, width, 20, L"", this);
-		m_upButton->OnLeftClick(System::EventHandler(this, &VerticalScrollBar::OnUpButtonLeftClick));
+		m_upButton->SetMouseLeftClickHandler(System::EventHandler(this, &VerticalScrollBar::OnUpButtonLeftClick));
 		m_downButton = new Button(0, 0, width, 20, L"", this);
-		m_downButton->OnLeftClick(System::EventHandler(this, &VerticalScrollBar::OnDownButtonLeftClick));
+		m_downButton->SetMouseLeftClickHandler(System::EventHandler(this, &VerticalScrollBar::OnDownButtonLeftClick));
 	}
 
 	VerticalScrollBar::~VerticalScrollBar()

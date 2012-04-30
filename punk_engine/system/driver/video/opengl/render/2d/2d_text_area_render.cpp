@@ -25,7 +25,7 @@ namespace Render
 	void TextAreaRender::Parameters::Set(float x, float y, float width, float height, float* color, Driver::Texture2D* texture)
 	{
 		m_x = x; m_y = y; m_width = width; m_height = height; m_texture = texture;
-		m_color[0] = color[0]; m_color[1] = color[1]; m_color[2] = color[2]; m_color[3] = color[3];
+		m_back_color[0] = color[0]; m_back_color[1] = color[1]; m_back_color[2] = color[2]; m_back_color[3] = color[3];
 	}
 
     TextAreaRender::Parameters* TextAreaRender::Parameters::Create()
@@ -46,8 +46,8 @@ namespace Render
 	void TextAreaRender::SetText(const char* text)
 	{
 		m_text = text;
-		m_color[0] = 1;
-		m_color[1] = m_color[2] = m_color[3] = 1;
+		m_back_color[0] = 1;
+		m_back_color[1] = m_back_color[2] = m_back_color[3] = 1;
 		RenderTextToTexture();
 	}
 
@@ -156,7 +156,7 @@ namespace Render
 			Driver::CheckError(L"-1");
 
 			m_program->SetUniformMatrix4f(m_proj_view_world_uniform, projViewWorld);
-			m_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_color);
+			m_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_back_color);
 			m_program->SetTexture(m_baseMapUniform, 0);
 
 			glActiveTexture(GL_TEXTURE0);

@@ -12,6 +12,7 @@ namespace OpenGL
 	{
 		GLuint m_proj_view_world_uniform;
 		GLuint m_diffuse_color_uniform;
+		GLuint m_text_color_uniform;
 		GLuint m_diffuse_map_uniform;
 		GLuint m_text_map_uniform;
 
@@ -20,6 +21,7 @@ namespace OpenGL
 		Math::mat4 m_proj;
 		Math::mat4 m_proj_view_world;
 		Math::vec4 m_diffuse_color;
+		Math::vec4 m_text_color;
 				
 		virtual void InitAttributes()
 		{
@@ -36,6 +38,8 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to get uniform location");
 			m_text_map_uniform = glGetUniformLocation(m_program, "uTextMap");
 			CHECK_GL_ERROR(L"Unable to get uniform location");
+			m_text_color_uniform = glGetUniformLocation(m_program, "uTextColor");
+			CHECK_GL_ERROR(L"Unable to get uniform location");
 		}
 
 		virtual void BindUniforms()
@@ -43,6 +47,7 @@ namespace OpenGL
 			m_proj_view_world = m_proj * m_view * m_world;
 			SetUniformMatrix4f(m_proj_view_world_uniform, &m_proj_view_world[0]);
 			SetUniformVector4f(m_diffuse_color_uniform, &m_diffuse_color[0]);
+			SetUniformVector4f(m_text_color_uniform, &m_text_color[0]);
 			SetUniformInt(m_diffuse_map_uniform, 1);
 			SetUniformInt(m_text_map_uniform, 0);
 			glDisable(GL_DEPTH_TEST);
@@ -93,6 +98,11 @@ namespace OpenGL
 		{
 			m_diffuse_color = v;
 		}
+
+		void SetTextColor(const Math::Vector4<float>& v)
+		{
+			m_text_color = v;
+		}
 	};
 
 	RenderContextGUI::RenderContextGUI()
@@ -120,6 +130,11 @@ namespace OpenGL
 	void RenderContextGUI::SetDiffuseColor(const Math::Vector4<float>& c)
 	{
 		static_cast<RenderContextGUIImpl*>(impl_rc.get())->SetDiffuseColor(c);
+	}
+
+	void RenderContextGUI::SetTextColor(const Math::Vector4<float>& c)
+	{
+		static_cast<RenderContextGUIImpl*>(impl_rc.get())->SetTextColor(c);
 	}
 
 	void RenderContextGUI::SetProjectionMatrix(const Math::Matrix4x4<float>& m)

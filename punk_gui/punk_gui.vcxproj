@@ -78,9 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\punk_engine\gui\button.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\punk_engine\gui\button.cpp" />
     <ClCompile Include="..\punk_engine\gui\console.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -110,15 +108,11 @@
     <ClCompile Include="..\punk_engine\gui\vertical_scrollbar.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\gui\vertical_slider.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\punk_engine\gui\vertical_slider.cpp" />
     <ClCompile Include="..\punk_engine\gui\widget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\punk_engine\gui\button.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\punk_engine\gui\button.h" />
     <ClInclude Include="..\punk_engine\gui\config.h" />
     <ClInclude Include="..\punk_engine\gui\console.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -149,9 +143,7 @@
     <ClInclude Include="..\punk_engine\gui\vertical_scrollbar.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\gui\vertical_slider.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\punk_engine\gui\vertical_slider.h" />
     <ClInclude Include="..\punk_engine\gui\watcher.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

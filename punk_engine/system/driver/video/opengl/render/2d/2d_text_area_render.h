@@ -18,7 +18,7 @@ namespace OpenGL
 			static std::queue<Parameters*> parametersPool;
 		public:
 			float m_x, m_y, m_width, m_height;
-			float m_color[4];
+			float m_back_color[4];
 			Driver::Texture2D* m_texture;
 
 			void Set(float x, float y, float width, float height, float* color, Driver::Texture2D* texture);

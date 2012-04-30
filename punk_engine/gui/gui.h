@@ -9,15 +9,15 @@
 
 #include "widget.h"
 #include "manager.h"
-//#include "button.h"
-/*#include "manager.h"
-#include "static_text_area.h"
+#include "button.h"
+#include "manager.h"
+#include "list_box.h"
+/*#include "static_text_area.h"
 #include "int_watcher.h"
 #include "edit_box.h"
 #include "horizontal_slider.h"
 #include "vertical_scrollbar.h"
 #include "console.h"
-#include "list_box.h"
 */
 
 #endif

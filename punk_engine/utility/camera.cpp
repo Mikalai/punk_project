@@ -10,7 +10,7 @@ namespace Utility
 		m_move_left(System::PUNK_KEY_A),
 		m_move_right(System::PUNK_KEY_D)
 	{
-		//System::Mouse::GetInstance()->LockInWindow(true);
+		System::Mouse::GetInstance()->LockInWindow(false);
 		//System::Mouse::GetInstance()->Show(false);
 
 		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Camera::OnMouseMove));
@@ -70,6 +70,9 @@ namespace Utility
 
 	void Camera::OnMouseMove(System::Event* e)
 	{
+		if (!System::Mouse::GetInstance()->IsLocked())
+			return;
+
 		System::MouseMoveEvent* event = dynamic_cast<System::MouseMoveEvent*>(e);
 		if (!e)
 			throw System::SystemError(L"Unexpected event");
@@ -99,21 +102,21 @@ namespace Utility
 	{
 		float dt = m_timer.GetElapsedTime();
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_forward))
-			m_position += m_direction.Normalized()*dt*10.0f;
+			m_position += m_direction.Normalized()*dt;
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_backward))
-			m_position -= m_direction.Normalized()*dt*10.0f;
+			m_position -= m_direction.Normalized()*dt;
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_left))
-			m_position += Math::vec3(0,1,0).Cross(m_direction).Normalized()*dt*10.0f;
+			m_position += Math::vec3(0,1,0).Cross(m_direction).Normalized()*dt;
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_right))
-			m_position -= Math::vec3(0,1,0).Cross(m_direction).Normalized()*dt*10.0f;
+			m_position -= Math::vec3(0,1,0).Cross(m_direction).Normalized()*dt;
 		UpdateMatrix();
 		m_timer.UpdateStartPoint();
 	}
 
 	Camera::~Camera()
 	{
-		System::Mouse::GetInstance()->LockInWindow(false);
-		System::Mouse::GetInstance()->Show(true);
+		//System::Mouse::GetInstance()->LockInWindow(false);
+		//System::Mouse::GetInstance()->Show(false);
 		System::EventManager::GetInstance()->UnsubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Camera::OnMouseMove));
 		System::EventManager::GetInstance()->UnsubscribeHandler(System::EVENT_IDLE, System::EventHandler(this, &Camera::OnIdle));
 	}

@@ -13,7 +13,7 @@ namespace System
         IdleEvent();
         IdleEvent(IdleEvent&);
     public:
-		unsigned elapsed_time_ms;
+		double elapsed_time_s;
         virtual void Release();
 		virtual string ToString();
         static IdleEvent* Raise();

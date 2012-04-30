@@ -2,11 +2,12 @@
 #define _H_PUNK_VERTICAL_SLIDER
 
 #include "widget.h"
-#include "../render/render.h"
 
 namespace GUI
 {
-	class VerticalSlider : public Widget
+	class IGUIRender;
+
+	class LIB_GUI VerticalSlider : public Widget
 	{
 		int m_min;
 		int m_max;
@@ -15,8 +16,12 @@ namespace GUI
 	protected:
 		System::Handler m_onChangeValue;
 
+		virtual void OnIdle(System::IdleEvent* e);
+		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e);
+		virtual void OnMouseMove(System::MouseMoveEvent* e);
+
 	public:
-		VerticalSlider(int x = 0, int y = 0, int width = 20, int height = 200, int min_value = 0, int max_value = 100, Widget* parent = 0);
+		VerticalSlider(float x = 0, float y = 0, float width = 1, float height = 0.1, int min_value = 0, int max_value = 100, Widget* parent = 0);
 		virtual ~VerticalSlider();
 		void SetMin(int min);
 		void SetMax(int max);
@@ -25,11 +30,9 @@ namespace GUI
 		int GetMax() const;
 		int GetCurrent() const;
 		void SetBounds(int min, int max);
-
 		void OnChangeValue(System::Handler onChangeValue);
 
-		virtual bool EventHandler(System::Event* event);
-		virtual void Render();
+		virtual void Render(IGUIRender* render) const;
 	};
 }
 

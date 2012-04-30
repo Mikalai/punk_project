@@ -17,7 +17,9 @@ namespace GUI
 		virtual ~DefaultGUIRender();
 		virtual void Begin(int x, int y, int width, int height);
 		virtual void End();
-		virtual void RenderWidget(const Widget* widget);		
+		virtual void RenderWidget(const Widget* widget);	
+		virtual void RenderList(const ListBox* list_box);
+		virtual void RenderVerticalSlider(const VerticalSlider* slide);
 	};
 }
 

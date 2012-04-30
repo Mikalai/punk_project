@@ -6,7 +6,7 @@ namespace GUI
 	Button::Button(float x, float y, float width, float height, const System::string& text) : Widget(x,y,width,height)
 	{
 		m_text = text;
-		//RenderTextToTexture();
+		RenderTextToTexture();
 	}
 
 	void Button::Render()
@@ -16,11 +16,11 @@ namespace GUI
 		p1->m_y = (float)GetY();
 		p1->m_width = (float)m_width;
 		p1->m_height = (float)m_height;
-		p1->m_color[0] = m_color[0]; p1->m_color[1] = m_color[1]; p1->m_color[2] = m_color[2]; p1->m_color[3] = m_color[3];
+		p1->m_back_color[0] = m_back_color[0]; p1->m_back_color[1] = m_back_color[1]; p1->m_back_color[2] = m_back_color[2]; p1->m_back_color[3] = m_back_color[3];
 		Render::RenderPipeline::GetRenderPipeline()->Add(m_quadRender, (void*)p1);		
 
 		Render::TextAreaRender::Parameters* p2 = Render::TextAreaRender::Parameters::Create();
-		p2->m_color[0] = m_textColor[0]; p2->m_color[1] = m_textColor[1]; p2->m_color[2] = m_textColor[2]; p2->m_color[3] = m_textColor[3];
+		p2->m_back_color[0] = m_text_color[0]; p2->m_back_color[1] = m_text_color[1]; p2->m_back_color[2] = m_text_color[2]; p2->m_back_color[3] = m_text_color[3];
 		p2->m_x = (float)GetX();
 		p2->m_y = (float)GetY();
 		p2->m_width = (float)m_width;
@@ -33,51 +33,36 @@ namespace GUI
 	{
 	}
 
+	void Button::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
+	{
+		Widget::OnMouseLeftButtonDown(e);
+	}
+
+	void Button::OnIdle(System::IdleEvent* e)
+	{
+		Widget::OnIdle(e);
+		if (m_isCursorIn)
+		{
+			if (m_leftButtonDown)
+			{				
+				m_back_color = Math::vec4(1,1,1,1);
+				m_text_color = Math::vec4(0,0,0,1);
+			}			
+			else
+			{
+				m_animation = min(m_animation, m_animation_duration);
+				m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
+				m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
+			}
+		}
+	}
+
 	bool Button::EventHandler(System::Event* event)
 	{	
 		switch (event->eventCode)
 		{
 		case System::EVENT_IDLE:
-			if (m_isCursorIn)
-			{
-				if (m_leftButtonDown)
-				{
-					m_color[0] += (1 - m_activeColor[0] - m_color[0]) / 2.0f;
-					m_color[1] += (1 - m_activeColor[1] - m_color[1]) / 2.0f;
-					m_color[2] += (1 - m_activeColor[2] - m_color[2]) / 2.0f;
-					m_color[3] += (m_activeColor[3] - m_color[3]) / 2.0f;
 
-					m_textColor[0] += (1 - m_textActiveColor[0] - m_textColor[0]) / 2.0f;
-					m_textColor[1] += (1 - m_textActiveColor[1] - m_textColor[1]) / 2.0f;
-					m_textColor[2] += (1 - m_textActiveColor[2] - m_textColor[2]) / 2.0f;
-					m_textColor[3] += (m_textActiveColor[3] - m_textColor[3]) / 2.0f;
-				}			
-				else
-				{
-					m_color[0] += (m_activeColor[0] - m_color[0]) / 10.0f;
-					m_color[1] += (m_activeColor[1] - m_color[1]) / 10.0f;
-					m_color[2] += (m_activeColor[2] - m_color[2]) / 10.0f;
-					m_color[3] += (m_activeColor[3] - m_color[3]) / 10.0f;
-
-					m_textColor[0] += (m_textActiveColor[0] - m_textColor[0]) / 10.0f;
-					m_textColor[1] += (m_textActiveColor[1] - m_textColor[1]) / 10.0f;
-					m_textColor[2] += (m_textActiveColor[2] - m_textColor[2]) / 10.0f;
-					m_textColor[3] += (m_textActiveColor[3] - m_textColor[3]) / 10.0f;
-				}
-			}
-			else
-			{
-				m_color[0] += (m_inactiveColor[0] - m_color[0]) / 10.0f;
-				m_color[1] += (m_inactiveColor[1] - m_color[1]) / 10.0f;
-				m_color[2] += (m_inactiveColor[2] - m_color[2]) / 10.0f;
-				m_color[3] += (m_inactiveColor[3] - m_color[3]) / 10.0f;	
-
-				m_textColor[0] += (m_textInactiveColor[0] - m_textColor[0]) / 10.0f;
-				m_textColor[1] += (m_textInactiveColor[1] - m_textColor[1]) / 10.0f;
-				m_textColor[2] += (m_textInactiveColor[2] - m_textColor[2]) / 10.0f;
-				m_textColor[3] += (m_textInactiveColor[3] - m_textColor[3]) / 10.0f;
-			}
-			break;
 		default:
 			Widget::EventHandler(event);
 		}

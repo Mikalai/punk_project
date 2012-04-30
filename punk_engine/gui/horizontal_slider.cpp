@@ -46,7 +46,7 @@ namespace GUI
 	void HorizontalSlider::Render()
 	{
 		Render::QuadRender::Parameters* p1 = Render::QuadRender::Parameters::Create();
-		p1->m_color[0] = m_color[0]; p1->m_color[1] = m_color[1]; p1->m_color[2] = m_color[2]; p1->m_color[3] = m_color[3];
+		p1->m_back_color[0] = m_back_color[0]; p1->m_back_color[1] = m_back_color[1]; p1->m_back_color[2] = m_back_color[2]; p1->m_back_color[3] = m_back_color[3];
 		p1->m_height = (float)m_height;
 		p1->m_width = (float)m_width;
 		p1->m_x = (float)GetX();
@@ -54,7 +54,7 @@ namespace GUI
 		Render::RenderPipeline::GetRenderPipeline()->Add(m_quadRender, (void*)p1);
 
 		Render::QuadRender::Parameters* p3 = Render::QuadRender::Parameters::Create();
-		p3->m_color[0] =  1 - m_color[0]; p3->m_color[1] = 1 - m_color[1]; p3->m_color[2] = 1 - m_color[2]; p3->m_color[3] = m_color[3];
+		p3->m_back_color[0] =  1 - m_back_color[0]; p3->m_back_color[1] = 1 - m_back_color[1]; p3->m_back_color[2] = 1 - m_back_color[2]; p3->m_back_color[3] = m_back_color[3];
 		p3->m_height = (float)m_height;
 		p3->m_width = 20.0f;
 		p3->m_x = float(-10 + GetX() + m_cur * m_width / (m_max - m_min));

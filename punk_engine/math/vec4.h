@@ -454,7 +454,7 @@ namespace Math
 	template<class T>
 	static Vector4<T> operator *(const Vector4<T>& a, T d)
 	{
-		return new Vector4<T>(a[0] * d, a[1] * d, a[2] * d, a[3] * d);
+		return Vector4<T>(a[0] * d, a[1] * d, a[2] * d, a[3] * d);
 	}
 
 	template<class T>

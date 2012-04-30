@@ -1,6 +1,8 @@
 #include "gui_default_render.h"
 #include "../math/mat4.h"
 #include "widget.h"
+#include "list_box.h"
+#include "vertical_slider.h"
 
 namespace GUI
 {
@@ -26,17 +28,65 @@ namespace GUI
 		m_rc->End();
 	}
 
-	void DefaultGUIRender::RenderWidget(const Widget* widget)
+	void DefaultGUIRender::RenderList(const ListBox* list_box) 
 	{
-		unsigned children_count = widget->GetChildrenCount();
+	}
+
+	void DefaultGUIRender::RenderVerticalSlider(const VerticalSlider* slider)
+	{
+		m_rc->SetProjectionMatrix(Math::mat4::CreateIdentity());
+		float x = -1 + 2*slider->GetX();
+		float y = -1 + 2*slider->GetY();
+		float w = slider->GetWidth();
+		float h = slider->GetHeight();
+		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
+		m_rc->SetDiffuseColor(slider->BackColor());
+		m_rc->SetTextColor(slider->TextColor());
+		m_rc->Begin();
+		m_tc->SetTexture0(slider->GetBackgroundTexture());
+		m_tc->SetTexture1(slider->GetTextTexture());
+		m_tc->Bind();
+		m_quad->Bind(m_rc->GetSupportedVertexAttributes());
+		m_quad->Render();			
+		m_quad->Unbind();
+		m_tc->Unbind();
+		m_rc->End();
+
+		x = -1 + 2 * slider->GetX();
+		y = -1 + 2 * (slider->GetY() + slider->GetHeight() * (slider->GetMax() - slider->GetCurrent()) / float(slider->GetMax() - slider->GetMin()));
+		w = slider->GetWidth();
+		h = 0.01;					
+		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
+		m_rc->SetDiffuseColor(Math::vec4(1,1,1,1) - slider->BackColor());
+		m_rc->SetTextColor(Math::vec4(1,1,1,1) - slider->TextColor());
+		m_rc->Begin();	
+		m_tc->SetTexture0(slider->GetBackgroundTexture());
+		m_tc->SetTexture1(slider->GetTextTexture());
+		m_tc->Bind();
+		m_quad->Bind(m_rc->GetSupportedVertexAttributes());
+		m_quad->Render();			
+		m_quad->Unbind();
+		m_tc->Unbind();
+		m_rc->End();
+		/**/
+		unsigned children_count = slider->GetChildrenCount();
 		for (int i = 0; i < children_count; ++i)
 		{
-			const Widget* child = widget->GetChild(i);
+			const Widget* child = slider->GetChild(i);
 			child->Render(this);
 		}
+
+	}
+	void DefaultGUIRender::RenderWidget(const Widget* widget)
+	{
 		m_rc->SetProjectionMatrix(Math::mat4::CreateIdentity());
-		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(widget->GetX() - 1, widget->GetY() - 1, 0) * Math::mat4::CreateScaling(2*widget->GetWidth(), 2*widget->GetHeight(), 1));
-		m_rc->SetDiffuseColor(Math::vec4(1,1,1,0.5));
+		float x = -1 + 2*widget->GetX();
+		float y = -1 + 2*widget->GetY();
+		float w = widget->GetWidth();
+		float h = widget->GetHeight();
+		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
+		m_rc->SetDiffuseColor(widget->BackColor());
+		m_rc->SetTextColor(widget->TextColor());
 		m_rc->Begin();
 		m_tc->SetTexture0(widget->GetBackgroundTexture());
 		m_tc->SetTexture1(widget->GetTextTexture());
@@ -47,20 +97,11 @@ namespace GUI
 		m_tc->Unbind();
 		m_rc->End();
 
-		//		m_driver->GetRenderContext()->Begin(m_driver->GetShaderProgram(L"solid_color_2d"));
-		//OpenGL::RenderContext* rc = m_driver->GetRenderContext();
-		//ShaderProgram* sp = rc->GetShaderProgram();				
-		//float x = px + widget->GetX();
-		//float y = py + widget->GetY();				
-		//Math::mat4 pvw =  Math::mat4::CreateTranslate(-1+x,-1+y,0)*Math::mat4::CreateScaling(2,2,1)*Math::mat4::CreateScaling(widget->GetWidth(), widget->GetHeight(), 1);
-		//sp->SetUniformMatrix4f(sp->GetLocation(UNIFORM_PROJVIEWWORLD), pvw);
-		//sp->SetUniformVector4f(sp->GetLocation(UNIFORM_DIFFUSE_COLOR), Math::vec4(0,0,1,0.5));
-		//sp->SetUniformFloat(sp->GetLocation(UNIFORM_RADIUS), 0.05);
-		//rc->DisableDepthTest();
-		//rc->EnableBlending();
-		//m_driver->RenderQuad();
-		//rc->DisableBlending();
-		//rc->EnableDepthTest();
-		//m_driver->GetRenderContext()->End();
+		unsigned children_count = widget->GetChildrenCount();
+		for (int i = 0; i < children_count; ++i)
+		{
+			const Widget* child = widget->GetChild(i);
+			child->Render(this);
+		}
 	}
 }

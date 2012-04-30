@@ -6,6 +6,7 @@
 #include "../system/string.h"
 #include "config.h"
 #include "../system/driver/video/driver.h"
+#include "../math/math.h"
 
 namespace GUI
 {
@@ -26,12 +27,17 @@ namespace GUI
 		float m_x, m_y;
 
 		int m_fontSize;
-		float m_activeColor[4];
-		float m_inactiveColor[4];
-		float m_textActiveColor[4];
-		float m_textInactiveColor[4];
-		float m_color[4];
-		float m_textColor[4];
+
+		Math::Vector4<float> m_back_color_0;
+		Math::Vector4<float> m_back_color_1;
+		Math::Vector4<float> m_text_color_0;
+		Math::Vector4<float> m_text_color_1;
+		Math::Vector4<float> m_back_color;
+		Math::Vector4<float> m_text_color;
+		float m_animation;
+		float m_animation_duration;
+		float m_animation_speed;
+
 		bool m_isVisible;
 		bool m_isEnabled;
 		bool m_isCursorIn;
@@ -68,9 +74,16 @@ namespace GUI
 
 	protected:
 		virtual void RenderTextToTexture();
+		virtual void OnResize(System::WindowResizeEvent* event);
+		virtual void OnMouseMove(System::MouseMoveEvent* event);
+		virtual void OnIdle(System::IdleEvent* event);
+		virtual void OnMouseEnter(System::MouseEnterEvent* event);
+		virtual void OnMouseLeave(System::MouseLeaveEvent* event);
+		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
+		virtual void OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* event);
 	public:
 
-		Widget(float x = 0, float y = 0, float width = 1, float height = 1);
+		Widget(float x = 0, float y = 0, float width = 1, float height = 1, Widget* parent = 0);
 		
 		void RemoveChild(Widget* child);
 		void AddChild(Widget* child);
@@ -110,7 +123,7 @@ namespace GUI
 		virtual void Render(IGUIRender* render) const;
 		virtual bool EventHandler(System::Event* event);
 
-		bool IsPointIn(float x, float y);
+		bool IsPointIn(const Math::vec2& point_in_viewport) const;
 
 		bool SendChildren(System::Event* event);  
 
@@ -123,20 +136,38 @@ namespace GUI
 		void SetBackgroundTexture(OpenGL::Texture2D* texture);
 		const OpenGL::Texture2D* GetBackgroundTexture() const;
 
+		/// Work with color goes here
+		Math::Vector4<float>& BackColor0();
+		Math::Vector4<float>& BackColor1();
+		Math::Vector4<float>& TextColor0();
+		Math::Vector4<float>& TextColor1();
+		
+		const Math::Vector4<float>& BackColor0() const;
+		const Math::Vector4<float>& BackColor1() const;
+		const Math::Vector4<float>& TextColor0() const;
+		const Math::Vector4<float>& TextColor1() const;
+
+		const Math::Vector4<float>& TextColor() const;
+		const Math::Vector4<float>& BackColor() const;
+
 		/*********************************************************************/
 		/*	Handlers
 		/*********************************************************************/
-		void OnLeftClick(System::Handler onLeftClick);
-		void OnRightClick(System::Handler onRightClick);
-		void OnMiddleClick(System::Handler onMiddleClick);
-		void OnMouseEnter(System::Handler onMouseEnter);
-		void OnMouseLeave(System::Handler onMouseLeave);
-		void OnChar(System::Handler onChar);
-		void OnKeyDown(System::Handler onKeyDown);
-		void OnKeyUp(System::Handler onKeyUp);
-		void OnWheel(System::Handler onWheel);
+
+		void SetMouseLeftClickHandler(System::Handler onLeftClick);
+		void SetMouseRightClickHandler(System::Handler onRightClick);
+		void SetMouseMiddleClickHandler(System::Handler onMiddleClick);
+		void SetMouseEnterHandler(System::Handler onMouseEnter);
+		void SetMouseLeaveHandler(System::Handler onMouseLeave);
+		void SetCharHandler(System::Handler onChar);
+		void SetKeyDownHandler(System::Handler onKeyDown);
+		void SetKeyUpHandler(System::Handler onKeyUp);
+		void SetWheelHandler(System::Handler onWheel);
+
 
 		friend class Manager;
+
+		static const Math::Vector2<float> WindowToViewport(float x, float y);
 	};
 }
 

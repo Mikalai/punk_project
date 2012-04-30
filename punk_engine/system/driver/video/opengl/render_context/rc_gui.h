@@ -22,6 +22,7 @@ namespace OpenGL
 		void SetViewMatrix(const Math::Matrix4x4<float>& m);
 		void SetWorldMatrix(const Math::Matrix4x4<float>& m);
 		void SetDiffuseColor(const Math::Vector4<float>& m);		
+		void SetTextColor(const Math::Vector4<float>& m);
 	};
 };
 

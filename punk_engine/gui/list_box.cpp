@@ -91,7 +91,7 @@ namespace GUI
 	{
 		Widget::Render();		
 		Render::TextAreaRender::Parameters* p = Render::TextAreaRender::Parameters::Create();
-		p->Set((float)GetX(), (float)GetY(), (float)m_width, (float)m_height, m_textColor, &m_textTexture);
+		p->Set((float)GetX(), (float)GetY(), (float)m_width, (float)m_height, m_text_color, &m_textTexture);
 		Render::RenderPipeline::GetRenderPipeline()->Add(Render::TextAreaRender::GetRender(), p);
 
 		if (m_currentSelection != -1 &&  (m_currentSelection - m_startPosition - 1) < m_height / m_fontSize && m_currentSelection - m_startPosition > 0)

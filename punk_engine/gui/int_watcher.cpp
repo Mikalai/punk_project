@@ -9,7 +9,7 @@ Widget(x, y, width, height, parent)
 {	
 	m_isMinimized = false;
 	m_button = new Button(0, this->GetHeight() - 20, width, 20, L" System", this);
-	m_button->OnLeftClick(System::EventHandler(this, &IntWatcher::OnButtonClick));	
+	m_button->SetMouseLeftClickHandler(System::EventHandler(this, &IntWatcher::OnButtonClick));	
 	FixPosition(false);
 }
 

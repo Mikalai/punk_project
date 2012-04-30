@@ -1,10 +1,12 @@
 #include "vertical_slider.h"
+#include "gui_render.h"
 
 namespace GUI
 {
-	VerticalSlider::VerticalSlider(int x, int y, int width, int height, int min, int max, Widget* parent) :
-		Widget(x,y,width,height, parent), m_min(min), m_max(max), m_cur(0), m_prev(0)
+	VerticalSlider::VerticalSlider(float x, float y, float width, float height, int min, int max, Widget* parent) :
+		Widget(x, y, width, height, parent), m_min(min), m_max(max), m_cur(0), m_prev(0)
 	{
+		m_text = "Vertical Slider";
 	}
 
 	VerticalSlider::~VerticalSlider()
@@ -53,58 +55,37 @@ namespace GUI
 		m_onChangeValue = handler;
 	}
 
-	void VerticalSlider::Render()
+	void VerticalSlider::Render(IGUIRender* render) const
 	{
-		Render::QuadRender::Parameters* p1 = Render::QuadRender::Parameters::Create();
-		p1->m_color[0] = m_color[0]; p1->m_color[1] = m_color[1]; p1->m_color[2] = m_color[2]; p1->m_color[3] = m_color[3];
-		p1->m_height = (float)m_height;
-		p1->m_width = (float)m_width;
-		p1->m_x = (float)GetX();
-		p1->m_y = (float)GetY();
-		Render::RenderPipeline::GetRenderPipeline()->Add(m_quadRender, (void*)p1);
-
-		Render::QuadRender::Parameters* p3 = Render::QuadRender::Parameters::Create();
-		p3->m_color[0] =  1 - m_color[0]; p3->m_color[1] = 1 - m_color[1]; p3->m_color[2] = 1 - m_color[2]; p3->m_color[3] = m_color[3];
-		p3->m_height = 20.0;
-		p3->m_width = (float)m_width;
-		p3->m_x = (float)GetX();
-		p3->m_y = float(-10 + GetY() + (m_max - m_cur) * m_height / (m_max - m_min));
-		Render::RenderPipeline::GetRenderPipeline()->Add(m_quadRender, (void*)p3);
+		render->RenderVerticalSlider(this);
 	}
 
-	bool VerticalSlider::EventHandler(System::Event* event)
-	{	
-		switch(event->eventCode)
+	void VerticalSlider::OnIdle(System::IdleEvent* e)
+	{
+		if (m_prev != m_cur)
 		{
-		case System::EVENT_IDLE:
-			if (m_prev != m_cur)
-			{
-				event->anyData = (void*)m_cur;
-				m_onChangeValue(event);
-				m_prev = m_cur;
-			}
-			Widget::EventHandler(event);
-			break;
-		case System::EVENT_MOUSE_LBUTTON_DOWN:
-			{
-				System::MouseLeftButtonDownEvent* e = static_cast<System::MouseLeftButtonDownEvent*>(event);
-				m_cur = m_max - int((e->y - GetY()) / (float)m_height * (float)(m_max - m_min) + 1);
-				SendChildren(event);
-				Widget::EventHandler(event);
-			}
-			break;
-		case System::EVENT_MOUSE_MOVE:
-			{
-				System::MouseMoveEvent* e = static_cast<System::MouseMoveEvent*>(event);
-				if (m_leftButtonDown)
-				{
-					m_cur = m_max - int((e->y - GetY()) / (float)m_height * (float)(m_max - m_min) + 1);
-				}
-				SendChildren(event);
-			}
-		default:
-			Widget::EventHandler(event);
+			e->anyData = (void*)m_cur;
+			m_onChangeValue(e);
+			m_prev = m_cur;
 		}
-		return false;
+		Widget::OnIdle(e);
+	}
+
+	void VerticalSlider::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
+	{
+		Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
+		m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
+		//SendChildren(e);
+		Widget::OnMouseLeftButtonDown(e);
+	}
+
+	void VerticalSlider::OnMouseMove(System::MouseMoveEvent* e)
+	{
+		if (m_leftButtonDown)
+		{
+			Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
+			m_cur = m_max - int((p.Y() - GetY()) / (float)m_height * (float)(m_max - m_min) + 1);
+		}
+		Widget::OnMouseMove(e);
 	}
 }

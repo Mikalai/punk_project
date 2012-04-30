@@ -149,7 +149,7 @@ namespace System
 
 			//Sleep(10);
 			IdleEvent* e = IdleEvent::Raise();
-			e->elapsed_time_ms = timer.GetElapsedTime();
+			e->elapsed_time_s = timer.GetElapsedTime();
 			timer.UpdateStartPoint();
 			EventManager::GetInstance()->FixEvent(e);
 			EventManager::GetInstance()->Process();			

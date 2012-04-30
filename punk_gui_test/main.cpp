@@ -52,8 +52,10 @@ public:
 		x = y = z = 10;
 
 		m_gui.reset(new GUI::Manager());		
-		m_gui->AddRootWidget(new GUI::Widget(0.95, 0.95, 0.1, 0.1));		
-
+		GUI::Widget* w = new GUI::Widget(0, 0.8, 1, 0.2);
+		//m_gui->AddRootWidget(w);	
+		w->AddChild(new GUI::Button(0, 0.1, 0.5, 0.5));
+		m_gui->AddRootWidget(new GUI::VerticalSlider(0, 0, 0.1, 0.8f, 0, 100, 0));
 	}
 
 	void OnKeyDown(System::Event* event)
@@ -101,7 +103,7 @@ public:
 
 int main(int argc, char** argv)
 {
-	System::Window::GetInstance()->SetTitle(L"Punk Viewer");
+	System::Window::GetInstance()->SetTitle(L"Тэставаньне графічнага інтэрфэйса картыстальніка");
 	System::Mouse::GetInstance()->LockInWindow(true);
 	OpenGL::Module module;
 	module.Init();

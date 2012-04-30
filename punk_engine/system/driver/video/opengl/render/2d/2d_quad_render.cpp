@@ -39,7 +39,7 @@ namespace Render
 	void QuadRender::Parameters::Set(float x, float y, float width, float height, float* color)
 	{
 		m_x = x; m_y = y; m_width = width; m_height = height; 
-		m_color[0] = color[0]; m_color[1] = color[1], m_color[2] = color[2]; m_color[3] = color[3];
+		m_back_color[0] = color[0]; m_back_color[1] = color[1], m_back_color[2] = color[2]; m_back_color[3] = color[3];
 	}
 
 	QuadRender::QuadRender()
@@ -133,7 +133,7 @@ namespace Render
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			m_program->SetUniformMatrix4f(m_proj_view_world_uniform, projViewWorld);
-			m_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_color);
+			m_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_back_color);
 			m_program->SetUniformFloat(m_radiusUniform, 5.0f);
 
 			Driver::CheckError(L"0");

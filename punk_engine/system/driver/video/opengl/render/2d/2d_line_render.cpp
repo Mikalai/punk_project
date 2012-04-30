@@ -27,7 +27,7 @@ namespace Render
 		m_p1[1] = y1;
 		m_p2[0] = x2;
 		m_p2[1] = y2;
-		m_color[0] = color[0]; m_color[1] = color[1]; m_color[2] = color[2]; m_color[3] = color[3];
+		m_back_color[0] = color[0]; m_back_color[1] = color[1]; m_back_color[2] = color[2]; m_back_color[3] = color[3];
 	}
 
     LineRender::Parameters* LineRender::Parameters::Create()
@@ -137,7 +137,7 @@ namespace Render
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			m_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_color);
+			m_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_back_color);
 			m_program->SetUniformVector2f(m_p1Uniform, p->m_p1);
 			m_program->SetUniformVector2f(m_p2Uniform, p->m_p2);
 			m_program->SetUniformFloat(m_widthUniform, width);

@@ -45,7 +45,7 @@ namespace Render
 				const Math::vec3& light_positon)
 	{
 		m_vertex_array_object = vao;
-		m_color = color;
+		m_back_color = color;
 		m_world_transform = world_transform;
 		m_view_transform = view_transform;
 		m_projection_transform = projection_transform;
@@ -95,7 +95,7 @@ namespace Render
 			m_shader_program->SetUniformMatrix4f(m_proj_view_world_uniform, projViewWorld);
 			m_shader_program->SetUniformMatrix3f(m_viewUniform, p->m_view_transform.RotationPart());
 			m_shader_program->SetUniformMatrix3f(m_normalTransformUniform, normalTransform);
-			m_shader_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_color);
+			m_shader_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_back_color);
 			m_shader_program->SetUniformVector3f(m_lightPositionUniform, p->m_light_position);
 			m_shader_program->SetUniformVector3f(m_lightDirectionUniform, p->m_light_direction);
 

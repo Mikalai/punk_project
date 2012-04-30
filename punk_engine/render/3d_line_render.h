@@ -25,7 +25,7 @@ namespace Render
 			Math::mat4 m_world_transform;
 			Math::mat4 m_view_transform;
 			Math::mat4 m_projection_transform;
-			Math::vec4 m_color;						
+			Math::vec4 m_back_color;						
 			const VertexArrayObject* m_vertex_array_object;
 			
 			void Set(const VertexArrayObject* vao, 

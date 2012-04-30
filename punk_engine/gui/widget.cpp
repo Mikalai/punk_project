@@ -1,4 +1,5 @@
 #include "widget.h"
+#include "../math/math.h"
 #include "../utility/font_builder.h"
 //#include "../render/render.h"
 #include "../system/event_manager.h"
@@ -7,34 +8,32 @@
 
 namespace GUI
 {
-	Widget::Widget(float x, float y, float width, float height) : m_x(x),
-		m_y(y), 
-		m_width(width), 
-		m_height(height), 
-		m_isVisible(true), 
-		m_isEnabled(true),
-		m_isCursorIn(false),
-		m_leftButtonDown(false),
-		m_rightButtonDown(false),
-		m_middleButtonDown(false),
-		m_moveable(false),
-		m_text("Widget"),
-		m_fontSize(12),
-		m_parent(0)
+	Widget::Widget(float x, float y, float width, float height, Widget* parent) 
+		: m_x(x)
+		, m_y(y)
+		, m_width(width)
+		, m_height(height)
+		, m_isVisible(true)
+		, m_isEnabled(true)
+		, m_isCursorIn(false)
+		, m_leftButtonDown(false)
+		, m_rightButtonDown(false)
+		, m_middleButtonDown(false)
+		, m_moveable(false)
+		, m_text("Widget")
+		, m_fontSize(14)
+		, m_parent(parent)
+		, m_back_color_0(1, 0, 0, 0.5)
+		, m_back_color_1(0, 0, 1, 0.5)
+		, m_text_color_0(0, 1, 0, 1)
+		, m_text_color_1(1,0,0,1)
+		, m_back_color(m_back_color_0)
+		, m_text_color(m_text_color_0)
+		, m_animation(0)
+		, m_animation_duration(0.1)		
 	{
-		m_inactiveColor[0] = 0.0f;
-		m_inactiveColor[1] = 0.3f;
-		m_inactiveColor[2] = 0.8f;
-		m_inactiveColor[3] = 0.8f;
-
-		m_activeColor[0] = 0.0f;
-		m_activeColor[1] = 0.6f;
-		m_activeColor[2] = 1.0f;
-		m_activeColor[3] = 1.0f;
-
-		m_textActiveColor[0] = m_textActiveColor[1] = m_textActiveColor[2] = m_textActiveColor[3] = 1.0f;
-		m_textInactiveColor[0] = m_textInactiveColor[1] = m_textInactiveColor[2] = m_textInactiveColor[3] = 0.95f;
-
+		if (m_parent)
+			m_parent->AddChild(this);
 		m_text_texture = new OpenGL::Texture2D;;
 		m_text_texture->Create(m_width*System::Window::GetInstance()->GetWidth(), m_height*System::Window::GetInstance()->GetHeight(), GL_RED, 0);
 
@@ -58,18 +57,125 @@ namespace GUI
 	void Widget::AddChild(Widget* child)
 	{
 		m_children.push_back(child);
-	}
-	/*
-	Widget* Widget::GetParent()
-	{
-		return m_parent;
+		child->SetParent(this);		
 	}
 
-	const Widget* Widget::GetParent() const
+	void Widget::OnResize(System::WindowResizeEvent*)
 	{
-		return m_parent;
+		m_text_texture->Create(GetWidth()*System::Window::GetInstance()->GetWidth(), GetHeight()*System::Window::GetInstance()->GetHeight(), GL_RED, 0);
+		RenderTextToTexture();
 	}
-	*/
+
+	void Widget::OnMouseMove(System::MouseMoveEvent* e)
+	{
+		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); it++)
+		{
+			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
+				continue;
+
+			bool wasIn = (*it)->IsPointIn(Widget::WindowToViewport(e->x_prev, e->y_prev));
+			bool isIn = (*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y));
+
+			if (!wasIn && isIn)
+			{
+				System::MouseEnterEvent* new_event = System::MouseEnterEvent::Raise();
+				new_event->anyData = *it;
+				System::EventManager::GetInstance()->FixEvent(new_event);
+			}
+
+			if (wasIn && !isIn)
+			{
+				System::MouseLeaveEvent* new_event = System::MouseLeaveEvent::Raise();
+				new_event->anyData = *it;
+				System::EventManager::GetInstance()->FixEvent(new_event);
+			}
+
+			if (isIn)
+			{
+				(*it)->EventHandler(e);
+			}
+		}
+		if (m_leftButtonDown && m_moveable)
+		{
+			m_x += e->x - e->x_prev;
+			m_y += e->y - e->y_prev;
+		}
+	}
+
+	void Widget::OnMouseEnter(System::MouseEnterEvent* e)
+	{
+		m_isCursorIn = true;
+		m_OnMouseEnter(e);
+		//SendChildren(event);
+	}
+
+	void Widget::OnMouseLeave(System::MouseLeaveEvent* e)
+	{
+		m_isCursorIn = false;
+		m_leftButtonDown = false;
+		m_rightButtonDown = false;
+		m_middleButtonDown = false;
+		//SendChildren(e);
+		m_OnMouseLeave(e);
+	}
+
+	void Widget::OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* e)
+	{
+		if (m_isCursorIn)
+		{
+			if (m_leftButtonDown)
+			{
+				m_leftButtonDown = false;
+				m_OnLeftClick(e);
+			}
+		}
+		for (auto it = m_children.begin(); it != m_children.end(); ++it)
+		{
+			(*it)->OnMouseLeftButtonUp(e);
+		}
+	}
+
+	void Widget::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
+	{
+		if (m_isCursorIn)
+		{
+			m_leftButtonDown = true;
+		}
+		for (auto it = m_children.begin(); it != m_children.end(); ++it)
+		{
+			(*it)->OnMouseLeftButtonDown(e);
+		}
+	}
+
+	void Widget::OnIdle(System::IdleEvent* e)
+	{		
+		float time_in_s = float(e->elapsed_time_s);
+		if (m_isCursorIn)
+		{			
+			if (m_animation < m_animation_duration)
+			{
+				m_animation += time_in_s;
+				m_animation = min(m_animation, m_animation_duration);
+				m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
+				m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
+			}
+		}
+		else
+		{
+			if (m_animation > 0)
+			{
+				m_animation -= time_in_s;
+				m_animation = max(m_animation, 0);
+				m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
+				m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
+			}
+		}			
+		for (auto it = m_children.begin(); it != m_children.end(); ++it)
+		{
+			(*it)->OnIdle(e);
+		}
+	}
+
 	void Widget::FixPosition(bool isFixed)
 	{
 		m_moveable = !isFixed;
@@ -116,16 +222,16 @@ namespace GUI
 		switch(type)
 		{
 		case ACTIVE_COLOR:
-			c = m_activeColor;
+			c = m_back_color_0;
 			break;
 		case INACTIVE_COLOR:
-			c = m_inactiveColor;
+			c = m_back_color_1;
 			break;
 		case TEXT_ACTIVE_COLOR:
-			c = m_textActiveColor;
+			c = m_text_color_0;
 			break;
 		case TEXT_INACTIVE_COLOR:
-			c = m_textInactiveColor;
+			c = m_text_color_1;
 			break;
 		default:
 			throw System::SystemError(L"Bad color type" + LOG_LOCATION_STRING);
@@ -139,26 +245,30 @@ namespace GUI
 
 	float Widget::GetWidth() const
 	{
-		return m_width;
+		if (m_parent == 0)
+			return m_width;
+		return m_width * m_parent->GetWidth();
 	}
 
 	float Widget::GetHeight() const
 	{
-		return m_height;
+		if (m_parent == 0)
+			return m_height;
+		return m_height * m_parent->GetHeight();
 	}
 
 	float Widget::GetX() const
 	{
 		if (m_parent == 0)
 			return m_x;
-		return m_x + m_parent->GetX();
+		return m_parent->GetX() + m_x * m_parent->GetWidth();
 	}
 
 	float Widget::GetY() const
 	{
 		if (m_parent == 0)
 			return m_y;
-		return m_y + m_parent->GetY();
+		return m_parent->GetY() + m_y * m_parent->GetHeight();
 	}
 
 	const OpenGL::Texture2D* Widget::GetBackgroundTexture() const
@@ -194,6 +304,7 @@ namespace GUI
 	void Widget::SetParent(Widget* widget)
 	{
 		m_parent = widget;
+		OnResize(0);
 	}
 
 	Widget* Widget::GetParent() 
@@ -259,70 +370,21 @@ namespace GUI
 			break;
 		case System::EVENT_MOUSE_ENTER:
 			{
-				m_isCursorIn = true;
-				m_OnMouseEnter(event);
-				//SendChildren(event);
 			}
 			break;
 		case System::EVENT_MOUSE_LEAVE:
-			{
-				m_isCursorIn = false;
-				m_leftButtonDown = false;
-				m_rightButtonDown = false;
-				m_middleButtonDown = false;
-				SendChildren(event);
-				m_OnMouseLeave(event);
+			{				
 			}
 			break;
 		case System::EVENT_IDLE:
-			if (m_isCursorIn)
-			{
-				m_color[0] += (m_activeColor[0] - m_color[0]) / 2.0f;
-				m_color[1] += (m_activeColor[1] - m_color[1]) / 2.0f;
-				m_color[2] += (m_activeColor[2] - m_color[2]) / 2.0f;
-				m_color[3] += (m_activeColor[3] - m_color[3]) / 2.0f;	
-
-				m_textColor[0] += (m_textActiveColor[0] - m_textColor[0]) / 2.0f;
-				m_textColor[1] += (m_textActiveColor[1] - m_textColor[1]) / 2.0f;
-				m_textColor[2] += (m_textActiveColor[2] - m_textColor[2]) / 2.0f;
-				m_textColor[3] += (m_textActiveColor[3] - m_textColor[3]) / 2.0f;
-
-			}
-			else
-			{
-				m_color[0] += (m_inactiveColor[0] - m_color[0]) / 10.0f;
-				m_color[1] += (m_inactiveColor[1] - m_color[1]) / 10.0f;
-				m_color[2] += (m_inactiveColor[2] - m_color[2]) / 10.0f;
-				m_color[3] += (m_inactiveColor[3] - m_color[3]) / 10.0f;	
-
-				m_textColor[0] += (m_textInactiveColor[0] - m_textColor[0]) / 10.0f;
-				m_textColor[1] += (m_textInactiveColor[1] - m_textColor[1]) / 10.0f;
-				m_textColor[2] += (m_textInactiveColor[2] - m_textColor[2]) / 10.0f;
-				m_textColor[3] += (m_textInactiveColor[3] - m_textColor[3]) / 10.0f;
-			}
-			SendChildren(event);
+		//	OnIdle(static_cast<System::IdleEvent*>(event));
 			break;
 		case System::EVENT_MOUSE_LBUTTON_DOWN:
 			{
-				if (m_isCursorIn)
-				{
-					m_leftButtonDown = true;
-				}
-				SendChildren(event);
+
 			}
 			break;
 		case System::EVENT_MOUSE_LBUTTON_UP:
-			{
-				if (m_isCursorIn)
-				{
-					if (m_leftButtonDown)
-					{
-						m_leftButtonDown = false;
-						m_OnLeftClick(event);
-					}
-				}
-				SendChildren(event);
-			}
 			break;
 		case System::EVENT_MOUSE_RBUTTON_DOWN:
 			{
@@ -357,54 +419,11 @@ namespace GUI
 			break;
 		case System::EVENT_MOUSE_MBUTTON_UP:
 			{
-				if (m_isCursorIn)
-				{
-					if (m_middleButtonDown)
-					{
-						m_middleButtonDown = false;
-						m_OnMiddleClick(event);
-					}
-				}
-				SendChildren(event);
+
 			}
 			break;
 		case System::EVENT_MOUSE_MOVE:
-			{
-/*				System::MouseMoveEvent* e = static_cast<System::MouseMoveEvent*>(event);
-				for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); it++)
-				{
-					if (!(*it)->IsVisible() || !(*it)->IsEnabled())
-						continue;
-
-					bool wasIn = (*it)->IsPointIn(e->x_prev, e->y_prev);
-					bool isIn = (*it)->IsPointIn(e->x, e->y);
-
-					if (!wasIn && isIn)
-					{
-						System::MouseEnterEvent* new_event = System::MouseEnterEvent::Raise();
-						new_event->anyData = *it;
-						CommonStaff::g_eventManager.FixEvent(new_event);
-					}
-
-					if (wasIn && !isIn)
-					{
-						System::MouseLeaveEvent* new_event = System::MouseLeaveEvent::Raise();
-						new_event->anyData = *it;
-						CommonStaff::g_eventManager.FixEvent(new_event);
-					}
-
-					if (isIn)
-					{
-						(*it)->EventHandler(event);
-					}
-				}
-				if (m_leftButtonDown && m_moveable)
-				{
-					m_x += e->x - e->x_prev;
-					m_y += e->y - e->y_prev;
-				}
-				//SendChildren(event);*/
-			}
+			OnMouseMove(static_cast<System::MouseMoveEvent*>(event));
 			break;
 		}	
 		return false;
@@ -414,7 +433,7 @@ namespace GUI
 	{		
 		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
 		{
-			if ((*it)->IsPointIn(x, y))
+			if ((*it)->IsPointIn(WindowToViewport(x, y)))
 				return (*it)->GetFocused(x, y);
 		}
 		return this;/**/
@@ -428,10 +447,10 @@ namespace GUI
 
 	bool Widget::SendChildren(System::Event* event)
 	{
-/*		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); it++)
+		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); it++)
 		{
 			(*it)->EventHandler(event);
-		}*/
+		}
 		return false;
 	}
 
@@ -440,11 +459,15 @@ namespace GUI
 		return m_children.size();
 	}
 
-	bool Widget::IsPointIn(float px, float py)
+	bool Widget::IsPointIn(const Math::vec2& p) const
 	{
-		if (px < GetX() || px > GetX() + m_width)
+		float x = GetX();
+		float y = GetY();
+		float w = GetWidth();
+		float h = GetHeight();
+		if (p.X() < x || p.X() > x + w)
 			return false;
-		if (py < GetY() || py > GetY() + m_height)
+		if (p.Y() < y || p.Y() > y + h)
 			return false;		
 		return true;
 	}
@@ -469,48 +492,106 @@ namespace GUI
 		m_isEnabled = isEnabled;
 	}
 
-	void Widget::OnLeftClick(System::Handler onLeftClick)
+	const Math::Vector4<float>& Widget::BackColor() const
+	{
+		return m_back_color;
+	}
+
+	const Math::Vector4<float>& Widget::TextColor() const
+	{
+		return m_text_color;
+	}
+
+	Math::Vector4<float>& Widget::BackColor0()
+	{
+		return m_back_color_0;
+	}
+
+	Math::Vector4<float>& Widget::BackColor1()
+	{
+		return m_back_color_1;
+	}
+
+	Math::Vector4<float>& Widget::TextColor0()
+	{
+		return m_text_color_0;
+	}
+
+	Math::Vector4<float>& Widget::TextColor1()
+	{
+		return m_text_color_1;
+	}
+		
+	const Math::Vector4<float>& Widget::BackColor0() const
+	{
+		return m_back_color_0;
+	}
+
+	const Math::Vector4<float>& Widget::BackColor1() const
+	{
+		return m_back_color_1;
+	}
+		
+	const Math::Vector4<float>& Widget::TextColor0() const
+	{
+		return m_text_color_0;
+	}
+	
+	const Math::Vector4<float>& Widget::TextColor1() const
+	{
+		return m_text_color_1;
+	}
+
+	void Widget::SetMouseLeftClickHandler(System::Handler onLeftClick)
 	{		
 		m_OnLeftClick = onLeftClick;
 	}
 
-	void Widget::OnRightClick(System::Handler onRightClick)
+	void Widget::SetMouseRightClickHandler(System::Handler onRightClick)
 	{
 		m_OnRightClick = onRightClick;
 	}
 
-	void Widget::OnMiddleClick(System::Handler onMiddleClick)
+	void Widget::SetMouseMiddleClickHandler(System::Handler onMiddleClick)
 	{
 		m_OnMiddleClick = onMiddleClick;
 	}
 
-	void Widget::OnMouseEnter(System::Handler onMouseEnter)
+	void Widget::SetMouseEnterHandler(System::Handler onMouseEnter)
 	{
 		m_OnMouseEnter = onMouseEnter;
 	}
 
-	void Widget::OnMouseLeave(System::Handler onMouseLeave)
+	void Widget::SetMouseLeaveHandler(System::Handler onMouseLeave)
 	{
 		m_OnMouseLeave = onMouseLeave;
 	}
 
-	void Widget::OnChar(System::Handler onChar)
+	void Widget::SetCharHandler(System::Handler onChar)
 	{
 		m_OnChar = onChar;
 	}
 
-	void Widget::OnKeyDown(System::Handler onKeyDown)
+	void Widget::SetKeyDownHandler(System::Handler onKeyDown)
 	{
 		m_OnKeyDown = onKeyDown;
 	}
 
-	void Widget::OnKeyUp(System::Handler onKeyUp)
+	void Widget::SetKeyUpHandler(System::Handler onKeyUp)
 	{
 		m_OnKeyUp = onKeyUp;
 	}
 
-	void Widget::OnWheel(System::Handler onWheel)
+	void Widget::SetWheelHandler(System::Handler onWheel)
 	{
 		m_OnWheel = onWheel;
+	}
+
+	const Math::Vector2<float> Widget::WindowToViewport(float x, float y)
+	{
+		Math::Vector2<float> res;
+		res[0] = x / (float)System::Window::GetInstance()->GetWidth();
+		res[1] = y / (float)System::Window::GetInstance()->GetHeight();
+		return res;
 	}
 }

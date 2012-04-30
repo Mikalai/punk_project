@@ -37,14 +37,14 @@ namespace GUI
 		if (m_isVisible)
 		{		
 			Render::QuadRender::Parameters* p = Render::QuadRender::Parameters::Create();
-			p->Set((float)GetX(), (float)GetY(), (float)m_width, (float)m_height, m_color);
+			p->Set((float)GetX(), (float)GetY(), (float)m_width, (float)m_height, m_back_color);
 			Render::RenderPipeline::GetRenderPipeline()->Add(Render::QuadRender::GetRender(), p);
 			Render::TextAreaRender::Parameters* p2 = Render::TextAreaRender::Parameters::Create();
-			p2->Set((float)GetX(), (float)GetY(), (float)m_width, (float)m_height, m_textColor, &m_textTexture);
+			p2->Set((float)GetX(), (float)GetY(), (float)m_width, (float)m_height, m_text_color, &m_textTexture);
 			Render::RenderPipeline::GetRenderPipeline()->Add(Render::TextAreaRender::GetRender(), p2);
 			m_textBox->Render();
 			Render::LineRender::Parameters* p3 = Render::LineRender::Parameters::Create();
-			p3->Set(float(GetX()+10), float(GetY() + 20), float(GetX() + m_width-10), float(GetY() + 20), m_inactiveColor);
+			p3->Set(float(GetX()+10), float(GetY() + 20), float(GetX() + m_width-10), float(GetY() + 20), m_back_color_1);
 			Render::RenderPipeline::GetRenderPipeline()->Add(Render::LineRender::GetRender(), p3);
 		}
 	}

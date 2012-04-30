@@ -21,7 +21,7 @@ namespace Render
 		public:
 			float m_p1[2];
 			float m_p2[2];
-			float m_color[4];
+			float m_back_color[4];
 
 			void Set(float x1, float y1, float x2, float y2, float* color);
 			static Parameters* Create();

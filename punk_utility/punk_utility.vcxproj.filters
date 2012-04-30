@@ -4,6 +4,9 @@
     <Filter Include="model">
       <UniqueIdentifier>{743eaeea-5af5-4242-a72e-06ff6710180c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="animation">
+      <UniqueIdentifier>{496bae4c-7708-4d7c-b323-7f2c981530dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\utility\model\bone.cpp">
@@ -87,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\intersection.h">
       <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\animation.h">
+      <Filter>animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

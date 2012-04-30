@@ -44,6 +44,10 @@ namespace GUI
 		void OnMouseHoover(System::Event* event);
 		void OnKeyChar(System::Event* event);
 		void OnResize(System::Event* event);
+		void OnKeyDownHandler(System::Event* event);
+		void OnKeyUpHandler(System::Event* event);
+		void OnMouseEnter(System::Event* event);
+		void OnMouseLeave(System::Event* event);
 	};
 }
 

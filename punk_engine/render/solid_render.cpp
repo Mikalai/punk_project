@@ -43,7 +43,7 @@ namespace Render
 				Math::vec4& color)
 	{
 		m_vertex_array_object = vao;
-		m_color = color;
+		m_back_color = color;
 		m_world_transform = world_transform;
 		m_view_transform = view_transform;
 		m_projection_transform = projection_transform;
@@ -81,7 +81,7 @@ namespace Render
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			m_shader_program->SetUniformMatrix4f(m_proj_view_world_uniform, projViewWorld);
-			m_shader_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_color);
+			m_shader_program->SetUniformVector4f(m_diffuse_color_uniform, p->m_back_color);
 			//glDrawRangeElements(GL_TRIANGLES, 0,  p->m_vertex_array_object.GetIndexCount() / 3, GL_UNSIGNED_SHORT, 0);
 			glDrawElements(GL_TRIANGLES, p->m_vertex_array_object->GetIndexCount(), GL_UNSIGNED_SHORT, 0);
 
