@@ -1,5 +1,7 @@
 #include "list_box.h"
 #include <algorithm>
+#include "gui_render.h"
+#include "../utility/font_builder.h"
 
 namespace GUI
 {
@@ -26,9 +28,9 @@ namespace GUI
 		m_data = data;
 	}
 
-	ListBox::ListBox(int x, int y, int width, int height, Widget* parent) : Widget(x, y, width, height, parent), m_currentSelection(3), m_startPosition(0)
+	ListBox::ListBox(float x, float y, float width, float height, Widget* parent) : Widget(x, y, width, height, parent), m_currentSelection(3), m_startPosition(0)
 	{
-		m_scrollBar = new VerticalScrollBar(width - 5, 0, 5, height, this);
+		m_scrollBar = new VerticalScrollBar(0.95, 0, 0.05, 1, this);
 		m_scrollBar->OnChangeValue(System::EventHandler(this, &ListBox::OnScroll));
 	}
 
@@ -42,8 +44,11 @@ namespace GUI
 
 	void ListBox::OnScroll(System::Event*)
 	{
-		m_startPosition = m_scrollBar->GetCurrent();
+		if (IsVisible() && IsEnabled())
+		{
+		m_startPosition = max(0, m_scrollBar->GetCurrent());
 		RenderTextToTexture();
+		}
 	}
 
 	int ListBox::GetMaxVisibleItems() const
@@ -87,73 +92,61 @@ namespace GUI
 		RenderTextToTexture();
 	}
 
-	void ListBox::Render()
+	void ListBox::Render(IGUIRender* render) const
 	{
-		Widget::Render();		
-		Render::TextAreaRender::Parameters* p = Render::TextAreaRender::Parameters::Create();
-		p->Set((float)GetX(), (float)GetY(), (float)m_width, (float)m_height, m_text_color, &m_textTexture);
-		Render::RenderPipeline::GetRenderPipeline()->Add(Render::TextAreaRender::GetRender(), p);
-
-		if (m_currentSelection != -1 &&  (m_currentSelection - m_startPosition - 1) < m_height / m_fontSize && m_currentSelection - m_startPosition > 0)
-		{
-			float color[4] = {0.0f , 0.2f, 0.5f, 0.5f};
-			Render::QuadRender::Parameters* p1 = Render::QuadRender::Parameters::Create();
-			p1->Set(float(GetX()+1), float(GetY() + m_height - (m_currentSelection-m_startPosition)*m_fontSize-2), float(m_width - 2), float(m_fontSize+1), color);
-			Render::RenderPipeline::GetRenderPipeline()->Add(Render::QuadRender::GetRender(), p1);
-		}
-
-		m_scrollBar->Render();
+		render->RenderListBox(this);
+		m_scrollBar->Render(render);
 	}
 
-	bool ListBox::EventHandler(System::Event* event)
+	void ListBox::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
 	{
-		switch(event->eventCode)
+		if (IsVisible() && IsEnabled())
 		{
-		case System::EVENT_MOUSE_LBUTTON_DOWN:
-			{
-				System::MouseLeftButtonDownEvent* e = static_cast<System::MouseLeftButtonDownEvent*>(event);
-				m_currentSelection = m_startPosition + m_height / m_fontSize - (e->y - GetY()) / m_fontSize;
-			}
-			break;			
-		case System::EVENT_MOUSE_WHEEL:
-			{
-				System::MouseWheelEvent* e = static_cast<System::MouseWheelEvent*>(event);
-				if (m_height / m_fontSize < m_items.size())
-				{
-					if (e->delta > 0)
-					{
-						if (m_startPosition > 0)
-						{
-							m_startPosition--;
-							m_scrollBar->SetCurrent(m_scrollBar->GetCurrent() - 1);
-						}
-					}
-					else 
-					{
-						if (m_items.size() - m_height / m_fontSize > m_startPosition)
-						{
-							m_startPosition++;
-							m_scrollBar->SetCurrent(m_scrollBar->GetCurrent() + 1);
-						}
-					}
-					RenderTextToTexture();
-				}				
-			}
-			break;
-		default:
-			Widget::EventHandler(event);
+		if (m_isCursorIn)
+		{
+			Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
+			float delta = GetHeight() - (p.Y() - GetY());
+			float f = (m_text_texture->GetHeight() / (float)m_fontSize) / GetHeight() * delta;
+			m_currentSelection = m_startPosition +  f;
+			if (m_currentSelection >= m_items.size())
+				m_currentSelection = m_items.size() - 1;
+			Widget::OnMouseLeftButtonDown(e);
 		}
-		return false;
+		}
+	}
+
+	void ListBox::OnMouseWheel(System::MouseWheelEvent* e)
+	{
+		if (IsVisible() && IsEnabled())
+		{
+		int capacity = m_text_texture->GetHeight() / m_fontSize;
+		if (m_isCursorIn)
+		{
+				if (e->delta > 0)
+				{
+					if (m_startPosition > 0)
+						m_startPosition--;
+				}
+				else 
+				{
+					if (m_startPosition + capacity < m_items.size())
+						m_startPosition++;						
+				}
+				m_scrollBar->SetCurrent(m_startPosition);
+				RenderTextToTexture();
+		}
+		Widget::OnMouseWheel(e);
+		}
 	}
 
 	void ListBox::RenderTextToTexture()
 	{
 		int x = 2;
-		int y = m_height - m_fontSize;
-		m_textTexture.Fill(0);
-		Render::FontBuilder::SetCurrentFace(m_font);
-		Render::FontBuilder::SetCharSize(m_fontSize, m_fontSize);
-		for (int i = m_startPosition; i < (int)m_items.size()+m_startPosition && (i-m_startPosition)*m_fontSize < m_height; i++)
+		int y = m_text_texture->GetHeight() - m_fontSize;
+		m_text_texture->Fill(0);
+		Utility::FontBuilder::GetInstance()->SetCurrentFace(m_font);
+		Utility::FontBuilder::GetInstance()->SetCharSize(m_fontSize, m_fontSize);
+		for (int i = m_startPosition; i < (int)m_items.size() && (i-m_startPosition)*m_fontSize < m_text_texture->GetHeight(); i++)
 		{
 			for (const char* a = m_items[i]->GetText();  *a; a++)
 			{ 
@@ -164,10 +157,10 @@ namespace GUI
 				int x_advance;
 				int y_advance;
 				unsigned char* buffer;
-				Render::FontBuilder::RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
-				if (x + x_offset + width >= m_textTexture.GetWidth())
+				Utility::FontBuilder::GetInstance()->RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
+				if (x + x_offset + width >= m_text_texture->GetWidth())
 					break;
-				m_textTexture.CopyFromCPU(x + x_offset, m_textTexture.GetHeight() - (y + y_offset), width, height, ImageLoader::IMAGE_FORMAT_RED, buffer);
+				m_text_texture->CopyFromCPU(x + x_offset, m_text_texture->GetHeight()- (y + y_offset), width, height, GL_RED, buffer);
 				x += x_advance;				
 			}
 			y -= m_fontSize;

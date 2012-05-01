@@ -14,6 +14,7 @@ namespace System
     public:
         int eventCode;        
 		void* anyData;
+		void* reciever;
         virtual void Release() = 0;
 		virtual string ToString()
 		{

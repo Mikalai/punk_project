@@ -19,6 +19,7 @@ namespace GUI
 		virtual void OnIdle(System::IdleEvent* e);
 		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e);
 		virtual void OnMouseMove(System::MouseMoveEvent* e);
+		virtual void OnMouseWheel(System::MouseWheelEvent* e);
 
 	public:
 		VerticalSlider(float x = 0, float y = 0, float width = 1, float height = 0.1, int min_value = 0, int max_value = 100, Widget* parent = 0);
@@ -32,6 +33,9 @@ namespace GUI
 		void SetBounds(int min, int max);
 		void OnChangeValue(System::Handler onChangeValue);
 
+		const VerticalSlider* GetSlider() const;
+		const Button* GetTopButton() const;
+		const Button* GetBottonButton() const;
 		virtual void Render(IGUIRender* render) const;
 	};
 }

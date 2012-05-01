@@ -52,10 +52,39 @@ public:
 		x = y = z = 10;
 
 		m_gui.reset(new GUI::Manager());		
-		GUI::Widget* w = new GUI::Widget(0, 0.8, 1, 0.2);
-		//m_gui->AddRootWidget(w);	
-		w->AddChild(new GUI::Button(0, 0.1, 0.5, 0.5));
-		m_gui->AddRootWidget(new GUI::VerticalSlider(0, 0, 0.1, 0.8f, 0, 100, 0));
+		GUI::Widget* w = new GUI::Widget(0, 0, 1, 1);
+	//	m_gui->AddRootWidget(w);	
+		GUI::Button* btn;
+		w->AddChild(btn = new GUI::Button(0.2, 0.1, 0.5, 0.1));		
+		w->AddChild(new GUI::VerticalSlider(0, 0, 0.1, 0.8f, 0, 100, 0));
+		w->AddChild(new GUI::VerticalScrollBar(0.1, 0, 0.1, 1));
+		w->AddChild(new GUI::TextBox(0.5, 0.9, 0.1, 0.1));
+		w->AddChild(new GUI::TextBox(0.5, 0.6, 0.1, 0.1));
+		GUI::ListBox* lb = new GUI::ListBox(0.7, 0, 0.1, 1);
+		for (int i = 0; i < 20; ++i)
+		{
+			lb->AddItem(new GUI::ListBox::ListBoxItem("Item 1"));
+			lb->AddItem(new GUI::ListBox::ListBoxItem("Item 2"));
+		}
+		w->AddChild(lb);
+		GUI::TabWidget* tw = new GUI::TabWidget(0, 0, 1, 0.5, 0);
+		tw->AddTab(L"Tab 1", w);
+		tw->AddTab(L"Tab 2", new GUI::Widget(0, 0, 1, 1));
+		m_gui->AddRootWidget(tw);
+
+		GUI::Balloon* b = new GUI::Balloon(0.1, 0.8, 0.4, 0.1, L"Hello world", 0);
+		b->SetText(L"I'm a cool balloon widget. I am the best of all the balloons widgets ever made in humanity. Yeah!. True I am incredible");
+		m_gui->AddRootWidget(b);
+		btn->SetMouseLeftClickHandler(System::EventHandler(b, this, &Viewer::OnButtonPress));
+	}
+
+	void OnButtonPress(System::Event* event)
+	{
+		GUI::Balloon* b = static_cast<GUI::Balloon*>(event->reciever);
+		if (b)
+		{
+			b->Blink();
+		}
 	}
 
 	void OnKeyDown(System::Event* event)

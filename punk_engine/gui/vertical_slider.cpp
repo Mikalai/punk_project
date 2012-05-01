@@ -52,16 +52,22 @@ namespace GUI
 
 	void VerticalSlider::OnChangeValue(System::Handler handler)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		m_onChangeValue = handler;
+		}
 	}
 
 	void VerticalSlider::Render(IGUIRender* render) const
 	{
-		render->RenderVerticalSlider(this);
+		if (IsVisible())
+			render->RenderVerticalSlider(this);
 	}
 
 	void VerticalSlider::OnIdle(System::IdleEvent* e)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		if (m_prev != m_cur)
 		{
 			e->anyData = (void*)m_cur;
@@ -69,23 +75,50 @@ namespace GUI
 			m_prev = m_cur;
 		}
 		Widget::OnIdle(e);
+		}
 	}
 
 	void VerticalSlider::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
 	{
-		Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
-		m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
-		//SendChildren(e);
+		if (IsVisible() && IsEnabled())
+		{
+		if (m_isCursorIn)
+		{
+			Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
+			m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
+			//SendChildren(e);
+			Widget::OnMouseLeftButtonDown(e);
+		}
 		Widget::OnMouseLeftButtonDown(e);
+		}
+	}
+
+	void VerticalSlider::OnMouseWheel(System::MouseWheelEvent* e)
+	{
+		if (IsVisible() && IsEnabled())
+		{
+		if (m_isCursorIn)
+		{
+			m_cur -= e->delta;
+			if (m_cur < m_min)
+				m_cur = m_min;
+			if (m_cur > m_max)
+				m_cur = m_max;
+		}
+		Widget::OnMouseWheel(e);
+		}
 	}
 
 	void VerticalSlider::OnMouseMove(System::MouseMoveEvent* e)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		if (m_leftButtonDown)
 		{
 			Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
-			m_cur = m_max - int((p.Y() - GetY()) / (float)m_height * (float)(m_max - m_min) + 1);
+			m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
 		}
 		Widget::OnMouseMove(e);
+		}
 	}
 }

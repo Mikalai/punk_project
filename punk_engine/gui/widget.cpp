@@ -20,26 +20,25 @@ namespace GUI
 		, m_rightButtonDown(false)
 		, m_middleButtonDown(false)
 		, m_moveable(false)
+		, m_isFocused(false)
 		, m_text("Widget")
 		, m_fontSize(14)
 		, m_parent(parent)
-		, m_back_color_0(1, 0, 0, 0.5)
-		, m_back_color_1(0, 0, 1, 0.5)
-		, m_text_color_0(0, 1, 0, 1)
-		, m_text_color_1(1,0,0,1)
+		, m_back_color_0(0.6, 0.6, 0.6, 0.5)
+		, m_back_color_1(1, 1, 1, 0.8)
+		, m_text_color_0(0, 0, 0, 1)
+		, m_text_color_1(1, 0, 0, 1)
 		, m_back_color(m_back_color_0)
 		, m_text_color(m_text_color_0)
 		, m_animation(0)
 		, m_animation_duration(0.1)		
 	{
-		if (m_parent)
-			m_parent->AddChild(this);
 		m_text_texture = new OpenGL::Texture2D;;
 		m_text_texture->Create(m_width*System::Window::GetInstance()->GetWidth(), m_height*System::Window::GetInstance()->GetHeight(), GL_RED, 0);
-
 		m_background_texture = 0;
-
 		RenderTextToTexture();
+		if (m_parent)
+			m_parent->AddChild(this);
 	}
 
 	Widget::~Widget()
@@ -48,79 +47,91 @@ namespace GUI
 
 	void Widget::RemoveChild(Widget* child)
 	{
-		std::vector<Widget*>::iterator it = std::find(m_children.begin(), m_children.end(), child);
+		std::vector<std::shared_ptr<Widget>>::iterator it;
+		for (it = m_children.begin(); it != m_children.end(); ++it)
+		{
+			if (it->get() == child)
+				break;
+		}
 		if (it != m_children.end())
 			m_children.erase(it);
 	}
 	
+	void Widget::RemoveAll()
+	{
+		m_children.clear();
+	}
 
 	void Widget::AddChild(Widget* child)
 	{
-		m_children.push_back(child);
+		m_children.push_back(std::shared_ptr<Widget>(child));
 		child->SetParent(this);		
 	}
 
-	void Widget::OnResize(System::WindowResizeEvent*)
+	void Widget::OnResize(System::WindowResizeEvent* e)
 	{
 		m_text_texture->Create(GetWidth()*System::Window::GetInstance()->GetWidth(), GetHeight()*System::Window::GetInstance()->GetHeight(), GL_RED, 0);
 		RenderTextToTexture();
+		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnResize(e); } );
 	}
 
 	void Widget::OnMouseMove(System::MouseMoveEvent* e)
 	{
-		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); it++)
+		if (IsVisible() && IsEnabled())
 		{
-			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
-				continue;
-
-			bool wasIn = (*it)->IsPointIn(Widget::WindowToViewport(e->x_prev, e->y_prev));
-			bool isIn = (*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y));
-
+			bool wasIn = IsPointIn(Widget::WindowToViewport(e->x_prev, e->y_prev));
+			bool isIn = IsPointIn(Widget::WindowToViewport(e->x, e->y));
 			if (!wasIn && isIn)
 			{
 				System::MouseEnterEvent* new_event = System::MouseEnterEvent::Raise();
-				new_event->anyData = *it;
+				new_event->anyData = this;
 				System::EventManager::GetInstance()->FixEvent(new_event);
 			}
-
+			
 			if (wasIn && !isIn)
 			{
 				System::MouseLeaveEvent* new_event = System::MouseLeaveEvent::Raise();
-				new_event->anyData = *it;
+				new_event->anyData = this;
 				System::EventManager::GetInstance()->FixEvent(new_event);
 			}
 
-			if (isIn)
+			if (m_leftButtonDown && m_moveable)
 			{
-				(*it)->EventHandler(e);
+				m_x += e->x - e->x_prev;
+				m_y += e->y - e->y_prev;
 			}
 		}
-		if (m_leftButtonDown && m_moveable)
-		{
-			m_x += e->x - e->x_prev;
-			m_y += e->y - e->y_prev;
-		}
+
+		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseMove(e); } );
 	}
 
 	void Widget::OnMouseEnter(System::MouseEnterEvent* e)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		m_isCursorIn = true;
 		m_OnMouseEnter(e);
 		//SendChildren(event);
+		}
 	}
 
 	void Widget::OnMouseLeave(System::MouseLeaveEvent* e)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		m_isCursorIn = false;
 		m_leftButtonDown = false;
 		m_rightButtonDown = false;
 		m_middleButtonDown = false;
-		//SendChildren(e);
 		m_OnMouseLeave(e);
+		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseLeave(e); } );
+		}
 	}
 
 	void Widget::OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* e)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		if (m_isCursorIn)
 		{
 			if (m_leftButtonDown)
@@ -129,26 +140,51 @@ namespace GUI
 				m_OnLeftClick(e);
 			}
 		}
-		for (auto it = m_children.begin(); it != m_children.end(); ++it)
-		{
-			(*it)->OnMouseLeftButtonUp(e);
+		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseLeftButtonUp(e); } );
 		}
 	}
 
 	void Widget::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		if (m_isCursorIn)
 		{
 			m_leftButtonDown = true;
 		}
-		for (auto it = m_children.begin(); it != m_children.end(); ++it)
+		else
 		{
-			(*it)->OnMouseLeftButtonDown(e);
+			if (m_isFocused)
+				m_isFocused = false;
 		}
+		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseLeftButtonDown(e); } );
+		}
+	}
+
+	void Widget::OnMouseWheel(System::MouseWheelEvent* e)
+	{
+		if (IsVisible() && IsEnabled())
+		{
+		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseWheel(e); } );
+		}
+	}
+
+	void Widget::OnKeyChar(System::KeyCharEvent* e)
+	{
+		if (IsVisible() && IsEnabled())
+		{
+		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnKeyChar(e); } );
+		}
+	}
+
+	void Widget::OnKeyDown(System::KeyDownEvent* event)
+	{
 	}
 
 	void Widget::OnIdle(System::IdleEvent* e)
 	{		
+		if (IsVisible() && IsEnabled())
+		{
 		float time_in_s = float(e->elapsed_time_s);
 		if (m_isCursorIn)
 		{			
@@ -170,9 +206,7 @@ namespace GUI
 				m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 			}
 		}			
-		for (auto it = m_children.begin(); it != m_children.end(); ++it)
-		{
-			(*it)->OnIdle(e);
+		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnIdle(e); } );
 		}
 	}
 
@@ -288,17 +322,18 @@ namespace GUI
 
 	void Widget::Render(IGUIRender* render) const
 	{
-		render->RenderWidget(this);
+		if (m_isVisible)
+			render->RenderWidget(this);
 	}
 
 	Widget* Widget::GetChild(int index)
 	{
-		return m_children[index];
+		return m_children[index].get();
 	}
 
 	const Widget* Widget::GetChild(int index) const
 	{
-		return m_children[index];
+		return m_children[index].get();
 	}
 
 	void Widget::SetParent(Widget* widget)
@@ -352,88 +387,11 @@ namespace GUI
 		m_isFocused = value;
 	}
 
-	bool Widget::EventHandler(System::Event* event)
-	{
-		if (!m_isEnabled)
-			return false;
-
-		//if (SendChildren(event))
-		//return true;
-
-		switch(event->eventCode)
-		{
-		case System::EVENT_SET_FOCUSED:
-			m_isFocused = true;
-			break;
-		case System::EVENT_SET_UNFOCUSED:
-			m_isFocused = false;
-			break;
-		case System::EVENT_MOUSE_ENTER:
-			{
-			}
-			break;
-		case System::EVENT_MOUSE_LEAVE:
-			{				
-			}
-			break;
-		case System::EVENT_IDLE:
-		//	OnIdle(static_cast<System::IdleEvent*>(event));
-			break;
-		case System::EVENT_MOUSE_LBUTTON_DOWN:
-			{
-
-			}
-			break;
-		case System::EVENT_MOUSE_LBUTTON_UP:
-			break;
-		case System::EVENT_MOUSE_RBUTTON_DOWN:
-			{
-				if (m_isCursorIn)
-				{
-					m_rightButtonDown = true;
-				}
-				SendChildren(event);
-			}
-			break;
-		case System::EVENT_MOUSE_RBUTTON_UP:
-			{
-				if (m_isCursorIn)
-				{
-					if (m_rightButtonDown)
-					{
-						m_rightButtonDown = false;
-						m_OnRightClick(event);
-					}
-				}
-				SendChildren(event);
-			}
-			break;
-		case System::EVENT_MOUSE_MBUTTON_DOWN:
-			{
-				if (m_isCursorIn)
-				{
-					m_middleButtonDown = true;
-				}
-				SendChildren(event);
-			}
-			break;
-		case System::EVENT_MOUSE_MBUTTON_UP:
-			{
-
-			}
-			break;
-		case System::EVENT_MOUSE_MOVE:
-			OnMouseMove(static_cast<System::MouseMoveEvent*>(event));
-			break;
-		}	
-		return false;
-	}
-
 	Widget* Widget::GetFocused(float x, float y)
 	{		
-		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
+		for (auto it = m_children.begin(); it != m_children.end(); ++it)
 		{
-			if ((*it)->IsPointIn(WindowToViewport(x, y)))
+			if ((*it)->IsVisible() && (*it)->IsEnabled() && (*it)->IsPointIn(WindowToViewport(x, y)))
 				return (*it)->GetFocused(x, y);
 		}
 		return this;/**/
@@ -445,18 +403,19 @@ namespace GUI
 		m_text_texture->Resize(m_width, m_height);
 	}
 
-	bool Widget::SendChildren(System::Event* event)
-	{
-		for (std::vector<Widget*>::iterator it = m_children.begin(); it != m_children.end(); it++)
-		{
-			(*it)->EventHandler(event);
-		}
-		return false;
-	}
-
 	unsigned Widget::GetChildrenCount() const
 	{
 		return m_children.size();
+	}
+
+	void Widget::SetAnyData(void* data)
+	{
+		m_any_data = data;
+	}
+
+	void* Widget::GetAnyData()
+	{
+		return m_any_data;
 	}
 
 	bool Widget::IsPointIn(const Math::vec2& p) const
@@ -593,5 +552,10 @@ namespace GUI
 		res[0] = x / (float)System::Window::GetInstance()->GetWidth();
 		res[1] = y / (float)System::Window::GetInstance()->GetHeight();
 		return res;
+	}
+
+	bool Widget::IsCursorIn() const
+	{
+		return m_isCursorIn;
 	}
 }

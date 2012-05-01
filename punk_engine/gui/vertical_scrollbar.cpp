@@ -1,15 +1,18 @@
 #include "vertical_scrollbar.h"
-#include "../render/render.h"
+#include "gui_render.h"
 
 namespace GUI
 {
-	VerticalScrollBar::VerticalScrollBar(int x, int y, int width, int height, Widget* parent) : 
-		Widget(x, y, width, height, parent)
+	static const float g_auto_scroll = 0.5;
+
+	VerticalScrollBar::VerticalScrollBar(float x, float y, float width, float height, Widget* parent) 
+		: Widget(x, y, width, height, parent)
+		, m_timer(0)
 	{
-		m_slider = new VerticalSlider(0, 20, width, height - 40, 0, 1, this);
-		m_upButton = new Button(0, height - 20, width, 20, L"", this);
+		m_slider = new VerticalSlider(0, 0.05, 1, 0.90, 0, 100, this);
+		m_upButton = new Button(0, 0.95, 1, 0.05, L"", this);
 		m_upButton->SetMouseLeftClickHandler(System::EventHandler(this, &VerticalScrollBar::OnUpButtonLeftClick));
-		m_downButton = new Button(0, 0, width, 20, L"", this);
+		m_downButton = new Button(0, 0, 1, 0.05, L"", this);
 		m_downButton->SetMouseLeftClickHandler(System::EventHandler(this, &VerticalScrollBar::OnDownButtonLeftClick));
 	}
 
@@ -17,21 +20,38 @@ namespace GUI
 	{
 	}
 
-	void VerticalScrollBar::Render()
+	void VerticalScrollBar::OnIdle(System::IdleEvent* e)
 	{
-		m_slider->Render();
-		m_upButton->Render();
-		m_downButton->Render();
+		if (IsVisible() && IsEnabled())
+		{
+		Widget::OnIdle(e);
+		}
+	}
+
+	void VerticalScrollBar::Render(IGUIRender* render) const
+	{
+		if (IsVisible())
+		{
+		render->RenderVerticalSlider(m_slider);
+		render->RenderWidget(m_upButton);
+		render->RenderWidget(m_downButton);
+		}
 	}
 
 	void VerticalScrollBar::OnDownButtonLeftClick(System::Event*)
 	{
-		m_slider->SetCurrent(m_slider->GetCurrent() + 1);
+		if (IsVisible() && IsEnabled())
+		{
+		m_slider->SetCurrent(m_slider->GetCurrent() + 1);		
+		}
 	}
 
 	void VerticalScrollBar::OnUpButtonLeftClick(System::Event*)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		m_slider->SetCurrent(m_slider->GetCurrent() - 1);
+		}
 	}
 
 	int VerticalScrollBar::GetCurrent() const
@@ -51,7 +71,10 @@ namespace GUI
 	
 	void VerticalScrollBar::OnChangeValue(System::Handler handler)
 	{
+		if (IsVisible() && IsEnabled())
+		{
 		m_slider->OnChangeValue(handler);
+		}
 	}
 
 }

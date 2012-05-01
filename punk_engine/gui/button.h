@@ -20,14 +20,11 @@ namespace GUI
 		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e);
 	public:
 
-		Button(float x = 0, float y = 0, float width = 0.1, float height=0.01, const System::string& text = L"Button");
+		Button(float x = 0, float y = 0, float width = 0.1, float height=0.01, const System::string& text = L"Button", Widget* parent = 0);
 		virtual ~Button();
-
-		virtual void Render();
-		virtual bool EventHandler(System::Event* event);
 		void SetBackColorDown(float* c);
 		void SetBackColorUp(float* c);
-		void SetBackColorMouseOver(float* c);
+		void SetBackColorMouseOver(float* c);		
 	};
 }
 #endif

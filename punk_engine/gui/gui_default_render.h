@@ -18,8 +18,11 @@ namespace GUI
 		virtual void Begin(int x, int y, int width, int height);
 		virtual void End();
 		virtual void RenderWidget(const Widget* widget);	
-		virtual void RenderList(const ListBox* list_box);
 		virtual void RenderVerticalSlider(const VerticalSlider* slide);
+		virtual void RenderTextBox(const TextBox* slide);
+		virtual void RenderListBox(const ListBox* lb);
+		virtual void RenderTabWidget(const TabWidget* lb);
+		virtual void RenderBalloon(const Balloon* lb);
 	};
 }
 

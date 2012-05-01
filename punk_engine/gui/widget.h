@@ -2,6 +2,7 @@
 #define _H_PUNK_GUI_WIDGET
 
 #include <vector>
+#include <memory>
 #include "../system/system.h"
 #include "../system/string.h"
 #include "config.h"
@@ -51,10 +52,12 @@ namespace GUI
 		System::string m_font;
 
 		Widget* m_parent;		
-		std::vector<Widget*> m_children;
+		std::vector<std::shared_ptr<Widget>> m_children;
 
 		OpenGL::Texture2D* m_text_texture;
 		OpenGL::Texture2D* m_background_texture;
+
+		void* m_any_data;
 
 	
 		/******************************************************************/
@@ -81,15 +84,18 @@ namespace GUI
 		virtual void OnMouseLeave(System::MouseLeaveEvent* event);
 		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
 		virtual void OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* event);
+		virtual void OnMouseWheel(System::MouseWheelEvent* event);
+		virtual void OnKeyChar(System::KeyCharEvent* event);	
+		virtual void OnKeyDown(System::KeyDownEvent* event);		
 	public:
 
 		Widget(float x = 0, float y = 0, float width = 1, float height = 1, Widget* parent = 0);
 		
 		void RemoveChild(Widget* child);
+		void RemoveAll();
 		void AddChild(Widget* child);
 
 		virtual ~Widget();
-
 
 		void SetWidth(float width);
 		void SetHeight(float height);
@@ -113,21 +119,21 @@ namespace GUI
 		void SetText(const System::string& text);
 		void SetFont(const char* fontName);
 		void SetTextSize(int size);
+		int GetTextSize() const {return m_fontSize;}
 		Widget* GetChild(int index);
 		const Widget* GetChild(int index) const;
 		unsigned GetChildrenCount() const;
+		void SetAnyData(void* data);
+		void* GetAnyData();
 
 		const System::string& GetText() const;
 		void SetFocuse(bool isFocused);
 
 		virtual void Render(IGUIRender* render) const;
-		virtual bool EventHandler(System::Event* event);
 
 		bool IsPointIn(const Math::vec2& point_in_viewport) const;
-
-		bool SendChildren(System::Event* event);  
-
 		Widget* GetFocused(float x, float y);
+		bool IsCursorIn() const;
 
 		void Store(System::Buffer& buffer) {}
 		void Restore(System::Buffer& buffer) {}

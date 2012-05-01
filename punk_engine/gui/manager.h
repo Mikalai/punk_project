@@ -20,7 +20,7 @@ namespace GUI
 
 	class LIB_GUI Manager
 	{
-		std::vector<Widget*> rootWidgets;
+		std::vector<std::shared_ptr<Widget>> rootWidgets;
 		Widget* m_focusWidget;
 		IGUIRender* m_render;
 	public:
@@ -32,10 +32,6 @@ namespace GUI
 		void SetGUIRender(IGUIRender* render);
 		void AddRootWidget(Widget* widget);
 		void RemoveRootWidget(Widget* widget);
-
-		void EventHandler(System::Event* event);
-		void SendChildren(System::Event* event);  
-
 		void OnMouseMove(System::Event* event);
 		void OnMouseLeftDown(System::Event* event);
 		void OnMouseLeftUp(System::Event* event);

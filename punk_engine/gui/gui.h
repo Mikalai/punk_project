@@ -12,11 +12,14 @@
 #include "button.h"
 #include "manager.h"
 #include "list_box.h"
+#include "vertical_scrollbar.h"
+#include "edit_box.h"
+#include "tab_widget.h"
+#include "balloon.h"
+
 /*#include "static_text_area.h"
 #include "int_watcher.h"
-#include "edit_box.h"
 #include "horizontal_slider.h"
-#include "vertical_scrollbar.h"
 #include "console.h"
 */
 

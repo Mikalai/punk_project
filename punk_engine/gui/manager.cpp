@@ -25,11 +25,6 @@ namespace GUI
 
 	Manager::~Manager()
 	{
-		for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
-		{
-			delete *it;
-		}
-
 		rootWidgets.clear();
 	}
 
@@ -50,7 +45,7 @@ namespace GUI
 
 	void Manager::AddRootWidget(Widget* widget)
 	{
-		rootWidgets.push_back(widget);
+		rootWidgets.push_back(std::shared_ptr<Widget>(widget));
 	}
 
 	void Manager::OnMouseHoover(System::Event* event)
@@ -59,6 +54,16 @@ namespace GUI
 
 	void Manager::OnMouseWheel(System::Event* event)
 	{
+		System::MouseWheelEvent* e = static_cast<System::MouseWheelEvent*>(event);
+		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
+		{
+			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
+				continue;
+			if ((*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y)))
+			{
+				(*it)->OnMouseWheel(e);
+			}
+		}
 	}
 
 	void Manager::OnMouseEnter(System::Event* event)
@@ -79,7 +84,7 @@ namespace GUI
 	{
 		System::MouseLeftButtonDownEvent* e = static_cast<System::MouseLeftButtonDownEvent*>(event);
 		Widget* newFocuseWidget = 0;
-		for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
+		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
 		{
 			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
 				continue;
@@ -108,14 +113,14 @@ namespace GUI
 
 			newFocuseWidget->SetFocuse(true);
 			m_focusWidget = newFocuseWidget;
-			m_focusWidget->EventHandler(e);					
+			m_focusWidget->OnMouseLeftButtonDown(e);					
 		}
 	}
 
 	void Manager::OnMouseLeftUp(System::Event* event)
 	{
 		System::MouseLeftButtonUpEvent* e = static_cast<System::MouseLeftButtonUpEvent*>(event);
-		for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
+		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
 		{
 			if ((*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y)))
 			{
@@ -129,7 +134,7 @@ namespace GUI
 	void Manager::OnMouseMove(System::Event* event)
 	{
 		System::MouseMoveEvent* e = static_cast<System::MouseMoveEvent*>(event);
-		for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
+		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
 		{
 			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
 				continue;
@@ -139,20 +144,20 @@ namespace GUI
 			if (!wasIn && isIn)
 			{
 				System::MouseEnterEvent* new_event = System::MouseEnterEvent::Raise();
-				new_event->anyData = *it;
+				new_event->anyData = (*it).get();
 				System::EventManager::GetInstance()->FixEvent(new_event);
 			}
 
 			if (wasIn && !isIn)
 			{
 				System::MouseLeaveEvent* new_event = System::MouseLeaveEvent::Raise();
-				new_event->anyData = *it;
+				new_event->anyData = (*it).get();
 				System::EventManager::GetInstance()->FixEvent(new_event);
 			}
 
 			if (isIn)
 			{
-				(*it)->EventHandler(e);
+				(*it)->OnMouseMove(e);
 			}
 		}
 	}
@@ -160,7 +165,7 @@ namespace GUI
 	void Manager::OnIdle(System::Event* event)
 	{		
 		System::IdleEvent* e = static_cast<System::IdleEvent*>(event);
-		for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
+		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
 		{
 			(*it)->OnIdle(e);			
 		}
@@ -170,7 +175,7 @@ namespace GUI
 	void Manager::OnKeyChar(System::Event* event)
 	{
 		if (m_focusWidget)
-			m_focusWidget->EventHandler(event);	
+			m_focusWidget->OnKeyChar(static_cast<System::KeyCharEvent*>(event));	
 	}
 
 	void Manager::OnResize(System::Event* event)
@@ -198,64 +203,12 @@ namespace GUI
 			}
 			break;
 		}
+		if (m_focusWidget)
+			m_focusWidget->OnKeyDown(e);
 	}
 
 	void Manager::OnKeyUpHandler(System::Event* event)
 	{
 	}
-
-	void Manager::SendChildren(System::Event* event)
-	{
-		for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
-		{
-			(*it)->EventHandler(event);
-		}
-	}
-
-	void Manager::EventHandler(System::Event* event)
-	{
-		switch(event->eventCode)
-		{
-		case System::EVENT_SET_FOCUSED:
-		case System::EVENT_SET_UNFOCUSED:
-		case System::EVENT_MOUSE_LEAVE:
-		case System::EVENT_MOUSE_ENTER:
-		case System::EVENT_IDLE:
-		case System::EVENT_KEY_CHAR:				
-		case System::EVENT_KEY_DOWN:
-			{
-				//Driver::CheckError(L"Bug checking");
-				if (m_focusWidget)
-					m_focusWidget->EventHandler(event);
-			}
-			break;
-		case System::EVENT_KEY_UP:
-			{
-				if (m_focusWidget)
-					m_focusWidget->EventHandler(event);
-			}
-			break;
-		case System::EVENT_MOUSE_WHEEL:
-			//{
-			//	System::MouseLeftButtonDownEvent* e = static_cast<System::MouseLeftButtonDownEvent*>(event);
-			//	for (std::vector<Widget*>::iterator it = rootWidgets.begin(); it != rootWidgets.end(); it++)
-			//	{
-			//		if (!(*it)->IsVisible() || !(*it)->IsEnabled())
-			//			continue;
-
-			//		if ((*it)->IsPointIn(e->x, e->y))
-			//		{
-			//			(*it)->GetFocused(e->x, e->y)->EventHandler(event);
-			//			break;
-			//		}
-			//	}
-			//}
-			//break;
-		case System::EVENT_WINDOW_RESIZE:
-			{
-			}
-			break;
-		}
-	}				
 }
 

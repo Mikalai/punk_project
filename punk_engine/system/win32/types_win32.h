@@ -19,6 +19,7 @@ namespace System
         Handler() : object(0), method(0) {}
         void* object;
         void* method;
+		void* reciever;
 
         void operator() (Event* params)
         {
@@ -30,6 +31,7 @@ namespace System
                 void** a = (void**)&m;
                 void** b = (void**)&method;
                 *a = *b;
+				params->reciever = reciever;
                 (o->*m)(params);
             }
         }
@@ -44,6 +46,19 @@ namespace System
     {
         Handler handler;
         handler.object = (void*)object;
+		handler.reciever = 0;
+        void* methodAdr = &method;
+        void** a = (void**)methodAdr;
+        void** b = (void**)&handler.method;
+        *b = *a;
+        return handler;
+    }
+
+	template<class U, class T> Handler EventHandler(U* reciever, T* object, void (T::*method)(Event*))
+    {
+        Handler handler;
+        handler.object = (void*)object;
+		handler.reciever = (void*)reciever;
         void* methodAdr = &method;
         void** a = (void**)methodAdr;
         void** b = (void**)&handler.method;
