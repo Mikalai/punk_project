@@ -159,6 +159,16 @@ def export_local_matrix(f, object):
         f.write("%f\t%f\t%f\t%f\n" % (v[0], v[1], v[2], v[3]))
     end_block(f)
     return    
+
+#   export parent inverse matrix
+#
+def export_parent_inverse_matrix(f, object):
+    start_block(f, "*parent_inverse_matrix")
+    for v in object.matrix_parent_inverse:  
+        make_offset(f)      
+        f.write("%f\t%f\t%f\t%f\n" % (v[0], v[1], v[2], v[3]))
+    end_block(f)
+    return    
 #
 #   exports vertex position for current mesh with no tranformation
 #   applied in the scene
@@ -436,6 +446,7 @@ def export_object(f, object):
     export_location(f, object)
     export_world_matrix(f, object)
     export_local_matrix(f, object)
+    export_parent_inverse_matrix(f, object)
     if object.name.find("slot") == -1:
         export_mesh(f, object)       
     for child in object.children:

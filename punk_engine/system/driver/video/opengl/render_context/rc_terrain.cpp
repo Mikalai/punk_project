@@ -66,10 +66,10 @@ namespace OpenGL
 		virtual void BindUniforms()
 		{
 			m_proj_view_world = m_proj * m_view* m_world;
-			SetUniformMatrix4f(m_proj_view_world_uniform, m_proj_view_world);
-			SetUniformMatrix4f(m_world_uniform, m_world);
-			SetUniformMatrix4f(m_view_uniform, m_view);
-			SetUniformMatrix4f(m_projection_uniform, m_proj);
+			SetUniformMatrix4f(m_proj_view_world_uniform, &m_proj_view_world[0]);
+			SetUniformMatrix4f(m_world_uniform, &m_world[0]);
+			SetUniformMatrix4f(m_view_uniform, &m_view[0]);
+			SetUniformMatrix4f(m_projection_uniform, &m_proj[0]);
 			SetUniformMatrix3f(m_normal_transform_uniform, m_normal_tranform);
 			SetUniformVector3f(m_light_direction_uniform, m_light_direction);
 			SetUniformVector4f(m_diffuse_color_uniform, Math::vec4(1,1,1,1));

@@ -38,8 +38,19 @@ namespace Math
 	template<class T, class U>
 	T spherical_linear_interpolation(const T& q1, const T& q2, const U& t)
 	{
-		U theta = std::acos(q1.Dot(q2));
-		return std::sin(theta*(1-t))/std::sin(theta)*q1 + std::sin(theta*t)/std::sin(theta)*q2;
+		float cos_value = q1.Dot(q2);
+		if (cos_value > 1.0)
+			cos_value = 1.0;
+
+		U theta = std::acos(cos_value);
+		if (theta != 0)
+		{
+			T _q1 = std::sin(theta*(1-t))/std::sin(theta)*q1;
+			T _q2 = std::sin(theta*t)/std::sin(theta)*q2;
+			return _q1 + _q2;
+		}
+		else		
+			return linear_interpolation(q1, q2, t);
 	}
 }
 

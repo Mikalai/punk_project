@@ -4,6 +4,7 @@
 #include "../config.h"
 #include "vertex.h"
 #include "material.h"
+#include "../../math/mat4.h"
 
 namespace System
 {
@@ -25,7 +26,7 @@ namespace Utility
 		void* m_vb;
 		unsigned* m_index;
 		unsigned m_material_id;
-		
+		Math::Matrix4x4<float> m_mesh_offset;
 	public:
 		StaticMesh();
 
@@ -50,6 +51,8 @@ namespace Utility
 
 		int GetVertexComponentCode() const;
 
+		const Math::Matrix4x4<float>& GetMeshOffset() const;
+		void SetMeshOffset(const Math::Matrix4x4<float>& offset);
 		void Save(System::Buffer& buffer);
 		void Load(System::Buffer& buffer);
 

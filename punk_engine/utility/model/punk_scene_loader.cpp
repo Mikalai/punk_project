@@ -8,7 +8,7 @@
 #include "bone.h"
 #include "bone_frame.h"
 #include "material.h"
-#include "skeleton.h"
+#include "armature.h"
 #include "../config.h"
 #include "../error.h"
 #include <map>
@@ -18,7 +18,7 @@
 #include "bone_frame.h"
 #include "material.h"
 #include "bone.h"
-#include "skeleton.h"
+#include "armature.h"
 #include "mesh.h"
 #include "vertex_bone_weight.h"
 #include "action.h"
@@ -79,7 +79,8 @@ namespace Utility
 		WORD_ARMATURES,
 		WORD_FRAMES, 
 		WORD_TEXTURE,
-		WORD_TIMING
+		WORD_TIMING,
+		WORD_PARENT_INVERSED_MATRIX
 	};
 	static const wchar_t* Keyword[] = {
 		L"{",
@@ -118,23 +119,23 @@ namespace Utility
 		L"*armatures",
 		L"*frames", 
 		L"*texture",
-		L"*timing"
+		L"*timing",
+		L"*parent_inverse_matrix"
 	};
 
 	struct Scene::SceneImpl
 	{					
 		typedef std::map<System::string, Math::Matrix<BoneFrame> > CookedAnimation;
-		//	struct 
-		typedef std::map<System::string, Action> Animation;		
+		typedef std::vector<std::shared_ptr<CookedAnimation>> CookedAnimationCollection;
+		//	struct 		
 		typedef std::map<System::string, Object> Objects;
 		System::string m_material;
 		Objects m_objects;
 		Math::BoundingBox m_bbox;
-		Armature m_skeleton;
-		SkeletonID m_skeleton_id;
-		Animation m_skeleton_animation;
+	//	SkeletonID m_skeleton_id;
+		//ActionCollection m_skeleton_animation;
 		Materials m_materials;
-		CookedAnimation m_cooked_animation;
+		CookedAnimationCollection m_cooked_animation;
 		std::map<System::string, Math::Matrix<float> > m_frame_value;
 		std::map<BoneName, std::map<FrameID, BoneFrame> >::iterator m_maximum_frames;
 		std::map<BoneName, int> m_bone_index;
@@ -147,9 +148,8 @@ namespace Utility
 			: m_material(impl.m_material)
 			, m_bbox(impl.m_bbox)
 			, m_objects(impl.m_objects)
-			, m_skeleton(impl.m_skeleton)
-			, m_skeleton_id(impl.m_skeleton_id)
-			, m_skeleton_animation(impl.m_skeleton_animation)
+//			, m_skeleton_id(impl.m_skeleton_id)
+//			, m_skeleton_animation(impl.m_skeleton_animation)
 			, m_materials(impl.m_materials)
 			, m_cooked_animation(impl.m_cooked_animation)
 			, m_frame_value(impl.m_frame_value)
@@ -191,10 +191,7 @@ namespace Utility
 				default:
 					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword: %s",  word.Data()));
 				}
-			}
-
-			BuildBoneIndex();
-			//CookAnimationFrames();
+			}						
 		}
 
 		/// Parse actions
@@ -216,19 +213,20 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_ACTION:
-					{
-						Action action;
-						ParseAction(buffer, action);
-						m_skeleton_animation[action.m_name] = action;
+					{												
+						ParseAction(buffer, *m_armature_collection.begin()->second);
 					}
 					break;
 				}
 			}
 		}
 
-		void ParseAction(System::Buffer& buffer, Action& action)
+		void ParseAction(System::Buffer& buffer, Armature& armature)
 		{
 			CHECK_START(buffer);
+
+			Animation* anim = 0;
+			System::string action_name;
 
 			while (1)
 			{
@@ -244,26 +242,19 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_NAME:
-					action.m_name = ParseName(buffer);
+					action_name = ParseName(buffer);
 					break;
 				case WORD_TIMING:
 					{
 						CHECK_START(buffer);
-						action.m_start_frame = buffer.ReadWord().ToInt32();
-						action.m_end_frame = buffer.ReadWord().ToInt32();
+						buffer.ReadWord().ToInt32();
+						buffer.ReadWord().ToInt32();
 						if (Parse(buffer.ReadWord()) != WORD_CLOSE_BRACKET)
 							System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);		
 					}
 					break;
 				case WORD_FRAMES:
-					ParseSkeletoneAnimation(buffer, action.m_pose);
-					break;
-				case WORD_ACTION:
-					{
-						Action action;
-						ParseAction(buffer, action);
-						m_skeleton_animation[action.m_name] = action;
-					}
+					ParseSkeletoneAnimation(buffer, action_name, armature);
 					break;
 				}
 			}
@@ -288,9 +279,12 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_ARMATURE:
-					std::shared_ptr<Armature> armature(new Armature);
-					ParseArmature(buffer, *armature);
-					m_armature_collection.push_back(armature);
+					{
+						std::auto_ptr<Armature> armature(new Armature);
+						ParseArmature(buffer, *armature);
+						Armature* t = armature.get();
+						m_armature_collection[t->GetName()].reset(armature.release());
+					}
 					break;
 				}
 			}
@@ -313,15 +307,16 @@ namespace Utility
 				switch(index = Parse(name = buffer.ReadWord()))
 				{
 				case WORD_CLOSE_BRACKET:
+					res.CacheBones();
 					return;
 				case WORD_NAME:
-					res.m_name = ParseName(buffer);
+					res.SetName(ParseName(buffer));
 					break;
 				case WORD_BONE:
 					{
-						std::shared_ptr<Bone> bone(new Bone);
-						ParseBone(buffer, *bone);
-						res.m_bones[bone->GetName()] = bone;
+						std::auto_ptr<Bone> bone(new Bone);
+						ParseBone(buffer, res, *bone);
+						res.AddBone(bone.release());
 					}
 					break;
 				default:
@@ -360,6 +355,9 @@ namespace Utility
 				case WORD_WORLD_MATRIX:
 					o.m_world_matrix = ParseMatrix(buffer);
 					break;
+				case WORD_PARENT_INVERSED_MATRIX:
+					ParseMatrix(buffer);
+					break;
 				case WORD_LOCAL_MATRIX:
 					o.m_local_matrix = ParseMatrix(buffer);
 					break;
@@ -369,12 +367,12 @@ namespace Utility
 						ParseObjectMesh(buffer, *o.m_mesh);
 					}
 					break;
-				//case WORD_ARMATURE:
-				//	ParseBones(buffer);
-				//	break;
-				//case WORD_SKELETON_ANIMATION:
-				//	ParseSkeletoneAnimation(buffer);
-				//	break;
+					//case WORD_ARMATURE:
+					//	ParseBones(buffer);
+					//	break;
+					//case WORD_SKELETON_ANIMATION:
+					//	ParseSkeletoneAnimation(buffer);
+					//	break;
 				case WORD_MATERIALS:
 					ParseMaterials(buffer);
 					break;
@@ -481,7 +479,7 @@ namespace Utility
 				face[1].Set(u2, v2);
 				face[2].Set(u3, v3);
 				face[3].Set(u4, v4);
-				
+
 				mesh.push_back(face);		
 			}
 		}
@@ -525,7 +523,7 @@ namespace Utility
 			for (int i = 0; i < 16; i++)
 				m[i] = buffer.ReadWord().ToFloat();
 			CHECK_END(buffer);
-			return m;
+			return m.Transposed();
 		}
 
 		void ParseVertexPosition(System::Buffer &buffer, Vertices& v)
@@ -613,19 +611,19 @@ namespace Utility
 			}
 		}
 
-		void ParseBones(System::Buffer &buffer)
-		{
-			/*CHECK_START(buffer);
+		//void ParseBones(System::Buffer &buffer)
+		//{
+		//	/*CHECK_START(buffer);
 
-			int count = buffer.ReadWord().ToInt32();
-			for (int i = 0; i < count; i++)
-			{
-				if (Parse(buffer.ReadWord()) != WORD_BONE)
-					return;
-				ParseBone(buffer, );
-			}
-			CHECK_END(buffer);*/
-		}
+		//	int count = buffer.ReadWord().ToInt32();
+		//	for (int i = 0; i < count; i++)
+		//	{
+		//		if (Parse(buffer.ReadWord()) != WORD_BONE)
+		//			return;
+		//		ParseBone(buffer, );
+		//	}
+		//	CHECK_END(buffer);*/
+		//}
 
 		Math::quat ParseQuaternion(System::Buffer& buffer)
 		{
@@ -639,7 +637,7 @@ namespace Utility
 			return q;
 		}
 
-		void ParseBone(System::Buffer& buffer, Bone& bone)
+		void ParseBone(System::Buffer& buffer, Armature& armature, Bone& bone)
 		{
 			CHECK_START(buffer);
 			System::string name, parent;
@@ -651,10 +649,10 @@ namespace Utility
 					return;
 				case WORD_NAME:
 					bone.SetName(ParseName(buffer));
-					bone.SetParent(-1);
+					bone.SetParent(0);
 					break;
 				case WORD_PARENT:
-					bone.SetParentName(ParseName(buffer));
+					bone.SetParent(armature.GetBoneByName(ParseName(buffer)));
 					break;
 				case WORD_LOCAL_MATRIX:
 					bone.SetMatrix(ParseMatrix(buffer));
@@ -671,7 +669,7 @@ namespace Utility
 			}
 		}
 
-		void ParseSkeletoneAnimation(System::Buffer& buffer, SkeletonAnimation& anim)
+		void ParseSkeletoneAnimation(System::Buffer& buffer, System::string action_name, Armature& armature)
 		{
 			CHECK_START(buffer);
 
@@ -682,10 +680,8 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_BONE:
-					{
-						BoneAnimation bone_anim;
-						ParseBoneAnimation(buffer, bone_anim);
-						anim[bone_anim.m_bone_name] = bone_anim;
+					{						
+						ParseBoneAnimation(buffer, action_name, armature);
 					}
 					break;
 				default:
@@ -694,9 +690,11 @@ namespace Utility
 			}
 		}
 
-		void ParseBoneAnimation(System::Buffer& buffer, BoneAnimation& bone_anim)
+		void ParseBoneAnimation(System::Buffer& buffer, const System::string& action_name, Armature& armature)
 		{
 			CHECK_START(buffer);
+
+			Bone* cur_bone = 0;
 
 			System::string bone_name;
 			while (1)
@@ -706,7 +704,9 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_NAME:
-					bone_anim.m_bone_name = ParseName(buffer);
+					cur_bone = armature.GetBoneByName(ParseName(buffer));
+					if (cur_bone == 0)
+						throw "Can't parse bone animation";
 					break;
 				case WORD_POS_X:
 				case WORD_POS_Y:
@@ -715,13 +715,13 @@ namespace Utility
 				case WORD_ROT_X:
 				case WORD_ROT_Y:
 				case WORD_ROT_Z:
-					ParseBoneAnimationValues(buffer, bone_anim, code);
+					ParseBoneAnimationValues(buffer, *cur_bone->GetAnimationMixer().GetOrCreateTrack(action_name), code);
 					break;
 				}
 			}
 		}
 
-		void ParseBoneAnimationValues(System::Buffer& buffer, BoneAnimation& action, KeywordCode code)
+		void ParseBoneAnimationValues(System::Buffer& buffer, Animation& action, KeywordCode code)
 		{
 			CHECK_START(buffer);
 
@@ -739,49 +739,49 @@ namespace Utility
 					{
 						int frame = s.ToInt32();
 						float x = buffer.ReadWord().ToFloat();
-						action.m_frames[frame].m_position[0] = x;
+						action.GetOrCreatePositionKey(frame).X() = x;
 					}
 					break;
 				case WORD_POS_Y:
 					{
 						int frame = s.ToInt32();
-						float x = buffer.ReadWord().ToFloat();
-						action.m_frames[frame].m_position[1] = x;
+						float y = buffer.ReadWord().ToFloat();
+						action.GetOrCreatePositionKey(frame).Y() = y;
 					}
 					break;
 				case WORD_POS_Z:
 					{
 						int frame = s.ToInt32();
-						float x = buffer.ReadWord().ToFloat();
-						action.m_frames[frame].m_position[2] = x;
+						float z = buffer.ReadWord().ToFloat();
+						action.GetOrCreatePositionKey(frame).Z() = z;
 					}
 					break;
 				case WORD_ROT_W:
 					{
 						int frame = s.ToInt32();
-						float x = buffer.ReadWord().ToFloat();
-						action.m_frames[frame].m_rotation.W() = x;
+						float w = buffer.ReadWord().ToFloat();
+						action.GetOrCreateRotationKey(frame).W() = w;
 					}
 					break;
 				case WORD_ROT_X:
 					{
 						int frame = s.ToInt32();
 						float x = buffer.ReadWord().ToFloat();
-						action.m_frames[frame].m_rotation.X() = x;
+						action.GetOrCreateRotationKey(frame).X() = x;
 					}
 					break;
 				case WORD_ROT_Y:
 					{
 						int frame = s.ToInt32();
-						float x = buffer.ReadWord().ToFloat();
-						action.m_frames[frame].m_rotation.Y() = x;
+						float y = buffer.ReadWord().ToFloat();
+						action.GetOrCreateRotationKey(frame).Y() = y;
 					}
 					break;
 				case WORD_ROT_Z:
 					{
 						int frame = s.ToInt32();
-						float x = buffer.ReadWord().ToFloat();
-						action.m_frames[frame].m_rotation.Z() = x;
+						float z = buffer.ReadWord().ToFloat();
+						action.GetOrCreateRotationKey(frame).Z() = z;
 					}
 					break;
 				}
@@ -901,86 +901,80 @@ namespace Utility
 		//	return m_oct_tree;
 		//}
 
-		void BuildBoneIndex()
-		{
-			int i = 0;
-			for (BonesCollection::iterator bone = m_skeleton.m_bones.begin(); bone != m_skeleton.m_bones.end(); ++bone)
-			{
-				m_bone_index[(*bone).first] = i;
-				(*bone).second->SetName((*bone).first);
-				m_skeleton_id[i] = *((*bone).second);
-				++i;
-			}
+		//void BuildBoneIndex()
+		//{
+		//	int i = 0;
+		//	for (BonesCollection::iterator bone = m_skeleton.m_bones.begin(); bone != m_skeleton.m_bones.end(); ++bone)
+		//	{
+		//		m_bone_index[(*bone).first] = i;
+		//		(*bone).second->SetName((*bone).first);
+		//		m_skeleton_id[i] = *((*bone).second);
+		//		++i;
+		//	}
 
-			//
-			//	Check skeleton hierarchy
-			//
-			for (BonesCollection::iterator bone = m_skeleton.m_bones.begin(); bone != m_skeleton.m_bones.end(); ++bone)
-			{
-				const System::string pname = (*bone).second->GetParentName();
-				if (pname.Length() != 0)
-					(*bone).second->SetParent(GetBoneID(pname));
-				m_skeleton_id[GetBoneID((*bone).first)] = *(*bone).second;
-			}
-		}
+		//	//
+		//	//	Check skeleton hierarchy
+		//	//
+		//	for (BonesCollection::iterator bone = m_skeleton.m_bones.begin(); bone != m_skeleton.m_bones.end(); ++bone)
+		//	{
+		//		const System::string pname = (*bone).second->GetParentName();
+		//		if (pname.Length() != 0)
+		//			(*bone).second->SetParent(GetBoneID(pname));
+		//		m_skeleton_id[GetBoneID((*bone).first)] = *(*bone).second;
+		//	}
+		//}
 
-		int GetBoneID(const System::string& bone_name) const
-		{
-			return m_bone_index.at(bone_name);
-		}
+		//int GetBoneID(const System::string& bone_name) const
+		//{
+		//	return m_bone_index.at(bone_name);
+		//}
 
-		void CookAnimationFrames(const System::string& action_name) 
+		/*void CookAnimationFrames(const System::string& action_name, CookedAnimation& cooked_animation) 
 		{
 			//
 			//	cook anitmation
 			//
-			Action *action = &m_skeleton_animation.at(action_name);
+			Action& action = *m_skeleton_animation.at(action_name);
 
-			CalculateMaximumFrameCount(action_name);
+			//CalculateMaximumFrameCount(action_name);
 
-			m_cooked_animation[action_name].SetSize(action->m_key_count, m_skeleton.m_bones.size());
-
-
-			for (SkeletonAnimation::const_iterator animation = action->m_pose.begin(); animation != action->m_pose.end(); ++animation)
+			for (auto animation = action.GetSkeletonAnimation().begin(); animation != action.GetSkeletonAnimation().end(); ++animation)
 			{
-				System::string bone_name = (*animation).first;
-				int bone_id = GetBoneID(bone_name);
-
-				for (FramesCollection::const_iterator frame = (*animation).second.m_frames.begin(); frame != (*animation).second.m_frames.end(); ++frame)
+				System::string bone_name = animation->first;						
+				BoneAnimation& bone_animation = *animation->second;
+				for (auto frame = bone_animation.GetFrames().begin(); frame != bone_animation.GetFrames().end(); ++frame)
 				{
-					int current_frame = (*frame).first;
-					int current_frame_id = GetFrameID(action_name, bone_id, current_frame);
-
-					m_cooked_animation[action_name].At(current_frame_id, bone_id).m_position = (*frame).second.m_position;
-					m_cooked_animation[action_name].At(current_frame_id, bone_id).m_rotation= (*frame).second.m_rotation;
+					int current_frame = frame->first;
+					cooked_animation[action_name].At(current_frame, bone_id).m_position = (*frame).second.m_position;
+					m_cooked_animation[action_name].At(current_frame, bone_id).m_rotation= (*frame).second.m_rotation;
 				}
 			}
 		}
 
-		void CalculateMaximumFrameCount(const System::string& action_name)
+		/*void CalculateMaximumFrameCount(const System::string& action_name)
 		{
-			int max = 0;
-			Action& action = m_skeleton_animation[action_name];
-			SkeletonAnimation::iterator max_iter; 
-			for (SkeletonAnimation::iterator bone_anim = action.m_pose.begin(); bone_anim != action.m_pose.end(); ++bone_anim)
-			{
-				if (max < (*bone_anim).second.m_frames.size())
-				{
-					max_iter = bone_anim;
-					max = (*bone_anim).second.m_frames.size();
-				}
-			}
-			action.m_key_count = max;
-			m_frame_value[action_name].SetSize(1, max);
-
-			for (FramesCollection::iterator frame = (*max_iter).second.m_frames.begin(); frame != (*max_iter).second.m_frames.end(); ++frame)
-			{
-				int frame_index = GetFrameID(action_name, GetBoneID((*max_iter).first), (*frame).first);
-				m_frame_value[action_name].At(0, frame_index) = (*frame).first;
-			}
+		int max = 0;
+		Action& action = m_skeleton_animation[action_name];
+		SkeletonAnimation::iterator max_iter; 
+		for (SkeletonAnimation::iterator bone_anim = action.m_pose.begin(); bone_anim != action.m_pose.end(); ++bone_anim)
+		{
+		if (max < (*bone_anim).second.m_frames.size())
+		{
+		max_iter = bone_anim;
+		max = (*bone_anim).second.m_frames.size();
 		}
+		}
+		action.m_key_count = max;
+		m_frame_value[action_name].SetSize(1, max);
 
-		int GetFrameID(const System::string& action_name, int bone_name, FrameID frame) const
+		for (FramesCollection::iterator frame = (*max_iter).second.m_frames.begin(); frame != (*max_iter).second.m_frames.end(); ++frame)
+		{
+		int frame_index = GetFrameID(action_name, GetBoneID((*max_iter).first), (*frame).first);
+		m_frame_value[action_name].At(0, frame_index) = (*frame).first;
+		}
+		}*/
+
+	/*	int GetFrameID(const System::string& action_name, int bone_name, FrameID frame) const
 		{
 			int id = 0;
 			const BoneAnimation& anim = m_skeleton_animation.at(action_name).m_pose.at(GetBoneName(bone_name));			
@@ -991,9 +985,9 @@ namespace Utility
 				id++;
 			}
 			return -1;
-		}
+		}*/
 
-		const System::string GetBoneName(int id) const
+		/*const System::string GetBoneName(int id) const
 		{
 			BonesCollection::const_iterator it = m_skeleton.m_bones.begin();
 			for (int i = 0; i < id && it != m_skeleton.m_bones.end(); i++)
@@ -1005,7 +999,7 @@ namespace Utility
 				return L"NULL";
 			return (*it).first;
 		}
-
+		*/
 		int GetObjectsCount() const
 		{
 			return m_objects.size();
@@ -1143,6 +1137,7 @@ namespace Utility
 				}
 			}
 
+			mesh->SetMeshOffset(o.m_local_matrix);
 			mesh->SetVertexBufferSize(sizeof(Vertex)*mesh->GetVertexCount());
 			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT);
 			mesh->SetOneVertexSize(sizeof(Vertex));
@@ -1150,21 +1145,21 @@ namespace Utility
 			return mesh.release();
 		}
 
-		SkinnedMesh* CookSkinnedMesh(Object& o) const
+		StaticMesh* CookSkinnedMesh(Object& o, Armature armature) const
 		{
 			if (o.m_mesh->m_bone_weights.empty())
 				return nullptr;
 			struct Vertex
 			{
 				float x, y, z, w;
-				float nx, ny, nz, nw;
-				float u, v, s, q;
+				float nx, ny, nz, nw;				
 				float bx, by, bz, bw;
 				float tx, ty, tz, tw;
-				float   b1, b2, b3, b4;
+				float u, v, s, q;
+				float b1, b2, b3, b4;
 				float w1, w2, w3, w4;
 			};
-			std::auto_ptr<SkinnedMesh> mesh(new SkinnedMesh);
+			std::auto_ptr<StaticMesh> mesh(new StaticMesh);
 			mesh->SetIndexCount(o.m_mesh->m_faces.size()*3);
 			mesh->SetIndexBuffer(new unsigned[mesh->GetIndexCount()]);
 
@@ -1181,7 +1176,7 @@ namespace Utility
 			std::vector<int> base_index;		/// contains vertex index in the source array
 
 			int index = 0;
-			for (unsigned i = 0; i < o.m_mesh->m_tex_coords.size(); i++)
+			for (unsigned i = 0, max_i = o.m_mesh->m_tex_coords[0].size(); i < max_i; i++)
 			{
 				const Math::ivec3& f = o.m_mesh->m_faces[i];
 				const Math::vec3& v1 = o.m_mesh->m_vertices[f[0]];
@@ -1212,7 +1207,7 @@ namespace Utility
 
 				CookOneVertexWithBone //{}\\==>
 					(
-					o, f[0], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
+					o, armature, f[0], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
 					vb[index].w1, vb[index].w2, vb[index].w3, vb[index].w4
 					);
 
@@ -1233,7 +1228,7 @@ namespace Utility
 
 				CookOneVertexWithBone //{}\\==>
 					(
-					o, f[1], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
+					o, armature, f[1], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
 					vb[index].w1, vb[index].w2, vb[index].w3, vb[index].w4
 					);
 
@@ -1254,7 +1249,7 @@ namespace Utility
 
 				CookOneVertexWithBone //{}\\==>
 					(
-					o, f[2], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
+					o, armature, f[2], vb[index].b1, vb[index].b2, vb[index].b3,  vb[index].b4,
 					vb[index].w1, vb[index].w2, vb[index].w3, vb[index].w4
 					);
 
@@ -1310,13 +1305,14 @@ namespace Utility
 
 			//CookBonesMatrix(bones, count);
 
+			mesh->SetMeshOffset(o.m_local_matrix);
 			mesh->SetVertexBufferSize(sizeof(Vertex)*mesh->GetVertexCount());
 			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
 			mesh->SetOneVertexSize(sizeof(Vertex));
 			return mesh.release();
 		}
 
-		void CookOneVertexWithBone(Object& o, int index, float& b1, float& b2, float& b3, float& b4, float& w1, float& w2, float& w3, float& w4) const
+		void CookOneVertexWithBone(Object& o, Armature& armature, int index, float& b1, float& b2, float& b3, float& b4, float& w1, float& w2, float& w3, float& w4) const
 		{
 			const BoneWeights& weights = o.m_mesh->m_bone_weights.at(index);
 
@@ -1325,21 +1321,22 @@ namespace Utility
 			float w[4];
 			memset(w, 0, sizeof(w));
 			int used = 0;
-			for (BonesCollection::const_iterator bone = m_skeleton.m_bones.begin(); bone != m_skeleton.m_bones.end() && used < 4; ++bone)
+			for (int i = 0; i < armature.GetBonesCount() /*&& used < 4*/; ++i)
 			{
-				if (weights.find((*bone).first) != weights.end())
+				const Bone* cur_bone = armature.GetBoneByIndex(i);
+				if (weights.find(cur_bone->GetName()) != weights.end())
 				{	
 					//
 					// зам€н€ем найменьш уплывовую в€ршыну
 					//
 					int min = 0;
-					for (int i = 0; i < 4; i++)
+					for (int j = 0; j < 4; j++)
 					{
-						if (w[i] < w[min])
-							min = i;
+						if (w[j] < w[min])
+							min = j;
 					}
-					b_id[min] = GetBoneID((*bone).first);
-					w[min] = weights.at((*bone).first);
+					b_id[min] = i;
+					w[min] = weights.at(cur_bone->GetName());
 					used++;
 				}
 			}
@@ -1358,238 +1355,178 @@ namespace Utility
 			w1 = w[0]; w2 = w[1]; w3 = w[2]; w4 = 1.0 - w1 - w2 - w3 ;
 			b1 = b_id[0]; b2 = b_id[1]; b3 = b_id[2]; b4 = b_id[3];
 		}
+
+		Armature* GetArmature(const System::string& name)
+		{
+			return m_armature_collection.at(name).get();
+		}
 	};
 
-		
-	//	const Math::quat Model::GetBoneLocalOrientation(int bone_name, const System::string& action, FrameID frame) const;
-	//	void LoadPunkModel(System::string& filename);	
-	//	StaticMesh* CookStaticMesh() const;
-	//	bool CookSkinnedMesh(SkinnedMesh*& mesh, Math::mat4*& bones, int& count) const;
-	//	bool CookAnimation(const System::string& action_name, SkinAnimation*& anim);
 
-	//	void BuildBoneIndex();
+	/*! Side effect of this function is filling m_frame_value that holds correspondence between
+	frames index and frame values
+	*/
 
-	//	/*! Calculate maximum count of frame among bong for selected action */
-	//	void CalculateMaximumFrameCount(const System::string& action_name);
-	//	/*! Returns ID of the bone */
-	//	int GetBoneID(const System::string& bone_name) const;
-	//	const System::string GetBoneName(int id) const;
-	//	/// Return ID of the 
-	//	int GetFrameID(const System::string& action_name, int bone_name, FrameID frame) const;
+	/*int GetBoneID(const System::string& bone_name) const
+	{
+	return m_bone_index.at(bone_name);
+	}*/
 
-	//	void CookAnimationFrames(const System::string& action_name);
-	//	BoneFrame GetGlobalFrame(int parent, System::string action, FrameID frame) const;
-	//	void CookOneVertexWithBone(int index, float& b1, float& b2, float& b3, float& b4, float& w1, float& w2, float& w3, float& w4) const;
-	//	void CookBonesMatrix(Math::mat4*& bones, int& count) const;
+	/*const System::string GetBoneName(int id) const
+	{	
+		Armature::const_iterator it = m_skeleton.begin();
+		for (int i = 0; i < id && it != m_skeleton.end(); i++)
+		{
+			it++;
+		}
 
-	//	/// Returns global transform matrix of the bone in primary skeletone state
-	//	const Math::mat4 GetSourceGlobalMatrix(int bone_id) const;
+		if (it == m_skeleton.end())
+			return L"NULL";
+		return (*it).first;
+	}
 
-	//	//
-	//	//	PARSING STAFF
-	//	//
+	/*BoneFrame GetGlobalFrame(int bone_name, System::string action_name, FrameID frame) const
+	{
+		BoneFrame res;
+		if (bone_name == -1)
+			return res;
 
-	//	KeywordCode Parse(System::string& word);
-	//	bool CheckIntegrity(System::Buffer& buffer);
-	//	void ParseObject(System::Buffer& buffer);
-	//	void ParseMesh(System::Buffer& buffer);
-	//	void ParseObjectName(System::Buffer& buffer);
-	//	void ParseObjectBoundingBox(System::Buffer& buffer);
-	//	void ParseObjectLocation(System::Buffer& buffer);
-	//	void ParseObjectWorldMatrix(System::Buffer& buffer);
-	//	void ParseObjectLocalMatrix(System::Buffer& buffer);
-	//	void ParseObjectMesh(System::Buffer& buffer);
-	//	void ParseBonesWeights(System::Buffer& buffer);
-	//	void ParseBones(System::Buffer& buffer);
-	//	void ParseBone(System::Buffer& buffer);
-	//	void ParseVertexPosition(System::Buffer& buffer);
-	//	void ParseNormals(System::Buffer& buffer);
-	//	void ParseFaces(System::Buffer& buffer);
-	//	void ParseFaceVertexID(System::Buffer& buffer);
-	//	System::string ParseBoneName(System::Buffer& buffer);
-	//	Math::mat4 ParseBoneLocalMatrix(System::Buffer& buffer);
-	//	void ParseSkeletoneAnimation(System::Buffer& buffer);
-	//	void ParseBoneAnimation(System::Buffer& buffer, Action& action);
-	//	void ParseBoneAnimationValues(System::Buffer&, Action& action, System::string& name, KeywordCode code);
-	//	void ParseTextureCoords(System::Buffer& buffer);
-	//	Math::quat ParseGimbalTransform(System::Buffer& buffer);
-	//	Math::mat4 ParseBoneMatrix(System::Buffer& buffer);
+		FramesCollection& anim = const_cast<Model*>(this)->m_skeleton_animation[action_name].m_pose[GetBoneName(bone_name)];
+		Armature& skelet = const_cast<Model*>(this)->m_skeleton;
 
-	//	void ParseMeshMaterial(System::Buffer&);
-	//	void ParseMaterials(System::Buffer&);
-	//	System::string ParseMaterialsName(System::Buffer&);
-	//	void ParseMaterialsNormalMap(System::Buffer&, const System::string&);
-	//	void ParseMaterialsDiffuseMap(System::Buffer&, const System::string&);
-	//};
+		int frame_id = GetFrameID(action_name, bone_name, frame);
+		int parent_id = skelet[GetBoneName(bone_name)].GetParent();
 
 
-
-	///*! Side effect of this function is filling m_frame_value that holds correspondence between
-	//frames index and frame values
-	//*/
-
-
-	//int Model::GetBoneID(const System::string& bone_name) const
-	//{
-	//	return m_bone_index.at(bone_name);
-	//}
-
-	//const System::string Model::GetBoneName(int id) const
-	//{
-	//	Armature::const_iterator it = m_skeleton.begin();
-	//	for (int i = 0; i < id && it != m_skeleton.end(); i++)
-	//	{
-	//		it++;
-	//	}
-
-	//	if (it == m_skeleton.end())
-	//		return L"NULL";
-	//	return (*it).first;
-	//}
-
-	//BoneFrame Model::GetGlobalFrame(int bone_name, System::string action_name, FrameID frame) const
-	//{
-	//	BoneFrame res;
-	//	if (bone_name == -1)
-	//		return res;
-
-	//	FramesCollection& anim = const_cast<Model*>(this)->m_skeleton_animation[action_name].m_pose[GetBoneName(bone_name)];
-	//	Armature& skelet = const_cast<Model*>(this)->m_skeleton;
-
-	//	int frame_id = GetFrameID(action_name, bone_name, frame);
-	//	int parent_id = skelet[GetBoneName(bone_name)].GetParent();
+		Math::quat p(1, 0, 0, 0);
+		if (parent_id != -1)
+		{
+			p = GetGlobalFrame(parent_id, action_name, frame).m_rotation;
+		}
 
 
-	//	Math::quat p(1, 0, 0, 0);
-	//	if (parent_id != -1)
-	//	{
-	//		p = GetGlobalFrame(parent_id, action_name, frame).m_rotation;
-	//	}
+		Math::quat parent = GetBoneLocalOrientation(skelet[GetBoneName(bone_name)].GetParent(), action_name, frame);
 
 
-	//	Math::quat parent = GetBoneLocalOrientation(skelet[GetBoneName(bone_name)].GetParent(), action_name, frame);
+		/*	res.m_rotation =
+		(parent
+		*skelet[GetBoneName(bone_name)].GetMatrix()
+		*anim[frame].m_rotation
+		*skelet[GetBoneName(bone_name)].GetMatrix().Inversed();
+		*parent.Conjugated()).Normalized();
+		/**/
+
+		/*res.m_position = Math::vec3(0,0,0);
+		return res;
+	}
+
+	/*const Math::quat GetBoneLocalOrientation(int bone_name, const System::string& action_name, FrameID frame) const
+	{
+		Math::quat res(1, 0, 0, 0);
+		if (bone_name == -1)
+			return res;
+		FramesCollection& anim = const_cast<Model*>(this)->m_skeleton_animation[action_name].m_pose[GetBoneName(bone_name)];
+		Armature& skelet = const_cast<Model*>(this)->m_skeleton;
+
+		//res = skelet[GetBoneName(bone_name)].m_gimbal_transform * anim[frame].m_rotation;;
+
+		return (GetBoneLocalOrientation(skelet[GetBoneName(bone_name)].GetParent(), action_name, frame) * res).Normalized();	
+	}
+
+	const Math::quat GetBoneLocalPosition(int bone_name, const System::string& action_name, FrameID frame) const
+	{
+		Math::vec3 res(0, 0, 0);
+		if (bone_name == -1)
+			return res;
+		FramesCollection& anim = const_cast<Model*>(this)->m_skeleton_animation[action_name].m_pose[bone_name];
+		Armature& skelet = const_cast<Model*>(this)->m_skeleton;
+
+		res = anim[frame].m_rotation;;
+
+		return (GetBoneLocalOrientation(skelet[bone_name].m_parent, action_name, frame) * res).Normalized();	
+	}
+
+	const Math::mat4 GetSourceGlobalMatrix(int bone_name) const
+	{
+		const Bone& bone = const_cast<Model*>(this)->m_skeleton[GetBoneName(bone_name)];
+		if (bone.GetParent() == -1)
+			return bone.GetMatrix();
+
+		Math::mat4 res = GetSourceGlobalMatrix(bone.GetParent())*bone.GetMatrix();
+		return res;
+	}
+
+	/*const Math::mat4 GetSourceGlobalMatrix(int bone_id) const
+	{
+		int id = 0;
+		for (Armature::const_iterator bone = m_skeleton.begin(); bone != m_skeleton.end(); ++bone)
+		{
+			if (id == bone_id)
+				return (*bone).second.GetMatrix();
+			id++;
+		}
+		return Math::mat4();
+	}
+
+	void CookBonesMatrix(Math::mat4*& bones, int& count) const
+	{
+		throw(System::SystemError(L"Not implemented"));
+		count = m_skeleton.size();
+		Math::mat4* cur_bone = bones = new Math::mat4[count];
+		for (std::map<System::string, Bone>::const_iterator i = m_skeleton.begin(); i != m_skeleton.end(); ++i)
+		{
+			Math::mat4 m = CookGlobalMatrix((*i).first);
+			m[12] = 0;
+			m[13] = 0;
+			m[14] = 0;
+			cur_bone++ = m;
+		}
+	}*/
 
 
-	//	/*	res.m_rotation =
-	//	(parent
-	//	*skelet[GetBoneName(bone_name)].GetMatrix()
-	//	*anim[frame].m_rotation
-	//	*skelet[GetBoneName(bone_name)].GetMatrix().Inversed();
-	//	*parent.Conjugated()).Normalized();
-	//	/**/
+	/*bool CookSkinAnimation(const System::string& action_name, SkinAnimation*& anim)
+	{
+		anim = new SkinAnimation;
+		anim->m_bones.resize(m_skeleton_animation.size());
 
-	//	res.m_position = Math::vec3(0,0,0);
-	//	return res;
-	//}
-
-	//const Math::quat Model::GetBoneLocalOrientation(int bone_name, const System::string& action_name, FrameID frame) const
-	//{
-	//	Math::quat res(1, 0, 0, 0);
-	//	if (bone_name == -1)
-	//		return res;
-	//	FramesCollection& anim = const_cast<Model*>(this)->m_skeleton_animation[action_name].m_pose[GetBoneName(bone_name)];
-	//	Armature& skelet = const_cast<Model*>(this)->m_skeleton;
-
-	//	//res = skelet[GetBoneName(bone_name)].m_gimbal_transform * anim[frame].m_rotation;;
-
-	//	return (GetBoneLocalOrientation(skelet[GetBoneName(bone_name)].GetParent(), action_name, frame) * res).Normalized();	
-	//}
-
-	///*	const Math::quat Model::GetBoneLocalPosition(int bone_name, const System::string& action_name, FrameID frame) const
-	//{
-	//Math::vec3 res(0, 0, 0);
-	//if (bone_name == -1)
-	//return res;
-	//FramesCollection& anim = const_cast<Model*>(this)->m_skeleton_animation[action_name].m_pose[bone_name];
-	//Armature& skelet = const_cast<Model*>(this)->m_skeleton;
-
-	//res = anim[frame].m_rotation;;
-
-	//return (GetBoneLocalOrientation(skelet[bone_name].m_parent, action_name, frame) * res).Normalized();	
-	//}*/
-
-	//const Math::mat4 Model::GetSourceGlobalMatrix(int bone_name) const
-	//{
-	//	const Bone& bone = const_cast<Model*>(this)->m_skeleton[GetBoneName(bone_name)];
-	//	if (bone.GetParent() == -1)
-	//		return bone.GetMatrix();
-
-	//	Math::mat4 res = GetSourceGlobalMatrix(bone.GetParent())*bone.GetMatrix();
-	//	return res;
-	//}
-
-	///*	const Math::mat4 Model::GetSourceGlobalMatrix(int bone_id) const
-	//{
-	//int id = 0;
-	//for (Armature::const_iterator bone = m_skeleton.begin(); bone != m_skeleton.end(); ++bone)
-	//{
-	//if (id == bone_id)
-	//return (*bone).second.GetMatrix();
-	//id++;
-	//}
-	//return Math::mat4();
-	//}
-	///**/
-
-	///*	void Model::CookBonesMatrix(Math::mat4*& bones, int& count) const
-	//{
-	//throw(System::SystemError(L"Not implemented"));
-	//count = m_skeleton.size();
-	//Math::mat4* cur_bone = bones = new Math::mat4[count];
-	//for (std::map<System::string, Bone>::const_iterator i = m_skeleton.begin(); i != m_skeleton.end(); ++i)
-	//{
-	//Math::mat4 m = CookGlobalMatrix((*i).first);
-	///*	m[12] = 0;
-	//m[13] = 0;
-	//m[14] = 0;/**/
-	///*		*cur_bone++ = m;
-	//}
-	//}/**/
-
-	///*	bool Model::CookSkinAnimation(const System::string& action_name, SkinAnimation*& anim)
-	//{
-	//anim = new SkinAnimation;
-	//anim->m_bones.resize(m_skeleton_animation.size());
-
-	//int index = 0;
-	//for (Animation::iterator i = m_skeleton_animation.begin(); i != m_skeleton_animtion.end(); ++i)
-	//{
-	//(*i).second.
-	//anim->m_bones[
-	//}
-	//}
-	///**/		
+		int index = 0;
+		for (ActionCollection::iterator i = m_skeleton_animation.begin(); i != m_skeleton_animtion.end(); ++i)
+		{
+			(*i).second.
+				anim->m_bones[
+		}
+	}
 
 
-	//bool Model::CookAnimation(const System::string& action_name, SkinAnimation*& anim)
-	//{
-	//	CookAnimationFrames(action_name);
+	bool CookAnimation(const System::string& action_name, SkinAnimation*& anim)
+	{
+		CookAnimationFrames(action_name);
 
-	//	anim = new SkinAnimation;
+		anim = new SkinAnimation;
 
-	//	anim->SetAnimationSize(m_cooked_animation[action_name].RowCount(), m_cooked_animation[action_name].ColumnCount());
-	//	anim->SetName(action_name);
-	//	for (int bone_num = 0; bone_num < m_cooked_animation[action_name].RowCount(); bone_num++)
-	//	{
-	//		for (int frame_num = 0; frame_num < m_cooked_animation[action_name].ColumnCount(); frame_num++)
-	//		{
-	//			anim->SetPosition(m_cooked_animation[action_name].At(bone_num, frame_num).m_position, bone_num, frame_num);
-	//			anim->SetRotation(m_cooked_animation[action_name].At(bone_num, frame_num).m_rotation, bone_num, frame_num);
-	//		}			
-	//	}
+		anim->SetAnimationSize(m_cooked_animation[action_name].RowCount(), m_cooked_animation[action_name].ColumnCount());
+		anim->SetName(action_name);
+		for (int bone_num = 0; bone_num < m_cooked_animation[action_name].RowCount(); bone_num++)
+		{
+			for (int frame_num = 0; frame_num < m_cooked_animation[action_name].ColumnCount(); frame_num++)
+			{
+				anim->SetPosition(m_cooked_animation[action_name].At(bone_num, frame_num).m_position, bone_num, frame_num);
+				anim->SetRotation(m_cooked_animation[action_name].At(bone_num, frame_num).m_rotation, bone_num, frame_num);
+			}			
+		}
 
-	//	for (int frame_num = 0; frame_num < m_cooked_animation[action_name].ColumnCount(); frame_num++)
-	//	{
-	//		anim->SetFrameTimeValue(frame_num, frame_num);
-	//	}			
+		for (int frame_num = 0; frame_num < m_cooked_animation[action_name].ColumnCount(); frame_num++)
+		{
+			anim->SetFrameTimeValue(frame_num, frame_num);
+		}			
 
-	//	anim->SetDuration(1);
-	//	anim->SetTicksPerSecond(1);		
-	//	anim->SetRestPosition(m_skeleton_id);
-	//	anim->SetMeshOffset(m_local_matrix);
+		anim->SetDuration(1);
+		anim->SetTicksPerSecond(1);		
+		anim->SetRestPosition(m_skeleton_id);
+		anim->SetMeshOffset(m_local_matrix);
 
-	//	return true;
-	//}
+		return true;
+	}*/
 
 }
 
@@ -1629,9 +1566,22 @@ namespace Utility
 		return impl_scene->CookStaticMesh(*obj);
 	}
 
+	StaticMesh* Scene::CookSkinnedMesh(const System::string& name) const
+	{
+		Utility::Object* obj = impl_scene->FindObjectByName(name);
+		if (!obj)
+			return nullptr;
+		return impl_scene->CookSkinnedMesh(*obj, *impl_scene->m_armature_collection.begin()->second.get());
+	}
+
+	Armature* Scene::GetArmature(const System::string& name) 
+	{
+		return impl_scene->GetArmature(name);
+	}
+
 	/*Math::OctTree& Scene::GetOctTree()
 	{
-		return impl_scene->GetOctTree();
+	return impl_scene->GetOctTree();
 	}*/
 
 	bool Scene::IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res)

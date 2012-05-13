@@ -6,8 +6,8 @@ namespace GUI
 	Balloon::Balloon(float x, float y, float w, float h, const System::string& m, Widget* p)
 		: Widget(x, y, w, h, p)
 		, m_show_time(3)
-		, m_appear_time(0.1)
-		, m_disappear_time(0.1)
+		, m_appear_time(0.5)
+		, m_disappear_time(0.5)
 		, m_scale(1)
 	{
 		m_text = m;
@@ -17,12 +17,13 @@ namespace GUI
 
 	void Balloon::Blink()
 	{
+		m_isCursorIn = false;
 		m_isVisible = true;
 		m_cur_time = 0;
 		m_back_color_0[3] = 0;
-		m_back_color_1[3] = 1;
+		m_back_color_1[3] = 0.5;
 		m_text_color_0[3] = 0;
-		m_text_color_0[3] = 1;
+		m_text_color_0[3] = 0.5;
 		m_scale = 0;
 	}
 
@@ -63,6 +64,7 @@ namespace GUI
 	
 	void Balloon::OnIdle(System::IdleEvent* e)
 	{	
+		float transp = 1;
 		if (m_isVisible && m_isEnabled)
 		{
 			Widget::OnIdle(e);
@@ -70,16 +72,16 @@ namespace GUI
 			float t = m_cur_time;
 			if (t < m_appear_time)
 			{
-				m_back_color[3] = m_scale = t / m_appear_time;				
+				m_back_color[3] = m_scale = transp*t / m_appear_time;				
 			}
 			else if (t < m_appear_time + m_show_time)
 			{
-				m_back_color[3] = m_scale = 1;
+				m_back_color[3] = m_scale = transp*1;
 			}
 			else if (t < m_appear_time + m_show_time + m_disappear_time)
 			{
 				t -= m_appear_time + m_show_time;
-				m_back_color[3] = m_scale = 1 - t / m_disappear_time;
+				m_back_color[3] = m_scale = 1 - transp*t / m_disappear_time;
 			}
 			else
 			{

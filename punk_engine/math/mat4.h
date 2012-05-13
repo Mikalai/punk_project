@@ -1,6 +1,8 @@
 #ifndef _H_MAT4X4_MATH
 #define _H_MAT4X4_MATH
 
+#include <stdio.h>
+#include <ostream>
 #include <cmath>
 #include "config.h"
 #include "mat3.h"
@@ -279,7 +281,7 @@ namespace Math
 			return m[i];
 		}
 
-		operator T*()
+		/*operator T*()
 		{
 			return m;
 		}
@@ -287,7 +289,7 @@ namespace Math
 		operator const T* ()
 		{
 			return m;
-		}
+		}*/
 
 		Quaternion<T> ToQuaternion() const
 		{
@@ -729,6 +731,24 @@ namespace Math
 		for (int i = 0; i < 16; i++)
 			res[i] = m[i]*v;
 		return res;
+	}
+
+	template<class T>
+	std::ostream& operator << (std::ostream& stream, const Matrix4x4<T>& m)
+	{
+		int old = stream.width(8);
+		int old_prec = stream.precision(5);
+		for (int row = 0; row < 4; ++row)
+		{
+			for (int col = 0; col < 4; ++col)
+			{				
+				printf("%9.5f" , m[col*4 + row]);
+			}
+			stream << std::endl;
+		}
+		stream.width(old);
+		stream.precision(old_prec);
+		return stream;
 	}
 
 	//

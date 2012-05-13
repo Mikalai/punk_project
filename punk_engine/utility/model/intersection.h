@@ -3,6 +3,7 @@
 
 #include "../../system/string.h"
 #include <vector>
+#include <map>
 #include "../../math/vec3.h"
 
 namespace Utility

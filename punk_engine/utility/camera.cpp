@@ -100,7 +100,7 @@ namespace Utility
 
 	void Camera::OnIdle(System::Event* e)
 	{
-		float dt = m_timer.GetElapsedTime();
+		float dt = 10*m_timer.GetElapsedTime();
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_forward))
 			m_position += m_direction.Normalized()*dt;
 		if (System::Keyboard::GetInstance()->GetKeyState(m_move_backward))

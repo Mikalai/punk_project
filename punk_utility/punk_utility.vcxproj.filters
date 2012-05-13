@@ -30,6 +30,21 @@
     <ClCompile Include="..\punk_engine\utility\model\punk_scene_loader.cpp">
       <Filter>model</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\armature.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\action.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\animation\animation.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\animation\animation_mixer.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\animation\armature_animation.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\utility\model\bone.h">
@@ -64,9 +79,6 @@
     <ClInclude Include="..\punk_engine\utility\model\bone_frame.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\skeleton.h">
-      <Filter>model</Filter>
-    </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\action.h">
       <Filter>model</Filter>
     </ClInclude>
@@ -92,6 +104,21 @@
       <Filter>model</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\utility\animation\animation.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\armature.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\track_pos.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\animation_track.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\animation_mixer.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\armature_animation.h">
       <Filter>animation</Filter>
     </ClInclude>
   </ItemGroup>

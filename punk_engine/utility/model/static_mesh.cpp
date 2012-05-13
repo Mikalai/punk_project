@@ -91,6 +91,16 @@ namespace Utility
 		return m_vertex_component;
 	}
 
+	void StaticMesh::SetMeshOffset(const Math::Matrix4x4<float>& m)
+	{
+		m_mesh_offset = m;
+	}
+
+	const Math::Matrix4x4<float>& StaticMesh::GetMeshOffset() const
+	{
+		return m_mesh_offset;
+	}
+
 	void StaticMesh::Save(System::Buffer& buffer)
 	{
 		buffer.WriteUnsigned32(m_vertex_count);
@@ -109,7 +119,7 @@ namespace Utility
 		m_vertex_buffer_size = buffer.ReadUnsigned32();
 		m_one_vertex_size = buffer.ReadUnsigned32();
 		m_vertex_component = buffer.ReadSigned32();
-		m_vb = (Vertex*) new char[m_vertex_buffer_size];
+		m_vb = (void*) new char[m_vertex_buffer_size];
 		buffer.ReadBuffer((void*&)m_vb, m_vertex_buffer_size);			// well, i don't know will it work
 		m_index = new unsigned[sizeof(unsigned)*m_index_count];
 		buffer.ReadBuffer((void*&)m_index, sizeof(unsigned)*m_index_count);

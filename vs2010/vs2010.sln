@@ -75,6 +75,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pmd_viewer", "..\pmd_viewer
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_gui_test", "..\punk_gui_test\punk_gui_test.vcxproj", "{A15999BD-FEBC-4381-8C2F-075743B636BA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_skinning_test", "..\punk_skinning\punk_skinning.vcxproj", "{FA4D5016-5CDA-4AF3-AAF8-8C8BA334B66F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -195,6 +197,10 @@ Global
 		{A15999BD-FEBC-4381-8C2F-075743B636BA}.Debug|Win32.Build.0 = Debug|Win32
 		{A15999BD-FEBC-4381-8C2F-075743B636BA}.Release|Win32.ActiveCfg = Release|Win32
 		{A15999BD-FEBC-4381-8C2F-075743B636BA}.Release|Win32.Build.0 = Release|Win32
+		{FA4D5016-5CDA-4AF3-AAF8-8C8BA334B66F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FA4D5016-5CDA-4AF3-AAF8-8C8BA334B66F}.Debug|Win32.Build.0 = Debug|Win32
+		{FA4D5016-5CDA-4AF3-AAF8-8C8BA334B66F}.Release|Win32.ActiveCfg = Release|Win32
+		{FA4D5016-5CDA-4AF3-AAF8-8C8BA334B66F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

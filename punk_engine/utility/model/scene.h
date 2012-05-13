@@ -10,6 +10,7 @@
 #include <map>
 #include <vector>
 #include "material.h"
+#include "armature.h"
 
 namespace Utility
 {
@@ -26,7 +27,7 @@ namespace Utility
 		void OpenFile(const System::string& filename);
 		StaticMesh* CookStaticMesh(const System::string& name);
 		SkinnedMesh* CookSkinnedMesh(const System::string& name);
-		SkinAnimation* CookSkinAnimation(const System::string& mesh_name, unsigned anim_id);
+		SkinAnimation* CookSkinAnimation(const System::string& mesh_name, unsigned anim_id);		
 
 		Material GetMaterial(const System::string& name) const;
 		Material GetMaterial(unsigned index) const;

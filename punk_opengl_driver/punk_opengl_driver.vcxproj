@@ -100,11 +100,13 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.cpp" />
@@ -114,6 +116,7 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp" />
@@ -250,11 +253,13 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h" />
@@ -265,6 +270,7 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.h" />

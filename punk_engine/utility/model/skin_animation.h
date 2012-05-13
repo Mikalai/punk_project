@@ -4,12 +4,12 @@
 #include "../config.h"
 #include <vector>
 #include <map>
-#include "../../math/smart_matrix.h"
+#include "../../math/header_matrix.h"
 #include "../../math/mat4.h"
 #include "../../math/quat.h"
 #include "scene.h"
 #include "bone.h"
-#include "skeleton.h"
+#include "armature.h"
 
 namespace System
 {
@@ -29,14 +29,14 @@ namespace Utility
 	class LIB_UTILITY SkinAnimation
 	{	
 		System::string m_name;
-		SkeletonID m_rest_pose;
+		Armature* m_rest_pose;
 		Math::mat4 m_mesh_offset;
 
 		float m_duration;
 		float m_tick_per_second;
-
-		Math::Matrix<float> m_time;
-		Math::Matrix<Frame> m_animation;
+		
+		typedef std::map<FrameID, std::map<BoneName, Frame>> Type;
+		Type m_animation;
 
 	public:
 		void Save(System::Buffer& buffer);
@@ -45,14 +45,18 @@ namespace Utility
 		int GetBonesCount() const;
 
 		const Math::quat GetRotation(unsigned bone_id, unsigned frame) const;
+		const Math::quat GetRotation(const BoneName& bone, unsigned frame) const;
 		const Math::vec3 GetPosition(unsigned bone_id, unsigned frame) const;
+		const Math::vec3 GetPosition(const BoneName& bone, unsigned frame) const;
 		const Math::mat4 GetTransform(unsigned bone_id, unsigned frame) const;
+		const Math::mat4 GetTransform(const BoneName& bone, unsigned frame) const;
 		const Math::mat4 GetMeshOffset() const;
 
 		const Math::mat4 GetInterpolatedTransform(unsigned bone_id, unsigned frame1, unsigned frame2, float t) const;
+		const Math::mat4 GetInterpolatedTransform(const BoneName& bone, unsigned frame1, unsigned frame2, float t) const;
 
 		unsigned GetFramesCount() const;
-		const SkeletonID& GetRestPosition() const;
+		const Armature& GetRestPosition() const;
 		float GetDuration() const;
 		float GetTicksPerSecond() const;
 		const System::string GetName() const;
@@ -61,13 +65,21 @@ namespace Utility
 
 		void SetDuration(float duration);
 		void SetTicksPerSecond(float tps);
-		void SetRestPosition(SkeletonID& skeleton);
-		void SetAnimationSize(unsigned bones_count, unsigned frame_count);
+		void SetRestPosition(Armature* skeleton);		
 		void SetRotation(const Math::quat& rot, unsigned bone_id, unsigned frame);
+		void SetRotation(const Math::quat& rot, const BoneName& bone, unsigned frame);
 		void SetPosition(const Math::vec3& pos, unsigned bone_id, unsigned frame);
-		void SetFrameTimeValue(unsigned frame_id, float time);
+		void SetPosition(const Math::vec3& pos, const BoneName& bone, unsigned frame);		
 		void SetName(const System::string& name);
 		void SetMeshOffset(const Math::mat4& mat);
+
+		void SetAnimationSize(unsigned bones_count, unsigned frame_count);
+		Frame& GetFrame(const BoneName& bone, const FrameID& frame);
+		const Frame& GetFrame(const BoneName& bone, const FrameID& frame) const;
+
+		Type& GetAnimation();
+		const Type& GetAnimation() const;
+
 		friend class RawScene;
 	};
 }

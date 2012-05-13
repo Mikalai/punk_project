@@ -5,9 +5,27 @@
 
 namespace Utility
 {
-	enum VertexComponent {COMPONENT_POSITION = 1, COMPONENT_NORMAL = 2, COMPONENT_TEXTURE = 4, COMPONENT_BITANGENT = 8, COMPONENT_TANGENT = 16, COMPONENT_BONE_ID = 32, COMPONENT_BONE_WEIGHT = 64};
+		/*VERTEX_NONE = 0,
+		VERTEX_POSITION = 1, 
+		VERTEX_NORMAL = 2, 
+		VERTEX_TANGENT = 4, 
+		VERTEX_BITANGENT = 8, 
+		VERTEX_TEXTURE_0 = 16, 
+		VERTEX_BONE = 32,
+		VERTEX_FLAGS = 64// If bones present that it is supposed to be bone id and weight*/
 
-	namespace internal_data
+	enum VertexComponent {
+		COMPONENT_NONE = 0,
+		COMPONENT_POSITION = 1, 
+		COMPONENT_NORMAL = 2,
+		COMPONENT_TANGENT = 4, 
+		COMPONENT_BITANGENT = 8, 
+		COMPONENT_TEXTURE = 16, 
+		COMPONENT_BONE_ID = 32,
+		COMPONENT_BONE_WEIGHT = 64
+	};
+
+/*	namespace internal_data
 	{
 
 	}
@@ -51,7 +69,7 @@ namespace Utility
 			{
 			case COMPONENT_POSITION:
 				return 0;
-			case COMPONENT_TEXTURE:
+			case COMPONENT_TEXTURE_0:
 				return 4*sizeof(float);
 			default:
 				return -1;
@@ -75,7 +93,7 @@ namespace Utility
 				return 0;
 			case COMPONENT_NORMAL:
 				return 4*sizeof(float);
-			case COMPONENT_TEXTURE:
+			case COMPONENT_TEXTURE_0:
 				return 8*sizeof(float);
 			case COMPONENT_BITANGENT:
 				return 12*sizeof(float);
@@ -106,7 +124,7 @@ namespace Utility
 				return 0;
 			case COMPONENT_NORMAL:
 				return 4*sizeof(float);
-			case COMPONENT_TEXTURE:
+			case COMPONENT_TEXTURE_0:
 				return 8*sizeof(float);
 			case COMPONENT_BITANGENT:
 				return 12*sizeof(float);
@@ -120,7 +138,7 @@ namespace Utility
 				return -1;
 			}
 		}
-	};
+	};*/
 }
 
 #endif

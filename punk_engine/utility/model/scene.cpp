@@ -1,4 +1,4 @@
-#include <assimp.hpp>      // C++ importer interface
+/*#include <assimp.hpp>      // C++ importer interface
 #include <aiScene.h>       // Output data structure
 #include <aiPostProcess.h> // Post processing flags
 
@@ -428,4 +428,4 @@ namespace Utility
 	}
 
 
-}
+}*/

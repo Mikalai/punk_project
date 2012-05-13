@@ -207,6 +207,15 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.cpp">
       <Filter>render_context\context%28logic%29</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.cpp">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.cpp">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h">
@@ -353,6 +362,15 @@
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.h">
       <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.h">
+      <Filter>render_context\context%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.h">
+      <Filter>render_context\shaders%28logic%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,7 @@ and handle different parameters about users video system
 #include "render_context\rc_light.h"
 #include "render_context\rc_bump_mapping.h"
 #include "render_context\rc_gui.h"
+#include "render_context\rc_skinning.h"
 #include "extensions.h"
 
 

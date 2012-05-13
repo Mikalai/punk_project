@@ -4,7 +4,7 @@
 #include "../config.h"
 #include <vector>
 #include "intersection.h"
-
+#include "armature.h"
 
 namespace Math
 {
@@ -19,6 +19,8 @@ namespace System
 
 namespace Utility
 {
+	class StaticMesh;
+
 	class LIB_UTILITY Scene
 	{
 		struct SceneImpl;
@@ -36,6 +38,8 @@ namespace Utility
 		//Math::OctTree& GetOctTree();
 		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res);
 		StaticMesh* CookStaticMesh(const System::string& name) const;
+		StaticMesh* CookSkinnedMesh(const System::string& name) const;
+		Armature* GetArmature(const System::string& name);
 	};
 
 

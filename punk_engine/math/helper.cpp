@@ -19,7 +19,7 @@ namespace Math
         float xScale = 1.0f / tanf(0.5f * fovy);
         float yScale = xScale / aspectInv;
         mat4 res;
-        float* m = res;
+        float* m = &res[0];
         m[0*4 + 0] = xScale;
         m[0*4 + 1] = 0.0f;
         m[0*4 + 2] = 0.0f;
@@ -56,7 +56,7 @@ namespace Math
         yAxis.Normalize();
 
         mat4 res;
-        float* m = res;
+        float* m = &res[0];
 
         m[0*4 + 0] = xAxis[0];
         m[1*4 + 0] = xAxis[1];
@@ -95,7 +95,7 @@ namespace Math
         yAxis.Normalize();
 
         mat4 res;
-        float* m = res;
+        float* m = &res[0];
 
         m[0*4 + 0] = xAxis[0];
         m[1*4 + 0] = xAxis[1];
@@ -149,7 +149,7 @@ namespace Math
         yy = q[1] * y2;   yz = q[1] * z2;   zz = q[2] * z2;
         wx = q[3] * x2;   wy = q[3] * y2;   wz = q[3] * z2;
         mat4 mat;
-        float* m = mat;
+        float* m = &mat[0];
         m[0*4 + 0]=1.0f-(yy+zz); m[0*4 + 1]=xy-wz;        m[0*4 + 2]=xz+wy;
         m[1*4 + 0]=xy+wz;        m[1*4 + 1]=1.0f-(xx+zz); m[1*4 + 2]=yz-wx;
         m[2*4 + 0]=xz-wy;        m[2*4 + 1]=yz+wx;        m[2*4 + 2]=1.0f-(xx+yy);
