@@ -65,7 +65,7 @@ namespace Utility
 					throw System::SystemError(L"Error occured while rendering a glyph" + LOG_LOCATION_STRING);
 			}		
 
-			//System::Logger::GetInstance()->WriteDebugMessage("bitmap (%d; %d)", curFace->glyph->bitmap.width, curFace->glyph->bitmap.rows);
+			//System::Logger::Instance()->WriteDebugMessage("bitmap (%d; %d)", curFace->glyph->bitmap.width, curFace->glyph->bitmap.rows);
 
 			FT_GlyphSlot slot = curFace->glyph;
 
@@ -113,7 +113,7 @@ namespace Utility
 					throw System::SystemError(L"Error occured while rendering a glyph" + LOG_LOCATION_STRING);
 			}		
 
-			//System::Logger::GetInstance()->WriteDebugMessage("bitmap (%d; %d)", curFace->glyph->bitmap.width, curFace->glyph->bitmap.rows);
+			//System::Logger::Instance()->WriteDebugMessage("bitmap (%d; %d)", curFace->glyph->bitmap.width, curFace->glyph->bitmap.rows);
 
 			FT_GlyphSlot slot = curFace->glyph;
 
@@ -159,7 +159,7 @@ namespace Utility
 
 		System::ConfigFile conf;
 		
-		conf.Open(System::Window::GetInstance()->GetTitle());
+		conf.Open(System::Window::Instance()->GetTitle());
 		if (conf.IsExistOption(L"fonts"))
 		{
 			iniFontsFile = (pathToFonts = conf.ReadOptionString(L"fonts")) + L"fonts.ini";
@@ -185,15 +185,14 @@ namespace Utility
 		{
 			System::string name = buffer.ReadWord();
 			System::string path = pathToFonts + buffer.ReadWord();
-			System::Logger::GetInstance()->WriteDebugMessage(L"Loading font " + path + LOG_LOCATION_STRING);
+			System::Logger::Instance()->WriteDebugMessage(L"Loading font " + path + LOG_LOCATION_STRING);
 			
 			FT_Face face;
 
-			char* ansi;
-			int len;
+			char ansi[1024];
+			int len = 1024;
 			path.ToANSI(ansi, len);
 			error = FT_New_Face(library, ansi, 0, &face);
-			delete[] ansi;
 
 			if (error == FT_Err_Unknown_File_Format)
 			{
@@ -211,8 +210,8 @@ namespace Utility
 				throw System::SystemError(L"Can't set char size" + LOG_LOCATION_STRING);
 			}
 
-			System::Logger::GetInstance()->WriteDebugMessage(L"Font style: " + System::string(face->style_name));
-			System::Logger::GetInstance()->WriteDebugMessage(System::string::Format(L"Num glyphs: %d", face->num_glyphs));
+			System::Logger::Instance()->WriteDebugMessage(L"Font style: " + System::string(face->style_name));
+			System::Logger::Instance()->WriteDebugMessage(System::string::Format(L"Num glyphs: %d", face->num_glyphs));
 
 			curFace = face;
 			fontFace[name] = face;

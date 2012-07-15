@@ -39,6 +39,16 @@ namespace OpenGL
 		void Fill(unsigned char data);
 		int GetHeight() const;
 		int GetWidth() const;
+		unsigned GetCode() const;
+		void Create(const ImageModule::Image& image);
+
+		void SetSourceFile(const System::string& filename);
+		const System::string& GetSourceFile() const;
+		void SetIndex(int index);
+		int GetIndex() const;
+
+		void Init();
+		void Clear();
 	};
 }
 

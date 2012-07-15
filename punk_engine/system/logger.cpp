@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <string.h>
 
+#include "environment.h"
 #include "logger.h"
 #include "binary_file.h"
 #include "console.h"
@@ -49,38 +50,38 @@ namespace System
 
 	void Logger::WriteDebugMessage(const string& msg, const string& file, const string& line, const string& function)
 	{
-		Console::GetInstance()->SetTextColor(Console::COLOR_LIGHTGRAY);
+		Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		if (file.Length())
-			Write(Clock::GetInstance()->ToString() + L" DEBUG => " + msg + L" " + file + L"(" + line + L"): " + function);
+			Write(Clock::Instance()->ToString() + L" DEBUG => " + msg + L" " + file + L"(" + line + L"): " + function);
 		else
-			Write(Clock::GetInstance()->ToString() + L" DEBUG => " + msg);
+			Write(Clock::Instance()->ToString() + L" DEBUG => " + msg);
 	}
 
 	void Logger::WriteError(const string& msg, const string& file, const string& line, const string& function)
 	{
-		Console::GetInstance()->SetTextColor(Console::COLOR_LIGHTRED);
+		Console::Instance()->SetTextColor(Console::COLOR_LIGHTRED);
 		if (file.Length())
-			Write(Clock::GetInstance()->ToString() + L" ERROR => " + msg + L" " + file + L"(" + line + L"): " + function);
+			Write(Clock::Instance()->ToString() + L" ERROR => " + msg + L" " + file + L"(" + line + L"): " + function);
 		else
-			Write(Clock::GetInstance()->ToString() + L" ERROR => " + msg);
+			Write(Clock::Instance()->ToString() + L" ERROR => " + msg);
 	}
 
 	void Logger::WriteWarning(const string& msg, const string& file, const string& line, const string& function)
 	{
-		Console::GetInstance()->SetTextColor(Console::COLOR_YELLOW);
+		Console::Instance()->SetTextColor(Console::COLOR_YELLOW);
 		if (file.Length())
-			Write(Clock::GetInstance()->ToString() + L" WARNING => " + msg + L" " + file + L"(" + line + L"): " + function);
+			Write(Clock::Instance()->ToString() + L" WARNING => " + msg + L" " + file + L"(" + line + L"): " + function);
 		else
-			Write(Clock::GetInstance()->ToString() + L" WARNING => " + msg);
+			Write(Clock::Instance()->ToString() + L" WARNING => " + msg);
 	}
 
 	void Logger::WriteMessage(const string& msg, const string& file, const string& line, const string& function)
 	{
-		Console::GetInstance()->SetTextColor(Console::COLOR_LIGHTGREEN);
+		Console::Instance()->SetTextColor(Console::COLOR_LIGHTGREEN);
 		if (file.Length())
-			Write(Clock::GetInstance()->ToString() + L" " + msg + L" " + file + L"(" + line + L"): " + function);
+			Write(Clock::Instance()->ToString() + L" " + msg + L" " + file + L"(" + line + L"): " + function);
 		else
-			Write(Clock::GetInstance()->ToString() + L" " + msg);
+			Write(Clock::Instance()->ToString() + L" " + msg);
 	}
 
 	void Logger::Write(const string& msg)
@@ -93,8 +94,8 @@ namespace System
 
 		if (displayToConsole)
 		{
-			Console::GetInstance()->Print(msg);
-			Console::GetInstance()->Print(L"\n");
+			Console::Instance()->Print(msg);
+			Console::Instance()->Print(L"\n");
 		}
 		if (displayToFile)
 		{

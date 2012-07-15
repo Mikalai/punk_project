@@ -14,33 +14,43 @@ namespace ImageModule
 		: Image()
 	{}
 
-	RGBAImage Importer::LoadRGBA(const System::string& filename)
+	Image* Importer::LoadAnyImage(const System::string& filename)
+	{
+		Load(filename);
+
+		Image* image = new Image();
+		std::swap(image->impl_image, impl_image);
+
+		return image;
+	}
+
+	RGBAImage* Importer::LoadRGBA(const System::string& filename)
 	{
 		Load(filename);
 		if (impl_image->m_components != 4)
 			throw ImageError((filename + L" is not an RGBA image").Data());
-		RGBAImage rgba_image;
-		std::swap(rgba_image.impl_image, impl_image);
+		RGBAImage* rgba_image = new RGBAImage;
+		std::swap(rgba_image->impl_image, impl_image);
 		return rgba_image;
 	}
 
-	RGBImage Importer::LoadRGB(const System::string& filename)
+	RGBImage* Importer::LoadRGB(const System::string& filename)
 	{
 		Load(filename);
 		if (impl_image->m_components != 3)
 			throw ImageError((filename + L" is not an RGB image").Data());
-		RGBImage rgb_image;
-		std::swap(rgb_image.impl_image, impl_image);
+		RGBImage* rgb_image = new RGBImage;
+		std::swap(rgb_image->impl_image, impl_image);
 		return rgb_image;
 	}
 
-	GrayImage Importer::LoadGray(const System::string& filename)
+	GrayImage* Importer::LoadGray(const System::string& filename)
 	{
 		Load(filename);
 		if (impl_image->m_components != 1)
 			throw ImageError((filename + L" is not an RGB image").Data());
-		GrayImage gray_image;
-		std::swap(gray_image.impl_image, impl_image);
+		GrayImage* gray_image = new GrayImage;
+		std::swap(gray_image->impl_image, impl_image);
 		return gray_image;
 	}
 

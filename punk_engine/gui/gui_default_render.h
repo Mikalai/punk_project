@@ -9,6 +9,7 @@ namespace GUI
 {
 	class DefaultGUIRender : public IGUIRender
 	{
+		Math::vec4 m_selection_color_delta;
 		std::auto_ptr<OpenGL::QuadObject> m_quad;
 		std::auto_ptr<OpenGL::RenderContextGUI> m_rc;
 		std::auto_ptr<OpenGL::TextureContext> m_tc;

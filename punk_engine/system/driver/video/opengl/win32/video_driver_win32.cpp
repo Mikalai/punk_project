@@ -6,13 +6,14 @@ and deinitialization rutines
 */
 
 #ifdef _WIN32
+#define NOMINMAX
 #include <Windows.h>
 #include "../gl/gl3.h"
 //#include "gl3\wglext.h>
 #include "../driver.h"
 #include "../../../../logger.h"
 #include "../../../../window.h"
-#include "../../../../exception.h"
+//#include "../../../../exception.h"
 #include "../extensions.h"
 #include "../glsl_program.h"
 
@@ -35,55 +36,55 @@ namespace Driver
 
 	bool Video::Init(const DriverParameters* parameters)
 	{
-		System::Logger::GetInstance()->WriteMessage(L"Starting video engine...");
+		System::Logger::Instance()->WriteMessage(L"Starting video engine...");
 		m_parameters = *parameters;
 		if (!InitOpenGL())
 		{
-			System::Logger::GetInstance()->WriteError(L"OpenGL failed to initialize", LOG_LOCATION);
+			System::Logger::Instance()->WriteError(L"OpenGL failed to initialize", LOG_LOCATION);
 			return false;
 		}
 		if (!InitView())
 		{
-			System::Logger::GetInstance()->WriteError(L"Unable to initialize view", LOG_LOCATION);
+			System::Logger::Instance()->WriteError(L"Unable to initialize view", LOG_LOCATION);
 			return false;
 		}
 		isLaunched = true;
-		System::Logger::GetInstance()->WriteMessage(L"Video driver initialized successfully...");
+		System::Logger::Instance()->WriteMessage(L"Video driver initialized successfully...");
 		return true;
 	}
 
 	bool Video::InitView()
 	{
-		System::Logger::GetInstance()->WriteMessage(L"Initialize view...");
+		System::Logger::Instance()->WriteMessage(L"Initialize view...");
 		glViewport(0, 0, m_parameters.width, m_parameters.height);//m_parameters.width, m_parameters.height);
-		System::Logger::GetInstance()->WriteMessage(L"View initialized...");
+		System::Logger::Instance()->WriteMessage(L"View initialized...");
 		return true;
 	}
 
 	bool Video::OnResize()
 	{
-		System::Logger::GetInstance()->WriteMessage(L"Video driver resizing window...");
+		System::Logger::Instance()->WriteMessage(L"Video driver resizing window...");
 		if (!m_parameters.fullScreen)
 		{
 			RECT rect;
 			GetClientRect(m_parameters.window, &rect);
 			m_parameters.width = rect.right - rect.left;
 			m_parameters.height = rect.bottom - rect.top;
-			System::Logger::GetInstance()->WriteMessage(System::string::Format(L"New resolution is: %dx%d", m_parameters.width, m_parameters.height));
+			System::Logger::Instance()->WriteMessage(System::string::Format(L"New resolution is: %dx%d", m_parameters.width, m_parameters.height));
 		}
 		InitView();
-		System::Logger::GetInstance()->WriteMessage(L"Resized successfull...");
+		System::Logger::Instance()->WriteMessage(L"Resized successfull...");
 		return true;
 	}
 
 	bool Video::InitOpenGL()
 	{
-		System::Logger::GetInstance()->WriteMessage(L"Initializing OpenGL...");
+		System::Logger::Instance()->WriteMessage(L"Initializing OpenGL...");
 		m_parameters.deviceContext = ::GetDC(m_parameters.window);
 
 		if (m_parameters.fullScreen)
 		{
-			System::Logger::GetInstance()->WriteMessage(L"Fullscreen mode...");
+			System::Logger::Instance()->WriteMessage(L"Fullscreen mode...");
 			DEVMODE mode;
 			ZeroMemory(&mode, sizeof(mode));
 			mode.dmSize = sizeof(mode);
@@ -102,7 +103,7 @@ namespace Driver
 		}
 		else
 		{
-			System::Logger::GetInstance()->WriteMessage(L"Window mode...");
+			System::Logger::Instance()->WriteMessage(L"Window mode...");
 			RECT r;
 			r.left = 100;
 			r.right = m_parameters.width;
@@ -207,16 +208,16 @@ namespace Driver
 
 		GLint t;
 
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tRenderer: %s ", System::string((const char*)glGetString(GL_RENDERER)).Data()));
-		System::Logger::GetInstance()->WriteMessage(L"\tVendor: " + System::string((const char*)glGetString(GL_VENDOR)));
-		System::Logger::GetInstance()->WriteMessage(L"\tVersion: " + System::string((const char*)glGetString(GL_VERSION)));
-		System::Logger::GetInstance()->WriteMessage(L"\tGLSL version: " + System::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tRenderer: %s ", System::string((const char*)glGetString(GL_RENDERER)).Data()));
+		System::Logger::Instance()->WriteMessage(L"\tVendor: " + System::string((const char*)glGetString(GL_VENDOR)));
+		System::Logger::Instance()->WriteMessage(L"\tVersion: " + System::string((const char*)glGetString(GL_VERSION)));
+		System::Logger::Instance()->WriteMessage(L"\tGLSL version: " + System::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)));
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax vertex attribs: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax vertex attribs: %d", t));
 		glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax vertex uniform components: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax vertex uniform components: %d", t));
 		glGetIntegerv(GL_MAX_VARYING_FLOATS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax varying floats: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax varying floats: %d", t));
 
 		wglSwapIntervalEXT(0);
 
@@ -233,9 +234,9 @@ namespace Driver
 		int profile;
 		glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &profile);
 		if (profile & WGL_CONTEXT_CORE_PROFILE_BIT_ARB)
-			System::Logger::GetInstance()->WriteMessage(L"\tCore profile selected");
+			System::Logger::Instance()->WriteMessage(L"\tCore profile selected");
 		if (profile & WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB)
-			System::Logger::GetInstance()->WriteMessage(L"\tCompatible profile selected");
+			System::Logger::Instance()->WriteMessage(L"\tCompatible profile selected");
 
 		GLSLProgram::Init();
 		//CgProgram::Init();
@@ -245,25 +246,25 @@ namespace Driver
 	bool Video::MakeFullScreen(bool full)
 	{
 		if (full)
-			System::Logger::GetInstance()->WriteMessage(L"Enter full screen mode...");
+			System::Logger::Instance()->WriteMessage(L"Enter full screen mode...");
 		else
-			System::Logger::GetInstance()->WriteMessage(L"Enter windowed mode...");
+			System::Logger::Instance()->WriteMessage(L"Enter windowed mode...");
 		m_parameters.fullScreen = full;
 		if (Reboot())
 		{
-			System::Logger::GetInstance()->WriteMessage(L"Screen mode changed successfully...");
+			System::Logger::Instance()->WriteMessage(L"Screen mode changed successfully...");
 			return true;
 		}
 		else
 		{
-			System::Logger::GetInstance()->WriteMessage(L"Failed to change screen mode...");
+			System::Logger::Instance()->WriteMessage(L"Failed to change screen mode...");
 			return false;
 		}
 	}
 
 	bool Video::Reboot(const DriverParameters* params)
 	{
-		System::Logger::GetInstance()->WriteMessage(L"Rebooting vide driver...");
+		System::Logger::Instance()->WriteMessage(L"Rebooting vide driver...");
 		if (params)
 			m_parameters = *params;
 
@@ -307,23 +308,23 @@ namespace Driver
 		ShowWindow(m_parameters.window, SW_SHOW);
 		UpdateWindow(m_parameters.window);
 
-		System::Logger::GetInstance()->WriteMessage(L"Ok...");
+		System::Logger::Instance()->WriteMessage(L"Ok...");
 		return true;
 	}
 
 	Video::~Video()
 	{
-		System::Logger::GetInstance()->WriteMessage(L"Destroying video driver...");
+		System::Logger::Instance()->WriteMessage(L"Destroying video driver...");
 		ChangeDisplaySettings(NULL, 0);
 		wglMakeCurrent(m_parameters.deviceContext,NULL);
 		wglDeleteContext(m_parameters.openglContext);
 		ReleaseDC(m_parameters.window, m_parameters.deviceContext);
-		System::Logger::GetInstance()->WriteMessage(L"Video driver destroyed...");
+		System::Logger::Instance()->WriteMessage(L"Video driver destroyed...");
 	}
 
 	bool Video::MakeScreenShot()
 	{
-		System::Logger::GetInstance()->WriteMessage(L"Making screenshot...");
+		System::Logger::Instance()->WriteMessage(L"Making screenshot...");
 		FILE *f = 0;
 		fopen_s(&f, "screenshot.bmp", "wb");
 		if (f == 0)
@@ -420,7 +421,7 @@ namespace Driver
 			fclose(f);
 			throw;
 		}
-		System::Logger::GetInstance()->WriteMessage(L"Done...");
+		System::Logger::Instance()->WriteMessage(L"Done...");
 		return true;
 	}
 
@@ -433,7 +434,7 @@ namespace Driver
 
 	bool Video::IsExtensionSupported(const char* ext)
 	{			
-		System::Logger::GetInstance()->WriteError(L"Not implemented", LOG_LOCATION);
+		System::Logger::Instance()->WriteError(L"Not implemented", LOG_LOCATION);
 		throw System::NotImplemented();
 	}
 

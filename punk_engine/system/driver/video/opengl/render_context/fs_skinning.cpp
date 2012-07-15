@@ -6,6 +6,6 @@ namespace OpenGL
 	FragmentVertexSkinning::FragmentVertexSkinning()
 		: Shader(SHADER_FRAGMENT)
 	{
-		CookFromFile(System::Environment::GetShaderFolder() + L"skinning_330.frag");
+		CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"skinning_330.frag");
 	}
 }

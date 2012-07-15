@@ -35,10 +35,10 @@ public:
 		m_static_mesh.reset(scene.CookStaticMesh(L"Cube"));
 		System::Buffer buffer;
 		m_static_mesh->Save(buffer);
-		System::BinaryFile::Save(System::Environment::GetModelFolder() + L"simple_house.mesh", buffer);
+		System::BinaryFile::Save(System::Environment::Instance()->GetModelFolder() + L"simple_house.mesh", buffer);
 
 		x = y = z = 10;
-		m_driver.Start(System::Window::GetInstance());
+		m_driver.Start(System::Window::Instance());
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
 		m_solid_context.reset(new OpenGL::RenderContextSolid3D());
 		m_textured_context.reset(new OpenGL::RenderContextTextured3D());
@@ -58,8 +58,8 @@ public:
 		m_grid->SetWidthSlice(16);
 		m_grid->Init();/**/
 
-		m_image = ImageModule::Importer().LoadRGBA(System::Environment::GetTexutreFolder() + L"diffuse_map.png");
-		m_gray_image = ImageModule::Importer().LoadRGB(System::Environment::GetTexutreFolder() + L"house_normal.png");
+		m_image = ImageModule::Importer().LoadRGBA(System::Environment::Instance()->GetTexutreFolder() + L"diffuse_map.png");
+		m_gray_image = ImageModule::Importer().LoadRGB(System::Environment::Instance()->GetTexutreFolder() + L"house_normal.png");
 		m_height_map.reset(new OpenGL::Texture2D(m_gray_image));		
 
 		m_terrain_context.reset(new OpenGL::RenderContextTerrain());		
@@ -209,15 +209,15 @@ public:
 
 int main()
 {
-	System::Window::GetInstance()->SetTitle(L"Punk OpenGL Driver Test");
-	System::Mouse::GetInstance()->LockInWindow(false);
+	System::Window::Instance()->SetTitle(L"Punk OpenGL Driver Test");
+	System::Mouse::Instance()->LockInWindow(false);
 	OpenGL::Module module;
 	module.Init();
 	Test test;
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&test, &Test::OnIdle));
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&test, &Test::OnKeyDown));
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(&test, &Test::OnMouseMove));
-	System::Window::GetInstance()->Loop();
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&test, &Test::OnIdle));
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&test, &Test::OnKeyDown));
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(&test, &Test::OnMouseMove));
+	System::Window::Instance()->Loop();
 
 	module.Destroy();
 	return 0;
@@ -266,7 +266,7 @@ int main()
 //		driver = new OpenGL::Driver;
 //		try
 //		{			
-//			driver->Start(System::Window::GetInstance());
+//			driver->Start(System::Window::Instance());
 //		}
 //		catch (System::SystemError& err)
 //		{
@@ -327,9 +327,9 @@ int main()
 //		a1 = 0;
 //		a2 = 0;
 //
-//		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Test::OnKey));
+//		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Test::OnKey));
 //
-//		//System::Mouse::GetInstance()->BindCursorToWindow(0);
+//		//System::Mouse::Instance()->BindCursorToWindow(0);
 //	}
 //
 //	~Test()
@@ -365,7 +365,7 @@ int main()
 //			context_2d.Begin(program_2d);
 //			Math::mat4 world = Math::mat4::CreateTranslate(100, 100, 0)*Math::mat4::CreateScaling(100,100,1);
 //			Math::mat4 view = Math::mat4::CreateIdentity();
-//			Math::mat4 proj = Math::mat4::CreateOrthographicProjection(0, System::Window::GetInstance()->GetWidth(), System::Window::GetInstance()->GetHeight(), 0, -1, 1);
+//			Math::mat4 proj = Math::mat4::CreateOrthographicProjection(0, System::Window::Instance()->GetWidth(), System::Window::Instance()->GetHeight(), 0, -1, 1);
 //			program_2d->SetUniformMatrix4f(program_2d->GetUniformLocation("uProjViewWorld"), proj*view*world);
 //			program_2d->SetUniformVector4f(program_2d->GetUniformLocation("uDiffuseColor"), Math::vec4(0, 0, 1, 1));
 //			program_2d->SetUniformFloat(program_2d->GetUniformLocation("uRadius"), 0.01f);
@@ -501,10 +501,10 @@ int main()
 //{	
 //	//_CrtSetBreakAlloc(469);
 //
-//	System::Window::GetInstance()->SetTitle(L"Punk OpenGL Driver Test");
+//	System::Window::Instance()->SetTitle(L"Punk OpenGL Driver Test");
 //	Test* t = new Test();;
-//	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(t, &Test::Draw));
-//	System::Window::GetInstance()->Loop();
+//	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(t, &Test::Draw));
+//	System::Window::Instance()->Loop();
 //	delete t;
 //	//_CrtDumpMemoryLeaks();
 //	return 0;

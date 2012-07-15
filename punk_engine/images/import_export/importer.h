@@ -22,9 +22,12 @@ namespace ImageModule
 		//std::auto_ptr<ImporterImpl> impl_importer;
 	public:
 		Importer();
-		RGBAImage LoadRGBA(const System::string& filename);
-		RGBImage LoadRGB(const System::string& filename);
-		GrayImage LoadGray(const System::string& filename);
+		RGBAImage* LoadRGBA(const System::string& filename);
+		RGBImage* LoadRGB(const System::string& filename);
+		GrayImage* LoadGray(const System::string& filename);
+
+		Image* LoadAnyImage(const System::string& filename);
+
 	protected:
 		virtual void Load(const System::string& filename);
 	};

@@ -152,9 +152,16 @@ namespace OpenGL
 	PFNGLDRAWELEMENTSPROC glDrawElements;
 	PFNGLDRAWELEMENTSINDIRECTPROC glDrawElementsIndirect;
 	PFNGLDRAWELEMENTSINSTANCEDPROC glDrawElementsInstanced;
-	PFNGLCLEARPROC glClear;
+	MODULE_OPENGL PFNGLCLEARPROC glClear;
 	PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D;
 	PFNGLPOLYGONMODEPROC glPolygonMode;
+	PFNGLFENCESYNCPROC glFenceSync;
+	PFNGLWAITSYNCPROC glWaitSync;
+	PFNGLDELETESYNCPROC glDeleteSync;
+	PFNGLDRAWBUFFERSPROC glDrawBuffers;
+	PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC glRenderbufferStorageMultisample;
+	PFNGLBLITFRAMEBUFFERPROC glBlitFramebuffer;
+	PFNGLDEPTHFUNCPROC glDepthFunc;
 
 	bool IsSupported(const char* extension, Driver* driver)
 	{
@@ -172,12 +179,12 @@ namespace OpenGL
 				const char* end = ptr + strlen(extension);
 				if (isspace(*end) || *end == '\0')
 				{
-					System::Logger::GetInstance()->WriteMessage(System::string::Format(L"[Video] %s is supported", System::string(extension).Data()));
+					System::Logger::Instance()->WriteMessage(System::string::Format(L"[Video] %s is supported", System::string(extension).Data()));
 					return true;
 				}
 			}
 		}
-		System::Logger::GetInstance()->WriteWarning(System::string::Format(L"[Video] %s is not supported", System::string(extension).Data()));
+		System::Logger::Instance()->WriteWarning(System::string::Format(L"[Video] %s is not supported", System::string(extension).Data()));
 		return false;
 	};
 
@@ -332,5 +339,12 @@ namespace OpenGL
 		glGetBufferParameteriv = (PFNGLGETBUFFERPARAMETERIVPROC)driver->GetProcAddress("glGetBufferParameteriv");
 		glGetBufferParameterui64v = (PFNGLGETBUFFERPARAMETERUI64VNVPROC)driver->GetProcAddress("glGetBufferParameterui64v");
 		glGetBufferPointerv = (PFNGLGETBUFFERPOINTERVPROC)driver->GetProcAddress("glGetBufferPointerv");
+		glFenceSync = (PFNGLFENCESYNCPROC )driver->GetProcAddress("glFenceSync");
+		glWaitSync = (PFNGLWAITSYNCPROC)driver->GetProcAddress("glWaitSync");
+		glDeleteSync = (PFNGLDELETESYNCPROC)driver->GetProcAddress("glDeleteSync");
+		glDrawBuffers = (PFNGLDRAWBUFFERSPROC)driver->GetProcAddress("glDrawBuffers");
+		glRenderbufferStorageMultisample = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC)driver->GetProcAddress("glRenderbufferStorageMultisample");
+		glBlitFramebuffer = (PFNGLBLITFRAMEBUFFERPROC)driver->GetProcAddress("glBlitFramebuffer");
+		glDepthFunc = (PFNGLDEPTHFUNCPROC)driver->GetProcAddress("glDepthFunc");
 	}
 }

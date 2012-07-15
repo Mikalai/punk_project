@@ -11,7 +11,7 @@ namespace Render
 
 	void SceneRenderVisitor::operator() (System::Descriptor desc, Data& data)
 	{
-		//System::ResourceManager* rm = System::ResourceManager::GetInstance();
+		//System::ResourceManager* rm = System::ResourceManager::Instance();
 		//switch(desc.Type())
 		//{
 		//case System::RESOURCE_WIDGET:
@@ -73,16 +73,16 @@ namespace Render
 
 	void SceneRender::ButtonRender(float px, float py, GUI::Button* button)
 	{
-		int win_width = System::Window::GetInstance()->GetWidth();
-		int win_height = System::Window::GetInstance()->GetHeight();
+		int win_width = System::Window::Instance()->GetWidth();
+		int win_height = System::Window::Instance()->GetHeight();
 
 		if (button->GetTextTexture() == System::Descriptor::Root())
 		{
-			System::Descriptor d = m_driver->CreateStringTexture(button->GetText(), System::Window::GetInstance()->GetWidth()*button->GetWidth(), System::Window::GetInstance()->GetHeight()*button->GetHeight(), 14, L"Courier New");
+			System::Descriptor d = m_driver->CreateStringTexture(button->GetText(), System::Window::Instance()->GetWidth()*button->GetWidth(), System::Window::Instance()->GetHeight()*button->GetHeight(), 14, L"Courier New");
 			button->SetTextTexture(d);
 		}
 
-		auto res_text = System::ResourceManager::GetInstance()->GetResource<OpenGL::TextTexture2D>(button->GetTextTexture());
+		auto res_text = System::ResourceManager::Instance()->GetResource<OpenGL::TextTexture2D>(button->GetTextTexture());
 		auto texture = res_text->Lock();
 
 		if (texture->GetWidth() != (int)((float)win_width*button->GetWidth()) || texture->GetHeight() != (int)((float)win_height*button->GetHeight()))

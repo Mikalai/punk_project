@@ -21,6 +21,7 @@ namespace System
 	{
 		wchar_t buffer[256];
 		_wasctime_s(buffer, 256, &m_date);
+		buffer[24] = 0;
 		return string(buffer);
 	}
 

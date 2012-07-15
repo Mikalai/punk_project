@@ -22,7 +22,7 @@ namespace OpenGL
 
 		if (m_parameters.fullScreen)
 		{
-			System::Logger::GetInstance()->WriteMessage(L"Fullscreen mode...");
+			System::Logger::Instance()->WriteMessage(L"Fullscreen mode...");
 			DEVMODE mode;
 			ZeroMemory(&mode, sizeof(mode));
 			mode.dmSize = sizeof(mode);
@@ -41,7 +41,7 @@ namespace OpenGL
 		}
 		else
 		{
-			System::Logger::GetInstance()->WriteMessage(L"Window mode...");
+			System::Logger::Instance()->WriteMessage(L"Window mode...");
 			RECT r;
 			r.left = 100;
 			r.right = m_parameters.width;
@@ -146,16 +146,16 @@ namespace OpenGL
 
 		GLint t;
 
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tRenderer: %s ", System::string((const char*)glGetString(GL_RENDERER)).Data()));
-		System::Logger::GetInstance()->WriteMessage(L"\tVendor: " + System::string((const char*)glGetString(GL_VENDOR)));
-		System::Logger::GetInstance()->WriteMessage(L"\tVersion: " + System::string((const char*)glGetString(GL_VERSION)));
-		System::Logger::GetInstance()->WriteMessage(L"\tGLSL version: " + System::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tRenderer: %s ", System::string((const char*)glGetString(GL_RENDERER)).Data()));
+		System::Logger::Instance()->WriteMessage(L"\tVendor: " + System::string((const char*)glGetString(GL_VENDOR)));
+		System::Logger::Instance()->WriteMessage(L"\tVersion: " + System::string((const char*)glGetString(GL_VERSION)));
+		System::Logger::Instance()->WriteMessage(L"\tGLSL version: " + System::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)));
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax vertex attribs: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax vertex attribs: %d", t));
 		glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax vertex uniform components: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax vertex uniform components: %d", t));
 		glGetIntegerv(GL_MAX_VARYING_FLOATS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax varying floats: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax varying floats: %d", t));
 
 		wglSwapIntervalEXT(0);
 
@@ -172,9 +172,9 @@ namespace OpenGL
 		int profile;
 		glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &profile);
 		if (profile & WGL_CONTEXT_CORE_PROFILE_BIT_ARB)
-			System::Logger::GetInstance()->WriteMessage(L"\tCore profile selected");
+			System::Logger::Instance()->WriteMessage(L"\tCore profile selected");
 		if (profile & WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB)
-			System::Logger::GetInstance()->WriteMessage(L"\tCompatible profile selected");
+			System::Logger::Instance()->WriteMessage(L"\tCompatible profile selected");
 
 		GLSLProgram::Init();
 		//CgProgram::Init();

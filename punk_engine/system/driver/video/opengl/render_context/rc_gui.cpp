@@ -15,6 +15,7 @@ namespace OpenGL
 		GLuint m_text_color_uniform;
 		GLuint m_diffuse_map_uniform;
 		GLuint m_text_map_uniform;
+		GLuint m_no_diffuse_texture_uniform;
 
 		Math::mat4 m_world;
 		Math::mat4 m_view;
@@ -22,6 +23,7 @@ namespace OpenGL
 		Math::mat4 m_proj_view_world;
 		Math::vec4 m_diffuse_color;
 		Math::vec4 m_text_color;
+		Math::vec4 m_no_diffuse_texture;
 				
 		virtual void InitAttributes()
 		{
@@ -40,6 +42,8 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to get uniform location");
 			m_text_color_uniform = glGetUniformLocation(m_program, "uTextColor");
 			CHECK_GL_ERROR(L"Unable to get uniform location");
+			m_no_diffuse_texture_uniform = glGetUniformLocation(m_program, "uNoDiffuseTexture");
+			CHECK_GL_ERROR(L"Unable to get uniform location");
 		}
 
 		virtual void BindUniforms()
@@ -48,6 +52,7 @@ namespace OpenGL
 			SetUniformMatrix4f(m_proj_view_world_uniform, &m_proj_view_world[0]);
 			SetUniformVector4f(m_diffuse_color_uniform, &m_diffuse_color[0]);
 			SetUniformVector4f(m_text_color_uniform, &m_text_color[0]);
+			SetUniformVector4f(m_no_diffuse_texture_uniform, &m_no_diffuse_texture[0]);
 			SetUniformInt(m_diffuse_map_uniform, 1);
 			SetUniformInt(m_text_map_uniform, 0);
 			glDisable(GL_DEPTH_TEST);
@@ -103,6 +108,14 @@ namespace OpenGL
 		{
 			m_text_color = v;
 		}
+
+		void RenderDiffuseTexture(bool value)
+		{
+			if (value)
+				m_no_diffuse_texture.Set(0,0,0,1);
+			else
+				m_no_diffuse_texture = m_diffuse_color;//.Set(1,1,1,1);
+		}
 	};
 
 	RenderContextGUI::RenderContextGUI()
@@ -150,5 +163,10 @@ namespace OpenGL
 	void RenderContextGUI::SetWorldMatrix(const Math::Matrix4x4<float>& m)
 	{
 		static_cast<RenderContextGUIImpl*>(impl_rc.get())->SetWorldMatrix(m);
+	}
+
+	void RenderContextGUI::RenderDiffuseTexture(bool value)
+	{
+		static_cast<RenderContextGUIImpl*>(impl_rc.get())->RenderDiffuseTexture(value);
 	}
 }

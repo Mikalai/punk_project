@@ -6,6 +6,7 @@
 #define __NV_DDS_H__
 
 #ifdef _WIN32
+#define NOMINMAX
 #include <windows.h>
 #endif
 

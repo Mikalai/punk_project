@@ -5,12 +5,12 @@ namespace System
 {
 
 	const long PUNK_KEY_LEFT_ALT = 0x01;
-	const long PUNK_KEY_RIGHT_ALT =0x02;
-	const long PUNK_KEY_TAB =0x03;
+	const long PUNK_KEY_RIGHT_ALT =0x02;	
 	const long PUNK_KEY_CAPSLOCK =0x04;
 	const long PUNK_KEY_PAGE_UP =0x05;
 	const long PUNK_KEY_PAGE_DOWN =0x06;
 	const long PUNK_KEY_BACKSPACE = 0x08;
+	const long PUNK_KEY_TAB = 0x09;
 	const long PUNK_KEY_ENTER = 0x0D;
 	const long PUNK_KEY_SHIFT = 0x10;
 	const long PUNK_KEY_CONTROL = 0x11;
@@ -125,7 +125,7 @@ namespace System
 	const long EVENT_INSTANCE_APPEARED = 0x0017;
 
 	const long EVENT_MODEL_TIME_STEP	= 0x0018;
-
+	const long EVENT_MODULE_LOGIC_EVENTS = 0x0100;
 }
 
 #endif // EVENT_TYPE_H

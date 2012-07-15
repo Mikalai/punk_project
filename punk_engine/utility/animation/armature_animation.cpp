@@ -1,3 +1,5 @@
+#include <ostream>
+#include <istream>
 #include "armature_animation.h"
 #include "../model/armature.h"
 
@@ -7,13 +9,19 @@ namespace Utility
 		: m_armature(armature)
 	{}
 
-	void ArmatureAnimation::UpdateBones(int frame)
+	void ArmatureAnimation::UpdateBones(float frame)
 	{
 		for (int i = 0; i < m_armature.GetBonesCount(); ++i)
 		{
 			Bone* b = m_armature.GetBoneByIndex(i);
 			b->UpdatePose(frame);
 		}
+	}
+
+	void ArmatureAnimation::UpdateBones(float frame, int bone_id)
+	{
+		Bone* b = m_armature.GetBoneByIndex(bone_id);
+		b->UpdatePose(frame);
 	}
 
 	void ArmatureAnimation::EnableTrack(const System::string& track_name, bool flag)
@@ -40,4 +48,11 @@ namespace Utility
 		}
 	}
 
+	void ArmatureAnimation::Save(std::ostream& stream)
+	{
+	}
+
+	void ArmatureAnimation::Load(std::istream& stream)
+	{
+	}
 }

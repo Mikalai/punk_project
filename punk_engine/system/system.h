@@ -27,5 +27,7 @@
 #include "handle.h"
 #include "resource.h"
 #include "resource_manager.h"
+#include "template_singletone.h"
+#include "resource_manager_2.h"
 
 #endif 

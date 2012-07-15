@@ -14,8 +14,8 @@ namespace OpenGL
 		int x = 0;
 		int y = GetHeight() - font_size;
 		Fill(0);
-		Utility::FontBuilder::GetInstance()->SetCurrentFace(font_name);
-		Utility::FontBuilder::GetInstance()->SetCharSize(font_size, font_size);
+		Utility::FontBuilder::Instance()->SetCurrentFace(font_name);
+		Utility::FontBuilder::Instance()->SetCharSize(font_size, font_size);
 		for (const wchar_t* a = m_text.Data(); *a; a++)
 		{ 
 			int width;
@@ -25,7 +25,7 @@ namespace OpenGL
 			int x_advance;
 			int y_advance;
 			unsigned char* buffer;
-			Utility::FontBuilder::GetInstance()->RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
+			Utility::FontBuilder::Instance()->RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
 			if (x + x_offset + width >= GetWidth())
 			{
 				y -= font_size;

@@ -18,10 +18,10 @@ namespace System
 	class LIB_APPLICATION Application : public Singletone(Application)
 	{
 	protected:
-		Render::SceneRender m_render;
+		//Render::SceneRender m_render;
 		GUI::Manager* m_user_interface;
 		OpenGL::Driver* m_video_driver;
-		Scene::SceneGraph m_scene_graph;
+	//	Scene::SceneGraph m_scene_graph;
 		System::Timer m_timer;	
 
 		void Step(System::Event* event);
@@ -39,7 +39,7 @@ namespace System
 		Window* GetWindow();
 		EventManager* GetEventManager();
 		OpenGL::Driver* GetDriver();
-		GUI::Manager* GetUserInterface();
+		//GUI::Manager* GetUserInterface();
 
 		int Run();
 		~Application();

@@ -6,6 +6,6 @@ namespace OpenGL
 	VertexShaderGUI::VertexShaderGUI()
 		: Shader(SHADER_VERTEX)
 	{
-		CookFromFile(System::Environment::GetShaderFolder() + L"gui_330.vert");
+		CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"gui_330.vert");
 	}
 }

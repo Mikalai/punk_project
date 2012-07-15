@@ -1,53 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="linux">
-      <UniqueIdentifier>{b6134640-42f3-4e3c-b117-b9fe38d4956f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="win32">
-      <UniqueIdentifier>{1333ade8-87fc-4930-b47a-c9cb1fdfc8cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="nvtristrip">
-      <UniqueIdentifier>{cbdd91b4-7c86-4370-baf8-3383ae12a056}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gl">
-      <UniqueIdentifier>{798ee159-107c-4509-9cff-c2adb8322dc5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="glsl">
-      <UniqueIdentifier>{3ecdd327-ecc0-4d32-bada-e6c6872b8fc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="render">
-      <UniqueIdentifier>{c8671c18-f711-4048-9a74-8ef51d2688bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="render\2d">
-      <UniqueIdentifier>{d2641275-1a3e-4c08-bb6b-a368128de1c5}</UniqueIdentifier>
+      <UniqueIdentifier>{01736df5-bef5-482d-bcbe-d0531fc20176}</UniqueIdentifier>
     </Filter>
     <Filter Include="resource">
-      <UniqueIdentifier>{4d8b154f-1840-40e3-bdf3-95e70e03f64a}</UniqueIdentifier>
+      <UniqueIdentifier>{3f99a505-02a5-4b08-9e07-3a6c9ae993c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="render_context">
-      <UniqueIdentifier>{97834ba7-2c59-4eed-8ac1-1b8ef4b32215}</UniqueIdentifier>
+      <UniqueIdentifier>{b9a07925-3b95-4737-86a9-08680069bb60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="render_context\shaders%28logic%29">
-      <UniqueIdentifier>{6b41649d-2d06-4226-8e43-cbfb2d110779}</UniqueIdentifier>
+    <Filter Include="nvtristrip">
+      <UniqueIdentifier>{af24903a-9e41-4253-a223-7c421e706675}</UniqueIdentifier>
     </Filter>
-    <Filter Include="render_context\context%28logic%29">
-      <UniqueIdentifier>{0c8de1f3-7f2d-4875-af94-175cc6c12cc7}</UniqueIdentifier>
+    <Filter Include="dump%28logic%29">
+      <UniqueIdentifier>{903435b4-cae6-4ff9-9eca-6fc06cc166e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="geometry_context%28logic%29">
-      <UniqueIdentifier>{293e6739-9dc8-416d-8413-c38164979d19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="texture_context%28logic%29">
-      <UniqueIdentifier>{c3f98e9d-257a-43ac-b91e-9a7db20d8111}</UniqueIdentifier>
+    <Filter Include="glsl">
+      <UniqueIdentifier>{d6c0d0f0-57ae-48af-8f7d-e0c72da6e802}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.cpp">
-      <Filter>linux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\video_driver_linux.cpp">
-      <Filter>linux</Filter>
-    </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.cpp">
       <Filter>win32</Filter>
     </ClCompile>
@@ -57,8 +30,74 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\video_driver_win32.cpp">
-      <Filter>win32</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp">
+      <Filter>render_context</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.cpp">
       <Filter>nvtristrip</Filter>
@@ -69,163 +108,158 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.cpp">
       <Filter>nvtristrip</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\3d_line_render.cpp">
-      <Filter>render</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\video_driver_win32.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\advanced_static_mesh.cpp">
-      <Filter>render</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\driver.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\font_builder.cpp">
-      <Filter>render</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\error.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\per_vertex_render.cpp">
-      <Filter>render</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\pipeline.cpp">
-      <Filter>render</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render_element.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render_state.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\slider.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\solid_render.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\terrain_render.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_line_render.cpp">
-      <Filter>render\2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_quad_render.cpp">
-      <Filter>render\2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_text_area_render.cpp">
-      <Filter>render\2d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\driver.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\error.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\glsl_program.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light_manager.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\material.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\module.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context_old.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp">
-      <Filter>texture_context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp">
-      <Filter>texture_context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\render\terrain_render.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\glsl_program.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\grid_object.cpp">
-      <Filter>geometry_context%28logic%29</Filter>
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light.cpp">
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light_manager.cpp">
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\material.cpp">
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\module.cpp">
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp">
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp">
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context_old.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\static_object.cpp">
-      <Filter>geometry_context%28logic%29</Filter>
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\terrain_render.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp">
+      <Filter>dump%28logic%29</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.cpp">
-      <Filter>render_context\context%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.cpp">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\line.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h">
-      <Filter>linux</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.h">
+      <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.h">
       <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\texture_2d_resource.h">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context_impl.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.h">
+      <Filter>render_context</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.h">
       <Filter>nvtristrip</Filter>
@@ -236,153 +270,146 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.h">
       <Filter>nvtristrip</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\gl3.h">
-      <Filter>gl</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\config.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\wglext.h">
-      <Filter>gl</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\driver.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\module.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\texture_2d_resource.h">
-      <Filter>resource</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\driver_parameters.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\extensions.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\error.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\extensions.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.h">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\frame_buffer.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context_impl.h">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context_old.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertext_array_object_impl.h">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object.h">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object_impl.h">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_attributes.h">
-      <Filter>geometry_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h">
-      <Filter>render_context\context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_bind_target.h">
-      <Filter>texture_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h">
-      <Filter>texture_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d_impl.h">
-      <Filter>texture_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h">
-      <Filter>texture_context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h">
-      <Filter>render_context\context%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\render\terrain_render.h">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\glsl_program.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object.h">
-      <Filter>geometry_context%28logic%29</Filter>
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object_impl.h">
-      <Filter>geometry_context%28logic%29</Filter>
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\light.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\light_manager.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\material.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\module.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\os.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object_impl.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context_old.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\shader_program.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\standard_shaders.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object.h">
-      <Filter>geometry_context%28logic%29</Filter>
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object_impl.h">
-      <Filter>geometry_context%28logic%29</Filter>
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\terrain_render.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.h">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d_impl.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_bind_target.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vbo.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.h">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.h">
-      <Filter>render_context\context%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_attributes.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertext_array_object_impl.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.h">
-      <Filter>render_context\shaders%28logic%29</Filter>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\resource_manager.h">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render\line.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render\rigid_body.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_2d_manager.h">
+      <Filter>dump%28logic%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt">
       <Filter>nvtristrip</Filter>
     </None>
-    <None Include="..\punk_engine\system\driver\video\opengl\model.txt" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="..\punk_engine\system\driver\video\opengl\material.txt">
+      <Filter>dump%28logic%29</Filter>
+    </None>
+    <None Include="..\punk_engine\system\driver\video\opengl\model.txt">
+      <Filter>dump%28logic%29</Filter>
+    </None>
+    <None Include="..\..\data\shaders\bump_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\bump_330.vert">
+      <Filter>glsl</Filter>
+    </None>
     <None Include="..\..\data\shaders\draw_normals.frag">
       <Filter>glsl</Filter>
     </None>
     <None Include="..\..\data\shaders\draw_normals.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\gui_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\gui_330.vert">
       <Filter>glsl</Filter>
     </None>
     <None Include="..\..\data\shaders\line_2d_330.frag">
@@ -433,6 +460,12 @@
     <None Include="..\..\data\shaders\solid_color_3d_330.vert">
       <Filter>glsl</Filter>
     </None>
+    <None Include="..\..\data\shaders\static_mesh_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\static_mesh_330.vert">
+      <Filter>glsl</Filter>
+    </None>
     <None Include="..\..\data\shaders\terrain_330 - Copy.frag">
       <Filter>glsl</Filter>
     </None>
@@ -451,91 +484,11 @@
     <None Include="..\..\data\shaders\textured_2d_330.vert">
       <Filter>glsl</Filter>
     </None>
-    <None Include="..\..\data\shaders\bump_330.vert">
+    <None Include="..\..\data\shaders\line_330.frag">
       <Filter>glsl</Filter>
     </None>
-    <None Include="..\..\data\shaders\bump_330.frag">
+    <None Include="..\..\data\shaders\line_330.vert">
       <Filter>glsl</Filter>
     </None>
-    <None Include="..\..\data\shaders\gui_330.frag">
-      <Filter>glsl</Filter>
-    </None>
-    <None Include="..\..\data\shaders\gui_330.vert">
-      <Filter>glsl</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.h">
-      <Filter>win32</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\3d_line_render.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\3DElement.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\abstract_render.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\advanced_static_mesh.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\font_builder.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\per_vertex_render.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\pipeline.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\render.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\render_element.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\render_parameters.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\render_state.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\solid_render.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\terrain.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\terrain_render.h">
-      <Filter>render</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_line_render.h">
-      <Filter>render\2d</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_quad_render.h">
-      <Filter>render\2d</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_text_area_render.h">
-      <Filter>render\2d</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\config.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\driver.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\driver_parameters.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\error.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\frame_buffer.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\glsl_program.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\light.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\light_manager.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\material.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\material.txt" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\os.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\shader_program.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\standard_shaders.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\vbo.h" />
-    <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\texture2d.h">
-      <Filter>texture_context%28logic%29</Filter>
-    </CustomBuildStep>
   </ItemGroup>
 </Project>

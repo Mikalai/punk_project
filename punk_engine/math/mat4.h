@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <ostream>
+#include <istream>
 #include <cmath>
 #include "config.h"
 #include "mat3.h"
@@ -23,10 +24,9 @@ namespace Math
 			Matrix4x4<T> res;
 
 			float e = 1.0f / tanf(fovx / 2.0f);
-			float aspectInv = 1.0f / aspect;
-			float fovy = 2.0f * atanf(aspectInv / e);
+			float fovy = 2.0f * atanf(aspect / e);
 			float xScale = 1.0f / tanf(0.5f * fovy);
-			float yScale = xScale / aspectInv;
+			float yScale = xScale * aspect;
 			float* m = &res[0];
 
 			m[0*4 + 0] = xScale;
@@ -55,7 +55,7 @@ namespace Math
 
 		static Matrix4x4<T> CreateTargetCameraMatrix(const Vector3<T>& eye, const Vector3<T>& target, const Vector3<T>& up)
 		{
-			Vector3<T> zAxis = eye - target;
+			Vector3<T> zAxis = -(eye - target);
 			zAxis.Normalize();
 
 			vec3 xAxis = up.Cross(zAxis);
@@ -255,6 +255,16 @@ namespace Math
 			res.SetColumn(0, Vector3<T>(m[0], m[1], m[2]));
 			res.SetColumn(1, Vector3<T>(m[4], m[5], m[6]));
 			res.SetColumn(2, Vector3<T>(m[8], m[9], m[10]));
+			return res;
+		}
+
+		Matrix4x4<T> RotationPart4x4() const
+		{
+			Matrix4x4<T> res;
+			res.SetColumn(0, Vector4<T>(m[0], m[1], m[2], 0));
+			res.SetColumn(1, Vector4<T>(m[4], m[5], m[6], 0));
+			res.SetColumn(2, Vector4<T>(m[8], m[9], m[10], 0));
+			res.SetColumn(3, Vector4<T>(0, 0, 0, 1));
 			return res;
 		}
 
@@ -650,6 +660,16 @@ namespace Math
 		{
 			return System::string::Format(L"\n(%7.3f %7.3f %7.3f %7.3f)\n(%7.3f %7.3f %7.3f %7.3f)\n(%7.3f %7.3f %7.3f %7.3f)\n(%7.3f %7.3f %7.3f %7.3f)\n",
 				m[0], m[4], m[8], m[12], m[1], m[5], m[9], m[13], m[2], m[6], m[10], m[14], m[3], m[7], m[11], m[15]);
+		}
+
+		void Save(std::ostream& stream)
+		{
+			stream.write(reinterpret_cast<const char*>(m), sizeof(m));
+		}
+
+		void Load(std::istream& stream)
+		{
+			stream.read(reinterpret_cast<char*>(m), sizeof(m));
 		}
 
 		/*

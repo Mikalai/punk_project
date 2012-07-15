@@ -60,30 +60,30 @@ namespace ImageModule
 		unsigned bpp = png_get_bit_depth(png_ptr, info_ptr);
 		int	colorType = png_get_color_type(png_ptr, info_ptr);
 		int	rowBytes = png_get_rowbytes(png_ptr, info_ptr);
-		unsigned channels = 0;
+		unsigned channels = png_get_channels(png_ptr, info_ptr);		
 		ImageFormat format = IMAGE_FORMAT_ALPHA;
 		impl_image->m_bit_depth = bpp;
 
 		switch ( colorType )
 		{
 		case PNG_COLOR_TYPE_RGB:
-			channels = 3;
+			//channels = bpp / 8;
 			format = IMAGE_FORMAT_RGB;
 			break;
 
 		case PNG_COLOR_TYPE_RGB_ALPHA:
-			channels = 4;
+			//channels = bpp / 8;
 			format = IMAGE_FORMAT_RGBA;
 			break;
 
 		case PNG_COLOR_TYPE_GRAY:
 		case PNG_COLOR_TYPE_GRAY_ALPHA:
-			channels = 1;
+			//channels = bpp / 8;
 			format = IMAGE_FORMAT_ALPHA;
 			break;
 
 		case PNG_COLOR_TYPE_PALETTE:
-			channels = 3;
+			//channels = bpp / 8;
 			break;
 
 		default:

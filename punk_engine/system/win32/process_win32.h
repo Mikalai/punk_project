@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_PROCESS_WIN32
 #define _H_PUNK_PROCESS_WIN32
 
+#define NOMINMAX
 #include <Windows.h>
 #include "string_win32.h"
 #include "../config.h"

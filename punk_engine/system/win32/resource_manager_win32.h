@@ -81,7 +81,7 @@ namespace System
 //		ResourceManager()
 //		{
 //			ConfigFile conf;
-//			conf.Open(Window::GetInstance()->GetTitle());
+//			conf.Open(Window::Instance()->GetTitle());
 //			if (!conf.IsExistOption(L"gc_time"))
 //				conf.WriteOptionInt(L"gc_time", 60);
 //

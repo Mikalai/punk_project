@@ -6,6 +6,6 @@ namespace OpenGL
 	ShaderSolidTextured::ShaderSolidTextured()
 		: Shader(SHADER_FRAGMENT)
 	{
-		CookFromFile(System::Environment::GetShaderFolder() + L"textured_2d_330.frag");
+		CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"textured_2d_330.frag");
 	}
 }

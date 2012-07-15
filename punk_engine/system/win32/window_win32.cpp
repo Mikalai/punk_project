@@ -151,8 +151,8 @@ namespace System
 			IdleEvent* e = IdleEvent::Raise();
 			e->elapsed_time_s = timer.GetElapsedTime();
 			timer.UpdateStartPoint();
-			EventManager::GetInstance()->FixEvent(e);
-			EventManager::GetInstance()->Process();			
+			EventManager::Instance()->FixEvent(e);
+			EventManager::Instance()->Process();			
 			/*std::multimap<UINT, Handler>::iterator lb = m_handlers.lower_bound(WM_IDLE);
 			std::multimap<UINT, Handler>::iterator ub = m_handlers.upper_bound(WM_IDLE);
 			for (std::multimap<UINT, Handler>::iterator i = lb; i != ub; i++)
@@ -177,13 +177,13 @@ namespace System
 
 	/*	void Window::SubscribeHandler(unsigned message, Handler handler)
 	{
-	Logger::GetInstance()->WriteDebugMessage(string::Format(L"[WINDOW] => something subscribed for %d", message));
-	EventManager::GetInstance()->SubscribeHandler(message, handler);
+	Logger::Instance()->WriteDebugMessage(string::Format(L"[WINDOW] => something subscribed for %d", message));
+	EventManager::Instance()->SubscribeHandler(message, handler);
 	}
 
 	void Window::UnsubscribeHandler(unsigned message, Handler handler)
 	{
-	EventManager::GetInstance()->UnsubscribeHandler(message, handler);
+	EventManager::Instance()->UnsubscribeHandler(message, handler);
 	/*std::multimap<unsigned, Handler>::iterator lb = m_handlers.lower_bound(message);
 	std::multimap<unsigned, Handler>::iterator ub = m_handlers.upper_bound(message);
 	std::multimap<unsigned, Handler>::iterator at = m_handlers.end();
@@ -236,6 +236,8 @@ namespace System
 		static Window* window = 0;
 		static int x_prev = 0;
 		static int y_prev = 0;
+		static int x = 0;
+		static int y = 0;
 		if (window)
 		{
 			/*		std::multimap<UINT, Handler>::iterator lb = window->m_handlers.lower_bound(msg);
@@ -251,7 +253,7 @@ namespace System
 			{
 				MouseMiddleButtonUpEvent* event = MouseMiddleButtonUpEvent::Raise();
 				event->x = LOWORD(lParam);
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam);
+				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
 				event->y_prev = y_prev;
 				x_prev = event->x;
@@ -263,15 +265,15 @@ namespace System
 				event->shiftButton = (wParam & MK_SHIFT) == 0;
 				event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
 				event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
-				Mouse::GetInstance()->SetButtonState(Mouse::MIDDLE_BUTTON, false);
-				EventManager::GetInstance()->FixEvent(event);
+				Mouse::Instance()->SetButtonState(Mouse::MIDDLE_BUTTON, false);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_MBUTTONDOWN:
 			{
 				MouseMiddleButtonDownEvent* event = MouseMiddleButtonDownEvent::Raise();
 				event->x = LOWORD(lParam);
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam);
+				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
 				event->y_prev = y_prev;
 				x_prev = event->x;
@@ -283,15 +285,15 @@ namespace System
 				event->shiftButton = (wParam & MK_SHIFT) == 0;
 				event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
 				event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
-				Mouse::GetInstance()->SetButtonState(Mouse::MIDDLE_BUTTON, true);
-				EventManager::GetInstance()->FixEvent(event);
+				Mouse::Instance()->SetButtonState(Mouse::MIDDLE_BUTTON, true);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_RBUTTONUP:
 			{
 				MouseRightButtonUpEvent* event = MouseRightButtonUpEvent::Raise();
 				event->x = LOWORD(lParam);
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam);
+				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
 				event->y_prev = y_prev;
 				x_prev = event->x;
@@ -303,15 +305,15 @@ namespace System
 				event->shiftButton = (wParam & MK_SHIFT) == 0;
 				event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
 				event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
-				Mouse::GetInstance()->SetButtonState(Mouse::RIGHT_BUTTON, false);
-				EventManager::GetInstance()->FixEvent(event);
+				Mouse::Instance()->SetButtonState(Mouse::RIGHT_BUTTON, false);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_RBUTTONDOWN:
 			{
 				MouseRightButtonDownEvent* event = MouseRightButtonDownEvent::Raise();
 				event->x = LOWORD(lParam);
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam);
+				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
 				event->y_prev = y_prev;
 				x_prev = event->x;
@@ -323,15 +325,15 @@ namespace System
 				event->shiftButton = (wParam & MK_SHIFT) == 0;
 				event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
 				event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
-				Mouse::GetInstance()->SetButtonState(Mouse::RIGHT_BUTTON, true);
-				EventManager::GetInstance()->FixEvent(event);
+				Mouse::Instance()->SetButtonState(Mouse::RIGHT_BUTTON, true);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_LBUTTONUP:
 			{
 				MouseLeftButtonUpEvent* event = MouseLeftButtonUpEvent::Raise();
 				event->x = LOWORD(lParam);
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam);
+				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
 				event->y_prev = y_prev;
 				x_prev = event->x;
@@ -343,15 +345,15 @@ namespace System
 				event->shiftButton = (wParam & MK_SHIFT) == 0;
 				event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
 				event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
-				Mouse::GetInstance()->SetButtonState(Mouse::LEFT_BUTTON, false);
-				EventManager::GetInstance()->FixEvent(event);
+				Mouse::Instance()->SetButtonState(Mouse::LEFT_BUTTON, false);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_LBUTTONDOWN:
 			{
 				MouseLeftButtonDownEvent* event = MouseLeftButtonDownEvent::Raise();
 				event->x = LOWORD(lParam);
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam);
+				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
 				event->y_prev = y_prev;
 				x_prev = event->x;
@@ -363,30 +365,33 @@ namespace System
 				event->shiftButton = (wParam & MK_SHIFT) == 0;
 				event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
 				event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
-				Mouse::GetInstance()->SetButtonState(Mouse::LEFT_BUTTON, true);
-				EventManager::GetInstance()->FixEvent(event);
+				Mouse::Instance()->SetButtonState(Mouse::LEFT_BUTTON, true);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_MOUSEHOVER:
 			{
 				MouseHooverEvent* event = MouseHooverEvent::Raise();
 				event->x = LOWORD(lParam);
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam);
+				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
 				event->y_prev = y_prev;
-				EventManager::GetInstance()->FixEvent(event);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_MOUSEMOVE:
 			{
-
 				MouseMoveEvent* event = MouseMoveEvent::Raise();
-				event->x = LOWORD(lParam);
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam);
+				
+				x_prev = x;
+				y_prev = y;
+				x = LOWORD(lParam);
+				y = HIWORD(lParam);				
+
+				event->x = x;
+				event->y = Window::Instance()->GetHeight() - y;
 				event->x_prev = x_prev;
-				event->y_prev = y_prev;
-				x_prev = event->x;
-				y_prev = event->y;
+				event->y_prev = Window::Instance()->GetHeight() - y_prev;
 				event->controlKey = (wParam & MK_CONTROL) == 0;
 				event->leftButton = (wParam & MK_LBUTTON) == 0;
 				event->middleButton = (wParam & MK_MBUTTON) == 0;
@@ -394,6 +399,23 @@ namespace System
 				event->shiftButton = (wParam & MK_SHIFT) == 0;
 				event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
 				event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+
+				if (Mouse::Instance()->IsLocked())
+				{					
+					RECT r, r2;
+					GetWindowRect(hwnd, &r);
+					GetClientRect(hwnd, &r2);
+					int c_x = (r.left + r.right) / 2;
+					int c_y = (r.top + r.bottom) / 2;
+					POINT p = {c_x, c_y};
+					ClientToScreen(hwnd, &p);
+					if (x != x_prev || y != y_prev)
+					{				
+						x = x_prev = c_x;
+						y = y_prev = c_y;
+						SetCursorPos(p.x, p.y);
+					}
+				}
 
 				TRACKMOUSEEVENT te;
 				memset(&te, 0, sizeof(te));
@@ -403,33 +425,16 @@ namespace System
 				te.hwndTrack = *window;
 				TrackMouseEvent(&te);
 
-				if (Mouse::GetInstance()->IsLocked())
-				{
-					RECT r;
-					GetWindowRect(window->m_windowHandle, &r);
-
-					if (event->x < -r.left + (r.left + r.right)/2-150 ||
-						event->x > -r.left + (r.left + r.right)/2+150 ||
-						event->y > -r.top + (r.top + r.bottom)/2 + 150 ||
-						event->y < -r.top + (r.top + r.bottom)/2 - 150 )
-					{
-						event->x_prev = event->x = x_prev = -r.left + (r.left + r.right)/2;
-						event->y_prev = event->y = y_prev = -r.top + (r.top + r.bottom)/2;
-
-						SetCursorPos((r.left+r.right)/2, (r.top+r.bottom)/2);
-					}
-				}
-				EventManager::GetInstance()->FixEvent(event);
-
-
-
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_MOUSEWHEEL:
 			{
+				POINT p = {LOWORD(lParam), HIWORD(lParam)};
+				ScreenToClient(hwnd, &p);
 				MouseWheelEvent* event = MouseWheelEvent::Raise();
-				event->x = LOWORD(lParam) - Window::GetInstance()->GetX();
-				event->y = Window::GetInstance()->GetHeight() - HIWORD(lParam) + Window::GetInstance()->GetY();
+				event->x = p.x;
+				event->y = Window::Instance()->GetHeight() - p.y;
 				event->x_prev = x_prev;
 				event->y_prev = y_prev;
 				x_prev = event->x;
@@ -442,7 +447,7 @@ namespace System
 				event->shiftButton = (wParam & MK_SHIFT) == 0;
 				event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
 				event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
-				EventManager::GetInstance()->FixEvent(event);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_CHAR:
@@ -455,7 +460,7 @@ namespace System
 				event->isAltPressed = (lParam & 0x20000000) == 0;
 				event->prevState = (lParam & 0x40000000) == 0;
 				event->transitionState = (lParam & 0x80000000) == 0;
-				EventManager::GetInstance()->FixEvent(event);
+				EventManager::Instance()->FixEvent(event);
 			}
 			break;
 		case WM_UNICHAR:
@@ -468,7 +473,7 @@ namespace System
 				event->isAltPressed = (lParam & 0x20000000) == 0;
 				event->prevState = (lParam & 0x40000000) == 0;
 				event->transitionState = (lParam & 0x80000000) == 0;
-				EventManager::GetInstance()->FixEvent(event);				
+				EventManager::Instance()->FixEvent(event);				
 			}
 			break;
 		case WM_SYSKEYDOWN:
@@ -481,9 +486,9 @@ namespace System
 				event->isExtended = (lParam & 0x1000000) == 0;
 				event->prevState = (lParam & 0x40000000) == 0;
 				event->transitionState = (lParam & 0x80000000) == 0;
-				EventManager::GetInstance()->FixEvent(event);
+				EventManager::Instance()->FixEvent(event);
 
-				Keyboard::GetInstance()->SetKeyState(wParam, true);
+				Keyboard::Instance()->SetKeyState(wParam, true);
 				break;
 			}
 		case WM_SYSKEYUP:
@@ -491,9 +496,9 @@ namespace System
 			{
 				KeyUpEvent* event = KeyUpEvent::Raise();
 				event->key = (int)wParam;
-				EventManager::GetInstance()->FixEvent(event);
+				EventManager::Instance()->FixEvent(event);
 
-				Keyboard::GetInstance()->SetKeyState(wParam, false);
+				Keyboard::Instance()->SetKeyState(wParam, false);
 				break;
 			}
 		case WM_SIZE:
@@ -503,7 +508,7 @@ namespace System
 				event->restored = (wParam & SIZE_RESTORED) == 0;
 				event->width = LOWORD(lParam);
 				event->height = HIWORD(lParam);
-				EventManager::GetInstance()->FixEvent(event);
+				EventManager::Instance()->FixEvent(event);
 
 				/*		RECT r;
 				GetWindowRect(window->m_windowHandle, &r);

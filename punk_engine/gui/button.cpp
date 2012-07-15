@@ -4,7 +4,7 @@
 namespace GUI
 {
 	Button::Button(float x, float y, float width, float height, const System::string& text, Widget* parent) 
-		: Widget(x,y,width,height,parent)
+		: Widget(x,y,width,height,text,parent)
 	{
 		m_text = text;
 		RenderTextToTexture();
@@ -19,6 +19,18 @@ namespace GUI
 		Widget::OnMouseLeftButtonDown(e);
 	}
 
+	void Button::OnKeyDown(System::KeyDownEvent* e)
+	{
+		if (e->key == System::PUNK_KEY_ENTER)
+		{
+			m_OnLeftClick(e);
+		}
+		else
+		{
+			Widget::OnKeyDown(e);
+		}
+	}
+
 	void Button::OnIdle(System::IdleEvent* e)
 	{
 		Widget::OnIdle(e);
@@ -31,7 +43,7 @@ namespace GUI
 			}			
 			else
 			{
-				m_animation = min(m_animation, m_animation_duration);
+				m_animation = std::min(m_animation, m_animation_duration);
 				m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
 				m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 			}

@@ -149,7 +149,7 @@ namespace System
 		{
 			if (!m_resource)
 			{
-				System::Logger::GetInstance()->WriteMessage(System::string::Format(L"Resource %s is not in memory. Restoring...", System::string(typeid(T).name()).Data()));
+				System::Logger::Instance()->WriteMessage(System::string::Format(L"Resource %s is not in memory. Restoring...", System::string(typeid(T).name()).Data()));
 				RestoreFromHdd();
 			}
 

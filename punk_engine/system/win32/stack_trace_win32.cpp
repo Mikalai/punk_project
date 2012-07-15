@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include <Windows.h>
 #include <DbgHelp.h>
 #include "stack_trace_win32.h"
@@ -8,7 +9,7 @@ namespace System
 	Stack::Stack()
 	{
 		if (!SymInitialize(GetCurrentProcess(), NULL, TRUE))
-			Logger::GetInstance()->WriteDebugMessage(L"Unable to find initialize debug info", LOG_LOCATION);
+			Logger::Instance()->WriteDebugMessage(L"Unable to find initialize debug info", LOG_LOCATION);
 	}
 
 	Stack::~Stack()

@@ -54,8 +54,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>punk_string.lib;punk_system.lib;punk_image.lib;punk_utility.lib;punk_opengl_driver.lib;punk_math.lib;punk_gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\project\punk_project\vs2010\$(ConfigurationName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>punk_string.lib;punk_system.lib;punk_image.lib;punk_utility.lib;punk_opengl_driver.lib;punk_math.lib;punk_gui.lib;punk_render.lib;punk_scene.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,8 +73,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>punk_string.lib;punk_system.lib;punk_image.lib;punk_utility.lib;punk_opengl_driver.lib;punk_math.lib;punk_gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\project\punk_project\vs2010\$(ConfigurationName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>punk_string.lib;punk_system.lib;punk_image.lib;punk_utility.lib;punk_opengl_driver.lib;punk_math.lib;punk_gui.lib;punk_render.lib;punk_scene.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

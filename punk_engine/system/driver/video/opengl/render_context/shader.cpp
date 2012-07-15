@@ -36,7 +36,7 @@ namespace OpenGL
 	{
 		impl_shader->m_shader_index = glCreateShader(impl_shader->m_type);
 		CHECK_GL_ERROR(L"Unable to create shader");
-		System::Logger::GetInstance()->WriteMessage(L"Loading vertex shader\n" + System::string(string, length));
+		System::Logger::Instance()->WriteMessage(L"Loading vertex shader\n" + System::string(string, length));
 		const char * body = string;
 		int len = length;
 		GLint compileStatus;
@@ -48,7 +48,7 @@ namespace OpenGL
 		CHECK_GL_ERROR(L"Unable to get shader compile status");
 		if (compileStatus == GL_TRUE)
 		{
-			System::Logger::GetInstance()->WriteMessage(L"Shader has been compiled successfully");
+			System::Logger::Instance()->WriteMessage(L"Shader has been compiled successfully");
 		}
 		else
 		{
@@ -60,7 +60,7 @@ namespace OpenGL
 				GLchar* buffer = new GLchar[logLength];
 				glGetShaderInfoLog(impl_shader->m_shader_index, logLength, NULL, buffer);
 				CHECK_GL_ERROR(L"Unable to get shader info log text");
-				System::Logger::GetInstance()->WriteError(System::string(buffer));			
+				System::Logger::Instance()->WriteError(System::string(buffer));			
 				delete[] buffer;
 			}
 			else
@@ -68,7 +68,7 @@ namespace OpenGL
 				GLchar buffer[65536];
 				glGetShaderInfoLog(impl_shader->m_shader_index, 65536, NULL, buffer);
 				CHECK_GL_ERROR(L"Unable to get shader info log text");
-				System::Logger::GetInstance()->WriteError(System::string(buffer));							
+				System::Logger::Instance()->WriteError(System::string(buffer));							
 			}
 			throw System::SystemError(L"Can't create vertex shader");
 		}
@@ -80,7 +80,7 @@ namespace OpenGL
 		System::BinaryFile::Load(filename, shader_data);		
 		impl_shader->m_shader_index = glCreateShader(impl_shader->m_type);
 		CHECK_GL_ERROR(L"Unable to create shader");
-		System::Logger::GetInstance()->WriteMessage(L"Loading vertex shader " + filename);
+		System::Logger::Instance()->WriteMessage(L"Loading vertex shader " + filename);
 		char * body = (char*)shader_data.StartPointer();
 		int len = shader_data.GetSize();
 		GLint compileStatus;
@@ -92,7 +92,7 @@ namespace OpenGL
 		CHECK_GL_ERROR(L"Unable to get shader compile status");
 		if (compileStatus == GL_TRUE)
 		{
-			System::Logger::GetInstance()->WriteMessage(filename + L" has been compiled successfully");
+			System::Logger::Instance()->WriteMessage(filename + L" has been compiled successfully");
 		}
 		else
 		{
@@ -104,7 +104,7 @@ namespace OpenGL
 				GLchar* buffer = new GLchar[logLength];
 				glGetShaderInfoLog(impl_shader->m_shader_index, logLength, NULL, buffer);
 				CHECK_GL_ERROR(L"Unable to get shader info log text");
-				System::Logger::GetInstance()->WriteError(System::string(buffer));			
+				System::Logger::Instance()->WriteError(System::string(buffer));			
 				delete[] buffer;
 			}
 			else
@@ -112,7 +112,7 @@ namespace OpenGL
 				GLchar buffer[65536];
 				glGetShaderInfoLog(impl_shader->m_shader_index, 65536, NULL, buffer);
 				CHECK_GL_ERROR(L"Unable to get shader info log text");
-				System::Logger::GetInstance()->WriteError(System::string(buffer));							
+				System::Logger::Instance()->WriteError(System::string(buffer));							
 			}
 			throw System::SystemError(L"Can't create vertex shader");
 		}

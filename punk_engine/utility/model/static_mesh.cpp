@@ -101,27 +101,27 @@ namespace Utility
 		return m_mesh_offset;
 	}
 
-	void StaticMesh::Save(System::Buffer& buffer)
+	void StaticMesh::Save(std::ostream& stream)
 	{
-		buffer.WriteUnsigned32(m_vertex_count);
-		buffer.WriteUnsigned32(m_index_count);
-		buffer.WriteUnsigned32(m_vertex_buffer_size);
-		buffer.WriteUnsigned32(m_one_vertex_size);
-		buffer.WriteSigned32(m_vertex_component);
-		buffer.WriteBuffer(m_vb, m_vertex_buffer_size);
-		buffer.WriteBuffer(m_index, sizeof(unsigned)*m_index_count);
+		stream.write(reinterpret_cast<const char*>(&m_vertex_count), sizeof(m_vertex_count));
+		stream.write(reinterpret_cast<const char*>(&m_index_count), sizeof(m_index_count));
+		stream.write(reinterpret_cast<const char*>(&m_vertex_buffer_size), sizeof(m_vertex_buffer_size));
+		stream.write(reinterpret_cast<const char*>(&m_one_vertex_size), sizeof(m_one_vertex_size));
+		stream.write(reinterpret_cast<const char*>(&m_vertex_component), sizeof(m_vertex_component));
+		stream.write(reinterpret_cast<const char*>(m_vb), m_vertex_buffer_size);
+		stream.write(reinterpret_cast<const char*>(m_index), sizeof(unsigned)*m_index_count);
 	}
 
-	void StaticMesh::Load(System::Buffer& buffer)
+	void StaticMesh::Load(std::istream& stream)
 	{
-		m_vertex_count = buffer.ReadUnsigned32();
-		m_index_count = buffer.ReadUnsigned32();
-		m_vertex_buffer_size = buffer.ReadUnsigned32();
-		m_one_vertex_size = buffer.ReadUnsigned32();
-		m_vertex_component = buffer.ReadSigned32();
+		stream.read(reinterpret_cast<char*>(&m_vertex_count), sizeof(m_vertex_count));
+		stream.read(reinterpret_cast<char*>(&m_index_count), sizeof(m_index_count));
+		stream.read(reinterpret_cast<char*>(&m_vertex_buffer_size), sizeof(m_vertex_buffer_size));
+		stream.read(reinterpret_cast<char*>(&m_one_vertex_size), sizeof(m_one_vertex_size));
+		stream.read(reinterpret_cast<char*>(&m_vertex_component), sizeof(m_vertex_component));
 		m_vb = (void*) new char[m_vertex_buffer_size];
-		buffer.ReadBuffer((void*&)m_vb, m_vertex_buffer_size);			// well, i don't know will it work
+		stream.read(reinterpret_cast<char*>(m_vb), m_vertex_buffer_size);
 		m_index = new unsigned[sizeof(unsigned)*m_index_count];
-		buffer.ReadBuffer((void*&)m_index, sizeof(unsigned)*m_index_count);
+		stream.read(reinterpret_cast<char*>(m_index), sizeof(unsigned)*m_index_count);
 	}
 }

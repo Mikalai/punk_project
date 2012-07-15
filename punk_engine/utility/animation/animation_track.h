@@ -1,6 +1,8 @@
 #ifndef _H_PUNK_UTILITY_TRACK
 #define _H_PUNK_UTILITY_TRACK
 
+#include <ostream>
+#include <istream>
 #include <vector>
 #include <algorithm>
 #include "../../math/interpolation.h"
@@ -17,12 +19,14 @@ namespace Utility
 		bool m_is_looping;
 	public:
 		void AddKey(int frame, const T& pos);
-		const T GetKey(int frame);
+		const T GetKey(float frame);
 		bool HasKeyAt(int frame);
 		T& GetOriginalKey(int frame, bool& flag);
 		const T& GetOriginalKey(int frame, bool& flag) const;
 		void SetLooping(bool flag) { m_is_looping = flag; }
 		bool IsLooping() const { return m_is_looping; }
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
 	};
 
 	template<class T>
@@ -72,14 +76,14 @@ namespace Utility
 	}
 
 	template<class T>
-	inline const T AnimationTrack<T>::GetKey(int frame)
+	inline const T AnimationTrack<T>::GetKey(float frame)
 	{
 		while (frame > m_keys.back().first)
 			frame -= m_keys.back().first;
 
 		auto it1 = m_keys.begin();
 		auto it2 = m_keys.begin();
-		for (; it1 != m_keys.end() && frame >= it1->first; ++it1);
+		for (; it1 != m_keys.end() && frame >= (float)it1->first; ++it1);
 		it2 = it1;
 		--it1;
 		if (it2 == m_keys.end())
@@ -93,14 +97,14 @@ namespace Utility
 	}
 
 	template<>
-	inline const Math::Quaternion<float> AnimationTrack<Math::Quaternion<float>>::GetKey(int frame)
+	inline const Math::Quaternion<float> AnimationTrack<Math::Quaternion<float>>::GetKey(float frame)
 	{
 		while (frame > m_keys.back().first)
 			frame -= m_keys.back().first;
 
 		auto it1 = m_keys.begin();
 		auto it2 = m_keys.begin();
-		for (; it1 != m_keys.end() && frame >= it1->first; ++it1);
+		for (; it1 != m_keys.end() && frame >= (float)it1->first; ++it1);
 		it2 = it1;
 		--it1;
 		
@@ -115,6 +119,25 @@ namespace Utility
 
 		const Math::Quaternion<float> res = Math::spherical_linear_interpolation(p1, p2, (frame - it1->first) / (float)(it2->first - it1->first));
 		return res;
+	}	
+
+	template<class T>
+	inline void AnimationTrack<T>::Save(std::ostream& stream)
+	{
+		int frame_count = m_keys.size();
+		stream.write(reinterpret_cast<const char*>(&frame_count), sizeof(frame_count));
+		stream.write(reinterpret_cast<const char*>(&m_keys[0]), m_keys.size()*sizeof(std::pair<Frame, T>));
+		stream.write(reinterpret_cast<const char*>(&m_is_looping), sizeof(m_is_looping));
+	}
+
+	template<class T>
+	inline void AnimationTrack<T>::Load(std::istream& stream)
+	{
+		int frame_count = 0;
+		stream.read(reinterpret_cast<char*>(&frame_count), sizeof(frame_count));
+		m_keys.resize(frame_count);
+		stream.read(reinterpret_cast<char*>(&m_keys[0]), m_keys.size()*sizeof(std::pair<Frame, T>));
+		stream.read(reinterpret_cast<char*>(&m_is_looping), sizeof(m_is_looping));
 	}
 }
 

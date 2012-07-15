@@ -91,7 +91,7 @@ namespace OpenGL
 
 		ReadConfig();
 
-		System::Logger::GetInstance()->WriteMessage(L"Initializing OpenGL...");
+		System::Logger::Instance()->WriteMessage(L"Initializing OpenGL...");
 
 		HDC deviceContext = ::GetDC(*m_window);
 
@@ -176,16 +176,16 @@ namespace OpenGL
 
 		GLint t;
 
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tRenderer: %s ", System::string((const char*)glGetString(GL_RENDERER)).Data()));
-		System::Logger::GetInstance()->WriteMessage(L"\tVendor: " + System::string((const char*)glGetString(GL_VENDOR)));
-		System::Logger::GetInstance()->WriteMessage(L"\tVersion: " + System::string((const char*)glGetString(GL_VERSION)));
-		System::Logger::GetInstance()->WriteMessage(L"\tGLSL version: " + System::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tRenderer: %s ", System::string((const char*)glGetString(GL_RENDERER)).Data()));
+		System::Logger::Instance()->WriteMessage(L"\tVendor: " + System::string((const char*)glGetString(GL_VENDOR)));
+		System::Logger::Instance()->WriteMessage(L"\tVersion: " + System::string((const char*)glGetString(GL_VERSION)));
+		System::Logger::Instance()->WriteMessage(L"\tGLSL version: " + System::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)));
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax vertex attribs: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax vertex attribs: %d", t));
 		glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax vertex uniform components: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax vertex uniform components: %d", t));
 		glGetIntegerv(GL_MAX_VARYING_FLOATS, &t);
-		System::Logger::GetInstance()->WriteMessage(System::string::Format(L"\tMax varying floats: %d", t));
+		System::Logger::Instance()->WriteMessage(System::string::Format(L"\tMax varying floats: %d", t));
 
 		wglSwapIntervalEXT(0);
 
@@ -202,12 +202,17 @@ namespace OpenGL
 		int profile;
 		glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &profile);
 		if (profile & WGL_CONTEXT_CORE_PROFILE_BIT_ARB)
-			System::Logger::GetInstance()->WriteMessage(L"\tCore profile selected");
+			System::Logger::Instance()->WriteMessage(L"\tCore profile selected");
 		if (profile & WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB)
-			System::Logger::GetInstance()->WriteMessage(L"\tCompatible profile selected");
+			System::Logger::Instance()->WriteMessage(L"\tCompatible profile selected");
 
+		try
+		{
 		InitShaderPrograms();
-
+		}
+		catch(...)
+		{
+		}
 		SubscribeForSystemMessages();
 
 		InitInternalVertexBuffers();
@@ -219,11 +224,11 @@ namespace OpenGL
 
 	void Driver::Shutdown()
 	{
-		System::Logger::GetInstance()->WriteMessage(L"Destroying video driver...");
+		System::Logger::Instance()->WriteMessage(L"Destroying video driver...");
 		ChangeDisplaySettings(NULL, 0);
 		wglMakeCurrent(::GetDC(*m_window), NULL);
 		wglDeleteContext(m_opengl_context);
-		System::Logger::GetInstance()->WriteMessage(L"Video driver destroyed...");
+		System::Logger::Instance()->WriteMessage(L"Video driver destroyed...");
 	}
 
 	void Driver::SwapBuffers()
@@ -275,7 +280,7 @@ namespace OpenGL
 			b |= GL_STENCIL_BUFFER_BIT;
 
 		glClear(b);
-		CHECK_GL_ERROR(L"Unable to clear shader");		
+		CHECK_GL_ERROR(L"Unable to clear buffer");		
 	}
 
 	void Driver::SetClearColor(float r, float g, float b, float a)
@@ -316,8 +321,8 @@ namespace OpenGL
 
 	System::Descriptor Driver::CreateStringTexture(const System::string& init_value, int width, int height, int size, const System::string& font_name)
 	{
-	/*	System::Descriptor desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_TEXT_TEXTURE>(new System::Resource<TextTexture2D>());
-		auto res = System::ResourceManager::GetInstance()->GetResource<TextTexture2D>(desc);
+	/*	System::Descriptor desc = System::ResourceManager::Instance()->ManageResource<System::RESOURCE_TEXT_TEXTURE>(new System::Resource<TextTexture2D>());
+		auto res = System::ResourceManager::Instance()->GetResource<TextTexture2D>(desc);
 		auto v = res->Lock();
 
 		if (v->GetWidth() != width || v->GetHeight() != height)
@@ -332,7 +337,7 @@ namespace OpenGL
 
 	void Driver::AlterateStringTexture(System::Descriptor desc, const System::string& init_value, int width, int height, int size, const System::string& font_name)
 	{
-/*		auto res = System::ResourceManager::GetInstance()->GetResource<TextTexture2D>(desc);
+/*		auto res = System::ResourceManager::Instance()->GetResource<TextTexture2D>(desc);
 		auto v = res->Lock();
 
 		if (v->GetWidth() != width || v->GetHeight() != height)
@@ -352,7 +357,7 @@ namespace OpenGL
 	void Driver::InitShaderPrograms()
 	{
 		System::ConfigFile conf;
-		conf.Open(System::Window::GetInstance()->GetTitle());
+		conf.Open(System::Window::Instance()->GetTitle());
 		System::string path = conf.ReadOptionString(L"shaders");
 		conf.Close();
 
@@ -375,7 +380,7 @@ namespace OpenGL
 			}
 			catch(...)
 			{
-				System::Logger::GetInstance()->WriteError(System::string::Format(L"Unable to make GLSL program %s", name.Data()), LOG_LOCATION);
+				System::Logger::Instance()->WriteError(System::string::Format(L"Unable to make GLSL program %s", name.Data()), LOG_LOCATION);
 				delete p;
 				continue;
 			}
@@ -405,7 +410,7 @@ namespace OpenGL
 			SetWindowLong(*m_window, GWL_STYLE, WS_POPUP);
 			SetWindowLong(*m_window, GWL_EXSTYLE, WS_EX_APPWINDOW);
 
-			System::Logger::GetInstance()->WriteMessage(L"Fullscreen mode...");
+			System::Logger::Instance()->WriteMessage(L"Fullscreen mode...");
 			DEVMODE mode;
 			ZeroMemory(&mode, sizeof(mode));
 			mode.dmSize = sizeof(mode);
@@ -428,7 +433,7 @@ namespace OpenGL
 			SetWindowLong(*m_window, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 			SetWindowLong(*m_window, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
 			
-			System::Logger::GetInstance()->WriteMessage(L"Window mode...");
+			System::Logger::Instance()->WriteMessage(L"Window mode...");
 			m_window->SetPosition(30, 30);
 			m_window->SetSize(2*m_width/3, 2*m_height/3);
 		}
@@ -445,14 +450,14 @@ namespace OpenGL
 		
 		if (event->key == System::PUNK_KEY_ENTER)
 		{
-			if (System::Keyboard::GetInstance()->GetKeyState(System::PUNK_KEY_ALT))
+			if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_ALT))
 				SetFullScreen(!m_fullscreen);
 		}
 	}
 
 	void Driver::SubscribeForSystemMessages()
 	{
-		System::EventManager* mgr = System::EventManager::GetInstance();
+		System::EventManager* mgr = System::EventManager::Instance();
 		if (!mgr)
 			throw System::SystemError(L"Unable to get event manager");
 
@@ -462,7 +467,7 @@ namespace OpenGL
 
 	void Driver::RenderQuad()
 	{
-/*		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(m_quad_desc);
+/*		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::Instance()->GetResource<VertexArrayObject>(m_quad_desc);
 		VertexArrayObject* vao = vao_res->Lock();
 
 		vao->Render();
@@ -482,7 +487,7 @@ namespace OpenGL
 	/*	if (desc.Type() != System::RESOURCE_VAO)
 			return;
 
-		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(desc);
+		System::Resource<VertexArrayObject>* vao_res = System::ResourceManager::Instance()->GetResource<VertexArrayObject>(desc);
 		VertexArrayObject* vao = vao_res->Lock();
 
 		vao->Render();
@@ -492,17 +497,17 @@ namespace OpenGL
 
 	void Driver::InitInternalVertexBuffers()
 	{
-	/*	System::ResourceManager::GetInstance()->DestroyResource(m_quad_desc);
-		System::ResourceManager::GetInstance()->DestroyResource(m_point_desc);
-		m_quad_desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());
-		auto vao_res = System::ResourceManager::GetInstance()->GetResource<VertexArrayObject>(m_quad_desc);
+	/*	System::ResourceManager::Instance()->DestroyResource(m_quad_desc);
+		System::ResourceManager::Instance()->DestroyResource(m_point_desc);
+		m_quad_desc = System::ResourceManager::Instance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());
+		auto vao_res = System::ResourceManager::Instance()->GetResource<VertexArrayObject>(m_quad_desc);
 
 		auto vao = vao_res->Lock();
 
 		vao->CreateQuad();
 
 		vao_res->Unlock();		
-//		m_point_desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());*/
+//		m_point_desc = System::ResourceManager::Instance()->ManageResource<System::RESOURCE_VAO>(new System::Resource<VertexArrayObject>());*/
 	}
 }
 

@@ -87,213 +87,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\punk_engine\render\terrain_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\grid_object.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\linux\video_driver_linux.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\module.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\static_object.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\video_driver_win32.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip_objects.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\3d_line_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\advanced_static_mesh.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\font_builder.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\per_vertex_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\pipeline.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render_element.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\render_state.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\slider.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\solid_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\terrain_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_line_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_quad_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\2d\2d_text_area_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\driver.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\error.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\glsl_program.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light_manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\material.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context_old.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp" />
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\punk_engine\render\terrain_render.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\extensions.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\linux\driver_parameters_linux.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\module.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\texture_2d_resource.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_bind_target.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertext_array_object_impl.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_attributes.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip_objects.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\gl3.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\gl\wglext.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\render\3d_line_render.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -400,58 +197,21 @@
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\os.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context_old.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\shader_program.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\standard_shaders.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\texture2d.h" />
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\vbo.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\data\shaders\draw_normals.frag" />
-    <None Include="..\..\data\shaders\draw_normals.vert" />
-    <None Include="..\..\data\shaders\gui_330.frag" />
-    <None Include="..\..\data\shaders\gui_330.vert" />
-    <None Include="..\..\data\shaders\line_2d_330.frag" />
-    <None Include="..\..\data\shaders\line_2d_330.vert" />
-    <None Include="..\..\data\shaders\line_3d_330.frag" />
-    <None Include="..\..\data\shaders\line_3d_330.vert" />
-    <None Include="..\..\data\shaders\normals_330.frag" />
-    <None Include="..\..\data\shaders\normals_330.vert" />
-    <None Include="..\..\data\shaders\per_vertex_lighting_330.frag" />
-    <None Include="..\..\data\shaders\per_vertex_lighting_330.vert" />
-    <None Include="..\..\data\shaders\quad_330.geom" />
-    <None Include="..\..\data\shaders\shaders.ini" />
-    <None Include="..\..\data\shaders\skinning_330.frag" />
-    <None Include="..\..\data\shaders\skinning_330.vert" />
-    <None Include="..\..\data\shaders\solid_color_2d_330.frag" />
-    <None Include="..\..\data\shaders\solid_color_2d_330.vert" />
-    <None Include="..\..\data\shaders\solid_color_3d_330.frag" />
-    <None Include="..\..\data\shaders\solid_color_3d_330.vert" />
-    <None Include="..\..\data\shaders\bump_330.frag" />
-    <None Include="..\..\data\shaders\bump_330.vert" />
-    <None Include="..\..\data\shaders\terrain_330 - Copy.frag" />
-    <None Include="..\..\data\shaders\terrain_330 - Copy.vert" />
-    <None Include="..\..\data\shaders\terrain_330.frag" />
-    <None Include="..\..\data\shaders\terrain_330.vert" />
-    <None Include="..\..\data\shaders\textured_2d_330.frag" />
-    <None Include="..\..\data\shaders\textured_2d_330.vert" />
-    <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt" />
     <CustomBuildStep Include="..\punk_engine\system\driver\video\opengl\material.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
-    <None Include="..\punk_engine\system\driver\video\opengl\model.txt" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\punk_image\punk_image.vcxproj">
@@ -474,6 +234,199 @@
       <Project>{b18777c9-81ea-473d-a21b-816947b323e4}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\config.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\driver.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\driver_parameters.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\error.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\extensions.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\frame_buffer.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\glsl_program.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\grid_object_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\light.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\light_manager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\material.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\module.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip_objects.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\os.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\point_object_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\quad_object_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render\line.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render\rigid_body.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context_old.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\resource_manager.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\resource\texture_2d_resource.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\shader_program.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\standard_shaders.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\static_object_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\terrain_render.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture2d_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_2d_manager.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_bind_target.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vbo.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertext_array_object_impl.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_attributes.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\driver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\error.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\frame_buffer_with_depth.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\glsl_program.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\grid_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\light_manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\material.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\module.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\nv_tri_strip_objects.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\nvtristrip\vertex_cache.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\point_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\quad_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\line.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_bump.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_gui.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_light.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_skinning.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_color.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_solid_textured.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_terrain.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_bump_mapping.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_gui.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_light.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_skinning.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_color_3d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_solid_textured_3d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_terrain.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\render_context.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_bump.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_gui.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_light.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_skinning.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_terrain.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transformed_textured_3d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_transform_3d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context_old.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\static_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\terrain_render.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_win32.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\extensions_win32.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\video_driver_win32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\data\shaders\bump_330.frag" />
+    <None Include="..\..\data\shaders\bump_330.vert" />
+    <None Include="..\..\data\shaders\draw_normals.frag" />
+    <None Include="..\..\data\shaders\draw_normals.vert" />
+    <None Include="..\..\data\shaders\gui_330.frag" />
+    <None Include="..\..\data\shaders\gui_330.vert" />
+    <None Include="..\..\data\shaders\line_2d_330.frag" />
+    <None Include="..\..\data\shaders\line_2d_330.vert" />
+    <None Include="..\..\data\shaders\line_330.frag" />
+    <None Include="..\..\data\shaders\line_330.vert" />
+    <None Include="..\..\data\shaders\line_3d_330.frag" />
+    <None Include="..\..\data\shaders\line_3d_330.vert" />
+    <None Include="..\..\data\shaders\normals_330.frag" />
+    <None Include="..\..\data\shaders\normals_330.vert" />
+    <None Include="..\..\data\shaders\per_vertex_lighting_330.frag" />
+    <None Include="..\..\data\shaders\per_vertex_lighting_330.vert" />
+    <None Include="..\..\data\shaders\quad_330.geom" />
+    <None Include="..\..\data\shaders\shaders.ini" />
+    <None Include="..\..\data\shaders\skinning_330.frag" />
+    <None Include="..\..\data\shaders\skinning_330.vert" />
+    <None Include="..\..\data\shaders\solid_color_2d_330.frag" />
+    <None Include="..\..\data\shaders\solid_color_2d_330.vert" />
+    <None Include="..\..\data\shaders\solid_color_3d_330.frag" />
+    <None Include="..\..\data\shaders\solid_color_3d_330.vert" />
+    <None Include="..\..\data\shaders\static_mesh_330.frag" />
+    <None Include="..\..\data\shaders\static_mesh_330.vert" />
+    <None Include="..\..\data\shaders\terrain_330 - Copy.frag" />
+    <None Include="..\..\data\shaders\terrain_330 - Copy.vert" />
+    <None Include="..\..\data\shaders\terrain_330.frag" />
+    <None Include="..\..\data\shaders\terrain_330.vert" />
+    <None Include="..\..\data\shaders\textured_2d_330.frag" />
+    <None Include="..\..\data\shaders\textured_2d_330.vert" />
+    <None Include="..\punk_engine\system\driver\video\opengl\material.txt" />
+    <None Include="..\punk_engine\system\driver\video\opengl\model.txt" />
+    <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

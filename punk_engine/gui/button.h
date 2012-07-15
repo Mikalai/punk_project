@@ -18,6 +18,7 @@ namespace GUI
 	protected:
 		virtual void OnIdle(System::IdleEvent* e);
 		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e);
+		virtual void OnKeyDown(System::KeyDownEvent* e);
 	public:
 
 		Button(float x = 0, float y = 0, float width = 0.1, float height=0.01, const System::string& text = L"Button", Widget* parent = 0);

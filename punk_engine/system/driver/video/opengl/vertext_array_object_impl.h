@@ -1,6 +1,8 @@
 #ifndef _H_PUNK_OPENGL_VERTEXT_ARRAY_OBJECT_IMPL
 #define _H_PUNK_OPENGL_VERTEXT_ARRAY_OBJECT_IMPL
 
+#include <ostream>
+#include <istream>
 #include "gl/gl3.h"
 #include "config.h"
 #include "../../../buffer.h"
@@ -14,6 +16,8 @@ namespace OpenGL
 
 	struct VertexArrayObjectImpl
 	{
+		int m_index;
+		System::string m_location;
 		GLuint m_vertex_buffer;		
 		GLuint m_index_buffer;
 		GLuint m_vao;
@@ -23,6 +27,10 @@ namespace OpenGL
 		bool m_was_modified;
 		VertexAttributes m_combination;
 		unsigned m_primitive_count;
+		int m_vb_size;
+		int m_ib_size;
+		Math::BoundingBox m_bbox;
+		Math::mat4 m_mesh_transform;
 
 		VertexArrayObjectImpl()
 			: m_vertex_buffer(0)
@@ -50,21 +58,37 @@ namespace OpenGL
 
 		~VertexArrayObjectImpl()
 		{
-			if (m_vertex_buffer)
-			{
-				glDeleteBuffers(1, &m_vertex_buffer);
-				CHECK_GL_ERROR(L"Unable to delete vertext buffer");
-			}
-			if (m_index_buffer)
-			{
-				glDeleteBuffers(1, &m_index_buffer);
-				CHECK_GL_ERROR(L"Unable to delete index buffer");
-			}
-			if (m_vao)
-			{
-				glDeleteVertexArrays(1, &m_vao);
-				CHECK_GL_ERROR(L"Unable to delete vao");
-			}
+			Clear();
+		}
+
+		void SetIndex(int index)
+		{
+			m_index = index;
+		}
+
+		int GetIndex() const
+		{
+			return m_index;
+		}
+
+		void SetSourceFile(const System::string& filename)
+		{
+			m_location = filename;
+		}
+
+		const System::string& GetSourceFile() const
+		{
+			return m_location;
+		}
+
+		void SetMeshTransform(const Math::mat4& value)
+		{
+			m_mesh_transform = value;
+		}
+
+		const Math::mat4& GetMeshTransform() const
+		{
+			return m_mesh_transform;
 		}
 
 		void Bind(VertexAttributes supported_by_context)
@@ -108,6 +132,9 @@ namespace OpenGL
 			m_was_modified = true;
 			glBindVertexArray(0);
 			CHECK_GL_ERROR(L"Unable to generate vertex buffer");
+			m_vb_size = buffer_size;
+
+			m_bbox.Create(reinterpret_cast<const float*>(vbuffer), m_vertex_size, m_vb_size/m_vertex_size);
 		}
 
 		void SetUpAttributes(VertexAttributes supported_by_context)
@@ -265,6 +292,7 @@ namespace OpenGL
 			m_was_modified = true;
 			glBindVertexArray(0);
 			CHECK_GL_ERROR(L"Unable to generate vertex buffer");
+			m_ib_size = size;
 		}
 
 		void Cook(VertexAttributes components, GLenum primitive_type)
@@ -340,6 +368,106 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to map buffer");
 			glBindVertexArray(0);
 			CHECK_GL_ERROR(L"Unable to unbind vao");
+		}
+
+		void Clear()
+		{
+			if (m_vertex_buffer)
+			{
+				glDeleteBuffers(1, &m_vertex_buffer);
+				CHECK_GL_ERROR(L"Unable to delete vertext buffer");
+			}
+			if (m_index_buffer)
+			{
+				glDeleteBuffers(1, &m_index_buffer);
+				CHECK_GL_ERROR(L"Unable to delete index buffer");
+			}
+			if (m_vao)
+			{
+				glDeleteVertexArrays(1, &m_vao);
+				CHECK_GL_ERROR(L"Unable to delete vao");
+			}
+		}
+
+		void Save(std::ostream& stream)
+		{
+			//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));
+			//m_location.Save(stream);
+
+			Bind(m_combination);
+
+			GLvoid* vb = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
+			stream.write(reinterpret_cast<const char*>(&m_vb_size), sizeof(m_vb_size));
+			stream.write(reinterpret_cast<const char*>(vb), m_vb_size);			
+			stream.write(reinterpret_cast<const char*>(&m_vertex_size), sizeof(m_vertex_size));		
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+
+			GLvoid* ib = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_ONLY);
+			stream.write(reinterpret_cast<const char*>(&m_ib_size), sizeof(m_ib_size));
+			stream.write(reinterpret_cast<const char*>(ib), m_ib_size);
+			glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+		
+			stream.write(reinterpret_cast<const char*>(&m_index_count), sizeof(m_index_buffer));
+			stream.write(reinterpret_cast<const char*>(&m_primitive_type), sizeof(m_primitive_type));			
+			stream.write(reinterpret_cast<const char*>(&m_was_modified), sizeof(m_was_modified));
+			stream.write(reinterpret_cast<const char*>(&m_combination), sizeof(m_combination));
+			stream.write(reinterpret_cast<const char*>(&m_primitive_count), sizeof(m_primitive_count));
+			stream.write(reinterpret_cast<const char*>(&m_mesh_transform[0]), sizeof(m_mesh_transform));
+
+			Clear();
+		}
+
+		void Load(std::istream& stream)
+		{
+			//stream.read(reinterpret_cast<char*>(&m_index), sizeof(m_index));
+			//m_location.Load(stream);
+			stream.read(reinterpret_cast<char*>(&m_vb_size), sizeof(m_vb_size));
+			char* vb = new char[m_vb_size];
+			try
+			{
+				stream.read(reinterpret_cast<char*>(vb), m_vb_size);
+				stream.read(reinterpret_cast<char*>(&m_vertex_size), sizeof(m_vertex_size));					
+				SetVertexBuffer(vb, m_vb_size, m_vertex_size);
+			}
+			catch(...)
+			{
+				delete[] vb;
+				throw;
+			}
+			delete[] vb;
+
+			stream.read(reinterpret_cast<char*>(&m_ib_size), sizeof(m_ib_size));
+			char* ib = new char[m_ib_size];
+			try
+			{
+				stream.read(reinterpret_cast<char*>(ib), m_ib_size);
+				SetIndexBuffer(ib, m_ib_size);
+			}
+			catch(...)
+			{
+				delete[] ib;
+				throw;
+			}
+			delete[] ib;
+		
+			stream.read(reinterpret_cast<char*>(&m_index_count), sizeof(m_index_buffer));
+			stream.read(reinterpret_cast<char*>(&m_primitive_type), sizeof(m_primitive_type));
+			stream.read(reinterpret_cast<char*>(&m_was_modified), sizeof(m_was_modified));
+			stream.read(reinterpret_cast<char*>(&m_combination), sizeof(m_combination));
+			stream.read(reinterpret_cast<char*>(&m_primitive_count), sizeof(m_primitive_count));
+			stream.read(reinterpret_cast<char*>(&m_mesh_transform[0]), sizeof(m_mesh_transform));
+
+			Cook(m_combination, m_primitive_type);
+		}
+
+		Math::BoundingBox& GetBoundingBox()
+		{
+			return m_bbox;
+		}
+
+		const Math::BoundingBox& GetBoundingBox() const
+		{
+			return m_bbox;
 		}
 	};
 }

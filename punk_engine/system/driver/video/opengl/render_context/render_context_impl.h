@@ -39,6 +39,15 @@ namespace OpenGL
 
 		void Begin()
 		{
+			Init();			
+			glUseProgram(m_program);
+			CHECK_GL_ERROR(L"Unable to use shader program");
+			BindUniforms();		
+			OpenGL::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+
+		void Init()
+		{
 			if (m_was_modified || !m_program)
 			{
 				if (m_program)
@@ -92,9 +101,6 @@ namespace OpenGL
 
 				m_was_modified = false;
 			}
-			glUseProgram(m_program);
-			CHECK_GL_ERROR(L"Unable to use shader program");
-			BindUniforms();			
 		}
 
 		void End()
@@ -299,18 +305,15 @@ namespace OpenGL
 		}
 
 		virtual void InitUniforms()
-		{
-			throw System::SystemError(L"Not implemented");
+		{			
 		}
 
 		virtual void BindUniforms() 
 		{
-			throw System::SystemError(L"Not implemented");
 		}
 
 		virtual void InitAttributes()
 		{
-			throw System::SystemError(L"Not implemented");
 		}
 
 		virtual ~RenderContextImpl()

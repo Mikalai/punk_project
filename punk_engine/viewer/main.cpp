@@ -33,7 +33,7 @@ public:
 		}
 				
 		/// start driver
-		m_driver.Start(System::Window::GetInstance());
+		m_driver.Start(System::Window::Instance());
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
 
 		/// initialize different render contexts
@@ -99,14 +99,14 @@ int main(int argc, char** argv)
 		std::cout << "Need file to render" << std::endl;
 		return 0;
 	}
-	System::Window::GetInstance()->SetTitle(L"Punk Viewer");
-	System::Mouse::GetInstance()->LockInWindow(true);
+	System::Window::Instance()->SetTitle(L"Punk Viewer");
+	System::Mouse::Instance()->LockInWindow(true);
 	OpenGL::Module module;
 	module.Init();
 	Viewer viewer(argv[1]);
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&viewer, &Viewer::OnIdle));
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&viewer, &Viewer::OnKeyDown));
-	System::Window::GetInstance()->Loop();
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&viewer, &Viewer::OnIdle));
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&viewer, &Viewer::OnKeyDown));
+	System::Window::Instance()->Loop();
 
 	module.Destroy();
 

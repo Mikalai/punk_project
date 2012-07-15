@@ -7,8 +7,8 @@
 
 namespace Utility
 {
-	const Math::mat4& Bone::GetWorldMatrix() const
-	{
+	const Math::mat4 Bone::GetWorldMatrix() const
+	{		
 		return m_global_matrix;
 	}
 
@@ -88,10 +88,8 @@ namespace Utility
 		return m_last_global_matrix_update;
 	}
 
-	void Bone::UpdatePose(int frame)
+	void Bone::UpdatePose(float frame)
 	{
-		if (frame == 20 && m_index_in_armature == 10)
-			frame = 20;
 		if (m_last_get_global_matrix != frame)
 		{
 			m_last_get_global_matrix = frame;
@@ -135,5 +133,57 @@ namespace Utility
 	void Bone::ResetCache()
 	{
 		m_need_update_global_matrix = true;
+	}
+
+	void Bone::Save(std::ostream& stream)
+	{
+		int parent_id = (m_parent == 0) ? -1 : m_parent->GetIndex();
+		stream.write(reinterpret_cast<const char*>(&parent_id), sizeof(parent_id));
+		int children_count = m_children.size();
+		stream.write(reinterpret_cast<const char*>(&children_count), sizeof(children_count));
+		for each (Bone* bone in m_children)
+		{
+			int index = bone->GetIndex();
+			stream.write(reinterpret_cast<const char*>(&index), sizeof(index));	
+		}
+		m_name.Save(stream);
+		stream.write(reinterpret_cast<const char*>(&m_index_in_armature), sizeof(m_index_in_armature));
+		m_animation.Save(stream);
+		m_global_matrix.Save(stream);
+		m_bone_matrix.Save(stream);
+		m_last_local_matrix_update.Save(stream);
+		m_last_global_matrix_update.Save(stream);
+		stream.write(reinterpret_cast<const char*>(&m_last_get_global_matrix), sizeof(m_last_get_global_matrix));
+		stream.write(reinterpret_cast<const char*>(&m_need_update_global_matrix), sizeof(m_need_update_global_matrix));		
+	}
+
+	void Bone::Load(std::istream& stream)
+	{
+		int parent_id = -1;
+		stream.read(reinterpret_cast<char*>(&parent_id), sizeof(parent_id));
+		
+		if (parent_id == -1)
+			m_parent = 0;
+		else
+			m_parent = m_armature->GetBoneByIndex(parent_id);
+
+		int children_count = 0;
+		stream.read(reinterpret_cast<char*>(&children_count), sizeof(children_count));
+		m_children.resize(children_count);
+		for (int i = 0; i < children_count; ++i)
+		{
+			int index = 0;
+			stream.read(reinterpret_cast<char*>(&index), sizeof(index));
+			m_children[i] = m_armature->GetBoneByIndex(index);
+		}
+		m_name.Load(stream);
+		stream.read(reinterpret_cast<char*>(&m_index_in_armature), sizeof(m_index_in_armature));
+		m_animation.Load(stream);
+		m_global_matrix.Load(stream);
+		m_bone_matrix.Load(stream);
+		m_last_local_matrix_update.Load(stream);
+		m_last_global_matrix_update.Load(stream);
+		stream.read(reinterpret_cast<char*>(&m_last_get_global_matrix), sizeof(m_last_get_global_matrix));
+		stream.read(reinterpret_cast<char*>(&m_need_update_global_matrix), sizeof(m_need_update_global_matrix));
 	}
 }

@@ -2,6 +2,7 @@
 #define _H_PUNK_IMAGES_IMAGE
 
 #include <memory>
+#include <iosfwd>
 #include "../config.h"
 #include "../formats.h"
 #include "component.h"
@@ -25,8 +26,8 @@ namespace ImageModule
 		Image& operator = (const Image& image);
 		~Image();
 
-		void Save(System::Buffer& buffer) const;
-		void Load(System::Buffer& buffer);				
+		void Save(std::ostream& stream) const;
+		void Load(std::istream& stream);				
 		const System::Descriptor& GetDescriptor() const;		
 		unsigned GetSizeInBytes() const;
 		unsigned GetComponentsCount() const;

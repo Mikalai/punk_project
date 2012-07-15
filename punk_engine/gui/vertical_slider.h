@@ -5,6 +5,7 @@
 
 namespace GUI
 {
+	class Button;
 	class IGUIRender;
 
 	class LIB_GUI VerticalSlider : public Widget

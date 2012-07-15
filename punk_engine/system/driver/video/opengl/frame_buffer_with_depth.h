@@ -10,25 +10,16 @@ frame buffer object can be used else
 #define _H_PUNK_FRAME_BUFFER_OBJECT_WITH_DEPTH
 
 #include "gl/gl3.h"
+#include "frame_buffer.h"
 
 namespace OpenGL
 {
-	class FrameBufferWithDepth
-	{
-		GLint m_width;
-		GLint m_height;
-		GLuint m_texture;
-		GLuint m_fbo;
-		GLint m_oldx;
-		GLint m_oldy;
-		GLint m_oldWidth;
-		GLint m_oldHeight;
+	class MODULE_OPENGL FrameBufferWithDepth : public FrameBuffer
+	{		
 	public:
-		~FrameBufferWithDepth();
-		void Init(GLint width, GLint height);
-		void Activate();
-		void Deactivate();
-		GLuint GetTexture();
+		FrameBufferWithDepth();
+		virtual ~FrameBufferWithDepth();
+		virtual void Init(GLint width, GLint height);
 	};
 }
 

@@ -10,7 +10,7 @@ Description: Contains declarations of OpenGL extension functions
 #include "../config.h"
 #include "../../../../logger.h"
 
-#define CHECK_GL_ERROR(X) if (glGetError() != GL_NO_ERROR) System::Logger::GetInstance()->WriteWarning((X));
+#define CHECK_GL_ERROR(X) if (glGetError() != GL_NO_ERROR) System::Logger::Instance()->WriteWarning((X));
 
 namespace OpenGL
 {
@@ -167,13 +167,22 @@ namespace OpenGL
 	extern PFNGLDRAWELEMENTSPROC glDrawElements;
 	extern PFNGLDRAWELEMENTSINDIRECTPROC glDrawElementsIndirect;
 	extern PFNGLDRAWELEMENTSINSTANCEDPROC glDrawElementsInstanced;
-	extern PFNGLCLEARPROC glClear;
+	extern MODULE_OPENGL PFNGLCLEARPROC glClear;
 	extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
 	extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 
 	extern PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D;
 	extern PFNGLPOLYGONMODEPROC glPolygonMode;
 
+	extern PFNGLFENCESYNCPROC glFenceSync;
+	extern PFNGLWAITSYNCPROC glWaitSync;
+	extern PFNGLDELETESYNCPROC glDeleteSync;
+
+	extern PFNGLDRAWBUFFERSPROC glDrawBuffers;
+
+	extern PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC glRenderbufferStorageMultisample;
+	extern PFNGLBLITFRAMEBUFFERPROC glBlitFramebuffer;
+	extern PFNGLDEPTHFUNCPROC glDepthFunc;
 	extern void InitExtensions(Driver* driver);
 	extern bool IsSupported(const char* name);
 }

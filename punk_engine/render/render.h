@@ -7,7 +7,9 @@ Description: Render of the scene
 #ifndef _H_RENDER
 #define _H_RENDER
 
-#include "scene_render.h"
+#include "renderable.h"
+#include "simple_renderpipeline.h"
+#include "terrain_render.h"
 
 /*#include "font_builder.h"
 #include "pipeline.h"

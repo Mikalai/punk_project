@@ -6,7 +6,7 @@ namespace GUI
 	static const float g_auto_scroll = 0.5;
 
 	VerticalScrollBar::VerticalScrollBar(float x, float y, float width, float height, Widget* parent) 
-		: Widget(x, y, width, height, parent)
+		: Widget(x, y, width, height, L"", parent)
 		, m_timer(0)
 	{
 		m_slider = new VerticalSlider(0, 0.05, 1, 0.90, 0, 100, this);
@@ -24,7 +24,7 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		Widget::OnIdle(e);
+			Widget::OnIdle(e);
 		}
 	}
 
@@ -32,9 +32,9 @@ namespace GUI
 	{
 		if (IsVisible())
 		{
-		render->RenderVerticalSlider(m_slider);
-		render->RenderWidget(m_upButton);
-		render->RenderWidget(m_downButton);
+			render->RenderVerticalSlider(m_slider);
+			render->RenderWidget(m_upButton);
+			render->RenderWidget(m_downButton);
 		}
 	}
 
@@ -42,7 +42,7 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		m_slider->SetCurrent(m_slider->GetCurrent() + 1);		
+			m_slider->SetCurrent(m_slider->GetCurrent() + 1);		
 		}
 	}
 
@@ -50,7 +50,7 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		m_slider->SetCurrent(m_slider->GetCurrent() - 1);
+			m_slider->SetCurrent(m_slider->GetCurrent() - 1);
 		}
 	}
 
@@ -68,12 +68,12 @@ namespace GUI
 	{
 		m_slider->SetBounds(0, max);
 	}
-	
+
 	void VerticalScrollBar::OnChangeValue(System::Handler handler)
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		m_slider->OnChangeValue(handler);
+			m_slider->OnChangeValue(handler);
 		}
 	}
 

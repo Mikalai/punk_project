@@ -4,7 +4,7 @@
 namespace GUI
 {
 	Balloon::Balloon(float x, float y, float w, float h, const System::string& m, Widget* p)
-		: Widget(x, y, w, h, p)
+		: Widget(x, y, w, h, m, p)
 		, m_show_time(3)
 		, m_appear_time(0.5)
 		, m_disappear_time(0.5)

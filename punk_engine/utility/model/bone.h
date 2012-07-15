@@ -18,6 +18,13 @@ namespace Utility
 	typedef float Weight;
 	typedef std::map<BoneName, Weight> BoneWeights;
 
+	/*class LIB_UTILITY Bone2
+	{
+		int m_id;
+		Bone* m_parent;
+
+	};*/
+
 	class LIB_UTILITY Bone
 	{
 		Bone*				m_parent;
@@ -29,7 +36,7 @@ namespace Utility
 		AnimationMixer		m_animation;
 		Math::mat4			m_last_local_matrix_update;
 		Math::mat4			m_last_global_matrix_update;
-		int					m_last_get_global_matrix;
+		float				m_last_get_global_matrix;
 		bool				m_need_update_global_matrix;
 		Armature*			m_armature;
 	public:
@@ -43,19 +50,22 @@ namespace Utility
 
 		const BoneName& GetName() const;
 		const Bone* GetParent() const;
-		const Math::mat4& GetWorldMatrix() const;
+		const Math::mat4 GetWorldMatrix() const;
 		const Math::mat4& GetBoneMatrix() const;
 		int GetIndex() const;
 
 		void AddChild(Bone* bone);
 
 		Math::mat4& GetAnimatedGlobalMatrix();
-		void UpdatePose(int frame);
+		void UpdatePose(float frame);
 		AnimationMixer& GetAnimationMixer();
 		const AnimationMixer& GetAnimationMixer() const;
 
 		/* Drops all precalculated staff */
 		void ResetCache();
+
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
 	};
 }
 

@@ -1,0 +1,6 @@
+VSWIZARD 7.0
+Wizard=VsWizard.VsWizardEngine.10.0
+
+Param="WIZARD_NAME = punk_engine_application"
+Param="ABSOLUTE_PATH = D:\project\punk_project\vs2010\punk_engine_application"
+Param="FALLBACK_LCID = 1033"

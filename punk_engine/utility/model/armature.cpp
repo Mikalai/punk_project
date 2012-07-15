@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "armature.h"
 
 namespace Utility
@@ -71,12 +72,12 @@ namespace Utility
 
 	void Armature::SetMeshOffset(const Math::Matrix4x4<float>& offset)
 	{
-		m_mesh_offset = offset;
+		//m_mesh_offset = offset;
 	}
 
 	const Math::Matrix4x4<float>& Armature::GetMeshOffset() const
 	{
-		return m_mesh_offset;
+		return Math::Matrix4x4<float>();
 	}
 
 	void Armature::PrintDebug(Bone* parent, int level)
@@ -91,5 +92,58 @@ namespace Utility
 				PrintDebug(it->second.get(), level+1);
 			}
 		}
+	}
+
+	void Armature::Save(std::ostream& stream)
+	{
+		m_name.Save(stream);
+		int bones_count = m_bones.size();
+		stream.write(reinterpret_cast<const char*>(&bones_count), sizeof(bones_count));
+		for each (Bone* bone in m_cache)
+		{
+			bone->Save(stream);
+		}
+		m_animation.Save(stream);
+	}
+
+	void Armature::Load(std::istream& stream)
+	{
+		m_name.Load(stream);
+		int bones_count = 0;
+		stream.read(reinterpret_cast<char*>(&bones_count), sizeof(bones_count));
+		m_cache.resize(bones_count);
+		//
+		//	allocate memory for bones
+		//
+		for (int i = 0; i < bones_count; ++i)
+		{
+			std::auto_ptr<Bone> bone(new Bone);			
+			m_cache[i] = bone.release();
+			m_cache[i]->SetArmature(this);			
+		}
+		//
+		//	read data
+		//
+		for (int i = 0; i < bones_count; ++i)
+		{
+			m_cache[i]->Load(stream);			
+			m_bones[m_cache[i]->GetName()].reset(m_cache[i]);			
+		}
+		m_animation.Load(stream);
+	}
+
+	void Armature::FromFileArmature(const System::string& filename)
+	{
+		char ansi_filename[2048];
+		filename.ToANSI(ansi_filename, 2048);
+		std::ifstream file(ansi_filename, std::ios_base::binary);
+		if (!file.is_open())
+		{
+			std::cout << "File " << ansi_filename << " was not opened in "__FUNCSIG__ << std::endl;
+			return;
+		}
+		Load(file);
+		file.close();
+
 	}
 }

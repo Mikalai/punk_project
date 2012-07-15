@@ -21,14 +21,17 @@ namespace Utility
 		Math::Vector3<float>& GetOrCreatePositionKey(int frame);
 		Math::Quaternion<float>& GetOrCreateRotationKey(int frame);
 
-		const Math::Vector3<float> GetPosition(int frame);
-		const Math::Quaternion<float> GetRotation(int frame);
+		const Math::Vector3<float> GetPosition(float frame);
+		const Math::Quaternion<float> GetRotation(float frame);
 
 		void Enable(bool flag);
 		bool IsEnabled() const;
 
 		void SetLooping(bool flag);
 		bool IsLooping() const;
+
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
 	};
 }
 

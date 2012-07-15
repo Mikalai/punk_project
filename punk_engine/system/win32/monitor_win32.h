@@ -8,6 +8,7 @@
 #define _H_PUNK_WIN32_MONITOR
 
 #include "../config.h"
+#define NOMINMAX
 #include <windows.h>
 
 class MODULE_SYSTEM Monitor

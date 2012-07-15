@@ -1,6 +1,7 @@
 #include "image.h"
 #include "image_impl.h"
 
+#include <fstream>
 #include "../error.h"
 #include <vector>
 #include <algorithm>
@@ -27,14 +28,14 @@ namespace ImageModule
 		impl_image.reset(0);
 	}
 
-	void Image::Save(System::Buffer& buffer) const
+	void Image::Save(std::ostream& stream) const
 	{
-		impl_image->Save(buffer);
+		impl_image->Save(stream);
 	}
 
-	void Image::Load(System::Buffer& buffer)
+	void Image::Load(std::istream& stream)
 	{
-		impl_image->Load(buffer);
+		impl_image->Load(stream);
 	}
 
 	const System::Descriptor& Image::GetDescriptor() const

@@ -1,37 +1,19 @@
 #ifndef _H_PUNK_RENDER_PIEPLINE
 #define _H_PUNK_RENDER_PIEPLINE
 
-#include "../system/allocator.h"
-//#include "render_element.h"
-#include "font_builder.h"
 #include <vector>
+#include "renderable.h"
 
 namespace Render
 {
-	class AbstractRender;
-
-    class RenderPipeline //: public SimpleContainer<RenderElement*>
+    class RenderPipeline 
     {
-		struct Item
-		{
-			AbstractRender* m_render;
-			void* m_parameters;
-			Item(AbstractRender* render, void *parameters) : m_render(render), m_parameters(parameters) {}
-		};
-
-		std::vector<Item> m_queue;
-
     public:
-
-		static RenderPipeline* GetRenderPipeline();
-
-        RenderPipeline();
-        ~RenderPipeline();
-		void Process();
-		void Add(AbstractRender* render, void* parameters);
-
+		virtual void Process() = 0;
+		virtual void AddStaticRenderable(StaticRenderable r) = 0;
+		virtual void SetViewMatrix(const Math::mat4& m) = 0;
+		virtual void SetProjectionMatrix(const Math::mat4& m) = 0;
     };
-
 }
 
 #endif

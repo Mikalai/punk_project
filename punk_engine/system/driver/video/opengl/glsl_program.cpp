@@ -308,12 +308,12 @@ namespace OpenGL
 		m_pass[0].m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		m_pass[0].m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-		System::Logger::GetInstance()->WriteMessage(L"Loading vertex shader " + vertexFileName);
+		System::Logger::Instance()->WriteMessage(L"Loading vertex shader " + vertexFileName);
 
 		if (!LoadShader(m_pass[0].m_vertexShader, vertexShaderData))
 			throw System::SystemError(L"Can't create vertex shader");
 
-		System::Logger::GetInstance()->WriteMessage(L"Loading fragment shader " + fragmentFileName);
+		System::Logger::Instance()->WriteMessage(L"Loading fragment shader " + fragmentFileName);
 
 		if (!LoadShader(m_pass[0].m_fragmentShader, fragmentShaderData))
 			throw System::SystemError(L"Can't create fragment shader" + LOG_LOCATION_STRING);
@@ -360,12 +360,12 @@ namespace OpenGL
 		m_pass[0].m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		m_pass[0].m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-		System::Logger::GetInstance()->WriteMessage(L"Loading vertex shader\n");
+		System::Logger::Instance()->WriteMessage(L"Loading vertex shader\n");
 
 		if (!LoadShader(m_pass[0].m_vertexShader, vertexBufferData))
 			throw System::SystemError(L"Can't create vertex shader" + LOG_LOCATION_STRING);
 
-		System::Logger::GetInstance()->WriteMessage(L"Loading fragment shader");
+		System::Logger::Instance()->WriteMessage(L"Loading fragment shader");
 
 		if (!LoadShader(m_pass[0].m_fragmentShader, fragmentBufferData))
 			throw System::SystemError(L"Can't create fragment shader" + LOG_LOCATION_STRING);
@@ -382,7 +382,7 @@ namespace OpenGL
 		glAttachShader(m_pass[0].m_program, m_pass[0].m_vertexShader);
 		glAttachShader(m_pass[0].m_program, m_pass[0].m_fragmentShader);
 
-		System::Logger::GetInstance()->WriteMessage(L"Linking programs");
+		System::Logger::Instance()->WriteMessage(L"Linking programs");
 
 		// link the m_program object and print out the info m_log
 		//	glBindAttribLocation(m_pass[0].m_program, 0, "rm_Vertex");
@@ -471,7 +471,7 @@ namespace OpenGL
 		{
 			GLchar* buffer = new GLchar[logLength];
 			glGetShaderInfoLog(shader, logLength, NULL, buffer);
-			System::Logger::GetInstance()->WriteError(System::string(buffer));
+			System::Logger::Instance()->WriteError(System::string(buffer));
 			//printf("GLSL: %s\n", buffer);
 			delete[] buffer;
 		}
@@ -479,7 +479,7 @@ namespace OpenGL
 		{
 			GLchar buffer[65536];
 			glGetShaderInfoLog(shader, 65536, NULL, buffer);
-			System::Logger::GetInstance()->WriteError(System::string(buffer));
+			System::Logger::Instance()->WriteError(System::string(buffer));
 			//printf("GLSL: %s\n", buffer);
 		}
 		return false;

@@ -13,69 +13,172 @@ class Viewer
 	std::auto_ptr<GUI::Manager> m_gui;
 	OpenGL::Driver m_driver;
 	std::auto_ptr<OpenGL::RenderContextLight> m_light_context;
-	Utility::Camera m_camera;
 	float x, y, z;
-	std::vector<std::shared_ptr<Utility::StaticMesh>> m_meshes; 
-	std::vector<std::shared_ptr<OpenGL::StaticObject>> m_vaos;
+	GUI::ListBox* lst_all_food;
+	GUI::Button* btn_load;
+	GUI::Widget* lbl_file;
+	GUI::TextBox* txt_file;
+	GUI::Widget* lbl_name;
+	GUI::TextBox* txt_name;
+	GUI::Widget* lbl_desc;
+	GUI::TextBox* txt_desc;
+	GUI::Widget* lbl_satiety;
+	GUI::TextBox* txt_satiety;
+	GUI::Widget* lbl_help;
+	GUI::Button* btn_save;
+	GUI::Button* btn_delete;
+	GUI::Button* btn_clear;
 public:
 	
-	Viewer(const char* filename)
-	{
-		Utility::Scene scene;
-		/// Load scene
-		scene.Load(System::string(filename));
-		int objects_count = scene.GetObjectsCount();
-		m_meshes.resize(objects_count);
-		m_vaos.resize(objects_count);
-		for (int i = 0; i < objects_count; ++i)
-		{
-			const System::string& name = scene.GetObjectName(i);
-			m_meshes[i].reset(scene.CookStaticMesh(name));
-		}
-				
+	Viewer()
+	{		
 		/// start driver
-		m_driver.Start(System::Window::GetInstance());
+		m_driver.Start(System::Window::Instance());
+		System::Window::Instance()->SetSize(400, 600);
+		System::Window::Instance()->SetPosition(200, 100);
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
+	
+		m_gui.reset(new GUI::Manager());
+		float y = 0.95;
+		float h = 0.05;
+		float w0 = 0.2;
+		float w1 = 0.2;
+		float w2 = 1 - w1 - w0;
+		btn_load = new GUI::Button(w0, y, w1+w2, h, L"Load");
+		y -= h;
+		lbl_file = new GUI::Widget(w0, y, w1, h, L"File:");
+		txt_file = new GUI::TextBox(w0+w1, y, w2, h);
+		y -= h;
+		lbl_name = new GUI::Widget(w0, y, w1, h, L"Name*:");
+		txt_name = new GUI::TextBox(w0+w1, y, w2, h);
+		y -= h;
+		lbl_desc = new GUI::Widget(w0, y, w1, h, L"Description*:");
+		txt_desc = new GUI::TextBox(w0+w1, y, w2, h);
+		y -= h;
+		lbl_satiety = new GUI::Widget(w0, y, w1, h, L"Satiety**:");
+		txt_satiety = new GUI::TextBox(w0+w1, y, w2, h);
+		y -= h;
+		lbl_help = new GUI::Widget(w0, y, w1+w2, h, L"* - '_' should be used instead of ' '; ** - should be integer");
+		y -= h;
+		btn_save = new GUI::Button(w0, y, (w1+w2) / 2, h, L"Save");
+		btn_clear = new GUI::Button(w0 + (w1+w2) / 2, y, (w1+w2) / 2, h, L"Clear fields");
+		y -= h;
+		btn_delete = new GUI::Button(w0, y, w1+w2, h, L"Delete");
 
-		/// initialize different render contexts
-		m_light_context.reset(new OpenGL::RenderContextLight());
+		lst_all_food = new GUI::ListBox(0, 0, w0, 1);
 
-		/// for each mesh create static vao
-		for (int i = 0; i < objects_count; ++i)
+		m_gui->AddRootWidget(btn_load);
+		m_gui->AddRootWidget(btn_save);
+		m_gui->AddRootWidget(lbl_file);
+		m_gui->AddRootWidget(txt_file);
+		m_gui->AddRootWidget(lbl_name);
+		m_gui->AddRootWidget(txt_name);
+		m_gui->AddRootWidget(lbl_desc);
+		m_gui->AddRootWidget(txt_desc);
+		m_gui->AddRootWidget(lbl_satiety);
+		m_gui->AddRootWidget(txt_satiety);
+		m_gui->AddRootWidget(lbl_help);
+		m_gui->AddRootWidget(btn_delete);
+		m_gui->AddRootWidget(btn_clear);
+		m_gui->AddRootWidget(lst_all_food);
+
+		btn_load->SetNextWidget(txt_file);
+		txt_file->SetNextWidget(txt_name);
+		txt_name->SetNextWidget(txt_desc);
+		txt_desc->SetNextWidget(txt_satiety);
+		txt_satiety->SetNextWidget(txt_file);
+		btn_save->SetNextWidget(btn_clear);
+		btn_clear->SetNextWidget(btn_delete);
+		btn_delete->SetNextWidget(btn_load);
+
+		ListAllFood();
+
+		btn_load->SetMouseLeftClickHandler(System::EventHandler(this, &Viewer::OnLoad));
+		btn_save->SetMouseLeftClickHandler(System::EventHandler(this, &Viewer::OnSave));
+		btn_delete->SetMouseLeftClickHandler(System::EventHandler(this, &Viewer::OnDelete));
+		btn_clear->SetMouseLeftClickHandler(System::EventHandler(this, &Viewer::OnClear));
+	}
+	
+	void OnClear(System::Event*)
+	{
+		txt_file->SetText(L"");
+		txt_desc->SetText(L"");
+		txt_name->SetText(L"");
+		txt_satiety->SetText(L"");
+	}
+
+	void OnDelete(System::Event*)
+	{
+		int cur_sel = lst_all_food->GetCurrentSelection();
+		if (cur_sel == -1)
+			return;
+		char buf[256];
+		System::string path = System::Environment::Instance()->GetCurrentFolder() + L"\\food\\" + lst_all_food->GetItem(cur_sel)->GetText();
+
+		System::Folder::DeleteFile(path);
+		ListAllFood();
+	}
+
+	void OnLoad(System::Event*)
+	{
+		int cur_sel = lst_all_food->GetCurrentSelection();
+		if (cur_sel == -1)
+			return;
+		char buf[256];
+		System::string path = System::Environment::Instance()->GetCurrentFolder() + L"\\food\\" + lst_all_food->GetItem(cur_sel)->GetText();
+		path.ToANSI(buf, 256);
+		std::ifstream stream(buf, std::ios_base::binary);
+		Utility::FoodType food;
+		food.Load(stream);
+		stream.close();
+
+		txt_file->SetText(lst_all_food->GetItem(cur_sel)->GetText());
+		txt_desc->SetText(food.m_description);
+		txt_name->SetText(food.m_name);
+		txt_satiety->SetText(System::string::Convert(food.m_satiety));
+	}
+
+	void OnSave(System::Event*)
+	{		
+		Utility::FoodType food;
+		food.SetName(txt_name->GetText().Data());
+		food.SetDescription(txt_desc->GetText().Data());
+		try
 		{
-			m_vaos[i].reset(new OpenGL::StaticObject());
-			m_vaos[i]->SetStaticObject(m_meshes[i].get());			
-			m_vaos[i]->Init();
+			food.m_satiety = txt_satiety->GetText().ToInt32();
 		}
-
-		/// init camera staff
-		x = y = z = 10;
-
-		m_gui.reset(new GUI::Manager());		
-		GUI::Widget* w = new GUI::Widget(0, 0, 1, 1);
-	//	m_gui->AddRootWidget(w);	
-		GUI::Button* btn;
-		w->AddChild(btn = new GUI::Button(0.2, 0.1, 0.5, 0.1));		
-		w->AddChild(new GUI::VerticalSlider(0, 0, 0.1, 0.8f, 0, 100, 0));
-		w->AddChild(new GUI::VerticalScrollBar(0.1, 0, 0.1, 1));
-		w->AddChild(new GUI::TextBox(0.5, 0.9, 0.1, 0.1));
-		w->AddChild(new GUI::TextBox(0.5, 0.6, 0.1, 0.1));
-		GUI::ListBox* lb = new GUI::ListBox(0.7, 0, 0.1, 1);
-		for (int i = 0; i < 20; ++i)
+		catch(...)
 		{
-			lb->AddItem(new GUI::ListBox::ListBoxItem("Item 1"));
-			lb->AddItem(new GUI::ListBox::ListBoxItem("Item 2"));
+			System::Logger::Instance()->WriteError(L"Bad satiety value");
+			return;
 		}
-		w->AddChild(lb);
-		GUI::TabWidget* tw = new GUI::TabWidget(0, 0, 1, 0.5, 0);
-		tw->AddTab(L"Tab 1", w);
-		tw->AddTab(L"Tab 2", new GUI::Widget(0, 0, 1, 1));
-		m_gui->AddRootWidget(tw);
+		
+		char buf[256];
+		System::string path = System::Environment::Instance()->GetCurrentFolder() + L"food\\" + txt_file->GetText();
+		path.ToANSI(buf, 256);
+		std::ofstream stream(buf, std::ios_base::binary);
+		if (!stream.is_open())
+		{
+			System::Logger::Instance()->WriteError(L"Can't save new food");
+			return;
+		}
+		food.Save(stream);
+		stream.close();
+		ListAllFood();
+	}
 
-		GUI::Balloon* b = new GUI::Balloon(0.1, 0.8, 0.4, 0.1, L"Hello world", 0);
-		b->SetText(L"I'm a cool balloon widget. I am the best of all the balloons widgets ever made in humanity. Yeah!. True I am incredible");
-		m_gui->AddRootWidget(b);
-		btn->SetMouseLeftClickHandler(System::EventHandler(b, this, &Viewer::OnButtonPress));
+	void ListAllFood()
+	{
+		System::string data = System::Environment::Instance()->GetCurrentFolder() + L"food";
+		System::Folder fld;
+		fld.Open(data);
+		std::list<System::string> files = fld.ListAllItems();
+		lst_all_food->RemoveAllItems();
+		for each (System::string lst in files)
+		{
+			lst_all_food->AddItem(new GUI::ListBox::ListBoxItem(lst));
+		}
+		fld.Close();
 	}
 
 	void OnButtonPress(System::Event* event)
@@ -103,26 +206,7 @@ public:
 
 	void OnIdle(System::Event* event)
 	{	
-		static float a = 0;
-		a+= 0.001;
-
 		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);				
-		for (int i = 0; i < m_vaos.size(); ++i)
-		{
-			m_light_context->SetWorldMatrix(Math::mat4::CreateTranslate(0, 0, i*10));
-			m_light_context->SetViewMatrix(m_camera.GetViewMatrix());
-			m_light_context->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 1.3, 0.1, 100.0));
-			m_light_context->SetAmbientColor(Math::vec4(0,0,0,0));
-			m_light_context->SetSpecularColor(Math::vec4(1,1,1,1));
-			m_light_context->SetDiffuseColor(Math::vec4(1,1,1,1));
-			m_light_context->SetSpecularPower(16);
-			m_light_context->SetLightPosition(Math::vec3(10, 1, 10));
-			m_light_context->Begin();				
-			m_vaos[i]->Bind(m_light_context->GetSupportedVertexAttributes());
-			m_vaos[i]->Render();		
-			m_vaos[i]->Unbind();
-			m_light_context->End();			
-		}/**/
 
 		m_gui->Render();
 		
@@ -132,14 +216,14 @@ public:
 
 int main(int argc, char** argv)
 {
-	System::Window::GetInstance()->SetTitle(L"Тэставаньне графічнага інтэрфэйса картыстальніка");
-	System::Mouse::GetInstance()->LockInWindow(true);
+	System::Window::Instance()->SetTitle(L"FoodMaker");	
+	System::Mouse::Instance()->LockInWindow(false);
 	OpenGL::Module module;
 	module.Init();
-	Viewer viewer("sklad.pmd");
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&viewer, &Viewer::OnIdle));
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&viewer, &Viewer::OnKeyDown));
-	System::Window::GetInstance()->Loop();
+	Viewer viewer;
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&viewer, &Viewer::OnIdle));
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&viewer, &Viewer::OnKeyDown));
+	System::Window::Instance()->Loop();
 
 	module.Destroy();
 

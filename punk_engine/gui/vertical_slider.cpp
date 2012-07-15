@@ -3,8 +3,8 @@
 
 namespace GUI
 {
-	VerticalSlider::VerticalSlider(float x, float y, float width, float height, int min, int max, Widget* parent) :
-		Widget(x, y, width, height, parent), m_min(min), m_max(max), m_cur(0), m_prev(0)
+	VerticalSlider::VerticalSlider(float x, float y, float width, float height, int min, int max, Widget* parent) 
+		: Widget(x, y, width, height, L"", parent), m_min(min), m_max(max), m_cur(0), m_prev(0)
 	{
 		m_text = "Vertical Slider";
 	}
@@ -54,7 +54,7 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		m_onChangeValue = handler;
+			m_onChangeValue = handler;
 		}
 	}
 
@@ -68,13 +68,13 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		if (m_prev != m_cur)
-		{
-			e->anyData = (void*)m_cur;
-			m_onChangeValue(e);
-			m_prev = m_cur;
-		}
-		Widget::OnIdle(e);
+			if (m_prev != m_cur)
+			{
+				e->anyData = (void*)m_cur;
+				m_onChangeValue(e);
+				m_prev = m_cur;
+			}
+			Widget::OnIdle(e);
 		}
 	}
 
@@ -82,14 +82,14 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		if (m_isCursorIn)
-		{
-			Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
-			m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
-			//SendChildren(e);
+			if (m_isCursorIn)
+			{
+				Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
+				m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
+				//SendChildren(e);
+				Widget::OnMouseLeftButtonDown(e);
+			}
 			Widget::OnMouseLeftButtonDown(e);
-		}
-		Widget::OnMouseLeftButtonDown(e);
 		}
 	}
 
@@ -97,15 +97,15 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		if (m_isCursorIn)
-		{
-			m_cur -= e->delta;
-			if (m_cur < m_min)
-				m_cur = m_min;
-			if (m_cur > m_max)
-				m_cur = m_max;
-		}
-		Widget::OnMouseWheel(e);
+			if (m_isCursorIn)
+			{
+				m_cur -= e->delta;
+				if (m_cur < m_min)
+					m_cur = m_min;
+				if (m_cur > m_max)
+					m_cur = m_max;
+			}
+			Widget::OnMouseWheel(e);
 		}
 	}
 
@@ -113,12 +113,12 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-		if (m_leftButtonDown)
-		{
-			Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
-			m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
-		}
-		Widget::OnMouseMove(e);
+			if (m_leftButtonDown)
+			{
+				Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
+				m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
+			}
+			Widget::OnMouseMove(e);
 		}
 	}
 }

@@ -84,7 +84,7 @@ namespace OpenGL
 		Texture2D* GetTexture2D(const System::string& texture);
 
 		System::Descriptor CreateStringTexture(const System::string& init_value, int width, int height, int font_size, const System::string& font_name);
-		void AlterateStringTexture(System::Descriptor desc, const System::string& value, int width, int height, int font_size, const System::string& font_name);
+		void AlterateStringTexture(System::Descriptor desc, const System::string& value, int width, int height, int font_size, const System::string& font_name);		
 
 	};
 }

@@ -28,7 +28,7 @@ namespace GUI
 			throw System::SystemError(L"SceneGraph not set");
 
 		System::Resource<Widget>* rw = new System::Resource<Widget>();	
-		System::Descriptor desc = System::ResourceManager::GetInstance()->ManageResource<System::RESOURCE_WIDGET>(rw);
+		System::Descriptor desc = System::ResourceManager::Instance()->ManageResource<System::RESOURCE_WIDGET>(rw);
 		m_scene_graph->Add(System::Descriptor::Root(), desc);
 		m_layers.push_back(desc);
 		m_active = desc;

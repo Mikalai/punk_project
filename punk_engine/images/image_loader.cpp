@@ -11,12 +11,12 @@ JPEG - jpeglib
 #include <stdlib.h>
 #include "image_loader.h"
 #include "error.h"
-#include "jpeg/jpeglib.h"
+//#include "jpeg/jpeglib.h"
 #include <assert.h>
 //#include "bmp/bmp.h"
 //#include "dds/nv_dds.h"
 //#include "tga/tga.h"
-#include "png/png.h"
+//#include "png/png.h"
 //#include "pngpriv.h"
 
 namespace ImageLoader

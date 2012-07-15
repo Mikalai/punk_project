@@ -1,18 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="model">
-      <UniqueIdentifier>{743eaeea-5af5-4242-a72e-06ff6710180c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="animation">
-      <UniqueIdentifier>{496bae4c-7708-4d7c-b323-7f2c981530dc}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="..\punk_engine\utility\animation\animation.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\animation\animation_mixer.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\animation\armature_animation.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\action.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\armature.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
     <ClCompile Include="..\punk_engine\utility\model\bone.cpp">
       <Filter>model</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\utility\model\material.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\camera.cpp" />
+    <ClCompile Include="..\punk_engine\utility\error.cpp" />
+    <ClCompile Include="..\punk_engine\utility\font_builder.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\punk_scene_loader.cpp">
       <Filter>model</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\utility\model\scene.cpp">
@@ -24,36 +37,69 @@
     <ClCompile Include="..\punk_engine\utility\model\static_mesh.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\utility\camera.cpp" />
-    <ClCompile Include="..\punk_engine\utility\error.cpp" />
-    <ClCompile Include="..\punk_engine\utility\font_builder.cpp" />
-    <ClCompile Include="..\punk_engine\utility\model\punk_scene_loader.cpp">
+    <ClCompile Include="..\punk_engine\utility\utility_lod.cpp" />
+    <ClCompile Include="..\punk_engine\utility\food_type.cpp" />
+    <ClCompile Include="..\punk_engine\utility\elements\terrain.cpp">
+      <Filter>elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\elements\utility_tree.cpp">
+      <Filter>elements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\bullet_type.cpp" />
+    <ClCompile Include="..\punk_engine\utility\weapon_type.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\object.cpp">
       <Filter>model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\utility\model\armature.cpp">
-      <Filter>model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\utility\model\action.cpp">
-      <Filter>model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\utility\animation\animation.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\utility\animation\animation_mixer.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\punk_engine\utility\animation\armature_animation.cpp">
-      <Filter>animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\punk_engine\utility\utility.h" />
+    <ClInclude Include="..\punk_engine\utility\animation\animation.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\animation_mixer.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\animation_track.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\armature_animation.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\animation\track_pos.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\armature.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\action.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\bone_frame.h">
+      <Filter>model</Filter>
+    </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\bone.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\intersection.h">
       <Filter>model</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\material.h">
       <Filter>model</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\mesh.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\camera.h" />
+    <ClInclude Include="..\punk_engine\utility\config.h" />
+    <ClInclude Include="..\punk_engine\utility\error.h" />
+    <ClInclude Include="..\punk_engine\utility\font_builder.h" />
     <ClInclude Include="..\punk_engine\utility\model\scene.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\punk_scene_loader.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\skeleton_animation.h">
       <Filter>model</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\skin_animation.h">
@@ -65,61 +111,50 @@
     <ClInclude Include="..\punk_engine\utility\model\static_mesh.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\vertex.h">
-      <Filter>model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\camera.h" />
-    <ClInclude Include="..\punk_engine\utility\config.h" />
-    <ClInclude Include="..\punk_engine\utility\error.h" />
-    <ClInclude Include="..\punk_engine\utility\font_builder.h" />
-    <ClInclude Include="..\punk_engine\utility\utility.h" />
-    <ClInclude Include="..\punk_engine\utility\model\punk_scene_loader.h">
-      <Filter>model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\bone_frame.h">
-      <Filter>model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\action.h">
-      <Filter>model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\skeleton_animation.h">
-      <Filter>model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\mesh.h">
-      <Filter>model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\vertex_bone_weight.h">
-      <Filter>model</Filter>
-    </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\texture_faces.h">
       <Filter>model</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\vertex_index.h">
       <Filter>model</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\vertex.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\vertex_bone_weight.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\utility_lod.h" />
+    <ClInclude Include="..\punk_engine\utility\food_type.h" />
+    <ClInclude Include="..\punk_engine\utility\elements\human.h">
+      <Filter>elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\elements\terrain.h">
+      <Filter>elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\elements\utility_tree.h">
+      <Filter>elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\weapon_type.h" />
+    <ClInclude Include="..\punk_engine\utility\bullet_type.h" />
+    <ClInclude Include="..\punk_engine\utility\scene_manager.h" />
     <ClInclude Include="..\punk_engine\utility\model\object.h">
       <Filter>model</Filter>
     </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\intersection.h">
-      <Filter>model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\animation\animation.h">
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="animation">
+      <UniqueIdentifier>{751218b0-22d7-4f78-ad4b-8743180268d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{66146b37-2114-4f0a-b6d2-64e3db765ced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="elements">
+      <UniqueIdentifier>{5aebe84d-a9ad-4b38-9f2a-aa9811afd1ce}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\punk_engine\utility\animation\animation_track.inl">
       <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\model\armature.h">
-      <Filter>model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\animation\track_pos.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\animation\animation_track.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\animation\animation_mixer.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\utility\animation\armature_animation.h">
-      <Filter>animation</Filter>
-    </ClInclude>
+    </None>
   </ItemGroup>
 </Project>

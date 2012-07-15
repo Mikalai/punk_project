@@ -6,6 +6,6 @@ namespace OpenGL
 	VertexShaderSkinning::VertexShaderSkinning()
 		: Shader(SHADER_VERTEX)
 	{
-		CookFromFile(System::Environment::GetShaderFolder() + L"skinning_330.vert");
+		CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"skinning_330.vert");
 	}
 }

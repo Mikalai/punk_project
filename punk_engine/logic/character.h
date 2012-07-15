@@ -10,7 +10,7 @@ namespace System
 {
 	class string;
 }
-
+/*
 namespace Logic
 {
 	class Quest;
@@ -23,5 +23,5 @@ namespace Logic
 		virtual void AddQuest(Quest* quest);
 	};
 }
-
+*/
 #endif

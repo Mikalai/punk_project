@@ -6,6 +6,6 @@ namespace OpenGL
 	FragmentShaderLight::FragmentShaderLight()
 		: Shader(SHADER_FRAGMENT)
 	{
-		CookFromFile(System::Environment::GetShaderFolder() + L"per_vertex_lighting_330.frag");
+		CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"per_vertex_lighting_330.frag");
 	}
 }

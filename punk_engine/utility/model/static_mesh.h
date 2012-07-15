@@ -53,8 +53,9 @@ namespace Utility
 
 		const Math::Matrix4x4<float>& GetMeshOffset() const;
 		void SetMeshOffset(const Math::Matrix4x4<float>& offset);
-		void Save(System::Buffer& buffer);
-		void Load(System::Buffer& buffer);
+
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
 
 	};
 }

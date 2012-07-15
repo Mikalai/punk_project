@@ -6,6 +6,6 @@ namespace OpenGL
 	ShaderTerrainFragment::ShaderTerrainFragment()
 		: Shader(SHADER_FRAGMENT)
 	{
-		CookFromFile(System::Environment::GetShaderFolder() + L"terrain_330.frag");
+		CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"terrain_330.frag");
 	}
 }

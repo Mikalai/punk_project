@@ -8,7 +8,7 @@ namespace OpenGL
 	void Module::Init()
 	{
 		System::ConfigFile file;
-		file.Open(System::Window::GetInstance()->GetTitle());
+		file.Open(System::Window::Instance()->GetTitle());
 		if (!file.IsExistOption(L"shaders"))
 			file.WriteOptionString(L"shaders", L"d:\\project\\data\\shaders\\");
 		if (!file.IsExistOption(L"textures"))

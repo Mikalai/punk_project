@@ -1,3 +1,4 @@
+#define NOMINMAX
 #include <Windows.h>
 #include "../logger.h"
 #include "buffer_win32.h"

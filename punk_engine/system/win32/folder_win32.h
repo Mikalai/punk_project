@@ -1,9 +1,10 @@
 #ifndef FOLDER_WIN32_H
 #define FOLDER_WIN32_H
 
+#define NOMINMAX
 #include <Windows.h>
-#include <string>
 #include <list>
+#include "string_win32.h"
 #include "../config.h"
 
 namespace System
@@ -12,15 +13,18 @@ namespace System
 	{    
 		Folder(const Folder&);
 		Folder& operator = (const Folder&);
-		std::string folderName;
+		System::string folderName;
+		System::string prevFolder;
 	public:
 		Folder();
-		bool IsContain(const char*) const;
-		std::list<std::string> ListAllItems();
-		bool Open(const char* name);    
+		bool IsContain(const System::string&) const;
+		std::list<System::string> ListAllItems();
+		bool Open(const System::string& name);    
 		void Close();
-		std::list<std::string> Find(const char* name) const;
-		const char* Name() const;
+		std::list<System::string> Find(const System::string& name) const;
+		const System::string& Name() const;
+
+		static void DeleteFile(const System::string& filename);
 	};
 }
 

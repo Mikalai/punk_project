@@ -9,18 +9,27 @@
 
 #include <time.h>
 #include "types_win32.h"
+#define NOMINMAX
 #include <Windows.h>
 
 namespace System
 {
 	class MODULE_SYSTEM Timer
     {
+		static std::auto_ptr<Timer> m_instance;
+
         __int64 freq;
 		LARGE_INTEGER startPoint;
+
     public:
         Timer();
         double GetElapsedTime() const;
         void UpdateStartPoint();
+
+		__int64 GetCurrentSystemTimeUS();
+
+		static Timer* GetGlobalTimer();
+		static void DestroyGlobalTimer();
     };
 }
 

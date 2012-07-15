@@ -114,6 +114,9 @@ def export_world_matrix(f, object):
 #   on the current face
 #   
 def export_normals(f, mesh):
+    if len(mesh.vertices) == 0:
+        return;
+    
     start_block(f, "*normals")
     make_offset(f)
     f.write("%d\n" % len(mesh.vertices))
@@ -128,8 +131,11 @@ def export_normals(f, mesh):
 #   face MUST be TRIANGULATED
 #
 def export_face_vertex_position_id(f, mesh):
+    if (mesh == None) or len(mesh.polygons) == 0:
+        return;
+    
     start_block(f, "*vertex_positions_id")
-    for face in mesh.faces:
+    for face in mesh.polygons:
         make_offset(f)
         f.write("%d\t%d\t%d\t%d\n" % (face.index, face.vertices[0], face.vertices[1], face.vertices[2]))
         
@@ -140,10 +146,14 @@ def export_face_vertex_position_id(f, mesh):
 #   it is needed more info later. 
 #
 def export_faces(f, mesh):
+    
+    if (mesh == None) or len(mesh.polygons) == 0:
+        return
+    
     start_block(f, "*faces")
 
     make_offset(f)
-    f.write("%d\n" % len(mesh.faces))
+    f.write("%d\n" % len(mesh.polygons))
     
     export_face_vertex_position_id(f, mesh)
     
@@ -173,7 +183,9 @@ def export_parent_inverse_matrix(f, object):
 #   exports vertex position for current mesh with no tranformation
 #   applied in the scene
 #
-def export_vertex_position(f, mesh):        
+def export_vertex_position(f, mesh):   
+    if (mesh == None) or (len(mesh.vertices) == 0):
+        return
     start_block(f, "*vertex_position")    
     make_offset(f)
     f.write("%d\n" % len(mesh.vertices))
@@ -189,24 +201,31 @@ def export_vertex_position(f, mesh):
 #   but i export all this staff. later should clear situation
 #
 def export_tex_coords(f, mesh):
-    if (len(mesh.uv_textures) == 0):
-        return
     
-    for texture in mesh.uv_textures:
+    if (mesh == None) or (len(mesh.uv_textures) == 0):
+        return
+
+    index = 0;
+    for texture in mesh.uv_layers:
         start_block(f, "*texture")    
         start_block(f, "*name")
         make_offset(f)
-        f.write("%s\n" % texture.name)
+        f.write("texture_%d\n" % index)
+        index = index + 1
         end_block(f)
         
         start_block(f, "*tex_coord")        
         #
         #   uv1 uv2 uv3 uv4
         #
-        for data in mesh.uv_textures[0].data:
-            make_offset(f)   
-            f.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n" % (data.uv1[0], data.uv1[1], data.uv2[0], data.uv2[1], data.uv3[0], data.uv3[1], data.uv4[0], data.uv4[1]))               
-        end_block(f)
+
+        data = texture.data
+    
+        for face in mesh.polygons:
+            make_offset(f)
+            f.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n" % (data[face.vertices[0]].uv[0], data[face.vertices[0]].uv[1], data[face.vertices[1]].uv[0], data[face.vertices[1]].uv[1], data[face.vertices[2]].uv[0], data[face.vertices[2]].uv[1], 0, 0))
+            
+        end_block(f)   
         end_block(f)
     return
 
@@ -214,7 +233,7 @@ def export_tex_coords(f, mesh):
 #   export mesh material
 #
 def export_mesh_material(f, mesh):
-    if (len(mesh.materials) == 0):
+    if (mesh == None) or (len(mesh.materials) == 0):
         return
     start_block(f, "*material")
     make_offset(f)
@@ -226,6 +245,8 @@ def export_mesh_material(f, mesh):
 #   export only mesh
 #
 def export_mesh(f, object):
+    if (object.data == None):
+        return
     start_block(f, "*mesh")
     export_vertex_position(f, object.data)
     export_normals(f, object.data)
@@ -329,14 +350,19 @@ def export_actions(f):
             #
             #   write bone name that is affected by this curve
             #
-            if curve.data_path.rfind("bones") == -1:
-                continue
-            s = curve.data_path.split('"')
-            start_block(f, "*bone")
-            start_block(f, "*name")
-            make_offset(f)
-            f.write("%s\n" % s[1])
-            end_block(f)
+            if curve.data_path.rfind("bones") != -1:
+                start_block(f, "*bone")
+                start_block(f, "*name")
+                s = curve.data_path.split('"')
+                make_offset(f)
+                f.write("%s\n" % s[1])
+                end_block(f)
+            else:
+                start_block(f, "*object")
+                start_block(f, "*name")
+                make_offset(f)
+                f.write("%s\n" % curve.group.name)
+                end_block(f)                
 
             #
             #   write data block
@@ -447,10 +473,13 @@ def export_object(f, object):
     export_world_matrix(f, object)
     export_local_matrix(f, object)
     export_parent_inverse_matrix(f, object)
+
     if object.name.find("slot") == -1:
-        export_mesh(f, object)       
+        export_mesh(f, object)  
+             
     for child in object.children:
-        export_object(f, child)       
+        export_object(f, child)    
+           
     end_block(f)
     return     
 

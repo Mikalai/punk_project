@@ -123,7 +123,12 @@
     <ClInclude Include="..\punk_engine\system\resource.h" />
     <ClInclude Include="..\punk_engine\system\resource_factory.h" />
     <ClInclude Include="..\punk_engine\system\resource_manager.h" />
+    <ClInclude Include="..\punk_engine\system\resource_manager_2.h" />
     <ClInclude Include="..\punk_engine\system\scene_graph.h" />
+    <ClInclude Include="..\punk_engine\system\serializable.h" />
+    <ClInclude Include="..\punk_engine\system\template_singletone.h" />
+    <ClInclude Include="..\punk_engine\system\thread_job.h" />
+    <ClInclude Include="..\punk_engine\system\thread_pool.h" />
     <ClInclude Include="..\punk_engine\system\win32\binary_file_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\buffer_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\clock_win32.h" />
@@ -137,7 +142,9 @@
     <ClInclude Include="..\punk_engine\system\win32\monitor_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\mouse_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\process_win32.h" />
-    <ClInclude Include="..\punk_engine\system\win32\resource_factory_win32.h" />
+    <ClInclude Include="..\punk_engine\system\win32\resource_factory_win32.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\punk_engine\system\win32\resource_manager_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\resource_win32.h" />
     <ClInclude Include="..\punk_engine\system\win32\stack_trace_win32.h" />
@@ -199,6 +206,9 @@
     <ClCompile Include="..\punk_engine\system\linux\text_file_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\timer_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\window_linux.cpp" />
+    <ClCompile Include="..\punk_engine\system\resource_manager.cpp" />
+    <ClCompile Include="..\punk_engine\system\thread_job.cpp" />
+    <ClCompile Include="..\punk_engine\system\thread_pool.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\binary_file_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\buffer_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\clock_win32.cpp" />
@@ -211,7 +221,9 @@
     <ClCompile Include="..\punk_engine\system\win32\keyboard_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\mouse_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\process_win32.cpp" />
-    <ClCompile Include="..\punk_engine\system\win32\resource_factory_win32.cpp" />
+    <ClCompile Include="..\punk_engine\system\win32\resource_factory_win32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\punk_engine\system\win32\resource_manager_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\stack_trace_win32.cpp" />
     <ClCompile Include="..\punk_engine\system\win32\thread_win32.cpp" />

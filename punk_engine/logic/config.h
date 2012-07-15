@@ -4,7 +4,7 @@
 #ifdef PUNK_LOGIC_EXPORTS
 #define PUNK_LOGIC_MODULE __declspec(dllexport)
 #else
-#define PUNK_LOGIC_EXPORTS __declspec(dllimport)
+#define PUNK_LOGIC_MODULE __declspec(dllimport)
 #endif
 
 #endif

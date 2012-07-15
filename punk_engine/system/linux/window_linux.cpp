@@ -640,7 +640,7 @@ namespace System
                                 e->x = kevent->x;
                                 e->y = kevent->y;
                                 e->key = key;
-                                EventManager::GetInstance()->FixEvent(e);
+                                EventManager::Instance()->FixEvent(e);
                             }
                             else
                             {
@@ -648,7 +648,7 @@ namespace System
                                 e->x = kevent->x;
                                 e->y = kevent->y;
                                 e->key = key;
-                                EventManager::GetInstance()->FixEvent(e);
+                                EventManager::Instance()->FixEvent(e);
                             }
 
                             if (charKey != 0 && press)
@@ -657,7 +657,7 @@ namespace System
                                 e->x = kevent->x;
                                 e->y = kevent->y;
                                 e->key = key;
-                                EventManager::GetInstance()->FixEvent(e);
+                                EventManager::Instance()->FixEvent(e);
                             }
                         }
                         break;
@@ -674,7 +674,7 @@ namespace System
                     event->shiftButton = (bool)(wParam & MK_SHIFT);
                     event->xbutton1 = (bool)(wParam & MK_XBUTTON1);
                     event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
-                        EventManager::GetInstance()->FixEvent(e);
+                        EventManager::Instance()->FixEvent(e);
                         break;
                     }
                 case ButtonPress:
@@ -709,7 +709,7 @@ namespace System
                                 event->shiftButton = (bool)(wParam & MK_SHIFT);
                                 event->xbutton1 = (bool)(wParam & MK_XBUTTON1);
                                 event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
-                                EventManager::GetInstance()->FixEvent(e);
+                                EventManager::Instance()->FixEvent(e);
                             }
                             break;
                         case 5:         //wheel -
@@ -726,7 +726,7 @@ namespace System
                             event->shiftButton = (bool)(wParam & MK_SHIFT);
                             event->xbutton1 = (bool)(wParam & MK_XBUTTON1);
                             event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
-                                EventManager::GetInstance()->FixEvent(e);
+                                EventManager::Instance()->FixEvent(e);
                                 break;
                             }
                         }                        
@@ -735,8 +735,8 @@ namespace System
             }
             while (XPending(display)); /* loop to compress events */
 
-            EventManager::GetInstance()->FixEvent(IdleEvent::Raise());
-            EventManager::GetInstance()->Process();
+            EventManager::Instance()->FixEvent(IdleEvent::Raise());
+            EventManager::Instance()->Process();
 
         }
     }

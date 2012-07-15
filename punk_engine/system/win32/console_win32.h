@@ -1,6 +1,7 @@
 #ifndef _H_SYSTEM_CONSOLE_WIN32
 #define _H_SYSTEM_CONSOLE_WIN32
 
+#define NOMINMAX
 #include <Windows.h>
 #include "../singletone.h"
 #include "string_win32.h"

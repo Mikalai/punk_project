@@ -43,8 +43,8 @@ namespace Math
 			return false;
 		}
 
-		*t0 = max(u0, *t0);
-		*t1 = max(u1, *t1);
+		*t0 = std::max(u0, *t0);
+		*t1 = std::max(u1, *t1);
 
 		if (*t1 < *t0)
 		{

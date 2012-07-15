@@ -3,6 +3,7 @@
 
 #ifdef _WIN32
 
+#define NOMINMAX
 #include <stddef.h>
 #include <windows.h>
 #include <vector>
@@ -73,6 +74,7 @@ namespace System
 		string& operator += (const wchar_t* s);
 
 		void ToANSI(char*& buffer, int& length) const;
+		void ToANSI(char* buffer, int size) const;
 
 		int ToInt32() const;
 		int ToInt32FromHex() const;
@@ -111,6 +113,8 @@ namespace System
 		void* operator new (size_t size);
 		void operator delete (void* pointer, size_t size);
 
+		void Save(std::ostream& stream) const;
+		void Load(std::istream& stream);
 		//
 		//	debugging info
 		//

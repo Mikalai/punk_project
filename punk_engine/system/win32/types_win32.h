@@ -31,7 +31,8 @@ namespace System
                 void** a = (void**)&m;
                 void** b = (void**)&method;
                 *a = *b;
-				params->reciever = reciever;
+				if (reciever)
+					params->reciever = reciever;
                 (o->*m)(params);
             }
         }

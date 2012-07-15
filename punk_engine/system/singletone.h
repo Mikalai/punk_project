@@ -5,7 +5,7 @@
 namespace T##__private_data\
 {\
 	T* m_object;\
-	T* T##__singletone::GetInstance()\
+	T* T##__singletone::Instance()\
     {\
 		if (m_object)\
 			return m_object;\
@@ -28,7 +28,7 @@ namespace T##__private_data\
 	class LIB T##__singletone\
 	{\
 	public:\
-			static T* GetInstance();\
+			static T* Instance();\
         static void Release();\
     };\
 }
@@ -45,7 +45,7 @@ namespace T##__private_data\
         static T* m_object;
     public:
 
-        static T* GetInstance()
+        static T* Instance()
         {
             //
             //  add synchronization here

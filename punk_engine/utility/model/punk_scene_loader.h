@@ -40,6 +40,10 @@ namespace Utility
 		StaticMesh* CookStaticMesh(const System::string& name) const;
 		StaticMesh* CookSkinnedMesh(const System::string& name) const;
 		Armature* GetArmature(const System::string& name);
+		int GetArmatureCount() const;
+		const System::string& GetArmatureName(int index) const;
+
+		void PrintDebug();
 	};
 
 

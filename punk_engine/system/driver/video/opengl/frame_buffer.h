@@ -10,26 +10,39 @@ frame buffer object can be used else
 #define _H_PUNK_FRAME_BUFFER_OBJECT
 
 #include "gl/gl3.h"
+#include "texture2d.h"
+#include "config.h"
 
 namespace OpenGL
 {
-	class FrameBuffer
+	class MODULE_OPENGL FrameBuffer
 	{
-		GLint m_width;
-		GLint m_height;
-		GLuint m_texture;
-		GLuint m_fbo;
-		GLuint m_rbo;
-		GLint m_oldx;
-		GLint m_oldy;
-		GLint m_oldWidth;
-		GLint m_oldHeight;
+		FrameBuffer(const FrameBuffer&);
+		FrameBuffer& operator = (const FrameBuffer&);
+	protected:
+		//	color texture
+		std::auto_ptr<Texture2D> m_color_texture;
+		//	depth texture
+		std::auto_ptr<Texture2D> m_depth_texture;
+		//	multisample resolve target
+		GLuint m_resolve_fb;
+		//	render frame buffer
+		GLuint m_fb;
+		//	contains color information
+		GLuint m_color_rb;
+		//	contains depth information
+		GLuint m_depth_rb;
+
+		void Check();
+		virtual void Clear();
 	public:
-		~FrameBuffer();
-		void Init(GLint width, GLint height);
+		FrameBuffer();
+		virtual ~FrameBuffer();
+		virtual void Init(GLint width, GLint height);
 		void Activate();
 		void Deactivate();
-		GLuint GetTexture();
+		Texture2D* GetColorTexture();
+		Texture2D* GetDepthTexture();
 	};
 }
 #endif	//_H_FRAME_BUFFER_OBJECT

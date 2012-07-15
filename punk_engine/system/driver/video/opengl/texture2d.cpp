@@ -31,11 +31,13 @@ namespace OpenGL
 	void Texture2D::Bind() const 
 	{
 		glBindTexture(GL_TEXTURE_2D, impl_texture_2d->m_id);
+		CHECK_GL_ERROR(L"Unable to bind texture");
 	}
 
 	void Texture2D::Unbind() const
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
+		CHECK_GL_ERROR(L"Unable to unbind texture");
 	}
 
 	Texture2D::~Texture2D()
@@ -55,7 +57,14 @@ namespace OpenGL
 
 	void Texture2D::Create(int width, int height, GLenum format, const unsigned char* data)
 	{
+		impl_texture_2d.reset(new Texture2DImpl);
 		impl_texture_2d->Create(width, height, format, data);
+	}
+
+	void Texture2D::Create(const ImageModule::Image& image)
+	{
+		impl_texture_2d.reset(new Texture2DImpl);
+		impl_texture_2d->CreateFromImage(image, false);
 	}
 
 	void Texture2D::Fill(unsigned char byte)
@@ -71,6 +80,41 @@ namespace OpenGL
 	int Texture2D::GetHeight() const
 	{
 		return impl_texture_2d->m_height;
+	}
+
+	unsigned Texture2D::GetCode() const
+	{
+		return impl_texture_2d->m_id;
+	}
+
+	void Texture2D::SetSourceFile(const System::string& filename)
+	{
+		impl_texture_2d->SetSourceFile(filename);
+	}
+
+	const System::string& Texture2D::GetSourceFile() const
+	{
+		return impl_texture_2d->GetSourceFile();
+	}
+
+	void Texture2D::SetIndex(int index)
+	{
+		impl_texture_2d->SetIndex(index);
+	}
+
+	int Texture2D::GetIndex() const
+	{
+		return impl_texture_2d->GetIndex();
+	}
+
+	void Texture2D::Init()
+	{
+		impl_texture_2d->Init();
+	}
+
+	void Texture2D::Clear()
+	{
+		impl_texture_2d->Clear();
 	}
 
 	/*void Texture2D::Create(const ImageModule::ImageFile& file)

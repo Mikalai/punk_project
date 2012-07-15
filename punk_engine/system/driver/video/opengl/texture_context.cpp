@@ -35,10 +35,15 @@ namespace OpenGL
 
 	void TextureContext::SetTexture0(const Texture2D* map)
 	{
-		impl_tc->m_diffuse_map = map;
+		impl_tc->m_diffuse_map_1 = map;
 	}
 
 	void TextureContext::SetTexture1(const Texture2D* map)
+	{
+		impl_tc->m_diffuse_map_2 = map;
+	}
+
+	void TextureContext::SetTexture2(const Texture2D* map)
 	{
 		impl_tc->m_normal_map = map;
 	}

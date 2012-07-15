@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../error.h"
 #include <algorithm>
 #include "../../system/string.h"
@@ -30,13 +31,13 @@
 #define CHECK_START(buffer)\
 	if (!CheckIntegrity(buffer))\
 		{\
-		System::Logger::GetInstance()->WriteError(L"Integrity check failed", LOG_LOCATION);\
+		System::Logger::Instance()->WriteError(L"Integrity check failed", LOG_LOCATION);\
 		}
 
 #define CHECK_END(buffer)\
 	if (Parse(buffer.ReadWord()) != WORD_CLOSE_BRACKET)\
 		{\
-		System::Logger::GetInstance()->WriteError(L"Integrity check failed", LOG_LOCATION);\
+		System::Logger::Instance()->WriteError(L"Integrity check failed", LOG_LOCATION);\
 		}
 
 namespace Utility
@@ -128,7 +129,7 @@ namespace Utility
 		typedef std::map<System::string, Math::Matrix<BoneFrame> > CookedAnimation;
 		typedef std::vector<std::shared_ptr<CookedAnimation>> CookedAnimationCollection;
 		//	struct 		
-		typedef std::map<System::string, Object> Objects;
+		typedef std::map<System::string, std::shared_ptr<Object>> Objects;
 		System::string m_material;
 		Objects m_objects;
 		Math::BoundingBox m_bbox;
@@ -139,7 +140,13 @@ namespace Utility
 		std::map<System::string, Math::Matrix<float> > m_frame_value;
 		std::map<BoneName, std::map<FrameID, BoneFrame> >::iterator m_maximum_frames;
 		std::map<BoneName, int> m_bone_index;
+		
+		typedef std::map<System::string, std::shared_ptr<Animation>> AnimationCollection;
+		typedef std::map<System::string, AnimationCollection> ActionCollection;
+		ActionCollection m_actions;
+
 		ArmatureCollection m_armature_collection;
+
 		SceneImpl::SceneImpl()
 		{}
 
@@ -158,12 +165,11 @@ namespace Utility
 			, m_armature_collection(impl.m_armature_collection)
 		{}
 
-
 		///	Loads entire scene
 		void Load(const System::string& filename)
 		{
 			System::Buffer buffer;
-			if (!System::BinaryFile::Load(System::Environment::GetModelFolder()+filename, buffer))
+			if (!System::BinaryFile::Load(System::Environment::Instance()->GetModelFolder()+filename, buffer))
 				throw UtilityError((L"Unable to load file " + filename).Data());
 
 			while (!buffer.IsEnd())
@@ -176,7 +182,7 @@ namespace Utility
 						std::auto_ptr<Object> o(new Object);
 						ParseObject(buffer, *o);
 						Object* oo = o.release();
-						m_objects[oo->m_name] = *oo;
+						m_objects[oo->GetName()].reset(oo);
 					}
 					break;
 				case WORD_MATERIALS:
@@ -189,7 +195,7 @@ namespace Utility
 					ParseActions(buffer);
 					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword: %s",  word.Data()));
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword: %s",  word.Data()));
 				}
 			}						
 		}
@@ -203,7 +209,7 @@ namespace Utility
 			{
 				if (buffer.IsEnd())
 				{
-					System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);
+					System::Logger::Instance()->WriteError(L"Can't parse object", LOG_LOCATION);
 					return;
 				}
 
@@ -213,36 +219,37 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_ACTION:
-					{												
-						ParseAction(buffer, *m_armature_collection.begin()->second);
+					{	
+						ParseAction(buffer, m_actions);
 					}
 					break;
 				}
 			}
 		}
 
-		void ParseAction(System::Buffer& buffer, Armature& armature)
+		void ParseAction(System::Buffer& buffer, ActionCollection& actions)
 		{
 			CHECK_START(buffer);
-
-			Animation* anim = 0;
-			System::string action_name;
 
 			while (1)
 			{
 				if (buffer.IsEnd())
 				{
-					System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);
+					System::Logger::Instance()->WriteError(L"Can't parse object", LOG_LOCATION);
 					return;
 				}
 
 				KeywordCode index;
+				System::string name;
 				switch(index = Parse(buffer.ReadWord()))
 				{
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_NAME:
-					action_name = ParseName(buffer);
+					{
+						name = ParseName(buffer);
+						actions[name] = AnimationCollection();
+					}
 					break;
 				case WORD_TIMING:
 					{
@@ -250,11 +257,11 @@ namespace Utility
 						buffer.ReadWord().ToInt32();
 						buffer.ReadWord().ToInt32();
 						if (Parse(buffer.ReadWord()) != WORD_CLOSE_BRACKET)
-							System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);		
+							System::Logger::Instance()->WriteError(L"Can't parse object", LOG_LOCATION);		
 					}
 					break;
 				case WORD_FRAMES:
-					ParseSkeletoneAnimation(buffer, action_name, armature);
+					ParseAnimation(buffer, name, actions[name]);
 					break;
 				}
 			}
@@ -269,7 +276,7 @@ namespace Utility
 			{
 				if (buffer.IsEnd())
 				{
-					System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);
+					System::Logger::Instance()->WriteError(L"Can't parse object", LOG_LOCATION);
 					return;
 				}
 
@@ -298,7 +305,7 @@ namespace Utility
 			{
 				if (buffer.IsEnd())
 				{
-					System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);
+					System::Logger::Instance()->WriteError(L"Can't parse object", LOG_LOCATION);
 					return;
 				}
 
@@ -320,7 +327,7 @@ namespace Utility
 					}
 					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string("Unknown keyword: ") + name);
+					System::Logger::Instance()->WriteError(System::string("Unknown keyword: ") + name);
 				}
 			}
 		}
@@ -334,7 +341,7 @@ namespace Utility
 			{
 				if (buffer.IsEnd())
 				{
-					System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);
+					System::Logger::Instance()->WriteError(L"Can't parse object", LOG_LOCATION);
 					return;
 				}
 
@@ -344,40 +351,48 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_NAME:
-					o.m_name = ParseName(buffer);
+					o.SetName(ParseName(buffer));
+					System::Logger::Instance()->WriteMessage(L"Parsing " + o.GetName());
 					break;
 				case WORD_BOUNDING_BOX:
-					o.m_bbox = ParseBoundingBox(buffer);
+					o.AsBoundingBox() = ParseBoundingBox(buffer);
 					break;
 				case WORD_LOCATION:
-					o.m_location = ParseVector(buffer);
+					o.SetLocation(ParseVector(buffer));
 					break;
 				case WORD_WORLD_MATRIX:
-					o.m_world_matrix = ParseMatrix(buffer);
+					o.SetWorldMatrix(ParseMatrix(buffer));
 					break;
 				case WORD_PARENT_INVERSED_MATRIX:
 					ParseMatrix(buffer);
 					break;
 				case WORD_LOCAL_MATRIX:
-					o.m_local_matrix = ParseMatrix(buffer);
+					o.SetLocalMatrix(ParseMatrix(buffer));
 					break;
 				case WORD_MESH:
 					{
-						o.m_mesh.reset(new Mesh());
-						ParseObjectMesh(buffer, *o.m_mesh);
+						o.SetMesh(new Mesh());
+						ParseObjectMesh(buffer, *o.GetMesh());
 					}
 					break;
 					//case WORD_ARMATURE:
 					//	ParseBones(buffer);
 					//	break;
 					//case WORD_SKELETON_ANIMATION:
-					//	ParseSkeletoneAnimation(buffer);
+					//	ParseAnimation(buffer);
 					//	break;
 				case WORD_MATERIALS:
 					ParseMaterials(buffer);
 					break;
+				case WORD_OBJECT:
+					{
+						std::auto_ptr<Object> child(new Object);
+						ParseObject(buffer, *child);
+						o.AddChild(child.release());
+					}
+					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[index]), LOG_LOCATION);
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[index]), LOG_LOCATION);
 				}
 			}
 		}
@@ -390,7 +405,7 @@ namespace Utility
 			{
 				if (buffer.IsEnd())
 				{
-					System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);
+					System::Logger::Instance()->WriteError(L"Can't parse object", LOG_LOCATION);
 					return;
 				}
 
@@ -399,12 +414,15 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_VERTEX_POSITION:
+					std::cout << "Loading vertex position..." << std::endl;
 					ParseVertexPosition(buffer, mesh.m_vertices);					
 					break;					
 				case WORD_NORMALS:
+					std::cout << "Loading normals..." << std::endl;
 					ParseNormals(buffer, mesh.m_normals);
 					break;
 				case WORD_FACES:
+					std::cout << "Loading faces..." << std::endl;
 					ParseFaces(buffer, mesh.m_faces);
 					break;
 				case WORD_BONES_WEIGHT:
@@ -412,6 +430,7 @@ namespace Utility
 					break;
 				case WORD_TEXTURE:
 					{
+						std::cout << "Loading textures..." << std::endl;
 						TextureMesh* tm = mesh.m_tex_coords.FindEmpty();
 						if (tm)
 							ParseTexture(buffer, *tm);
@@ -423,7 +442,7 @@ namespace Utility
 					ParseMeshMaterial(buffer);
 					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[index]), LOG_LOCATION);
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[index]), LOG_LOCATION);
 				}
 			}
 		}
@@ -436,7 +455,7 @@ namespace Utility
 			{
 				if (buffer.IsEnd())
 				{
-					System::Logger::GetInstance()->WriteError(L"Can't parse object", LOG_LOCATION);
+					System::Logger::Instance()->WriteError(L"Can't parse object", LOG_LOCATION);
 					return;
 				}
 
@@ -451,7 +470,7 @@ namespace Utility
 					ParseTextureCoords(buffer, face);
 					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[index]), LOG_LOCATION);
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[index]), LOG_LOCATION);
 				}
 			}
 		}
@@ -465,6 +484,7 @@ namespace Utility
 
 				if (word == Keyword[WORD_CLOSE_BRACKET])
 					return;
+				
 				float u1 = word.ToFloat();
 				float v1 = buffer.ReadWord().ToFloat();
 				float u2 = buffer.ReadWord().ToFloat();
@@ -664,12 +684,12 @@ namespace Utility
 					bone.SetBoneMatrix(ParseMatrix(buffer));
 					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
 				}
 			}
 		}
 
-		void ParseSkeletoneAnimation(System::Buffer& buffer, System::string action_name, Armature& armature)
+		void ParseAnimation(System::Buffer& buffer, const System::string& action_name, AnimationCollection& animations)
 		{
 			CHECK_START(buffer);
 
@@ -681,16 +701,52 @@ namespace Utility
 					return;
 				case WORD_BONE:
 					{						
-						ParseBoneAnimation(buffer, action_name, armature);
+						ParseBoneAnimation(buffer, action_name, animations);
+					}
+					break;
+				case WORD_OBJECT:
+					{
+						ParseObjectAnimation(buffer, action_name, animations);
 					}
 					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
 				}
 			}
 		}
 
-		void ParseBoneAnimation(System::Buffer& buffer, const System::string& action_name, Armature& armature)
+		void ParseObjectAnimation(System::Buffer& buffer, const System::string& action_name, AnimationCollection& animation)
+		{
+			CHECK_START(buffer);
+
+			Object* cur_object = 0;
+
+			System::string bone_name;
+			while (1)
+			{
+				switch(KeywordCode code = Parse(buffer.ReadWord()))
+				{
+				case WORD_CLOSE_BRACKET:
+					return;
+				case WORD_NAME:
+					cur_object = FindObjectByName(ParseName(buffer));
+					if (cur_object == 0)
+						throw "Can't parse object animation";
+					break;
+				case WORD_POS_X:
+				case WORD_POS_Y:
+				case WORD_POS_Z:
+				case WORD_ROT_W:
+				case WORD_ROT_X:
+				case WORD_ROT_Y:
+				case WORD_ROT_Z:
+					ParseObjectAnimationValues(buffer, *cur_object->AsAnimationMixer().GetOrCreateTrack(action_name), code);
+					break;
+				}
+			}
+		}
+
+		void ParseBoneAnimation(System::Buffer& buffer, const System::string& action_name, AnimationCollection& animation)
 		{
 			CHECK_START(buffer);
 
@@ -704,7 +760,7 @@ namespace Utility
 				case WORD_CLOSE_BRACKET:
 					return;
 				case WORD_NAME:
-					cur_bone = armature.GetBoneByName(ParseName(buffer));
+					cur_bone = FindBoneByName(ParseName(buffer));
 					if (cur_bone == 0)
 						throw "Can't parse bone animation";
 					break;
@@ -715,13 +771,13 @@ namespace Utility
 				case WORD_ROT_X:
 				case WORD_ROT_Y:
 				case WORD_ROT_Z:
-					ParseBoneAnimationValues(buffer, *cur_bone->GetAnimationMixer().GetOrCreateTrack(action_name), code);
+					ParseObjectAnimationValues(buffer, *cur_bone->GetAnimationMixer().GetOrCreateTrack(action_name), code);
 					break;
 				}
 			}
 		}
 
-		void ParseBoneAnimationValues(System::Buffer& buffer, Animation& action, KeywordCode code)
+		void ParseObjectAnimationValues(System::Buffer& buffer, Animation& action, KeywordCode code)
 		{
 			CHECK_START(buffer);
 
@@ -827,7 +883,7 @@ namespace Utility
 					}
 					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
 				}
 			}
 		}
@@ -852,7 +908,7 @@ namespace Utility
 					ParseMaterialsDiffuseMap(buffer, name);
 					break;
 				default:
-					System::Logger::GetInstance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
 				}
 			}
 		}
@@ -865,7 +921,7 @@ namespace Utility
 				if (word == Keyword[i])
 					return static_cast<KeywordCode>(i);
 			}	
-			System::Logger::GetInstance()->WriteError(System::string::Format(L"Unknown keyword %s", word.Data()), LOG_LOCATION);		
+			System::Logger::Instance()->WriteError(System::string::Format(L"Unknown keyword %s", word.Data()), LOG_LOCATION);		
 			throw UtilityError(L"Unable to parse model file");
 		}
 
@@ -879,14 +935,37 @@ namespace Utility
 
 		Object* FindObjectByName(const System::string& obj)
 		{
-			return &m_objects.at(obj);
+			for each (auto object in m_objects)
+			{
+				if (object.second->GetName() == obj)
+					return object.second.get();
+				else
+				{
+					Object* res = object.second->GetChild(obj);
+					if (res)
+						return res;
+				}
+			}
+			return 0;
+		}
+
+		
+		Bone* FindBoneByName(const System::string& name)
+		{
+			for each (auto armature in m_armature_collection)
+			{
+				auto bone = armature.second->GetBoneByName(name);
+				if (bone)
+					return bone;
+			}
+			return 0;
 		}
 
 		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res)
 		{
-			for (Objects::const_iterator i = m_objects.begin(); i != m_objects.end(); ++i)
+			for each (auto record in m_objects)
 			{
-				i->second.IntersectWithRay(start, end, res);
+				record.second->IntersectWithRay(start, end, res);
 			}
 			return !res.empty();
 		}
@@ -1007,7 +1086,7 @@ namespace Utility
 
 		const System::string& GetObjectName(int index) const
 		{
-			if (index >= m_objects.size())
+			if (index >= (int)m_objects.size())
 				throw System::SystemError(L"Index out of range");
 			int i = 0;
 			for (Objects::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
@@ -1030,31 +1109,31 @@ namespace Utility
 			};
 
 			std::auto_ptr<StaticMesh> mesh(new StaticMesh);
-			mesh->SetIndexCount(o.m_mesh->m_faces.size()*3);
+			mesh->SetIndexCount(o.GetMesh()->m_faces.size()*3);
 			mesh->SetIndexBuffer(new unsigned[mesh->GetIndexCount()]);
-			for (unsigned i = 0; i < o.m_mesh->m_faces.size()*3; i++)
+			for (unsigned i = 0; i < o.GetMesh()->m_faces.size()*3; i++)
 			{
 				mesh->GetIndexBuffer()[i] = i;
 			}
-			mesh->SetVertexCount(o.m_mesh->m_faces.size()*3);
+			mesh->SetVertexCount(o.GetMesh()->m_faces.size()*3);
 			Vertex* vb;
 			mesh->SetVertexBuffer(vb = new Vertex[mesh->GetVertexCount()]);
 			memset(vb, 0, sizeof(Vertex)*mesh->GetVertexCount());
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 			int index = 0;
-			for (unsigned i = 0; i < o.m_mesh->m_tex_coords[0].size(); i++)
+			for (unsigned i = 0; i < o.GetMesh()->m_tex_coords[0].size(); i++)
 			{
-				const Math::ivec3& f = o.m_mesh->m_faces[i];
-				const Math::vec3& v1 = o.m_mesh->m_vertices[f[0]];
-				const Math::vec3& v2 = o.m_mesh->m_vertices[f[1]];
-				const Math::vec3& v3 = o.m_mesh->m_vertices[f[2]];
-				const Math::vec2& t1 = o.m_mesh->m_tex_coords[0][i][0];
-				const Math::vec2& t2 = o.m_mesh->m_tex_coords[0][i][1];
-				const Math::vec2& t3 = o.m_mesh->m_tex_coords[0][i][2];
-				const Math::vec3& n1 = o.m_mesh->m_normals[f[0]];
-				const Math::vec3& n2 = o.m_mesh->m_normals[f[1]];
-				const Math::vec3& n3 = o.m_mesh->m_normals[f[2]];
+				const Math::ivec3& f = o.GetMesh()->m_faces[i];
+				const Math::vec3& v1 = o.GetMesh()->m_vertices[f[0]];
+				const Math::vec3& v2 = o.GetMesh()->m_vertices[f[1]];
+				const Math::vec3& v3 = o.GetMesh()->m_vertices[f[2]];
+				const Math::vec2& t1 = o.GetMesh()->m_tex_coords[0][i][0];
+				const Math::vec2& t2 = o.GetMesh()->m_tex_coords[0][i][1];
+				const Math::vec2& t3 = o.GetMesh()->m_tex_coords[0][i][2];
+				const Math::vec3& n1 = o.GetMesh()->m_normals[f[0]];
+				const Math::vec3& n2 = o.GetMesh()->m_normals[f[1]];
+				const Math::vec3& n3 = o.GetMesh()->m_normals[f[2]];
 
 				Math::vec3 tgn;
 				Math::vec3 nrm;
@@ -1097,12 +1176,12 @@ namespace Utility
 
 			/// Smooth TBN
 			std::vector<int> mask(mesh->GetVertexCount());
-			for (int i = 0; i < o.m_mesh->m_vertices.size(); i++)
+			for (int i = 0; i < (int)o.GetMesh()->m_vertices.size(); i++)
 			{
 				Math::vec3 norm;
 				Math::vec3 tang;
 				Math::vec3 btan;
-				for (int j = 0; j < mesh->GetVertexCount(); j++)
+				for (int j = 0; j < (int)mesh->GetVertexCount(); j++)
 				{
 					Vertex* v = static_cast<Vertex*>(mesh->GetVertexBuffer()) + j;
 					if (base_index[j] == i)
@@ -1125,7 +1204,7 @@ namespace Utility
 				m.At(2,0) = norm[0]; m.At(2,1) = norm[1]; m.At(2,2) = norm[2];
 				float w = m.Determinant();
 
-				for (int j = 0; j < mesh->GetVertexCount(); j++)
+				for (int j = 0; j < (int)mesh->GetVertexCount(); j++)
 				{	
 					Vertex* v = static_cast<Vertex*>(mesh->GetVertexBuffer()) + j;
 					if (base_index[j] == i)
@@ -1137,7 +1216,7 @@ namespace Utility
 				}
 			}
 
-			mesh->SetMeshOffset(o.m_local_matrix);
+			mesh->SetMeshOffset(o.GetLocalMatrix());
 			mesh->SetVertexBufferSize(sizeof(Vertex)*mesh->GetVertexCount());
 			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT);
 			mesh->SetOneVertexSize(sizeof(Vertex));
@@ -1147,7 +1226,7 @@ namespace Utility
 
 		StaticMesh* CookSkinnedMesh(Object& o, Armature armature) const
 		{
-			if (o.m_mesh->m_bone_weights.empty())
+			if (o.GetMesh()->m_bone_weights.empty())
 				return nullptr;
 			struct Vertex
 			{
@@ -1160,15 +1239,15 @@ namespace Utility
 				float w1, w2, w3, w4;
 			};
 			std::auto_ptr<StaticMesh> mesh(new StaticMesh);
-			mesh->SetIndexCount(o.m_mesh->m_faces.size()*3);
+			mesh->SetIndexCount(o.GetMesh()->m_faces.size()*3);
 			mesh->SetIndexBuffer(new unsigned[mesh->GetIndexCount()]);
 
-			for (unsigned i = 0; i < o.m_mesh->m_faces.size()*3; i++)
+			for (unsigned i = 0; i < o.GetMesh()->m_faces.size()*3; i++)
 			{
 				mesh->GetIndexBuffer()[i] = i;
 			}
 
-			mesh->SetVertexCount(o.m_mesh->m_faces.size()*3);
+			mesh->SetVertexCount(o.GetMesh()->m_faces.size()*3);
 			Vertex* vb;
 			mesh->SetVertexBuffer(vb = new Vertex[mesh->GetVertexCount()]);
 			memset(vb, 0, sizeof(Vertex)*mesh->GetVertexCount());
@@ -1176,18 +1255,18 @@ namespace Utility
 			std::vector<int> base_index;		/// contains vertex index in the source array
 
 			int index = 0;
-			for (unsigned i = 0, max_i = o.m_mesh->m_tex_coords[0].size(); i < max_i; i++)
+			for (unsigned i = 0, max_i = o.GetMesh()->m_tex_coords[0].size(); i < max_i; i++)
 			{
-				const Math::ivec3& f = o.m_mesh->m_faces[i];
-				const Math::vec3& v1 = o.m_mesh->m_vertices[f[0]];
-				const Math::vec3& v2 = o.m_mesh->m_vertices[f[1]];
-				const Math::vec3& v3 = o.m_mesh->m_vertices[f[2]];
-				const Math::vec2& t1 = o.m_mesh->m_tex_coords[0][i][0];
-				const Math::vec2& t2 = o.m_mesh->m_tex_coords[0][i][1];
-				const Math::vec2& t3 = o.m_mesh->m_tex_coords[0][i][2];
-				const Math::vec3& n1 = o.m_mesh->m_normals[f[0]];
-				const Math::vec3& n2 = o.m_mesh->m_normals[f[1]];
-				const Math::vec3& n3 = o.m_mesh->m_normals[f[2]];			
+				const Math::ivec3& f = o.GetMesh()->m_faces[i];
+				const Math::vec3& v1 = o.GetMesh()->m_vertices[f[0]];
+				const Math::vec3& v2 = o.GetMesh()->m_vertices[f[1]];
+				const Math::vec3& v3 = o.GetMesh()->m_vertices[f[2]];
+				const Math::vec2& t1 = o.GetMesh()->m_tex_coords[0][i][0];
+				const Math::vec2& t2 = o.GetMesh()->m_tex_coords[0][i][1];
+				const Math::vec2& t3 = o.GetMesh()->m_tex_coords[0][i][2];
+				const Math::vec3& n1 = o.GetMesh()->m_normals[f[0]];
+				const Math::vec3& n2 = o.GetMesh()->m_normals[f[1]];
+				const Math::vec3& n3 = o.GetMesh()->m_normals[f[2]];			
 
 				Math::vec3 tgn;
 				Math::vec3 nrm;
@@ -1263,12 +1342,12 @@ namespace Utility
 
 			/// Smooth TBN
 			std::vector<int> mask(mesh->GetVertexCount());
-			for (int i = 0; i < o.m_mesh->m_vertices.size(); i++)
+			for (int i = 0; i < (int)o.GetMesh()->m_vertices.size(); i++)
 			{
 				Math::vec3 norm;
 				Math::vec3 tang;
 				Math::vec3 btan;
-				for (int j = 0; j < mesh->GetVertexCount(); j++)
+				for (int j = 0; j < (int)mesh->GetVertexCount(); j++)
 				{
 					Vertex* v = static_cast<Vertex*>(mesh->GetVertexBuffer()) + j;
 					if (base_index[j] == i)
@@ -1291,7 +1370,7 @@ namespace Utility
 				m.At(2,0) = norm[0]; m.At(2,1) = norm[1]; m.At(2,2) = norm[2];
 				float w = m.Determinant();
 
-				for (int j = 0; j < mesh->GetVertexCount(); j++)
+				for (int j = 0; j < (int)mesh->GetVertexCount(); j++)
 				{	
 					Vertex* v = static_cast<Vertex*>(mesh->GetVertexBuffer()) + j;
 					if (base_index[j] == i)
@@ -1305,7 +1384,7 @@ namespace Utility
 
 			//CookBonesMatrix(bones, count);
 
-			mesh->SetMeshOffset(o.m_local_matrix);
+			mesh->SetMeshOffset(o.GetLocalMatrix());
 			mesh->SetVertexBufferSize(sizeof(Vertex)*mesh->GetVertexCount());
 			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
 			mesh->SetOneVertexSize(sizeof(Vertex));
@@ -1314,7 +1393,7 @@ namespace Utility
 
 		void CookOneVertexWithBone(Object& o, Armature& armature, int index, float& b1, float& b2, float& b3, float& b4, float& w1, float& w2, float& w3, float& w4) const
 		{
-			const BoneWeights& weights = o.m_mesh->m_bone_weights.at(index);
+			const BoneWeights& weights = o.GetMesh()->m_bone_weights.at(index);
 
 			int b_id[4];
 			memset(b_id, 0, sizeof(b_id));
@@ -1352,13 +1431,54 @@ namespace Utility
 				throw;
 
 			w[0] /= l; w[1] /= l; w[2] /= l; w[3] /= l;
-			w1 = w[0]; w2 = w[1]; w3 = w[2]; w4 = 1.0 - w1 - w2 - w3 ;
-			b1 = b_id[0]; b2 = b_id[1]; b3 = b_id[2]; b4 = b_id[3];
+			w1 = w[0]; w2 = w[1]; w3 = w[2]; w4 = 1.0f - w1 - w2 - w3 ;
+			b1 = (float)b_id[0]; b2 = (float)b_id[1]; b3 = (float)b_id[2]; b4 = (float)b_id[3];
 		}
 
 		Armature* GetArmature(const System::string& name)
 		{
 			return m_armature_collection.at(name).get();
+		}
+
+		const System::string& GetArmatureName(int index) const
+		{
+			if (index >= (int)m_armature_collection.size())
+				throw System::SystemError(L"Index out of range");
+			int i = 0;
+			for (auto it = m_armature_collection.begin(); it != m_armature_collection.end(); ++it)
+			{
+				if (i == index)
+					return it->first;
+				i++;
+			}
+		}
+
+		int GetArmatureCount() const
+		{
+			return m_armature_collection.size();
+		}
+
+		void PrintObject(Object* object, int offset)
+		{
+			for (int i = 0; i != offset; ++i)
+				std::wcout << L'\t';
+
+			std::wcout << object->GetName().Data() << std::endl;
+			
+			for each (auto child in object->GetChildren())
+				PrintObject(child.get(), offset + 1);
+		}
+
+		void PrintDebug()
+		{
+			for each (auto object in m_objects)
+			{
+				std::wcout << object.first.Data() << std::endl;
+				for each (auto child in object.second->GetChildren())
+				{
+					PrintObject(child.get(), 1);
+				}
+			}
 		}
 	};
 
@@ -1528,6 +1648,8 @@ namespace Utility
 		return true;
 	}*/
 
+	
+
 }
 
 /** Interface implementaion goes here */
@@ -1555,6 +1677,7 @@ namespace Utility
 
 	void Scene::Load(const System::string& filename)
 	{
+		impl_scene.reset(new SceneImpl);
 		impl_scene->Load(filename);
 	}
 
@@ -1574,9 +1697,19 @@ namespace Utility
 		return impl_scene->CookSkinnedMesh(*obj, *impl_scene->m_armature_collection.begin()->second.get());
 	}
 
+	int Scene::GetArmatureCount() const
+	{
+		return impl_scene->GetArmatureCount();
+	}
+
 	Armature* Scene::GetArmature(const System::string& name) 
 	{
 		return impl_scene->GetArmature(name);
+	}
+
+	const System::string& Scene::GetArmatureName(int index) const
+	{
+		return impl_scene->GetArmatureName(index);
 	}
 
 	/*Math::OctTree& Scene::GetOctTree()
@@ -1599,4 +1732,8 @@ namespace Utility
 		return impl_scene->GetObjectName(index);
 	}
 
+	void Scene::PrintDebug()
+	{
+		impl_scene->PrintDebug();
+	}
 }

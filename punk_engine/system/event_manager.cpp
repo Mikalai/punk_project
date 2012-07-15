@@ -39,7 +39,7 @@ namespace System
 		std::vector<Handler>::const_iterator i = std::find(eventHandlers[event].begin(), eventHandlers[event].end(), handler);
 		if ( i == eventHandlers[event].end())
 		{
-			System::Logger::GetInstance()->WriteWarning(string::Format(L"There is no handler to unsubscribe with code %d", event), LOG_LOCATION);
+			System::Logger::Instance()->WriteWarning(string::Format(L"There is no handler to unsubscribe with code %d", event), LOG_LOCATION);
 			return;
 		}
 		eventHandlers[event].erase(i);
@@ -54,7 +54,7 @@ namespace System
 		static long prev_event_code = event->eventCode;
 		if (prev_event_code != event->eventCode && m_events_mask[event->eventCode])
 		{
-			Logger::GetInstance()->WriteMessage(event->ToString());
+			Logger::Instance()->WriteMessage(event->ToString());
 			prev_event_code = event->eventCode;
 		}
 
@@ -86,12 +86,12 @@ namespace System
 		}
 		catch (System::SystemError& err)
 		{
-			System::Logger::GetInstance()->WriteError(err.Message());
+			System::Logger::Instance()->WriteError(err.Message());
 			throw;
 		}
 		catch (...)
 		{
-			System::Logger::GetInstance()->WriteError(L"Defenetly unexpected error in main loop");
+			System::Logger::Instance()->WriteError(L"Defenetly unexpected error in main loop");
 			throw;
 		}
 	}

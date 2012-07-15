@@ -29,6 +29,9 @@ namespace GUI
 
 		void Render();
 
+		void SetFocusedWidget(Widget* widget);
+		Widget* GetFocusedWidget() { return m_focusWidget; }
+		const Widget* GetFocusedWidget() const { return m_focusWidget; }
 		void SetGUIRender(IGUIRender* render);
 		void AddRootWidget(Widget* widget);
 		void RemoveRootWidget(Widget* widget);

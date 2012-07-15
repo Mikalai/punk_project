@@ -1,4 +1,5 @@
 #include "gui_default_render.h"
+#include "manager.h"
 #include "../math/mat4.h"
 #include "widget.h"
 #include "list_box.h"
@@ -11,6 +12,7 @@
 namespace GUI
 {
 	DefaultGUIRender::DefaultGUIRender()
+		: m_selection_color_delta(0.1, 0.1, 0.1, 0.1)
 	{
 		m_quad.reset(new OpenGL::QuadObject());
 		m_quad->Init();
@@ -40,6 +42,10 @@ namespace GUI
 	void DefaultGUIRender::RenderListBox(const ListBox* lb)
 	{
 		RenderWidget(lb);
+
+		if (lb->GetCurrentSelection() > lb->GetStartOffset() + lb->GetMaxVisibleItems())
+			return;
+
 		if (lb->GetCurrentSelection() != -1 && lb->GetCurrentSelection() >= lb->GetStartOffset())
 		{
 			Math::vec4 color(0.0f , 0.2f, 0.5f, 0.5f);
@@ -51,10 +57,11 @@ namespace GUI
 			m_rc->SetProjectionMatrix(Math::mat4::CreateIdentity());									
 			m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
 			m_rc->SetDiffuseColor(color);
-			m_rc->SetTextColor(lb->TextColor());
-			m_rc->Begin();
-			m_tc->SetTexture0(lb->GetBackgroundTexture());
+			m_rc->SetTextColor(lb->TextColor());			
+			m_tc->SetTexture1(lb->GetBackgroundTexture());
+			m_rc->RenderDiffuseTexture(lb->GetBackgroundTexture() != 0);
 			m_tc->SetTexture1(0);
+			m_rc->Begin();
 			m_tc->Bind();
 			m_quad->Bind(m_rc->GetSupportedVertexAttributes());
 			m_quad->Render();
@@ -72,11 +79,15 @@ namespace GUI
 		float w = tb->GetWidth();
 		float h = tb->GetHeight();
 		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
-		m_rc->SetDiffuseColor(tb->BackColor());
-		m_rc->SetTextColor(tb->TextColor());
+		if (tb->GetManager()->GetFocusedWidget() == tb)
+			m_rc->SetDiffuseColor(tb->BackColor() + m_selection_color_delta);
+		else
+			m_rc->SetDiffuseColor(tb->BackColor());
+		m_rc->SetTextColor(tb->TextColor());		
+		m_tc->SetTexture1(tb->GetBackgroundTexture());
+		m_rc->RenderDiffuseTexture(tb->GetBackgroundTexture() != 0);
+		m_tc->SetTexture0(tb->GetTextTexture());
 		m_rc->Begin();
-		m_tc->SetTexture0(tb->GetBackgroundTexture());
-		m_tc->SetTexture1(tb->GetTextTexture());
 		m_tc->Bind();
 		m_quad->Bind(m_rc->GetSupportedVertexAttributes());
 		m_quad->Render();
@@ -96,8 +107,8 @@ namespace GUI
 		m_rc->SetDiffuseColor(slider->BackColor());
 		m_rc->SetTextColor(slider->TextColor());
 		m_rc->Begin();
-		m_tc->SetTexture0(slider->GetBackgroundTexture());
-		m_tc->SetTexture1(0);
+		m_tc->SetTexture1(slider->GetBackgroundTexture());
+		m_tc->SetTexture0(0);
 		m_tc->Bind();
 		m_quad->Bind(m_rc->GetSupportedVertexAttributes());
 		m_quad->Render();			
@@ -111,10 +122,11 @@ namespace GUI
 		h = 0.01;					
 		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
 		m_rc->SetDiffuseColor(Math::vec4(1,1,1,1) - slider->BackColor());
-		m_rc->SetTextColor(Math::vec4(1,1,1,1) - slider->TextColor());
+		m_rc->SetTextColor(Math::vec4(1,1,1,1) - slider->TextColor());		
+		m_tc->SetTexture1(slider->GetBackgroundTexture());
+		m_rc->RenderDiffuseTexture(slider->GetBackgroundTexture() != 0);
+		m_tc->SetTexture0(slider->GetTextTexture());
 		m_rc->Begin();	
-		m_tc->SetTexture0(slider->GetBackgroundTexture());
-		m_tc->SetTexture1(0);
 		m_tc->Bind();
 		m_quad->Bind(m_rc->GetSupportedVertexAttributes());
 		m_quad->Render();			
@@ -139,10 +151,11 @@ namespace GUI
 		float h = widget->GetHeight()*widget->GetScale();
 		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
 		m_rc->SetDiffuseColor(widget->BackColor());
-		m_rc->SetTextColor(widget->TextColor());
+		m_rc->SetTextColor(widget->TextColor());		
+		m_tc->SetTexture1(widget->GetBackgroundTexture());
+		m_rc->RenderDiffuseTexture(widget->GetBackgroundTexture() != 0);
+		m_tc->SetTexture0(widget->GetTextTexture());
 		m_rc->Begin();
-		m_tc->SetTexture0(widget->GetBackgroundTexture());
-		m_tc->SetTexture1(widget->GetTextTexture());
 		m_tc->Bind();
 		m_quad->Bind(m_rc->GetSupportedVertexAttributes());
 		m_quad->Render();
@@ -167,12 +180,16 @@ namespace GUI
 		float w = widget->GetWidth();
 		float h = widget->GetHeight();
 		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
-		m_rc->SetDiffuseColor(widget->BackColor());
-		m_rc->SetTextColor(widget->TextColor());
+		if (widget->GetManager()->GetFocusedWidget() == widget)
+			m_rc->SetDiffuseColor(widget->BackColor() + m_selection_color_delta);
+		else
+			m_rc->SetDiffuseColor(widget->BackColor());
+		m_rc->SetTextColor(widget->TextColor());		
+		m_rc->RenderDiffuseTexture(widget->GetBackgroundTexture() != 0);
+		m_tc->SetTexture1(widget->GetBackgroundTexture());		
+		m_tc->SetTexture0(widget->GetTextTexture());
 		m_rc->Begin();
-		m_tc->SetTexture0(widget->GetBackgroundTexture());
-		m_tc->SetTexture1(widget->GetTextTexture());
-		m_tc->Bind();
+		m_tc->Bind();		
 		m_quad->Bind(m_rc->GetSupportedVertexAttributes());
 		m_quad->Render();
 		m_quad->Unbind();

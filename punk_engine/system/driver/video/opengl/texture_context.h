@@ -20,6 +20,7 @@ namespace OpenGL
 
 		void SetTexture0(const Texture2D* map);
 		void SetTexture1(const Texture2D* map);		
+		void SetTexture2(const Texture2D* map);		
 
 		void Bind();	
 		void Unbind();

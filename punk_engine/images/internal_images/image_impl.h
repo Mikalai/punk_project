@@ -1,6 +1,9 @@
 #ifndef _H_PUNK_IMAGE_IMAGE_MODULE_IMAGE_IMPL
 #define _H_PUNK_IMAGE_IMAGE_MODULE_IMAGE_IMPL
 
+#include <ostream>
+#include <istream>
+
 #include "../error.h"
 #include "../formats.h"
 #include "component.h"
@@ -84,24 +87,24 @@ namespace ImageModule
 			std::copy(data, data + width_in_pixel*components_per_pixel, m_data.begin() + y*m_width*m_components);
 		}
 
-		void Save(System::Buffer& buffer) const
+		void Save(std::ostream& stream) const
 		{
-			m_descriptor.Save(buffer);
-			buffer.WriteSigned32(m_width);
-			buffer.WriteSigned32(m_height);
-			buffer.WriteSigned32(m_components);
-			buffer.WriteBuffer(&m_data[0], m_size);
+			stream.write(reinterpret_cast<const char*>(&m_descriptor), sizeof(m_descriptor));
+			stream.write(reinterpret_cast<const char*>(&m_width), sizeof(m_width));
+			stream.write(reinterpret_cast<const char*>(&m_height), sizeof(m_height));
+			stream.write(reinterpret_cast<const char*>(&m_components), sizeof(m_components));
+			stream.write(reinterpret_cast<const char*>(&m_data[0]), m_size);
 		}
 
-		void Load(System::Buffer& buffer)
+		void Load(std::istream& stream)
 		{
-			m_descriptor.Load(buffer);
-			m_width = buffer.ReadSigned32();
-			m_height = buffer.ReadSigned32();
-			m_components = buffer.ReadSigned32();
+			stream.read(reinterpret_cast<char*>(&m_descriptor), sizeof(m_descriptor));
+			stream.read(reinterpret_cast<char*>(&m_width), sizeof(m_width));
+			stream.read(reinterpret_cast<char*>(&m_height), sizeof(m_height));
+			stream.read(reinterpret_cast<char*>(&m_components), sizeof(m_components));
 			m_size = m_width*m_height*m_components*sizeof(Component);
 			m_data.resize(m_size);
-			buffer.ReadBuffer(&m_data[0], m_size);
+			stream.read(reinterpret_cast<char*>(&m_data[0]), m_size);
 		}
 
 		const Component* At(unsigned x, unsigned y, unsigned component) const

@@ -42,7 +42,7 @@ public:
 		//m_armature->PrintDebug(0, 0);
 		//exit(0);
 		/// start driver
-		m_driver.Start(System::Window::GetInstance());
+		m_driver.Start(System::Window::Instance());
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
 
 		/// initialize different render contexts
@@ -183,14 +183,14 @@ public:
 
 int main(int argc, char** argv)
 {
-	System::Window::GetInstance()->SetTitle(L"Тэст скуры");
-	System::Mouse::GetInstance()->LockInWindow(true);
+	System::Window::Instance()->SetTitle(L"Тэст скуры");
+	System::Mouse::Instance()->LockInWindow(true);
 	OpenGL::Module module;
 	module.Init();
 	Viewer viewer("animated_male2.pmd");
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&viewer, &Viewer::OnIdle));
-	System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&viewer, &Viewer::OnKeyDown));
-	System::Window::GetInstance()->Loop();
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(&viewer, &Viewer::OnIdle));
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(&viewer, &Viewer::OnKeyDown));
+	System::Window::Instance()->Loop();
 
 	module.Destroy();
 

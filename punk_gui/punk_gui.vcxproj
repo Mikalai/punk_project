@@ -82,26 +82,35 @@
     <ClCompile Include="..\punk_engine\gui\button.cpp" />
     <ClCompile Include="..\punk_engine\gui\console.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\gui\edit_box.cpp" />
     <ClCompile Include="..\punk_engine\gui\gui_default_render.cpp" />
     <ClCompile Include="..\punk_engine\gui\horizontal_slider.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\gui\int_watcher.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\gui\list_box.cpp" />
     <ClCompile Include="..\punk_engine\gui\main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\gui\manager.cpp" />
     <ClCompile Include="..\punk_engine\gui\static_text_area.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\gui\tab_widget.cpp" />
+    <ClCompile Include="..\punk_engine\gui\trackball_viewer_3d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\punk_engine\gui\user_interface_control.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\punk_engine\gui\vertical_scrollbar.cpp" />
     <ClCompile Include="..\punk_engine\gui\vertical_slider.cpp" />
@@ -113,6 +122,7 @@
     <ClInclude Include="..\punk_engine\gui\config.h" />
     <ClInclude Include="..\punk_engine\gui\console.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\gui\edit_box.h" />
     <ClInclude Include="..\punk_engine\gui\gui.h" />
@@ -120,24 +130,32 @@
     <ClInclude Include="..\punk_engine\gui\gui_render.h" />
     <ClInclude Include="..\punk_engine\gui\horizontal_slider.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\gui\int_watcher.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\gui\layout.h" />
     <ClInclude Include="..\punk_engine\gui\list_box.h" />
     <ClInclude Include="..\punk_engine\gui\manager.h" />
     <ClInclude Include="..\punk_engine\gui\static_text_area.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\gui\tab_widget.h" />
+    <ClInclude Include="..\punk_engine\gui\trackball_viewer_3d.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\punk_engine\gui\user_interface_control.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\gui\vertical_scrollbar.h" />
     <ClInclude Include="..\punk_engine\gui\vertical_slider.h" />
     <ClInclude Include="..\punk_engine\gui\watcher.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\punk_engine\gui\widget.h" />
   </ItemGroup>

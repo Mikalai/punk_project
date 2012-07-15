@@ -1,3 +1,5 @@
+#include <ostream>
+#include <istream>
 #include "animation.h"
 
 namespace Utility
@@ -34,12 +36,12 @@ namespace Utility
 		return m_rot_track.GetOriginalKey(time, flag);
 	}
 
-	const Math::Vector3<float> Animation::GetPosition(int time)
+	const Math::Vector3<float> Animation::GetPosition(float time)
 	{
 		return m_pos_track.GetKey(time);
 	}
 		
-	const Math::Quaternion<float> Animation::GetRotation(int time)
+	const Math::Quaternion<float> Animation::GetRotation(float time)
 	{
 		return m_rot_track.GetKey(time);
 	}
@@ -63,5 +65,20 @@ namespace Utility
 	bool Animation::IsLooping() const
 	{
 		return m_pos_track.IsLooping();
+	}
+
+	void Animation::Save(std::ostream& stream)
+	{
+		stream.write(reinterpret_cast<const char*>(&m_is_enabled), sizeof(m_is_enabled));		
+
+		m_pos_track.Save(stream);
+		m_rot_track.Save(stream);
+	}
+
+	void Animation::Load(std::istream& stream)
+	{
+		stream.read(reinterpret_cast<char*>(&m_is_enabled), sizeof(m_is_enabled));		
+		m_pos_track.Load(stream);
+		m_rot_track.Load(stream);
 	}
 }

@@ -18,7 +18,7 @@ namespace GUI
 		TextBox(const TextBox&);
 		TextBox& operator = (const TextBox&);
 	protected:
-		void InversCursor();
+		void InversCursor();	
 		virtual void OnKeyChar(System::KeyCharEvent* e);
 		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e);
 		virtual void OnKeyDown(System::KeyDownEvent* e);
@@ -27,6 +27,7 @@ namespace GUI
 		TextBox(float x = 0, float y = 0, float width = 0.1, float height = 0.05, Widget* parent = 0);
 		void SetCursorPosition(int position);
 		virtual void Render(IGUIRender* render) const; 
+		virtual void SetText(const System::string& text);
 		virtual ~TextBox();
 	};
 }

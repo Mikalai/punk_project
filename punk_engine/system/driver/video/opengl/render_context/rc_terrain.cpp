@@ -13,7 +13,8 @@ namespace OpenGL
 	{
 		GLuint m_proj_view_world_uniform;
 		GLuint m_diffuse_color_uniform;
-		GLuint m_diffuse_map_uniform;		
+		GLuint m_diffuse_map_1_uniform;		
+		GLuint m_diffuse_map_2_uniform;		
 		GLint m_normal_transform_uniform;
 		GLint m_view_uniform;
 		GLint m_world_uniform;
@@ -55,7 +56,8 @@ namespace OpenGL
 			m_projection_uniform = GetUniformLocation("uProjection");
 			m_height_map_uniform = GetUniformLocation("uHeightMapUniform");
 			m_normal_map_uniform = GetUniformLocation("uNormalMapUniform");
-			m_diffuse_map_uniform = GetUniformLocation("uDiffuseMapUniform");
+			m_diffuse_map_1_uniform = GetUniformLocation("uDiffuseMapUniform1");
+			m_diffuse_map_2_uniform = GetUniformLocation("uDiffuseMapUniform2");
 			m_position_uniform = GetUniformLocation("uPosition");
 			m_level_uniform = GetUniformLocation("uLevel");
 			m_i_uniform = GetUniformLocation("ui");
@@ -70,23 +72,25 @@ namespace OpenGL
 			SetUniformMatrix4f(m_world_uniform, &m_world[0]);
 			SetUniformMatrix4f(m_view_uniform, &m_view[0]);
 			SetUniformMatrix4f(m_projection_uniform, &m_proj[0]);
-			SetUniformMatrix3f(m_normal_transform_uniform, m_normal_tranform);
+		//	SetUniformMatrix3f(m_normal_transform_uniform, m_normal_tranform);
 			SetUniformVector3f(m_light_direction_uniform, m_light_direction);
 			SetUniformVector4f(m_diffuse_color_uniform, Math::vec4(1,1,1,1));
 			SetUniformVector2f(m_position_uniform, m_position);
-			SetUniformInt(m_height_map_uniform, 1);
-			SetUniformInt(m_diffuse_map_uniform, 0);
+			SetUniformInt(m_height_map_uniform, 2);
+			SetUniformInt(m_diffuse_map_1_uniform, 0);
+			SetUniformInt(m_diffuse_map_2_uniform, 1);
 			SetUniformFloat(m_level_uniform, float(m_level));
 			SetUniformInt(m_i_uniform, m_i);
 			SetUniformInt(m_j_uniform, m_j);
-			SetUniformVector3f(m_light_direction_uniform, Math::mat4::CreateRotation(1,0,0, 0) * Math::vec3(1, 0, 0).ToHomogeneous());
+//			SetUniformVector3f(m_light_direction_uniform, Math::mat4::CreateRotation(1,0,0, 0) * Math::vec3(1, 0, 0).ToHomogeneous());
 		}
 
 		RenderContextTerrainImpl()
 			: RenderContextImpl()
 			, m_proj_view_world_uniform()
 		, m_diffuse_color_uniform()
-		, m_diffuse_map_uniform()		
+		, m_diffuse_map_1_uniform()		
+		, m_diffuse_map_2_uniform()		
 		, m_normal_transform_uniform()
 		, m_view_uniform()
 		, m_world_uniform()
@@ -115,7 +119,8 @@ namespace OpenGL
 			: RenderContextImpl(impl)
 			, m_proj_view_world_uniform(impl.m_projection_uniform)
 			, m_diffuse_color_uniform(impl.m_diffuse_color_uniform)
-			, m_diffuse_map_uniform(impl.m_diffuse_map_uniform)		
+			, m_diffuse_map_1_uniform(impl.m_diffuse_map_1_uniform)		
+			, m_diffuse_map_2_uniform(impl.m_diffuse_map_2_uniform)		
 			, m_normal_transform_uniform(impl.m_normal_transform_uniform)
 			, m_view_uniform(impl.m_view_uniform)
 			, m_world_uniform(impl.m_world_uniform)

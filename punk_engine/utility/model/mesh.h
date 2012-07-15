@@ -2,6 +2,7 @@
 #define _H_PUNK_UTILITY_MESH
 
 #include "../../math/vec3.h"
+#include "../../math/bounding_box.h"
 #include "texture_faces.h"
 #include "vertex_bone_weight.h"
 #include "vertex_index.h"

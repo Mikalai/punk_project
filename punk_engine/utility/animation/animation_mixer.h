@@ -23,14 +23,18 @@ namespace Utility
 
 		Animation* GetOrCreateTrack(const System::string& name);
 
-		const Math::Vector3<float> GetPosition(int frame);
-		const Math::Quaternion<float> GetRotation(int frame);
+		const Math::Vector3<float> GetPosition(float frame);
+		const Math::Quaternion<float> GetRotation(float frame);
 
 		bool HasAnimation();
 
 		void EnableTrack(const System::string name, bool flag);
 		void SetLooping(const System::string name, bool flag);
 		void SetTrackWeight(const System::string name, float value);
+
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
+
 	private:
 		void NormalizeWeights();
 	};

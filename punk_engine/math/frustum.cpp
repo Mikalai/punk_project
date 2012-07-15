@@ -6,12 +6,12 @@ namespace Math
 	Frustum::Frustum()
 	{
 		m_fov = PI/4.0f;
-		m_zfar = 100.0f;
+		m_zfar = 1000.0f;
 		m_znear = 0.1f;
 		m_aspect = 4.0f / 3.0f;
 
-		m_position = vec3(0,0,-5);
-		m_target = vec3(0,0,0);
+		m_position = vec3(0,0,0);
+		m_target = vec3(0,0,-1);
 		m_up = vec3(0,1,0);
 		m_direction = vec3(0,0,1);
 
@@ -28,7 +28,7 @@ namespace Math
 		m_far_height = m_zfar * tang;
 		m_far_width = m_far_height * m_aspect;	
 
-		mat4 m = m_view_matrix;//.Inversed();
+		mat4 m = m_view_matrix.Inversed();
 
 		vec3 x = m.GetColumn(0).XYZ().Normalized();
 		vec3 y = m.GetColumn(1).XYZ().Normalized();
@@ -61,6 +61,11 @@ namespace Math
 		m_position = position;
 
 		UpdateMatrix();
+	}
+
+	void Frustum::SetProjectionMatrix(const Math::mat4& matrix)
+	{
+		m_projection_matrix = matrix;
 	}
 
 	Frustum::Classification Frustum::BoxInFrustum(const BoundingBox& m_bbox) const

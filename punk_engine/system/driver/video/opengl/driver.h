@@ -17,7 +17,9 @@ and handle different parameters about users video system
 #include "render_context\rc_bump_mapping.h"
 #include "render_context\rc_gui.h"
 #include "render_context\rc_skinning.h"
+#include "render\line.h"
 #include "extensions.h"
+#include "frame_buffer_with_depth.h"
 
 
 #include "texture_context.h"

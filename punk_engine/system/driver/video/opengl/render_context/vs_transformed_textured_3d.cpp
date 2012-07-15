@@ -5,6 +5,6 @@ namespace OpenGL
 	ShaderTransformTextured3D::ShaderTransformTextured3D()
 		: Shader(SHADER_VERTEX)
 	{
-		CookFromFile(System::Environment::GetShaderFolder() + L"textured_2d_330.vert");
+		CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"textured_2d_330.vert");
 	}
 }

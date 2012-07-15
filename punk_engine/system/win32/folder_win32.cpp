@@ -1,5 +1,5 @@
 #ifdef _WIN32
-#include <string.h>
+#include "string_win32.h"
 #include "folder_win32.h"
 
 namespace System
@@ -8,71 +8,91 @@ namespace System
 	{
 	}
 
-	bool Folder::Open(const char *name)
+	bool Folder::Open(const System::string& name)
 	{
-		return SetCurrentDirectoryA(name) == TRUE;
+		wchar_t buf[2048];
+		GetCurrentDirectory(2048, buf);
+		prevFolder = buf;
+		return SetCurrentDirectory(name.Data()) == TRUE;
 	}
 
-	bool Folder::IsContain(const char *name) const
+	bool Folder::IsContain(const System::string& name) const
 	{
-		WIN32_FIND_DATAA dir;
+		WIN32_FIND_DATA dir;
 		HANDLE file;
 
-		char dirName[256];
-		GetCurrentDirectoryA(256, dirName);
-		file = FindFirstFileA(dirName, &dir);
+		wchar_t dirName[256];
+		GetCurrentDirectory(256, dirName);
+		file = FindFirstFile(dirName, &dir);
 
 		do
 		{
-			if (!strcmp(name, dir.cFileName))
+			if (name == dir.cFileName)
 				return true;
 		}
-		while (FindNextFileA(file, &dir));
+		while (FindNextFile(file, &dir));
 
 		return false;
 	}
 
 	void Folder::Close()
 	{
-
+		SetCurrentDirectory(prevFolder.Data());
 	}
 
-	std::list<std::string> Folder::ListAllItems()
+	std::list<System::string> Folder::ListAllItems()
 	{
-		std::list<std::string> res;
-		WIN32_FIND_DATAA dir;
-		char dirName[256];
-		GetCurrentDirectoryA(256, dirName);
-		HANDLE file = FindFirstFileA(dirName, &dir);
+		std::list<System::string> res;
+		WIN32_FIND_DATA dir;
+		wchar_t dirName[256];
+		GetCurrentDirectory(256, dirName);
+		HANDLE file = FindFirstFile(L"*", &dir);
 
-		do
+		if (file != INVALID_HANDLE_VALUE)
 		{
-			res.push_back(dir.cFileName);
+			do
+			{
+				System::string f = System::string(dir.cFileName);
+				if (f == L"." || f == L"..")	//skip this and parent
+					continue;
+				res.push_back(f);
+			}
+			while (FindNextFile(file, &dir));
 		}
-		while (FindNextFileA(file, &dir));
 
 		return res;
 	}
 
-	const char* Folder::Name() const
+	const System::string& Folder::Name() const
 	{
-		return folderName.c_str();
+		return folderName;
 	}
 
-	std::list<std::string> Folder::Find(const char *name) const
+	void Folder::DeleteFile(const System::string& path)
 	{
-		std::list<std::string> res;
-		WIN32_FIND_DATAA dir;
-		char dirName[256];
-		GetCurrentDirectoryA(256, dirName);
-		HANDLE file = FindFirstFileA(dirName, &dir);
+		::DeleteFile(path.Data());
+	}
+	
+	std::list<System::string> Folder::Find(const System::string& name) const
+	{
+		std::list<System::string> res;
+		WIN32_FIND_DATA dir;
+		wchar_t dirName[256];
+		GetCurrentDirectory(256, dirName);
+		HANDLE file = FindFirstFile(name.Data(), &dir);
 
-		do
+		if (file != INVALID_HANDLE_VALUE)
 		{
-			if (strstr(dir.cFileName, name))
-				res.push_back(dir.cFileName);
+			do
+			{
+				System::string f = System::string(dir.cFileName);
+				if (f == L"." || f == L"..")	//skip this and parent
+					continue;
+				//if (wcswcs(dir.cFileName, name.Data()))
+				res.push_back(f);
+			}
+			while (FindNextFile(file, &dir));
 		}
-		while (FindNextFileA(file, &dir));
 
 		return res;
 	}

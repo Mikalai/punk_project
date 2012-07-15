@@ -11,16 +11,18 @@ namespace System
 
 	class MODULE_SYSTEM Environment : public Singletone(Environment)
 	{
-	public:
-		static string GetCurrentFolder();
-		static void SetCurrentFolder(const string& dir);
-		static string GetFontFolder();
-		static string GetModelFolder();
-		static string GetTexutreFolder();
-		static string GetMapFolder();
-		static string GetSaveFolder();
-		static string GetQuestFolder();
-		static const string GetShaderFolder();
+	public:		
+		Environment();
+		void SetCurrentFolder(const string& dir);
+		const string GetCurrentFolder();
+		const string GetFontFolder();
+		const string GetModelFolder();
+		const string GetTexutreFolder();
+		const string GetMapFolder();
+		const string GetSaveFolder();
+		const string GetQuestFolder();
+		const string GetSoundFolder();
+		const string GetShaderFolder();
 	};
 }
 

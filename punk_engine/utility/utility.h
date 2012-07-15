@@ -11,5 +11,10 @@
 #include "error.h"
 #include "config.h"
 #include "model/punk_scene_loader.h"
-
+#include "elements\terrain.h"
+#include "utility_lod.h"
+#include "elements\utility_tree.h"
+#include "food_type.h"
+#include "weapon_type.h"
+#include "bullet_type.h"
 #endif

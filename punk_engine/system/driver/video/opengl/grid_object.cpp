@@ -53,9 +53,9 @@ namespace OpenGL
 		};
 
 		std::vector<Vertex> v((impl.m_width_slice+1)*(impl.m_height_slice+1));
-		for (int i = 0; i < impl.m_height_slice + 1; i++)
+		for (int i = 0; i < (int)impl.m_height_slice + 1; i++)
 		{
-			for (int j = 0; j < impl.m_width_slice + 1; j++)
+			for (int j = 0; j < (int)impl.m_width_slice + 1; j++)
 			{
 				v[i*(impl.m_width_slice+1) + j].x = impl.m_width/float(impl.m_width_slice)*float(j);
 				v[i*(impl.m_width_slice+1) + j].y = 0;
@@ -64,15 +64,15 @@ namespace OpenGL
 				v[i*(impl.m_width_slice+1) + j].ny = 1.0f;
 				v[i*(impl.m_width_slice+1) + j].u = 1.0f/float(impl.m_width_slice)*float(j);
 				v[i*(impl.m_width_slice+1) + j].v = 1.0f/float(impl.m_height_slice)*float(i);
-				v[i*(impl.m_width_slice+1) + j].ix = (i + j) % 2;
+				v[i*(impl.m_width_slice+1) + j].ix = float((i + j) % 2);
 			}
 		}
 
 		std::vector<unsigned int> index(6*impl.m_width_slice*impl.m_height_slice);
 
-		for (int i = 0; i < impl.m_height_slice; i++)
+		for (int i = 0; i < (int)impl.m_height_slice; i++)
 		{
-			for (int j = 0; j < impl.m_width_slice; j++)
+			for (int j = 0; j < (int)impl.m_width_slice; j++)
 			{
 				index[6*(i*impl.m_width_slice + j) + 0] = i*(impl.m_width_slice+1) + j + 0;
 				index[6*(i*impl.m_width_slice + j) + 1] = (i+1)*(impl.m_width_slice+1) + j;

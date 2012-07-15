@@ -8,9 +8,13 @@ namespace OpenGL
 {
 	struct Texture2DImpl
 	{
+		int m_index;
+		System::string m_location;
+
 		int m_width;
 		int m_height;
 		GLenum m_format;
+		GLenum m_internal_format;
 		GLuint m_id;
 
 		Texture2DImpl()
@@ -18,6 +22,8 @@ namespace OpenGL
 			, m_width(0)
 			, m_height(0)
 			, m_format(0)
+			, m_index(-1)
+			, m_location(L"/")
 		{
 			//Create(64, 64, GL_RED, 0);
 		}
@@ -36,6 +42,38 @@ namespace OpenGL
 		{}
 
 		~Texture2DImpl()
+		{
+			Clear();
+		}
+
+		void SetSourceFile(const System::string& filename)
+		{
+			m_location = filename;
+		}
+
+		const System::string& GetSourceFile() const
+		{
+			return m_location;
+		}
+
+		void SetIndex(int index)
+		{
+			m_index = index;
+		}
+
+		int GetIndex() const
+		{
+			return m_index;
+		}
+
+		void Init()
+		{
+			ImageModule::Importer import;
+			std::auto_ptr<ImageModule::Image> image(import.LoadAnyImage(m_location));
+			CreateFromImage(*image, true);
+		}
+
+		void Clear()
 		{
 			if (m_id)
 			{
@@ -83,23 +121,26 @@ namespace OpenGL
 			}
 			else if (m_format == GL_ALPHA)
 			{
+				m_format = m_internal_format = GL_RED;
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RED, GL_UNSIGNED_BYTE, image.GetData());
 				CHECK_GL_ERROR(L"Can't copy data to texture");
 			}
 			else if (m_format == GL_RGB)
 			{
+				m_format = m_internal_format = GL_RGB;
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, image.GetData());					
 				CHECK_GL_ERROR(L"Can't copy data to texture");
 			}
 			else if (m_format == GL_RGBA)
 			{
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetData());					
+				m_format = m_internal_format = GL_RGBA;
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetData());			
 				CHECK_GL_ERROR(L"Can't copy data to texture");
 			}
 
 			if (generate_mip_maps)
 			{
-				glGenerateMipmap(GL_TEXTURE_2D);
+				//glGenerateMipmap(GL_TEXTURE_2D);
 				CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
 			}
 		}
@@ -119,7 +160,7 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Can't bind texture");
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);			
 			CHECK_GL_ERROR(L"Can't set pixel store");
-			glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, format, GL_UNSIGNED_BYTE, (void*)data);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, m_internal_format, GL_UNSIGNED_BYTE, (void*)data);
 			CHECK_GL_ERROR(L"Can't tex sub image");
 			glBindTexture(GL_TEXTURE_2D, 0);
 			CHECK_GL_ERROR(L"Can't unbind texture");			
@@ -145,7 +186,7 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Can't tex paramter f");
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			CHECK_GL_ERROR(L"Can't tex prarameter f");
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
+			glTexImage2D(GL_TEXTURE_2D, 0, m_format, width, height, 0, m_internal_format, GL_UNSIGNED_BYTE, 0);
 			CHECK_GL_ERROR(L"Can't tex image");
 			Fill(0);			
 		}
@@ -183,32 +224,63 @@ namespace OpenGL
 				CHECK_GL_ERROR(L"Can't compressed tex image 2d");		
 				offs += size;
 			}
-			else
+			else if (m_format == GL_ALPHA)
 			{
-				if (m_format == GL_ALPHA)
-				{
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
-					CHECK_GL_ERROR(L"Can't tex image 2d");
-				}
-				else if (m_format == GL_RGB)
-				{
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);					
-					CHECK_GL_ERROR(L"Can't tex image 2d");
-				}
-				else if (m_format == GL_RED)
-				{
-					glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-					CHECK_GL_ERROR(L"Can't tex image 2d");
-				}
+				m_format = m_internal_format = GL_RED;
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
+				CHECK_GL_ERROR(L"Can't tex image 2d");
 			}
-			glGenerateMipmap(GL_TEXTURE_2D);
-			CHECK_GL_ERROR(L"Can't generate mip map");
+			else if (m_format == GL_RGB)
+			{
+				m_format = m_internal_format = GL_RGB;
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);					
+				CHECK_GL_ERROR(L"Can't tex image 2d");
+			}
+			else if (m_format == GL_RED)
+			{
+				m_format = m_internal_format = GL_RED;
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+				CHECK_GL_ERROR(L"Can't tex image 2d");
+			}
+			else if (m_format == GL_DEPTH_COMPONENT24)
+			{
+				m_format = GL_DEPTH_COMPONENT24; m_internal_format = GL_DEPTH;
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				CHECK_GL_ERROR(L"Can't GL_TEXTURE_MAG_FILTER mip map");
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+				CHECK_GL_ERROR(L"Can't GL_TEXTURE_MIN_FILTER mip map");
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				CHECK_GL_ERROR(L"Can't GL_TEXTURE_WRAP_S mip map");
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				CHECK_GL_ERROR(L"Can't GL_TEXTURE_WRAP_T mip map");
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH, GL_UNSIGNED_BYTE, 0);
+				CHECK_GL_ERROR(L"Can't glTexImage2D GL_DEPTH_COMPONENT24");
+			}
+			else if (m_format == GL_RGBA8)
+			{
+				m_format = GL_RGBA8; m_internal_format = GL_RGBA;
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				CHECK_GL_ERROR(L"Can't GL_TEXTURE_MAG_FILTER mip map");
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+				CHECK_GL_ERROR(L"Can't GL_TEXTURE_MIN_FILTER mip map");
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				CHECK_GL_ERROR(L"Can't GL_TEXTURE_WRAP_S mip map");
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				CHECK_GL_ERROR(L"Can't GL_TEXTURE_WRAP_T mip map");
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+				CHECK_GL_ERROR(L"Can't glTexImage2D GL_RGBA8->GL_RGBA");
+			}
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+		//	glGenerateMipmap(GL_TEXTURE_2D);
+			//CHECK_GL_ERROR(L"Can't generate mip map");
 		}
 
 		void Fill(unsigned char byte)
 		{
 			const int size = 64;
-			unsigned char data[size*size];
+			unsigned char data[size*size*16];
 			memset(data, byte, size*size);
 			glBindTexture(GL_TEXTURE_2D, m_id);
 			CHECK_GL_ERROR(L"Can't bind texture");
@@ -231,7 +303,7 @@ namespace OpenGL
 					else
 						height = size - ((i+1) * size - m_height);
 
-					glTexSubImage2D(GL_TEXTURE_2D, 0, j*size, i*size, width, height, m_format, GL_UNSIGNED_BYTE, (void*)data);
+					glTexSubImage2D(GL_TEXTURE_2D, 0, j*size, i*size, width, height, m_internal_format, GL_UNSIGNED_BYTE, (void*)data);
 					CHECK_GL_ERROR(L"Can't tex sub image 2d");
 
 				}

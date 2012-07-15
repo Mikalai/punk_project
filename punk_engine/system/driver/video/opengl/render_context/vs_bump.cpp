@@ -6,6 +6,6 @@ namespace OpenGL
 	VertexShaderBump::VertexShaderBump()
 		: Shader(SHADER_VERTEX)
 	{
-		CookFromFile(System::Environment::GetShaderFolder() + L"bump_330.vert");
+		CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"bump_330.vert");
 	}
 }

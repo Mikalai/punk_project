@@ -29,21 +29,21 @@ public:
 			for (int x = 0; x < m_image_rgba.GetWidth(); ++x)
 			{				
 				const ImageModule::Component* p = m_image_rgba.GetPixelComponent(x, y, 0);
-				System::Window::GetInstance()->DrawPixel(x, y, p[0], p[1], p[2], p[3]);			
+				System::Window::Instance()->DrawPixel(x, y, p[0], p[1], p[2], p[3]);			
 			}
 
 		for (int y = 0; y < m_image_rgb.GetHeight(); ++y)
 			for (int x = 0; x < m_image_rgb.GetWidth(); ++x)
 			{				
 				const ImageModule::Component* p = m_image_rgb.GetPixelComponent(x, y, 0);
-				System::Window::GetInstance()->DrawPixel(x, m_image_rgba.GetHeight() + y, p[0], p[1], p[2], 255);			
+				System::Window::Instance()->DrawPixel(x, m_image_rgba.GetHeight() + y, p[0], p[1], p[2], 255);			
 			}
 
 		for (int y = 0; y < m_image_gray.GetHeight(); ++y)
 			for (int x = 0; x < m_image_gray.GetWidth(); ++x)
 			{				
 				const ImageModule::Component* p = m_image_gray.GetPixelComponent(x, y, 0);
-				System::Window::GetInstance()->DrawPixel(m_image_rgba.GetWidth() + x, y, p[0], p[0], p[0], 255);			
+				System::Window::Instance()->DrawPixel(m_image_rgba.GetWidth() + x, y, p[0], p[0], p[0], 255);			
 			}
 	}
 };
@@ -53,12 +53,12 @@ int main()
 	try
 	{
 		Test test;
-		System::Window::GetInstance()->SetTitle(L"Punk image test");
-		System::Mouse::GetInstance()->LockInWindow(false);
+		System::Window::Instance()->SetTitle(L"Punk image test");
+		System::Mouse::Instance()->LockInWindow(false);
 
-		System::EventManager::GetInstance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(&test, &Test::OnMouseClick));
+		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(&test, &Test::OnMouseClick));
 
-		System::Window::GetInstance()->Loop();
+		System::Window::Instance()->Loop();
 		
 	
 	

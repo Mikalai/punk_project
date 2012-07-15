@@ -20,7 +20,11 @@ namespace GUI
 		int GetActiveTab(int tab); 
 		Widget* GetTab(int tab); 
 		const Widget* GetTab(int tab) const;
+		virtual void SetNextWidget(Widget* widget);		
+		virtual void SetPrevWidget(Widget* widget);
 		virtual void Render(IGUIRender* render) const;
+		Widget* GetFirstTabButton();
+		Widget* GetLastTabButton();
 	protected:
 		void SwitchTab(System::Event*);
 	};

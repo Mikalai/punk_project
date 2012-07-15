@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "static_object.h"
 #include "static_object_impl.h"
 #include "../../../../utility/model/static_mesh.h"
@@ -23,6 +24,9 @@ namespace OpenGL
 
 	void StaticObject::SetStaticObject(Utility::StaticMesh* mesh)
 	{
+		assert(mesh != 0 && "Can't work when mesh is null"__FUNCSIG__);
+
+		impl_vao->SetMeshTransform(mesh->GetMeshOffset());
 		static_cast<StaticObjectImpl&>(*impl_vao).m_object = mesh;
 	}
 
@@ -45,7 +49,7 @@ namespace OpenGL
 		if (code & Utility::COMPONENT_NORMAL)
 			components |= VERTEX_NORMAL;
 		if (code & Utility::COMPONENT_TEXTURE)
-			components |= VERTEX_TEXTURE_0;
+			components |= VERTEX_TEXTURE_0;		
 		impl_vao->Cook(components, GL_TRIANGLES);/**/
 	}
 }

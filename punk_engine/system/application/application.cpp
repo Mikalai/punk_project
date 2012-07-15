@@ -19,17 +19,17 @@ namespace System
 
 	int Application::Run()
 	{
-		return Window::GetInstance()->Loop();
+		return Window::Instance()->Loop();
 	}
 
 	Window* Application::GetWindow()
 	{
-		return Window::GetInstance();
+		return Window::Instance();
 	}
 
 	EventManager* Application::GetEventManager()
 	{
-		return EventManager::GetInstance();
+		return EventManager::Instance();
 	}
 
 	OpenGL::Driver* Application::GetDriver()
@@ -52,9 +52,9 @@ namespace System
 
 	void Application::Init()
 	{				
-		m_user_interface.SetSceneGraph(&m_scene_graph);
-		m_render.SetVideoDriver(GetDriver());
-		Utility::FontBuilder::GetInstance()->Init();
+//		m_user_interface.SetSceneGraph(&m_scene_graph);
+//		m_render.SetVideoDriver(GetDriver());
+		Utility::FontBuilder::Instance()->Init();
 		GetEventManager()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(this, &Application::Step));
 		OnInit();
 	}
@@ -62,30 +62,30 @@ namespace System
 	void Application::Render()
 	{
 		m_video_driver->ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);		
-		Render::SceneRenderVisitor visitor(m_render);
-		m_scene_graph.Visit<Render::SceneRenderVisitor, Render::SceneRenderVisitor::Data>(visitor);
+//		Render::SceneRenderVisitor visitor(m_render);
+//		m_scene_graph.Visit<Render::SceneRenderVisitor, Render::SceneRenderVisitor::Data>(visitor);
 		m_video_driver->SwapBuffers();
 	}
 
-	GUI::UserInterface* Application::GetUserInterface()
-	{
-		return &m_user_interface;
-	}
+	//GUI::UserInterface* Application::GetUserInterface()
+	//{
+	//	return &m_user_interface;
+	//}
 
 	void Application::Step(System::Event* event)
 	{		
 		IdleEvent* e = static_cast<IdleEvent*>(event);
 		ModelTimeStepEvent* model_time = ModelTimeStepEvent::Raise();
-		model_time->elapsed_time_ms = e->elapsed_time_ms*m_time_scale_nominator/m_time_scale_denomiator;
+		model_time->elapsed_time_ms = e->elapsed_time_s*1000.0*m_time_scale_nominator/m_time_scale_denomiator;
 		GetEventManager()->FixEvent(model_time);
 		Render();
-		OnStep(e->elapsed_time_ms);
+		OnStep(e->elapsed_time_s);
 	}
 
 	void Application::OnStep(__int64 dt)
 	{
-		System::Clock::GetInstance()->Advance(dt);
-	//	System::Console::GetInstance()->Print(System::Clock::GetInstance()->ToString());
+		System::Clock::Instance()->Advance(dt);
+	//	System::Console::Instance()->Print(System::Clock::Instance()->ToString());
 	}
 
 	void Application::OnInit()
