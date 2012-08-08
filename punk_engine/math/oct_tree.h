@@ -1,9 +1,11 @@
 #ifndef _H_PUNK_MATH_OCT_TREE
 #define _H_PUNK_MATH_OCT_TREE
 
-#include "config.h"
 #include <vector>
 #include <memory>
+#include <iosfwd>
+
+#include "config.h"
 #include "bounding_box.h"
 
 namespace Math
@@ -33,6 +35,7 @@ namespace Math
 		FaceList m_face_list;
 		//VertexList vertexList;
 		bool m_is_finale;
+		
 	public:
 		OctTree(OctTree* parent = 0);
 		OctTree(const OctTree& tree);		
@@ -40,6 +43,9 @@ namespace Math
 		OctTree* Build(const FaceList& fl, const VertexList& vertexList);
 		FaceList Cross(const Line3D& line);
 		FaceList CrossAll(const Line3D& line) const;
+
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
 	};
 }
 

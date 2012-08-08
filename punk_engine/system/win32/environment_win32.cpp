@@ -52,7 +52,7 @@ namespace System
 		return GetCurrentFolder() + L"saves\\";
 	}
 
-	const string Environment::GetTexutreFolder()
+	const string Environment::GetTextureFolder()
 	{
 		return GetCurrentFolder() + L"textures\\";
 	}
@@ -70,5 +70,15 @@ namespace System
 	const string Environment::GetShaderFolder()
 	{
 		return GetCurrentFolder() + L"shaders\\";
+	}
+	
+	const string Environment::GetArmatureFolder()
+	{
+		return GetCurrentFolder() + L"armatures\\";
+	}
+
+	const string Environment::GetWeaponFolder()
+	{
+		return GetCurrentFolder() + L"weapons\\";
 	}
 }

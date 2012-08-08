@@ -11,5 +11,6 @@
 #include "gui\gui.h"
 #include "render\render.h"
 #include "system\application\application.h"
+#include "audio\punk_audio.h"
 
 #endif

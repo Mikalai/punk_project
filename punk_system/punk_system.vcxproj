@@ -119,6 +119,7 @@
     <ClInclude Include="..\punk_engine\system\linux\types_linux.h" />
     <ClInclude Include="..\punk_engine\system\linux\window_linux.h" />
     <ClInclude Include="..\punk_engine\system\module.h" />
+    <ClInclude Include="..\punk_engine\system\node.h" />
     <ClInclude Include="..\punk_engine\system\region.h" />
     <ClInclude Include="..\punk_engine\system\resource.h" />
     <ClInclude Include="..\punk_engine\system\resource_factory.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="..\punk_engine\system\linux\text_file_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\timer_linux.cpp" />
     <ClCompile Include="..\punk_engine\system\linux\window_linux.cpp" />
+    <ClCompile Include="..\punk_engine\system\node.cpp" />
     <ClCompile Include="..\punk_engine\system\resource_manager.cpp" />
     <ClCompile Include="..\punk_engine\system\thread_job.cpp" />
     <ClCompile Include="..\punk_engine\system\thread_pool.cpp" />

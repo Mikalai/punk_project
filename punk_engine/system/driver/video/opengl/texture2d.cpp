@@ -4,6 +4,8 @@ Author: Abramau Mikalai
 Description: Texture2D implementation
 */
 
+#include <istream>
+#include <ostream>
 #include "texture2d.h"
 #include "texture2d_impl.h"
 
@@ -115,6 +117,17 @@ namespace OpenGL
 	void Texture2D::Clear()
 	{
 		impl_texture_2d->Clear();
+	}
+
+	void Texture2D::Load(std::istream& stream)
+	{
+		ImageModule::Image image;
+		image.Load(stream);
+		Create(image);
+	}
+
+	void Texture2D::Save(std::ostream& stream)
+	{		
 	}
 
 	/*void Texture2D::Create(const ImageModule::ImageFile& file)

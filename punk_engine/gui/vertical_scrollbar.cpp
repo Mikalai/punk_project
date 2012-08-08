@@ -9,10 +9,10 @@ namespace GUI
 		: Widget(x, y, width, height, L"", parent)
 		, m_timer(0)
 	{
-		m_slider = new VerticalSlider(0, 0.05, 1, 0.90, 0, 100, this);
-		m_upButton = new Button(0, 0.95, 1, 0.05, L"", this);
+		m_slider = new VerticalSlider(0, 0.05f, 1, 0.90f, 0, 100, this);
+		m_upButton = new Button(0, 0.95f, 1, 0.05f, L"", this);
 		m_upButton->SetMouseLeftClickHandler(System::EventHandler(this, &VerticalScrollBar::OnUpButtonLeftClick));
-		m_downButton = new Button(0, 0, 1, 0.05, L"", this);
+		m_downButton = new Button(0, 0, 1, 0.05f, L"", this);
 		m_downButton->SetMouseLeftClickHandler(System::EventHandler(this, &VerticalScrollBar::OnDownButtonLeftClick));
 	}
 

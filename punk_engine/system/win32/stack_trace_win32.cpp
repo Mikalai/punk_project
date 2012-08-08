@@ -14,6 +14,7 @@ namespace System
 
 	Stack::~Stack()
 	{
+
 		SymCleanup(GetCurrentProcess());
 	}
 

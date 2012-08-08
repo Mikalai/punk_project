@@ -33,6 +33,7 @@ namespace OpenGL
 		void SetI(int i);
 		void SetJ(int j);
 		void SetLightDirection(const Math::Vector3<float>& v);
+		void SetVerticalScale(float value);
 	};
 };
 

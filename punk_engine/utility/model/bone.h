@@ -37,6 +37,7 @@ namespace Utility
 		Math::mat4			m_last_local_matrix_update;
 		Math::mat4			m_last_global_matrix_update;
 		float				m_last_get_global_matrix;
+		float				m_length;
 		bool				m_need_update_global_matrix;
 		Armature*			m_armature;
 	public:
@@ -54,10 +55,13 @@ namespace Utility
 		const Math::mat4& GetBoneMatrix() const;
 		int GetIndex() const;
 
+		void SetLength(float v) { m_length = v; }
+		float GetLength() const { return m_length; }
+
 		void AddChild(Bone* bone);
 
 		Math::mat4& GetAnimatedGlobalMatrix();
-		void UpdatePose(float frame);
+		void UpdatePose(float frame, bool deep = false);
 		AnimationMixer& GetAnimationMixer();
 		const AnimationMixer& GetAnimationMixer() const;
 

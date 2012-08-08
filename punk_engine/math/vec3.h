@@ -1,9 +1,13 @@
 #ifndef _H_VEC3_MATH
 #define _H_VEC3_MATH
 
+#include <istream>
+#include <ostream>
+#include <vector>
+
 #include <memory.h>
 #include <math.h>
-#include <vector>
+
 #include "config.h"
 #include "vec2.h"
 #include "vec4.h"
@@ -265,19 +269,16 @@ namespace Math
 			return System::string::Format(L"(%.3f; %.3f; %.3f)", m_v[0], m_v[1], m_v[2]);
 		}
 
-/*		void Save(System::Buffer& buffer) const
+		void Save(std::ostream& stream) 
 		{
-			buffer.WriteReal32(m_v[0]);
-			buffer.WriteReal32(m_v[1]);
-			buffer.WriteReal32(m_v[2]);
+			stream.write((char*)m_v, sizeof(m_v));
 		}
 
-		void Load(System::Buffer& buffer)
+		void Load(std::istream& stream) 
 		{
-			m_v[0] = buffer.ReadReal32();
-			m_v[1] = buffer.ReadReal32();
-			m_v[2] = buffer.ReadReal32();
-		}*/
+			stream.read((char*)m_v, sizeof(m_v));
+		}
+
 	};
 
 	template<class T>

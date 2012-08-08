@@ -24,6 +24,8 @@ namespace OpenGL
 	protected:
 		virtual void Cook();		
 	};
+
+	typedef StaticObject* StaticObjectRef;
 }
 
 #endif

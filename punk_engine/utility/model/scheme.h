@@ -6,7 +6,6 @@
 #include "../../system/system.h"
 #include "../../images/images.h"
 #include "../../system/string.h"
-#include "bone_frame.h"
 #include <map>
 #include <vector>
 #include "material.h"

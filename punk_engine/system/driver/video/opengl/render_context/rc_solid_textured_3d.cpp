@@ -41,9 +41,27 @@ namespace OpenGL
 			SetUniformMatrix4f(m_proj_view_world_uniform, &m_proj_view_world[0]);
 			SetUniformVector4f(m_diffuse_color_uniform, &m_diffuse_color[0]);
 			SetUniformInt(m_diffuse_map_uniform, 0);
-			glDisable(GL_DEPTH_TEST);
+		}
+
+		virtual void Begin()
+		{
+			RenderContextImpl::Begin();
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+			glDepthMask(GL_TRUE);
 			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
+
+		virtual void End()
+		{
+			RenderContextImpl::End();
+			glEnable(GL_DEPTH_TEST);			
+			glDepthFunc(GL_LESS);
+			glDepthMask(GL_TRUE);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 
 		RenderContextTextured3DImpl()

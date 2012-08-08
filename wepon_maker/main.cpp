@@ -53,10 +53,19 @@ class Viewer
 	GUI::Widget* wid_second;
 	GUI::Widget* wid_third;
 
-	GUI::Widget* wid_viewer;
-	GUI::ListBox* lst_geom;
+	GUI::Widget* lbl_shoot_sound;
+	GUI::Widget* lbl_reload_sound;
 
-	GUI::ListBox* lst_sound;
+	GUI::Widget* wid_viewer;
+	GUI::Widget* lbl_geom;
+	GUI::Widget* lbl_diffuse_map;
+	GUI::Widget* lbl_normal_map;
+	GUI::ListBox* lst_geom;
+	GUI::ListBox* lst_diffuse_map;
+	GUI::ListBox* lst_normal_map;
+
+	GUI::ListBox* lst_sound_shoot;
+	GUI::ListBox* lst_sound_reload;
 
 	GUI::Button* btn_save;
 	GUI::Button* btn_delete;
@@ -76,6 +85,7 @@ class Viewer
 
 	std::auto_ptr<Audio::Player> m_player;
 
+	Utility::WeaponType m_weapon;
 public:
 
 	Viewer()
@@ -88,10 +98,10 @@ public:
 
 		m_gui.reset(new GUI::Manager());
 		float count = 5;
-		float y = 0.95;
-		float h = 0.05;
-		float w0 = 0.2;
-		float w1 = 0.2;
+		float y = 0.95f;
+		float h = 0.05f;
+		float w0 = 0.2f;
+		float w1 = 0.2f;
 		float w2 = 1 - w1 - w0;
 		btn_load = new GUI::Button(w0, y, w1+w2, h, L"Load");		
 		lbl_barrel_type = new GUI::Widget(w0+w1+w2/2, y-h, w2/2, h, L"Barrel type:");
@@ -119,10 +129,10 @@ public:
 		lst_bullet_type = new GUI::ListBox(w0, y, (1-w0)/4, count*h);
 		lbl_backsight_type = new GUI::Widget(w0+(1-w0)/4, y+count*h, (1-w0)/4, h, L"Backsight type:");
 		lst_backsight_type = new GUI::ListBox(w0+(1-w0)/4, y, (1-w0)/4, count*h);		
-		lbl_purpose_type = new GUI::Widget(w0+2.0*(1-w0)/4, y+count*h, (1-w0)/4, h, L"Purpose type:");
-		lst_purpose_type = new GUI::ListBox(w0+2.0*(1-w0)/4, y, (1-w0)/4, count*h);		
-		lbl_control_type = new GUI::Widget(w0+3.0*(1-w0)/4, y+count*h, (1-w0)/4, h, L"Control type:");
-		lst_control_type = new GUI::ListBox(w0+3.0*(1-w0)/4, y, (1-w0)/4, count*h);		
+		lbl_purpose_type = new GUI::Widget(w0+2.0f*(1-w0)/4.0f, y+count*h, (1-w0)/4, h, L"Purpose type:");
+		lst_purpose_type = new GUI::ListBox(w0+2.0f*(1-w0)/4, y, (1-w0)/4, count*h);		
+		lbl_control_type = new GUI::Widget(w0+3.0f*(1-w0)/4, y+count*h, (1-w0)/4, h, L"Control type:");
+		lst_control_type = new GUI::ListBox(w0+3.0f*(1-w0)/4, y, (1-w0)/4, count*h);		
 		y -= (count+1)*h;
 		lbl_kill_source_type = new GUI::Widget(w0, y+count*h, (1-w0)/4, h, L"Kill source:");
 		lst_kill_source_type = new GUI::ListBox(w0, y, (1-w0)/4, count*h);
@@ -130,18 +140,23 @@ public:
 		lst_usage_type = new GUI::ListBox(w0+(1-w0)/4, y, (1-w0)/4, count*h);
 		lbl_automatic_type = new GUI::Widget(w0+2*(1-w0)/4, y+count*h, (1-w0)/4, h, L"Automatic type:");
 		lst_automatic_type = new GUI::ListBox(w0+2*(1-w0)/4, y, (1-w0)/4, count*h);
-		lbl_barrel_count_type = new GUI::Widget(w0+3.0*(1-w0)/4, y+count*h, (1-w0)/4, h, L"Barrel count:");
-		lst_barrel_count_type = new GUI::ListBox(w0+3.0*(1-w0)/4, y, (1-w0)/4, count*h);
+		lbl_barrel_count_type = new GUI::Widget(w0+3.0f*(1-w0)/4, y+count*h, (1-w0)/4, h, L"Barrel count:");
+		lst_barrel_count_type = new GUI::ListBox(w0+3.0f*(1-w0)/4, y, (1-w0)/4, count*h);
 		y -= h;
 		btn_index = new GUI::Button(w0, y, w1, h, L"Index:");
 		txt_index = new GUI::TextBox(w0+w1, y, w2/4, h);		
 		btn_save = new GUI::Button(w0+w1+w2/4, y, w2/4, h, L"Save");
-		btn_clear = new GUI::Button(w0+w1+2.0*w2/4, y, w2/4, h, L"Clear fields");
+		btn_clear = new GUI::Button(w0+w1+2.0f*w2/4, y, w2/4, h, L"Clear fields");
 		btn_delete = new GUI::Button(w0+w1+3*w2/4, y, w2/4, h, L"Delete");
 		lst_all_weapon = new GUI::ListBox(0, 0, w0, 1);
 
-		lst_geom = new GUI::ListBox(0, 0, w0, 1);
+		lbl_geom = new GUI::Widget(0, 0.95, w0, 0.05, L"Geometry:");
+		lst_geom = new GUI::ListBox(0, 0.7, w0, 0.25);
 		lst_geom->OnItemChanged(System::EventHandler(this, &Viewer::OnItemChanged));
+		lbl_diffuse_map = new GUI::Widget(0, 0.65, w0, 0.5, L"Diffuse map:");
+		lst_diffuse_map = new GUI::ListBox(0, 0.4, w0, 0.25);
+		lst_diffuse_map->OnItemChanged(System::EventHandler(this, &Viewer::OnDiffuseMapChanged));
+
 		wid_viewer = new GUI::Widget(w0, 0, 1-w0, 1);
 		wid_viewer->SetMouseMoveHandler(System::EventHandler(this, &Viewer::OnViewerMouseMove));
 		wid_viewer->SetKeyDownHandler(System::EventHandler(this, &Viewer::OnViewerKeyDown));
@@ -150,13 +165,24 @@ public:
 
 		wid_first = new GUI::Widget(0, 0, 1, 1, L"");
 		wid_second = new GUI::Widget(0, 0, 1, 1, L"");
+		wid_second->AddChild(lbl_geom);
 		wid_second->AddChild(lst_geom);
+		wid_second->AddChild(lbl_diffuse_map);
+		wid_second->AddChild(lst_diffuse_map);
 		wid_second->AddChild(wid_viewer);
 
 		wid_third = new GUI::Widget(0, 0, 1, 1, L"");
-		lst_sound = new GUI::ListBox(0, 0, w0, 1);
-		lst_sound->OnItemChanged(System::EventHandler(this, &Viewer::OnSoundItemChanged));
-		wid_third->AddChild(lst_sound);
+		lbl_shoot_sound = new GUI::Widget(0, 0.95, w0, 0.05, L"Shoot:");		
+		wid_third->AddChild(lbl_shoot_sound);
+		lbl_reload_sound = new GUI::Widget(0, 0.45, w0, 0.05, L"Reload:");
+		wid_third->AddChild(lbl_reload_sound);
+		lst_sound_reload = new GUI::ListBox(0, 0, w0, 0.45);
+		lst_sound_reload->OnItemChanged(System::EventHandler(this, &Viewer::OnSoundReloadItemChanged));
+		wid_third->AddChild(lst_sound_reload);
+		lst_sound_shoot = new GUI::ListBox(0, 0.5, w0, 0.45);
+		lst_sound_shoot->OnItemChanged(System::EventHandler(this, &Viewer::OnSoundShootItemChanged));
+		lst_sound_shoot->SetText(L"QWERT");
+		wid_third->AddChild(lst_sound_shoot);
 
 		tab_widget = new GUI::TabWidget(0, 0, 1, 1);
 
@@ -246,19 +272,78 @@ public:
 		m_player.reset(new Audio::Player());
 	}
 
-	void OnSoundItemChanged(System::Event* e)
+	void OnDiffuseMapChanged(System::Event* e)
 	{
 		int new_item = (int)e;
 		if (new_item < 0)
 			return;
 
-		System::string file = lst_sound->GetItem(new_item)->GetText();
-		int index = (int)lst_sound->GetItem(new_item)->GetData();		
+		System::string file = lst_diffuse_map->GetItem(new_item)->GetText();
+		int index = (int)lst_diffuse_map->GetItem(new_item)->GetData();		
+
+		m_weapon.GetMapDiffuse().SetDiffuse(file);
+	}
+
+	void OnNormalMapChanged(System::Event* e)
+	{
+		int new_item = (int)e;
+		if (new_item < 0)
+			return;
+
+		System::string file = lst_normal_map->GetItem(new_item)->GetText();
+		int index = (int)lst_normal_map->GetItem(new_item)->GetData();		
+
+		m_weapon.GetMapNormal().SetNormal(file);
+	}
+
+	void OnSoundShootItemChanged(System::Event* e)
+	{
+		int new_item = (int)e;
+		if (new_item < 0)
+			return;
+
+		System::string file = lst_sound_shoot->GetItem(new_item)->GetText();
+		int index = (int)lst_sound_shoot->GetItem(new_item)->GetData();		
 		m_player.reset(new Audio::Player);
 		m_player->SetSound(Audio::AudioManager::Instance()->Get(index));
 		m_player->Stop();
 		m_player->Play();
+
+		m_weapon.SetSoundShoot(Utility::WeaponType::SoundElement(file));
 	}
+
+	void OnShootItemChanged(System::Event* e)
+	{
+		int new_item = (int)e;
+		if (new_item < 0)
+			return;
+
+		System::string file = lst_sound_shoot->GetItem(new_item)->GetText();
+		int index = (int)lst_sound_shoot->GetItem(new_item)->GetData();		
+		m_player.reset(new Audio::Player);
+		m_player->SetSound(Audio::AudioManager::Instance()->Get(index));
+		m_player->Stop();
+		m_player->Play();
+
+		m_weapon.SetSoundShoot(Utility::WeaponType::SoundElement(file));
+	}
+
+	void OnSoundReloadItemChanged(System::Event* e)
+	{
+		int new_item = (int)e;
+		if (new_item < 0)
+			return;
+
+		System::string file = lst_sound_reload->GetItem(new_item)->GetText();
+		int index = (int)lst_sound_reload->GetItem(new_item)->GetData();		
+		m_player.reset(new Audio::Player);
+		m_player->SetSound(Audio::AudioManager::Instance()->Get(index));
+		m_player->Stop();
+		m_player->Play();
+
+		m_weapon.SetSoundReload(Utility::WeaponType::SoundElement(file));
+	}
+
 
 	void InitRender()
 	{
@@ -278,16 +363,10 @@ public:
 		//	create frame buffer
 		//
 		m_frame_buffer.reset(new OpenGL::FrameBuffer());
-		m_frame_buffer->Init(wid_viewer->GetScreenWidth(), wid_viewer->GetScreenHeight());
+		m_frame_buffer->Init((int)wid_viewer->GetScreenWidth(), (int)wid_viewer->GetScreenHeight());
 		//
 		//	set fbo as a texture
 		wid_viewer->SetBackgroundTexture(m_frame_buffer->GetColorTexture());
-
-		System::Folder fld;
-		fld.Open(System::Environment::Instance()->GetModelFolder());
-		m_vao.reset(new OpenGL::StaticObject());
-		m_vao->FromFileVAO(L"m16a2_rifle.vao");
-		fld.Close();
 	}
 
 	void Render()
@@ -303,7 +382,7 @@ public:
 			m_rc->SetLightPosition(m_camera.GetPosition());
 			m_rc->SetSpecularColor(Math::vec4(1,1,1,1));
 			m_rc->SetSpecularPower(16);
-			m_rc->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0, m_frame_buffer->GetColorTexture()->GetWidth() / (double)m_frame_buffer->GetColorTexture()->GetHeight(), 0.1, 100.0));
+			m_rc->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, m_frame_buffer->GetColorTexture()->GetWidth() / (float)m_frame_buffer->GetColorTexture()->GetHeight(), 0.1f, 100.0f));
 			m_rc->SetViewMatrix(m_camera.GetViewMatrix());
 			m_rc->Begin();
 			m_tc->SetTexture0(m_diffuse_map.get());
@@ -318,6 +397,30 @@ public:
 		m_frame_buffer->Deactivate();
 	}
 
+	void MakeVao(Utility::Scene* scene, Utility::Object* obj)
+	{
+		if (obj)
+		{
+			std::auto_ptr<OpenGL::StaticObject> vao(new OpenGL::StaticObject);
+			if (obj->GetMesh())
+			{
+				vao->SetStaticObject(scene->CookStaticMesh(obj->GetName()));
+				vao->Init();
+
+				System::Folder fld;
+				fld.Open(System::Environment::Instance()->GetModelFolder());
+				std::ofstream stream((obj->GetName()+L".vao").Data(), std::ios_base::binary);
+				vao->Save(stream);
+				stream.close();
+				fld.Close();
+			}
+			for each (auto child in obj->GetChildren())
+			{
+				MakeVao(scene, child.get());
+			}
+		}
+	}
+
 	void OnItemChanged(System::Event* e)
 	{
 		int new_item = (int)e;
@@ -326,19 +429,32 @@ public:
 
 		System::string file = lst_geom->GetItem(new_item)->GetText();
 
-		System::Folder fld;
-		fld.Open(System::Environment::Instance()->GetModelFolder());
-		m_vao.reset(new OpenGL::StaticObject());
-		m_vao->FromFileVAO(file);
-		fld.Close();
+		Utility::Scene* scene = Utility::SceneFileManager::Instance()->Get(new_item);
+		
+		if (!scene)
+		{
+			System::Logger::Instance()->WriteError(L"No scheme for weapon");
+			return;
+		}
+
+		m_weapon.MakeFromScheme(txt_file->GetText(), *scene);
+	
+		
+		for (int i = 0; i < scene->GetObjectsCount(); i++)
+		{
+			MakeVao(scene, scene->FindObjectByName(scene->GetObjectName(i)));			
+		}
+
+		///	recache data in the folder
+		OpenGL::VaoManager::Instance()->Init();
 	}
 
 	void CreateTexture()
 	{
 		ImageModule::Importer importer;
-		std::auto_ptr<ImageModule::RGBAImage> test(importer.LoadRGBA(System::Environment::Instance()->GetTexutreFolder() + L"checker2.png"));	
+		std::auto_ptr<ImageModule::RGBAImage> test(importer.LoadRGBA(System::Environment::Instance()->GetTextureFolder() + L"checker2.png"));	
 		m_diffuse_map.reset(new OpenGL::Texture2D(*test));
-		std::auto_ptr<ImageModule::RGBImage> testrgb(importer.LoadRGB(System::Environment::Instance()->GetTexutreFolder() + L"bump.png"));
+		std::auto_ptr<ImageModule::RGBImage> testrgb(importer.LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"bump.png"));
 		m_normal_map.reset(new OpenGL::Texture2D(*testrgb));
 
 		//
@@ -350,28 +466,28 @@ public:
 
 	void ListAllSounds()
 	{
-		lst_sound->RemoveAllItems();
+		lst_sound_reload->RemoveAllItems();
+		lst_sound_shoot->RemoveAllItems();
 		auto all_sounds = Audio::AudioManager::Instance()->GetAll();
 
 		for each (auto sound in all_sounds)
 		{
-			std::auto_ptr<GUI::ListBox::ListBoxItem> item(new GUI::ListBox::ListBoxItem(sound->GetLocation(), (void*)sound->GetIndex()));
-			lst_sound->AddItem(item.release());
+			std::auto_ptr<GUI::ListBox::ListBoxItem> item1(new GUI::ListBox::ListBoxItem(sound->GetLocation(), (void*)sound->GetIndex()));
+			std::auto_ptr<GUI::ListBox::ListBoxItem> item2(new GUI::ListBox::ListBoxItem(sound->GetLocation(), (void*)sound->GetIndex()));
+			lst_sound_reload->AddItem(item1.release());
+			lst_sound_shoot->AddItem(item2.release());
 		}
 	}
 
 	void ListAllWeapon()
 	{
-		System::string data = System::Environment::Instance()->GetCurrentFolder() + L"weapon";
-		System::Folder fld;
-		fld.Open(data);
-		std::list<System::string> files = fld.ListAllItems();
+		auto all_weapons = Utility::WeaponTypeManager::Instance()->GetAll();
 		lst_all_weapon->RemoveAllItems();
-		for each (System::string lst in files)
+
+		for each (auto weapon in all_weapons)
 		{
-			lst_all_weapon->AddItem(new GUI::ListBox::ListBoxItem(lst));
+			lst_all_weapon->AddItem(new GUI::ListBox::ListBoxItem(weapon->GetLocation()));
 		}
-		fld.Close();
 
 		LoadAllBullets();
 		InitBarrelType();
@@ -475,16 +591,12 @@ public:
 
 	void ListAllVao()
 	{
-		System::string data = System::Environment::Instance()->GetModelFolder();
-		System::Folder fld;
-		fld.Open(data);
-		std::list<System::string> files = fld.Find(L"*.vao");
 		lst_geom->RemoveAllItems();
-		for each (System::string lst in files)
+		auto scenes = Utility::SceneFileManager::Instance()->GetAll();
+		for each (auto scene in scenes)
 		{
-			lst_geom->AddItem(new GUI::ListBox::ListBoxItem(lst));
+			lst_geom->AddItem(new GUI::ListBox::ListBoxItem(scene->GetLocation(), (void*)scene->GetIndex()));
 		}
-		fld.Close();
 	}
 
 	void OnViewerMouseMove(System::Event* event)
@@ -506,7 +618,7 @@ public:
 	{
 		if (m_frame_buffer.get())
 		{
-			m_frame_buffer->Init(wid_viewer->GetScreenWidth(), wid_viewer->GetScreenHeight());
+			m_frame_buffer->Init((int)wid_viewer->GetScreenWidth(), (int)wid_viewer->GetScreenHeight());
 			wid_viewer->SetBackgroundTexture(m_frame_buffer->GetColorTexture());
 		}
 	}
@@ -549,7 +661,6 @@ public:
 		int cur_sel = lst_all_weapon->GetCurrentSelection();
 		if (cur_sel == -1)
 			return;
-		char buf[256];
 		System::string path = System::Environment::Instance()->GetCurrentFolder() + L"\\weapon\\" + lst_all_weapon->GetItem(cur_sel)->GetText();
 
 		System::Folder::DeleteFile(path);
@@ -562,60 +673,52 @@ public:
 		if (cur_sel == -1)
 			return;
 		char buf[256];
-		System::string path = System::Environment::Instance()->GetCurrentFolder() + L"\\weapon\\" + lst_all_weapon->GetItem(cur_sel)->GetText();
-		path.ToANSI(buf, 256);
-		std::ifstream stream(buf, std::ios_base::binary);
-		Utility::WeaponType weapon;
-		weapon.Load(stream);
-		stream.close();
 
-		txt_file->SetText(lst_all_weapon->GetItem(cur_sel)->GetText());
-		txt_desc->SetText(weapon.m_description);
-		txt_name->SetText(weapon.m_name);
-		txt_weight->SetText(System::string::Convert(weapon.m_weight));
-		txt_kill_range->SetText(System::string::Convert(weapon.m_kill_range));
-		txt_index->SetText(System::string::Convert(weapon.m_index));
-		txt_holder_size->SetText(System::string::Convert(weapon.m_holder_size));
+		m_weapon = *Utility::WeaponTypeManager::Instance()->Load(lst_all_weapon->GetItem(cur_sel)->GetText());
+	
+		txt_file->SetText(lst_all_weapon->GetItem(cur_sel)->GetText().Replace(L".weapon", L""));
+		txt_desc->SetText(m_weapon.GetDescription());
+		txt_name->SetText(m_weapon.GetName());
+		txt_weight->SetText(System::string::Convert(m_weapon.GetWeight()));
+		txt_kill_range->SetText(System::string::Convert(m_weapon.GetKillRange()));
+		//txt_index->SetText(System::string::Convert(m_weapon.m_index));
+		txt_holder_size->SetText(System::string::Convert(m_weapon.GetHolderSize()));
 
-		lst_automatic_type->SelectItem(weapon.m_automatic_type);
-		lst_backsight_type->SelectItem(weapon.m_backsight_type);
-		lst_barrel_count_type->SelectItem(weapon.m_barrel_count_type);
-		lst_barrel_type->SelectItem(weapon.m_barrel_type);
+		lst_automatic_type->SelectItem(m_weapon.GetTypeAutomatic());
+		//lst_backsight_type->SelectItem(m_weapon.GetBackSightType());
+		lst_barrel_count_type->SelectItem(m_weapon.GetTypeBarrelCount());
+		lst_barrel_type->SelectItem(m_weapon.GetTypeBarrel());
 		for (int i = 0; i < lst_bullet_type->GetItemsCount(); ++i)
 		{
-			if ((int)lst_bullet_type->GetItem(i)->GetData() == weapon.m_bullet_type)
+			if ((int)lst_bullet_type->GetItem(i)->GetData() == m_weapon.GetBulletType())
 			{
 				lst_bullet_type->SelectItem(i);
 				break;
 			}
 		}
-		lst_control_type->SelectItem(weapon.m_control_type);
-		lst_kill_source_type->SelectItem(weapon.m_kill_source_type);
-		lst_purpose_type->SelectItem(weapon.m_purpose);
-		lst_usage_type->SelectItem(weapon.m_usage_type);
+		lst_control_type->SelectItem(m_weapon.GetTypeControl());
+		lst_kill_source_type->SelectItem(m_weapon.GetTypeKillSource());
+		lst_purpose_type->SelectItem(m_weapon.GetTypePurpose());
+		lst_usage_type->SelectItem(m_weapon.GetTypeUsage());
 	}
 
 	void OnSave(System::Event*)
 	{		
-		Utility::WeaponType weapon;
-		weapon.SetName(txt_name->GetText().Data());
-		weapon.SetDescription(txt_desc->GetText().Data());
+		m_weapon.SetName(txt_name->GetText().Data());
+		m_weapon.SetDescription(txt_desc->GetText().Data());
 		try
 		{
-			weapon.m_weight = txt_weight->GetText().ToInt32();
-			weapon.m_index = txt_index->GetText().ToInt32();
-			weapon.m_kill_range = txt_kill_range->GetText().ToInt32();
-			weapon.m_holder_size = txt_holder_size->GetText().ToInt32();
-
-			weapon.m_automatic_type = Utility::WeaponType::AutomaticType(lst_automatic_type->GetCurrentSelection());
-			weapon.m_backsight_type = lst_backsight_type->GetCurrentSelection() == -1 ? -1 : (int)lst_backsight_type->GetItem(lst_backsight_type->GetCurrentSelection())->GetData();
-			weapon.m_barrel_count_type = Utility::WeaponType::BarrelCountType(lst_barrel_count_type->GetCurrentSelection());
-			weapon.m_barrel_type = Utility::WeaponType::BarrelType(lst_barrel_type->GetCurrentSelection());
-			weapon.m_bullet_type = int(lst_bullet_type->GetItem(lst_bullet_type->GetCurrentSelection())->GetData());
-			weapon.m_control_type = Utility::WeaponType::ControlType(lst_control_type->GetCurrentSelection());
-			weapon.m_kill_source_type = Utility::WeaponType::KillSourceType(lst_kill_source_type->GetCurrentSelection());
-			weapon.m_purpose = Utility::WeaponType::PurposeType(lst_purpose_type->GetCurrentSelection());
-			weapon.m_usage_type = Utility::WeaponType::UsageType(lst_usage_type->GetCurrentSelection());
+			m_weapon.SetWeight(txt_weight->GetText().ToInt32());
+			m_weapon.SetKillRange(txt_kill_range->GetText().ToInt32());
+			m_weapon.SetHolderSize(txt_holder_size->GetText().ToInt32());
+			m_weapon.SetTypeAutomatic(Utility::WeaponType::AutomaticType(lst_automatic_type->GetCurrentSelection()));
+			m_weapon.SetTypeBarrelCount(Utility::WeaponType::BarrelCountType(lst_barrel_count_type->GetCurrentSelection()));
+			m_weapon.SetTypeBarrel(Utility::WeaponType::BarrelType(lst_barrel_type->GetCurrentSelection()));
+			m_weapon.SetBulletType(int(lst_bullet_type->GetItem(lst_bullet_type->GetCurrentSelection())->GetData()));
+			m_weapon.SetTypeControl(Utility::WeaponType::ControlType(lst_control_type->GetCurrentSelection()));
+			m_weapon.SetTypeKillSource(Utility::WeaponType::KillSourceType(lst_kill_source_type->GetCurrentSelection()));
+			m_weapon.SetTypePurpose(Utility::WeaponType::PurposeType(lst_purpose_type->GetCurrentSelection()));
+			m_weapon.SetTypeUsage(Utility::WeaponType::UsageType(lst_usage_type->GetCurrentSelection()));
 		}
 		catch(...)
 		{
@@ -623,17 +726,19 @@ public:
 			return;
 		}
 
-		char buf[256];
-		System::string path = System::Environment::Instance()->GetCurrentFolder() + L"weapon\\" + txt_file->GetText();
-		path.ToANSI(buf, 256);
-		std::ofstream stream(buf, std::ios_base::binary);
-		if (!stream.is_open())
-		{
-			System::Logger::Instance()->WriteError(L"Can't save new bullet");
-			return;
-		}
-		weapon.Save(stream);
-		stream.close();
+		Utility::WeaponTypeManager::Instance()->Manage(txt_file->GetText(), new Utility::WeaponType(m_weapon));
+
+		//char buf[256];
+		//System::string path = System::Environment::Instance()->GetCurrentFolder() + L"weapon\\" + txt_file->GetText() + L".weapon";
+		//path.ToANSI(buf, 256);
+		//std::ofstream stream(buf, std::ios_base::binary);
+		//if (!stream.is_open())
+		//{
+		//	System::Logger::Instance()->WriteError(L"Can't save new bullet");
+		//	return;
+		//}
+		//m_weapon.Save(stream);
+		//stream.close();
 		ListAllWeapon();
 	}
 

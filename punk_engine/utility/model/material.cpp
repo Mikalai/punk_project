@@ -1,3 +1,5 @@
+#include <istream>
+#include <ostream>
 #include "material.h"
 
 namespace Utility
@@ -61,4 +63,51 @@ namespace Utility
 	{
 		return m_name;
 	}
+
+	void Material::Save(std::ostream& stream)
+	{
+		m_diffuse_map.Save(stream);
+		m_normal_map.Save(stream);
+		m_diffuse_color.Save(stream);
+		m_specular_color.Save(stream);
+		m_name.Save(stream);
+		stream.write((char*)&m_specular_factor, sizeof(m_specular_factor));	
+
+		stream.write((char*)&m_ambient, sizeof(m_ambient));	
+		stream.write((char*)&m_diffuse_intensity, sizeof(m_diffuse_intensity));	
+		stream.write((char*)&m_darkness, sizeof(m_darkness));	
+		stream.write((char*)&m_diffuse_fresnel, sizeof(m_diffuse_fresnel));	
+		stream.write((char*)&m_diffuse_fresnel_factor, sizeof(m_diffuse_fresnel_factor));	
+		stream.write((char*)&m_emit, sizeof(m_emit));			
+		m_mirror_color.Save(stream);
+		stream.write((char*)&m_roughness, sizeof(m_roughness));			
+		stream.write((char*)&m_specular_intensity, sizeof(m_specular_intensity));			
+		stream.write((char*)&m_specular_index_of_refraction, sizeof(m_specular_index_of_refraction));
+		stream.write((char*)&m_specular_slope, sizeof(m_specular_slope));
+		stream.write((char*)&m_translucency, sizeof(m_translucency));		
+	}
+
+	void Material::Load(std::istream& stream)
+	{
+		m_diffuse_map.Load(stream);
+		m_normal_map.Load(stream);
+		m_diffuse_color.Load(stream);
+		m_specular_color.Load(stream);
+		m_name.Load(stream);
+		stream.read((char*)&m_specular_factor, sizeof(m_specular_factor));		
+
+		stream.read((char*)&m_ambient, sizeof(m_ambient));	
+		stream.read((char*)&m_diffuse_intensity, sizeof(m_diffuse_intensity));	
+		stream.read((char*)&m_darkness, sizeof(m_darkness));	
+		stream.read((char*)&m_diffuse_fresnel, sizeof(m_diffuse_fresnel));	
+		stream.read((char*)&m_diffuse_fresnel_factor, sizeof(m_diffuse_fresnel_factor));	
+		stream.read((char*)&m_emit, sizeof(m_emit));			
+		m_mirror_color.Load(stream);
+		stream.read((char*)&m_roughness, sizeof(m_roughness));			
+		stream.read((char*)&m_specular_intensity, sizeof(m_specular_intensity));			
+		stream.read((char*)&m_specular_index_of_refraction, sizeof(m_specular_index_of_refraction));
+		stream.read((char*)&m_specular_slope, sizeof(m_specular_slope));
+		stream.read((char*)&m_translucency, sizeof(m_translucency));		
+	}
+
 }

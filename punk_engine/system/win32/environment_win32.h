@@ -17,12 +17,14 @@ namespace System
 		const string GetCurrentFolder();
 		const string GetFontFolder();
 		const string GetModelFolder();
-		const string GetTexutreFolder();
+		const string GetTextureFolder();
 		const string GetMapFolder();
 		const string GetSaveFolder();
 		const string GetQuestFolder();
 		const string GetSoundFolder();
 		const string GetShaderFolder();
+		const string GetArmatureFolder();
+		const string GetWeaponFolder();
 	};
 }
 

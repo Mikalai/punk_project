@@ -57,19 +57,27 @@ namespace Math
 		btn[1] = tb.At(1,1);
 		btn[2] = tb.At(1,2);
 
-		//
-		//	gram-shmidt normalization
-		//
-		nrm.Normalize();
-		tng = (tng - tng.Dot(nrm)*nrm).Normalize();
-		btn = (btn - btn.Dot(nrm)*nrm - btn.Dot(tng)*tng).Normalize();
-
-		Matrix<T> m(3,3);
-		m.At(0,0) = tng[0]; m.At(0,1) = tng[1]; m.At(0,2) = tng[2];
-		m.At(1,0) = btn[0]; m.At(1,1) = btn[1]; m.At(1,2) = btn[2];
-		m.At(2,0) = nrm[0]; m.At(2,1) = nrm[1]; m.At(2,2) = nrm[2];
-
-		mm = m.Determinant();/**/
+		if (btn.Length()==0 || tng.Length() == 0)
+		{
+			nrm.Normalize();	
+			mm = 1;
+		}
+		else
+		{
+			//
+			//	gram-shmidt normalization
+			//
+			nrm.Normalize();
+			tng = (tng - tng.Dot(nrm)*nrm).Normalize();
+			btn = (btn - btn.Dot(nrm)*nrm - btn.Dot(tng)*tng).Normalize();
+					
+			Matrix<T> m(3,3);
+			m.At(0,0) = tng[0]; m.At(0,1) = tng[1]; m.At(0,2) = tng[2];
+			m.At(1,0) = btn[0]; m.At(1,1) = btn[1]; m.At(1,2) = btn[2];
+			m.At(2,0) = nrm[0]; m.At(2,1) = nrm[1]; m.At(2,2) = nrm[2];
+			
+			mm = m.Determinant();/**/
+		}
 	}
 
 }

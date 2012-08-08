@@ -7,6 +7,7 @@ Description: Contains a Texture2D class
 #ifndef _H_PUNK_TEXTURE_2D
 #define _H_PUNK_TEXTURE_2D
 
+#include <iosfwd>
 #include "config.h"
 #include "../../../../system/resource.h"
 #include "../../../../system/buffer.h"
@@ -42,6 +43,8 @@ namespace OpenGL
 		unsigned GetCode() const;
 		void Create(const ImageModule::Image& image);
 
+		void Load(std::istream& stream);
+		void Save(std::ostream& stream);
 		void SetSourceFile(const System::string& filename);
 		const System::string& GetSourceFile() const;
 		void SetIndex(int index);
@@ -50,6 +53,8 @@ namespace OpenGL
 		void Init();
 		void Clear();
 	};
+
+	typedef Texture2D* Texture2DRef;
 }
 
 #endif	// _H_Texture2D

@@ -8,7 +8,7 @@ namespace ImageModule
 	class PngExporter : public Exporter
 	{
 	public:
-		virtual void Export(const System::string& filename, const Image& image);
+		virtual void Export(const System::string& filename, const Image& image);		
 	};
 }
 

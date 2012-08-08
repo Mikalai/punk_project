@@ -16,10 +16,12 @@ namespace Utility
 	typedef std::map<BoneName, std::shared_ptr<Bone>> BonesCollection;
 	typedef std::vector<Bone*> BonesCache;
 
+	class Object;
+
 	class LIB_UTILITY Armature2
 	{
 		int m_bones_count;
-		Bone* m_root_bone;
+		Bone* m_root_bone;		
 	public:
 		void SetRootBone(Bone* bone);
 		Bone* GetRootBone(Bone* bone);
@@ -30,6 +32,7 @@ namespace Utility
 		System::string m_name;
 		BonesCollection m_bones;
 		BonesCache m_cache;		
+		Object* m_armature;
 		ArmatureAnimation m_animation;
 		//Math::Matrix4x4<float> m_mesh_offset;
 	public:
@@ -60,8 +63,13 @@ namespace Utility
 		void Load(std::istream& stream);
 
 		void FromFileArmature(const System::string& filename);
+
+		void SetArmatureObject(Object* obj) { m_armature = obj; }
+		Object* GetArmatureObject() { return m_armature; }
+		const Object* GetArmatureObject() const { return m_armature; }
 	};
 
+	typedef Armature* ArmatureRef;
 	typedef std::map<System::string, std::shared_ptr<Armature>> ArmatureCollection;
 }
 

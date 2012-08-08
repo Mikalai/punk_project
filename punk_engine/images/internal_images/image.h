@@ -34,10 +34,15 @@ namespace ImageModule
 		unsigned GetWidth() const;
 		unsigned GetHeight() const;
 		unsigned GetBitDepth() const;
+		void Create(int width, int height, int channels);
+		void SetFormat(int format);
+		void SetNumChannels(int channels);
+		void SetDepth(int bpp);
 		void SetSize(unsigned width, unsigned height);
 		void SetSubImage(unsigned x, unsigned y, const Image& image);
 		const Component* GetPixelComponent(unsigned x, unsigned y, unsigned component) const;
 		Component* GetPixelComponent(unsigned x, unsigned y, unsigned component);
+		void SetPixelComponent(unsigned x, unsigned y, unsigned component, Component value);
 		const Component* GetData() const;
 		Component* GetData();
 		ImageFormat GetImageFormat() const;

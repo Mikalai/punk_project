@@ -68,7 +68,7 @@ namespace GUI
 		if (m_isVisible && m_isEnabled)
 		{
 			Widget::OnIdle(e);
-			m_cur_time += e->elapsed_time_s;
+			m_cur_time += (float)e->elapsed_time_s;
 			float t = m_cur_time;
 			if (t < m_appear_time)
 			{

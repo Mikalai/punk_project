@@ -55,6 +55,14 @@ namespace Utility
 		return !m_tracks.empty();
 	}
 
+	void AnimationMixer::DisableAllTracks()
+	{
+		for (auto it = m_tracks.begin(); it != m_tracks.end(); ++it)
+		{
+			m_active[it->first] = false;
+		}		
+	}
+
 	void AnimationMixer::EnableTrack(const System::string name, bool flag)
 	{
 		m_active[name] = flag;

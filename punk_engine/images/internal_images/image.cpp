@@ -35,7 +35,38 @@ namespace ImageModule
 
 	void Image::Load(std::istream& stream)
 	{
-		impl_image->Load(stream);
+		char header[16];
+		stream.read(header, 16);
+		{
+			char png[] = { 137, 80, 78, 71, 13, 10, 26, 10 };
+			if (!memcmp(header, png, 8))
+			{					
+				stream.seekg(0, std::ios_base::beg);
+				PngImporter importer;
+				importer.Load(stream, this);
+			}
+			return;
+		}
+	}
+		
+	void Image::Create(int width, int height, int channels)
+	{
+		impl_image->Create(width, height, channels);
+	}
+
+	void Image::SetFormat(int format)
+	{
+		impl_image->SetFormat(format);
+	}
+
+	void Image::SetNumChannels(int channels)
+	{
+		impl_image->SetNumChannels(channels);
+	}
+
+	void Image::SetDepth(int bpp)
+	{
+		impl_image->SetDepth(bpp);
 	}
 
 	const System::Descriptor& Image::GetDescriptor() const
@@ -86,6 +117,11 @@ namespace ImageModule
 	Component* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component)
 	{
 		return impl_image->At(x, y, component);
+	}
+
+	void Image::SetPixelComponent(unsigned x, unsigned y, unsigned component, Component value)
+	{
+		*impl_image->At(x, y, component) = value;
 	}
 
 	const Component* Image::GetData() const

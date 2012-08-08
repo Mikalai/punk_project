@@ -162,6 +162,7 @@ namespace OpenGL
 	PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC glRenderbufferStorageMultisample;
 	PFNGLBLITFRAMEBUFFERPROC glBlitFramebuffer;
 	PFNGLDEPTHFUNCPROC glDepthFunc;
+	PFNGLDEPTHMASKPROC glDepthMask;
 
 	bool IsSupported(const char* extension, Driver* driver)
 	{
@@ -346,5 +347,6 @@ namespace OpenGL
 		glRenderbufferStorageMultisample = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC)driver->GetProcAddress("glRenderbufferStorageMultisample");
 		glBlitFramebuffer = (PFNGLBLITFRAMEBUFFERPROC)driver->GetProcAddress("glBlitFramebuffer");
 		glDepthFunc = (PFNGLDEPTHFUNCPROC)driver->GetProcAddress("glDepthFunc");
+		glDepthMask = (PFNGLDEPTHMASKPROC)driver->GetProcAddress("glDepthMask");
 	}
 }

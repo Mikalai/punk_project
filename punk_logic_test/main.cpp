@@ -234,9 +234,9 @@ public:
 		m_simulator.Add(&m_tree);
 
 		ImageModule::Importer file;		
-		ImageModule::GrayImage* landscape = file.LoadGray(System::Environment::Instance()->GetTexutreFolder() + L"terrain.png");
-		ImageModule::RGBImage* diffuse1 = file.LoadRGB(System::Environment::Instance()->GetTexutreFolder() + L"grass.png");
-		ImageModule::RGBImage* diffuse2 = file.LoadRGB(System::Environment::Instance()->GetTexutreFolder() + L"ground.png");
+		ImageModule::GrayImage* landscape = file.LoadGray(System::Environment::Instance()->GetTextureFolder() + L"terrain.png");
+		ImageModule::RGBImage* diffuse1 = file.LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"grass.png");
+		ImageModule::RGBImage* diffuse2 = file.LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"ground.png");
 
 		m_image_manager.ManageResource(System::Resource<ImageModule::Image>(landscape));
 		m_image_manager.ManageResource(System::Resource<ImageModule::Image>(diffuse1));

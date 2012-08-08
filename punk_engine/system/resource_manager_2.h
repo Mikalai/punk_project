@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <string>
+#include <map>
 
 #include "string.h"
 #include "folder.h"
@@ -65,6 +66,11 @@ namespace System
 			return m_resource.get();
 		}
 
+		void Set(T* item)
+		{
+			m_resource.reset(new T(*item));
+		}
+
 		void Unload()
 		{
 			m_resource.reset(0)
@@ -88,7 +94,7 @@ namespace System
 			std::wifstream inp(file.Data());
 			out << m_index << L' ' << m_location.Data() << std::endl;
 			out.close();
-		}
+		}	
 
 		const System::string& GetLocation() const { return m_location; }
 		int GetIndex() const { return m_index; }
@@ -165,16 +171,19 @@ namespace System
 					inp >> index;
 					if (inp.eof())
 						break;
-					inp >> buf;
+					inp.getline(buf, 2048);
 					if (wcslen(buf) == 0)
 						break;
 
 					std::shared_ptr<Resource2<T, Policy>> res(new Resource2<T, Policy>);
-					res->Init(index, buf);
+					System::string file(buf);
+					file = file.Trim(L" ");
+					res->Init(index, file);
 					//	we should place a resource in specifed by index position
 					m_items.resize(std::max((int)m_items.size(), index + 1));
 					m_items[index] = res;
-					System::Logger::Instance()->WriteMessage(L"Resource " + System::string::Convert(index) + L" " + buf + L" has been cached");
+					m_dictionary[file] = index;
+					System::Logger::Instance()->WriteMessage(L"Resource " + System::string::Convert(index) + L" " + file + L" has been cached");
 				}							
 			}
 			else
@@ -210,19 +219,30 @@ namespace System
 			System::Logger::Instance()->WriteMessage(L"Look for files: " + Policy<T>::GetExtension());
 			std::list<System::string> all_files = fld.Find(Policy<T>::GetExtension().Data());		
 
-			std::list<System::string> unindexed;
-			for each (System::string file in all_files)
+			///	remove not existed files
+			std::list<System::string> really_indexed;
+			for each (System::string file in indexed)
 			{
-				auto it = std::find(indexed.begin(), indexed.end(), file);
-				if (it == indexed.end())
+				auto it = std::find(all_files.begin(), all_files.end(), file);
+				if (it != all_files.end())
 				{
-					unindexed.push_back(file);
+					really_indexed.push_back(file);
 				}
 			}
 
+			std::list<System::string> unindexed;
+			for each (System::string file in all_files)
+			{
+				auto it = std::find(really_indexed.begin(), really_indexed.end(), file);
+				if (it == really_indexed.end())
+				{
+					unindexed.push_back(file);
+				}
+			}	
+
 			fld.Close();
-			std::copy(unindexed.begin(), unindexed.end(), std::back_inserter(indexed));			
-			UpdateResourceFile(indexed);
+			std::copy(unindexed.begin(), unindexed.end(), std::back_inserter(really_indexed));			
+			UpdateResourceFile(really_indexed);
 			System::Logger::Instance()->WriteMessage(L"Resource caching complete");
 
 			LoadResources();
@@ -231,6 +251,33 @@ namespace System
 		T* Get(int index)
 		{
 			return m_items[index]->Get();
+		}
+
+		void Manage(const System::string& name, T* item)
+		{
+			System::string location = name + Policy<T>::GetExtension().Replace(L"*", L"");
+			System::Folder fld;
+			fld.Open(Policy<T>::GetFolder());
+			std::ofstream out(location.Data(), std::ios_base::binary);
+			item->Save(out);
+			fld.Close();
+			
+			int index = m_items.size();
+			std::shared_ptr<Resource2<T, Policy>> res(new Resource2<T, Policy>);
+			res->Init(index, location);
+			m_items.push_back(res);
+			m_dictionary[location] = index;
+		}
+
+		T* Load(const System::string& filename)
+		{
+			auto it = m_dictionary.find(filename);
+			if (it == m_dictionary.end())
+			{
+				System::Logger::Instance()->WriteError(filename + L" was not cached. Can't load");
+				return 0;
+			}
+			return m_items[it->second]->Get();
 		}
 
 		const Collection& GetAll() const { return m_items; }
@@ -250,10 +297,13 @@ namespace System
 		}
 
 	private:
+		
+		typedef std::map<const System::string, int> Dictionary;
 
 		static std::auto_ptr<ResourceManager2> m_instance;
 
 		Collection m_items;
+		Dictionary m_dictionary;
 	};
 
 	template<class T, template <class U> class Policy> 

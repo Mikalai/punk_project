@@ -1,5 +1,5 @@
-#ifndef _H_PUNK_UTILITY
-#define _H_PUNK_UTILITY
+#ifndef _H_PUNK_UTILITY_TEXTURE_FACE
+#define _H_PUNK_UTILITY_TEXTURE_FACE
 
 #include <map>
 #include "../../system/string.h"
@@ -50,6 +50,27 @@ namespace Utility
 		{
 			m_coords.push_back(coord);
 		}
+
+		void Save(std::ostream& stream)
+		{
+			m_name.Save(stream);
+			int size = (int)m_coords.size();
+			stream.write((char*)&size, sizeof(size));
+			if (size)
+				stream.write((char*)&m_coords[0], sizeof(m_coords[0])*size);
+		}
+
+		void Load(std::istream& stream)
+		{
+			m_name.Load(stream);
+			int size = -1;
+			stream.read((char*)&size, sizeof(size));
+			if (size > 0)
+			{
+				m_coords.resize(size);
+				stream.read((char*)&m_coords[0], sizeof(m_coords[0])*size);
+			}
+		}
 	};
 
 	class TextureMeshes
@@ -85,6 +106,23 @@ namespace Utility
 			for (int i = 0; i < MAX_TEXTURE_MESHES; ++i)
 				if (m_mesh[i]->size() == 0)
 					return m_mesh[i].get();
+			return 0;
+		}
+
+		void Save(std::ostream& stream)
+		{
+			for (int i = 0; i < MAX_TEXTURE_MESHES; ++i)
+			{
+				m_mesh[i]->Save(stream);
+			}
+		}
+
+		void Load(std::istream& stream)
+		{
+			for (int i = 0; i < MAX_TEXTURE_MESHES; ++i)
+			{
+				m_mesh[i]->Load(stream);
+			}
 		}
 	};
 

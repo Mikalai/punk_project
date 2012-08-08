@@ -217,7 +217,7 @@ namespace OpenGL
 
 		InitInternalVertexBuffers();
 
-		glClearColor(0.8, 0.8, 0.8, 1);
+		glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
 	//	GLSLProgram::Init();
 		//CgProgram::Init();
 	}
@@ -399,7 +399,7 @@ namespace OpenGL
 
 	void Driver::SetViewport(float x, float y, float width, float height)
 	{
-		glViewport(x, y, width, height);
+		glViewport((GLsizei)x, (GLsizei)y, (GLsizei)width, (GLsizei)height);
 	}
 	
 	void Driver::SetFullScreen(bool flag)

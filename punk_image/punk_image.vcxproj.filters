@@ -71,6 +71,7 @@
     <ClInclude Include="..\punk_engine\images\storage.h" />
     <ClInclude Include="..\punk_engine\images\surface.h" />
     <ClInclude Include="..\punk_engine\images\texture.h" />
+    <ClInclude Include="..\punk_engine\images\image_manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\punk_engine\images\import_export\exporter.cpp">
@@ -108,5 +109,6 @@
     <ClCompile Include="..\punk_engine\images\storage.cpp" />
     <ClCompile Include="..\punk_engine\images\surface.cpp" />
     <ClCompile Include="..\punk_engine\images\texture.cpp" />
+    <ClCompile Include="..\punk_engine\images\image_manager.cpp" />
   </ItemGroup>
 </Project>

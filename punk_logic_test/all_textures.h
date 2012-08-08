@@ -22,14 +22,14 @@ struct AllTextures
 	AllTextures()
 	{
 		ImageModule::Importer importer;
-		std::auto_ptr<ImageModule::RGBAImage> rgba_image(importer.LoadRGBA(System::Environment::Instance()->GetTexutreFolder() + L"male_skin.png"));
+		std::auto_ptr<ImageModule::RGBAImage> rgba_image(importer.LoadRGBA(System::Environment::Instance()->GetTextureFolder() + L"male_skin.png"));
 		m_male_skin.reset(new OpenGL::Texture2D(*rgba_image));
 
-		std::auto_ptr<ImageModule::RGBImage> rgb_image(importer.LoadRGB(System::Environment::Instance()->GetTexutreFolder() + L"mini14.png"));
+		std::auto_ptr<ImageModule::RGBImage> rgb_image(importer.LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"mini14.png"));
 		m_mini14_skin.reset(new OpenGL::Texture2D(*rgb_image));
 
 		rgb_image.reset(0);
-		rgb_image.reset(importer.LoadRGB(System::Environment::Instance()->GetTexutreFolder() + L"m16a2.png"));
+		rgb_image.reset(importer.LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"m16a2.png"));
 		m_m16a2_skin.reset(new OpenGL::Texture2D(*rgb_image));		
 	}
 

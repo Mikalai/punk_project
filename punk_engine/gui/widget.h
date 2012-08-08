@@ -21,7 +21,13 @@ namespace GUI
 
 		enum ColorType {ACTIVE_COLOR = 1, INACTIVE_COLOR, TEXT_ACTIVE_COLOR, TEXT_INACTIVE_COLOR};
 
+		enum VerticalAlign { VERTICAL_ALIGN_TOP, VERTICAL_ALIGN_CENTER, VERTICAL_ALIGN_BOTTOM };
+		enum HorizontalAlign { HORIZONTAL_ALIGHT_LEFT, HORIZONTAL_ALIGN_CENTER, HORIZONTAL_ALIGN_RIGHT};
+
 	protected:
+
+		VerticalAlign m_vertical_align;
+		HorizontalAlign m_horizontal_align;
 
 		float m_width;
 		float m_height;
@@ -92,7 +98,10 @@ namespace GUI
 		virtual void OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* event);
 		virtual void OnMouseWheel(System::MouseWheelEvent* event);
 		virtual void OnKeyChar(System::KeyCharEvent* event);	
-		virtual void OnKeyDown(System::KeyDownEvent* event);		
+		virtual void OnKeyDown(System::KeyDownEvent* event);	
+
+		int CalculateTextXOffset(const wchar_t* text);
+		int CalculateTextYOffset(const wchar_t* text);
 	public:
 
 		Widget(float x = 0, float y = 0, float width = 1, float height = 1, const System::string& text = L"", Widget* parent = 0);
@@ -103,6 +112,11 @@ namespace GUI
 
 		virtual ~Widget();
 		virtual void SetText(const System::string& text);
+
+		void SetVerticalTextAlign(VerticalAlign v) { m_vertical_align = v; }
+		void SetHorizontalTextAlign(HorizontalAlign v) { m_horizontal_align = v; }
+		VerticalAlign SetVerticalTextAlign(VerticalAlign v) const { return m_vertical_align; }
+		HorizontalAlign SetHorizontalTextAlign(HorizontalAlign v) const { return m_horizontal_align; }
 
 		void SetWidth(float width);
 		void SetHeight(float height);

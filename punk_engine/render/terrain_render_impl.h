@@ -15,9 +15,9 @@ namespace Render
 	struct TerrainRender::TerrainRenderImpl
 	{
 		OpenGL::Texture2D m_height_map;
-		OpenGL::Texture2D m_normal_map;
-		OpenGL::Texture2D m_diffuse_map_1;
-		OpenGL::Texture2D m_diffuse_map_2;
+		OpenGL::Texture2DRef m_normal_map;
+		OpenGL::Texture2DRef m_diffuse_map_1;
+		OpenGL::Texture2DRef m_diffuse_map_2;
 
 		OpenGL::GridObject m_grid;
 		Utility::Terrain* m_terrain;
@@ -27,9 +27,9 @@ namespace Render
 
 		TerrainRenderImpl()
 			: m_height_map()
-			, m_normal_map()
-			, m_diffuse_map_1()
-			, m_diffuse_map_2()
+			, m_normal_map(0)
+			, m_diffuse_map_1(0)
+			, m_diffuse_map_2(0)
 			, m_grid()
 			, m_terrain(0)
 			, m_terrain_rc()
@@ -52,7 +52,7 @@ namespace Render
 			m_grid.SetWidth(1);
 			m_grid.SetHeight(1);
 			m_grid.SetWidthSlice(16);
-			m_grid.SetHeightSlice(16);
+			m_grid.SetHeightSlice(16);			
 			m_grid.Init();
 		}
 
@@ -62,14 +62,24 @@ namespace Render
 			m_height_map.Create(*m_terrain->GetLandscape());
 		}
 
-		void SetDiffuseMap1(const ImageModule::Image& image)
+		//void SetDiffuseMap1(const ImageModule::Image& image)
+		//{
+		//	m_diffuse_map_1.Create(image);
+		//}
+		//
+		//void SetDiffuseMap2(const ImageModule::Image& image)
+		//{
+		//	m_diffuse_map_2.Create(image);
+		//}
+
+		void SetDiffuseMap1(const OpenGL::Texture2DRef t)
 		{
-			m_diffuse_map_1.Create(image);
+			m_diffuse_map_1 = t;
 		}
-		
-		void SetDiffuseMap2(const ImageModule::Image& image)
+
+		void SetDiffuseMap2(const OpenGL::Texture2DRef t)
 		{
-			m_diffuse_map_2.Create(image);
+			m_diffuse_map_2 = t;
 		}
 
 		void Render(Utility::Camera* camera)
@@ -92,8 +102,8 @@ namespace Render
 			int start = -4;
 			int end = 4;
 		
-			m_texture_context.SetTexture0(&m_diffuse_map_1);
-			m_texture_context.SetTexture1(&m_diffuse_map_2);
+			m_texture_context.SetTexture0(m_diffuse_map_1);
+			m_texture_context.SetTexture1(m_diffuse_map_2);
 			m_texture_context.SetTexture2(&m_height_map);						
 			m_texture_context.Bind();					
 
@@ -125,6 +135,7 @@ namespace Render
 						m_terrain_rc.SetLevel(float(level));
 						m_terrain_rc.SetI(i);
 						m_terrain_rc.SetJ(j);
+						m_terrain_rc.SetVerticalScale(m_terrain->GetScale());
 
 						m_terrain_rc.Begin();
 						m_grid.Render();

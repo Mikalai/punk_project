@@ -63,10 +63,10 @@ namespace System
 		int Size() const;
 		string& Erase(int start, int len);
 		string& Insert(wchar_t chr, int pos);
-		string Replace(const string& what, const string& with) const;
-		string SubString(int start, int end) const;
-		string Trim(const wchar_t* delimiters) const;
-		std::vector<string> Split(const wchar_t *delimiters) const;
+		const string Replace(const string& what, const string& with) const;
+		const string SubString(int start, int end) const;
+		const string Trim(const wchar_t* delimiters) const;
+		const std::vector<string> Split(const wchar_t *delimiters) const;
 
 		const wchar_t* Data() const;
 
@@ -91,24 +91,24 @@ namespace System
 		friend PUNK_STRING_MODULE bool operator < (const string& s1, const wchar_t* s2);
 
 
-		static string Convert(int value, int radix = 10);
-		static string Convert(unsigned value, int radix = 10);
-		static string Convert(INT64 value, int radix = 10);
-		static string Convert(unsigned __int64 value, int radix = 10);
-		static string Convert(__int16 value, int radix = 10);
-		static string Convert(unsigned __int16 value, int radix = 10);
-		static string Convert(__int8 value, int radix = 10);
-		static string Convert(unsigned __int8 value, int radix = 10);
-		static string Convert(signed char value);
-		static string Convert(unsigned char value);
-		static string Convert(float value, int precision = 5);
-		static string Convert(double value, int precision = 5);
-		static string Convert(long double value, int precision = 5);
-		static string Convert(wchar_t value);
-		static string Convert(bool value);
-		static string Convert(void* value);
+		static const string Convert(int value, int radix = 10);
+		static const string Convert(unsigned value, int radix = 10);
+		static const string Convert(INT64 value, int radix = 10);
+		static const string Convert(unsigned __int64 value, int radix = 10);
+		static const string Convert(__int16 value, int radix = 10);
+		static const string Convert(unsigned __int16 value, int radix = 10);
+		static const string Convert(__int8 value, int radix = 10);
+		static const string Convert(unsigned __int8 value, int radix = 10);
+		static const string Convert(signed char value);
+		static const string Convert(unsigned char value);
+		static const string Convert(float value, int precision = 5);
+		static const string Convert(double value, int precision = 5);
+		static const string Convert(long double value, int precision = 5);
+		static const string Convert(wchar_t value);
+		static const string Convert(bool value);
+		static const string Convert(void* value);
 
-		static string Format(const wchar_t* fmt, ...);
+		static const string Format(const wchar_t* fmt, ...);
 
 		void* operator new (size_t size);
 		void operator delete (void* pointer, size_t size);

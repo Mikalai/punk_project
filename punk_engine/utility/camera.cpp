@@ -17,7 +17,7 @@ namespace Utility
 		System::Mouse::Instance()->LockInWindow(false);
 		//System::Mouse::Instance()->Show(false);
 
-	/*	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Camera::OnMouseMove));
+		/*System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Camera::OnMouseMove));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(this, &Camera::OnIdle));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Camera::OnKeyDown));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_WHEEL, System::EventHandler(this, &Camera::OnMouseScroll));
@@ -113,7 +113,7 @@ namespace Utility
 	{
 		if (m_camera_type == CAMERA_TYPE_FPS)
 		{
-			float dt = m_timer.GetElapsedTime();
+			float dt = (float)m_timer.GetElapsedTime();
 			if (System::Keyboard::Instance()->GetKeyState(m_move_forward))
 				m_position -= m_direction.Normalized()*dt;
 			if (System::Keyboard::Instance()->GetKeyState(m_move_backward))
@@ -126,7 +126,7 @@ namespace Utility
 		}
 		else if (m_camera_type == CAMERA_TYPE_RTS)
 		{
-			float dt = m_height_offset*m_timer.GetElapsedTime();
+			float dt = (float)m_height_offset*m_timer.GetElapsedTime();
 			if (System::Keyboard::Instance()->GetKeyState(m_move_forward))
 				m_position -= Math::vec3(0, 0, 1)*dt;
 			if (System::Keyboard::Instance()->GetKeyState(m_move_backward))
@@ -174,7 +174,7 @@ namespace Utility
 	void Camera::OnResize(System::Event* e)
 	{
 		System::WindowResizeEvent* event = static_cast<System::WindowResizeEvent*>(e);
-		m_aspect = System::Window::Instance()->GetWidth() / (double)System::Window::Instance()->GetHeight();
+		m_aspect = System::Window::Instance()->GetWidth() / (float)System::Window::Instance()->GetHeight();
 		UpdateMatrix();
 	}
 

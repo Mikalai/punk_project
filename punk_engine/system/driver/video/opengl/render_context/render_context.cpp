@@ -246,4 +246,12 @@ namespace OpenGL
 	{
 		glGetVertexAttribfv ( index, GL_CURRENT_VERTEX_ATTRIB, out);
 	}
+
+	void RenderContext::EnableDepthTest(bool flag)
+	{
+		if (flag)
+			glEnable(GL_DEPTH_TEST);
+		else
+			glDisable(GL_DEPTH_TEST);
+	}
 }

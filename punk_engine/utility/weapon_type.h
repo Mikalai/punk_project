@@ -2,11 +2,17 @@
 #define _H_PUNK_UTILITY_WEAPON
 
 #include "config.h"
+#include "decl_property.h"
+#include "../math/mat4.h"
+#include "animation\animation_mixer.h"
 
 namespace Utility
 {
-	struct LIB_UTILITY  WeaponType
+	class Scene;
+
+	class LIB_UTILITY  WeaponType
 	{
+	public:
 		enum CalibreType { 
 			CALIBRE_NO,
 			CALIBRE_SMALL, 		//	мелкокалиберное
@@ -69,16 +75,88 @@ namespace Utility
 			BARREL_SMOOTH_BORE //гладкоствольный
 		};	
 
-		static const int MAX_NAME_SIZE = 64;
-		static const int MAX_DESCRIPTION_SIZE = 192;
-		wchar_t m_name[MAX_NAME_SIZE];
-		wchar_t m_description[MAX_DESCRIPTION_SIZE];
+		struct WeaponElement
+		{
+			bool m_support;
+			char m_geom_name[256];	//	filename in the geometry resources
+			int  m_geom_index;
+			Math::mat4 m_transform;
+			AnimationMixer m_animation;	//	index in animation resources
+
+			void Save(std::ostream& stream);
+			void Load(std::istream& stream);
+		};
+
+		struct SoundElement
+		{
+			int m_sound_index;
+			System::string m_sound_name;
+
+			SoundElement() : m_sound_index(-1), m_sound_name(L"") {}
+			SoundElement(const System::string& name) : m_sound_index(-1), m_sound_name(name) {} 
+			void Save(std::ostream& stream);
+			void Load(std::istream& stream);
+		};
+
+		struct TextureElement
+		{
+			int m_diffuse_map_index;
+			System::string m_diffuse_map_name;
+			int m_normal_map_index;
+			System::string m_normal_map_name;
+			
+			void SetDiffuse(const System::string& v) { m_diffuse_map_name = v; }
+			void SetNormal(const System::string& v) { m_normal_map_name = v; }
+			
+			const System::string& GetDiffuse() const { return m_diffuse_map_name; }
+			const System::string& GetNormal() const { return m_normal_map_name; }
+
+			TextureElement();
+			TextureElement(const System::string& diffuse, const System::string& normal);
+
+			void Save(std::ostream& stream);
+			void Load(std::istream& stream);
+		};
+
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
+
+		void MakeFromScheme(const System::string& name, const Scene& scene);
+
+		PROPERTY(System::string, Name, m_name);
+		PROPERTY(System::string, Description, m_description);
+		PROPERTY(int, Weight, m_weight);
+		PROPERTY(int, HolderSize, m_holder_size);
+		PROPERTY(int, KillRange, m_kill_range);
+		PROPERTY(int, BulletType, m_bullet_type);
+//		PROPERTY(int, BackSightType, m_backsight_type);
+		PROPERTY(CalibreType, TypeCallibre, m_callibre_type);
+		PROPERTY(PurposeType, TypePurpose, m_purpose);
+		PROPERTY(ControlType, TypeControl, m_control_type);
+		PROPERTY(KillSourceType, TypeKillSource, m_kill_source_type);
+		PROPERTY(UsageType, TypeUsage, m_usage_type);
+		PROPERTY(AutomaticType, TypeAutomatic, m_automatic_type);
+		PROPERTY(BarrelCountType, TypeBarrelCount, m_barrel_count_type);
+		PROPERTY(BarrelType, TypeBarrel, m_barrel_type);
+		PROPERTY(WeaponElement, Body, m_body);
+		PROPERTY(WeaponElement, Holder, m_holder);
+		PROPERTY(WeaponElement, Backsight, m_backsight);
+		PROPERTY(WeaponElement, Light, m_light);
+		PROPERTY(WeaponElement, GrenadeLauncher, m_grenade);
+		PROPERTY(SoundElement, SoundShoot, m_shoot_sound);
+		PROPERTY(SoundElement, SoundReload, m_reload_sound);
+		PROPERTY(TextureElement, MapDiffuse, m_diffuse_map);
+		PROPERTY(TextureElement, MapNormal, m_normal_map);
+
+	private:
+
+		System::string m_name;		
+		System::string m_description;
 		int m_weight;			//	gramms
 		int m_holder_size;		//	count
 		int m_kill_range;			//	meters
 		int m_bullet_type;		//	bullet type index in bullets array
-		int m_backsight_type;	//	index of the backsight
-		int m_index;			//	index of the weapon in the array
+		//int m_backsight_type;	//	index of the backsight
 		CalibreType m_callibre_type;
 		PurposeType m_purpose;
 		ControlType m_control_type;
@@ -87,11 +165,19 @@ namespace Utility
 		AutomaticType m_automatic_type;
 		BarrelCountType m_barrel_count_type;
 		BarrelType m_barrel_type;
+		SoundElement m_shoot_sound;
+		SoundElement m_reload_sound;
 
-		void SetName(const wchar_t* name);
-		void SetDescription(const wchar_t* desc);
-		void Save(std::ostream& stream);
-		void Load(std::istream& stream);
+		TextureElement m_diffuse_map;
+		TextureElement m_normal_map;
+
+		WeaponElement m_body;
+		WeaponElement m_holder;
+		WeaponElement m_backsight;
+		WeaponElement m_light;
+		WeaponElement m_lock;
+		WeaponElement m_grenade;		
+
 	};	//WeaponType
 }
 

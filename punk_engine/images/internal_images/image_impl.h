@@ -9,6 +9,7 @@
 #include "component.h"
 #include "../../system/buffer.h"
 #include "../../system/handle.h"
+#include "../import_export/png_importer.h"
 
 namespace ImageModule
 {
@@ -97,14 +98,30 @@ namespace ImageModule
 		}
 
 		void Load(std::istream& stream)
+		{			
+			//stream.read(reinterpret_cast<char*>(&m_descriptor), sizeof(m_descriptor));
+			//stream.read(reinterpret_cast<char*>(&m_width), sizeof(m_width));
+			//stream.read(reinterpret_cast<char*>(&m_height), sizeof(m_height));
+			//stream.read(reinterpret_cast<char*>(&m_components), sizeof(m_components));
+			//m_size = m_width*m_height*m_components*sizeof(Component);
+			//m_data.resize(m_size);
+			//stream.read(reinterpret_cast<char*>(&m_data[0]), m_size);
+		}
+
+
+		void SetFormat(int format)
 		{
-			stream.read(reinterpret_cast<char*>(&m_descriptor), sizeof(m_descriptor));
-			stream.read(reinterpret_cast<char*>(&m_width), sizeof(m_width));
-			stream.read(reinterpret_cast<char*>(&m_height), sizeof(m_height));
-			stream.read(reinterpret_cast<char*>(&m_components), sizeof(m_components));
-			m_size = m_width*m_height*m_components*sizeof(Component);
-			m_data.resize(m_size);
-			stream.read(reinterpret_cast<char*>(&m_data[0]), m_size);
+			m_format = (ImageFormat)format;
+		}
+
+		void SetNumChannels(int channels)
+		{
+			m_components = channels;
+		}
+
+		void SetDepth(int bpp)
+		{
+			m_bit_depth = bpp;
 		}
 
 		const Component* At(unsigned x, unsigned y, unsigned component) const

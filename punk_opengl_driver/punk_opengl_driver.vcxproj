@@ -47,7 +47,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PUNK_OPENGL_DRIVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NOMINMAX;_DEBUG;_WINDOWS;_USRDLL;PUNK_OPENGL_DRIVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -68,7 +68,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PUNK_OPENGL_DRIVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NOMINMAX;NDEBUG;_WINDOWS;_USRDLL;PUNK_OPENGL_DRIVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
@@ -312,6 +312,7 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_context_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.h" />
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vao_manager.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vbo.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertext_array_object_impl.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.h" />
@@ -379,8 +380,10 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\static_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\terrain_render.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture2d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_2d_manager.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_context.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\text_texture_2d.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vao_manager.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vbo.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\vertex_array_object.cpp" />
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.cpp" />

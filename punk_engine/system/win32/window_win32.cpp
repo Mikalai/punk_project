@@ -127,6 +127,11 @@ namespace System
 		return mode.dmPelsWidth;
 	}
 
+	void Window::BreakMainLoop()
+	{
+		PostQuitMessage(0);
+	}
+
 	int Window::Loop()
 	{
 		Timer timer;

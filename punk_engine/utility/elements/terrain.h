@@ -10,15 +10,16 @@ namespace Utility
 {
 	class LIB_UTILITY Terrain
 	{
-		ImageModule::GrayImage* m_landscape;
+		ImageModule::Image* m_landscape;
 		Math::vec3 m_offset;
 		float m_scale;
 		float m_base_height;
 		bool m_modified;
 	public:
+		Terrain();
 		float GetDistance(const Math::vec3& point);
-		void SetLandscape(ImageModule::GrayImage* landscape) { m_landscape = landscape; }
-		ImageModule::GrayImage* GetLandscape() { return m_landscape; }
+		void SetLandscape(ImageModule::Image* landscape) { m_landscape = landscape; }
+		ImageModule::Image* GetLandscape() { return m_landscape; }
 		void SetOffset(const Math::vec3& offset) { m_offset = offset; }
 		Math::vec3& GetOffset() { return m_offset; }
 		void SetScale(float scale) { m_scale = scale;}
@@ -30,7 +31,13 @@ namespace Utility
  		void SetModified(bool value) { m_modified = value;}
 		bool IsModified() const { return m_modified; }
 		bool IntersectWithRay(const Math::vec3& start, const Math::vec3& dir, Math::vec3& out);
+	private:
+		int GetHeightFromImage(int x, int y) const;
+		void SetHeightInImage(int x, int y, int height);
 	};
+
+	typedef Terrain* TerrainRef;
+
 }
 
 #endif	//	_H_PUNK_LOGIC_TERRAIN

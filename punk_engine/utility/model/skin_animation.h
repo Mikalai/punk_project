@@ -7,8 +7,8 @@
 #include "../../math/header_matrix.h"
 #include "../../math/mat4.h"
 #include "../../math/quat.h"
-#include "scene.h"
 #include "bone.h"
+#include "bone_frame.h"
 #include "armature.h"
 
 namespace System

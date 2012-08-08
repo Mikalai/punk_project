@@ -5,6 +5,7 @@
 
 #include "config.h"
 #include "abstract_render.h"
+#include "../system/driver/video/driver.h"
 
 namespace Utility { class Terrain; class Camera; }
 namespace ImageModule { class Image; }
@@ -21,10 +22,11 @@ namespace Render
 		virtual ~TerrainRender();
 
 		void SetTerrain(Utility::Terrain* terrain);
-		void SetDiffuseMap1(const ImageModule::Image& image);
-		void SetDiffuseMap2(const ImageModule::Image& image);
+		void SetDiffuseMap1(OpenGL::Texture2D* image);
+		void SetDiffuseMap2(OpenGL::Texture2D* image);
 		void Render(Utility::Camera* camera);
 		void Init();
+
 	private:
 		struct TerrainRenderImpl;
 		std::auto_ptr<TerrainRenderImpl> impl_terrain_render;

@@ -22,6 +22,38 @@ def export_normals(f, mesh):
     end_block(f)
     return
 
+#   export single float
+def export_float(f, name, value):
+    start_block(f, name)
+    make_offset(f)
+    f.write("%f\n" % value)
+    end_block(f)
+    return
+
+#   export single vec4
+def export_vec4(f, name, value):
+    start_block(f, name)
+    make_offset(f)
+    f.write("%f %f %f %f\n" % (value[0], value[1], value[2], value[3]))
+    end_block(f)
+    return
+
+#   export single vec4
+def export_vec3(f, name, value):
+    start_block(f, name)
+    make_offset(f)
+    f.write("%f %f %f\n" % (value[0], value[1], value[2]))
+    end_block(f)
+    return
+
+#   export single string
+def export_string(f, name, value):
+    start_block(f, name)
+    make_offset(f)
+    f.write("%s\n" % value)
+    end_block(f)
+    return
+
 #
 #   exports id of vertecies that face consist of
 #   face MUST be TRIANGULATED
@@ -221,9 +253,9 @@ def export_tex_coords(f, mesh):
 
         data = texture.data
     
-        for face in mesh.polygons:
+        for face in range(0, len(mesh.polygons)):
             make_offset(f)
-            f.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n" % (data[face.vertices[0]].uv[0], data[face.vertices[0]].uv[1], data[face.vertices[1]].uv[0], data[face.vertices[1]].uv[1], data[face.vertices[2]].uv[0], data[face.vertices[2]].uv[1], 0, 0))
+            f.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n" % (data[3*face].uv[0], data[3*face].uv[1], data[3*face+1].uv[0], data[3*face+1].uv[1], data[3*face+2].uv[0], data[3*face+2].uv[1], 0, 0))
             
         end_block(f)   
         end_block(f)
@@ -245,16 +277,17 @@ def export_mesh_material(f, mesh):
 #   export only mesh
 #
 def export_mesh(f, object):
-    if (object.data == None):
+    if object.data == None:
         return
-    start_block(f, "*mesh")
-    export_vertex_position(f, object.data)
-    export_normals(f, object.data)
-    export_faces(f, object.data)
-    export_tex_coords(f, object.data)
-    export_mesh_material(f, object.data)
-    export_bones_weight(f, object) 
-    end_block(f)
+    if type(object.data) == bpy.types.Mesh:
+        start_block(f, "*mesh")
+        export_vertex_position(f, object.data)
+        export_normals(f, object.data)
+        export_faces(f, object.data)
+        export_tex_coords(f, object.data)
+        export_mesh_material(f, object.data)
+        export_bones_weight(f, object) 
+        end_block(f)
     return
 
 #
@@ -284,9 +317,17 @@ def export_bones(f):
             #
             
             start_block(f, "*name")
-            make_offset(f);
-            f.write("%s\n" % bone.name);
-            end_block(f);
+            make_offset(f)
+            f.write("%s\n" % bone.name)
+            end_block(f)
+            
+            #
+            #   write bone length
+            #
+            start_block(f, "*length")
+            make_offset(f)
+            f.write("%f\n" % bone.length)
+            end_block(f)
             
             #
             #   write bone parent
@@ -433,11 +474,61 @@ def export_materials(f, materials):
     start_block(f, "*materials")
     for m in materials:
         start_block(f, "*material")        
-        start_block(f, "*name")
-        make_offset(f)
-        print(m.name)
-        f.write("%s\n" % m.name)
-        end_block(f)
+        
+        #   export name
+        export_string(f, "*name", m.name)
+        
+        #   export alpha
+        export_float(f, "*alpha", m.alpha)
+        
+        #   export ambient
+        export_float(f, "*ambient", m.ambient)
+        
+        #   export darkness
+        export_float(f, "*darkness", m.darkness)
+ 
+        #   export diffuse color
+        export_vec3(f, "*diffuse_color", m.diffuse_color)
+        
+        #   export diffuse fresnel
+        export_float(f, "*diffuse_fresnel", m.diffuse_fresnel)
+        
+        #   export diffuse fresnel factor
+        export_float(f, "*diffuse_fresnel_factor", m.diffuse_fresnel_factor)
+        
+        #   export diffuse intensity
+        export_float(f, "*diffuse_intensity", m.diffuse_intensity)
+        
+        #   export emit 
+        export_float(f, "*emit", m.emit)
+        
+        #   export mirrot color
+        export_vec3(f, "*mirror_color", m.mirror_color)
+        
+        #   export roughness
+        export_float(f, "*roughness", m.roughness)
+        
+        #   export specular alpha
+        export_float(f, "*specular_alpha", m.specular_alpha)
+        
+        #   export specular color
+        export_vec3(f, "*specular_color", m.specular_color)
+        
+        #   export specular hardness
+        export_float(f, "*specular_hardness", m.specular_hardness)
+        
+        #   export specular intensity
+        export_float(f, "*specular_intensity", m.specular_intensity)
+        
+        #   export specular index of refraction
+        export_float(f, "*specular_ior", m.specular_ior)
+        
+        #   export specular slope
+        export_float(f, "*specular_slope", m.specular_slope)
+        
+        #   export translucency
+        export_float(f, "*translucency", m.translucency)
+                
         
         try:
             file_name = m.texture_slots[0].texture.image.name
@@ -449,7 +540,7 @@ def export_materials(f, materials):
             print("No texture found")
         
         try:
-            file_name = m.texture_slots[0].texture.image.name
+            file_name = m.texture_slots[1].texture.image.name
             start_block(f, "*normal_map")
             make_offset(f)
             f.write("%s\n" % file_name)
@@ -457,6 +548,76 @@ def export_materials(f, materials):
         except:
             print("No texture found")
         end_block(f)    
+    end_block(f)
+    return
+
+#
+#   export sound
+#
+def export_sound(f, object):
+    start_block(f, "*sound")
+
+    #   export name
+    start_block(f, "*name")    
+    make_offset(f)
+    f.write("%s\n" % object.data.name)
+    end_block(f)
+    
+    #   export filename
+    start_block(f, "*filename")
+    make_offset(f)
+    f.write("%s\n" % object.data.sound.name)
+    end_block(f)
+    
+    #   export volume
+    start_block(f, "*volume")
+    make_offset(f)
+    f.write("%f\n" % object.data.volume)
+    end_block(f)
+    
+    #   export pitch
+    start_block(f, "*pitch")
+    make_offset(f)
+    f.write("%f\n" % object.data.pitch)
+    end_block(f)
+    
+    #   export max distance
+    start_block(f, "*max_distance")
+    make_offset(f)
+    f.write("%f\n" % object.data.distance_max)
+    end_block(f)
+    
+    #   exoirt ref distance
+    start_block(f, "*reference_distance")
+    make_offset(f)
+    f.write("%f\n" % object.data.distance_reference)
+    end_block(f)
+    
+    #   exoirt inner cone angle in degreese
+    start_block(f, "*cone_angle_inner")
+    make_offset(f)
+    f.write("%f\n" % object.data.cone_angle_inner)
+    end_block(f)
+    
+    #   export outer cone angle
+    start_block(f, "*cone_angle_outer")
+    make_offset(f)
+    f.write("%f\n" % object.data.cone_angle_outer)
+    end_block(f)
+    
+    #   export outer cone volumn
+    start_block(f, "*cone_volume_outer")
+    make_offset(f)
+    f.write("%f\n" % object.data.cone_volume_outer)
+    end_block(f)
+    
+    #   export attenuation
+    start_block(f, "*attenuation")
+    make_offset(f)
+    f.write("%f\n" % object.data.attenuation)
+    end_block(f)
+    
+
     end_block(f)
     return
 
@@ -474,8 +635,11 @@ def export_object(f, object):
     export_local_matrix(f, object)
     export_parent_inverse_matrix(f, object)
 
-    if object.name.find("slot") == -1:
+    if type(object.data) == bpy.types.Mesh:
         export_mesh(f, object)  
+        
+    if type(object.data) == bpy.types.Speaker:
+        export_sound(f, object)
              
     for child in object.children:
         export_object(f, child)    

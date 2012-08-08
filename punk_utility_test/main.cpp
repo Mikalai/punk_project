@@ -57,8 +57,32 @@ void tree_test()
 	Utility::LodContainer& c = tree.GetTrunkLods();
 }
 
+void MillTest()
+{
+	Utility::Scene scene;
+	scene.Load(System::Environment::Instance()->GetModelFolder() + L"wind_mill.pmd");
+
+	Utility::Object* object = scene.FindObjectByName(L"ground_floor");
+	
+	Utility::Object* wheel = object->GetChild(L"wheel");
+	wheel->AsAnimationMixer().EnableTrack(L"wheel", true);
+	{
+		std::ofstream stream(L"test");
+		object->Save(stream);
+		stream.close();
+	}
+
+	{
+		Utility::Object obj;
+		std::ifstream stream(L"test");
+		obj.Load(stream);
+		stream.close();
+	}
+
+
+}
 int main()
 {
-	animation_test();
+	MillTest();
 	return 0;
 }

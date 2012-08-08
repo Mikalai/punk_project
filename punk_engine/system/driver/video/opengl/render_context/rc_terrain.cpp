@@ -26,7 +26,8 @@ namespace OpenGL
 		GLint m_position_uniform;
 		GLint m_level_uniform;
 		GLint m_i_uniform;
-		GLint m_j_uniform;														
+		GLint m_j_uniform;	
+		GLint m_vert_scale_uniform;
 		Math::mat4 m_world;
 		Math::mat4 m_view;
 		Math::mat4 m_proj;
@@ -36,6 +37,7 @@ namespace OpenGL
 		Math::vec2 m_position;
 		Math::vec3 m_light_position;
 		Math::vec3 m_light_direction;
+		float m_vert_scale;
 
 		float m_level;
 		unsigned m_i, m_j;
@@ -44,6 +46,19 @@ namespace OpenGL
 		{
 
 		}
+
+		virtual void Begin()
+		{
+			RenderContextImpl::Begin();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+
+		virtual void End()
+		{
+			RenderContextImpl::End();
+		}
+
 
 		virtual void InitUniforms()
 		{
@@ -62,6 +77,7 @@ namespace OpenGL
 			m_level_uniform = GetUniformLocation("uLevel");
 			m_i_uniform = GetUniformLocation("ui");
 			m_j_uniform = GetUniformLocation("uj");
+			m_vert_scale_uniform = GetUniformLocation("uVertScale");
 
 		}
 
@@ -72,7 +88,7 @@ namespace OpenGL
 			SetUniformMatrix4f(m_world_uniform, &m_world[0]);
 			SetUniformMatrix4f(m_view_uniform, &m_view[0]);
 			SetUniformMatrix4f(m_projection_uniform, &m_proj[0]);
-		//	SetUniformMatrix3f(m_normal_transform_uniform, m_normal_tranform);
+			//	SetUniformMatrix3f(m_normal_transform_uniform, m_normal_tranform);
 			SetUniformVector3f(m_light_direction_uniform, m_light_direction);
 			SetUniformVector4f(m_diffuse_color_uniform, Math::vec4(1,1,1,1));
 			SetUniformVector2f(m_position_uniform, m_position);
@@ -82,37 +98,38 @@ namespace OpenGL
 			SetUniformFloat(m_level_uniform, float(m_level));
 			SetUniformInt(m_i_uniform, m_i);
 			SetUniformInt(m_j_uniform, m_j);
-//			SetUniformVector3f(m_light_direction_uniform, Math::mat4::CreateRotation(1,0,0, 0) * Math::vec3(1, 0, 0).ToHomogeneous());
+			SetUniformFloat(m_vert_scale_uniform, m_vert_scale);
+			//			SetUniformVector3f(m_light_direction_uniform, Math::mat4::CreateRotation(1,0,0, 0) * Math::vec3(1, 0, 0).ToHomogeneous());
 		}
 
 		RenderContextTerrainImpl()
 			: RenderContextImpl()
 			, m_proj_view_world_uniform()
-		, m_diffuse_color_uniform()
-		, m_diffuse_map_1_uniform()		
-		, m_diffuse_map_2_uniform()		
-		, m_normal_transform_uniform()
-		, m_view_uniform()
-		, m_world_uniform()
-		, m_projection_uniform()
-		, m_light_direction_uniform()
-		, m_light_position_uniform()
-		, m_height_map_uniform()
-		, m_normal_map_uniform()		
-		, m_position_uniform()
-		, m_level_uniform()
-		, m_i_uniform()
-		, m_j_uniform()												
-		, m_world()
-		, m_view()
-		, m_proj()
-		, m_proj_view_world()
-		, m_normal_tranform()
-		, m_diffuse_color()
-		, m_position()
-		, m_level()
-		, m_i()
-		, m_j()
+			, m_diffuse_color_uniform()
+			, m_diffuse_map_1_uniform()		
+			, m_diffuse_map_2_uniform()		
+			, m_normal_transform_uniform()
+			, m_view_uniform()
+			, m_world_uniform()
+			, m_projection_uniform()
+			, m_light_direction_uniform()
+			, m_light_position_uniform()
+			, m_height_map_uniform()
+			, m_normal_map_uniform()		
+			, m_position_uniform()
+			, m_level_uniform()
+			, m_i_uniform()
+			, m_j_uniform()												
+			, m_world()
+			, m_view()
+			, m_proj()
+			, m_proj_view_world()
+			, m_normal_tranform()
+			, m_diffuse_color()
+			, m_position()
+			, m_level()
+			, m_i()
+			, m_j()
 		{}
 
 		RenderContextTerrainImpl::RenderContextTerrainImpl(const RenderContextTerrainImpl& impl)
@@ -194,6 +211,11 @@ namespace OpenGL
 		{
 			m_j = j;
 		}
+
+		void SetVerticalScale(float value)
+		{
+			m_vert_scale = value;
+		}
 	};
 
 	RenderContextTerrain::RenderContextTerrain()
@@ -268,4 +290,8 @@ namespace OpenGL
 		static_cast<RenderContextTerrainImpl*>(impl_rc.get())->SetLightDirection(d);
 	}
 
+	void RenderContextTerrain::SetVerticalScale(float value)
+	{
+		static_cast<RenderContextTerrainImpl*>(impl_rc.get())->SetVerticalScale(value);
+	}
 }

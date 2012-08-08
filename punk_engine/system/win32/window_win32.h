@@ -40,6 +40,7 @@ namespace System
 		void SetSize(int width, int height);
 		void SetPosition(int x, int y);
 		int Loop();
+		void BreakMainLoop();
 		void SetTitle(const string& text);
 		string GetTitle() const;
 

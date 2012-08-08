@@ -1,12 +1,23 @@
 #ifndef _H_PUNK_BINARY_FILE
 #define _H_PUNK_BINARY_FILE
 
-//#include "../allocator.h"
+#include <istream>
+
 #include "../error.h"
 #include "binary_file_win32.h"
 
 namespace System
 {
+	bool BinaryFile::Load(std::istream& stream, Buffer& buffer)
+	{
+		stream.seekg(0, std::ios_base::end);
+		std::streamoff size = stream.tellg();
+		stream.seekg(0, std::ios_base::beg);
+		buffer.SetSize((int)size);
+		stream.read(reinterpret_cast<char*>(buffer.StartPointer()), size);
+		return true;
+	}
+
 	bool BinaryFile::Load(const string& filename, Buffer& buffer)
 	{
 		DWORD error = GetLastError();

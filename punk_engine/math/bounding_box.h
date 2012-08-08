@@ -7,6 +7,7 @@ Description: A bounding box
 #ifndef _H_BOUNDING_BOX
 #define _H_BOUNDING_BOX
 
+#include <iosfwd>
 #include "config.h"
 #include "mat4.h"
 #include "vec3.h"
@@ -40,6 +41,9 @@ namespace Math
 		const vec3& operator [] (int index) const;
 
 		const BoundingBox& Transform(const mat4& transform) const;
+
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
 
 		friend LIB_MATH BoundingBox Merge(const BoundingBox* b1, const BoundingBox* b2);
 	};

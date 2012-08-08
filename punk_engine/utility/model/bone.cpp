@@ -71,7 +71,7 @@ namespace Utility
 
 			if (m_parent)
 			{
-				m_last_global_matrix_update = m_parent->GetAnimatedGlobalMatrix() /** m_armature->GetMeshOffset().Inversed()*/ * m_global_matrix * m * m_global_matrix.Inversed() /** m_armature->GetMeshOffset()/**/;
+				m_last_global_matrix_update = m_parent->GetAnimatedGlobalMatrix() /** m_armature->GetMeshOffset().Inversed()*/ * m_global_matrix * m * m_bone_matrix * m_global_matrix.Inversed() /** m_armature->GetMeshOffset()/**/;
 				/*m_last_global_matrix_update = m_parent->GetAnimatedGlobalMatrix() * m_armature->GetMeshOffset().Inversed() * m_global_matrix * m * m_global_matrix.Inversed() * m_armature->GetMeshOffset();*/
 				Math::vec3 t = m_last_global_matrix_update.TranslationPart();
 				Math::quat q = m_last_global_matrix_update.ToQuaternion();
@@ -80,7 +80,7 @@ namespace Utility
 			}
 			else
 			{
-				m_last_global_matrix_update = /*m_armature->GetMeshOffset() **/ m_global_matrix * m * m_global_matrix.Inversed() /***m_armature->GetMeshOffset().Inversed()/**/;		/**/
+				m_last_global_matrix_update = /*m_armature->GetMeshOffset() **/ m_global_matrix * m * m_bone_matrix * m_global_matrix.Inversed() /***m_armature->GetMeshOffset().Inversed()/**/;		/**/
 				/*m_last_global_matrix_update = m_armature->GetMeshOffset().Inversed() * m_global_matrix * m * m_global_matrix.Inversed() *m_armature->GetMeshOffset();		*/
 			}
 			m_need_update_global_matrix = false;
@@ -88,7 +88,7 @@ namespace Utility
 		return m_last_global_matrix_update;
 	}
 
-	void Bone::UpdatePose(float frame)
+	void Bone::UpdatePose(float frame, bool deep)
 	{
 		if (m_last_get_global_matrix != frame)
 		{
@@ -97,6 +97,14 @@ namespace Utility
 			Math::quat rot = m_animation.GetRotation(frame).Normalized();
 			m_last_local_matrix_update = Math::mat4::CreateTranslate(pos) * rot.ToMatrix4x4();
 			m_need_update_global_matrix = true;
+
+			if (deep)
+			{
+				for each (auto bone in m_children)
+				{
+					bone->UpdatePose(frame, deep);
+				}
+			}
 		}		
 	}
 

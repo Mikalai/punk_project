@@ -7,7 +7,7 @@ namespace Math
 	{
 		m_fov = PI/4.0f;
 		m_zfar = 1000.0f;
-		m_znear = 0.1f;
+		m_znear = 0.01f;
 		m_aspect = 4.0f / 3.0f;
 
 		m_position = vec3(0,0,0);

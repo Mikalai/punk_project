@@ -189,7 +189,7 @@ namespace OpenGL
 			{
 				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)0);	//	position
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
-				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*sizeof(float)));	//	texture_0
+				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*4*sizeof(float)));	//	texture_0
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
 				glEnableVertexAttribArray(0);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
@@ -202,7 +202,7 @@ namespace OpenGL
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
 				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*sizeof(float)));	//	normal
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
-				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(2*4*sizeof(float)));	//texture_0
+				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, m_vertex_size, (void*)(4*4*sizeof(float)));	//texture_0
 				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
 				glEnableVertexAttribArray(0);
 				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");

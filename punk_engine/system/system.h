@@ -29,5 +29,6 @@
 #include "resource_manager.h"
 #include "template_singletone.h"
 #include "resource_manager_2.h"
+#include "node.h"
 
 #endif 

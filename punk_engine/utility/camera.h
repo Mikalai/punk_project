@@ -47,8 +47,9 @@ namespace Utility
 		void OnKeyDown(System::Event* event);
 		void OnMouseScroll(System::Event* event);
 		void OnResize(System::Event* event);
-
 	};
+	
+	typedef Camera* CameraRef;
 }
 
 #endif

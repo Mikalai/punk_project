@@ -28,9 +28,6 @@
     <ClCompile Include="..\punk_engine\utility\model\punk_scene_loader.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="..\punk_engine\utility\model\scene.cpp">
-      <Filter>model</Filter>
-    </ClCompile>
     <ClCompile Include="..\punk_engine\utility\model\skin_animation.cpp">
       <Filter>model</Filter>
     </ClCompile>
@@ -48,6 +45,24 @@
     <ClCompile Include="..\punk_engine\utility\bullet_type.cpp" />
     <ClCompile Include="..\punk_engine\utility\weapon_type.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\object.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\scheme.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\scene_file_manager.cpp" />
+    <ClCompile Include="..\punk_engine\utility\armature_manager.cpp" />
+    <ClCompile Include="..\punk_engine\utility\weapon_type_manager.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\building.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\mesh.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\object_manager.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\sound.cpp">
       <Filter>model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,9 +108,6 @@
     <ClInclude Include="..\punk_engine\utility\config.h" />
     <ClInclude Include="..\punk_engine\utility\error.h" />
     <ClInclude Include="..\punk_engine\utility\font_builder.h" />
-    <ClInclude Include="..\punk_engine\utility\model\scene.h">
-      <Filter>model</Filter>
-    </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\punk_scene_loader.h">
       <Filter>model</Filter>
     </ClInclude>
@@ -136,8 +148,25 @@
     </ClInclude>
     <ClInclude Include="..\punk_engine\utility\weapon_type.h" />
     <ClInclude Include="..\punk_engine\utility\bullet_type.h" />
-    <ClInclude Include="..\punk_engine\utility\scene_manager.h" />
     <ClInclude Include="..\punk_engine\utility\model\object.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\scheme.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\scene_file_manager.h" />
+    <ClInclude Include="..\punk_engine\utility\scheme.h" />
+    <ClInclude Include="..\punk_engine\utility\decl_property.h" />
+    <ClInclude Include="..\punk_engine\utility\weapon.h" />
+    <ClInclude Include="..\punk_engine\utility\armature_manager.h" />
+    <ClInclude Include="..\punk_engine\utility\weapon_type_manager.h" />
+    <ClInclude Include="..\punk_engine\utility\model\building.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\object_manager.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\sound.h">
       <Filter>model</Filter>
     </ClInclude>
   </ItemGroup>

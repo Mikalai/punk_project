@@ -3,22 +3,21 @@
 
 #include "config.h"
 #include "../../../resource_manager_2.h"
+#include "../../../environment.h"
 
-namespace OpenGL
-{
-	class Texture2D;
-}
+#include "texture2d.h"
 
 namespace System
 {
 	template<>
-	class Policy<Texture2D>
+	class Policy<OpenGL::Texture2D>
 	{
+	public:
 		static const System::string GetResourceFile() { return L"resource"; }
 		static const System::string GetExtension() { return L"*.png"; }
 		static const System::string GetFolder() { return System::Environment::Instance()->GetTextureFolder(); }	
-		static void OnInit();
-		static void OnDestroy();
+		static void OnInit() {}
+		static void OnDestroy() {}
 	};
 }
 

@@ -183,6 +183,9 @@ namespace OpenGL
 	extern PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC glRenderbufferStorageMultisample;
 	extern PFNGLBLITFRAMEBUFFERPROC glBlitFramebuffer;
 	extern PFNGLDEPTHFUNCPROC glDepthFunc;
+	extern PFNGLDEPTHMASKPROC glDepthMask;
+
+
 	extern void InitExtensions(Driver* driver);
 	extern bool IsSupported(const char* name);
 }

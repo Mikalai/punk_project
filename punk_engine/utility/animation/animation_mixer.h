@@ -28,6 +28,7 @@ namespace Utility
 
 		bool HasAnimation();
 
+		void DisableAllTracks();
 		void EnableTrack(const System::string name, bool flag);
 		void SetLooping(const System::string name, bool flag);
 		void SetTrackWeight(const System::string name, float value);

@@ -123,6 +123,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\images\image_manager.h" />
     <ClInclude Include="..\punk_engine\images\image_module.h" />
     <ClInclude Include="..\punk_engine\images\import_export\exporter.h" />
     <ClInclude Include="..\punk_engine\images\import_export\importer.h" />
@@ -159,6 +160,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\images\image_manager.cpp" />
     <ClCompile Include="..\punk_engine\images\image_module.cpp" />
     <ClCompile Include="..\punk_engine\images\import_export\exporter.cpp" />
     <ClCompile Include="..\punk_engine\images\import_export\importer.cpp" />

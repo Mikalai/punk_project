@@ -135,6 +135,7 @@
     </ClCompile>
     <ClCompile Include="..\punk_engine\render\terrain_render.cpp" />
     <ClCompile Include="..\punk_engine\render\tree_render.cpp" />
+    <ClCompile Include="..\punk_engine\render\weapon_render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\render\2d\2d_line_render.h">
@@ -161,6 +162,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\render\node.h" />
     <ClInclude Include="..\punk_engine\render\renderable.h" />
     <ClInclude Include="..\punk_engine\render\config.h" />
     <ClInclude Include="..\punk_engine\render\font_builder.h">
@@ -176,6 +178,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\render\renderable_node.h" />
     <ClInclude Include="..\punk_engine\render\render_element.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -200,6 +203,7 @@
     <ClInclude Include="..\punk_engine\render\terrain_render_impl.h" />
     <ClInclude Include="..\punk_engine\render\terrain_render.h" />
     <ClInclude Include="..\punk_engine\render\tree_render.h" />
+    <ClInclude Include="..\punk_engine\render\weapon_render.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

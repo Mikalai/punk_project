@@ -78,6 +78,9 @@ namespace Utility
 	template<class T>
 	inline const T AnimationTrack<T>::GetKey(float frame)
 	{
+		if (m_keys.empty())
+			return T();
+
 		while (frame > m_keys.back().first)
 			frame -= m_keys.back().first;
 
@@ -99,6 +102,9 @@ namespace Utility
 	template<>
 	inline const Math::Quaternion<float> AnimationTrack<Math::Quaternion<float>>::GetKey(float frame)
 	{
+		if (m_keys.empty())
+			return Math::Quaternion<float>();
+
 		while (frame > m_keys.back().first)
 			frame -= m_keys.back().first;
 
@@ -126,8 +132,11 @@ namespace Utility
 	{
 		int frame_count = m_keys.size();
 		stream.write(reinterpret_cast<const char*>(&frame_count), sizeof(frame_count));
-		stream.write(reinterpret_cast<const char*>(&m_keys[0]), m_keys.size()*sizeof(std::pair<Frame, T>));
-		stream.write(reinterpret_cast<const char*>(&m_is_looping), sizeof(m_is_looping));
+		if (frame_count)
+		{
+			stream.write(reinterpret_cast<const char*>(&m_keys[0]), m_keys.size()*sizeof(std::pair<Frame, T>));
+			stream.write(reinterpret_cast<const char*>(&m_is_looping), sizeof(m_is_looping));
+		}
 	}
 
 	template<class T>
@@ -135,9 +144,12 @@ namespace Utility
 	{
 		int frame_count = 0;
 		stream.read(reinterpret_cast<char*>(&frame_count), sizeof(frame_count));
-		m_keys.resize(frame_count);
-		stream.read(reinterpret_cast<char*>(&m_keys[0]), m_keys.size()*sizeof(std::pair<Frame, T>));
-		stream.read(reinterpret_cast<char*>(&m_is_looping), sizeof(m_is_looping));
+		if (frame_count)
+		{
+			m_keys.resize(frame_count);
+			stream.read(reinterpret_cast<char*>(&m_keys[0]), m_keys.size()*sizeof(std::pair<Frame, T>));
+			stream.read(reinterpret_cast<char*>(&m_is_looping), sizeof(m_is_looping));
+		}
 	}
 }
 

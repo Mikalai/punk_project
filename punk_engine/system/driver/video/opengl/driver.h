@@ -20,6 +20,8 @@ and handle different parameters about users video system
 #include "render\line.h"
 #include "extensions.h"
 #include "frame_buffer_with_depth.h"
+#include "vao_manager.h"
+#include "texture_2d_manager.h"
 
 
 #include "texture_context.h"

@@ -8,7 +8,7 @@
 #else
 #define MODULE_OPENGL __declspec(dllimport)
 #endif
-#define NOMINMAX
+
 #include <windows.h>
 #include "gl/gl3.h"
 #include "gl/glext.h"

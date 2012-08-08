@@ -49,6 +49,8 @@ namespace OpenGL
 	protected:
 		virtual void Cook();
 	};
+
+	typedef VertexArrayObject* VertexArrayObjectRef;
 }
 
 #endif

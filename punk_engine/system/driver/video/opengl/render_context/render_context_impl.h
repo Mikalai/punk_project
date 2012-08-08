@@ -37,7 +37,7 @@ namespace OpenGL
 			, m_vertex_attributes(impl.m_vertex_attributes)
 		{}
 
-		void Begin()
+		virtual void Begin()
 		{
 			Init();			
 			glUseProgram(m_program);
@@ -103,7 +103,7 @@ namespace OpenGL
 			}
 		}
 
-		void End()
+		virtual void End()
 		{
 			glUseProgram(0);
 		}

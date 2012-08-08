@@ -9,7 +9,7 @@ namespace GUI
 		, m_active_tab(-1)
 	{
 		SetText(L"");
-		Widget* widget = new Widget(0, 0, 1, 0.05, L"", this);
+		Widget* widget = new Widget(0, 0, 1, 0.05f, L"", this);
 		widget->SetText(L"");
 		m_buttons = widget;			
 	}
@@ -38,7 +38,7 @@ namespace GUI
 		}
 		else
 			widget->Show(false);
-		widget->SetSize(0, 0.05, 1, 0.95);
+		widget->SetSize(0, 0.05f, 1, 0.95f);
 		int index = GetChildrenCount();
 		widget->SetAnyData((void*)index);
 		AddChild(widget);
@@ -48,8 +48,8 @@ namespace GUI
 		Widget* last_btn = 0;
 		if (m_buttons->GetChildrenCount())
 			last_btn = m_buttons->GetChild(m_buttons->GetChildrenCount()-1);
-		float x_pos = m_buttons->GetChildrenCount() * 0.1;
-		Button* btn = new Button(x_pos, 0, 0.1, 1, name, m_buttons);				
+		float x_pos = (float)m_buttons->GetChildrenCount() * 0.1;
+		Button* btn = new Button(x_pos, 0, 0.1f, 1, name, m_buttons);				
 		btn->SetMouseLeftClickHandler(System::EventHandler(btn, this, &TabWidget::SwitchTab));
 		btn->SetAnyData((void*)widget);
 		if (last_btn)

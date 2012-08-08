@@ -85,7 +85,7 @@ namespace GUI
 			if (m_isCursorIn)
 			{
 				Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
-				m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
+				m_cur = m_max - int((p.Y() - GetY() / (float)GetHeight() * (float)(m_max - m_min) + 1));
 				//SendChildren(e);
 				Widget::OnMouseLeftButtonDown(e);
 			}
@@ -116,7 +116,7 @@ namespace GUI
 			if (m_leftButtonDown)
 			{
 				Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
-				m_cur = m_max - int((p.Y() - GetY()) / (float)GetHeight() * (float)(m_max - m_min) + 1);
+				m_cur = m_max - int((p.Y() - GetY() / (float)GetHeight() * (float)(m_max - m_min) + 1));
 			}
 			Widget::OnMouseMove(e);
 		}

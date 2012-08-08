@@ -33,7 +33,7 @@ namespace GUI
 	ListBox::ListBox(float x, float y, float width, float height, Widget* parent) 
 		: Widget(x, y, width, height, L"", parent), m_currentSelection(-1), m_startPosition(0)
 	{
-		m_scrollBar = new VerticalScrollBar(0.95, 0, 0.05, 1, this);
+		m_scrollBar = new VerticalScrollBar(0.95f, 0, 0.05f, 1, this);
 		m_scrollBar->OnChangeValue(System::EventHandler(this, &ListBox::OnScroll));
 	}
 
@@ -61,7 +61,7 @@ namespace GUI
 			m_currentSelection = -1;
 			return;
 		}
-		if (index >= m_items.size())
+		if (index >= (int)m_items.size())
 		{
 			m_currentSelection = -1;
 			return;
@@ -85,13 +85,13 @@ namespace GUI
 
 	int ListBox::GetMaxVisibleItems() const
 	{
-		return GetScreenHeight() / m_fontSize - 1;
+		return int(GetScreenHeight() / (float)m_fontSize - 1.0f);
 	}
 
 	void ListBox::AddItem(ListBoxItem* item)
 	{
 		m_items.push_back(item);
-		if (m_items.size() > GetMaxVisibleItems())
+		if ((int)m_items.size() > GetMaxVisibleItems())
 			m_scrollBar->SetMax(m_items.size() - GetMaxVisibleItems());
 		RenderTextToTexture();
 	}
@@ -104,7 +104,7 @@ namespace GUI
 			delete *it;
 			m_items.erase(it);
 		}
-		if (m_items.size() > GetMaxVisibleItems())
+		if ((int)m_items.size() > GetMaxVisibleItems())
 			m_scrollBar->SetMax(m_items.size() - GetMaxVisibleItems());
 		RenderTextToTexture();
 	}
@@ -131,7 +131,7 @@ namespace GUI
 	{
 		if (position < (int)m_items.size())
 			m_items.erase(m_items.begin() + position);
-		if (m_items.size() > GetMaxVisibleItems())
+		if ((int)m_items.size() > GetMaxVisibleItems())
 			m_scrollBar->SetMax(m_items.size() - GetMaxVisibleItems());
 		RenderTextToTexture();
 	}
@@ -140,14 +140,14 @@ namespace GUI
 	{
 		if (position < (int)m_items.size())
 			m_items.insert(m_items.begin() + position, item);
-		if (m_items.size() > GetMaxVisibleItems())
+		if ((int)m_items.size() > GetMaxVisibleItems())
 			m_scrollBar->SetMax(m_items.size() - GetMaxVisibleItems());
 		RenderTextToTexture();
 	}
 
 	ListBox::ListBoxItem* ListBox::GetItem(int index)
 	{
-		if (index >= 0 && index < m_items.size())
+		if (index >= 0 && index < (int)m_items.size())
 			return m_items[index];
 		return 0;
 	}
@@ -169,10 +169,10 @@ namespace GUI
 		{
 			if (m_isCursorIn)
 			{
-				Math::vec2 p = Widget::WindowToViewport(e->x, e->y);
+				Math::vec2 p = Widget::WindowToViewport(float(e->x), float(e->y));
 				float delta = GetHeight() - (p.Y() - GetY());
 				float f = (m_text_texture->GetHeight() / (float)m_fontSize) / GetHeight() * delta;
-				int new_selection = m_startPosition +  f;
+				int new_selection = (float)m_startPosition +  f;
 				if (new_selection >= m_items.size())
 					new_selection = m_items.size()-1;
 
@@ -200,7 +200,7 @@ namespace GUI
 				}
 				else 
 				{
-					if (m_startPosition + capacity < m_items.size())
+					if (m_startPosition + capacity < (int)m_items.size())
 						m_startPosition++;						
 				}
 				m_scrollBar->SetCurrent(m_startPosition);

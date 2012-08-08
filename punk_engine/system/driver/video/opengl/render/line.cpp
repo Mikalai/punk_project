@@ -70,7 +70,8 @@ namespace OpenGL
 	}
 
 	void Line::Draw(const Math::vec3& p1, const Math::vec3& p2)
-	{
+	{		
+		m_render->EnableDepthTest(false);
 		m_render->Begin();
 		m_render->SetUniformVector3f(m_start_uniform, p1);
 		m_render->SetUniformVector3f(m_end_uniform, p2);
@@ -80,6 +81,7 @@ namespace OpenGL
 		m_vao->Render();
 		m_vao->Unbind();
 		m_render->End();
+		m_render->EnableDepthTest(true);
 	}
 
 }

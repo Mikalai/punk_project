@@ -1,3 +1,9 @@
+#include <fstream>
+#include <istream>
+#include <ostream>
+
+#include "../../system/logger.h"
+
 #include "png_importer.h"
 #include "../internal_images/image_impl.h"
 #include <png.h>
@@ -9,22 +15,18 @@ namespace ImageModule
 		: Importer()
 	{}
 
-	void PngImporter::Load(const System::string& file)
+	void read(png_structp png, png_bytep data, png_size_t size)
 	{
+		std::istream& stream = *(std::istream*)(png_get_io_ptr(png));
+		stream.read((char*)data, size);
+	}
 
-#define bytesToCheck 8
-		FILE* f = 0;
-#ifdef __linux__
-		f = fopen(filename, "rb");
-#endif
-#ifdef _WIN32
-		_wfopen_s(&f, file.Data(), L"rb");
-#endif
-		if (!f)
-			throw ImageError(L"Can't open png file");
-
+	void PngImporter::Load(std::istream& stream, Image* image)
+	{
+		const int bytesToCheck = 8;
+		
 		char sig[bytesToCheck];
-		fread(sig, 1, bytesToCheck, f);
+		stream.read(sig, bytesToCheck);
 		if ( png_sig_cmp((png_bytep)sig, (png_size_t)0, bytesToCheck) )
 			throw ImageError(L"It is not a png file: ");
 
@@ -51,7 +53,8 @@ namespace ImageModule
 			throw ImageError(L"Can't load file: ");
 		}
 
-		png_init_io(png_ptr, f);
+		png_set_read_fn(png_ptr, &stream, read); 
+		//png_init_io(png_ptr, );
 		png_set_sig_bytes(png_ptr, bytesToCheck);
 		png_read_info(png_ptr, info_ptr);
 
@@ -62,7 +65,7 @@ namespace ImageModule
 		int	rowBytes = png_get_rowbytes(png_ptr, info_ptr);
 		unsigned channels = png_get_channels(png_ptr, info_ptr);		
 		ImageFormat format = IMAGE_FORMAT_ALPHA;
-		impl_image->m_bit_depth = bpp;
+		image->SetDepth(bpp);
 
 		switch ( colorType )
 		{
@@ -95,11 +98,11 @@ namespace ImageModule
 			png_destroy_read_struct ( &png_ptr, &info_ptr, (png_infopp) NULL );
 			throw ImageError(L"Can't load file: ");
 		}
-				
-		impl_image->Create(width, height, channels);
-		impl_image->m_format = format;
-		impl_image->m_components = channels;
-		impl_image->m_bit_depth = bpp;
+
+		image->Create(width, height, channels);
+		image->SetFormat(format);
+		image->SetNumChannels(channels);
+		image->SetDepth(bpp);
 
 		png_bytep * rowPtr  = new png_bytep[height];
 		unsigned long     * lineBuf = new unsigned long[width];
@@ -109,7 +112,7 @@ namespace ImageModule
 
 		png_read_image ( png_ptr, rowPtr );
 
-		Component* offset = GetData();
+		Component* offset = image->GetData();
 
 		// now rebuild the ImageFile
 		for (int i = 0; i < (int)height; i++ )
@@ -173,7 +176,7 @@ namespace ImageModule
 			}
 
 			unsigned char* src = (unsigned char*)lineBuf;
-			unsigned char* offset = GetData() + i*width*channels;	//alligned
+			unsigned char* offset = image->GetData() + height*width*channels - (i+1)*width*channels;	//alligned
 			for (int k = 0; k < (int)width; k++, src += 4)
 			{
 				if (channels == 1)
@@ -204,6 +207,18 @@ namespace ImageModule
 
 		png_read_end            ( png_ptr, end_info );
 		png_destroy_read_struct ( &png_ptr, &info_ptr, &end_info );
+	}
+
+	void PngImporter::Load(const System::string& file)
+	{
+		std::ifstream stream(file.Data(), std::ios_base::binary);
+		if (!stream.is_open())
+		{
+			System::Logger::Instance()->WriteError(L"Can't open file: " + file);
+			return;
+		}
+		Load(stream, this);
+		stream.close();
 	}
 }
 

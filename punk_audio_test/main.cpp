@@ -5,20 +5,23 @@ int main()
 {
 	System::Window::Instance()->SetTitle(L"PunkAudio Test");
 	System::Mouse::Instance()->LockInWindow(false);	
-	Audio::AudioManager::Instance()->LoadResources();
+//	Audio::AudioManager::Instance()->LoadResources();
 
-	Audio::Sound* snd = Audio::AudioManager::Instance()->Get(0);
+	Audio::Sound* snd = Audio::AudioManager::Instance()->Load(L"m16a2.wav");
 	
-	Audio::Player player;
-	player.SetSound(snd);
+	if (snd)
+	{
+		Audio::Player player;
+		player.SetSound(snd);
 
-	player.Play(true);
-	//Sleep(1000);
-	//player.Stop();
+		player.Play(true);
+		//Sleep(1000);
+		//player.Stop();
 
-	System::Window::Instance()->Loop();
+		System::Window::Instance()->Loop();
 
-	player.Stop();
+		player.Stop();
+	}
 
 	Audio::AudioManager::Destroy();
 

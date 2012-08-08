@@ -12,7 +12,7 @@
 namespace GUI
 {
 	DefaultGUIRender::DefaultGUIRender()
-		: m_selection_color_delta(0.1, 0.1, 0.1, 0.1)
+		: m_selection_color_delta(0.1f, 0.1f, 0.1f, 0.1f)
 	{
 		m_quad.reset(new OpenGL::QuadObject());
 		m_quad->Init();
@@ -41,6 +41,9 @@ namespace GUI
 
 	void DefaultGUIRender::RenderListBox(const ListBox* lb)
 	{
+		if (lb->GetText() == L"QWERT")
+			lb = lb;
+
 		RenderWidget(lb);
 
 		if (lb->GetCurrentSelection() > lb->GetStartOffset() + lb->GetMaxVisibleItems())
@@ -51,7 +54,7 @@ namespace GUI
 			Math::vec4 color(0.0f , 0.2f, 0.5f, 0.5f);
 			float w = lb->GetWidth();
 			float h = lb->GetHeight() * (float)lb->GetTextSize() / lb->GetTextTexture()->GetHeight();
-			float start = lb->GetCurrentSelection() - lb->GetStartOffset();
+			float start = float(lb->GetCurrentSelection() - lb->GetStartOffset());
 			float x = -1 + 2*lb->GetX();			
 			float y = -1 + 2*(lb->GetY() + lb->GetHeight() - (start + 1) * h);			
 			m_rc->SetProjectionMatrix(Math::mat4::CreateIdentity());									
@@ -119,7 +122,7 @@ namespace GUI
 		x = -1 + 2 * slider->GetX();
 		y = -1 + 2 * (slider->GetY() + slider->GetHeight() * (slider->GetMax() - slider->GetCurrent()) / float(slider->GetMax() - slider->GetMin()));
 		w = slider->GetWidth();
-		h = 0.01;					
+		h = 0.01f;					
 		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
 		m_rc->SetDiffuseColor(Math::vec4(1,1,1,1) - slider->BackColor());
 		m_rc->SetTextColor(Math::vec4(1,1,1,1) - slider->TextColor());		
@@ -135,7 +138,7 @@ namespace GUI
 		m_rc->End();
 		/**/
 		unsigned children_count = slider->GetChildrenCount();
-		for (int i = 0; i < children_count; ++i)
+		for (int i = 0; i < (int)children_count; ++i)
 		{
 			const Widget* child = slider->GetChild(i);
 			child->Render(this);
@@ -164,7 +167,7 @@ namespace GUI
 		m_rc->End();
 
 		unsigned children_count = widget->GetChildrenCount();
-		for (int i = 0; i < children_count; ++i)
+		for (int i = 0; i < (int)children_count; ++i)
 		{
 			const Widget* child = widget->GetChild(i);
 			if (child->IsVisible())
@@ -197,7 +200,7 @@ namespace GUI
 		m_rc->End();
 
 		unsigned children_count = widget->GetChildrenCount();
-		for (int i = 0; i < children_count; ++i)
+		for (int i = 0; i < (int)children_count; ++i)
 		{
 			const Widget* child = widget->GetChild(i);
 			if (child->IsVisible())

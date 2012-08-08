@@ -22,7 +22,7 @@ namespace GUI
 		std::vector<OpenGL::VertexArrayObject*> m_object_to_render;
 	public:
 		TrackballViewer3D(float x = 0, float y = 0, float width = 1, float height = 1, const System::string& text = L"", Widget* parent = 0);
-		virtual void OnMouseMove(System::MouseMoveEvent* event);
+		virtual void OnMouseMove(System::MouseMoveEvent* event){}
 
 		void SetCamera(Utility::Camera* m_camera);
 	};

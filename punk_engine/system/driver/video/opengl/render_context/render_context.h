@@ -61,6 +61,8 @@ namespace OpenGL
 		bool BindAttributeTo( int no, const char * name);
 		bool SetTexture( const char * name, int texUnit);
 		bool SetTexture( int loc, int texUnit);
+
+		void EnableDepthTest(bool flag);
 	};
 }
 

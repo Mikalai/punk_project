@@ -156,7 +156,7 @@ namespace System
 		return *this;
 	}
 
-	string string::Replace(const string& what, const string& with) const
+	const string string::Replace(const string& what, const string& with) const
 	{
 		if (what.Length() == 0)
 			return *this;
@@ -179,7 +179,7 @@ namespace System
 		while (1);
 	}
 
-	string string::SubString(int start, int end) const
+	const string string::SubString(int start, int end) const
 	{
 		return string(m_rep->m_data + start, end - start);
 	}
@@ -413,15 +413,23 @@ namespace System
 	void string::Representation::Save(std::ostream& stream) const
 	{
 		stream.write(reinterpret_cast<const char*>(&m_length), sizeof(m_length));
-		stream.write(reinterpret_cast<const char*>(m_data), m_length*sizeof(wchar_t));
+		if (m_length)
+			stream.write(reinterpret_cast<const char*>(m_data), m_length*sizeof(wchar_t));
 	}
 
 	void string::Representation::Load(std::istream& stream)
 	{
 		stream.read(reinterpret_cast<char*>(&m_length), sizeof(m_length));
-		std::vector<wchar_t> data(m_length);
-		stream.read(reinterpret_cast<char*>(&data[0]), m_length*sizeof(wchar_t));
-		Assign(&data[0], m_length);
+		if (m_length)
+		{
+			std::vector<wchar_t> data(m_length);
+			stream.read(reinterpret_cast<char*>(&data[0]), m_length*sizeof(wchar_t));
+			Assign(&data[0], m_length);
+		}
+		else 
+		{
+			Assign(L"", 0);
+		}
 	}
 
 	const wchar_t* string::Data() const
@@ -507,21 +515,21 @@ namespace System
 		return _wtof(m_rep->m_data);
 	}
 
-	string string::Convert(__int32 value, int radix)
+	const string string::Convert(__int32 value, int radix)
 	{
 		wchar_t buf[128];
 		_itow_s<128>(value, buf, radix);
 		return string(buf);
 	}
 
-	string string::Convert(unsigned __int32 value, int radix)
+	const string string::Convert(unsigned __int32 value, int radix)
 	{
 		wchar_t buf[128];
 		_ultow_s<128>((unsigned long)value, buf, radix);
 		return string(buf);
 	}		
 
-	string string::Convert(signed char value)
+	const string string::Convert(signed char value)
 	{
 		wchar_t buf[16];
 		buf[0] = value;
@@ -529,7 +537,7 @@ namespace System
 		return string(buf);
 	}
 
-	string string::Convert(unsigned char value)
+	const string string::Convert(unsigned char value)
 	{
 		wchar_t buf[16];
 		buf[0] = value;
@@ -537,62 +545,62 @@ namespace System
 		return string(buf);
 	}
 
-	string string::Convert(__int16 value, int radix)
+	const string string::Convert(__int16 value, int radix)
 	{
 		wchar_t buf[128];
 		_itow_s<128>(value, buf, radix);
 		return string(buf);
 	}
 
-	string string::Convert(unsigned __int16 value, int radix)
+	const string string::Convert(unsigned __int16 value, int radix)
 	{
 		wchar_t buf[128];
 		_itow_s<128>(value, buf, radix);
 		return string(buf);
 	}
-	string string::Convert(__int8 value, int radix)
-	{
-		wchar_t buf[128];
-		_itow_s<128>(value, buf, radix);
-		return string(buf);
-	}
-
-	string string::Convert(unsigned __int8 value, int radix)
+	const string string::Convert(__int8 value, int radix)
 	{
 		wchar_t buf[128];
 		_itow_s<128>(value, buf, radix);
 		return string(buf);
 	}
 
-	string string::Convert(__int64 value, int radix)
+	const string string::Convert(unsigned __int8 value, int radix)
+	{
+		wchar_t buf[128];
+		_itow_s<128>(value, buf, radix);
+		return string(buf);
+	}
+
+	const string string::Convert(__int64 value, int radix)
 	{
 		wchar_t buf[128];
 		_i64tow_s(value, buf, 128, radix);
 		return string(buf);
 	}
 
-	string string::Convert(unsigned __int64 value, int radix)
+	const string string::Convert(unsigned __int64 value, int radix)
 	{
 		wchar_t buf[128];
 		_ui64tow_s(value, buf, 128, radix);
 		return string(buf);
 	}
 
-	string string::Convert(float value, int precision)
+	const string string::Convert(float value, int precision)
 	{
 		char buf[128];
 		_gcvt_s<128>(buf, value, precision);
 		return string(buf);
 	}
 
-	string string::Convert(double value, int precision)
+	const string string::Convert(double value, int precision)
 	{
 		char buf[128];
 		_gcvt_s<128>(buf, value, precision);
 		return string(buf);
 	}
 
-	string string::Convert(wchar_t value)
+	const string string::Convert(wchar_t value)
 	{
 		wchar_t buf[2];
 		buf[0] = value;
@@ -600,14 +608,14 @@ namespace System
 		return string(buf);
 	}
 
-	string string::Convert(bool value)
+	const string string::Convert(bool value)
 	{
 		if (value)
 			return L"True";
 		return L"False";
 	}
 
-	string string::Convert(void* value)
+	const string string::Convert(void* value)
 	{
 #ifdef _WIN64
 		wchar_t buf[128];
@@ -620,7 +628,7 @@ namespace System
 #endif
 	}
 
-	string string::Format(const wchar_t* fmt, ...)
+	const string string::Format(const wchar_t* fmt, ...)
 	{
 #define FORMAT_MAX_LENGTH 8192
 		wchar_t buffer[FORMAT_MAX_LENGTH];
@@ -633,7 +641,7 @@ namespace System
 		return string(buffer);
 	}
 
-	string string::Trim(const wchar_t* delimiters) const
+	const string string::Trim(const wchar_t* delimiters) const
 	{    
 		unsigned delLength = (unsigned)wcslen(delimiters);
 		unsigned strLength = Length();
@@ -674,7 +682,7 @@ namespace System
 		return string(m_rep->m_data + start, end - start);
 	}
 
-	std::vector<string> string::Split(const wchar_t *delimiters) const
+	const std::vector<string> string::Split(const wchar_t *delimiters) const
 	{
 		unsigned start = 0;
 		unsigned end = Length();

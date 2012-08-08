@@ -60,7 +60,7 @@ namespace GUI
 		{
 			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
 				continue;
-			if ((*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y)))
+			if ((*it)->IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y))))
 			{
 				(*it)->OnMouseWheel(e);
 			}
@@ -112,9 +112,9 @@ namespace GUI
 			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
 				continue;
 
-			if ((*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y)))
+			if ((*it)->IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y))))
 			{
-				newFocuseWidget = (*it)->GetFocused(e->x, e->y);
+				newFocuseWidget = (*it)->GetFocused(float(e->x), float(e->y));
 				(*it)->OnMouseLeftButtonDown(e);
 				break;
 			}
@@ -145,9 +145,9 @@ namespace GUI
 		System::MouseLeftButtonUpEvent* e = static_cast<System::MouseLeftButtonUpEvent*>(event);
 		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
 		{
-			if ((*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y)))
+			if ((*it)->IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y))))
 			{
-				Widget* w = (*it)->GetFocused(e->x, e->y);
+				Widget* w = (*it)->GetFocused(float(e->x), float(e->y));
 				if (w)
 					w->OnMouseLeftButtonUp(e);
 			}
@@ -161,8 +161,8 @@ namespace GUI
 		{
 			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
 				continue;
-			bool wasIn = (*it)->IsPointIn(Widget::WindowToViewport(e->x_prev, e->y_prev));
-			bool isIn = (*it)->IsPointIn(Widget::WindowToViewport(e->x, e->y));
+			bool wasIn = (*it)->IsPointIn(Widget::WindowToViewport(float(e->x_prev), float(e->y_prev)));
+			bool isIn = (*it)->IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y)));
 
 			if (!wasIn && isIn)
 			{
@@ -207,7 +207,7 @@ namespace GUI
 		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); ++it)
 		{
 			(*it)->OnResize(e);			
-			for (int i = 0; i < (*it)->GetChildrenCount(); ++i)
+			for (int i = 0; i < (int)(*it)->GetChildrenCount(); ++i)
 			{
 				(*it)->GetChild(i)->OnResize(e);
 			}

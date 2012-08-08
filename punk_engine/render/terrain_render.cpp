@@ -38,7 +38,17 @@ namespace Render
 		impl_terrain_render->Init();
 	}
 
-	void TerrainRender::SetDiffuseMap2(const ImageModule::Image& image)
+	void TerrainRender::SetDiffuseMap1(OpenGL::Texture2D* image)
+	{
+		impl_terrain_render->SetDiffuseMap1(image);
+	}
+
+	void TerrainRender::SetDiffuseMap2(OpenGL::Texture2D* image)
+	{
+		impl_terrain_render->SetDiffuseMap2(image);
+	}
+
+	/*void TerrainRender::SetDiffuseMap2(const ImageModule::Image& image)
 	{
 		impl_terrain_render->SetDiffuseMap2(image);
 	}
@@ -46,7 +56,7 @@ namespace Render
 	void TerrainRender::SetDiffuseMap1(const ImageModule::Image& image)
 	{
 		impl_terrain_render->SetDiffuseMap1(image);
-	}
+	}*/
 
 }
 

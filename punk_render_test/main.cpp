@@ -53,8 +53,8 @@ public:
 		m_grid->SetWidthSlice(16);
 		m_grid->Init();/**/
 
-		m_image = ImageModule::Importer().LoadRGB(System::Environment::Instance()->GetTexutreFolder() + L"diffuse_map2.png");
-		m_gray_image = ImageModule::Importer().LoadRGB(System::Environment::Instance()->GetTexutreFolder() + L"house_normal2.png");
+		m_image = ImageModule::Importer().LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"diffuse_map2.png");
+		m_gray_image = ImageModule::Importer().LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"house_normal2.png");
 		m_height_map.reset(new OpenGL::Texture2D(m_gray_image));		
 		m_texture.reset(new OpenGL::Texture2D(m_image));
 

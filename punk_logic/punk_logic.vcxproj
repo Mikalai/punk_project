@@ -34,6 +34,7 @@
     <ClInclude Include="..\punk_engine\logic\events\event_update.h" />
     <ClInclude Include="..\punk_engine\logic\item.h" />
     <ClInclude Include="..\punk_engine\logic\logic.h" />
+    <ClInclude Include="..\punk_engine\logic\node.h" />
     <ClInclude Include="..\punk_engine\logic\property\property.h" />
     <ClInclude Include="..\punk_engine\logic\property\property_collection.h" />
     <ClInclude Include="..\punk_engine\logic\quest.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="..\punk_engine\logic\visitor\find_near_by_with_property.h" />
     <ClInclude Include="..\punk_engine\logic\visitor\visitor.h" />
     <ClInclude Include="..\punk_engine\logic\visitor\visitors.h" />
+    <ClInclude Include="..\punk_engine\logic\weapon.h" />
     <ClInclude Include="..\punk_engine\logic\world.h" />
   </ItemGroup>
   <ItemGroup>

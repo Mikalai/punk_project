@@ -110,6 +110,7 @@ namespace Utility
 		stream.write(reinterpret_cast<const char*>(&m_vertex_component), sizeof(m_vertex_component));
 		stream.write(reinterpret_cast<const char*>(m_vb), m_vertex_buffer_size);
 		stream.write(reinterpret_cast<const char*>(m_index), sizeof(unsigned)*m_index_count);
+		m_mesh_offset.Save(stream);
 	}
 
 	void StaticMesh::Load(std::istream& stream)
@@ -123,5 +124,6 @@ namespace Utility
 		stream.read(reinterpret_cast<char*>(m_vb), m_vertex_buffer_size);
 		m_index = new unsigned[sizeof(unsigned)*m_index_count];
 		stream.read(reinterpret_cast<char*>(m_index), sizeof(unsigned)*m_index_count);
+		m_mesh_offset.Load(stream);
 	}
 }

@@ -200,6 +200,22 @@ namespace Math
 			return true;
 	}
 
+	void BoundingBox::Save(std::ostream& stream)
+	{
+		stream.write((char*)&m_transformed_points, sizeof(m_transformed_points));
+		stream.write((char*)&m_border_points, sizeof(m_border_points));
+		stream.write((char*)&m_min, sizeof(m_min));
+		stream.write((char*)&m_max, sizeof(m_max));
+	}
+
+	void BoundingBox::Load(std::istream& stream)
+	{
+		stream.read((char*)&m_transformed_points, sizeof(m_transformed_points));
+		stream.read((char*)&m_border_points, sizeof(m_border_points));
+		stream.read((char*)&m_min, sizeof(m_min));
+		stream.read((char*)&m_max, sizeof(m_max));
+	}
+
 	bool BoundingBox::DoCrossTriangle(const vec3& pp1, const vec3& pp2, const vec3& pp3) const
 	{
 		if (pp1[0] > m_max[0] && pp2[0] > m_max[0] && pp3[0] > m_max[0])

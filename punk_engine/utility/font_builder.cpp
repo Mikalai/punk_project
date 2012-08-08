@@ -48,6 +48,80 @@ namespace Utility
 			throw System::SystemError(L"Can't set new char size" + LOG_LOCATION_STRING);
 	}
 
+	void FontBuilder::CacheSymbol(wchar_t s)
+	{
+		CacheData* data = wcache[curSize][curFace][s];
+		if (!data)
+		{
+			FT_UInt glyphIndex = FT_Get_Char_Index(curFace, s);
+			FT_Error error = FT_Load_Glyph(curFace, glyphIndex, 0);
+			if (error)
+				throw System::SystemError(L"Error occured while loading a glyph" + LOG_LOCATION_STRING);
+
+			if (curFace->glyph->format != FT_GLYPH_FORMAT_BITMAP)
+			{
+				error = FT_Render_Glyph(curFace->glyph, FT_RENDER_MODE_NORMAL);
+				if (error)
+					throw System::SystemError(L"Error occured while rendering a glyph" + LOG_LOCATION_STRING);
+			}		
+
+			FT_GlyphSlot slot = curFace->glyph;
+
+			data = new CacheData;
+			data->width = slot->bitmap.width;
+			data->height = slot->bitmap.rows;
+			if (data->width*data->height > 0)
+			{
+				data->buffer = new unsigned char[data->width*data->height];
+				memcpy(data->buffer, slot->bitmap.buffer, data->width*data->height);
+			}
+			data->x_offset = slot->bitmap_left;
+			data->y_offset = slot->bitmap_top;
+			data->x_advance = slot->advance.x >> 6;
+			data->y_advance = slot->advance.y >> 6;
+
+			wcache[curSize][curFace][s] = data;
+		}
+	}
+
+	int FontBuilder::CalculateLength(const wchar_t* text)
+	{
+		int res = 0;
+		const wchar_t* cur = text;
+		while (*cur)
+		{
+			CacheData* data = wcache[curSize][curFace][*cur];
+			
+			if (!data)
+				CacheSymbol(*cur);	
+
+			data = wcache[curSize][curFace][*cur];			
+			res += data->x_advance;
+			cur++;
+		}
+		return res;
+	}
+
+	int FontBuilder::GetWidth(wchar_t s)
+	{
+		CacheData* data = wcache[curSize][curFace][s];
+		if (!data)
+			CacheSymbol(s);	
+
+		data = wcache[curSize][curFace][s];			
+		return data->x_advance;
+	}
+
+	int FontBuilder::GetHeight(wchar_t s)
+	{
+		CacheData* data = wcache[curSize][curFace][s];
+		if (!data)
+			CacheSymbol(s);	
+
+		data = wcache[curSize][curFace][s];			
+		return data->height + data->y_offset;
+	}
+
 	void FontBuilder::RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
 	{
 		CacheData* data = cache[curSize][curFace][symbol];
@@ -95,51 +169,12 @@ namespace Utility
 		*buffer = data->buffer;
 		//putchar('\n');/**/
 	}
-
+	
 	void FontBuilder::RenderChar(wchar_t symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
 	{
 		CacheData* data = wcache[curSize][curFace][symbol];
 		if (!data)
-		{
-			FT_UInt glyphIndex = FT_Get_Char_Index(curFace, symbol);
-			FT_Error error = FT_Load_Glyph(curFace, glyphIndex, 0);
-			if (error)
-				throw System::SystemError(L"Error occured while loading a glyph" + LOG_LOCATION_STRING);
-
-			if (curFace->glyph->format != FT_GLYPH_FORMAT_BITMAP)
-			{
-				error = FT_Render_Glyph(curFace->glyph, FT_RENDER_MODE_NORMAL);
-				if (error)
-					throw System::SystemError(L"Error occured while rendering a glyph" + LOG_LOCATION_STRING);
-			}		
-
-			//System::Logger::Instance()->WriteDebugMessage("bitmap (%d; %d)", curFace->glyph->bitmap.width, curFace->glyph->bitmap.rows);
-
-			FT_GlyphSlot slot = curFace->glyph;
-
-			data = new CacheData;
-			data->width = slot->bitmap.width;
-			data->height = slot->bitmap.rows;
-			if (data->width*data->height > 0)
-			{
-				data->buffer = new unsigned char[data->width*data->height];
-				for (int i = data->height-1; i >= 0; i--)
-				{
-					for (int j = 0; j < data->width; j++)
-					{
-						data->buffer[j+(data->height-i-1)*data->width] = slot->bitmap.buffer[j+i*data->width];
-					}
-				}
-				memcpy(data->buffer, slot->bitmap.buffer, data->width*data->height);
-			}
-			data->x_offset = slot->bitmap_left;
-			data->y_offset = slot->bitmap_top;
-			data->x_advance = slot->advance.x >> 6;
-			data->y_advance = slot->advance.y >> 6;
-
-
-			wcache[curSize][curFace][symbol] = data;
-		}
+			CacheSymbol(symbol);
 
 		data = wcache[curSize][curFace][symbol];
 		*width = data->width;

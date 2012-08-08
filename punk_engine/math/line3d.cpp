@@ -89,7 +89,7 @@ namespace Math
 				return COLLINEAR;
 		}
 		float num = n.Dot(a - c);
-		t = -num / denom;
+		t = -num / (float)denom;
 		return SKEW;
 	}
 }

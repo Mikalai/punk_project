@@ -1,7 +1,13 @@
 #include <iostream>
+#include <fstream>
 #include "../error.h"
 #include <algorithm>
 #include "../../system/string.h"
+#include "../../system/environment.h"
+#include "../../system/binary_file.h"
+#include "../../system/logger.h"
+#include "../../system/error.h"
+
 #include "static_mesh.h"
 #include "skinned_mesh.h"
 #include "skin_animation.h"
@@ -14,7 +20,6 @@
 #include "../error.h"
 #include <map>
 #include <vector>
-#include "../../system/string.h"
 #include "../../math/math.h"
 #include "bone_frame.h"
 #include "material.h"
@@ -81,7 +86,35 @@ namespace Utility
 		WORD_FRAMES, 
 		WORD_TEXTURE,
 		WORD_TIMING,
-		WORD_PARENT_INVERSED_MATRIX
+		WORD_PARENT_INVERSED_MATRIX,
+		WORD_LENGTH,																								
+		WORD_ALPHA,									//	L"*alpha", 
+		WORD_AMBIENT,								//	L"*ambient",
+		WORD_DARKNESS,								//	L"*darkness",
+		WORD_DIFFUSE_COLOR,							//	L"*diffuse_color", 
+		WORD_DIFFUSE_FRESNEL,						//	L"*diffuse_fresnel", 
+		WORD_DIFFUSE_FRESNEL_FACTOR,				//	L"*diffuse_fresnel_factor",
+		WORD_DIFFUSE_INTENSITY,						//	L"*diffuse_intensity",
+		WORD_EMIT,									//	L"*emit",
+		WORD_MIRROR_COLOR,							//	L"*mirror_color",
+		WORD_ROUGHNESS,								//	L"*roughness",
+		WORD_SPECULAR_ALPHA,						//	L"*specular_alpha",
+		WORD_SPECULAR_COLOR,						//	L"*specular_color",
+		WORD_SPECULAR_HARDNESS,						//	L"*specular_hardness",
+		WORD_SPECULAR_INTENSITY,					//	L"*specular_intensity",
+		WORD_SPECULAR_IOR,							//	L"*specular_ior",
+		WORD_SPECULAR_SLOPE,						//	L"*specular_slope",
+		WORD_TRANSLUCENCY,							//	L"*translucency",
+		WORD_SOUND,
+		WORD_FILENAME,
+		WORD_VOLUME,
+		WORD_PITCH,
+		WORD_MAX_DISTANCE,
+		WORD_REFERENCE_DISTANCE,
+		WORD_CONE_ANGLE_INNER,
+		WORD_CONE_ANGLE_OUTER,
+		WORD_CONE_VOLUME_OUTER,
+		WORD_ATTENUATION				//L"*attenuation"
 	};
 	static const wchar_t* Keyword[] = {
 		L"{",
@@ -121,7 +154,35 @@ namespace Utility
 		L"*frames", 
 		L"*texture",
 		L"*timing",
-		L"*parent_inverse_matrix"
+		L"*parent_inverse_matrix",
+		L"*length",
+		L"*alpha", 
+		L"*ambient",
+		L"*darkness",
+		L"*diffuse_color", 
+		L"*diffuse_fresnel", 
+		L"*diffuse_fresnel_factor",
+		L"*diffuse_intensity",
+		L"*emit",
+		L"*mirror_color",
+		L"*roughness",
+		L"*specular_alpha",
+		L"*specular_color",
+		L"*specular_hardness",
+		L"*specular_intensity",
+		L"*specular_ior",
+		L"*specular_slope",
+		L"*translucency",
+		L"*sound",
+		L"*filename",
+		L"*volume",
+		L"*pitch",
+		L"*max_distance",
+		L"*reference_distance",
+		L"*cone_angle_inner",
+		L"*cone_angle_outer",
+		L"*cone_volume_outer",
+		L"*attenuation"
 	};
 
 	struct Scene::SceneImpl
@@ -136,7 +197,7 @@ namespace Utility
 	//	SkeletonID m_skeleton_id;
 		//ActionCollection m_skeleton_animation;
 		Materials m_materials;
-		CookedAnimationCollection m_cooked_animation;
+		//CookedAnimationCollection m_cooked_animation;
 		std::map<System::string, Math::Matrix<float> > m_frame_value;
 		std::map<BoneName, std::map<FrameID, BoneFrame> >::iterator m_maximum_frames;
 		std::map<BoneName, int> m_bone_index;
@@ -158,20 +219,160 @@ namespace Utility
 //			, m_skeleton_id(impl.m_skeleton_id)
 //			, m_skeleton_animation(impl.m_skeleton_animation)
 			, m_materials(impl.m_materials)
-			, m_cooked_animation(impl.m_cooked_animation)
+			//, m_cooked_animation(impl.m_cooked_animation)
 			, m_frame_value(impl.m_frame_value)
 			, m_maximum_frames(impl.m_maximum_frames)
 			, m_bone_index(impl.m_bone_index)
 			, m_armature_collection(impl.m_armature_collection)
 		{}
 
+		void ObjectSimplifySave(const Object& object)
+		{
+
+		}
+
+		void Save(std::ostream& stream)
+		{
+			int size = (int)m_objects.size();
+			stream.write((char*)&size, sizeof(int));
+			if (size)
+			{
+				for each (auto object in m_objects)
+				{				
+					object.second->Save(stream);
+				}
+			}
+
+			m_bbox.Save(stream);
+			size = (int)m_materials.size();
+			stream.write((char*)&size, sizeof(int));
+			for each (auto mat in m_materials)
+			{
+				mat.first.Save(stream);
+				mat.second.Save(stream);
+			}
+			size = (int)m_actions.size();
+			stream.write((char*)&size, sizeof(int));
+			for each (auto anim_col in m_actions)
+			{
+				anim_col.first.Save(stream);
+				size = (int)anim_col.second.size();
+				stream.write((char*)&size, sizeof(int));
+				for each (auto anim in anim_col.second)
+				{
+					anim.first.Save(stream);
+					anim.second->Save(stream);
+				}
+			}
+			size = (int)m_armature_collection.size();
+			stream.write((char*)&size, sizeof(int));
+			for each (auto armature in m_armature_collection)
+			{
+				armature.first.Save(stream);
+				armature.second->Save(stream);
+			}
+		}
+
+		void LoadFromBinaryFile(std::istream& stream)
+		{
+			int size = -1;
+			stream.read((char*)&size, sizeof(int));
+			for (int i = 0; i < size; ++i)
+			{
+				std::shared_ptr<Object> object(new Object);
+				object->Load(stream);
+				m_objects[object->GetName()] = object;
+			}				
+
+			m_bbox.Load(stream);
+			size = 0;
+			stream.read((char*)&size, sizeof(int));
+			if (size)
+			{
+				for (int i = 0; i < size; ++i)
+				{
+					System::string name;
+					name.Load(stream);
+					m_materials[name].Load(stream);
+				}
+			}
+
+			size = 0;
+			stream.read((char*)&size, sizeof(int));
+			if (size)
+			{
+				for (int i = 0; i < size; ++i)
+				{
+					System::string action_name;
+					action_name.Load(stream);
+					int count = 0;
+					stream.read((char*)&count, sizeof(count));
+					for (int j = 0; j < count; ++j)
+					{
+						System::string animation_name;
+						animation_name.Load(stream);
+						m_actions[action_name][animation_name].reset(new Animation);
+						m_actions[action_name][animation_name]->Load(stream);
+					}
+				}
+			}
+			size = 0;
+			stream.read((char*)&size, sizeof(int));
+			for (int i = 0; i < size; ++i)
+			{
+				System::string name;
+				name.Load(stream);
+				m_armature_collection[name].reset(new Armature);
+				m_armature_collection[name]->Load(stream);
+			}
+		}
+
+		void Load(std::istream& ss)
+		{
+			bool use_text = false;
+			try
+			{
+				std::ifstream& stream = dynamic_cast<std::ifstream&>(ss);
+				std::ios_base::fmtflags f = stream.flags();	
+				if (f & std::ios_base::binary)
+					use_text = true;
+				else
+				{
+					LoadFromBinaryFile(ss);
+				}
+
+			}
+			catch(std::bad_cast&)
+			{
+				use_text = true;
+			}
+
+			if (use_text)
+			{
+				System::Buffer buffer;
+				if (!System::BinaryFile::Load(ss, buffer))
+					throw UtilityError(L"Unable to load binary file from stream");
+
+				LoadFromBuffer(buffer);
+			}
+			else
+			{
+
+			}
+		}
+
 		///	Loads entire scene
 		void Load(const System::string& filename)
 		{
 			System::Buffer buffer;
-			if (!System::BinaryFile::Load(System::Environment::Instance()->GetModelFolder()+filename, buffer))
+			if (!System::BinaryFile::Load(filename, buffer))
 				throw UtilityError((L"Unable to load file " + filename).Data());
 
+			LoadFromBuffer(buffer);				
+		}
+
+		void LoadFromBuffer(System::Buffer& buffer)
+		{
 			while (!buffer.IsEnd())
 			{
 				System::string word = buffer.ReadWord();
@@ -197,7 +398,13 @@ namespace Utility
 				default:
 					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword: %s",  word.Data()));
 				}
-			}						
+			}
+
+			for each (auto object in m_objects)
+			{
+				UpdateMaterials(*object.second.get());
+				UpdateOctTree(*object.second.get());
+			}
 		}
 
 		/// Parse actions
@@ -231,6 +438,8 @@ namespace Utility
 		{
 			CHECK_START(buffer);
 
+			System::string name;
+
 			while (1)
 			{
 				if (buffer.IsEnd())
@@ -239,8 +448,7 @@ namespace Utility
 					return;
 				}
 
-				KeywordCode index;
-				System::string name;
+				KeywordCode index;				
 				switch(index = Parse(buffer.ReadWord()))
 				{
 				case WORD_CLOSE_BRACKET:
@@ -345,8 +553,11 @@ namespace Utility
 					return;
 				}
 
-				int index;
-				switch(index = Parse(buffer.ReadWord()))
+				System::string word = buffer.ReadWord(); 
+				if (word == L"*sound")
+					word = word;
+				KeywordCode index;
+				switch(index = Parse(word))
 				{
 				case WORD_CLOSE_BRACKET:
 					return;
@@ -372,7 +583,7 @@ namespace Utility
 				case WORD_MESH:
 					{
 						o.SetMesh(new Mesh());
-						ParseObjectMesh(buffer, *o.GetMesh());
+						ParseObjectMesh(buffer, *o.GetMesh(), o);
 					}
 					break;
 					//case WORD_ARMATURE:
@@ -381,8 +592,15 @@ namespace Utility
 					//case WORD_SKELETON_ANIMATION:
 					//	ParseAnimation(buffer);
 					//	break;
-				case WORD_MATERIALS:
-					ParseMaterials(buffer);
+				case WORD_MATERIAL:
+					o.SetMaterialName(buffer.ReadWord());
+					break;
+				case WORD_SOUND:
+					{
+						std::auto_ptr<Sound> sound(new Sound);
+						ParseSound(buffer, *sound.get());
+						o.SetSound(sound.release());
+					}
 					break;
 				case WORD_OBJECT:
 					{
@@ -397,7 +615,59 @@ namespace Utility
 			}
 		}
 
-		void ParseObjectMesh(System::Buffer& buffer, Mesh& mesh)
+		void ParseSound(System::Buffer& buffer, Sound& snd)
+		{
+			CHECK_START(buffer);
+
+			while (1)
+			{
+				if (buffer.IsEnd())
+				{
+					System::Logger::Instance()->WriteError(L"Can't parse sound", LOG_LOCATION);
+					return;
+				}
+
+				switch(int index = Parse(buffer.ReadWord()))
+				{
+				case WORD_CLOSE_BRACKET:
+					return;
+				case WORD_NAME:
+					snd.SetName(ParseName(buffer));
+					break;					
+				case WORD_FILENAME:
+					snd.SetFilename(ParseName(buffer));
+					break;
+				case WORD_VOLUME:
+					snd.SetVolume(ParseFloat(buffer));
+					break;
+				case WORD_PITCH:
+					snd.SetPitch(ParseFloat(buffer));
+					break;
+				case WORD_MAX_DISTANCE:
+					snd.SetMaxDistance(ParseFloat(buffer));
+					break;
+				case WORD_REFERENCE_DISTANCE:
+					snd.SetReferenceDistance(ParseFloat(buffer));
+					break;
+				case WORD_CONE_ANGLE_INNER:
+					snd.SetConeAngleInner(ParseFloat(buffer));
+					break;
+				case WORD_CONE_ANGLE_OUTER:
+					snd.SetConeAngleOuter(ParseFloat(buffer));
+					break;
+				case WORD_CONE_VOLUME_OUTER:
+					snd.SetConeVolumeOuter(ParseFloat(buffer));
+					break;
+				case WORD_ATTENUATION:
+					snd.SetAttenuation(ParseFloat(buffer));
+					break;
+				default:
+					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[index]), LOG_LOCATION);
+				}
+			}
+		}
+
+		void ParseObjectMesh(System::Buffer& buffer, Mesh& mesh, Object& o)
 		{
 			CHECK_START(buffer);
 
@@ -439,7 +709,7 @@ namespace Utility
 					}
 					break;
 				case WORD_MATERIAL:
-					ParseMeshMaterial(buffer);
+					o.SetMaterialName(ParseMeshMaterial(buffer));
 					break;
 				default:
 					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[index]), LOG_LOCATION);
@@ -510,6 +780,14 @@ namespace Utility
 			System::string name = buffer.ReadWord();
 			CHECK_END(buffer);
 			return name;
+		}
+
+		float ParseFloat(System::Buffer &buffer)
+		{
+			CHECK_START(buffer);
+			float v = buffer.ReadWord().ToFloat();
+			CHECK_END(buffer);
+			return v;
 		}
 
 		const Math::BoundingBox ParseBoundingBox(System::Buffer &buffer)
@@ -683,6 +961,9 @@ namespace Utility
 				case WORD_BONE_MATRIX:
 					bone.SetBoneMatrix(ParseMatrix(buffer));
 					break;
+				case WORD_LENGTH:
+					bone.SetLength(ParseFloat(buffer));
+					break;
 				default:
 					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
 				}
@@ -719,6 +1000,7 @@ namespace Utility
 		{
 			CHECK_START(buffer);
 
+			Object dummy;
 			Object* cur_object = 0;
 
 			System::string bone_name;
@@ -731,7 +1013,9 @@ namespace Utility
 				case WORD_NAME:
 					cur_object = FindObjectByName(ParseName(buffer));
 					if (cur_object == 0)
-						throw "Can't parse object animation";
+					{
+						cur_object = &dummy;
+					}
 					break;
 				case WORD_POS_X:
 				case WORD_POS_Y:
@@ -844,25 +1128,31 @@ namespace Utility
 			}
 		}
 
-		void ParseMeshMaterial(System::Buffer& buffer)
+		const System::string ParseMeshMaterial(System::Buffer& buffer)
 		{
+			System::string result;
 			CHECK_START(buffer);
-			m_material = buffer.ReadWord();
+			result = buffer.ReadWord();
 			CHECK_END(buffer);
+			return result;
 		}
 
-		void ParseMaterialsDiffuseMap(System::Buffer& buffer, const System::string& name)
+		const System::string ParseMaterialsDiffuseMap(System::Buffer& buffer, const System::string& name)
 		{
+			System::string result;
 			CHECK_START(buffer);
-			m_materials[name].SetTexture0(buffer.ReadWord());
+			result = buffer.ReadWord();
 			CHECK_END(buffer);
+			return result;
 		}
 
-		void ParseMaterialsNormalMap(System::Buffer& buffer, const System::string& name)
+		const System::string ParseMaterialsNormalMap(System::Buffer& buffer, const System::string& name)
 		{
+			System::string result;
 			CHECK_START(buffer);
-			m_materials[name].SetTexture1(buffer.ReadWord());
+			result = buffer.ReadWord();
 			CHECK_END(buffer);
+			return result;
 		}
 
 		void ParseMaterials(System::Buffer &buffer)
@@ -901,11 +1191,62 @@ namespace Utility
 				case WORD_NAME:
 					material.SetName(ParseName(buffer));
 					break;
+				case WORD_ALPHA:
+					material.SetAlpha(ParseFloat(buffer));
+					break;
+				case WORD_AMBIENT:
+					material.SetAmbient(ParseFloat(buffer));
+					break;
+				case WORD_DARKNESS:
+					material.SetDarkness(ParseFloat(buffer));
+					break;
+				case WORD_DIFFUSE_COLOR:
+					material.SetDiffuseColor(ParseVector(buffer).ToHomogeneous());
+					break;
+				case WORD_DIFFUSE_FRESNEL:
+					material.SetDiffuseFresnel(ParseFloat(buffer));
+					break;
+				case WORD_DIFFUSE_FRESNEL_FACTOR:
+					material.SetDiffuseFresnelFactor(ParseFloat(buffer));
+					break;
+				case WORD_DIFFUSE_INTENSITY:
+					material.SetDiffuseIntensity(ParseFloat(buffer));
+					break;
+				case WORD_EMIT:
+					material.SetEmit(ParseFloat(buffer));
+					break;
+				case WORD_MIRROR_COLOR:
+					material.SetMirrorColor(ParseVector(buffer).ToHomogeneous());
+					break;
+				case WORD_ROUGHNESS:
+					material.SetRoughness(ParseFloat(buffer));
+					break;
+				case WORD_SPECULAR_ALPHA:
+					material.SetSpecularAlpha(ParseFloat(buffer));
+					break;
+				case WORD_SPECULAR_COLOR:
+					material.SetSpecularColor(ParseVector(buffer).ToHomogeneous());
+					break;
+				case WORD_SPECULAR_HARDNESS:
+					material.SetSpecularFactor(ParseFloat(buffer));
+					break;
+				case WORD_SPECULAR_INTENSITY:
+					material.SetSpecularIntensity(ParseFloat(buffer));
+					break;
+				case WORD_SPECULAR_IOR:
+					material.SetSpecularIndexOfRefraction(ParseFloat(buffer));
+					break;
+				case WORD_SPECULAR_SLOPE:
+					material.SetSpecularSlope(ParseFloat(buffer));
+					break;
+				case WORD_TRANSLUCENCY:
+					material.SetTranslucency(ParseFloat(buffer));
+					break;
 				case WORD_NORMAL_MAP:
-					ParseMaterialsNormalMap(buffer, name);
+					material.SetTexture1(ParseMaterialsNormalMap(buffer, name));
 					break;
 				case WORD_DIFFUSE_MAP:
-					ParseMaterialsDiffuseMap(buffer, name);
+					material.SetTexture0(ParseMaterialsDiffuseMap(buffer, name));
 					break;
 				default:
 					System::Logger::Instance()->WriteError(System::string::Format(L"Unexpected keyword %s", Keyword[code]), LOG_LOCATION);
@@ -933,7 +1274,7 @@ namespace Utility
 			return true;
 		}
 
-		Object* FindObjectByName(const System::string& obj)
+		const Object* FindObjectByName(const System::string& obj) const
 		{
 			for each (auto object in m_objects)
 			{
@@ -941,7 +1282,7 @@ namespace Utility
 					return object.second.get();
 				else
 				{
-					Object* res = object.second->GetChild(obj);
+					const Object* res = object.second->GetChild(obj, true);
 					if (res)
 						return res;
 				}
@@ -949,8 +1290,12 @@ namespace Utility
 			return 0;
 		}
 
-		
-		Bone* FindBoneByName(const System::string& name)
+		Object* FindObjectByName(const System::string& obj)
+		{
+			return const_cast<Object*>(static_cast<const SceneImpl*>(this)->FindObjectByName(obj));
+		}
+
+		const Bone* FindBoneByName(const System::string& name) const
 		{
 			for each (auto armature in m_armature_collection)
 			{
@@ -961,6 +1306,22 @@ namespace Utility
 			return 0;
 		}
 
+		Bone* FindBoneByName(const System::string& name) 
+		{
+			return const_cast<Bone*>(static_cast<const SceneImpl*>(this)->FindBoneByName(name));
+		}
+
+		Animation* FindAnimationByName(const System::string& name)
+		{
+			return 0;
+		}
+
+		const Animation* FindAnimationByName(const System::string& name) const
+		{
+			return 0;
+		}
+
+
 		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res)
 		{
 			for each (auto record in m_objects)
@@ -968,6 +1329,26 @@ namespace Utility
 				record.second->IntersectWithRay(start, end, res);
 			}
 			return !res.empty();
+		}
+
+		void UpdateOctTree(Object& object)
+		{
+			object.BuildOctTree();
+			for each (auto child in object.GetChildren())
+			{
+				UpdateMaterials(*child.get());
+			}
+		}
+
+		void UpdateMaterials(Object& object)
+		{
+			const System::string& name = object.GetMaterialName();
+			if (name.Length())
+				object.SetMaterial(m_materials.at(name));
+			for each (auto child in object.GetChildren())
+			{
+				UpdateMaterials(*child.get());
+			}
 		}
 
 		//void BuildOctTree()
@@ -1084,7 +1465,7 @@ namespace Utility
 			return m_objects.size();
 		}
 
-		const System::string& GetObjectName(int index) const
+		const System::string GetObjectName(int index) const
 		{
 			if (index >= (int)m_objects.size())
 				throw System::SystemError(L"Index out of range");
@@ -1095,6 +1476,7 @@ namespace Utility
 					return it->first;
 				i++;
 			}
+			return L"";
 		}
 
 		StaticMesh* CookStaticMesh(Object& o) const
@@ -1223,11 +1605,6 @@ namespace Utility
 
 			return mesh.release();
 		}
-
-		StaticMesh* CookSkinnedMesh(Object& o, Armature armature) const
-		{
-			if (o.GetMesh()->m_bone_weights.empty())
-				return nullptr;
 			struct Vertex
 			{
 				float x, y, z, w;
@@ -1238,6 +1615,15 @@ namespace Utility
 				float b1, b2, b3, b4;
 				float w1, w2, w3, w4;
 			};
+
+		StaticMesh* CookSkinnedMesh(Object& o, Armature armature) const
+		{
+			if (!o.GetMesh())
+				return nullptr;
+
+			if (o.GetMesh()->m_bone_weights.empty())
+				return nullptr;
+
 			std::auto_ptr<StaticMesh> mesh(new StaticMesh);
 			mesh->SetIndexCount(o.GetMesh()->m_faces.size()*3);
 			mesh->SetIndexBuffer(new unsigned[mesh->GetIndexCount()]);
@@ -1257,6 +1643,8 @@ namespace Utility
 			int index = 0;
 			for (unsigned i = 0, max_i = o.GetMesh()->m_tex_coords[0].size(); i < max_i; i++)
 			{
+				if (index == 18)
+					i = i;
 				const Math::ivec3& f = o.GetMesh()->m_faces[i];
 				const Math::vec3& v1 = o.GetMesh()->m_vertices[f[0]];
 				const Math::vec3& v2 = o.GetMesh()->m_vertices[f[1]];
@@ -1296,6 +1684,8 @@ namespace Utility
 
 				base_index.push_back(f[0]);
 				index++;
+				if (index == 18)
+					i = i;
 
 				Math::CalculateTBN(v2, v3, v1, t2, t3, t1, tgn, btn, nrm, det);
 				vb[index].x = v2[0];	vb[index].y = v2[1];	vb[index].z = v2[2];	vb[index].w = 1.0f;
@@ -1317,6 +1707,8 @@ namespace Utility
 
 				base_index.push_back(f[1]);
 				index++;
+				if (index == 18)
+					i = i;
 
 				Math::CalculateTBN(v3, v1, v2, t3, t1, t2, tgn, btn, nrm, det);
 				vb[index].x = v3[0];	vb[index].y = v3[1];	vb[index].z = v3[2];	vb[index].w = 1.0f;
@@ -1358,8 +1750,16 @@ namespace Utility
 					}				
 				}
 
+				if (norm.Length() == 0)
+					norm = norm;
 				norm.Normalize();
+
+				if (tang.Length() == 0)
+					tang = tang;
 				tang.Normalize();
+
+				if (btan.Length() == 0)
+					btan = btan;
 				btan.Normalize();
 				tang = (tang - norm.Dot(tang)*norm).Normalized();
 				btan = (btan - norm.Dot(btan)*norm - tang.Dot(btan)*tang).Normalized();
@@ -1437,13 +1837,17 @@ namespace Utility
 
 		Armature* GetArmature(const System::string& name)
 		{
-			return m_armature_collection.at(name).get();
+			auto it = m_armature_collection.find(name);
+			if (it == m_armature_collection.end())
+				return 0;
+			return it->second.get();
 		}
 
-		const System::string& GetArmatureName(int index) const
+		const System::string GetArmatureName(int index) const
 		{
 			if (index >= (int)m_armature_collection.size())
 				throw System::SystemError(L"Index out of range");
+			
 			int i = 0;
 			for (auto it = m_armature_collection.begin(); it != m_armature_collection.end(); ++it)
 			{
@@ -1451,6 +1855,7 @@ namespace Utility
 					return it->first;
 				i++;
 			}
+			return L"";
 		}
 
 		int GetArmatureCount() const
@@ -1707,7 +2112,7 @@ namespace Utility
 		return impl_scene->GetArmature(name);
 	}
 
-	const System::string& Scene::GetArmatureName(int index) const
+	const System::string Scene::GetArmatureName(int index) const
 	{
 		return impl_scene->GetArmatureName(index);
 	}
@@ -1722,12 +2127,42 @@ namespace Utility
 		return impl_scene->IntersectWithRay(start, end, res);
 	}
 
+	Object* Scene::FindObjectByName(const System::string& name)
+	{
+		return impl_scene->FindObjectByName(name);
+	}
+
+	const Object* Scene::FindObjectByName(const System::string& name) const
+	{
+		return impl_scene->FindObjectByName(name);
+	}
+
+	Bone* Scene::FindBoneByName(const System::string& name)
+	{
+		return impl_scene->FindBoneByName(name);
+	}
+
+	const Bone* Scene::FindBoneByName(const System::string& name) const
+	{
+		return impl_scene->FindBoneByName(name);
+	}
+
+	Animation* Scene::FindAnimationByName(const System::string& name)
+	{
+		return impl_scene->FindAnimationByName(name);
+	}
+
+	const Animation* Scene::FindAnimationByName(const System::string& name) const
+	{
+		return impl_scene->FindAnimationByName(name);
+	}
+
 	unsigned Scene::GetObjectsCount() const
 	{
 		return impl_scene->GetObjectsCount();
 	}
 
-	const System::string& Scene::GetObjectName(int index) const
+	const System::string Scene::GetObjectName(int index) const
 	{
 		return impl_scene->GetObjectName(index);
 	}
@@ -1736,4 +2171,19 @@ namespace Utility
 	{
 		impl_scene->PrintDebug();
 	}
+
+	void Scene::Save(std::ostream& stream)
+	{
+		impl_scene->Save(stream);
+	}
+
+	void Scene::Load(std::istream& stream)
+	{
+		impl_scene.reset(new SceneImpl);
+		impl_scene->Load(stream);
+	}
+
+	struct SceneObjectIteratorImpl
+	{
+	};	
 }

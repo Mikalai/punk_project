@@ -20,6 +20,23 @@ namespace System
 namespace Utility
 {
 	class StaticMesh;
+	class Object;
+	class Bone;
+	class Animation;
+
+	////	used to iterate through all objects
+	//class SceneObjectIterator
+	//{
+	//	struct SceneObjectIteratorImpl;
+	//	std::auto_ptr<SceneObjectIteratorImpl> m_impl;
+	//public:				
+	//	SceneObjectIterator(Scene* scene);
+	//	~SceneObjectIterator(Scene* scene);
+	//	Object* operator * ();
+	//	Object* operator -> ();
+	//};
+
+	//extern SceneObjectIterator* operator ++ (int i, SceneObjectIterator&);
 
 	class LIB_UTILITY Scene
 	{
@@ -32,8 +49,10 @@ namespace Utility
 		~Scene();
 
 		unsigned GetObjectsCount() const;
-		const System::string& GetObjectName(int index) const;
+		const System::string GetObjectName(int index) const;
 
+		void Load(std::istream& stream);
+		void Save(std::ostream& stream);
 		void Load(const System::string& filename);
 		//Math::OctTree& GetOctTree();
 		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res);
@@ -41,9 +60,17 @@ namespace Utility
 		StaticMesh* CookSkinnedMesh(const System::string& name) const;
 		Armature* GetArmature(const System::string& name);
 		int GetArmatureCount() const;
-		const System::string& GetArmatureName(int index) const;
+		const System::string GetArmatureName(int index) const;
 
-		void PrintDebug();
+		Object* FindObjectByName(const System::string& name);
+		const Object* FindObjectByName(const System::string& name) const;
+		Bone* FindBoneByName(const System::string& name);
+		const Bone* FindBoneByName(const System::string& name) const;
+
+		Animation* FindAnimationByName(const System::string& name);
+		const Animation* FindAnimationByName(const System::string& name) const;
+
+		void PrintDebug();	
 	};
 
 

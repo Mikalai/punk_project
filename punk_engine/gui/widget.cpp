@@ -26,20 +26,22 @@ namespace GUI
 		, m_text(text)
 		, m_fontSize(14)
 		, m_parent(parent)
-		, m_back_color_0(0.6, 0.6, 0.6, 0.5)
-		, m_back_color_1(1, 1, 1, 0.8)
+		, m_back_color_0(0.6f, 0.6f, 0.6f, 0.5f)
+		, m_back_color_1(1, 1, 1, 0.8f)
 		, m_text_color_0(0, 0, 0, 1)
 		, m_text_color_1(1, 0, 0, 1)
 		, m_back_color(m_back_color_0)
 		, m_text_color(m_text_color_0)
 		, m_animation(0)
-		, m_animation_duration(0.1)		
+		, m_animation_duration(0.1f)		
 		, m_next_widget(0)
 		, m_prev_widget(0)
 		, m_manager(0)
+		, m_vertical_align(VERTICAL_ALIGN_CENTER)
+		, m_horizontal_align(HORIZONTAL_ALIGN_CENTER)
 	{
 		m_text_texture = new OpenGL::Texture2D;;
-		m_text_texture->Create(GetWidth()*System::Window::Instance()->GetWidth(), GetHeight()*System::Window::Instance()->GetHeight(), GL_RED, 0);
+		m_text_texture->Create(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()), GL_RED, 0);
 		m_background_texture = 0;
 		RenderTextToTexture();
 		if (m_parent)
@@ -75,7 +77,7 @@ namespace GUI
 
 	void Widget::OnResize(System::WindowResizeEvent* e)
 	{
-		m_text_texture->Create(GetWidth()*System::Window::Instance()->GetWidth(), GetHeight()*System::Window::Instance()->GetHeight(), GL_RED, 0);
+		m_text_texture->Create(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()), GL_RED, 0);
 		RenderTextToTexture();
 		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnResize(e); } );
 
@@ -87,8 +89,8 @@ namespace GUI
 		if (IsVisible() && IsEnabled())
 		{
 			m_OnMouseMove(e);
-			bool wasIn = IsPointIn(Widget::WindowToViewport(e->x_prev, e->y_prev));
-			bool isIn = IsPointIn(Widget::WindowToViewport(e->x, e->y));
+			bool wasIn = IsPointIn(Widget::WindowToViewport(float(e->x_prev), float(e->y_prev)));
+			bool isIn = IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y)));
 			if (!wasIn && isIn)
 			{
 				System::MouseEnterEvent* new_event = System::MouseEnterEvent::Raise();
@@ -406,10 +408,64 @@ namespace GUI
 		return m_parent;
 	}
 
+	int Widget::CalculateTextXOffset(const wchar_t* text)
+	{
+		int start_x;
+		if (HORIZONTAL_ALIGHT_LEFT == m_horizontal_align)
+			start_x = 0;
+		else if (HORIZONTAL_ALIGN_CENTER == m_horizontal_align)
+		{
+			int length = Utility::FontBuilder::Instance()->CalculateLength(text);
+			if (length >= m_text_texture->GetWidth())
+				start_x = 0;
+			else
+				start_x = (m_text_texture->GetWidth() - length) / 2;
+		}
+		else if (HORIZONTAL_ALIGN_RIGHT == m_horizontal_align)
+		{
+			int length = Utility::FontBuilder::Instance()->CalculateLength(text);
+			if (length >= m_text_texture->GetWidth())
+				start_x = 0;
+			else
+				start_x = m_text_texture->GetWidth() - length;
+		}
+		return start_x;
+	}
+
+	int Widget::CalculateTextYOffset(const wchar_t* text)
+	{
+		const wchar_t* cur = text;		
+		int length = Utility::FontBuilder::Instance()->CalculateLength(cur);
+		if (length == 0)
+			return 1;		
+		int height_M = Utility::FontBuilder::Instance()->GetHeight(L'M');
+		int lines = m_text_texture->GetHeight() / height_M;
+		int start_y = 0;
+		if (VERTICAL_ALIGN_BOTTOM == m_vertical_align)
+		{
+			start_y = 0;
+		}
+		else if (VERTICAL_ALIGN_CENTER == m_vertical_align)
+		{
+			start_y = m_text_texture->GetHeight() / 2 - lines*height_M / 2;
+		}
+		else if (VERTICAL_ALIGN_TOP == m_vertical_align)
+		{
+			start_y = m_text_texture->GetHeight() - height_M;
+		}
+		return start_y;
+	}
+
 	void Widget::RenderTextToTexture()
 	{
-		int x = 0;
-		int y = m_text_texture->GetHeight() - m_fontSize;
+		if (m_text.Length() == 0)
+		{
+			m_text_texture->Fill(0);
+			return;
+		}
+
+		int x = CalculateTextXOffset(m_text.Data());
+		int y = CalculateTextYOffset(m_text.Data());
 		m_text_texture->Fill(0);
 		Utility::FontBuilder::Instance()->SetCurrentFace(m_font);
 		Utility::FontBuilder::Instance()->SetCharSize(m_fontSize, m_fontSize);
@@ -427,8 +483,8 @@ namespace GUI
 				x += -x_offset;
 			if (x + x_offset + width >= m_text_texture->GetWidth())
 			{
-				y -= m_fontSize;
-				x = 0;
+				y -= Utility::FontBuilder::Instance()->GetHeight(L'M');
+				x = CalculateTextXOffset(a);
 				if (y < 0)
 					return;
 			}							
@@ -461,7 +517,7 @@ namespace GUI
 	void Widget::SetSize(float x, float y, float width, float height)
 	{
 		m_x = x; m_y = y; m_width = width; m_height = height;
-		m_text_texture->Resize(GetScreenWidth(), GetScreenHeight());
+		m_text_texture->Resize(int(GetScreenWidth()), int(GetScreenHeight()));
 	}
 
 	unsigned Widget::GetChildrenCount() const

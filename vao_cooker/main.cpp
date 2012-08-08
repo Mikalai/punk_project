@@ -16,60 +16,106 @@ class ToVaoConverter
 	OpenGL::Driver m_driver;
 public:
 
-	ToVaoConverter(const char* filename, const char* flag)
+	ToVaoConverter(const char* flag, const char* filename)
 	{
 		m_driver.Start(System::Window::Instance());
 
 		Utility::Scene scene;
-		// Load scene
-		scene.Load(System::string(filename));		
+		scene.Load(System::Environment::Instance()->GetModelFolder() + System::string(filename));
 
-		int objects_count = scene.GetObjectsCount();
-		
-		for (int i = 0; i < objects_count; ++i)
+		for (int i = 0; i < scene.GetArmatureCount(); ++i)
 		{
-			char ansi_name[2048];
-			char ansi_path[2048];
-			char output_filename[2048];
-			const System::string& name = scene.GetObjectName(i);
-			name.ToANSI(ansi_name, 2048);
-			System::Environment::Instance()->GetModelFolder().ToANSI(ansi_path, 2048);			
-			sprintf(output_filename, "%s%s.vao", ansi_path, ansi_name);
-			std::cout << "Exporting vao to " << output_filename << std::endl;
-			std::auto_ptr<Utility::StaticMesh> cpu_mesh;
+			Utility::Armature* arm = scene.GetArmature(scene.GetArmatureName(i));
+			std::ofstream stream((System::Environment::Instance()->GetArmatureFolder() + arm->GetName() + L".armature").Data(), std::ios_base::binary);
+			arm->Save(stream);
+			stream.close();
+		}
+
+		for (int i = 0; i < scene.GetObjectsCount(); ++i)
+		{
+			Utility::Object* obj = scene.FindObjectByName(scene.GetObjectName(i));
+			
+			//	save object file
+			{
+				std::ofstream stream((System::Environment::Instance()->GetModelFolder() + obj->GetName() + L".object").Data(), std::ios_base::binary);
+				obj->Save(stream);
+				stream.close();
+			}
+
+			std::wcout << L"Exporting vao to " << (System::Environment::Instance()->GetModelFolder() + System::string(obj->GetName().Data()) + L".vao").Data() << std::endl;
 			if (!strcmp(flag, "--skinned"))
-				cpu_mesh.reset(scene.CookSkinnedMesh(name));
+			{
+				bool cooked = false;
+				if (scene.GetArmatureCount())
+				{
+					Utility::Armature* arm = scene.GetArmature(scene.GetArmatureName(0));
+					if (arm)		
+					{
+						cooked = obj->CookAsSkinnedMesh(*arm);						 
+					}
+				}
+
+				if (!cooked)
+					obj->CookAsStaticMesh();
+			}
 			else if (!strcmp(flag, "--static"))
-				cpu_mesh.reset(scene.CookStaticMesh(name));
+			{
+				obj->CookAsStaticMesh();
+			}
 			else 
 			{
 				std::cout << "Bad flag " << flag << std::endl;
 				return;
 			}
-			std::auto_ptr<OpenGL::StaticObject> gpu_mesh(new OpenGL::StaticObject());
-			gpu_mesh->SetStaticObject(cpu_mesh.get());				
+
+			ExportVAO(obj);
+		}
+	}
+
+	void ExportVAO(Utility::Object* obj)
+	{
+		std::auto_ptr<OpenGL::StaticObject> gpu_mesh(new OpenGL::StaticObject());	
+		bool has_geom = true;
+		if (obj->GetSkinnedMesh())
+		{
+			gpu_mesh->SetStaticObject(obj->GetSkinnedMesh());				
+		}
+		else if (obj->GetStaticMesh())
+		{
+			gpu_mesh->SetStaticObject(obj->GetStaticMesh());
+		}
+		else
+		{
+			System::Logger::Instance()->WriteWarning(L"No geometry data in " + obj->GetName());
+			has_geom = false;
+		}
+
+		if (has_geom)
+		{
 			gpu_mesh->Init();			
-			std::ofstream output(output_filename, std::ios_base::binary);
+
+			std::ofstream output((System::Environment::Instance()->GetModelFolder() + System::string(obj->GetName().Data()) + L".vao").Data(), std::ios_base::binary);
+
 			if (!output.is_open())
 			{
 				std::cout << "Unable to openg a file" << std::endl;
-				continue;
+				return;
 			}
 			gpu_mesh->Save(output);
 			output.close();
 		}
-		if (!strcmp(flag, "--skinned"))
+		for each (auto child in obj->GetChildren())
 		{
-			int armature_count = scene.GetArmature()
+			ExportVAO(child.get());
 		}
 	}
 };
 
 int main(int argc, char** argv)
 {
-	if (argc == 2)
+	if (argc == 1)
 	{
-		System::Logger::Instance()->WriteError(System::string::Format(L"Not enough parameters. Should be provided a list of pmd files. They will be converted to vao. vao_cooker.exe --skinned|--static file.pmd ..."));
+		System::Logger::Instance()->WriteError(System::string::Format(L"Not enough parameters. Should be provided a list of pmd files. They will be converted to vao. vao_cooker.exe --skinned|--static file.pmd"));
 		return 0;
 	}
 
@@ -79,7 +125,7 @@ int main(int argc, char** argv)
 	module.Init();
 	for (int i = 2; i < argc; ++i)
 	{
-		ToVaoConverter converter(argv[i], argv[1]);	
+		ToVaoConverter converter(argv[1], argv[i]);	
 	}
 	module.Destroy();
 	return 0;

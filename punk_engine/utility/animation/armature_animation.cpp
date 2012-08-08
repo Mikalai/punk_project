@@ -32,6 +32,14 @@ namespace Utility
 		}
 	}
 
+	void ArmatureAnimation::DisableAllTracks()
+	{
+		for (int i = 0; i < m_armature.GetBonesCount(); ++i)
+		{
+			m_armature.GetBoneByIndex(i)->GetAnimationMixer().DisableAllTracks();
+		}
+	}
+
 	void ArmatureAnimation::SetTrackWeight(const System::string& track_name, float value)
 	{
 		for (int i = 0; i < m_armature.GetBonesCount(); ++i)

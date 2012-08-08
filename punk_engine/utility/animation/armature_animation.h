@@ -16,6 +16,7 @@ namespace Utility
 	public:
 		ArmatureAnimation(Armature& armature);
 		void UpdateBones(float frame);
+		void DisableAllTracks();
 		void EnableTrack(const System::string&, bool flag);
 		void SetTrackWeight(const System::string&, float value);
 		void SetLooping(const System::string&, bool flag);

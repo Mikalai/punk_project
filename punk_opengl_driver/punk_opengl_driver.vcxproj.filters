@@ -172,6 +172,12 @@
       <Filter>dump%28logic%29</Filter>
     </ClCompile>
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\render\line.cpp" />
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\vao_manager.cpp">
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_2d_manager.cpp">
+      <Filter>dump%28logic%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.h">
@@ -381,6 +387,9 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render\line.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render\rigid_body.h" />
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\texture_2d_manager.h">
+      <Filter>dump%28logic%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\vao_manager.h">
       <Filter>dump%28logic%29</Filter>
     </ClInclude>
   </ItemGroup>

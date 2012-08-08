@@ -6,6 +6,7 @@ AUTHOR: Mikalai Abramau
 #ifndef _H_VEC4_MATH
 #define _H_VEC4_MATH
 
+#include <iosfwd>
 #include "../system/string.h"
 #include <stdio.h>
 #include <cmath>
@@ -436,6 +437,16 @@ namespace Math
 
 			throw MathTestFailed();
 			//	should be completed somewhen
+		}
+
+		void Save(std::ostream& stream)
+		{
+			stream.write((char*)m_v, sizeof(m_v));
+		}
+		
+		void Load(std::istream& stream)
+		{
+			stream.read((char*)m_v, sizeof(m_v));
 		}
 	};
 

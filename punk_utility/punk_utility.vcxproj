@@ -92,6 +92,7 @@
     <ClCompile Include="..\punk_engine\utility\animation\animation.cpp" />
     <ClCompile Include="..\punk_engine\utility\animation\animation_mixer.cpp" />
     <ClCompile Include="..\punk_engine\utility\animation\armature_animation.cpp" />
+    <ClCompile Include="..\punk_engine\utility\armature_manager.cpp" />
     <ClCompile Include="..\punk_engine\utility\bullet_type.cpp" />
     <ClCompile Include="..\punk_engine\utility\elements\terrain.cpp" />
     <ClCompile Include="..\punk_engine\utility\elements\utility_tree.cpp" />
@@ -99,17 +100,23 @@
     <ClCompile Include="..\punk_engine\utility\model\action.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\armature.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\bone.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\building.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\material.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\mesh.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\object.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\object_manager.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\punk_scene_loader.cpp" />
-    <ClCompile Include="..\punk_engine\utility\model\scene.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\scheme.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\skin_animation.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\sound.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\static_mesh.cpp" />
     <ClCompile Include="..\punk_engine\utility\camera.cpp" />
     <ClCompile Include="..\punk_engine\utility\error.cpp" />
     <ClCompile Include="..\punk_engine\utility\font_builder.cpp" />
+    <ClCompile Include="..\punk_engine\utility\scene_file_manager.cpp" />
     <ClCompile Include="..\punk_engine\utility\utility_lod.cpp" />
     <ClCompile Include="..\punk_engine\utility\weapon_type.cpp" />
+    <ClCompile Include="..\punk_engine\utility\weapon_type_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\utility\animation\animation.h" />
@@ -117,7 +124,9 @@
     <ClInclude Include="..\punk_engine\utility\animation\animation_track.h" />
     <ClInclude Include="..\punk_engine\utility\animation\armature_animation.h" />
     <ClInclude Include="..\punk_engine\utility\animation\track_pos.h" />
+    <ClInclude Include="..\punk_engine\utility\armature_manager.h" />
     <ClInclude Include="..\punk_engine\utility\bullet_type.h" />
+    <ClInclude Include="..\punk_engine\utility\decl_property.h" />
     <ClInclude Include="..\punk_engine\utility\elements\human.h" />
     <ClInclude Include="..\punk_engine\utility\elements\terrain.h" />
     <ClInclude Include="..\punk_engine\utility\elements\utility_tree.h" />
@@ -125,16 +134,19 @@
     <ClInclude Include="..\punk_engine\utility\model\action.h" />
     <ClInclude Include="..\punk_engine\utility\model\bone.h" />
     <ClInclude Include="..\punk_engine\utility\model\bone_frame.h" />
+    <ClInclude Include="..\punk_engine\utility\model\building.h" />
     <ClInclude Include="..\punk_engine\utility\model\intersection.h" />
     <ClInclude Include="..\punk_engine\utility\model\material.h" />
     <ClInclude Include="..\punk_engine\utility\model\mesh.h" />
     <ClInclude Include="..\punk_engine\utility\model\object.h" />
+    <ClInclude Include="..\punk_engine\utility\model\object_manager.h" />
     <ClInclude Include="..\punk_engine\utility\model\punk_scene_loader.h" />
-    <ClInclude Include="..\punk_engine\utility\model\scene.h" />
+    <ClInclude Include="..\punk_engine\utility\model\scheme.h" />
     <ClInclude Include="..\punk_engine\utility\model\armature.h" />
     <ClInclude Include="..\punk_engine\utility\model\skeleton_animation.h" />
     <ClInclude Include="..\punk_engine\utility\model\skin_animation.h" />
     <ClInclude Include="..\punk_engine\utility\model\skinned_mesh.h" />
+    <ClInclude Include="..\punk_engine\utility\model\sound.h" />
     <ClInclude Include="..\punk_engine\utility\model\static_mesh.h" />
     <ClInclude Include="..\punk_engine\utility\model\texture_faces.h" />
     <ClInclude Include="..\punk_engine\utility\model\vertex.h" />
@@ -144,10 +156,13 @@
     <ClInclude Include="..\punk_engine\utility\font_builder.h" />
     <ClInclude Include="..\punk_engine\utility\model\vertex_bone_weight.h" />
     <ClInclude Include="..\punk_engine\utility\model\vertex_index.h" />
-    <ClInclude Include="..\punk_engine\utility\scene_manager.h" />
+    <ClInclude Include="..\punk_engine\utility\scene_file_manager.h" />
+    <ClInclude Include="..\punk_engine\utility\scheme.h" />
     <ClInclude Include="..\punk_engine\utility\utility.h" />
     <ClInclude Include="..\punk_engine\utility\utility_lod.h" />
+    <ClInclude Include="..\punk_engine\utility\weapon.h" />
     <ClInclude Include="..\punk_engine\utility\weapon_type.h" />
+    <ClInclude Include="..\punk_engine\utility\weapon_type_manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\punk_image\punk_image.vcxproj">

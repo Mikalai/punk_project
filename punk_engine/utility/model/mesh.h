@@ -6,6 +6,7 @@
 #include "texture_faces.h"
 #include "vertex_bone_weight.h"
 #include "vertex_index.h"
+#include "texture_faces.h"
 
 namespace Utility
 {
@@ -15,13 +16,16 @@ namespace Utility
 	typedef std::vector<Math::ivec3> Faces;
 	typedef Math::BoundingBox BoundingBox;		
 
-	struct Mesh
+	struct LIB_UTILITY Mesh
 	{		
 		Vertices m_vertices;
 		Normals m_normals;
 		Faces m_faces;
 		VertexBoneWeights m_bone_weights;
 		TextureMeshes m_tex_coords;
+
+		void Save(std::ostream& stream);
+		void Load(std::istream& stream);
 	};
 }
 

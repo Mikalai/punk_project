@@ -5,12 +5,15 @@
 
 namespace ImageModule
 {
+	class Image;
+
 	class PngImporter : public Importer
 	{
-	protected:
+	public:
 		PngImporter();
 
 		virtual void Load(const System::string& filename);
+		virtual void Load(std::istream& stream, Image* image);
 
 		friend class Importer;
 	};

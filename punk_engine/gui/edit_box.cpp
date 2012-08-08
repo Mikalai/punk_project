@@ -10,6 +10,8 @@ namespace GUI
 		, m_cursor_x(0)
 		, m_showCursor(true)		
 	{
+		SetVerticalTextAlign(VERTICAL_ALIGN_TOP);
+		SetHorizontalTextAlign(HORIZONTAL_ALIGHT_LEFT);
 		RenderTextToTexture();
 	}
 
@@ -110,7 +112,7 @@ namespace GUI
 			{
 				if (m_showCursor)
 					InversCursor();
-				int x = GetX();
+				int x = (int)GetX();
 				x = e->x - x;
 				m_cursor_x = m_text.Length();
 				for (int i = 0; i < m_cursor_x; i++)
