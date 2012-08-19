@@ -128,8 +128,15 @@ namespace Utility
 		StaticMesh* GetStaticMesh() { return m_static_mesh.get(); }
 		const StaticMesh* GetStaticMesh() const { return m_static_mesh.get(); }
 		
+		bool IsCollisionVolume() const;
+
+		//	test collision of bbox with all collision objects
+		//	bbox is in world coordinates
+		bool TestCollision(const Math::BoundingBox& bbox) const;
+
 	private:
 
+		bool TestCollision(const Math::BoundingBox& bbox, const Math::mat4& parent, const Object& child) const;
 		void UpdateCollision();
 	};
 	

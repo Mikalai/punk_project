@@ -72,6 +72,8 @@ namespace Utility
 
 	void Armature::SetMeshOffset(const Math::Matrix4x4<float>& offset)
 	{
+		int k = 0;
+		k = k;
 		//m_mesh_offset = offset;
 	}
 

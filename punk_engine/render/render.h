@@ -10,6 +10,8 @@ Description: Render of the scene
 #include "renderable.h"
 #include "simple_renderpipeline.h"
 #include "terrain_render.h"
+#include "bbox_render.h"
+#include "character_render.h"
 
 /*#include "font_builder.h"
 #include "pipeline.h"

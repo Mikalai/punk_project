@@ -35,10 +35,10 @@ namespace Utility
 		int					m_index_in_armature;
 		AnimationMixer		m_animation;
 		Math::mat4			m_last_local_matrix_update;
-		Math::mat4			m_last_global_matrix_update;
+		mutable Math::mat4	m_last_global_matrix_update;
 		float				m_last_get_global_matrix;
 		float				m_length;
-		bool				m_need_update_global_matrix;
+		mutable bool		m_need_update_global_matrix;
 		Armature*			m_armature;
 	public:
 		void SetName(const System::string& name);
@@ -60,7 +60,7 @@ namespace Utility
 
 		void AddChild(Bone* bone);
 
-		Math::mat4& GetAnimatedGlobalMatrix();
+		const Math::mat4& GetAnimatedGlobalMatrix(const Math::mat4& mesh_transform) const;
 		void UpdatePose(float frame, bool deep = false);
 		AnimationMixer& GetAnimationMixer();
 		const AnimationMixer& GetAnimationMixer() const;

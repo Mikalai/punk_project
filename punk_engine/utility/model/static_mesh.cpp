@@ -3,17 +3,23 @@
 
 namespace Utility
 {
-	StaticMesh::StaticMesh() : m_vb(0), m_index(0), m_vertex_count(0), m_index_count(0), m_vertex_buffer_size(0), m_one_vertex_size(0), m_vertex_component(0)
+	StaticMesh::StaticMesh() 
+		: m_vb(0)
+		, m_index(0)
+		, m_vertex_count(0)
+		, m_index_count(0)
+		, m_vertex_buffer_size(0)
+		, m_one_vertex_size(0)
+		, m_vertex_component(0)
+		, m_primitive_type(PRIMITIVE_TYPE_TRIANGLE)
 	{}
 
-	void StaticMesh::SetIndexBuffer(unsigned* buffer)
+	void StaticMesh::SetIndexBuffer(void* buffer, int size_in_bytes)
 	{
-		m_index = buffer;
-	}
-
-	void StaticMesh::SetIndexCount(unsigned count)
-	{
-		m_index_count = count;
+		m_index_buffer_size = size_in_bytes;
+		m_index.resize(size_in_bytes);
+		if (buffer)
+			memcpy(&m_index[0], buffer, size_in_bytes);
 	}
 
 	void StaticMesh::SetMaterialID(unsigned id)
@@ -26,14 +32,12 @@ namespace Utility
 		m_one_vertex_size = size;
 	}
 
-	void StaticMesh::SetVertexBuffer(void* buffer)
+	void StaticMesh::SetVertexBuffer(void* buffer, int size_in_bytes)
 	{
-		m_vb = buffer;
-	}
-
-	void StaticMesh::SetVertexBufferSize(unsigned size)
-	{
-		m_vertex_buffer_size = size;
+		m_vertex_buffer_size = size_in_bytes;
+		m_vb.resize(size_in_bytes);
+		if (buffer)
+			memcpy(&m_vb[0], buffer, size_in_bytes);
 	}
 
 	void StaticMesh::SetVertexComponent(int component)
@@ -48,12 +52,12 @@ namespace Utility
 
 	void* StaticMesh::GetVertexBuffer()
 	{
-		return m_vb;
+		return (void*)&m_vb[0];
 	}
 
-	unsigned* StaticMesh::GetIndexBuffer()
+	void* StaticMesh::GetIndexBuffer()
 	{
-		return m_index;
+		return (void*)&m_index[0];
 	}
 
 	unsigned StaticMesh::GetIndexCount() const
@@ -103,27 +107,31 @@ namespace Utility
 
 	void StaticMesh::Save(std::ostream& stream)
 	{
+		stream.write(reinterpret_cast<const char*>(&m_primitive_type), sizeof(PrimitiveType));
 		stream.write(reinterpret_cast<const char*>(&m_vertex_count), sizeof(m_vertex_count));
 		stream.write(reinterpret_cast<const char*>(&m_index_count), sizeof(m_index_count));
 		stream.write(reinterpret_cast<const char*>(&m_vertex_buffer_size), sizeof(m_vertex_buffer_size));
+		stream.write(reinterpret_cast<const char*>(&m_index_buffer_size), sizeof(m_index_buffer_size));
 		stream.write(reinterpret_cast<const char*>(&m_one_vertex_size), sizeof(m_one_vertex_size));
 		stream.write(reinterpret_cast<const char*>(&m_vertex_component), sizeof(m_vertex_component));
-		stream.write(reinterpret_cast<const char*>(m_vb), m_vertex_buffer_size);
-		stream.write(reinterpret_cast<const char*>(m_index), sizeof(unsigned)*m_index_count);
+		stream.write(reinterpret_cast<const char*>(&m_vb[0]), m_vertex_buffer_size);
+		stream.write(reinterpret_cast<const char*>(&m_index[0]), sizeof(unsigned)*m_index_count);		
 		m_mesh_offset.Save(stream);
 	}
 
 	void StaticMesh::Load(std::istream& stream)
 	{
+		stream.read(reinterpret_cast<char*>(&m_primitive_type), sizeof(PrimitiveType));
 		stream.read(reinterpret_cast<char*>(&m_vertex_count), sizeof(m_vertex_count));
 		stream.read(reinterpret_cast<char*>(&m_index_count), sizeof(m_index_count));
 		stream.read(reinterpret_cast<char*>(&m_vertex_buffer_size), sizeof(m_vertex_buffer_size));
+		stream.read(reinterpret_cast<char*>(&m_index_buffer_size), sizeof(m_index_buffer_size));
 		stream.read(reinterpret_cast<char*>(&m_one_vertex_size), sizeof(m_one_vertex_size));
 		stream.read(reinterpret_cast<char*>(&m_vertex_component), sizeof(m_vertex_component));
-		m_vb = (void*) new char[m_vertex_buffer_size];
-		stream.read(reinterpret_cast<char*>(m_vb), m_vertex_buffer_size);
-		m_index = new unsigned[sizeof(unsigned)*m_index_count];
-		stream.read(reinterpret_cast<char*>(m_index), sizeof(unsigned)*m_index_count);
+		m_vb.resize(m_vertex_buffer_size);
+		stream.read(reinterpret_cast<char*>(&m_vb[0]), m_vertex_buffer_size);
+		m_index.resize(m_index_buffer_size);
+		stream.read(reinterpret_cast<char*>(&m_index[0]), m_index_buffer_size);
 		m_mesh_offset.Load(stream);
 	}
 }

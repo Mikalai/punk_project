@@ -42,8 +42,7 @@ namespace OpenGL
 			Init();			
 			glUseProgram(m_program);
 			CHECK_GL_ERROR(L"Unable to use shader program");
-			BindUniforms();		
-			OpenGL::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			BindUniforms();					
 		}
 
 		void Init()

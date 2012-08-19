@@ -10,6 +10,7 @@
 namespace Utility { class Terrain; class Camera; }
 namespace ImageModule { class Image; }
 
+namespace OpenGL { class Texture2D; }
 namespace Render
 {
 	class LIB_RENDER TerrainRender 
@@ -25,6 +26,7 @@ namespace Render
 		void SetDiffuseMap1(OpenGL::Texture2D* image);
 		void SetDiffuseMap2(OpenGL::Texture2D* image);
 		void Render(Utility::Camera* camera);
+		OpenGL::Texture2D* GetHeightMap();
 		void Init();
 
 	private:

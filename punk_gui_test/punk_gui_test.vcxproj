@@ -83,6 +83,7 @@
     <ClCompile Include="field.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_menu.cpp" />
+    <ClCompile Include="monster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="building.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="character_control.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="main_menu.h" />
+    <ClInclude Include="monster.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

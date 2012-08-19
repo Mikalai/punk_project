@@ -22,5 +22,6 @@
 #include "armature_manager.h"
 #include "weapon_type_manager.h"
 #include "model\object_manager.h"
+#include "model\partical_system.h"
 
 #endif

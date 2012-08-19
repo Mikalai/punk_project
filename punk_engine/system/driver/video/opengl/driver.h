@@ -28,6 +28,10 @@ and handle different parameters about users video system
 #include "vertex_array_object.h"
 #include "text_texture_2d.h"
 #include "module.h"
+
+#include "render_context\rc_grass.h"
+#include "render_context\rc_particle_system.h"
+
 #endif
 
 #ifdef __linux__

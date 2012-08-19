@@ -34,12 +34,13 @@ namespace Math
 		const vec3& Min() const;
 		const vec3& Max() const;
 		vec3& Min();
-		vec3& Max();
+		vec3& Max();		
 		const vec3* TransformedPoints() const;
 
 		vec3& operator [] (int index);
 		const vec3& operator [] (int index) const;
 
+		const BoundingBox& Transform(const Math::mat4& transform, Math::vec3& min, Math::vec3& max) const;
 		const BoundingBox& Transform(const mat4& transform) const;
 
 		void Save(std::ostream& stream);

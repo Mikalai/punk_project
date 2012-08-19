@@ -40,6 +40,11 @@ namespace OpenGL
 		glDrawElements(impl_vao->m_primitive_type, impl_vao->m_index_count, GL_UNSIGNED_INT, 0);			
 	}
 
+	void VertexArrayObject::RenderInstanced(int count)
+	{		
+		glDrawElementsInstanced(impl_vao->m_primitive_type, impl_vao->m_index_count, GL_UNSIGNED_INT, 0, count);			
+	}
+
 	void VertexArrayObject::Init()
 	{
 		Cook();
@@ -79,6 +84,11 @@ namespace OpenGL
 	void VertexArrayObject::SetUpAttributes(VertexAttributes supported_by_context)
 	{
 		impl_vao->SetUpAttributes(supported_by_context);
+	}
+
+	void VertexArrayObject::SetPrimitiveType(int type)
+	{
+		impl_vao->SetPrimitiveType(type);
 	}
 
 	void VertexArrayObject::SetIndexBuffer(const void* ibuffer, unsigned size)

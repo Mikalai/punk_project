@@ -168,18 +168,38 @@ namespace Math
 		return m_transformed_points;
 	}
 
+	const BoundingBox& BoundingBox::Transform(const Math::mat4& transform, Math::vec3& min, Math::vec3& max) const
+	{
+		m_transformed_points[0] = (transform * vec3(m_min[0], m_min[1], m_min[2]).ToHomogeneous()).XYZ();		
+		min = max = m_transformed_points[0];
+		m_transformed_points[1] = (transform * vec3(m_min[0], m_min[1], m_max[2]).ToHomogeneous()).XYZ();
+		min[0] = std::min(min[0], m_transformed_points[1][0]); min[1] = std::min(min[1], m_transformed_points[1][1]); min[2] = std::min(min[2], m_transformed_points[1][2]);
+		max[0] = std::max(max[0], m_transformed_points[1][0]); max[1] = std::max(max[1], m_transformed_points[1][1]); max[2] = std::max(max[2], m_transformed_points[1][2]);
+		m_transformed_points[2] = (transform * vec3(m_min[0], m_max[1], m_min[2]).ToHomogeneous()).XYZ();
+		min[0] = std::min(min[0], m_transformed_points[2][0]); min[1] = std::min(min[1], m_transformed_points[2][1]); min[2] = std::min(min[2], m_transformed_points[2][2]);
+		max[0] = std::max(max[0], m_transformed_points[2][0]); max[1] = std::max(max[1], m_transformed_points[2][1]); max[2] = std::max(max[2], m_transformed_points[2][2]);
+		m_transformed_points[3] = (transform * vec3(m_min[0], m_max[1], m_max[2]).ToHomogeneous()).XYZ();
+		min[0] = std::min(min[0], m_transformed_points[3][0]); min[1] = std::min(min[1], m_transformed_points[3][1]); min[2] = std::min(min[2], m_transformed_points[3][2]);
+		max[0] = std::max(max[0], m_transformed_points[3][0]); max[1] = std::max(max[1], m_transformed_points[3][1]); max[2] = std::max(max[2], m_transformed_points[3][2]);
+		m_transformed_points[4] = (transform * vec3(m_max[0], m_min[1], m_min[2]).ToHomogeneous()).XYZ();
+		min[0] = std::min(min[0], m_transformed_points[4][0]); min[1] = std::min(min[1], m_transformed_points[4][1]); min[2] = std::min(min[2], m_transformed_points[4][2]);
+		max[0] = std::max(max[0], m_transformed_points[4][0]); max[1] = std::max(max[1], m_transformed_points[4][1]); max[2] = std::max(max[2], m_transformed_points[4][2]);
+		m_transformed_points[5] = (transform * vec3(m_max[0], m_min[1], m_max[2]).ToHomogeneous()).XYZ();
+		min[0] = std::min(min[0], m_transformed_points[5][0]); min[1] = std::min(min[1], m_transformed_points[5][1]); min[2] = std::min(min[2], m_transformed_points[5][2]);
+		max[0] = std::max(max[0], m_transformed_points[5][0]); max[1] = std::max(max[1], m_transformed_points[5][1]); max[2] = std::max(max[2], m_transformed_points[5][2]);
+		m_transformed_points[6] = (transform * vec3(m_max[0], m_max[1], m_min[2]).ToHomogeneous()).XYZ();
+		min[0] = std::min(min[0], m_transformed_points[6][0]); min[1] = std::min(min[1], m_transformed_points[6][1]); min[2] = std::min(min[2], m_transformed_points[6][2]);
+		max[0] = std::max(max[0], m_transformed_points[6][0]); max[1] = std::max(max[1], m_transformed_points[6][1]); max[2] = std::max(max[2], m_transformed_points[6][2]);
+		m_transformed_points[7] = (transform * vec3(m_max[0], m_max[1], m_max[2]).ToHomogeneous()).XYZ();
+		min[0] = std::min(min[0], m_transformed_points[7][0]); min[1] = std::min(min[1], m_transformed_points[7][1]); min[2] = std::min(min[2], m_transformed_points[7][2]);
+		max[0] = std::max(max[0], m_transformed_points[7][0]); max[1] = std::max(max[1], m_transformed_points[7][1]); max[2] = std::max(max[2], m_transformed_points[7][2]);
+		return *this;
+	}
+
 	const BoundingBox& BoundingBox::Transform(const Math::mat4& transform) const
 	{
-		m_transformed_points[0] = (transform * vec3(m_min[0], m_min[1], m_min[2]).ToHomogeneous()).XYZ();
-		m_transformed_points[1] = (transform * vec3(m_min[0], m_min[1], m_max[2]).ToHomogeneous()).XYZ();
-		m_transformed_points[2] = (transform * vec3(m_min[0], m_max[1], m_min[2]).ToHomogeneous()).XYZ();
-		m_transformed_points[3] = (transform * vec3(m_min[0], m_max[1], m_max[2]).ToHomogeneous()).XYZ();
-		m_transformed_points[4] = (transform * vec3(m_max[0], m_min[1], m_min[2]).ToHomogeneous()).XYZ();
-		m_transformed_points[5] = (transform * vec3(m_max[0], m_min[1], m_min[2]).ToHomogeneous()).XYZ();
-		m_transformed_points[6] = (transform * vec3(m_max[0], m_max[1], m_max[2]).ToHomogeneous()).XYZ();
-		m_transformed_points[7] = (transform * vec3(m_max[0], m_max[1], m_max[2]).ToHomogeneous()).XYZ();
-
-		return *this;
+		Math::vec3 p1, p2;
+		return Transform(transform, p1, p2);
 	}
 
 	vec3& BoundingBox::operator [] (int index)

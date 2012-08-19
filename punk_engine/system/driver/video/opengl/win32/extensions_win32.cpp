@@ -163,6 +163,12 @@ namespace OpenGL
 	PFNGLBLITFRAMEBUFFERPROC glBlitFramebuffer;
 	PFNGLDEPTHFUNCPROC glDepthFunc;
 	PFNGLDEPTHMASKPROC glDepthMask;
+	PFNGLPOINTSIZEPROC glPointSize;
+	PFNGLPOINTPARAMETERIVPROC glPointParameteriv;
+	PFNGLPOINTPARAMETERIPROC glPointParameteri;
+	PFNGLPOINTPARAMETERFVPROC glPointParameterfv;
+	PFNGLPOINTPARAMETERFPROC glPointParameterf;
+	PFNGLCULLFACEPROC glCullFace;
 
 	bool IsSupported(const char* extension, Driver* driver)
 	{
@@ -348,5 +354,11 @@ namespace OpenGL
 		glBlitFramebuffer = (PFNGLBLITFRAMEBUFFERPROC)driver->GetProcAddress("glBlitFramebuffer");
 		glDepthFunc = (PFNGLDEPTHFUNCPROC)driver->GetProcAddress("glDepthFunc");
 		glDepthMask = (PFNGLDEPTHMASKPROC)driver->GetProcAddress("glDepthMask");
+		glPointSize = (PFNGLPOINTSIZEPROC)driver->GetProcAddress("glPointSize");
+		glPointParameteriv = (PFNGLPOINTPARAMETERIVPROC)driver->GetProcAddress("glPointParameteriv");
+		glPointParameteri = (PFNGLPOINTPARAMETERIPROC)driver->GetProcAddress("glPointParameteri");
+		glPointParameterfv = (PFNGLPOINTPARAMETERFVPROC)driver->GetProcAddress("glPointParameterfv");
+		glPointParameterf = (PFNGLPOINTPARAMETERFPROC)driver->GetProcAddress("glPointParameterf");
+		glCullFace = (PFNGLCULLFACEPROC)driver->GetProcAddress("glCullFace");
 	}
 }

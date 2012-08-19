@@ -118,6 +118,13 @@ namespace Math
 			return *this;
 		}
 
+		Vector4<T>& operator /= (const T& v)
+		{
+			for (int i = 0; i < Size_c; i++)
+				m_v[i] /= v;
+			return *this;
+		}
+
 		T Length()
 		{
 			//

@@ -78,8 +78,17 @@ namespace Utility
 	template<class T>
 	inline const T AnimationTrack<T>::GetKey(float frame)
 	{
+		// parameter check
+		if (frame < (float)(*m_keys.begin()).first)
+		{			
+			frame = (float)(*m_keys.begin()).first;
+		}
+
 		if (m_keys.empty())
 			return T();
+
+		if (m_keys.size() == 1)
+			return (*m_keys.begin()).second;
 
 		while (frame > m_keys.back().first)
 			frame -= m_keys.back().first;
@@ -102,8 +111,16 @@ namespace Utility
 	template<>
 	inline const Math::Quaternion<float> AnimationTrack<Math::Quaternion<float>>::GetKey(float frame)
 	{
+				// parameter check
+		if (frame < (*m_keys.begin()).first)
+		{			
+			frame = (*m_keys.begin()).first;
+		}
 		if (m_keys.empty())
 			return Math::Quaternion<float>();
+
+		if (m_keys.size() == 1)
+			return (*m_keys.begin()).second;
 
 		while (frame > m_keys.back().first)
 			frame -= m_keys.back().first;

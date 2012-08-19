@@ -23,6 +23,11 @@ namespace Render
 		impl_terrain_render.reset(0);
 	}
 
+	OpenGL::Texture2D* TerrainRender::GetHeightMap()
+	{
+		return &impl_terrain_render->m_height_map;
+	}
+
 	void TerrainRender::SetTerrain(Utility::Terrain* terrain)
 	{
 		impl_terrain_render->SetTerrain(terrain);

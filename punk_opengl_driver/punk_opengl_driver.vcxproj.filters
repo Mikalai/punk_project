@@ -178,6 +178,27 @@
     <ClCompile Include="..\punk_engine\system\driver\video\opengl\texture_2d_manager.cpp">
       <Filter>dump%28logic%29</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_grass.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_grass.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_grass.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\rc_particle_system.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\fs_particle.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\punk_engine\system\driver\video\opengl\render_context\vs_particle.cpp">
+      <Filter>render_context</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\win32\driver_parameters_win32.h">
@@ -238,9 +259,6 @@
       <Filter>render_context</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\render_context_impl.h">
-      <Filter>render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader.h">
       <Filter>render_context</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_impl.h">
@@ -392,6 +410,30 @@
     <ClInclude Include="..\punk_engine\system\driver\video\opengl\vao_manager.h">
       <Filter>dump%28logic%29</Filter>
     </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_grass.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_grass.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_grass.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\rc_particle_system.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader_vertex.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\shader2.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\fs_particle.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\system\driver\video\opengl\render_context\vs_particle.h">
+      <Filter>render_context</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\punk_engine\system\driver\video\opengl\nvtristrip\README.txt">
@@ -497,6 +539,18 @@
       <Filter>glsl</Filter>
     </None>
     <None Include="..\..\data\shaders\line_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\grass_330.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\grass_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\particle_330.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\..\data\shaders\particle_330.frag">
       <Filter>glsl</Filter>
     </None>
   </ItemGroup>

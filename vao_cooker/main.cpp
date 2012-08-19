@@ -16,7 +16,7 @@ class ToVaoConverter
 	OpenGL::Driver m_driver;
 public:
 
-	ToVaoConverter(const char* flag, const char* filename)
+	ToVaoConverter(const char* flag, const char* filename, const char* output)
 	{
 		m_driver.Start(System::Window::Instance());
 
@@ -37,7 +37,14 @@ public:
 			
 			//	save object file
 			{
-				std::ofstream stream((System::Environment::Instance()->GetModelFolder() + obj->GetName() + L".object").Data(), std::ios_base::binary);
+				std::ofstream stream;
+				if (output)
+				{
+					System::string ff= System::Environment::Instance()->GetModelFolder() + System::string(output) + obj->GetName() + L".object";
+					stream.open(ff.Data(), std::ios_base::binary);
+				}
+				else
+					stream.open((System::Environment::Instance()->GetModelFolder() + obj->GetName() + L".object").Data(), std::ios_base::binary);
 				obj->Save(stream);
 				stream.close();
 			}
@@ -123,9 +130,15 @@ int main(int argc, char** argv)
 	System::Mouse::Instance()->LockInWindow(false);
 	OpenGL::Module module;
 	module.Init();
-	for (int i = 2; i < argc; ++i)
-	{
-		ToVaoConverter converter(argv[1], argv[i]);	
+	int i = 2;
+	if (strcmp(argv[2], "--o") == 0)			
+		i = 4;
+	for (; i < argc; ++i)
+	{		
+		if (strcmp(argv[2], "--o") == 0)			
+			ToVaoConverter converter(argv[1], argv[i], argv[3]);	
+		else
+			ToVaoConverter converter(argv[1], argv[i], 0);	
 	}
 	module.Destroy();
 	return 0;

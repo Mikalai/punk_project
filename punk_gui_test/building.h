@@ -10,13 +10,15 @@ class Building
 	std::auto_ptr<OpenGL::TextureContext> m_tc;
 
 	Audio::Player m_player;
+	
+	Render::BBoxRender render;
 
 public:
 	Building();
 	void Render(Utility::CameraRef m_camera, Utility::TerrainRef terrain);
 
 private:
-	void Render(Utility::ObjectRef object, const Math::mat4& matric);
+	void Render(Utility::ObjectRef object, const Math::mat4& matric, const Math::mat4& view, const Math::mat4& proj);
 };
 
 #endif	 //	_H_BUILDING

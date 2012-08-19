@@ -26,10 +26,12 @@ namespace OpenGL
 		void Unbind() const;
 		int GetIndexCount() const;		
 		void Render();		
+		void RenderInstanced(int count);		
 		void Init();
 		void* MapVertexBuffer();
 		void UnmapVertexBuffer();
 
+		void SetPrimitiveType(int type);
 		void SetVertexBuffer(const void* vbuffer, unsigned buffer_size, unsigned vertex_size);
 		void SetUpAttributes(VertexAttributes supported_by_context);
 		void SetIndexBuffer(const void* ibuffer, unsigned size);

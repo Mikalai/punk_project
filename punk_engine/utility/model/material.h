@@ -1,5 +1,5 @@
-#ifndef _H_PUNK_MATERIAL
-#define _H_PUNK_MATERIAL
+#ifndef _H_PUNK_UTILITY_MATERIAL
+#define _H_PUNK_UTILITY_MATERIAL
 
 #include <iosfwd>
 #include <map>
@@ -31,6 +31,7 @@ namespace Utility
 		float m_specular_slope;
 		float m_translucency;
 	public:
+		Material();
 		void SetTexture0(const System::string& map);
 		void SetTexture1(const System::string& map);
 		void SetDiffuseColor(const Math::vec4& color);

@@ -185,6 +185,13 @@ namespace OpenGL
 	extern PFNGLDEPTHFUNCPROC glDepthFunc;
 	extern PFNGLDEPTHMASKPROC glDepthMask;
 
+	extern PFNGLPOINTSIZEPROC glPointSize;
+	extern PFNGLPOINTPARAMETERIVPROC glPointParameteriv;
+	extern PFNGLPOINTPARAMETERIPROC glPointParameteri;
+	extern PFNGLPOINTPARAMETERFVPROC glPointParameterfv;
+	extern PFNGLPOINTPARAMETERFPROC glPointParameterf;
+
+	extern PFNGLCULLFACEPROC glCullFace;
 
 	extern void InitExtensions(Driver* driver);
 	extern bool IsSupported(const char* name);

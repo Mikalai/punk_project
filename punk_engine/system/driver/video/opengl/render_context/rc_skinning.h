@@ -24,6 +24,7 @@ namespace OpenGL
 		void SetProjectionMatrix(const Math::Matrix4x4<float>& m);
 		void SetViewMatrix(const Math::Matrix4x4<float>& m);
 		void SetWorldMatrix(const Math::Matrix4x4<float>& m);
+		void SetMeshMatrix(const Math::Matrix4x4<float>& m);
 		void SetLightPosition(const Math::Vector3<float>& v);
 		void SetAmbientColor(const Math::Vector4<float>& v);
 		void SetSpecularColor(const Math::Vector4<float>& v);

@@ -9,6 +9,7 @@
 #include "extensions.h"
 #include "../../../error.h"
 #include "vertex_attributes.h"
+#include "../../../../utility/model/static_mesh.h"
 
 namespace OpenGL
 {
@@ -98,10 +99,13 @@ namespace OpenGL
 				Cook(m_combination, m_primitive_type);
 				m_was_modified = false;
 			}
+			CHECK_GL_ERROR(L"Already with error");
 			glBindVertexArray(m_vao);
-			glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
 			CHECK_GL_ERROR(L"Unable to bind vertex array");
+			glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
+			CHECK_GL_ERROR(L"Unable to bind vertex buffer");
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
+			CHECK_GL_ERROR(L"Unable to bind index buffer");
 			SetUpAttributes(supported_by_context);			
 		}
 
@@ -269,6 +273,11 @@ namespace OpenGL
 			{
 				throw System::SystemError(L"Unsupported components combination of vertex");
 			}
+		}
+
+		void SetPrimitiveType(int type)
+		{
+			m_primitive_type = type;
 		}
 
 		void SetIndexBuffer(const void* ibuffer, unsigned size)

@@ -56,6 +56,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>freetype246MT_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -105,6 +106,7 @@
     <ClCompile Include="..\punk_engine\utility\model\mesh.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\object.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\object_manager.cpp" />
+    <ClCompile Include="..\punk_engine\utility\model\particle_system.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\punk_scene_loader.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\scheme.cpp" />
     <ClCompile Include="..\punk_engine\utility\model\skin_animation.cpp" />
@@ -140,6 +142,7 @@
     <ClInclude Include="..\punk_engine\utility\model\mesh.h" />
     <ClInclude Include="..\punk_engine\utility\model\object.h" />
     <ClInclude Include="..\punk_engine\utility\model\object_manager.h" />
+    <ClInclude Include="..\punk_engine\utility\model\partical_system.h" />
     <ClInclude Include="..\punk_engine\utility\model\punk_scene_loader.h" />
     <ClInclude Include="..\punk_engine\utility\model\scheme.h" />
     <ClInclude Include="..\punk_engine\utility\model\armature.h" />

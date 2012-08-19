@@ -252,6 +252,9 @@ namespace OpenGL
 		if (flag)
 			glEnable(GL_DEPTH_TEST);
 		else
-			glDisable(GL_DEPTH_TEST);
+		{
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_ALWAYS);
+		}
 	}
 }

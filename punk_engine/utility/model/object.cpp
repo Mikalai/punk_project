@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "object.h"
 #include "bone.h"
 #include "armature.h"
@@ -214,15 +216,14 @@ namespace Utility
 		{
 			m_static_mesh.reset(new StaticMesh);
 			m_static_mesh->SetIndexCount(GetMesh()->m_faces.size()*3);
-			m_static_mesh->SetIndexBuffer(new unsigned[m_static_mesh->GetIndexCount()]);
+			m_static_mesh->SetIndexBuffer(0, sizeof(unsigned)*m_static_mesh->GetIndexCount());
 			for (unsigned i = 0; i < GetMesh()->m_faces.size()*3; i++)
 			{
-				m_static_mesh->GetIndexBuffer()[i] = i;
+				((unsigned*)m_static_mesh->GetIndexBuffer())[i] = i;
 			}
-			m_static_mesh->SetVertexCount(GetMesh()->m_faces.size()*3);
-			Vertex* vb;
-			m_static_mesh->SetVertexBuffer(vb = new Vertex[m_static_mesh->GetVertexCount()]);
-			memset(vb, 0, sizeof(Vertex)*m_static_mesh->GetVertexCount());
+			m_static_mesh->SetVertexCount(GetMesh()->m_faces.size()*3);			
+			m_static_mesh->SetVertexBuffer(0, sizeof(Vertex)*m_static_mesh->GetVertexCount());
+			Vertex* vb = (Vertex*)m_static_mesh->GetVertexBuffer();
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 			int index = 0;
@@ -321,7 +322,6 @@ namespace Utility
 			}
 
 			m_static_mesh->SetMeshOffset(GetLocalMatrix());
-			m_static_mesh->SetVertexBufferSize(sizeof(Vertex)*m_static_mesh->GetVertexCount());
 			m_static_mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT);
 			m_static_mesh->SetOneVertexSize(sizeof(Vertex));
 		}
@@ -367,17 +367,16 @@ namespace Utility
 			m_skinned_mesh.reset(new SkinnedMesh);
 
 			m_skinned_mesh->SetIndexCount(GetMesh()->m_faces.size()*3);
-			m_skinned_mesh->SetIndexBuffer(new unsigned[m_skinned_mesh->GetIndexCount()]);
+			m_skinned_mesh->SetIndexBuffer(0, sizeof(unsigned)*m_skinned_mesh->GetIndexCount());
 
 			for (unsigned i = 0; i < GetMesh()->m_faces.size()*3; i++)
 			{
-				m_skinned_mesh->GetIndexBuffer()[i] = i;
+				((unsigned*)m_skinned_mesh->GetIndexBuffer())[i] = i;
 			}
 
-			m_skinned_mesh->SetVertexCount(GetMesh()->m_faces.size()*3);
-			Vertex* vb;
-			m_skinned_mesh->SetVertexBuffer(vb = new Vertex[m_skinned_mesh->GetVertexCount()]);
-			memset(vb, 0, sizeof(Vertex)*m_skinned_mesh->GetVertexCount());
+			m_skinned_mesh->SetVertexCount(GetMesh()->m_faces.size()*3);			
+			m_skinned_mesh->SetVertexBuffer(0, sizeof(Vertex)*m_skinned_mesh->GetVertexCount());
+			Vertex* vb = (Vertex*)m_skinned_mesh->GetVertexBuffer();
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 
@@ -385,6 +384,16 @@ namespace Utility
 			for (unsigned i = 0, max_i = GetMesh()->m_tex_coords[0].size(); i < max_i; i++)
 			{
 				if (index == 18)
+					i = i;
+				if (index == 180)
+					i = i;
+				if (index == 280)
+					i = i;
+				if (index == 380)
+					i = i;
+				if (index == 480)
+					i = i;
+				if (index == 1480)
 					i = i;
 				const Math::ivec3& f = GetMesh()->m_faces[i];
 				const Math::vec3& v1 = GetMesh()->m_vertices[f[0]];
@@ -471,6 +480,8 @@ namespace Utility
 
 				base_index.push_back(f[2]);
 				index++;
+
+				std::cout << i << " ";
 			}
 
 			/// Smooth TBN
@@ -526,7 +537,6 @@ namespace Utility
 			//CookBonesMatrix(bones, count);
 
 			m_skinned_mesh->SetMeshOffset(GetLocalMatrix());
-			m_skinned_mesh->SetVertexBufferSize(sizeof(Vertex)*m_skinned_mesh->GetVertexCount());
 			m_skinned_mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
 			m_skinned_mesh->SetOneVertexSize(sizeof(Vertex));	
 
@@ -593,6 +603,23 @@ namespace Utility
 				m_collision.push_back(object.get());
 			}
 		}
+	}
+
+	bool Object::IsCollisionVolume() const
+	{
+		const wchar_t name[] = L"collision";
+		bool result = wmemcmp(m_name.Data(), name, sizeof(name)/sizeof(name[0])-1) == 0; 
+		return result;
+	}
+
+	bool Object::TestCollision(const Math::BoundingBox& bbox) const
+	{
+		return TestCollision(bbox, m_local_matrix, *this);
+	}
+
+	bool Object::TestCollision(const Math::BoundingBox& bbox, const Math::mat4& parent, const Object& obj) const
+	{
+		return false;
 	}
 }
 

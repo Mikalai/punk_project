@@ -26,7 +26,7 @@ namespace OpenGL
 	{
 		assert(mesh != 0 && "Can't work when mesh is null"__FUNCSIG__);
 
-		impl_vao->SetMeshTransform(mesh->GetMeshOffset());
+		impl_vao->SetMeshTransform(mesh->GetMeshOffset());		
 		static_cast<StaticObjectImpl&>(*impl_vao).m_object = mesh;
 	}
 
@@ -50,6 +50,6 @@ namespace OpenGL
 			components |= VERTEX_NORMAL;
 		if (code & Utility::COMPONENT_TEXTURE)
 			components |= VERTEX_TEXTURE_0;		
-		impl_vao->Cook(components, GL_TRIANGLES);/**/
+		impl_vao->Cook(components, mesh->GetPrimitiveType());/**/
 	}
 }

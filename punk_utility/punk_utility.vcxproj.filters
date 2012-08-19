@@ -65,6 +65,9 @@
     <ClCompile Include="..\punk_engine\utility\model\sound.cpp">
       <Filter>model</Filter>
     </ClCompile>
+    <ClCompile Include="..\punk_engine\utility\model\particle_system.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\punk_engine\utility\utility.h" />
@@ -167,6 +170,9 @@
       <Filter>model</Filter>
     </ClInclude>
     <ClInclude Include="..\punk_engine\utility\model\sound.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\punk_engine\utility\model\partical_system.h">
       <Filter>model</Filter>
     </ClInclude>
   </ItemGroup>

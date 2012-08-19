@@ -18,8 +18,10 @@ Field::Field()
 
 	m_grass = Utility::ObjectManager::Instance()->Load(L"grass.object");
 
-	m_grass_rc.reset(new OpenGL::RenderContextTextured3D);
+	m_grass_rc.reset(new OpenGL::RenderContextGrass);
 	m_grass_tc.reset(new OpenGL::TextureContext);
+
+	m_time = 0;
 }
 
 void Field::SetCameraReference(Utility::CameraRef camera)
@@ -27,39 +29,34 @@ void Field::SetCameraReference(Utility::CameraRef camera)
 	m_camera = camera;
 }
 
+void Field::Update(float time, float delta)
+{
+	m_time += delta;
+}
+
 void Field::Render()
 {
 	m_terrain_render->Render(m_camera);
-
+	Math::Noise noise;
+	float wind_strength = sin(m_time);
+	Math::vec3 wind_direction(sin(m_time), cos(m_time), cos(m_time));
+	float heiught = m_terrain->GetHeight(1000, 1000);
 	m_grass_rc->SetDiffuseColor(Math::vec4(1,1,1,1));
 	m_grass_rc->SetProjectionMatrix(m_camera->GetProjectionMatrix());
 	m_grass_rc->SetViewMatrix(m_camera->GetViewMatrix());
-	
+	m_grass_rc->SetPosition(Math::vec3(1000, 0, 1000));
+	m_grass_rc->SetTime(m_time);
+	m_grass_rc->SetWindStrength(wind_strength);
+	m_grass_rc->SetWindDirection(wind_direction);
 	m_grass_tc->SetTexture0(OpenGL::Texture2DManager::Instance()->Load(m_grass->GetMaterial().GetDiffuseMap()));
+	m_grass_tc->SetTexture1(m_terrain_render->GetHeightMap());
 	m_grass_tc->Bind();
 
 	OpenGL::VertexArrayObject* vao = OpenGL::VaoManager::Instance()->Load(m_grass->GetName() + L".vao");
-	auto pos = m_camera->GetPosition();
+	
+	m_grass_rc->Begin();								
 	vao->Bind(m_grass_rc->GetSupportedVertexAttributes());
-	for (int i = -50; i <= 100; i++)
-	{
-		for (int j = -50; j <= 100; j++)
-		{
-			float delta_x = (abs(i) % 2) ? 0.25 : 0;
-			float delta_y = (abs(j) % 2) ? 0.25 : 0;
-			float x = 1000;
-			float z = 1000;
-			float y = m_terrain->GetHeight(x + 0.5*(float)i + delta_x, z + 0.5*(float)j + delta_y);			
-			Math::mat4 m = Math::mat4::CreateTranslate(x + 0.5*(float)i + delta_x, y, z+0.5*(float)j+delta_y);
-			auto bbox = m_grass->AsBoundingBox();
-			if (m_camera->BoxInFrustum(bbox.Transform(m)))
-			{
-				m_grass_rc->SetWorldMatrix(m);
-				m_grass_rc->Begin();								
-				vao->Render();						
-			}
-		}
-	}
+	vao->RenderInstanced(10000);							
 	vao->Unbind();		
 	m_grass_rc->End();			
 	m_grass_tc->Unbind();	

@@ -65,9 +65,9 @@ namespace Math
 			} 
 			else 
 			{
-				res[0] = m_vec[0] / s; // normalise axis
-				res[1] = m_vec[1] / s;
-				res[2] = m_vec[2] / s;
+				res[0] = m_vec[0] / (float)s; // normalise axis
+				res[1] = m_vec[1] / (float)s;
+				res[2] = m_vec[2] / (float)s;
 			}
 			res[3] = angle;
 			return res;

@@ -1488,19 +1488,17 @@ namespace Utility
 				float tx, ty, tz, tw;
 				float bx, by, bz, bw;				
 				float u, v, s, q;
-			};
-
+			};					
 			std::auto_ptr<StaticMesh> mesh(new StaticMesh);
-			mesh->SetIndexCount(o.GetMesh()->m_faces.size()*3);
-			mesh->SetIndexBuffer(new unsigned[mesh->GetIndexCount()]);
+			mesh->SetIndexCount(o.GetMesh()->m_faces.size()*3);			
+			mesh->SetIndexBuffer(0, mesh->GetIndexCount()*sizeof(unsigned));
 			for (unsigned i = 0; i < o.GetMesh()->m_faces.size()*3; i++)
 			{
-				mesh->GetIndexBuffer()[i] = i;
+				((unsigned*)mesh->GetIndexBuffer())[i] = i;
 			}
-			mesh->SetVertexCount(o.GetMesh()->m_faces.size()*3);
-			Vertex* vb;
-			mesh->SetVertexBuffer(vb = new Vertex[mesh->GetVertexCount()]);
-			memset(vb, 0, sizeof(Vertex)*mesh->GetVertexCount());
+			mesh->SetVertexCount(o.GetMesh()->m_faces.size()*3);			
+			mesh->SetVertexBuffer(0, mesh->GetVertexCount()*sizeof(Vertex));
+			Vertex* vb = (Vertex*)mesh->GetVertexBuffer();
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 			int index = 0;
@@ -1599,7 +1597,6 @@ namespace Utility
 			}
 
 			mesh->SetMeshOffset(o.GetLocalMatrix());
-			mesh->SetVertexBufferSize(sizeof(Vertex)*mesh->GetVertexCount());
 			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT);
 			mesh->SetOneVertexSize(sizeof(Vertex));
 
@@ -1626,17 +1623,16 @@ namespace Utility
 
 			std::auto_ptr<StaticMesh> mesh(new StaticMesh);
 			mesh->SetIndexCount(o.GetMesh()->m_faces.size()*3);
-			mesh->SetIndexBuffer(new unsigned[mesh->GetIndexCount()]);
+			mesh->SetIndexBuffer(0, mesh->GetIndexCount()*sizeof(unsigned));
 
 			for (unsigned i = 0; i < o.GetMesh()->m_faces.size()*3; i++)
 			{
-				mesh->GetIndexBuffer()[i] = i;
+				((unsigned*)mesh->GetIndexBuffer())[i] = i;
 			}
 
-			mesh->SetVertexCount(o.GetMesh()->m_faces.size()*3);
-			Vertex* vb;
-			mesh->SetVertexBuffer(vb = new Vertex[mesh->GetVertexCount()]);
-			memset(vb, 0, sizeof(Vertex)*mesh->GetVertexCount());
+			mesh->SetVertexCount(o.GetMesh()->m_faces.size()*3);			
+			mesh->SetVertexBuffer(0, sizeof(Vertex)*mesh->GetVertexCount());
+			Vertex* vb = (Vertex*)mesh->GetVertexBuffer();
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 
@@ -1785,7 +1781,6 @@ namespace Utility
 			//CookBonesMatrix(bones, count);
 
 			mesh->SetMeshOffset(o.GetLocalMatrix());
-			mesh->SetVertexBufferSize(sizeof(Vertex)*mesh->GetVertexCount());
 			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
 			mesh->SetOneVertexSize(sizeof(Vertex));
 			return mesh.release();

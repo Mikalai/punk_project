@@ -5,18 +5,20 @@
 #include "main_menu.h"
 #include "character_control.h"
 #include "building.h"
+#include "monster.h"
 
 class Viewer
 {
 	std::auto_ptr<Field> m_field;
 	std::auto_ptr<CharacterControl> m_cc;
+	std::auto_ptr<MonsterControl> m_monster;
 	MainMenu* m_main_menu;
 	std::auto_ptr<GUI::Manager> m_gui;
 	OpenGL::Driver m_driver;
 	std::auto_ptr<OpenGL::RenderContextLight> m_light_context;
 	std::auto_ptr<OpenGL::RenderContextBumpMapping> m_bump_context;
 	Utility::Camera m_camera;
-
+	System::Timer m_timer;
 	float angle;
 	bool m_game;
 
@@ -54,6 +56,11 @@ public:
 		m_cc->SetCamera(&m_camera);
 		m_cc->SetField(m_field.get());
 
+		m_monster.reset(new MonsterControl);
+		m_monster->SetLocation(Math::mat4::CreateTranslate(990, 200, 1000)*Math::mat4::CreateRotation(0, 1, 0, Math::PI/8));
+		m_monster->SetCamera(&m_camera);
+		m_monster->SetField(m_field.get());
+
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Viewer::OnMouseMove));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Viewer::OnKeyDown));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_UP, System::EventHandler(this, &Viewer::OnKeyUp));
@@ -62,6 +69,8 @@ public:
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(this, &Viewer::OnMouseLeftDown));
 
 		m_building.reset(new Building);
+
+		m_timer.UpdateStartPoint();
 	}
 
 	void OnStartButton(System::Event*)
@@ -175,17 +184,25 @@ public:
 	{	
 		if (m_game)
 		{
+			float time = m_timer.GetCurrentSystemTimeUS();
+			float delta = m_timer.GetElapsedTime();;
+			m_field->Update(time, delta);
+			m_cc->Update(time, delta);
+			m_monster->Update(time, delta);
+			m_timer.UpdateStartPoint();
 			System::IdleEvent* e = (System::IdleEvent*)event;
 			m_cc->Update(e->elapsed_time_s);
+			m_monster->Update(e->elapsed_time_s);
 		}
 
 		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);				
 		
 		if (m_game)
-		{
-			m_cc->Render();
-			m_building->Render(&m_camera, m_field->GetTerrain());
+		{			
 			m_field->Render();
+			m_monster->Render();
+			m_cc->Render();					
+			m_building->Render(&m_camera, m_field->GetTerrain());
 		}
 
 		m_gui->Render();		

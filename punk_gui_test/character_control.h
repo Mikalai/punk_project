@@ -6,15 +6,11 @@
 
 class CharacterControl
 {
+	float m_timer;
 	Math::mat4 m_location;
 	Utility::ArmatureRef m_armature;
 
-	OpenGL::VertexArrayObjectRef m_feet_vao;
-	OpenGL::VertexArrayObjectRef m_low_vao;
-	OpenGL::VertexArrayObjectRef m_arms_vao;
-	OpenGL::VertexArrayObjectRef m_head_vao;
-	OpenGL::VertexArrayObjectRef m_up_vao;
-	OpenGL::VertexArrayObjectRef m_hair_vao;
+	Utility::ObjectRef m_character;
 
 	OpenGL::VertexArrayObjectRef m_weapon_body;
 	OpenGL::VertexArrayObjectRef m_weapon_holder;
@@ -23,7 +19,7 @@ class CharacterControl
 
 	Utility::CameraRef m_camera;
 
-	std::auto_ptr<OpenGL::RenderContextSkinning> m_rc;
+	std::auto_ptr<Render::CharacterRender> m_chr_render;
 	std::auto_ptr<OpenGL::RenderContextBumpMapping> m_weapon_rc;
 	std::auto_ptr<OpenGL::TextureContext> m_tc;
 	OpenGL::Texture2DRef m_diffuse_map;
@@ -41,7 +37,7 @@ class CharacterControl
 
 	std::vector<float> m_animation;
 
-	enum States { STATE_GO_FORWARD, STATE_STAY };
+	enum States { STATE_GO_FORWARD, STATE_STAY, STATE_STRAFE_LEFT};
 
 	States m_state;
 
@@ -53,6 +49,10 @@ class CharacterControl
 	Audio::Player m_players[2];
 
 	OpenGL::Line m_line;
+
+	//	explosion on the ground
+	std::auto_ptr<OpenGL::RenderContextParticle> m_rc_particle;
+	std::auto_ptr<OpenGL::StaticObject> m_particle_vao;
 
 public:
 	CharacterControl();
@@ -82,8 +82,12 @@ public:
 	void SetField(Field* field) { m_field = field; }
 	Field* GetField() { return m_field; }
 
+	void Update(float time, float dt);
+
 	void Render();
+	void Render(Utility::ObjectRef object, const Math::mat4& parent, const Math::mat4& view, const Math::mat4& proj);
 	void RenderWeapon();
+	void RenderPS();
 
 	const Math::vec3 GetDirection() const;
 	const Math::mat4 GetRightHandTransform() const;

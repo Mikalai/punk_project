@@ -34,7 +34,7 @@ namespace Utility
 				for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2)
 				{
 					it2->first.Save(stream);	//	name of the bone
-					stream.write((char*)&it->second, sizeof(it->second));	//	weight
+					stream.write((char*)&it2->second, sizeof(it2->second));	//	weight
 				}
 			}
 		}		

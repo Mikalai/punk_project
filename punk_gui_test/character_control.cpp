@@ -2,20 +2,15 @@
 
 CharacterControl::CharacterControl()
 {
-	m_armature = Utility::ArmatureManager::Instance()->Load(L"Armature.armature");
+	m_armature = Utility::ArmatureManager::Instance()->Load(L"human_armature.armature");
 	m_armature->GetArmatureAnimation().EnableTrack(L"stand", true);
 
-	m_feet_vao = OpenGL::VaoManager::Instance()->Load(L"man_feet.vao");
-	m_low_vao = OpenGL::VaoManager::Instance()->Load(L"man_low.vao");
-	m_arms_vao = OpenGL::VaoManager::Instance()->Load(L"man_arms.vao");
-	m_head_vao = OpenGL::VaoManager::Instance()->Load(L"man_head.vao");
-	m_up_vao = OpenGL::VaoManager::Instance()->Load(L"man_up.vao");
-	m_hair_vao = OpenGL::VaoManager::Instance()->Load(L"man_hair.vao");
-
+	m_character = Utility::ObjectManager::Instance()->Load(L"human_armature.object");
+	
 	m_diffuse_map = OpenGL::Texture2DManager::Instance()->Load(L"male_skin.png");
 	m_normal_map = OpenGL::Texture2DManager::Instance()->Load(L"male_skin_normal.png");
 
-	m_rc.reset(new OpenGL::RenderContextSkinning);
+//	m_rc.reset(new OpenGL::RenderContextSkinning);
 	m_weapon_rc.reset(new OpenGL::RenderContextBumpMapping);
 
 	m_tc.reset(new OpenGL::TextureContext);	
@@ -49,6 +44,19 @@ CharacterControl::CharacterControl()
 	m_weapon_diffuse_map = OpenGL::Texture2DManager::Instance()->Load(L"mini14.png");
 	m_weapon_normal_map = OpenGL::Texture2DManager::Instance()->Load(L"mini14_normal.png");		
 	m_horizontal_rotation = 0;
+
+	m_rc_particle.reset(new OpenGL::RenderContextParticle);
+	Utility::ParticleSystem ps;
+	ps.SetParticleStartVelocity(Math::vec3(0,5,0));
+	ps.SetTimeBetweenEmission(1.0f/750.0f);
+	ps.SetParticleStartVelocityDeviation(Math::vec3(1,1,1));
+	std::auto_ptr<Utility::StaticMesh> ps_mesh(ps.CookMesh());
+	m_particle_vao.reset(new OpenGL::StaticObject);
+	m_particle_vao->SetStaticObject(ps_mesh.get());		
+	m_particle_vao->Init();	
+	m_timer = 0;
+
+	m_chr_render.reset(new Render::CharacterRender());
 }
 
 void CharacterControl::Forward()
@@ -65,6 +73,18 @@ void CharacterControl::Forward()
 	else
 	{
 		m_armature->GetArmatureAnimation().EnableTrack(L"stand", false);
+	}
+}
+
+void CharacterControl::StrafeLeft()
+{
+	if (m_state != STATE_STRAFE_LEFT)
+	{
+		m_animation[0] = 0;
+		m_armature->GetArmatureAnimation().DisableAllTracks();
+		m_armature->GetArmatureAnimation().EnableTrack(L"strafe_left", true);
+		m_speed = 5;
+		m_state = STATE_STRAFE_LEFT;
 	}
 }
 
@@ -133,7 +153,10 @@ void CharacterControl::Fire()
 	Math::vec3 point;
 	if (m_field->GetTerrain()->IntersectWithRay(start, dir, point))
 	{
-		m_field->Hit(point, 0.5);
+		m_timer = 0;
+		m_field->Hit(point, 0.1);
+
+		m_rc_particle->SetWorldMatrix(Math::mat4::CreateTranslate(point));
 	}
 }
 
@@ -154,6 +177,53 @@ void CharacterControl::Update(float dt)
 	cam_pos.Y() = pos.Y() + 3;
 
 	m_camera->SetPositionAndTarget(cam_pos, m_location.TranslationPart()+Math::vec3(0,1.8,0), Math::vec3(0, 1, 0));
+
+	if (m_aiming)
+	{
+		m_armature->GetArmatureAnimation().UpdateBones(m_animation[0]);	
+		if (m_state == STATE_GO_FORWARD)
+			m_armature->GetArmatureAnimation().EnableTrack(L"walk", false);	
+		else if (m_state == STATE_STAY)
+			m_armature->GetArmatureAnimation().EnableTrack(L"stand", false);
+		else if (m_state == STATE_STRAFE_LEFT)
+			m_armature->GetArmatureAnimation().EnableTrack(L"strafe_left", false);
+
+		m_armature->GetArmatureAnimation().EnableTrack(L"rifle_aiming", true);
+		Utility::Bone* l = m_armature->GetBoneByName(L"Shoulder_L");
+		Utility::Bone* r = m_armature->GetBoneByName(L"Shoulder_R");
+		l->UpdatePose(15, true);		
+		r->UpdatePose(15, true);
+		m_armature->GetArmatureAnimation().EnableTrack(L"rifle_aiming", false);
+
+		if (m_state == STATE_GO_FORWARD)
+			m_armature->GetArmatureAnimation().EnableTrack(L"walk", true);	
+		else if (m_state == STATE_STAY)
+			m_armature->GetArmatureAnimation().EnableTrack(L"stand", true);	
+		else if (m_state == STATE_STRAFE_LEFT)
+			m_armature->GetArmatureAnimation().EnableTrack(L"strafe_left", true);
+	}
+	else
+	{
+		m_armature->GetArmatureAnimation().UpdateBones(m_animation[0]);	
+		if (m_state == STATE_GO_FORWARD)
+			m_armature->GetArmatureAnimation().EnableTrack(L"walk", false);	
+		else if (m_state == STATE_STAY)
+			m_armature->GetArmatureAnimation().EnableTrack(L"stand", false);	
+		else if (m_state == STATE_STRAFE_LEFT)
+			m_armature->GetArmatureAnimation().EnableTrack(L"strafe_left", false);
+		m_armature->GetArmatureAnimation().EnableTrack(L"rifle_walk", true);
+		Utility::Bone* l = m_armature->GetBoneByName(L"Shoulder_L");
+		Utility::Bone* r = m_armature->GetBoneByName(L"Shoulder_R");
+		l->UpdatePose(0, true);		
+		r->UpdatePose(0, true);
+		m_armature->GetArmatureAnimation().EnableTrack(L"rifle_walk", false);
+		if (m_state == STATE_GO_FORWARD)
+			m_armature->GetArmatureAnimation().EnableTrack(L"walk", true);	
+		else if (m_state == STATE_STAY)
+			m_armature->GetArmatureAnimation().EnableTrack(L"stand", true);	
+		else if (m_state == STATE_STRAFE_LEFT)
+			m_armature->GetArmatureAnimation().EnableTrack(L"strafe_left", true);
+	}
 }
 
 void CharacterControl::RenderWeapon()
@@ -161,9 +231,9 @@ void CharacterControl::RenderWeapon()
 	Math::mat4 m1, m2;
 
 	Utility::Bone* arm1 = m_armature->GetBoneByName(L"Thumb_R");
-	m1 = arm1->GetAnimatedGlobalMatrix()*arm1->GetWorldMatrix();
+	m1 = arm1->GetAnimatedGlobalMatrix(Math::mat4())*arm1->GetWorldMatrix();
 	Utility::Bone* arm2 = m_armature->GetBoneByName(L"Thumb_L");
-	m2 = arm2->GetAnimatedGlobalMatrix()*arm2->GetWorldMatrix();
+	m2 = arm2->GetAnimatedGlobalMatrix(Math::mat4())*arm2->GetWorldMatrix();
 
 	Math::vec3 p1 = (m_location*Math::mat4::CreateRotation(1, 0, 0, -Math::PI/2)*m1 * Math::vec4(0,0,0,1)).XYZ();
 	Math::vec3 p2 = (m_location*Math::mat4::CreateRotation(1, 0, 0, -Math::PI/2)*m2 * Math::vec4(0,0,0,1)).XYZ();
@@ -204,79 +274,30 @@ void CharacterControl::RenderWeapon()
 
 void CharacterControl::Render()
 {
-	m_rc->SetProjectionMatrix(m_camera->GetProjectionMatrix());
-	m_rc->SetViewMatrix(m_camera->GetViewMatrix());	
-	m_rc->SetLightPosition(Math::vec3(990, 1010, 1010));
-	m_rc->SetAmbientColor(Math::vec4(0,0,0,1));
-	m_rc->SetSpecularColor(Math::vec4(0.8,0.8,0,1));
-	m_rc->SetDiffuseColor(Math::vec4(1,1, 0,1));
-	m_rc->SetSpecularPower(128.0f);
+	//m_rc->SetProjectionMatrix(m_camera->GetProjectionMatrix());
+	//m_rc->SetViewMatrix(m_camera->GetViewMatrix());	
+	//m_rc->SetWorldMatrix(m_location);
+	//m_rc->SetLightPosition(Math::vec3(990, 1010, 1010));
+	//m_rc->SetAmbientColor(Math::vec4(0,0,0,1));
+	//m_rc->SetSpecularColor(Math::vec4(0.8,0.8,0,1));
+	//m_rc->SetDiffuseColor(Math::vec4(1,1, 0,1));
+	//m_rc->SetSpecularPower(128.0f);
+	////m_armature->GetArmatureAnimation().EnableTrack(L"stand", true);
 
-	//m_armature->GetArmatureAnimation().EnableTrack(L"stand", true);
+	//for (int j = 0; j < m_armature->GetBonesCount(); ++j)
+	//{			
+	//	//const Math::mat4 m = meshes[i]->GetMeshTransform().Inversed()*m_armature->GetBoneByIndex(j)->GetAnimatedGlobalMatrix()*meshes[i]->GetMeshTransform();
+	//	const Math::mat4 m = m_armature->GetBoneByIndex(j)->GetAnimatedGlobalMatrix(Math::mat4());
+	//	m_rc->SetBoneMatrix(j, m);
+	//}
 
-	if (m_aiming)
-	{
-		m_armature->GetArmatureAnimation().UpdateBones(m_animation[0]);	
-		if (m_state == STATE_GO_FORWARD)
-			m_armature->GetArmatureAnimation().EnableTrack(L"walk", false);	
-		else if (m_state == STATE_STAY)
-			m_armature->GetArmatureAnimation().EnableTrack(L"stand", false);	
 
-		m_armature->GetArmatureAnimation().EnableTrack(L"rifle_aiming", true);
-		Utility::Bone* l = m_armature->GetBoneByName(L"Shoulder_L");
-		Utility::Bone* r = m_armature->GetBoneByName(L"Shoulder_R");
-		l->UpdatePose(15, true);		
-		r->UpdatePose(15, true);
-		m_armature->GetArmatureAnimation().EnableTrack(L"rifle_aiming", false);
+	//Render(m_character, m_location, m_camera->GetViewMatrix(), m_camera->GetProjectionMatrix());
 
-		if (m_state == STATE_GO_FORWARD)
-			m_armature->GetArmatureAnimation().EnableTrack(L"walk", true);	
-		else if (m_state == STATE_STAY)
-			m_armature->GetArmatureAnimation().EnableTrack(L"stand", true);	
-	}
-	else
-	{
-		m_armature->GetArmatureAnimation().UpdateBones(m_animation[0]);	
-		if (m_state == STATE_GO_FORWARD)
-			m_armature->GetArmatureAnimation().EnableTrack(L"walk", false);	
-		else if (m_state == STATE_STAY)
-			m_armature->GetArmatureAnimation().EnableTrack(L"stand", false);	
-		m_armature->GetArmatureAnimation().EnableTrack(L"rifle_walk", true);
-		Utility::Bone* l = m_armature->GetBoneByName(L"Shoulder_L");
-		Utility::Bone* r = m_armature->GetBoneByName(L"Shoulder_R");
-		l->UpdatePose(0, true);		
-		r->UpdatePose(0, true);
-		m_armature->GetArmatureAnimation().EnableTrack(L"rifle_walk", false);
-		if (m_state == STATE_GO_FORWARD)
-			m_armature->GetArmatureAnimation().EnableTrack(L"walk", true);	
-		else if (m_state == STATE_STAY)
-			m_armature->GetArmatureAnimation().EnableTrack(L"stand", true);	
-	}
-
-	OpenGL::VertexArrayObjectRef meshes[] = { m_hair_vao, m_head_vao, m_arms_vao , m_feet_vao, m_low_vao, m_up_vao };
-
-	m_tc->SetTexture0(m_diffuse_map);
-	m_tc->SetTexture1(m_normal_map);
-	m_tc->Bind();
-
-	for (int i = 0; i < sizeof(meshes)/sizeof(meshes[0]); ++i)
-	{
-		for (int j = 0; j < m_armature->GetBonesCount(); ++j)
-		{			
-			const Math::mat4 m = meshes[i]->GetMeshTransform().Inversed()*/*Math::mat4::CreateRotation(1, 0, 0, -Math::PI/2)*/m_armature->GetBoneByIndex(j)->GetAnimatedGlobalMatrix()*meshes[i]->GetMeshTransform();
-			m_rc->SetBoneMatrix(j, m);
-		}
-
-		m_rc->SetWorldMatrix(m_location*meshes[i]->GetMeshTransform()*Math::mat4::CreateRotation(1, 0, 0, -Math::PI/2));
-
-		m_rc->Begin();
-		meshes[i]->Bind(m_rc->GetSupportedVertexAttributes());
-		meshes[i]->Render();
-		meshes[i]->Unbind();
-	}
-
-	m_rc->End();
-	m_tc->Unbind();
+	Render::CharacterRender::Parameters params(m_character, m_camera, m_armature, &m_location);
+	params.m_show_bbox = true;
+	params.m_show_aabb = true;
+	m_chr_render->Render(&params);
 
 	{
 		Math::vec3 start = GetRightHandTransform().TranslationPart();
@@ -290,6 +311,72 @@ void CharacterControl::Render()
 	RenderWeapon();
 
 	RenderAxis();
+
+	RenderPS();
+}
+
+void CharacterControl::Render(Utility::ObjectRef object, const Math::mat4& parent, const Math::mat4& view, const Math::mat4& proj)
+{
+	//if (!object->IsCollisionVolume())
+	//{
+	//	if (object->GetMesh())
+	//	{
+	//		OpenGL::VertexArrayObject* vao = OpenGL::VaoManager::Instance()->Load(object->GetName() + L".vao");
+	//		if (vao)
+	//		{
+	//			m_rc->SetMeshMatrix(vao->GetMeshTransform());				
+	//			m_rc->SetWorldMatrix(m_location*vao->GetMeshTransform()*Math::mat4::CreateRotation(1, 0, 0, -Math::PI/2));
+	//			//m_rc->SetWorldMatrix(m_location);
+
+	//			m_tc->SetTexture0(OpenGL::Texture2DManager::Instance()->Load(object->GetMaterial().GetDiffuseMap()));
+	//			m_tc->SetTexture1(OpenGL::Texture2DManager::Instance()->Load(object->GetMaterial().GetNormalMap()));
+
+	//			m_tc->Bind();
+	//			m_rc->Begin();
+	//			vao->Bind(m_rc->GetSupportedVertexAttributes());
+	//			vao->Render();
+	//			vao->Unbind();
+
+	//			m_rc->End();
+	//			m_tc->Unbind();
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	Render::BBoxRender render;
+	//	render.Render(object->AsBoundingBox(), parent*object->GetLocalMatrix(), view, proj);
+	//	render.RenderAABB(object->AsBoundingBox(), parent*object->GetLocalMatrix(), view, proj);
+	//}
+
+	//for each (auto child in object->GetChildren())
+	//{
+	//	Render(child.get(), object->GetLocalMatrix(), view, proj);
+	//}
+}
+
+void CharacterControl::Update(float time, float dt)
+{
+	m_timer += dt;
+}
+
+void CharacterControl::RenderPS()
+{
+	m_rc_particle->SetViewMatrix(m_camera->GetViewMatrix());
+	m_rc_particle->SetProjectionMatrix(m_camera->GetProjectionMatrix());
+	m_rc_particle->SetTime(m_timer);
+	m_rc_particle->UseGravity(true);
+	m_rc_particle->Begin();
+
+	m_tc->SetTexture0(OpenGL::Texture2DManager::Instance()->Load(L"particle.png"));
+	m_tc->Bind();
+
+	m_particle_vao->Bind(m_rc_particle->GetSupportedVertexAttributes());
+	m_particle_vao->Render();
+	m_particle_vao->Unbind();
+	m_rc_particle->End();
+
+	m_tc->Unbind();
 }
 
 const Math::vec3 CharacterControl::GetDirection() const
@@ -302,7 +389,7 @@ const Math::vec3 CharacterControl::GetDirection() const
 const Math::mat4 CharacterControl::GetRightHandTransform() const
 {
 	Utility::Bone* arm1 = m_armature->GetBoneByName(L"Thumb_R");
-	Math::mat4 m1 = arm1->GetAnimatedGlobalMatrix()*arm1->GetWorldMatrix();
+	Math::mat4 m1 = arm1->GetAnimatedGlobalMatrix(Math::mat4())*arm1->GetWorldMatrix();
 	return m_location*Math::mat4::CreateRotation(1, 0, 0, -Math::PI/2)*m1;
 }
 
