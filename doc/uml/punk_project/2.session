@@ -1,0 +1,13 @@
+window_sizes 1352 878 337 1013 600 82
+diagrams
+  active  classdiagram_ref 128002 // q
+    1009 722 100 4 0 0
+end
+show_stereotypes
+selected 
+package_ref 134146 // utility
+open
+  
+package_ref 128002 // source
+end
+end
