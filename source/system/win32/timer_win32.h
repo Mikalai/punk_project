@@ -1,6 +1,6 @@
 /*
     File: timer.h
-    Author: Nickolai Abramov
+    Author: Mikalaj Abramau
     Desc: High resolution timer
 */
 

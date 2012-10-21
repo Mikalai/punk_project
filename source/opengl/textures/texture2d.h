@@ -1,6 +1,6 @@
 /*
 File: Texture2D.h
-Author: Abramau Mikalai
+Author: Abramau Mikalaj
 Description: Contains a Texture2D class
 */
 
@@ -10,7 +10,7 @@ Description: Contains a Texture2D class
 #include <iosfwd>
 #include "../../config.h"
 #include "../../system/resource.h"
-#include "../../system/permanent_data.h"
+#include "../../system/object.h"
 #include "../../system/buffer.h"
 #include "../../images/formats.h"
 
@@ -23,7 +23,7 @@ namespace OpenGL
 {
 	struct Texture2DImpl;
 
-	class PUNK_ENGINE Texture2D : public System::PermanentData
+	class PUNK_ENGINE Texture2D : public System::Object
 	{
 	protected:
 		std::auto_ptr<Texture2DImpl> impl_texture_2d;
@@ -44,8 +44,8 @@ namespace OpenGL
 		unsigned GetCode() const;
 		void Create(const ImageModule::Image& image);
 
-		void Load(std::istream& stream);
-		void Save(std::ostream& stream);
+		bool Load(std::istream& stream);
+		bool Save(std::ostream& stream);
 		void SetSourceFile(const System::string& filename);
 		const System::string& GetSourceFile() const;
 		void SetIndex(int index);
@@ -53,6 +53,9 @@ namespace OpenGL
 
 		void Init();
 		void Clear();
+
+		static Texture2D* CreateFromFile(const System::string& path);
+		static Texture2D* CreateFromStream(std::istream& stream);
 	};
 
 	typedef Texture2D* Texture2DRef;

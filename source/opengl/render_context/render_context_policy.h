@@ -7,6 +7,7 @@
 #include "../extensions.h"
 #include "../../math/mat4.h"
 #include "../../math/vec4.h"
+#include "../../system/poolable.h"
 
 namespace OpenGL
 {
@@ -26,7 +27,7 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters
+		struct PUNK_ENGINE PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
 		{
 			Math::mat4 m_proj_view_world;
 			Math::vec4 m_diffuse_color;
@@ -108,7 +109,7 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters
+		struct PUNK_ENGINE PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
 		{
 			Math::mat4 m_proj_view_world;
 			Math::vec4 m_diffuse_color;
@@ -185,7 +186,7 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters
+		struct PUNK_ENGINE PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
 		{
 			Math::mat4 m_world;
 			Math::mat4 m_view;
@@ -305,7 +306,7 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters
+		struct PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
 		{
 			Math::vec3 m_position;
 			Math::mat4 m_proj_view;
@@ -391,7 +392,7 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters
+		struct PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
 		{
 			Math::mat4 m_proj_view_world;
 			Math::vec4 m_diffuse_color;
@@ -481,7 +482,7 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters
+		struct PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
 		{
 			Math::mat4 m_world;
 			Math::mat4 m_view;
@@ -603,7 +604,7 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters
+		struct PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
 		{
 			Math::mat4 m_world;
 			Math::mat4 m_view;

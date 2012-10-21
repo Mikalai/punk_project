@@ -12,8 +12,8 @@ namespace ImageModule
 	public:
 		PngImporter();
 
-		virtual void Load(const System::string& filename);
-		virtual void Load(std::istream& stream, Image* image);
+		virtual bool Load(const System::string& filename);
+		virtual bool Load(std::istream& stream, Image* image);
 
 		friend class Importer;
 	};

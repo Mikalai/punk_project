@@ -5,16 +5,13 @@
 
 namespace System
 {
-    class PUNK_ENGINE SetUnFocusedEvent : public Event
-    {
-        static std::queue<SetUnFocusedEvent*> eventPool;
-        SetUnFocusedEvent();
+	class PUNK_ENGINE SetUnFocusedEvent : public Event, public Poolable<SetUnFocusedEvent>
+    {        
         SetUnFocusedEvent(const SetUnFocusedEvent&);
 		SetUnFocusedEvent& operator = (const SetUnFocusedEvent&);
     public:
-		virtual void Release();
+		SetUnFocusedEvent();
 		virtual string ToString();
-        static SetUnFocusedEvent* Raise();
     };
 }
 

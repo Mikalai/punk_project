@@ -105,8 +105,8 @@ namespace System
 		void* operator new (size_t size);
 		void operator delete (void* pointer, size_t size);
 
-		void Save(std::ostream& stream) const;
-		void Load(std::istream& stream);
+		bool Save(std::ostream& stream) const;
+		bool Load(std::istream& stream);
 		//
 		//	debugging info
 		//

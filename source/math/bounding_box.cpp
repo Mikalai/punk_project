@@ -1,9 +1,10 @@
-/*
+﻿/*
 File: BoundingBox.cpp
-Author: Abramau Mikalai and a guy who wrote that amazing clip functions
+Author: Abramaŭ Mikałaj and a guy who wrote that amazing clip functions
 Description: Bounding box emplementation
 */
 
+#include "../system/logger.h"
 #include "bounding_box.h"
 #include "line3d.h"
 
@@ -220,20 +221,22 @@ namespace Math
 			return true;
 	}
 
-	void BoundingBox::Save(std::ostream& stream)
+	bool BoundingBox::Save(std::ostream& stream)
 	{
 		stream.write((char*)&m_transformed_points, sizeof(m_transformed_points));
 		stream.write((char*)&m_border_points, sizeof(m_border_points));
 		stream.write((char*)&m_min, sizeof(m_min));
 		stream.write((char*)&m_max, sizeof(m_max));
+		return true;
 	}
 
-	void BoundingBox::Load(std::istream& stream)
+	bool BoundingBox::Load(std::istream& stream)
 	{
 		stream.read((char*)&m_transformed_points, sizeof(m_transformed_points));
 		stream.read((char*)&m_border_points, sizeof(m_border_points));
 		stream.read((char*)&m_min, sizeof(m_min));
 		stream.read((char*)&m_max, sizeof(m_max));
+		return true;
 	}
 
 	bool BoundingBox::DoCrossTriangle(const vec3& pp1, const vec3& pp2, const vec3& pp3) const
@@ -266,5 +269,15 @@ namespace Math
 			return true;
 
 		return false;
+	}
+
+	std::wostream& BoundingBox::out_formatted(std::wostream& stream)
+	{
+		stream << Tab() << typeid(*this).name() << std::endl;
+		Tab::Inc();
+		stream << Tab() << "Min: " << m_min.ToString().Data() << std::endl;
+		stream << Tab() << "Max: " << m_max.ToString().Data() << std::endl;		
+		stream << Tab::Dec() << typeid(*this).name();
+		return stream;
 	}
 }

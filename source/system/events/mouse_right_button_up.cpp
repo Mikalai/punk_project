@@ -2,31 +2,9 @@
 
 namespace System
 {
-    std::queue<MouseRightButtonUpEvent*> MouseRightButtonUpEvent::eventPool;
-
     MouseRightButtonUpEvent::MouseRightButtonUpEvent()
     {
         eventCode = EVENT_MOUSE_RBUTTON_UP;
-    }
-
-    void MouseRightButtonUpEvent::Release()
-    {
-        this->eventPool.push(this);
-    }
-
-    MouseRightButtonUpEvent* MouseRightButtonUpEvent::Raise()
-    {
-        if (eventPool.empty())
-        {
-            MouseRightButtonUpEvent* event = new MouseRightButtonUpEvent();
-            return event;
-        }
-        else
-        {
-            MouseRightButtonUpEvent* event = eventPool.front();
-            eventPool.pop();
-            return event;
-        }
     }
 
 	string MouseRightButtonUpEvent::ToString()

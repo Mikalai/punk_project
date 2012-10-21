@@ -2,7 +2,7 @@
 #define _H_PUNK_AudioBuffer
 
 #include <iosfwd>
-#include "../system/permanent_data.h"
+#include "../system/object.h"
 #include "../string/string.h"
 
 #include "../config.h"
@@ -12,8 +12,8 @@ namespace Audio
 	class AudioManager;
 	class Player;
 
-	class PUNK_ENGINE AudioBuffer : public System::PermanentData
-	{
+	class PUNK_ENGINE AudioBuffer : public System::Object
+	{		
 		AudioBuffer(const AudioBuffer&);
 		AudioBuffer& operator = (const AudioBuffer&);
 	public:
@@ -23,16 +23,20 @@ namespace Audio
 		void Init();
 		void Clear();
 		
-		virtual void Save(std::ostream& stream);
-		virtual void Load(std::istream& stream);		
+		virtual bool Save(std::ostream& stream);
+		virtual bool Load(std::istream& stream);		
 
 		/// wav, ogg etc.
 		//void SetSourceFile(const System::string& file) { m_file = file; }
 		//const System::string& GetSourceFile() const { return m_file; }
 		//int GetIndex() const { return m_index; }
 		//void SetIndex(int value) { m_index = value; }
+
+		static AudioBuffer* CreateFromFile(const System::string& path);
+		static AudioBuffer* CreateFromStream(std::istream& stream);
+
 	private:
-		void LoadFromWAV(std::istream& stream);
+		bool LoadFromWAV(std::istream& stream);
 		unsigned m_buffer;
 
 		friend class AudioManager;

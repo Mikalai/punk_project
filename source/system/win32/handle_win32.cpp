@@ -67,13 +67,15 @@ namespace System
 		return m_id == handler.m_id;
 	}
 
-	void Descriptor::Save(Buffer& buffer) const
+	bool Descriptor::Save(Buffer& buffer) const
 	{
 		buffer.WriteBuffer(&m_id, sizeof(m_id));
+		return true;
 	}
 
-	void Descriptor::Load(Buffer& buffer)
+	bool Descriptor::Load(Buffer& buffer)
 	{
 		buffer.ReadBuffer(&m_id, sizeof(m_id));
+		return true;
 	}
 }

@@ -4,12 +4,13 @@
 #include "../../config.h"
 #include <list>
 #include "../../system/profiler.h"
+#include "../../system/poolable.h"
 
 namespace OpenGL
 {
 	class RenderPass;
 	
-	class PUNK_ENGINE Frame
+	class PUNK_ENGINE Frame : public System::Poolable<Frame>
 	{
 		std::list<RenderPass*> m_render_passes;
 		System::Profiler m_profiler;

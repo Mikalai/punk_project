@@ -81,7 +81,7 @@ namespace System
 				}
 
 				events.pop();
-				event->Release();
+				delete event;
 			}
 		}
 		catch (System::SystemError& err)

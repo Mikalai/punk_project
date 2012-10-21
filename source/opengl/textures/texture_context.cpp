@@ -29,7 +29,7 @@ namespace OpenGL
 	{
 		for (int i = 0; i < MAX_TEXTURES; ++i)
 		{
-			if (m_textures[i])
+			if (m_textures[i].IsValid())
 			{
 				glActiveTexture(GL_TEXTURE0 + i);
 				CHECK_GL_ERROR(L"Unable to activate GL_TEXTURE0+i");
@@ -42,7 +42,7 @@ namespace OpenGL
 	{
 		for (int i = 0; i < MAX_TEXTURES; ++i)
 		{
-			if (m_textures[i])
+			if (m_textures[i].IsValid())
 			{
 				glActiveTexture(GL_TEXTURE0 + i);// place some usefull code here
 				CHECK_GL_ERROR(L"Unable to activate GL_TEXTUREi");
@@ -52,7 +52,7 @@ namespace OpenGL
 		}
 	}
 
-	void TextureContext::SetTexture(int slot, const Texture2D* map)
+	void TextureContext::SetTexture(int slot, System::Handle<Texture2D> map)
 	{
 		m_textures[slot] = map;
 	}

@@ -1,6 +1,6 @@
 /*
 	File: ImageFile.h
-	Author: Nickolai Abramov
+	Author: Mikalaj Abramau
 	Desc: Class that represents an image file
 */
 
@@ -46,8 +46,8 @@ namespace ImageModule
 
 		virtual ~ImageFile();
 
-		virtual void Load(const wchar_t* file) {}
-		virtual void Save(const wchar_t* file) {}
+		virtual bool Load(const wchar_t* file) { return false; }
+		virtual bool Save(const wchar_t* file) { return false; }
 
 		virtual void Store(System::Buffer& buffer);
 		virtual void Restore(System::Buffer& buffer);

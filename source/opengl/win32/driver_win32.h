@@ -13,6 +13,8 @@
 
 //#include "../../string/string.h"
 
+#include "../../system/singletone.h"
+
 namespace System
 {
 	class Window;
@@ -28,6 +30,8 @@ namespace OpenGL
 
 	class PUNK_ENGINE Driver
 	{
+		SingletoneInterface(Driver);
+
 	private:
 		int m_width;
 		int m_height;
@@ -38,6 +42,8 @@ namespace OpenGL
 		int m_opengl_version;
 		HGLRC m_opengl_context;
 	private:
+		void Init();
+		void Clear();
 		void ReadConfig();
 		void InitShaderPrograms();
 		void SubscribeForSystemMessages();
@@ -57,13 +63,8 @@ namespace OpenGL
 		void* GetProcAddress(const char* name);
 		void RenderFrame(Frame* frame);
 		RenderTarget* CreateRenderTarget(RenderTarget::Properties* props);
-
-		static Driver* Instance();
-		static void Destroy();
-
 	private:
 		std::list<RenderTarget*> m_targets;
-		static std::auto_ptr<Driver> m_instance;
 	};
 }
 

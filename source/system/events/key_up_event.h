@@ -5,17 +5,13 @@
 
 namespace System
 {
-    class PUNK_ENGINE KeyUpEvent : public Event
-    {
-        static std::queue<KeyUpEvent*> eventPool;
-        KeyUpEvent();
+	class PUNK_ENGINE KeyUpEvent : public Event, public Poolable<KeyUpEvent>
+    {        
         KeyUpEvent(const KeyUpEvent&);
     public:
-        int key;
-	
+		KeyUpEvent();
+        int key;	
 		virtual string ToString();
-        virtual void Release();
-        static KeyUpEvent* Raise();
     };
 }
 #endif // KEY_UP_EVENT_H

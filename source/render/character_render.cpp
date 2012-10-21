@@ -13,7 +13,7 @@
 
 namespace Render
 {
-	void Render(const Utility::Object* object, const Math::Matrix4x4<float>* parent, const CharacterRender::Parameters* params, OpenGL::RenderContextSkinning::PolicyParameters& p);
+	void Render(const Utility::Entity* object, const Math::Matrix4x4<float>* parent, const CharacterRender::Parameters* params, OpenGL::RenderContextSkinning::PolicyParameters& p);
 
 	struct CharacterRender::CharacterRenderImpl
 	{
@@ -28,7 +28,7 @@ namespace Render
 	};
 
 	CharacterRender::Parameters::Parameters(
-		Utility::Object* object, 
+		Utility::Entity* object, 
 		Utility::Camera* camera, 
 		Utility::Armature* armature,
 		Math::Matrix4x4<float>* location,
@@ -62,7 +62,7 @@ namespace Render
 
 	void CharacterRender::Render(const CharacterRender::Parameters* parameters)
 	{
-		const Utility::Object* object = parameters->m_object;
+		const Utility::Entity* object = parameters->m_object;
 		const Utility::Material& material = object->GetMaterial();
 		const Utility::Armature* armature = parameters->m_armature;
 		const Utility::Camera* camera = parameters->m_camera;
@@ -95,12 +95,12 @@ namespace Render
 	}
 
 	OpenGL::Batch* MakeBatch(
-		const Utility::Object* object,
+		const Utility::Entity* object,
 		const Math::Matrix4x4<float>* parent,
 		const CharacterRender::Parameters* params,
 
 
-	void Render(const Utility::Object* object, const Math::Matrix4x4<float>* parent, const CharacterRender::Parameters* params, OpenGL::RenderPass* pass)
+	void Render(const Utility::Entity* object, const Math::Matrix4x4<float>* parent, const CharacterRender::Parameters* params, OpenGL::RenderPass* pass)
 	{
 		const Math::Matrix4x4<float>* location = params->m_location;
 		const Utility::Camera* camera = params->m_camera;
@@ -117,7 +117,7 @@ namespace Render
 			{
 				OpenGL::Batch batch;
 				batch.m_parameters
-				OpenGL::SkinnedObject* vao = OpenGL::SkinnedObjectManager::Instance()->Load(object->GetName() + L".skinned_vao");
+				OpenGL::SkinnedMesh* vao = OpenGL::SkinnedMeshManager::Instance()->Load(object->GetName() + L".skinned_vao");
 				if (vao)
 				{
 					impl->m_rc->SetMeshMatrix(vao->GetMeshTransform());				

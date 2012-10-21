@@ -2,14 +2,24 @@
 #define _H_PUNK_SYSTEM_STORABLE_DATA
 
 #include <iosfwd>
+#include "../config.h"
+#include "hresource.h"
+#include "../string/string.h"
 
 namespace System
 {
-	class StorableData
+	class PUNK_ENGINE StorableData
 	{
+		System::string m_storage_name;
 	public:
-		virtual void Save(std::ostream& stream) = 0;
-		virtual void Load(std::istream& stream) = 0;
+
+		void SetStorageName(const System::string& value) { m_storage_name = value; }
+		const System::string GetStorageName() const { return m_storage_name; }
+
+		virtual bool Save(std::ostream& stream);
+		virtual bool Load(std::istream& stream);
+
+		virtual ~StorableData() {}
 	};
 }
 

@@ -173,7 +173,7 @@ namespace Math
 		return FaceList();
 	}
 
-	void OctTree::Save(std::ostream& stream)
+	bool OctTree::Save(std::ostream& stream)
 	{
 		stream.write((char*)&m_cur_depth, sizeof(m_cur_depth));		
 		m_bbox.Save(stream);
@@ -185,7 +185,7 @@ namespace Math
 			stream.write((char*)&m_face_list[0], sizeof(ivec3)*m_face_count);		
 
 		if (m_is_finale)
-			return;
+			return true;
 
 		int flag = m_right_front_up.get() != 0;
 		stream.write((char*)&flag, sizeof(flag));
@@ -231,9 +231,11 @@ namespace Math
 		stream.write((char*)&flag, sizeof(flag));
 		if (flag)
 			m_left_back_down->Save(stream);
+
+		return true;
 	}
 
-	void OctTree::Load(std::istream& stream)
+	bool OctTree::Load(std::istream& stream)
 	{
 		stream.read((char*)&m_cur_depth, sizeof(m_cur_depth));		
 		m_bbox.Load(stream);
@@ -248,7 +250,7 @@ namespace Math
 		}
 
 		if (m_is_finale)
-			return;
+			return true;
 
 		int flag = m_right_front_up.get() != 0;
 		stream.read((char*)&flag, sizeof(flag));
@@ -321,5 +323,7 @@ namespace Math
 			m_left_back_down->m_parent = this;
 			m_left_back_down->Load(stream);
 		}
+
+		return true;
 	}
 }

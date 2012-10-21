@@ -1,6 +1,6 @@
 /*
         File: clock_linux.h
-	Author: Nickolai Abramov
+	Author: Mikalaj Abramau
         Desc: Contains a class to access system time in linux
 */
 

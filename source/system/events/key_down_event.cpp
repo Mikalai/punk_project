@@ -2,31 +2,9 @@
 
 namespace System
 {
-    std::queue<KeyDownEvent*> KeyDownEvent::eventPool;
-
     KeyDownEvent::KeyDownEvent()
     {
         eventCode = EVENT_KEY_DOWN;
-    }
-
-    void KeyDownEvent::Release()
-    {
-        this->eventPool.push(this);
-    }
-
-    KeyDownEvent* KeyDownEvent::Raise()
-    {
-        if (eventPool.empty())
-        {
-            KeyDownEvent* event = new KeyDownEvent();
-            return event;
-        }
-        else
-        {
-            KeyDownEvent* event = eventPool.front();
-            eventPool.pop();
-            return event;
-        }
     }
 
 	string KeyDownEvent::ToString()

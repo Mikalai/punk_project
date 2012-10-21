@@ -11,13 +11,13 @@ namespace System
 {
 	class AbstractManager;
 
-	class PUNK_ENGINE GlobalManager
+	/*class PUNK_ENGINE GlobalManager
 	{
 	public:
 
 		bool RegisterManager(AbstractManager* manager);
 		bool UnregisterManager(AbstractManager* manager);
-		HResource Load(int type, const string& name);
+		StorableData* Load(int type, const string& name);
 		AbstractManager* FindManager(int type);
 
 		static GlobalManager* Instance();
@@ -27,7 +27,7 @@ namespace System
 
 		static std::auto_ptr<GlobalManager> m_instance;
 		std::map<int, AbstractManager*> m_managers;
-	};
+	};*/
 }
 
 #endif	//	_H_PUNK_SYSTEM_GLOBAL_RESOURCE_MANAGER

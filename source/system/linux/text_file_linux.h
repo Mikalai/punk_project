@@ -1,6 +1,6 @@
 /*
         File: text_file_linux.h
-	Author: Nickolai Abramov
+	Author: Mikalaj Abramau
 	Desc: A simple text file
 */
 

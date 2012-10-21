@@ -6,7 +6,7 @@
 
 namespace Utility
 {
-	class Object;
+	class Entity;
 	class Armature;
 	class Camera;
 }
@@ -24,7 +24,7 @@ namespace Render
 
 		struct PUNK_ENGINE Parameters
 		{
-			Utility::Object* m_object;
+			Utility::Entity* m_object;
 			Utility::Camera* m_camera;
 			Utility::Armature* m_armature;
 			Math::Matrix4x4<float>* m_location;
@@ -44,7 +44,7 @@ namespace Render
 		
 		public:
 		
-			Parameters(Utility::Object* object, 
+			Parameters(Utility::Entity* object, 
 				Utility::Camera* camera, 
 				Utility::Armature* armature,
 				Math::Matrix4x4<float>* location,

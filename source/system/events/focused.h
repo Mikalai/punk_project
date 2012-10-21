@@ -2,19 +2,18 @@
 #define SET_FOCUSED_EVENT_H
 
 #include "event.h"
+#include "../poolable.h"
 
 namespace System
 {
-	class PUNK_ENGINE SetFocusedEvent : public Event
-    {
-        static std::queue<SetFocusedEvent*> eventPool;
-        SetFocusedEvent();
+	class PUNK_ENGINE SetFocusedEvent : public Event, public Poolable<SetFocusedEvent>
+    {        
         SetFocusedEvent(const SetFocusedEvent&);
 		SetFocusedEvent& operator = (const SetFocusedEvent&);
     public:
-		virtual void Release();
+		SetFocusedEvent();
 		virtual string ToString();
-        static SetFocusedEvent* Raise();
+        //static SetFocusedEvent* Raise();
     };
 }
 

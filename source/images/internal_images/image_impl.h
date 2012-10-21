@@ -88,16 +88,17 @@ namespace ImageModule
 			std::copy(data, data + width_in_pixel*components_per_pixel, m_data.begin() + y*m_width*m_components);
 		}
 
-		void Save(std::ostream& stream) const
+		bool Save(std::ostream& stream) const
 		{
 			stream.write(reinterpret_cast<const char*>(&m_descriptor), sizeof(m_descriptor));
 			stream.write(reinterpret_cast<const char*>(&m_width), sizeof(m_width));
 			stream.write(reinterpret_cast<const char*>(&m_height), sizeof(m_height));
 			stream.write(reinterpret_cast<const char*>(&m_components), sizeof(m_components));
 			stream.write(reinterpret_cast<const char*>(&m_data[0]), m_size);
+			return true;
 		}
 
-		void Load(std::istream& stream)
+		bool Load(std::istream& stream)
 		{			
 			//stream.read(reinterpret_cast<char*>(&m_descriptor), sizeof(m_descriptor));
 			//stream.read(reinterpret_cast<char*>(&m_width), sizeof(m_width));
@@ -106,6 +107,7 @@ namespace ImageModule
 			//m_size = m_width*m_height*m_components*sizeof(Component);
 			//m_data.resize(m_size);
 			//stream.read(reinterpret_cast<char*>(&m_data[0]), m_size);
+			return false;
 		}
 
 

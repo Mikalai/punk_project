@@ -1,26 +1,26 @@
+bl_info = {
+    "name":         "PunkEngine Middle Format",
+    "author":       "Mikalaj Abramau",
+    "blender":      (2,6,2),
+    "version":      (0,0,1),
+    "location":     "File > Import-Export",
+    "description":  "Export PunkEngine (.pmd)",
+    "category":     "Import-Export"
+}
+
 #mesh.materials['Material'].texture_slots['bump].texture.image.name
 import bpy
+import copy
 
 # ExportHelper is a helper class, defines filename and
 # invoke() function which calls the file selector.
 from bpy_extras.io_utils import ExportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty
+from copy import deepcopy
 
-
-#
-#   export normalse. one normal for one vertex. i still don't know
-#   how to realize when one vertex can have some normals depending
-#   on the current face
-#   
-def export_normals(f, mesh):
-    start_block(f, "*normals")
-    make_offset(f)
-    f.write("%d\n" % len(mesh.vertices))
-    for vertex in mesh.vertices:
-        make_offset(f)
-        f.write("%d\t%f\t%f\t%f\n" % (vertex.index, vertex.normal.x, vertex.normal.y, vertex.normal.z))
-    end_block(f)
-    return
+text_offset = 0 #used to print data nice
+used_materials = set()
+used_actions = set()
 
 #   export single float
 def export_float(f, name, value):
@@ -34,7 +34,7 @@ def export_float(f, name, value):
 def export_vec4(f, name, value):
     start_block(f, name)
     make_offset(f)
-    f.write("%f %f %f %f\n" % (value[0], value[1], value[2], value[3]))
+    f.write("%f   %f   %f   %f\n" % (value[0], value[1], value[2], value[3]))
     end_block(f)
     return
 
@@ -42,7 +42,7 @@ def export_vec4(f, name, value):
 def export_vec3(f, name, value):
     start_block(f, name)
     make_offset(f)
-    f.write("%f %f %f\n" % (value[0], value[1], value[2]))
+    f.write("%f   %f   %f\n" % (value[0], value[1], value[2]))
     end_block(f)
     return
 
@@ -53,21 +53,6 @@ def export_string(f, name, value):
     f.write("%s\n" % value)
     end_block(f)
     return
-
-#
-#   exports id of vertecies that face consist of
-#   face MUST be TRIANGULATED
-#
-def export_face_vertex_position_id(f, mesh):
-    start_block(f, "*vertex_positions_id")
-    for face in mesh.faces:
-        make_offset(f)
-        f.write("%d\t%d\t%d\t%d\n" % (face.index, face.vertices[0], face.vertices[1], face.vertices[2]))
-        
-    end_block(f)   
-    return
-
-text_offset = 0 #used to print data nice
 
 def inc_offset():
     global text_offset
@@ -112,7 +97,7 @@ def export_bounding_box(f, object):
         
     for vertex in object.bound_box:
         make_offset(f)
-        f.write("%f\t%f\t%f\n" % (vertex[0], vertex[1], vertex[2]))
+        f.write("%16f%16f%16f\n" % (vertex[0], vertex[1], vertex[2]))
     
     end_block(f)
     return
@@ -125,7 +110,7 @@ def export_location(f, object):
     start_block(f, "*location")
     
     make_offset(f)
-    f.write("%f\t%f\t%f\n" % (object.location.x, object.location.y, object.location.z))
+    f.write("%16f%16f%16f\n" % (object.location.x, object.location.y, object.location.z))
     end_block(f)
     return
 
@@ -136,7 +121,7 @@ def export_world_matrix(f, object):
     start_block(f, "*world_matrix")
     for v in object.matrix_world:  
         make_offset(f)      
-        f.write("%f\t%f\t%f\t%f\n" % (v[0], v[1], v[2], v[3]))
+        f.write("%16f%16f%16f%16f\n" % (v[0], v[1], v[2], v[3]))
     end_block(f)
     return
 
@@ -150,29 +135,30 @@ def export_normals(f, mesh):
         return;
     
     start_block(f, "*normals")
-    make_offset(f)
-    f.write("%d\n" % len(mesh.vertices))
+    #make_offset(f)
+    #   f.write("%d\n" % len(mesh.vertices))
     for vertex in mesh.vertices:
         make_offset(f)
-        f.write("%d\t%f\t%f\t%f\n" % (vertex.index, vertex.normal.x, vertex.normal.y, vertex.normal.z))
+        f.write("%5d%16f%16f%16f\n" % (vertex.index, vertex.normal.x, vertex.normal.y, vertex.normal.z))
+    end_block(f)
+    return
+    
+#
+#   exports vertex position for current mesh with no tranformation
+#   applied in the scene
+#
+def export_vertex_position(f, mesh):   
+    if (mesh == None) or (len(mesh.vertices) == 0):
+        return
+    start_block(f, "*vertex_position")    
+    #f.write("%d\n" % len(mesh.vertices))
+    for vertex in mesh.vertices:
+        make_offset(f)
+        f.write("%5d%16f%16f%16f\n" % (vertex.index, vertex.co.x, vertex.co.y, vertex.co.z)) 
+
     end_block(f)
     return
 
-#
-#   exports id of vertecies that face consist of
-#   face MUST be TRIANGULATED
-#
-def export_face_vertex_position_id(f, mesh):
-    if (mesh == None) or len(mesh.polygons) == 0:
-        return;
-    
-    start_block(f, "*vertex_positions_id")
-    for face in mesh.polygons:
-        make_offset(f)
-        f.write("%d\t%d\t%d\t%d\n" % (face.index, face.vertices[0], face.vertices[1], face.vertices[2]))
-        
-    end_block(f)   
-    return
 #
 #   export vertex id for faces. it is practicaly enough. but
 #   it is needed more info later. 
@@ -183,14 +169,38 @@ def export_faces(f, mesh):
         return
     
     start_block(f, "*faces")
+    for face in mesh.polygons:
+        make_offset(f)
+        f.write("%10d%10d%10d%10d\n" % (face.index, face.vertices[0], face.vertices[1], face.vertices[2]))       
+    end_block(f)
+    
+    return
 
-    make_offset(f)
-    f.write("%d\n" % len(mesh.polygons))
+#
+#   export bones weights
+#
+def export_bones_weight(f, object):    
+    if len(object.vertex_groups) == 0:
+        return
     
-    export_face_vertex_position_id(f, mesh)
-    
+    start_block(f, "*bones_weight")    
+    for vert in object.data.vertices:
+        for group in object.vertex_groups:
+            try:
+                ind = vert.index
+                #print(ind)
+                gr_name = group.name
+                #print(gr_name)
+                weight = group.weight(ind)
+                #print(weight)
+                make_offset(f)
+                f.write("%5d %s %f\n" % (ind, gr_name, weight))
+            except:
+                pass
+                #print("found a vertex that is not in a group")
     end_block(f)
     return
+
 
 #   export local matrix
 #
@@ -198,7 +208,7 @@ def export_local_matrix(f, object):
     start_block(f, "*local_matrix")
     for v in object.matrix_local:  
         make_offset(f)      
-        f.write("%f\t%f\t%f\t%f\n" % (v[0], v[1], v[2], v[3]))
+        f.write("%16f%16f%16f%16f\n" % (v[0], v[1], v[2], v[3]))
     end_block(f)
     return    
 
@@ -208,25 +218,9 @@ def export_parent_inverse_matrix(f, object):
     start_block(f, "*parent_inverse_matrix")
     for v in object.matrix_parent_inverse:  
         make_offset(f)      
-        f.write("%f\t%f\t%f\t%f\n" % (v[0], v[1], v[2], v[3]))
+        f.write("%16f%16f%16f%16f\n" % (v[0], v[1], v[2], v[3]))
     end_block(f)
     return    
-#
-#   exports vertex position for current mesh with no tranformation
-#   applied in the scene
-#
-def export_vertex_position(f, mesh):   
-    if (mesh == None) or (len(mesh.vertices) == 0):
-        return
-    start_block(f, "*vertex_position")    
-    make_offset(f)
-    f.write("%d\n" % len(mesh.vertices))
-    for vertex in mesh.vertices:
-        make_offset(f)
-        f.write("%d\t%f\t%f\t%f\n" % (vertex.index, vertex.co.x, vertex.co.y, vertex.co.z)) 
-
-    end_block(f)
-    return
 
 #
 #   export tex coords. i can't understand what is uv1 uv2 uv3 uv4
@@ -267,9 +261,10 @@ def export_tex_coords(f, mesh):
 def export_mesh_material(f, mesh):
     if (mesh == None) or (len(mesh.materials) == 0):
         return
-    start_block(f, "*material")
+    start_block(f, "*material_ref")
     make_offset(f)
     f.write("%s\n" % mesh.materials[0].name)
+    used_materials.add(mesh.materials[0].name)
     end_block(f)
     return
   
@@ -291,6 +286,17 @@ def export_mesh(f, object):
     return
 
 #
+#   exort collision mesh
+#
+def export_collision_mesh(f, object):
+    if object.data == None:
+        return
+    if type(object.data) == bpy.types.Mesh:
+        start_block(f, "*collision_mesh")
+        export_vertex_position(f, object.data)
+        end_block(f)
+    return
+#
 #   export bones
 #
 def export_bones(f):
@@ -299,181 +305,198 @@ def export_bones(f):
         return
     start_block(f, "*armatures")
     for armature in armatures:
-        start_block(f, "*armature")    
+        export_armature(f, armature)
+    end_block(f)    #*armatures
+    
+#
+#   export armature skeleton
+#
+def export_armature(f, armature):
+    start_block(f, "*armature")    
+    
+    start_block(f, "*name")
+    make_offset(f)
+    f.write("%s\n" % armature.name)
+    end_block(f)    #*name
+    
+    for bone in armature.bones:
+        #
+        #   export bone
+        #
+        start_block(f, "*bone")
+        
+        #
+        #   write bone name
+        #
         
         start_block(f, "*name")
         make_offset(f)
-        f.write("%s\n" % armature.name)
-        end_block(f)    #*name
+        f.write("%s\n" % bone.name)
+        end_block(f)
         
-        for bone in armature.bones:
-            #
-            #   export bone
-            #
-            start_block(f, "*bone")
-            
-            #
-            #   write bone name
-            #
-            
-            start_block(f, "*name")
-            make_offset(f)
-            f.write("%s\n" % bone.name)
-            end_block(f)
-            
-            #
-            #   write bone length
-            #
-            start_block(f, "*length")
-            make_offset(f)
-            f.write("%f\n" % bone.length)
-            end_block(f)
-            
-            #
-            #   write bone parent
-            #
-            
-            if bone.parent != None:
-                start_block(f, "*parent")
-                make_offset(f);
-                f.write("%s\n" % bone.parent.name);
-                end_block(f);
-            
-            #
-            #   write bone matrix
-            #
-            start_block(f, "*local_matrix")
-            m = bone.matrix_local
-            make_offset(f)
-            f.write("%f %f %f %f\n" % (m[0][0], m[0][1], m[0][2], m[0][3]))
-            make_offset(f)
-            f.write("%f %f %f %f\n" % (m[1][0], m[1][1], m[1][2], m[1][3]))
-            make_offset(f)
-            f.write("%f %f %f %f\n" % (m[2][0], m[2][1], m[2][2], m[2][3]))
-            make_offset(f)
-            f.write("%f %f %f %f\n\n" % (m[3][0], m[3][1], m[3][2], m[3][3]))        
-            end_block(f)    #*local_matrix
-            end_block(f)    #*bone
-        end_block(f)    #*armature
-    end_block(f)    #*armatures
-
+        #
+        #   write bone length
+        #
+        start_block(f, "*length")
+        make_offset(f)
+        f.write("%f\n" % bone.length)
+        end_block(f)
+        
+        #
+        #   write bone parent
+        #
+        
+        if bone.parent != None:
+            start_block(f, "*parent")
+            make_offset(f);
+            f.write("%s\n" % bone.parent.name);
+            end_block(f);
+        
+        #
+        #   write bone matrix
+        #
+        start_block(f, "*local_matrix")
+        m = bone.matrix_local
+        make_offset(f)
+        f.write("%f %f %f %f\n" % (m[0][0], m[0][1], m[0][2], m[0][3]))
+        make_offset(f)
+        f.write("%f %f %f %f\n" % (m[1][0], m[1][1], m[1][2], m[1][3]))
+        make_offset(f)
+        f.write("%f %f %f %f\n" % (m[2][0], m[2][1], m[2][2], m[2][3]))
+        make_offset(f)
+        f.write("%f %f %f %f\n\n" % (m[3][0], m[3][1], m[3][2], m[3][3]))        
+        end_block(f)    #*local_matrix
+        end_block(f)    #*bone
+    end_block(f)    #*armature
+    
 #
 #   export all animation
 #    
-def export_actions(f):
+def export_actions(f):    
+    if len(used_actions) == 0:
+        return
+    if len(bpy.data.actions) == 0:
+        return
+    
     start_block(f, "*actions")
-    for action in bpy.data.actions:
-        start_block(f, "*action")
-        start_block(f, "*name")
-        make_offset(f)
-        f.write("%s\n" % action.name)
-        end_block(f)
-        try:
-            start = int(action.frame_range[0])
-            end = int(action.frame_range[1])
-            start_block(f, "*timing")
-            make_offset(f)
-            f.write("%d %d\n" % (start, end))
-            end_block(f)    #*timing
-        except:
-            print("erorr in timings")            
-        pos_x = []
-        pos_y = []
-        pos_z = []
-        rot_w = []
-        rot_x = []
-        rot_y = []
-        rot_z = []
-        was_pos = 0
-        was_rot = 0
-        start_block(f, "*frames")
-        for curve in action.fcurves:
-            #
-            #   write bone name that is affected by this curve
-            #
-            if curve.data_path.rfind("bones") != -1:
-                start_block(f, "*bone")
-                start_block(f, "*name")
-                s = curve.data_path.split('"')
-                make_offset(f)
-                f.write("%s\n" % s[1])
-                end_block(f)
-            else:
-                start_block(f, "*object")
-                start_block(f, "*name")
-                make_offset(f)
-                f.write("%s\n" % curve.group.name)
-                end_block(f)                
-
-            #
-            #   write data block
-            #
-            if curve.data_path.rfind("location") != -1:
-                if curve.array_index == 0:
-                    start_block(f, "*pos_x")
-                elif curve.array_index == 1:
-                    start_block(f, "*pos_y")
-                elif curve.array_index == 2:
-                    start_block(f, "*pos_z")
-            if curve.data_path.rfind("rotation_quaternion") != -1:
-                if curve.array_index == 0:
-                    start_block(f, "*rot_w")
-                elif curve.array_index == 1:
-                    start_block(f, "*rot_x")
-                elif curve.array_index == 2:
-                    start_block(f, "*rot_y")
-                elif curve.array_index == 3:
-                    start_block(f, "*rot_z")
-
-            for key in curve.keyframe_points:
-                make_offset(f) 
-                f.write("%s %s\n" % (int(key.co[0]), key.co[1])) 
-        
-            #
-            #   end curve block
-            #
-            end_block(f)
-            #
-            #   end bone block
-            end_block(f)
-        end_block(f)    #frames
-        end_block(f)    #*action    
-    #
-    #   end animation block
-    #
+    for action_name in used_actions:
+        action = bpy.data.actions[action_name]
+        export_action(f, action)
     end_block(f) #*actions
-            
-    return
-#
-#   export bones weights
-#
-def export_bones_weight(f, object):    
-    start_block(f, "*bones_weight")    
-    for vert in object.data.vertices:
-        for group in object.vertex_groups:
-            try:
-                ind = vert.index
-                #print(ind)
-                gr_name = group.name
-                #print(gr_name)
-                weight = group.weight(ind)
-                #print(weight)
-                make_offset(f)
-                f.write("%d %s %f\n" % (ind, gr_name, weight))
-            except:
-                pass
-                #print("found a vertex that is not in a group")
-    end_block(f)
+                
     return
 
 #
-#   export all materials
+#   export one action
 #
+def export_action(f, action):
+    start_block(f, "*action")
+    start_block(f, "*name")
+    make_offset(f)
+    f.write("%s\n" % action.name)
+    end_block(f)
+    try:
+        start = int(action.frame_range[0])
+        end = int(action.frame_range[1])
+        start_block(f, "*timing")
+        make_offset(f)
+        f.write("%d %d\n" % (start, end))
+        end_block(f)    #*timing
+    except:
+        print("erorr in timings")            
+    
+    tracks = dict()        
+    
+    #   cook tracks from curves
+    #   keyframe points in each channel should be equal
+    for curve in action.fcurves:         
+        index = curve.array_index
+        track_name = curve.group.name                    
+        #   get all location tracks collection
+        object_tracks = tracks.get(track_name)
+        if object_tracks == None:
+            object_tracks = dict()
+            tracks[track_name] = object_tracks
+        
+        #   determine whether it is location or rotation.
+        #   rotation should be represented only as quaternion
+        if curve.data_path.rfind("location") != -1:
+            track = object_tracks.get(curve.data_path)
+            #   if no, than create new location tracks collection
+            if track == None:
+                track = list()
+                object_tracks[curve.data_path] = track 
+            #   [time, [x, y, z]]
+            etalon = [0, [0.0, 0.0, 0.0]]
+        if curve.data_path.rfind("rotation_quaternion") != -1:
+            track = object_tracks.get(curve.data_path)
+            if track == None:
+                track = list()
+                object_tracks[curve.data_path] = track
+            #   [time, [w, x, y, z]]
+            etalon = [0, [0.0, 0.0, 0.0, 0.0]]
+        #   extract points from curve
+        for key_index in range(0, len(curve.keyframe_points)):
+            #   define location to write data
+            #   if point already in track we use it
+            #   otherwise create new point and add it
+            #   to the track
+            if len(track) > key_index:
+                point = track[key_index]
+            else:
+                point = deepcopy(etalon)
+                track.append(point)     
+            #   retrieve cure           
+            key = curve.keyframe_points[key_index]
+            point[0] = int(key.co[0])
+            point[1][index] = key.co[1]
+      
+    #   export all tracks 
+    for object_name in tracks:
+        object_tracks = tracks[object_name]
+        #   write bone name that is affected by this curve
+        if list(object_tracks.keys())[0].rfind("bones") != -1:
+            start_block(f, "*bone_animation")
+            start_block(f, "*name")
+            make_offset(f)
+            f.write("%s\n" % object_name)
+            end_block(f)
+        #   otherwise just mark this track as suitable for any object
+        else:
+            start_block(f, "*object_animation")
+            
+        #   export all tracks for current object    
+        for track_name in object_tracks:
+            track = object_tracks[track_name]            
+            #   export position
+            if track_name.rfind("location") != -1:
+                start_block(f, "*position_track")
+                for point in track:
+                    make_offset(f)
+                    f.write("%5d %16f %16f %16f\n" % (point[0], point[1][0], point[1][1], point[1][2]))
+                end_block(f) #  *position_track
+            #   epxort rotation
+            if track_name.find("rotation_quaternion") != -1:
+                start_block(f, "*rotation_track")
+                for point in track:
+                    make_offset(f)
+                    f.write("%5d %16f %16f %16f %16f\n" % (point[0], point[1][0], point[1][1], point[1][2], point[1][3]))
+                end_block(f) #  *rotation_track
+        
+        end_block(f)    # *bone_animation or *object_animation
+    end_block(f)    # *action    
+
+#   export all materials
 def export_materials(f, materials):
+    if len(used_materials) == 0:
+        return
+    
     if (len(materials) == 0):
         return
+    
     start_block(f, "*materials")
-    for m in materials:
+    for material in used_materials:
+        m = materials[material]
         start_block(f, "*material")        
         
         #   export name
@@ -665,6 +688,43 @@ def export_point_lamp(f, lamp):
     
        
 #
+#   export animation tracks for the object
+#
+def export_animation_tracks(f, object):
+    if object.animation_data == None:
+        return
+    
+    if len(object.animation_data.nla_tracks) == 0:
+        return
+    
+    start_block(f, "*actions_ref")
+    for track in object.animation_data.nla_tracks:        
+        if len(track.strips) == 0:
+            print("No strips in track %s", track.name)
+            return        
+        if len(track.strips) != 1:
+            print("Wanring: only first strip will be exported")
+        export_string(f, "*action_ref", track.strips[0].action.name)
+        
+        used_actions.add(track.strips[0].action.name)
+        
+    end_block(f)
+    
+#
+#   export camera
+#
+def export_camera(f, camera):
+    start_block(f, "*camera")
+    export_string(f, "*name", camera.name)
+    export_string(f, "*type", camera.type)
+    export_float(f, "*fov", camera.angle)
+    export_float(f, "*near", camera.clip_start)
+    export_float(f, "*far", camera.clip_end)
+    export_float(f, "*focus", camera.dof_distance)
+    export_float(f, "*ortho_scale", camera.ortho_scale)   
+    end_block(f)
+    
+#
 #   export the whole object with all data i can imaginge
 #
 def export_object(f, object): 
@@ -681,16 +741,28 @@ def export_object(f, object):
     export_world_matrix(f, object)
     export_local_matrix(f, object)
     export_parent_inverse_matrix(f, object)
-
-    if type(object.data) == bpy.types.Mesh:
-        export_mesh(f, object)  
-        
-    if type(object.data) == bpy.types.Speaker:
-        export_sound(f, object)
-        
-    if type(object.data) == bpy.types.PointLamp:
-        export_point_lamp(f, object.data)
-             
+    
+    if "type" in object:
+        if object["type"] == "collision_mesh":
+            export_collision_mesh(f, object)
+    else:
+        if type(object.data) == bpy.types.Mesh:
+            export_mesh(f, object)  
+            
+        if type(object.data) == bpy.types.Speaker:
+            export_sound(f, object)
+            
+        if type(object.data) == bpy.types.PointLamp:
+            export_point_lamp(f, object.data)
+            
+        if type(object.data) == bpy.types.Armature:
+            export_armature(f, object.data)
+            
+        if type(object.data) == bpy.types.Camera:
+            export_camera(f, object.data)
+                 
+    export_animation_tracks(f, object)
+    
     for child in object.children:
         export_object(f, child)    
            
@@ -703,15 +775,15 @@ def export_model(context, filepath, anim_in_separate_file):
     for obj in bpy.context.selected_objects:
         export_object(f, obj)
     export_materials(f, bpy.data.materials)
-    export_bones(f)    
+    #export_bones(f)    
     export_actions(f)
     f.close()
     return {'FINISHED'}
-
+    
 class ExportPunkModel(bpy.types.Operator, ExportHelper):
     'Exports mesh for Punk Engine'
     bl_idname = "export.punk_model"  
-    bl_label = "Export Punk Model"
+    bl_label = "Export PunkEngine Scene"
 
     # ExportHelper mixin classed uses this
     filename_ext = ".pmd"
@@ -750,4 +822,4 @@ if __name__ == "__main__":
     register()
 
     # test call
-    bpy.ops.export.punk_model('INVOKE_DEFAULT')
+#    bpy.ops.export.punk_model('INVOKE_DEFAULT')

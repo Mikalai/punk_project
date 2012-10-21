@@ -1,6 +1,6 @@
 /*
 File: Events.h
-Author: Nickolai Abramov
+Author: Mikalaj Abramau
 Desc: Contains at least system based events
 */
 

@@ -10,407 +10,110 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{F229A14C-5018-4689-876D-0119E032B530}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>punk_engine</RootNamespace>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\</OutDir>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>NOMINMAX;WIN32;_DEBUG;_WINDOWS;_USRDLL;PUNK_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\bullet\src;$(SolutionDir)..\..\3rd\src\;$(SolutionDir)..\..\3rd\src\freetype-2.4.6\include;$(SolutionDir)..\..\3rd\src\lpng154</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\lib\$(ConfigurationName);$(SolutionDir)..\..\3rd\bullet\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Opengl32.lib;dbghelp.lib;BulletCollision_debug.lib;BulletDynamics_debug.lib;BulletSoftBody_debug.lib;ConvexDecomposition_debug.lib;LinearMath_debug.lib;freetype246_D.lib;libpngd.lib;OpenAL32.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NOMINMAX;WIN32;NDEBUG;_WINDOWS;_USRDLL;PUNK_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\bullet\src;$(SolutionDir)..\..\3rd\src\;$(SolutionDir)..\..\3rd\src\freetype-2.4.6\include;$(SolutionDir)..\..\3rd\src\lpng154</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\lib\$(ConfigurationName);$(SolutionDir)..\..\3rd\bullet\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Opengl32.lib;dbghelp.lib;EFX-Util.lib;freetype246.lib;libpng.lib;OpenAL32.lib;zlib.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;ConvexDecomposition.lib;HACD.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\3rd\src\openal\aldlist.cpp" />
-    <ClCompile Include="..\..\..\3rd\src\openal\CWaves.cpp" />
-    <ClCompile Include="..\..\..\3rd\src\openal\Framework.cpp" />
-    <ClCompile Include="..\..\..\3rd\src\openal\LoadOAL.cpp" />
-    <ClCompile Include="..\..\..\source\audio\audio_manager.cpp" />
-    <ClCompile Include="..\..\..\source\audio\player.cpp" />
-    <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp" />
-    <ClCompile Include="..\..\..\source\images\error.cpp" />
-    <ClCompile Include="..\..\..\source\images\image_file.cpp" />
-    <ClCompile Include="..\..\..\source\images\import_export\exporter.cpp" />
-    <ClCompile Include="..\..\..\source\images\import_export\importer.cpp" />
-    <ClCompile Include="..\..\..\source\images\import_export\png_exporter.cpp" />
-    <ClCompile Include="..\..\..\source\images\import_export\png_importer.cpp" />
-    <ClCompile Include="..\..\..\source\images\internal_images\gray_image.cpp" />
-    <ClCompile Include="..\..\..\source\images\internal_images\image.cpp" />
-    <ClCompile Include="..\..\..\source\images\internal_images\rgba_image.cpp" />
-    <ClCompile Include="..\..\..\source\images\internal_images\rgb_image.cpp" />
-    <ClCompile Include="..\..\..\source\images\png_file.cpp" />
-    <ClCompile Include="..\..\..\source\main.cpp" />
-    <ClCompile Include="..\..\..\source\math\astar.cpp" />
-    <ClCompile Include="..\..\..\source\math\bounding_box.cpp" />
-    <ClCompile Include="..\..\..\source\math\camera.cpp" />
-    <ClCompile Include="..\..\..\source\math\frustum.cpp" />
-    <ClCompile Include="..\..\..\source\math\functions.cpp" />
-    <ClCompile Include="..\..\..\source\math\helper.cpp" />
-    <ClCompile Include="..\..\..\source\math\line2d.cpp" />
-    <ClCompile Include="..\..\..\source\math\line3d.cpp" />
-    <ClCompile Include="..\..\..\source\math\math.cpp" />
-    <ClCompile Include="..\..\..\source\math\math_error.cpp" />
-    <ClCompile Include="..\..\..\source\math\noise.cpp" />
-    <ClCompile Include="..\..\..\source\math\oct_tree.cpp" />
-    <ClCompile Include="..\..\..\source\math\plane.cpp" />
-    <ClCompile Include="..\..\..\source\math\random.cpp" />
-    <ClCompile Include="..\..\..\source\math\triangle2d.cpp" />
-    <ClCompile Include="..\..\..\source\math\triangle3d.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\architecture\vertex_array_object.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\attribute_configer.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\driver.cpp">
+    <ClInclude Include="..\..\..\source\ai\navi_mesh.h" />
+    <ClInclude Include="..\..\..\source\ai\navi_triangle.h" />
+    <ClInclude Include="..\..\..\source\application\application.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\error.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\frame_buffer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\frame_buffer_with_depth.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\glsl_program.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\grid_object.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\light.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\light_manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\linux\driver_parameters_linux.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\linux\video_driver_linux.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\material.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\module.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip_objects.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\nvtristrip\vertex_cache.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\point_object.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\quad_object.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\quad_object.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\skinned_object.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\static_object.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\vertex_array_object.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\renderable\managers\managers.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render\batch.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render\frame.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render\render_pass.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render\render_target.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render\render_target_back_buffer.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render\render_target_texture.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\dummy_render_context_policy.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_bump_mapping.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_grass.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_gui.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_light.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_particle_system.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_skinning.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_solid_color_3d.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_solid_textured_3d.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\render_contexts.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_bump.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_grass.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_gui.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_light.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_particle.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_skinning.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_color.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_textured.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_terrain.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\shader.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_bump.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_grass.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_gui.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_light.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle_system.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_skinning.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_solid_color.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_terrain.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transform_3d.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\render_context_old.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\terrain_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\textures\texture2d.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\textures\texture_2d_manager.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\textures\texture_context.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\text_texture_2d.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\vao_manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\vbo.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\win32\driver_parameters_win32.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\win32\driver_win32.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\win32\extensions_win32.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\win32\video_driver_win32.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\render\bbox_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\render\character_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\render\solid_object_render.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\string\string.cpp" />
-    <ClCompile Include="..\..\..\source\string\win32\string_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\clock.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\events.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\focused.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\idle_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\key_char_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\key_down_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\key_up_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\key_wchar_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\model_time_step_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_enter.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_hoover_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_leave.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_left_button_down.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_left_button_up.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_middle_button_down.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_middle_button_up.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_move_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_right_button_down.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_right_button_up.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_wheel_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\unfocused.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\event_manager.cpp" />
-    <ClCompile Include="..\..\..\source\system\global_resource_manager.cpp" />
-    <ClCompile Include="..\..\..\source\system\hresource.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\clock_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\folder_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\text_file_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\timer_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\window_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\logger.cpp" />
-    <ClCompile Include="..\..\..\source\system\node.cpp" />
-    <ClCompile Include="..\..\..\source\system\pool.cpp" />
-    <ClCompile Include="..\..\..\source\system\system_clock.cpp" />
-    <ClCompile Include="..\..\..\source\system\thread_job.cpp" />
-    <ClCompile Include="..\..\..\source\system\thread_pool.cpp" />
-    <ClCompile Include="..\..\..\source\system\types\list.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\assert_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\binary_file_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\buffer_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\clock_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\config_file_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\console_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\error_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\folder_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\handle_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\keyboard_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\mouse_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\stack_trace_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\thread_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\window_win32.cpp" />
-    <ClCompile Include="..\..\..\source\utility\bullet_type.cpp" />
-    <ClCompile Include="..\..\..\source\utility\elements\terrain.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\elements\utility_tree.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\fonts\font_builder.cpp" />
-    <ClCompile Include="..\..\..\source\utility\food_type.cpp" />
-    <ClCompile Include="..\..\..\source\utility\physics\bullet_physical_simulator.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\physics\bullet_rigid_body.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\physics\physical_simulator.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\scene_file_manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\utility_lod.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\weapon_type.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\weapon_type_manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\virtual\action.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\animation.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\animation_mixer.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\armature.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\armature_animation.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\armature_manager.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\bone.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\building.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\camera.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\light.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\material.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\mesh.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\object.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\object_manager.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\particle_system.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\punk_scene_loader.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\scheme.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\skin_animation.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\sound.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\static_mesh.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\3rd\src\openal\al.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\alc.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\aldlist.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\CWaves.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\efx-creative.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\EFX-Util.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\efx.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\Framework.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\LoadOAL.h" />
-    <ClInclude Include="..\..\..\3rd\src\openal\xram.h" />
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_buffer.h" />
     <ClInclude Include="..\..\..\source\audio\audio_manager.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\alc.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\aldlist.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\CWaves.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\efx-creative.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\EFX-Util.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\efx.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\Framework.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\LoadOAL.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\xram.h" />
     <ClInclude Include="..\..\..\source\audio\player.h" />
     <ClInclude Include="..\..\..\source\audio\punk_audio.h" />
     <ClInclude Include="..\..\..\source\audio\resource.h" />
-    <ClInclude Include="..\..\..\source\audio\audio_buffer.h" />
     <ClInclude Include="..\..\..\source\config.h" />
+    <ClInclude Include="..\..\..\source\gui\balloon.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\button.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\console.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\edit_box.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui_default_render.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui_render.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\horizontal_slider.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\int_watcher.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\layout.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\list_box.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\manager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\static_text_area.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\tab_widget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\trackball_viewer_3d.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\user_interface_control.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\vertical_scrollbar.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\vertical_slider.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\watcher.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\widget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\converter\yuy2_to_rgb.h" />
     <ClInclude Include="..\..\..\source\images\error.h" />
     <ClInclude Include="..\..\..\source\images\formats.h" />
     <ClInclude Include="..\..\..\source\images\images.h" />
@@ -461,6 +164,21 @@
     <ClInclude Include="..\..\..\source\math\vec2.h" />
     <ClInclude Include="..\..\..\source\math\vec3.h" />
     <ClInclude Include="..\..\..\source\math\vec4.h" />
+    <ClInclude Include="..\..\..\source\opencl\buffer.h" />
+    <ClInclude Include="..\..\..\source\opencl\buffer_impl.h" />
+    <ClInclude Include="..\..\..\source\opencl\command_queue.h" />
+    <ClInclude Include="..\..\..\source\opencl\command_queue_impl.h" />
+    <ClInclude Include="..\..\..\source\opencl\context.h" />
+    <ClInclude Include="..\..\..\source\opencl\context_impl.h" />
+    <ClInclude Include="..\..\..\source\opencl\device.h" />
+    <ClInclude Include="..\..\..\source\opencl\device_impl.h" />
+    <ClInclude Include="..\..\..\source\opencl\driver.h" />
+    <ClInclude Include="..\..\..\source\opencl\kernel.h" />
+    <ClInclude Include="..\..\..\source\opencl\kernel_impl.h" />
+    <ClInclude Include="..\..\..\source\opencl\platform.h" />
+    <ClInclude Include="..\..\..\source\opencl\platform_impl.h" />
+    <ClInclude Include="..\..\..\source\opencl\program.h" />
+    <ClInclude Include="..\..\..\source\opencl\program_impl.h" />
     <ClInclude Include="..\..\..\source\opengl\architecture\batch.h" />
     <ClInclude Include="..\..\..\source\opengl\architecture\batch_collection.h" />
     <ClInclude Include="..\..\..\source\opengl\architecture\batch_config.h" />
@@ -472,8 +190,13 @@
     <ClInclude Include="..\..\..\source\opengl\architecture\render_pass_collection.h" />
     <ClInclude Include="..\..\..\source\opengl\architecture\render_target.h" />
     <ClInclude Include="..\..\..\source\opengl\architecture\vertex_array_object.h" />
-    <ClInclude Include="..\..\..\source\opengl\attribute_configer.h" />
-    <ClInclude Include="..\..\..\source\opengl\driver.h" />
+    <ClInclude Include="..\..\..\source\opengl\attribute_configer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\driver.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\driver_parameters.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -483,8 +206,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\extensions.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\frame_buffer.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -546,15 +268,15 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\quad_object.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\quad_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\data\renderable.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\skinned_object.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\static_object.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\skinned_mesh.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\static_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\data\vertex_array_object.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\data\vertex_attributes.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\quad_object_manager.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\skinned_object_manager.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\static_object_manager.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\managers\quad_mesh_manager.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\managers\skinned_mesh_manager.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\managers\static_mesh_manager.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\renderable_data.h" />
     <ClInclude Include="..\..\..\source\opengl\render\batch.h" />
     <ClInclude Include="..\..\..\source\opengl\render\frame.h" />
@@ -625,10 +347,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context_old.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\shader_program.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -677,20 +395,30 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\render\render.h" />
+    <ClInclude Include="..\..\..\source\render\render.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\simple_render.h" />
     <ClInclude Include="..\..\..\source\render\solid_object_render.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\node.h" />
+    <ClInclude Include="..\..\..\source\scene\scene.h" />
     <ClInclude Include="..\..\..\source\string\string.h" />
     <ClInclude Include="..\..\..\source\string\win32\string_win32.h" />
     <ClInclude Include="..\..\..\source\system\abstract_manager.h" />
     <ClInclude Include="..\..\..\source\system\allocator.h" />
     <ClInclude Include="..\..\..\source\system\binary_file.h" />
     <ClInclude Include="..\..\..\source\system\buffer.h" />
+    <ClInclude Include="..\..\..\source\system\camera_capture.h" />
     <ClInclude Include="..\..\..\source\system\clock.h" />
     <ClInclude Include="..\..\..\source\system\config_file.h" />
     <ClInclude Include="..\..\..\source\system\console.h" />
+    <ClInclude Include="..\..\..\source\system\decl_property.h" />
     <ClInclude Include="..\..\..\source\system\dynamic_array.h" />
+    <ClInclude Include="..\..\..\source\system\dynamic_data.h" />
     <ClInclude Include="..\..\..\source\system\environment.h" />
     <ClInclude Include="..\..\..\source\system\error.h" />
     <ClInclude Include="..\..\..\source\system\events\event.h" />
@@ -730,13 +458,16 @@
     <ClInclude Include="..\..\..\source\system\linux\types_linux.h" />
     <ClInclude Include="..\..\..\source\system\linux\window_linux.h" />
     <ClInclude Include="..\..\..\source\system\logger.h" />
+    <ClInclude Include="..\..\..\source\system\mega_destroyer.h" />
     <ClInclude Include="..\..\..\source\system\module.h" />
     <ClInclude Include="..\..\..\source\system\monitor.h" />
     <ClInclude Include="..\..\..\source\system\monitor_scope.h" />
     <ClInclude Include="..\..\..\source\system\mouse.h" />
     <ClInclude Include="..\..\..\source\system\node.h" />
+    <ClInclude Include="..\..\..\source\system\object.h" />
     <ClInclude Include="..\..\..\source\system\permanent_data.h" />
     <ClInclude Include="..\..\..\source\system\pool.h" />
+    <ClInclude Include="..\..\..\source\system\pool_manager.h" />
     <ClInclude Include="..\..\..\source\system\process.h" />
     <ClInclude Include="..\..\..\source\system\profiler.h" />
     <ClInclude Include="..\..\..\source\system\region.h" />
@@ -744,7 +475,11 @@
     <ClInclude Include="..\..\..\source\system\resource_manager_2.h" />
     <ClInclude Include="..\..\..\source\system\scene_graph.h" />
     <ClInclude Include="..\..\..\source\system\serializable.h" />
+    <ClInclude Include="..\..\..\source\system\signal_slot\signal_slot.h" />
     <ClInclude Include="..\..\..\source\system\singletone.h" />
+    <ClInclude Include="..\..\..\source\system\smart_pointers\handle.h" />
+    <ClInclude Include="..\..\..\source\system\smart_pointers\proxy.h" />
+    <ClInclude Include="..\..\..\source\system\smart_pointers\ref_count.h" />
     <ClInclude Include="..\..\..\source\system\stack_trace.h" />
     <ClInclude Include="..\..\..\source\system\storable_data.h" />
     <ClInclude Include="..\..\..\source\system\system.h" />
@@ -760,6 +495,7 @@
     <ClInclude Include="..\..\..\source\system\win32\assert_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\binary_file_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\buffer_win32.h" />
+    <ClInclude Include="..\..\..\source\system\win32\camera_capture_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\clock_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\config_file_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\console_win32.h" />
@@ -780,99 +516,583 @@
     <ClInclude Include="..\..\..\source\system\win32\types_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\window_win32.h" />
     <ClInclude Include="..\..\..\source\system\window.h" />
-    <ClInclude Include="..\..\..\source\utility\bullet_type.h" />
-    <ClInclude Include="..\..\..\source\utility\config.h" />
-    <ClInclude Include="..\..\..\source\utility\decl_property.h" />
-    <ClInclude Include="..\..\..\source\utility\elements\human.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\elements\terrain.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\elements\utility_tree.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\action_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\animation_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\anim_track_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\armature_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\bone_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\camera_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\descriptors.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\material_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\mesh_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\object_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\object_type_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\light_desc.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\world_desc.h" />
     <ClInclude Include="..\..\..\source\utility\fonts\font_builder.h" />
-    <ClInclude Include="..\..\..\source\utility\food_type.h" />
-    <ClInclude Include="..\..\..\source\utility\physics\bullet_physical_simulator.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\physics\bullet_rigid_body.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\physics\bullet_shape_body.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\physics\physical_simulator.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\physics\rigid_body.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\physics\shape_body.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\scene_file_manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\scheme.h" />
+    <ClInclude Include="..\..\..\source\utility\model\vertex.h" />
+    <ClInclude Include="..\..\..\source\utility\model\vertex_bone_weight.h" />
+    <ClInclude Include="..\..\..\source\utility\model\vertex_component.h" />
+    <ClInclude Include="..\..\..\source\utility\model\vertex_index.h" />
+    <ClInclude Include="..\..\..\source\utility\parser\base_parser.h" />
+    <ClInclude Include="..\..\..\source\utility\parser\game_parser.h" />
+    <ClInclude Include="..\..\..\source\utility\parser\keywords.h" />
+    <ClInclude Include="..\..\..\source\utility\parser\parser.h" />
     <ClInclude Include="..\..\..\source\utility\utility.h" />
-    <ClInclude Include="..\..\..\source\utility\utility_lod.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\weapon.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\weapon_type.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\weapon_type_manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\virtual\action.h" />
-    <ClInclude Include="..\..\..\source\virtual\animation.h" />
-    <ClInclude Include="..\..\..\source\virtual\animation_mixer.h" />
-    <ClInclude Include="..\..\..\source\virtual\animation_track.h" />
-    <ClInclude Include="..\..\..\source\virtual\armature.h" />
-    <ClInclude Include="..\..\..\source\virtual\armature_animation.h" />
-    <ClInclude Include="..\..\..\source\virtual\armature_manager.h" />
-    <ClInclude Include="..\..\..\source\virtual\bone.h" />
-    <ClInclude Include="..\..\..\source\virtual\bone_frame.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\action.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\anim.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\animation.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\animation_mixer.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\animation_track.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\armature_animation_mixer.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\bone_animation.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\object_animation.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\object_animation_mixer.h" />
     <ClInclude Include="..\..\..\source\virtual\building.h" />
-    <ClInclude Include="..\..\..\source\virtual\camera.h" />
+    <ClInclude Include="..\..\..\source\virtual\controllers\controllers.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\camera.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\cameras\fps_camera.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\data.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\entity.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\light.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\lights\point_light.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\material.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\proxy.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\transform.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\world.h" />
     <ClInclude Include="..\..\..\source\virtual\intersection.h" />
-    <ClInclude Include="..\..\..\source\virtual\light.h" />
-    <ClInclude Include="..\..\..\source\virtual\material.h" />
-    <ClInclude Include="..\..\..\source\virtual\mesh.h" />
-    <ClInclude Include="..\..\..\source\virtual\object.h" />
-    <ClInclude Include="..\..\..\source\virtual\object_manager.h" />
-    <ClInclude Include="..\..\..\source\virtual\partical_system.h" />
-    <ClInclude Include="..\..\..\source\virtual\punk_scene_loader.h" />
+    <ClInclude Include="..\..\..\source\virtual\manager\camera_manager.h" />
+    <ClInclude Include="..\..\..\source\virtual\motions\key_based_strategy.h" />
+    <ClInclude Include="..\..\..\source\virtual\motions\motion.h" />
+    <ClInclude Include="..\..\..\source\virtual\motions\motion_strategy.h" />
+    <ClInclude Include="..\..\..\source\virtual\motions\static_motion_strategy.h" />
     <ClInclude Include="..\..\..\source\virtual\scheme.h" />
     <ClInclude Include="..\..\..\source\virtual\skeleton_animation.h" />
-    <ClInclude Include="..\..\..\source\virtual\skinned_mesh.h" />
-    <ClInclude Include="..\..\..\source\virtual\skin_animation.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\armature.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\armature_manager.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\bone.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\bone_frame.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\skinning.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\types.h" />
     <ClInclude Include="..\..\..\source\virtual\sound.h" />
-    <ClInclude Include="..\..\..\source\virtual\static_mesh.h" />
     <ClInclude Include="..\..\..\source\virtual\texture_faces.h" />
     <ClInclude Include="..\..\..\source\virtual\track_pos.h" />
-    <ClInclude Include="..\..\..\source\virtual\vertex.h" />
-    <ClInclude Include="..\..\..\source\virtual\vertex_bone_weight.h" />
-    <ClInclude Include="..\..\..\source\virtual\vertex_component.h" />
-    <ClInclude Include="..\..\..\source\virtual\vertex_index.h" />
+    <ClInclude Include="..\..\..\source\virtual\virtual.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\source\blender\punk_exporter_2_60.py" />
-    <None Include="..\..\..\source\opengl\material.txt">
+    <ClCompile Include="..\..\..\source\application\application.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
-    <None Include="..\..\..\source\opengl\model.txt">
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp" />
+    <ClCompile Include="..\..\..\source\audio\audio_manager.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\aldlist.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\CWaves.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\Framework.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\LoadOAL.cpp" />
+    <ClCompile Include="..\..\..\source\audio\player.cpp" />
+    <ClCompile Include="..\..\..\source\gui\balloon.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </None>
-    <None Include="..\..\..\source\opengl\nvtristrip\README.txt" />
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\button.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\console.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\edit_box.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\gui_default_render.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\horizontal_slider.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\int_watcher.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\list_box.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\static_text_area.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\tab_widget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\trackball_viewer_3d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\user_interface_control.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\vertical_scrollbar.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\vertical_slider.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\widget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\converter\yuy2_to_rgb.cpp" />
+    <ClCompile Include="..\..\..\source\images\error.cpp" />
+    <ClCompile Include="..\..\..\source\images\image_file.cpp" />
+    <ClCompile Include="..\..\..\source\images\import_export\exporter.cpp" />
+    <ClCompile Include="..\..\..\source\images\import_export\importer.cpp" />
+    <ClCompile Include="..\..\..\source\images\import_export\png_exporter.cpp" />
+    <ClCompile Include="..\..\..\source\images\import_export\png_importer.cpp" />
+    <ClCompile Include="..\..\..\source\images\internal_images\gray_image.cpp" />
+    <ClCompile Include="..\..\..\source\images\internal_images\image.cpp" />
+    <ClCompile Include="..\..\..\source\images\internal_images\rgba_image.cpp" />
+    <ClCompile Include="..\..\..\source\images\internal_images\rgb_image.cpp" />
+    <ClCompile Include="..\..\..\source\images\png_file.cpp" />
+    <ClCompile Include="..\..\..\source\main.cpp" />
+    <ClCompile Include="..\..\..\source\math\astar.cpp" />
+    <ClCompile Include="..\..\..\source\math\bounding_box.cpp" />
+    <ClCompile Include="..\..\..\source\math\camera.cpp" />
+    <ClCompile Include="..\..\..\source\math\frustum.cpp" />
+    <ClCompile Include="..\..\..\source\math\functions.cpp" />
+    <ClCompile Include="..\..\..\source\math\helper.cpp" />
+    <ClCompile Include="..\..\..\source\math\line2d.cpp" />
+    <ClCompile Include="..\..\..\source\math\line3d.cpp" />
+    <ClCompile Include="..\..\..\source\math\math.cpp" />
+    <ClCompile Include="..\..\..\source\math\math_error.cpp" />
+    <ClCompile Include="..\..\..\source\math\noise.cpp" />
+    <ClCompile Include="..\..\..\source\math\oct_tree.cpp" />
+    <ClCompile Include="..\..\..\source\math\plane.cpp" />
+    <ClCompile Include="..\..\..\source\math\random.cpp" />
+    <ClCompile Include="..\..\..\source\math\triangle2d.cpp" />
+    <ClCompile Include="..\..\..\source\math\triangle3d.cpp" />
+    <ClCompile Include="..\..\..\source\opencl\buffer.cpp" />
+    <ClCompile Include="..\..\..\source\opencl\command_queue.cpp" />
+    <ClCompile Include="..\..\..\source\opencl\context.cpp" />
+    <ClCompile Include="..\..\..\source\opencl\device.cpp" />
+    <ClCompile Include="..\..\..\source\opencl\kernel.cpp" />
+    <ClCompile Include="..\..\..\source\opencl\platform.cpp" />
+    <ClCompile Include="..\..\..\source\opencl\program.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\architecture\vertex_array_object.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\attribute_configer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\driver.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\error.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\frame_buffer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\frame_buffer_with_depth.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\glsl_program.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\grid_object.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\light.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\light_manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\linux\driver_parameters_linux.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\linux\video_driver_linux.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\material.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\module.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip_objects.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\nvtristrip\vertex_cache.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\point_object.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\quad_object.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\data\quad_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\data\skinned_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\data\static_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\data\vertex_array_object.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\managers\managers.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render\batch.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render\frame.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render\render_pass.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render\render_target.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render\render_target_back_buffer.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render\render_target_texture.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\dummy_render_context_policy.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_bump_mapping.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_grass.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_gui.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_light.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_particle_system.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_skinning.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_solid_color_3d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_solid_textured_3d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\render_contexts.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_bump.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_grass.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_gui.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_light.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_particle.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_skinning.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_color.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_textured.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_terrain.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\shader.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_bump.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_grass.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_gui.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_light.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle_system.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_skinning.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_solid_color.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_terrain.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transform_3d.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\terrain_render.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\textures\texture2d.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\textures\texture_2d_manager.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\textures\texture_context.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\text_texture_2d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\vao_manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\vbo.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\win32\driver_parameters_win32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\win32\driver_win32.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\win32\extensions_win32.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\win32\video_driver_win32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\bbox_render.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\character_render.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\simple_render.cpp" />
+    <ClCompile Include="..\..\..\source\render\solid_object_render.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\node.cpp" />
+    <ClCompile Include="..\..\..\source\string\string.cpp" />
+    <ClCompile Include="..\..\..\source\string\win32\string_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\clock.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\events.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\focused.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\idle_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\key_char_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\key_down_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\key_up_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\key_wchar_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\model_time_step_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_enter.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_hoover_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_leave.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_left_button_down.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_left_button_up.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_middle_button_down.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_middle_button_up.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_move_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_right_button_down.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_right_button_up.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\mouse_wheel_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\unfocused.cpp" />
+    <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp" />
+    <ClCompile Include="..\..\..\source\system\event_manager.cpp" />
+    <ClCompile Include="..\..\..\source\system\global_resource_manager.cpp" />
+    <ClCompile Include="..\..\..\source\system\hresource.cpp" />
+    <ClCompile Include="..\..\..\source\system\linux\clock_linux.cpp" />
+    <ClCompile Include="..\..\..\source\system\linux\folder_linux.cpp" />
+    <ClCompile Include="..\..\..\source\system\linux\text_file_linux.cpp" />
+    <ClCompile Include="..\..\..\source\system\linux\timer_linux.cpp" />
+    <ClCompile Include="..\..\..\source\system\linux\window_linux.cpp" />
+    <ClCompile Include="..\..\..\source\system\logger.cpp" />
+    <ClCompile Include="..\..\..\source\system\mega_destroyer.cpp" />
+    <ClCompile Include="..\..\..\source\system\node.cpp" />
+    <ClCompile Include="..\..\..\source\system\object.cpp" />
+    <ClCompile Include="..\..\..\source\system\poolable.h" />
+    <ClCompile Include="..\..\..\source\system\pool_manager.cpp" />
+    <ClCompile Include="..\..\..\source\system\storable.cpp" />
+    <ClCompile Include="..\..\..\source\system\system_clock.cpp" />
+    <ClCompile Include="..\..\..\source\system\thread_job.cpp" />
+    <ClCompile Include="..\..\..\source\system\thread_pool.cpp" />
+    <ClCompile Include="..\..\..\source\system\types\list.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\assert_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\binary_file_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\buffer_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\camera_capture_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\clock_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\config_file_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\console_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\error_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\folder_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\handle_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\keyboard_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\mouse_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\stack_trace_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\thread_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\win32\window_win32.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\action_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\animation_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\armature_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\bone_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\camera_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\light_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\material_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\mesh_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\object_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\object_type_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\descriptors\world_desc.cpp" />
+    <ClCompile Include="..\..\..\source\utility\fonts\font_builder.cpp" />
+    <ClCompile Include="..\..\..\source\utility\parser\base_parser.cpp" />
+    <ClCompile Include="..\..\..\source\utility\parser\game_parser.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\action.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\animation.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\animation_mixer.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\armature_animation_mixer.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\bone_animation.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\object_animation.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\object_animation_mixer.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\building.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\camera.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\cameras\fps_camera.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\entity.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\light.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\lights\point_light.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\material.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\proxy.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\transform.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\world.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\motions\motion_strategy.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\motions\static_motion_strategy.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\scheme.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\armature.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\armature_manager.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\bone.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\sound.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\data\opencl\yuy2_to_rgb.cl" />
+    <None Include="..\..\..\data\shaders\bump_330.frag" />
+    <None Include="..\..\..\data\shaders\bump_330.vert" />
+    <None Include="..\..\..\data\shaders\draw_normals.frag" />
+    <None Include="..\..\..\data\shaders\draw_normals.vert" />
+    <None Include="..\..\..\data\shaders\grass_330.frag" />
+    <None Include="..\..\..\data\shaders\grass_330.vert" />
+    <None Include="..\..\..\data\shaders\gui_330.frag" />
+    <None Include="..\..\..\data\shaders\gui_330.vert" />
+    <None Include="..\..\..\data\shaders\line_2d_330.frag" />
+    <None Include="..\..\..\data\shaders\line_2d_330.vert" />
+    <None Include="..\..\..\data\shaders\line_330.frag" />
+    <None Include="..\..\..\data\shaders\line_330.vert" />
+    <None Include="..\..\..\data\shaders\line_3d_330.frag" />
+    <None Include="..\..\..\data\shaders\line_3d_330.vert" />
+    <None Include="..\..\..\data\shaders\normals_330.frag" />
+    <None Include="..\..\..\data\shaders\normals_330.vert" />
+    <None Include="..\..\..\data\shaders\particle_330.frag" />
+    <None Include="..\..\..\data\shaders\particle_330.vert" />
+    <None Include="..\..\..\data\shaders\per_vertex_lighting_330.frag" />
+    <None Include="..\..\..\data\shaders\per_vertex_lighting_330.vert" />
+    <None Include="..\..\..\data\shaders\quad_330.geom" />
+    <None Include="..\..\..\data\shaders\shaders.ini" />
+    <None Include="..\..\..\data\shaders\skinning_330.frag" />
+    <None Include="..\..\..\data\shaders\skinning_330.vert" />
+    <None Include="..\..\..\data\shaders\solid_color_2d_330.frag" />
+    <None Include="..\..\..\data\shaders\solid_color_2d_330.vert" />
+    <None Include="..\..\..\data\shaders\solid_color_3d_330.frag" />
+    <None Include="..\..\..\data\shaders\solid_color_3d_330.vert" />
+    <None Include="..\..\..\data\shaders\static_mesh_330.frag" />
+    <None Include="..\..\..\data\shaders\static_mesh_330.vert" />
+    <None Include="..\..\..\data\shaders\terrain_330 - Copy.frag" />
+    <None Include="..\..\..\data\shaders\terrain_330 - Copy.vert" />
+    <None Include="..\..\..\data\shaders\terrain_330.frag" />
+    <None Include="..\..\..\data\shaders\terrain_330.vert" />
+    <None Include="..\..\..\data\shaders\textured_2d_330.frag" />
+    <None Include="..\..\..\data\shaders\textured_2d_330.vert" />
+    <None Include="..\..\..\source\blender\punk_exporter_2_60.py" />
+    <None Include="..\..\..\source\images\converter\yuy2_to_rgb.cl" />
+    <None Include="..\..\..\source\system\poolable.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\source\opengl\material.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Text>
+    <Text Include="..\..\..\source\opengl\model.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Text>
+    <Text Include="..\..\..\source\opengl\nvtristrip\README.txt" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F229A14C-5018-4689-876D-0119E032B530}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>punk_engine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;_DEBUG;_WINDOWS;_USRDLL;PUNK_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\OpenCL\common\inc\;$(SolutionDir)..\..\3rd\bullet\src;$(SolutionDir)..\..\3rd\src\;$(SolutionDir)..\..\3rd\src\freetype-2.4.6\include;$(SolutionDir)..\..\3rd\src\lpng154</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\OpenCL\common\lib\Win32\;$(SolutionDir)..\..\3rd\lib\$(ConfigurationName);$(SolutionDir)..\..\3rd\bullet\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;BulletCollision_debug.lib;BulletDynamics_debug.lib;BulletSoftBody_debug.lib;ConvexDecomposition_debug.lib;LinearMath_debug.lib;freetype246_D.lib;libpngd.lib;OpenAL32.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;NDEBUG;_WINDOWS;_USRDLL;PUNK_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\bullet\src;$(SolutionDir)..\..\3rd\OpenCL\common\inc\;$(SolutionDir)..\..\3rd\src\;$(SolutionDir)..\..\3rd\src\freetype-2.4.6\include;$(SolutionDir)..\..\3rd\src\lpng154</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\OpenCL\common\lib\Win32\;$(SolutionDir)..\..\3rd\lib\$(ConfigurationName);$(SolutionDir)..\..\3rd\bullet\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;EFX-Util.lib;freetype246.lib;libpng.lib;OpenAL32.lib;zlib.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;ConvexDecomposition.lib;HACD.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

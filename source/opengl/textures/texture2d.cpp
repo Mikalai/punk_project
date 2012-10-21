@@ -1,6 +1,6 @@
 /*
 File: Texture2D.cpp
-Author: Abramau Mikalai
+Author: Abramau Mikalaj
 Description: Texture2D implementation
 */
 
@@ -119,15 +119,33 @@ namespace OpenGL
 		impl_texture_2d->Clear();
 	}
 
-	void Texture2D::Load(std::istream& stream)
+	bool Texture2D::Load(std::istream& stream)
 	{
 		ImageModule::Image image;
 		image.Load(stream);
 		Create(image);
+		return true;
 	}
 
-	void Texture2D::Save(std::ostream& stream)
+	bool Texture2D::Save(std::ostream& stream)
+	{	
+		return false;
+	}
+
+	Texture2D* Texture2D::CreateFromFile(const System::string& path)
 	{		
+		ImageModule::Importer importer;
+		std::auto_ptr<ImageModule::Image> image(importer.LoadAnyImage(path));
+		std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
+		result->Create(*image);
+		return result.release();
+	}
+
+	Texture2D* Texture2D::CreateFromStream(std::istream& stream)
+	{		
+		std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
+		result->Load(stream);
+		return result.release();
 	}
 
 	/*void Texture2D::Create(const ImageModule::ImageFile& file)

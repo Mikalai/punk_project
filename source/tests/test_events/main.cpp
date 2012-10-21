@@ -12,5 +12,8 @@ int main()
 	System::Window::Instance()->SetTitle(L"Event test");
 	System::Mouse::Instance()->LockInWindow(false);
 	System::Window::Instance()->Loop();
+
+	System::MegaDestroyer::Destroy();
+
 	return 0;
 }

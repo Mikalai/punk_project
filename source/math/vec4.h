@@ -166,7 +166,7 @@ namespace Math
 			return System::string::Format(L"(%.3f; %.3f; %.3f; %.3f)", m_v[0], m_v[1], m_v[2], m_v[3]);
 		}
 
-	/*	void Save(System::Buffer& buffer) const
+	/*	bool Save(System::Buffer& buffer) const
 		{
 			buffer.WriteReal32(m_v[0]);
 			buffer.WriteReal32(m_v[1]);
@@ -174,7 +174,7 @@ namespace Math
 			buffer.WriteReal32(m_v[3]);
 		}
 
-		void Load()
+		bool Load()
 		{
 			m_v[0] = buffer.ReadReal32();
 			m_v[1] = buffer.ReadReal32();
@@ -446,14 +446,16 @@ namespace Math
 			//	should be completed somewhen
 		}
 
-		void Save(std::ostream& stream)
+		bool Save(std::ostream& stream)
 		{
 			stream.write((char*)m_v, sizeof(m_v));
+			return true;
 		}
 		
-		void Load(std::istream& stream)
+		bool Load(std::istream& stream)
 		{
 			stream.read((char*)m_v, sizeof(m_v));
+			return true;
 		}
 	};
 

@@ -2,14 +2,14 @@
 
 namespace System
 {
-    std::queue<SetFocusedEvent*> SetFocusedEvent::eventPool;
+ //   std::queue<SetFocusedEvent*> SetFocusedEvent::eventPool;
 
     SetFocusedEvent::SetFocusedEvent()
     {
 		eventCode = EVENT_SET_FOCUSED;
     }
 
-    void SetFocusedEvent::Release()
+  /*  void SetFocusedEvent::Release()
     {
         this->eventPool.push(this);
     }
@@ -28,7 +28,7 @@ namespace System
             return event;
         }
     }
-
+*/
 	string SetFocusedEvent::ToString()
 	{
 		return string::Format(L"Code: %d; Type: FOCUSED", eventCode);

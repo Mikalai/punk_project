@@ -126,10 +126,6 @@ namespace Math
     {
         return x - y*floor(x/y);
     }
-    float clamp(float x, float minVal, float maxVal)
-    {
-        return min(max(x, minVal), maxVal);
-    }
     float step(float edge, float x)
     {
         if (x < edge)

@@ -5,12 +5,11 @@
 
 namespace System
 {
-    class PUNK_ENGINE KeyCharEvent : public Event
-    {
-        static std::queue<KeyCharEvent*> eventPool;
-        KeyCharEvent();
+	class PUNK_ENGINE KeyCharEvent : public Event, public Poolable<KeyCharEvent>
+    {        
         KeyCharEvent(const KeyCharEvent&);
     public:
+		KeyCharEvent();
         int key;
 		int repeat_count;
 		int scan_code;
@@ -19,8 +18,6 @@ namespace System
 		bool prevState;
 		bool transitionState;
 		virtual string ToString();
-        virtual void Release();
-        static KeyCharEvent* Raise();
     };
 }
 

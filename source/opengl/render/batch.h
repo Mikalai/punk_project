@@ -4,17 +4,19 @@
 #include <list>
 #include "../render_context/render_context_policy.h"
 #include "../renderable/data/renderable.h"
+#include "../../system/poolable.h"
+#include "../../system/smart_pointers/handle.h"
 
 namespace OpenGL
 {	
 	class TextureContext;
 	class Texture2D;
 
-	class PUNK_ENGINE Batch
+	class PUNK_ENGINE Batch : public System::Poolable<Batch>
 	{		
 	public:
 		~Batch();
-		std::list<Texture2D*> m_textures;
+		std::list<System::Handle<Texture2D>> m_textures;
 		DummyRenderPolicy::DummyParameters* m_parameters;
 		Renderable* m_renderable;
 	};

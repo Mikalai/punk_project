@@ -2,22 +2,22 @@
 #define _H_PUNK_WINDOW_RESIZE
 
 #include "event.h"
+#include "../poolable.h"
 
 namespace System
 {
-    class PUNK_ENGINE WindowResizeEvent : public Event
-    {
-        static std::queue<WindowResizeEvent*> eventPool;
-        WindowResizeEvent();
+	class PUNK_ENGINE WindowResizeEvent : public Event, public Poolable<WindowResizeEvent>
+    {        
         WindowResizeEvent(const WindowResizeEvent&);
     public:
+		WindowResizeEvent();
+		virtual ~WindowResizeEvent();
+
         bool minimized;
 		bool restored;
         int width, height;
-
-        virtual void Release();
+		
 		virtual string ToString();
-        static WindowResizeEvent* Raise();
     };
 }
 

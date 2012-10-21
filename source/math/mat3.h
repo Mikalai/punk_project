@@ -211,12 +211,12 @@ namespace Math
 		}
 
 
-/*		void Save(System::Buffer& buffer) const
+/*		bool Save(System::Buffer& buffer) const
 		{
 			buffer.WriteBuffer(m, sizeof(m));
 		}
 
-		void Load(System::Buffer& buffer)
+		bool Load(System::Buffer& buffer)
 		{
 			buffer.ReadBuffer(m, sizeof(m));
 		}

@@ -1,6 +1,6 @@
-/*
+﻿/*
 File: BoundingBox.h
-Author: Abramau Mikalai
+Author: Abramaŭ Mikałaj
 Description: A bounding box
 */
 
@@ -43,10 +43,12 @@ namespace Math
 		const BoundingBox& Transform(const Math::mat4& transform, Math::vec3& min, Math::vec3& max) const;
 		const BoundingBox& Transform(const mat4& transform) const;
 
-		void Save(std::ostream& stream);
-		void Load(std::istream& stream);
+		bool Save(std::ostream& stream);
+		bool Load(std::istream& stream);
 
 		friend PUNK_ENGINE BoundingBox Merge(const BoundingBox* b1, const BoundingBox* b2);
+
+		std::wostream& out_formatted(std::wostream& stream);
 	};
 
 	PUNK_ENGINE BoundingBox Merge(const BoundingBox* b1, const BoundingBox* b2);

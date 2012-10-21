@@ -1,7 +1,7 @@
 #ifndef _H_BUILDING
 #define _H_BUILDING
 
-#include "../punk_engine/punk_engine.h"
+#include "../../punk_engine.h"
 
 class Building
 {

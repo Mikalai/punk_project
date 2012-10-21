@@ -5,12 +5,11 @@
 
 namespace System
 {
-    class PUNK_ENGINE MouseWheelEvent : public Event
-    {
-        static std::queue<MouseWheelEvent*> eventPool;
-        MouseWheelEvent();
+	class PUNK_ENGINE MouseWheelEvent : public Event, public Poolable<MouseWheelEvent>
+    {        
         MouseWheelEvent(const MouseWheelEvent&);
     public:       
+		MouseWheelEvent();
         int x, y;
 		int x_prev, y_prev;
         int delta;
@@ -22,9 +21,7 @@ namespace System
         bool xbutton1 : 1;
         bool xbutton2 : 1;
 
-        virtual void Release();
 		virtual string ToString();
-        static MouseWheelEvent* Raise();
     };
 }
 

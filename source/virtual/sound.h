@@ -4,7 +4,7 @@
 #include "../config.h"
 #include "../math/vec3.h"
 #include "../string/string.h"
-#include "../utility/decl_property.h"
+#include "../system/decl_property.h"
 
 #include <iosfwd>
 
@@ -23,8 +23,8 @@ namespace Utility
 		PROPERTY(float, ConeAngleOuter, m_cone_angle_outer);
 		PROPERTY(float, ConeVolumeOuter, m_cone_volume_outer);
 		PROPERTY(float, Attenuation, m_attenuation);
-		void Save(std::ostream& stream);
-		void Load(std::istream& stream);
+		bool Save(std::ostream& stream);
+		bool Load(std::istream& stream);
 	private:
 		System::string m_name;
 		System::string m_filename;

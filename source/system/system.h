@@ -30,6 +30,7 @@
 #include "resource_manager_2.h"
 #include "node.h"
 #include "profiler.h"
+#include "camera_capture.h"
 
 #include "types\list.h"
 #include "types\priority_list.h"

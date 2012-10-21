@@ -1,6 +1,6 @@
 /*
 File: Extensions.cpp
-Author:	Abramau Mikalai
+Author:	Abramau Mikalaj
 Description: Load OpenGL functions
 */
 #include "extensions_win32.h"

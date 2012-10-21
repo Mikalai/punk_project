@@ -5,18 +5,14 @@
 
 namespace System
 {
-    class PUNK_ENGINE MouseHooverEvent : public Event
-    {
-        static std::queue<MouseHooverEvent*> eventPool;
-        MouseHooverEvent();
+	class PUNK_ENGINE MouseHooverEvent : public Event, public Poolable<MouseHooverEvent>
+    {        
         MouseHooverEvent(const MouseHooverEvent&);
     public:
+		MouseHooverEvent();
         int x, y;
 		int x_prev, y_prev;
-
-		virtual void Release();
 		virtual string ToString();
-        static MouseHooverEvent* Raise();
     };
 }
 

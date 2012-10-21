@@ -1,12 +1,13 @@
 #ifndef _H_PUNK_UTILITY_VERTEX_BONE_WEIGHT
 #define _H_PUNK_UTILITY_VERTEX_BONE_WEIGHT
 
-#include "bone.h"
+#include <map>
+#include "../../string/string.h"
 #include "vertex_index.h"
 
-namespace Utility
+namespace Virtual
 {
-	typedef std::map<VertexIndex, BoneWeights> VertexBoneWeights;
+	typedef std::map<VertexIndex, std::map<System::string, float>> VertexBoneWeights;
 }
 
 #endif

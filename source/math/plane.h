@@ -1,6 +1,6 @@
 /*
     File: plane.h
-    Author: Nickolai Abramov
+    Author: Mikalaj Abramau
     Desc: Description of geometry 3d plane
 */
 

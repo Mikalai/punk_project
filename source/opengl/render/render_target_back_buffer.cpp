@@ -4,6 +4,7 @@
 namespace OpenGL
 {
 	RenderTargetBackBuffer::RenderTargetBackBufferProperties::RenderTargetBackBufferProperties()
+		: Properties()
 	{
 		m_type = RENDER_TARGET_BACK_BUFFER;
 	}

@@ -3,7 +3,7 @@
 
 #include "../config.h"
 #include "error.h"
-#include "storage.h"
+//#include "storage.h"
 #include "internal_images\rgba_image.h"
 #include "internal_images\rgb_image.h"
 #include "internal_images\gray_image.h"

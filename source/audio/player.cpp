@@ -39,19 +39,19 @@ namespace Audio
 		}
 	}
 
-	void Player::SetSound(System::HResource snd)
+	void Player::SetSound(AudioBuffer* snd)
 	{
 		m_sound = snd; 
-		if (m_sound.GetIndex() != AudioManager::RESOURCE_TYPE)
-		{
-			out_error() << "Resource handle is not valid" << std::endl;
-			return;
-		}
+		//if (m_sound.GetIndex() != AudioManager::RESOURCE_TYPE)
+		//{
+		//	out_error() << "Resource handle is not valid" << std::endl;
+		//	return;
+		//}
 
-		AudioBuffer* buffer = static_cast<AudioBuffer*>(*m_sound);
+		//AudioBuffer* buffer = static_cast<AudioBuffer*>(*m_sound);
 		
 		// Attach Source to Buffer
-		alSourcei(m_source, AL_BUFFER, buffer->m_buffer);
+		alSourcei(m_source, AL_BUFFER, m_sound->m_buffer);
 		CHECK_ALERROR("alSourcei(m_source, AL_BUFFER, m_sound->m_buffer); failed");
 	}
 

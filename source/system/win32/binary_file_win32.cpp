@@ -5,6 +5,7 @@
 #include <Windows.h>
 
 #include "../error.h"
+#include "../logger.h"
 #include "binary_file_win32.h"
 
 namespace System
@@ -23,26 +24,20 @@ namespace System
 	{
 		DWORD error = GetLastError();
 
-		HANDLE hFile = CreateFile(filename.Data(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE hFile = CreateFile(filename.Data(), GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		if (hFile == INVALID_HANDLE_VALUE)
-		{
-			throw SystemError(L"Error in binary file, can't load it " + filename);
-		}
+			return (out_error() << L"Error in binary file, can't load it " + filename << std::endl, false);
 
 		int size = GetFileSize(hFile, 0);
 		buffer.SetSize(size);
 
 		DWORD read;
 		if (!ReadFile(hFile, buffer.StartPointer(), size, &read, 0))
-		{
-			throw SystemError(L"Error in binary file, can't read data " + filename);
-		}
+			return (out_error() << L"Error in binary file, can't read data " + filename << std::endl, false);
 
 		if (read != size)
-		{
-			throw SystemError(L"Error in binary file, read data less than file contains, possible bad staff happenes " + filename);
-		}
+			return (out_error() << L"Error in binary file, read data less than file contains, possible bad staff happenes " + filename << std::endl, false);
 
 		CloseHandle(hFile);
 		error = GetLastError();
@@ -56,21 +51,14 @@ namespace System
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0,CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		if (hFile == INVALID_HANDLE_VALUE)
-		{
-			throw SystemError(L"Error in binary file, open file for saving " + filename);
-		}
+			return (out_error() << L"Error in binary file, open file for saving " + filename << std::endl, false);
 
 		DWORD read;
 		if (!WriteFile(hFile, (LPCVOID)buffer.StartPointer(), (DWORD)buffer.GetPosition(), &read, 0))
-		{
-			throw SystemError(L"Error in binary file, can't write data to file " + filename);
-			DWORD error = GetLastError();
-		}
+			return (out_error() << L"Error in binary file, can't write data to file " + filename << std::endl, false);
 
 		if (read != buffer.GetPosition())
-		{
-			throw SystemError(L"Error in binary file, written data is less than should be " + filename);
-		}
+			return (out_error() << L"Error in binary file, written data is less than should be " + filename << std::endl, false);
 
 		CloseHandle(hFile);
 		error = GetLastError();
@@ -84,9 +72,7 @@ namespace System
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		if (hFile == INVALID_HANDLE_VALUE)
-		{
-			throw SystemError(L"Error in binary file, can't open file for appending it " + filename);
-		}
+			return (out_error() << L"Error in binary file, can't open file for appending it " + filename << std::endl, false);
 
 		DWORD offset = GetFileSize(hFile, 0);
 		SetFilePointer(hFile, offset, 0, FILE_BEGIN);
@@ -94,14 +80,10 @@ namespace System
 		DWORD read;
 
 		if (!WriteFile(hFile, (LPCVOID)buffer.StartPointer(), (DWORD)buffer.GetPosition(), &read, 0))
-		{
-			throw SystemError(L"Error in binary file, can't write data to file " + filename);
-		}
+			return (out_error () << L"Error in binary file, can't write data to file " + filename, false);
 
 		if (read != buffer.GetPosition())
-		{
-			throw SystemError(L"Error in binary file, written data is less than should be in " + filename);
-		}
+			return (out_error () << L"Error in binary file, written data is less than should be in " + filename << std::endl, false);
 
 		CloseHandle(hFile);
 		error = GetLastError();
@@ -119,9 +101,7 @@ namespace System
 			return true;
 
 		if (hFile == INVALID_HANDLE_VALUE)
-		{
-			throw SystemError(L"Error can't truncate binary file " + filename);
-		}
+			return (out_error() << L"Error can't truncate binary file " + filename << std::endl, false);
 
 		CloseHandle(hFile);
 		error = GetLastError();

@@ -29,7 +29,7 @@ namespace ImageModule
 		Image* LoadAnyImage(const System::string& filename);
 
 	protected:
-		virtual void Load(const System::string& filename);
+		virtual bool Load(const System::string& filename);
 	};
 };
 

@@ -4,15 +4,13 @@
 
 #include <Windows.h>
 #include <memory>
-#include "../singletone.h"
 #include "../../string/string.h"
 #include "../../config.h"
 
 namespace System
 {
-	SingletoneInterface(Console, PUNK_ENGINE);
 
-	class PUNK_ENGINE Console : public Singletone(Console)
+	class PUNK_ENGINE Console
 	{
 		//	handle of the console object
 		HANDLE m_console_handle;

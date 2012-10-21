@@ -1,6 +1,6 @@
 #include "../../punk_engine.h"
 
-Utility::Camera camera;
+std::auto_ptr<Virtual::Cameras::FirstPersonCamera> g_camera;
 OpenGL::RenderTarget* rt;
 OpenGL::Frame frame;
 std::auto_ptr<OpenGL::RenderContextSolid3D> rc;
@@ -37,13 +37,15 @@ void Idle(System::Event*)
 	OpenGL::Driver* d = OpenGL::Driver::Instance();
 	OpenGL::RenderPass* pass = new OpenGL::RenderPass;
 
-	OpenGL::RenderContextSolid3D::PolicyParameters p;
-	p.m_proj_view_world = camera.GetViewProjectionMatrix()*Math::mat4::CreateRotation(1, 0, 0, x)*Math::mat4::CreateRotation(0, 1, 0, y);
-	p.m_diffuse_color.Set(1, 0, 1, 1);
+	OpenGL::RenderContextSolid3D::PolicyParameters* p = new OpenGL::RenderContextSolid3D::PolicyParameters;
 
-	OpenGL::Batch b;
-	b.m_parameters = &p;
-	b.m_renderable = m_quad.get();
+	p->m_proj_view_world = g_camera->GetViewProjectionMatrix()*Math::mat4::CreateRotation(1, 0, 0, x)*Math::mat4::CreateRotation(0, 1, 0, y);
+	p->m_diffuse_color.Set(1, 0, 1, 1);
+
+	OpenGL::Batch* b = new OpenGL::Batch;
+	b->m_parameters = p;
+	b->m_renderable = m_quad.get();
+
 	pass->SetRenderTarget(rt);
 	pass->AddBatch(0, rc.get(), b); 
 
@@ -55,7 +57,9 @@ void Idle(System::Event*)
 
 int main()
 {
-	camera.SetPositionAndTarget(Math::vec3(0, 5, 5), Math::vec3(0,0,0), Math::vec3(0,1,0));
+	Virtual::Cameras::FirstPersonCameraOptions options;	
+	g_camera.reset(new Virtual::Cameras::FirstPersonCamera(options));
+	g_camera->SetPositionAndTarget(Math::vec3(0, 5, 5), Math::vec3(0,0,0), Math::vec3(0,1,0));
 
 	System::Window::Instance()->SetTitle(L"OpenGL Init test");
 	System::Mouse::Instance()->LockInWindow(false);
@@ -81,6 +85,7 @@ int main()
 	}
 
 	System::Window::Instance()->Loop();
-
+	
+	System::MegaDestroyer::Destroy();
 	return 0;
 }

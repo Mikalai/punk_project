@@ -2,31 +2,9 @@
 
 namespace System
 {
-    std::queue<MouseMiddleButtonUpEvent*> MouseMiddleButtonUpEvent::eventPool;
-
     MouseMiddleButtonUpEvent::MouseMiddleButtonUpEvent()
     {
         eventCode = EVENT_MOUSE_MBUTTON_UP;
-    }
-
-    void MouseMiddleButtonUpEvent::Release()
-    {
-        this->eventPool.push(this);
-    }
-
-    MouseMiddleButtonUpEvent* MouseMiddleButtonUpEvent::Raise()
-    {
-        if (eventPool.empty())
-        {
-            MouseMiddleButtonUpEvent* event = new MouseMiddleButtonUpEvent();
-            return event;
-        }
-        else
-        {
-            MouseMiddleButtonUpEvent* event = eventPool.front();
-            eventPool.pop();
-            return event;
-        }
     }
 
 	string MouseMiddleButtonUpEvent::ToString()

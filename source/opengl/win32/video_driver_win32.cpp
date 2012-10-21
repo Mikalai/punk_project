@@ -1,6 +1,6 @@
 /*
 File: Driver.cpp
-Author: Abramau Mikalai
+Author: Abramau Mikalaj
 Description: Contains implementation, for now not the best, of initialization
 and deinitialization rutines
 */

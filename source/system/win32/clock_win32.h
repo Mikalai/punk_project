@@ -1,6 +1,6 @@
 /*
         File: clock_win32.h
-	Author: Nickolai Abramov
+	Author: Mikalaj Abramau
 	Desc: Contains a class to access system time
 */
 
@@ -15,10 +15,11 @@
 
 namespace System
 {
-	SingletoneInterface(Clock, PUNK_ENGINE)
-
-	class PUNK_ENGINE Clock : public Singletone(Clock)
+	class PUNK_ENGINE Clock
     {
+		SingletoneInterface(Clock);
+
+	private:
         static const int timeSize = 64;
         wchar_t the_time[timeSize];
 		__int64 m_time;

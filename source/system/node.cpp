@@ -27,7 +27,7 @@ namespace System
 
 		if (deep)
 		{
-			for each (std::shared_ptr<Node> node in m_children)
+			for (auto node : m_children)
 			{
 				if (!node->Apply(visitor, deep))
 					return false;
@@ -36,4 +36,9 @@ namespace System
 		return true;
 	}
 
+	Node::~Node()
+	{
+		for (auto node : m_children)
+			delete node;
+	}
 }

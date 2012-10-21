@@ -2,28 +2,6 @@
 
 namespace System
 {
-    std::queue<MouseMoveEvent*> MouseMoveEvent::eventPool;
-
-    MouseMoveEvent* MouseMoveEvent::Raise()
-    {
-        if (eventPool.empty())
-        {
-            MouseMoveEvent* event = new MouseMoveEvent();
-            return event;
-        }
-        else
-        {
-            MouseMoveEvent* event = eventPool.front();
-            eventPool.pop();
-            return event;
-        }
-    }
-
-    void MouseMoveEvent::Release()
-    {
-        this->eventPool.push(this);
-    }
-
     MouseMoveEvent::MouseMoveEvent()
     {
         eventCode = EVENT_MOUSE_MOVE;

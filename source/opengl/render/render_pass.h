@@ -6,11 +6,12 @@
 #include <list>
 #include "../render_context/dummy_render_context_policy.h"
 #include "batch.h"
+#include "../../system/poolable.h"
 
 namespace OpenGL
 {
 	class RenderTarget;
-	class PUNK_ENGINE RenderPass
+	class PUNK_ENGINE RenderPass : public System::Poolable<RenderPass>
 	{
 		std::map<TextureContext*, std::map<DummyRenderPolicy*, std::list<Batch*> > > m_batches;
 		RenderTarget* m_render_target;

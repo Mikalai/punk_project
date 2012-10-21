@@ -6,7 +6,7 @@
 
 namespace Audio
 {
-	class Sound;
+	class AudioBuffer;
 
 	class PUNK_ENGINE Player
 	{
@@ -16,8 +16,8 @@ namespace Audio
 		Player();
 		~Player();
 
-		void SetSound(System::HResource snd);
-		System::HResource GetSound() { return m_sound; }
+		void SetSound(AudioBuffer* snd);
+		AudioBuffer* GetSound() { return m_sound; }
 				
 		void Init();
 		void Clear();
@@ -29,7 +29,7 @@ namespace Audio
 
 	private:
 
-		System::HResource m_sound;
+		AudioBuffer* m_sound;
 		unsigned m_source;  
 		int m_state;
 		bool m_loop;

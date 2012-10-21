@@ -20,14 +20,15 @@ namespace System
 	class PUNK_ENGINE Node
 	{
 		Node* m_parent;
-		std::list<std::shared_ptr<Node>> m_children;
+		std::list<Node*> m_children;
 	public:		
 		Node();
 		Node(const Node& node);
 		Node& operator = (const Node& node);
+		~Node();
 
-		void AddChild(Node* node) { m_children.push_back(std::shared_ptr<Node>(node)); }
-		void RemoveChild(Node* node) { m_children.remove(std::shared_ptr<Node>(node)); }
+		void AddChild(Node* node) { m_children.push_back(node); }
+		void RemoveChild(Node* node) { m_children.remove(node); }
 
 		bool Apply(NodeVisitor& visitor, bool deep = true);
 	};

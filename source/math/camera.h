@@ -1,6 +1,6 @@
 /*
 File: Camera.h
-Author: Abramau Mikalai
+Author: Abramau Mikalaj
 Description: There is a class that simplify working with
 view matrix
 */

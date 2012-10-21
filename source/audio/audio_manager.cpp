@@ -25,6 +25,13 @@ namespace System
 	}
 }
 
+namespace Audio
+{
+	AudioManager::AudioManager()
+	{
+	}
+}
+
 //
 //	}
 //}

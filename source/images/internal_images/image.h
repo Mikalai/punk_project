@@ -26,8 +26,8 @@ namespace ImageModule
 		Image& operator = (const Image& image);
 		~Image();
 
-		void Save(std::ostream& stream) const;
-		void Load(std::istream& stream);				
+		bool Save(std::ostream& stream) const;
+		bool Load(std::istream& stream);				
 		const System::Descriptor& GetDescriptor() const;		
 		unsigned GetSizeInBytes() const;
 		unsigned GetComponentsCount() const;

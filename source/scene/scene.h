@@ -1,7 +1,6 @@
-#ifndef _H_PUNK_SCENE
-#define _H_PUNK_SCENE
+#ifndef _H_PUNK_SCENE_MAIN_HEADER
+#define _H_PUNK_SCENE_MAIN_HEADER
 
-#include "scene_graph.h"
-#include "storage.h"
+#include "node.h"
 
-#endif
+#endif	//	_H_PUNK_SCENE_MAIN_HEADER

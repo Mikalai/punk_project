@@ -6,6 +6,7 @@
 #include "../internal_images/gray_image.h"
 #include "../internal_images/image_impl.h"
 #include "png_importer.h"
+#include "../../system/logger.h"
 #include <string>
 
 namespace ImageModule
@@ -54,7 +55,7 @@ namespace ImageModule
 		return gray_image;
 	}
 
-	void Importer::Load(const System::string& filename)
+	bool Importer::Load(const System::string& filename)
 	{
 		std::wstring file(filename.Data());
 		if (file.rfind(L".png") != std::wstring::npos)
@@ -62,8 +63,12 @@ namespace ImageModule
 			PngImporter importer;
 			importer.Load(filename);
 			std::swap(impl_image, importer.impl_image);
+			return true;
 		}
 		else
-			throw ImageError(L"Unsupported file format");
+		{
+			out_error() << L"Unsupported file format" << std::endl;
+			return false;
+		}		
 	}
 }

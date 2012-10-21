@@ -48,10 +48,25 @@ namespace Math
     extern float roundEven(float x);
     extern float ceil(float x);
     extern float fract(float x);
-    extern float mod(float x, float y);
-    extern float clamp(float x, float min, float max);
+    extern float mod(float x, float y);    
     extern float step(float edge, float x);
     extern float smoothstep(float edge0, float edge1, float x);
+
+	template<class T>
+	T round_up(T value, T ratio)
+	{
+		T rest = value % ratio;
+		if (rest == 0)
+			return value;
+		else
+			return value + ratio - rest;
+	}
+
+	template<class T>
+	T clamp(T min_val, T max_val, T x)
+	{
+		return min(max(x, min_val), max_val);
+	}
 
     template<class T>
     inline T min(T x, T y)

@@ -1,6 +1,6 @@
 /*
 	File: File.h
-	Author: Nickolai Abramov
+	Author: Mikalaj Abramau
 	Desc: A simple text file
 */
 

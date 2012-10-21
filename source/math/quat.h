@@ -256,6 +256,12 @@ namespace Math
 			m_vec += v.m_vec;
 			return *this;
 		}
+
+		std::wostream& out_formatted(std::wostream& stream)
+		{
+			stream << ToString().Data();
+			return stream;
+		}
 	};
 
 	template<class T>
@@ -284,78 +290,78 @@ namespace Math
 
 	template<class T>
 	Quaternion<T> operator / (const Quaternion<T>& q, const T& s)
-		{
+	{
 		return Quaternion<T>(q.Scalar()/s, q.Vector()/s);
 	}
 
 	template<class T>
-		Quaternion<T> operator * (const Quaternion<T>& q1, const Quaternion<T>& q2)
+	Quaternion<T> operator * (const Quaternion<T>& q1, const Quaternion<T>& q2)
 	{
 		T scalar = q1.Scalar() * q2.Scalar() - q1.Vector().Dot(q2.Vector());
 		Vector3<T> vector = q1.Scalar() * q2.Vector() + q2.Scalar()*q1.Vector() + q1.Vector().Cross(q2.Vector());
 		return Quaternion<T>(scalar, vector[0], vector[1], vector[2]);
-		}
+	}
 
 
 
 	typedef Quaternion<float> quat;
 }
-	
+
 /*
 
 T Sign() const
 {
-	return *this
+return *this
 }
 
 T Dot(const Quaternion<T>& q) const
 {
-	return m_v[1]*q[1] + m_v[2]*q[2] + m_v[3]*q[3] + m_v[0]*q[0];
+return m_v[1]*q[1] + m_v[2]*q[2] + m_v[3]*q[3] + m_v[0]*q[0];
 }
 
 const wchar_t* ToString() const
 {
-	swprintf(m_buffer, L"(%.3f; %.3f, %.3f; %.3f)", m_v[0], m_v[1], m_v[2], m_v[3]);
+swprintf(m_buffer, L"(%.3f; %.3f, %.3f; %.3f)", m_v[0], m_v[1], m_v[2], m_v[3]);
 return m_buffer;
 }
 
 T& operator [] (int i)
-	{
+{
 return m_v[i];
 }
 
 const T& operator[] (int i) const
-	{
+{
 return m_v[i];
 }
 
 T& W() 
-	{
+{
 return m_v[0];
 }
 
 const T& W() const
-	{
+{
 return m_v[0];
 }
 
 T& X() 
-	{
+{
 return m_v[1];
 }
 
 const T& X() const
-	{
+{
 return m_v[1];
 }
 
 T& Y() 
-	{
+{
 return m_v[2];
 }
 
 const T& Y() const
-	{
+{
 return m_v[2];
 }
 
@@ -365,16 +371,16 @@ return m_v[3];
 }
 
 const T& Z() const
-	{
+{
 return m_v[3];
 }
 
-void Save(System::Buffer& buffer) const
+bool Save(System::Buffer& buffer) const
 {
-	buffer.WriteBuffer(m_v, sizeof(m_v));
+buffer.WriteBuffer(m_v, sizeof(m_v));
 }
 
-void Load(System::Buffer& buffer)
+bool Load(System::Buffer& buffer)
 {
 buffer.ReadBuffer(m_v, sizeof(m_v));
 }
@@ -410,25 +416,25 @@ return q;//.Normalized();
 /*
 T v[4];
 T A, B, C, D, E, F, G, H;
-	
+
 A = (q1[0] + q1[1]) * (q2[0] + q2[1]);
 B = (q1[3] - q1[2]) * (q2[2] - q2[3]);
 C = (q1[1] - q1[0]) * (q2[2] + q2[3]);
 D = (q1[2] + q1[3]) * (q2[1] - q2[0]);
 E = (q1[1] + q1[3]) * (q2[1] + q2[2]);
-	F = (q1[1] - q1[3]) * (q2[1] - q2[2]);
+F = (q1[1] - q1[3]) * (q2[1] - q2[2]);
 G = (q1[0] + q1[2]) * (q2[0] - q2[3]);
 H = (q1[0] - q1[2]) * (q2[0] + q2[3]);
 
 v[0] = B + (-E - F + G + H) * 0.5;
 v[1] = A - ( E + F + G + H) * 0.5; 
-	v[2] =-C + ( E - F + G - H) * 0.5;
+v[2] =-C + ( E - F + G - H) * 0.5;
 v[3] =-D + ( E - F - G + H) * 0.5;
 
 return Quaternion<T>(v[0], v[1], v[2], v[3]);
 }	
 /*
-	template<class T>
+template<class T>
 Quaternion<T> operator * (const Quaternion<T>& q, T s)
 {
 return Quaternion<T>(q[0]*s, q[1]*s, q[2]*s, q[3]*s);
@@ -436,7 +442,7 @@ return Quaternion<T>(q[0]*s, q[1]*s, q[2]*s, q[3]*s);
 
 template<class T>
 Quaternion<T> operator * (T s, const Quaternion<T>& q)
-	{
+{
 return Quaternion<T>(q[0]*s, q[1]*s, q[2]*s, q[3]*s);
 }
 
@@ -444,20 +450,20 @@ template<class T>
 Quaternion<T> operator / (const Quaternion<T>& q, T s)
 {
 return Quaternion<T>(q[0]/s, q[1]/s, q[2]/s, q[3]/s);
-	}
+}
 
 template<class T>
 Vector3<T> operator * (const Quaternion<T>& q, const Vector3<T>& v)
 {
 Quaternion<T> q2(0, v[0], v[1], v[2]);
-	q2 = q * q2;
+q2 = q * q2;
 return Vector3<T>(q2[1], q2[2], q2[3]);
 }
 
 template<class T>
 Vector3<T> operator * (const Vector3<T>& v, const Quaternion<T>& q)
 {
-	Quaternion<T> q2(0, v[0], v[1], v[2]);
+Quaternion<T> q2(0, v[0], v[1], v[2]);
 q2 = q2 * q;
 return Vector3<T>(q2[1], q2[2], q2[3]);
 }

@@ -33,8 +33,8 @@ namespace GUI
 		virtual unsigned GetOptimalWidth() = 0;
 		virtual unsigned GetOptimalHeight() = 0;
 
-		void Save(System::Buffer& buffer) const;
-		void Load(System::Buffer& buffer);		
+		bool Save(System::Buffer& buffer) const;
+		bool Load(System::Buffer& buffer);		
 	};
 }
 

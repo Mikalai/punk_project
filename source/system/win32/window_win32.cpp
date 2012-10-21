@@ -11,10 +11,11 @@
 #include "timer_win32.h"
 #include "keyboard_win32.h"
 #include "mouse_win32.h"
+#include "../mega_destroyer.h"
 
 namespace System
 {
-	SingletoneImplementation(Window);
+	SingletoneImplementation(Window)
 
 	Window::Window()
 	{
@@ -153,7 +154,7 @@ namespace System
 			}
 
 			//Sleep(10);
-			IdleEvent* e = IdleEvent::Raise();
+			IdleEvent* e = new IdleEvent;
 			e->elapsed_time_s = timer.GetElapsedTime();
 			timer.UpdateStartPoint();
 			EventManager::Instance()->FixEvent(e);
@@ -256,7 +257,7 @@ namespace System
 		{
 		case WM_MBUTTONUP:
 			{
-				MouseMiddleButtonUpEvent* event = MouseMiddleButtonUpEvent::Raise();
+				MouseMiddleButtonUpEvent* event = new MouseMiddleButtonUpEvent;
 				event->x = LOWORD(lParam);
 				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
@@ -276,7 +277,7 @@ namespace System
 			break;
 		case WM_MBUTTONDOWN:
 			{
-				MouseMiddleButtonDownEvent* event = MouseMiddleButtonDownEvent::Raise();
+				MouseMiddleButtonDownEvent* event = new MouseMiddleButtonDownEvent;
 				event->x = LOWORD(lParam);
 				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
@@ -296,7 +297,7 @@ namespace System
 			break;
 		case WM_RBUTTONUP:
 			{
-				MouseRightButtonUpEvent* event = MouseRightButtonUpEvent::Raise();
+				MouseRightButtonUpEvent* event = new MouseRightButtonUpEvent;
 				event->x = LOWORD(lParam);
 				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
@@ -316,7 +317,7 @@ namespace System
 			break;
 		case WM_RBUTTONDOWN:
 			{
-				MouseRightButtonDownEvent* event = MouseRightButtonDownEvent::Raise();
+				MouseRightButtonDownEvent* event = new MouseRightButtonDownEvent;
 				event->x = LOWORD(lParam);
 				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
@@ -336,7 +337,7 @@ namespace System
 			break;
 		case WM_LBUTTONUP:
 			{
-				MouseLeftButtonUpEvent* event = MouseLeftButtonUpEvent::Raise();
+				MouseLeftButtonUpEvent* event = new MouseLeftButtonUpEvent;
 				event->x = LOWORD(lParam);
 				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
@@ -356,7 +357,7 @@ namespace System
 			break;
 		case WM_LBUTTONDOWN:
 			{
-				MouseLeftButtonDownEvent* event = MouseLeftButtonDownEvent::Raise();
+				MouseLeftButtonDownEvent* event = new MouseLeftButtonDownEvent;
 				event->x = LOWORD(lParam);
 				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
@@ -376,7 +377,7 @@ namespace System
 			break;
 		case WM_MOUSEHOVER:
 			{
-				MouseHooverEvent* event = MouseHooverEvent::Raise();
+				MouseHooverEvent* event = new MouseHooverEvent;
 				event->x = LOWORD(lParam);
 				event->y = Window::Instance()->GetHeight() - HIWORD(lParam);
 				event->x_prev = x_prev;
@@ -386,7 +387,7 @@ namespace System
 			break;
 		case WM_MOUSEMOVE:
 			{
-				MouseMoveEvent* event = MouseMoveEvent::Raise();
+				MouseMoveEvent* event = new MouseMoveEvent;
 				
 				x_prev = x;
 				y_prev = y;
@@ -437,7 +438,7 @@ namespace System
 			{
 				POINT p = {LOWORD(lParam), HIWORD(lParam)};
 				ScreenToClient(hwnd, &p);
-				MouseWheelEvent* event = MouseWheelEvent::Raise();
+				MouseWheelEvent* event = new MouseWheelEvent;
 				event->x = p.x;
 				event->y = Window::Instance()->GetHeight() - p.y;
 				event->x_prev = x_prev;
@@ -457,7 +458,7 @@ namespace System
 			break;
 		case WM_CHAR:
 			{
-				KeyCharEvent* event = KeyCharEvent::Raise();
+				KeyCharEvent* event = new KeyCharEvent;
 				event->key = (int)wParam;
 				event->repeat_count = (lParam & 0xFFFF) == 0;
 				event->scan_code = (lParam & 0xFF0000) == 0;
@@ -470,7 +471,7 @@ namespace System
 			break;
 		case WM_UNICHAR:
 			{
-				KeyWCharEvent* event = KeyWCharEvent::Raise();
+				KeyWCharEvent* event = new KeyWCharEvent;
 				event->key = (int)wParam;
 				event->repeat_count = (lParam & 0xFFFF) == 0;
 				event->scan_code = (lParam & 0xFF0000) == 0;
@@ -484,7 +485,7 @@ namespace System
 		case WM_SYSKEYDOWN:
 		case WM_KEYDOWN:
 			{
-				KeyDownEvent* event = KeyDownEvent::Raise();
+				KeyDownEvent* event = new KeyDownEvent;
 				event->key = (int)wParam;
 				event->repeat_count = (lParam & 0xFFFF) == 0;
 				event->scan_code = (lParam & 0xFF0000) == 0;
@@ -499,7 +500,7 @@ namespace System
 		case WM_SYSKEYUP:
 		case WM_KEYUP:
 			{
-				KeyUpEvent* event = KeyUpEvent::Raise();
+				KeyUpEvent* event = new KeyUpEvent;
 				event->key = (int)wParam;
 				EventManager::Instance()->FixEvent(event);
 
@@ -508,7 +509,7 @@ namespace System
 			}
 		case WM_SIZE:
 			{
-				WindowResizeEvent* event = WindowResizeEvent::Raise();
+				WindowResizeEvent* event = new WindowResizeEvent;
 				event->minimized = (wParam & SIZE_MINIMIZED) == 0;
 				event->restored = (wParam & SIZE_RESTORED) == 0;
 				event->width = LOWORD(lParam);

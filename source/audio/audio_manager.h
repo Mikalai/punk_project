@@ -25,7 +25,7 @@ namespace System
 		static const System::string GetResourceFile() { return L"resource"; }
 		static const System::string GetExtension() { return L"*.wav"; }
 		static const System::string GetFolder() { return System::Environment::Instance()->GetSoundFolder(); }	
-		static const int GetResourceType() { return System::PERMANENT_RESOURCE_SOUND; }
+		static const int GetResourceType() { return System::PERMANENT_RESOURCE_AUDIO_BUFFER; }
 		static void OnInit();
 		static void OnDestroy();
 	};
@@ -37,6 +37,8 @@ namespace Audio
 	{
 		AudioManager(const AudioManager&);
 		AudioManager& operator = (const AudioManager&);		
+	public:
+		AudioManager();
 	};
 
 	//class PUNK_ENGINE AudioManager

@@ -3,6 +3,7 @@
 #include "environment_win32.h"
 #include "config_file_win32.h"
 #include "window_win32.h"
+#include "../mega_destroyer.h"
 
 namespace System
 {
@@ -92,6 +93,12 @@ namespace System
 	const string Environment::GetWeaponFolder()
 	{
 		return GetCurrentFolder() + L"\\..\\..\\data\\weapons\\";
+		//return GetCurrentFolder() + L"weapons\\";
+	}
+
+	const string Environment::GetOpenCLFolder()
+	{
+		return GetCurrentFolder() + L"\\..\\..\\data\\opencl\\";
 		//return GetCurrentFolder() + L"weapons\\";
 	}
 }

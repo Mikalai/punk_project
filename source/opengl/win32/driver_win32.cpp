@@ -13,19 +13,7 @@
 
 namespace OpenGL
 {
-	std::auto_ptr<Driver> Driver::m_instance;
-
-	Driver* Driver::Instance()
-	{
-		if (!m_instance.get())
-			m_instance.reset(new Driver());
-		return m_instance.get();
-	}
-
-	void Driver::Destroy()
-	{
-		m_instance.reset(0);
-	}
+	SingletoneImplementation(Driver);
 
 	Driver::~Driver()
 	{
@@ -223,6 +211,11 @@ namespace OpenGL
 
 	void Driver::Shutdown()
 	{
+		for (auto target : m_targets)
+		{
+			delete target;
+		}
+
 		out_message() << L"Destroying video driver..." << std::endl;
 		ChangeDisplaySettings(NULL, 0);
 		wglMakeCurrent(::GetDC(*System::Window::Instance()), NULL);

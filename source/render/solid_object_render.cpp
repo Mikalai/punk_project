@@ -29,7 +29,7 @@ namespace Render
 	};
 
 	SolidObjectRender::Parameters::Parameters(
-		Utility::Object* object, 
+		Utility::Entity* object, 
 		Utility::Camera* camera, 
 		OpenGL::RenderPass* render_pass,
 		Math::Matrix4x4<float>* location,
@@ -63,7 +63,7 @@ namespace Render
 
 	void SolidObjectRender::Render(const SolidObjectRender::Parameters* parameters)
 	{
-		const Utility::Object* object = parameters->m_object;
+		const Utility::Entity* object = parameters->m_object;
 		const Utility::Material& material = object->GetMaterial();		
 		const Utility::Camera* camera = parameters->m_camera;
 		const Math::Matrix4x4<float>* location = parameters->m_location;
@@ -71,7 +71,7 @@ namespace Render
 		Render(object, location, parameters);
 	}
 
-	void SolidObjectRender::Render(const Utility::Object* object, const Math::Matrix4x4<float>* parent, const SolidObjectRender::Parameters* params)
+	void SolidObjectRender::Render(const Utility::Entity* object, const Math::Matrix4x4<float>* parent, const SolidObjectRender::Parameters* params)
 	{
 		const Math::Matrix4x4<float>* location = &object->GetLocalMatrix();
 		const Utility::Camera* camera = params->m_camera;		
@@ -81,11 +81,11 @@ namespace Render
 		{						
 			if (object->IsProxy())
 			{				
-				const Utility::Object* proxy = object->GetReferenceObject();
+				const Utility::Entity* proxy = object->GetReferenceObject();
 				if (proxy)
 				{
 					const Utility::Material& material = proxy->GetMaterial();
-					OpenGL::StaticObject* vao = static_cast<OpenGL::StaticObject*>(*OpenGL::StaticObjectManager::Instance()->Load(proxy->GetName() + L".static_vao"));
+					OpenGL::StaticMesh* vao = static_cast<OpenGL::StaticMesh*>(*OpenGL::StaticMeshManager::Instance()->Load(proxy->GetName() + L".static_vao"));
 					if (vao)
 					{
 						Math::BoundingBox bbox = vao->GetBoundingBox().Transform(*parent**location);
@@ -120,7 +120,7 @@ namespace Render
 			if (object->IsMesh() && camera->BoxInFrustum(bbox))
 			{
 				const Utility::Material& material = object->GetMaterial();
-				OpenGL::StaticObject* vao = static_cast<OpenGL::StaticObject*>(*OpenGL::StaticObjectManager::Instance()->Load(object->GetName() + L".static_vao"));
+				OpenGL::StaticMesh* vao = static_cast<OpenGL::StaticMesh*>(*OpenGL::StaticMeshManager::Instance()->Load(object->GetName() + L".static_vao"));
 				if (vao)
 				{
 					std::auto_ptr<OpenGL::RenderContextBumpMapping::PolicyParameters> p(new OpenGL::RenderContextBumpMapping::PolicyParameters);

@@ -108,6 +108,21 @@ namespace System
 				return *this;
 			}
 
+			Streamer& operator << (long v)
+			{
+				std::cout << v;
+				m_stream << v;
+				return *this;
+			}
+
+			Streamer& operator << (unsigned long v)
+			{
+				std::cout << v;
+				m_stream << v;
+				return *this;
+			}
+
+
 
 			Streamer& operator << (int v)
 			{
@@ -238,6 +253,24 @@ namespace System
 		}
 	};
 }
+
+class Tab
+{
+	static int m_offset;
+public:
+	static const Tab Inc() { m_offset++; return Tab(); }
+	static const Tab Dec() { m_offset--; return Tab(); }
+	friend std::wostream& operator << (std::wostream& stream, const Tab& value);
+};
+
+
+inline std::wostream& operator << (std::wostream& stream, const Tab& value)
+{
+	if (Tab::m_offset)
+		stream << std::wstring(2*Tab::m_offset, L' ');
+	return stream;
+}
+
 
 //
 //	global staff fro printing messages, warnings and errors to console and to log file 

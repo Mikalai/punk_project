@@ -107,12 +107,12 @@ namespace Math
 		{
 			return Vector2<T>(m_v[0], m_v[1]);
 		}
-		
+
 		Vector2<T> YX() const 
 		{
 			return Vector2<T>(m_v[1], m_v[0]);
 		}
-		
+
 		Vector2<T> XZ() const
 		{
 			return Vector2<T>(m_v[0], m_v[2]);
@@ -133,7 +133,7 @@ namespace Math
 			return Vector2<T>(m_v[2], m_v[1]);
 		}
 
-				Vector3<T> XYZ() const
+		Vector3<T> XYZ() const
 		{
 			return Vector3<T>(m_v[0], m_v[1], m_v[2]);
 		}
@@ -195,7 +195,7 @@ namespace Math
 			return m_v;
 		}
 
-		
+
 		operator const T* () const
 		{
 			return m_v;
@@ -269,16 +269,23 @@ namespace Math
 			return System::string::Format(L"(%.3f; %.3f; %.3f)", m_v[0], m_v[1], m_v[2]);
 		}
 
-		void Save(std::ostream& stream) 
+		bool Save(std::ostream& stream) 
 		{
 			stream.write((char*)m_v, sizeof(m_v));
+			return true;
 		}
 
-		void Load(std::istream& stream) 
+		bool Load(std::istream& stream) 
 		{
 			stream.read((char*)m_v, sizeof(m_v));
+			return true;
 		}
 
+		std::wostream& out_formatted(std::wostream& stream)
+		{
+			stream << ToString().Data();
+			return stream;
+		}
 	};
 
 	template<class T>

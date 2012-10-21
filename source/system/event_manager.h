@@ -1,6 +1,6 @@
 /*
 	File: EventManager
-	Author: Nickolai Abramov
+	Author: Mikalaj Abramau
 	Desc: Collects all events that occur in game
 */
 
@@ -16,10 +16,11 @@
 
 namespace System
 {
-	SingletoneInterface(EventManager, PUNK_ENGINE);
-
-	class PUNK_ENGINE EventManager : public Singletone(EventManager)
+	class PUNK_ENGINE EventManager
     {
+		SingletoneInterface(EventManager);
+	
+	private:
 		bool m_events_mask[MAX_EVENTS_COUNT];
     public:
 		EventManager();

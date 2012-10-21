@@ -1,7 +1,7 @@
-
+﻿
 /*
     File: SystemError.h>
-    Author: Nickolai Abramov
+    Author: Mikałaj Abramaŭ
     Description: Contains implementation of SystemErrors classes
 */
 

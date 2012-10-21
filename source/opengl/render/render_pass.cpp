@@ -15,20 +15,18 @@ namespace OpenGL
 		for (auto it = m_batches.begin(); it != m_batches.end(); ++it)
 		{
 			TextureContext* textures = it->first;
-			if (textures)
-				textures->Bind();
+			//if (textures)
+			//	textures->Bind();
 
 			for (auto renders = it->second.begin(); renders != it->second.end(); ++renders)
 			{
-				DummyRenderPolicy* cur_policy = renders->first;
-				cur_policy->Begin();
 				for (auto batch_it = renders->second.begin(); batch_it != renders->second.end(); ++batch_it)
 				{				
 					Batch* batch = *batch_it;
 					int slot = 0;
 					if (textures)
 					{
-						for each (auto texture in batch->m_textures)
+						for each (const auto texture in batch->m_textures)
 						{
 							textures->SetTexture(slot, texture);
 							slot++;
@@ -36,6 +34,8 @@ namespace OpenGL
 						textures->Bind();
 					}
 
+					DummyRenderPolicy* cur_policy = renders->first;
+					cur_policy->Begin();
 					cur_policy->BindParameters(*(batch->m_parameters));
 					batch->m_renderable->Bind(cur_policy->GetRequiredAttributesSet());
 					batch->m_renderable->Render();
@@ -66,6 +66,7 @@ namespace OpenGL
 					delete batch;
 				}
 			}
+			delete it->first;
 		}
 	}
 }

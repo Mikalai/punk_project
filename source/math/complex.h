@@ -50,13 +50,13 @@ namespace Math
 			return m_buffer;
 		}
 
-		void Save(System::Buffer& buffer) const
+		bool Save(System::Buffer& buffer) const
 		{
 			buffer.WriteReal32(m_real);
 			buffer.WriteReal32(m_image);
 		}
 
-		void Load(System::Buffer& buffer)
+		bool Load(System::Buffer& buffer)
 		{
 			m_real = buffer.ReadReal32();
 			m_image = buffer.ReadReal32();

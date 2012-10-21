@@ -1,0 +1,1 @@
+>>> bpy.data.objects['Armature'].animation_data.nla_tracks['NlaTrack'].strips['ArmatureAction'].action.fcurves[10].keyframe_points[2].co

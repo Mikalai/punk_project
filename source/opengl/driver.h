@@ -1,6 +1,6 @@
 /*
 File: Driver.h
-Author: Abramau Mikalai
+Author: Abramau Mikalaj
 Description: Contains an entity that must initialise OpenGL
 and handle different parameters about users video system
 */

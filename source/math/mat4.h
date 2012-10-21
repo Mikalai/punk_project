@@ -1,6 +1,7 @@
 #ifndef _H_MAT4X4_MATH
 #define _H_MAT4X4_MATH
 
+#include "../system/logger.h"
 #include <stdio.h>
 #include <ostream>
 #include <istream>
@@ -662,23 +663,25 @@ namespace Math
 				m[0], m[4], m[8], m[12], m[1], m[5], m[9], m[13], m[2], m[6], m[10], m[14], m[3], m[7], m[11], m[15]);
 		}
 
-		void Save(std::ostream& stream)
+		bool Save(std::ostream& stream)
 		{
 			stream.write(reinterpret_cast<const char*>(m), sizeof(m));
+			return true;
 		}
 
-		void Load(std::istream& stream)
+		bool Load(std::istream& stream)
 		{
 			stream.read(reinterpret_cast<char*>(m), sizeof(m));
+			return true;
 		}
 
 		/*
-		void Save(System::Buffer& buffer) const
+		bool Save(System::Buffer& buffer) const
 		{
 		buffer.WriteBuffer(m, sizeof(m));
 		}
 
-		void Load(System::Buffer& buffer) 
+		bool Load(System::Buffer& buffer) 
 		{
 		buffer.ReadBuffer(m, sizeof(m));
 		}
@@ -754,15 +757,16 @@ namespace Math
 	}
 
 	template<class T>
-	std::ostream& operator << (std::ostream& stream, const Matrix4x4<T>& m)
+	std::wostream& operator << (std::wostream& stream, const Matrix4x4<T>& m)
 	{
 		int old = stream.width(8);
 		int old_prec = stream.precision(5);
 		for (int row = 0; row < 4; ++row)
 		{
+			stream << Tab();
 			for (int col = 0; col < 4; ++col)
 			{				
-				printf("%9.5f" , m[col*4 + row]);
+				stream << std::fixed << m[col*4 + row] << '\t';
 			}
 			stream << std::endl;
 		}

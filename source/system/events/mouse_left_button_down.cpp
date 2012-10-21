@@ -2,31 +2,9 @@
 
 namespace System
 {
-    std::queue<MouseLeftButtonDownEvent*> MouseLeftButtonDownEvent::eventPool;
-
     MouseLeftButtonDownEvent::MouseLeftButtonDownEvent()
     {
         eventCode = EVENT_MOUSE_LBUTTON_DOWN;
-    }
-
-    void MouseLeftButtonDownEvent::Release()
-    {
-        this->eventPool.push(this);
-    }
-
-    MouseLeftButtonDownEvent* MouseLeftButtonDownEvent::Raise()
-    {
-        if (eventPool.empty())
-        {
-            MouseLeftButtonDownEvent* event = new MouseLeftButtonDownEvent();
-            return event;
-        }
-        else
-        {
-            MouseLeftButtonDownEvent* event = eventPool.front();
-            eventPool.pop();
-            return event;
-        }
     }
 
 	string MouseLeftButtonDownEvent::ToString()

@@ -21,14 +21,17 @@ namespace ImageModule
 		stream.read((char*)data, size);
 	}
 
-	void PngImporter::Load(std::istream& stream, Image* image)
+	bool PngImporter::Load(std::istream& stream, Image* image)
 	{
 		const int bytesToCheck = 8;
 		
 		char sig[bytesToCheck];
 		stream.read(sig, bytesToCheck);
 		if ( png_sig_cmp((png_bytep)sig, (png_size_t)0, bytesToCheck) )
-			throw ImageError(L"It is not a png file: ");
+		{
+			out_error() << L"It is not a png file: " << std::endl;
+			return false;
+		}
 
 		png_structp png_ptr;
 		png_infop info_ptr;
@@ -36,21 +39,26 @@ namespace ImageModule
 		png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
 		if (png_ptr == NULL)
-			throw ImageError(L"Can't load file: ");
+		{
+			out_error() << L"Can't load file: " << std::endl;
+			return false;
+		}
 
 		info_ptr = png_create_info_struct(png_ptr);
 
 		if (info_ptr == NULL)
 		{
 			png_destroy_read_struct ( &png_ptr, (png_infopp) NULL, (png_infopp)NULL );
-			throw ImageError(L"Can't load file: ");
+			out_error() <<  L"Can't load file: " << std::endl;
+			return false;
 		}
 
 		png_infop end_info = png_create_info_struct(png_ptr);
 		if (!end_info)
 		{
 			png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-			throw ImageError(L"Can't load file: ");
+			out_error() << L"Can't load file: " << std::endl;
+			return false;
 		}
 
 		png_set_read_fn(png_ptr, &stream, read); 
@@ -207,18 +215,21 @@ namespace ImageModule
 
 		png_read_end            ( png_ptr, end_info );
 		png_destroy_read_struct ( &png_ptr, &info_ptr, &end_info );
+
+		return true;
 	}
 
-	void PngImporter::Load(const System::string& file)
+	bool PngImporter::Load(const System::string& file)
 	{
 		std::ifstream stream(file.Data(), std::ios_base::binary);
 		if (!stream.is_open())
 		{
 			out_error() << L"Can't open file: " + file << std::endl;
-			return;
+			return false;
 		}
 		Load(stream, this);
 		stream.close();
+		return true;
 	}
 }
 

@@ -1,13 +1,13 @@
 /*
 File: Render.h
-Author: Abramau Mikalai
+Author: Abramau Mikalaj
 Description: Render of the scene
 */
 
 #ifndef _H_RENDER
 #define _H_RENDER
 
-#include "solid_object_render.h"
+#include "simple_render.h"
 
 //#include "renderable.h"
 //#include "simple_renderpipeline.h"

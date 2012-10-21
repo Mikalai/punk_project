@@ -5,12 +5,12 @@
 
 namespace System
 {
-    class PUNK_ENGINE MouseLeftButtonDownEvent : public Event
-    {
-        static std::queue<MouseLeftButtonDownEvent*> eventPool;
-        MouseLeftButtonDownEvent();
+	class PUNK_ENGINE MouseLeftButtonDownEvent : public Event, public Poolable<MouseLeftButtonDownEvent>
+    {        
         MouseLeftButtonDownEvent(const MouseLeftButtonDownEvent&);
     public:
+		MouseLeftButtonDownEvent();
+
         int x, y;
 		int x_prev, y_prev;
         bool controlKey : 1;
@@ -21,9 +21,7 @@ namespace System
         bool xbutton1 : 1;
         bool xbutton2 : 1;
 
-        virtual void Release();
 		virtual string ToString();
-        static MouseLeftButtonDownEvent* Raise();
     };
 }
 #endif // MOUSE_LEFT_BUTTON_DOWN_H

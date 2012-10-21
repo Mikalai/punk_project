@@ -5,17 +5,13 @@
 
 namespace System
 {
-    class PUNK_ENGINE MouseLeaveEvent : public Event
-    {
-        static std::queue<MouseLeaveEvent*> eventPool;
-        MouseLeaveEvent();
+	class PUNK_ENGINE MouseLeaveEvent : public Event, Poolable<MouseLeaveEvent>
+    {        
         MouseLeaveEvent(const MouseLeaveEvent&);
 		MouseLeaveEvent& operator = (const MouseLeaveEvent&);
     public:
-		virtual void Release();
+		MouseLeaveEvent();
 		virtual string ToString();
-
-        static MouseLeaveEvent* Raise();
     };
 }
 

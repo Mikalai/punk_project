@@ -28,12 +28,12 @@ namespace ImageModule
 		impl_image.reset(0);
 	}
 
-	void Image::Save(std::ostream& stream) const
+	bool Image::Save(std::ostream& stream) const
 	{
-		impl_image->Save(stream);
+		return impl_image->Save(stream);
 	}
 
-	void Image::Load(std::istream& stream)
+	bool Image::Load(std::istream& stream)
 	{
 		char header[16];
 		stream.read(header, 16);
@@ -43,9 +43,9 @@ namespace ImageModule
 			{					
 				stream.seekg(0, std::ios_base::beg);
 				PngImporter importer;
-				importer.Load(stream, this);
+				return importer.Load(stream, this);
 			}
-			return;
+			return false;
 		}
 	}
 		

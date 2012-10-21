@@ -2,21 +2,18 @@
 #define IDLE_EVENT_H
 
 #include "event.h"
+#include "../poolable.h"
 
 namespace System
 {
 
-    class PUNK_ENGINE IdleEvent : public Event
-    {
-        static std::queue<IdleEvent*> eventPool;		
-
-        IdleEvent();
+    class PUNK_ENGINE IdleEvent : public Event, public Poolable<IdleEvent>
+    {        
         IdleEvent(IdleEvent&);
     public:
+		IdleEvent();		
 		double elapsed_time_s;
-        virtual void Release();
 		virtual string ToString();
-        static IdleEvent* Raise();
     };	
 }
 

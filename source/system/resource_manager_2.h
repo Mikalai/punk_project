@@ -9,14 +9,15 @@
 #include <iterator>
 #include <string>
 #include <map>
-
+#include "smart_pointers/handle.h"
 #include "string.h"
 #include "folder.h"
 
 #include "logger.h"
-#include "abstract_manager.h"
+//#include "abstract_manager.h"
 #include "hresource.h"
 #include "global_resource_manager.h"
+#include "singletone.h"
 
 namespace System
 {
@@ -29,89 +30,92 @@ namespace System
 		static const int GetResourceType() { return -1; }
 	};
 
-	template<class T, template<class> class Policy> 
-	class Resource2
-	{
-		int m_index;
-		System::string m_location;
-		std::auto_ptr<T> m_resource;
+	//template<class T, template<class> class Policy> 
+	//class Resource2
+	//{
+	//	int m_index;
+	//	System::string m_location;
+	//	std::auto_ptr<T> m_resource;
 
-		Resource2<T, Policy>(const Resource2<T, Policy>&);
-		Resource2<T, Policy>& operator = (const Resource2<T, Policy>&);
+	//	Resource2<T, Policy>(const Resource2<T, Policy>&);
+	//	Resource2<T, Policy>& operator = (const Resource2<T, Policy>&);
 
-		void LoadResource()
-		{
-			m_resource.reset(new T());			
-			out_message() << L"Loading " + Policy<T>::GetFolder() + m_location << std::endl;
-			std::ifstream inp((Policy<T>::GetFolder() + m_location).Data(), std::ios_base::binary);
-			m_resource->Load(inp);
-			inp.close();
-		}
+	//	bool LoadResource()
+	//	{
+	//		m_resource.reset(new T());			
+	//		out_message() << L"Loading " + Policy<T>::GetFolder() + m_location << std::endl;
+	//		std::ifstream inp((Policy<T>::GetFolder() + m_location).Data(), std::ios_base::binary);
+	//		m_resource->Load(inp);
+	//		inp.close();
 
-	public:
-		Resource2()
-			: m_index(-1)
-			, m_location(L"/")
-		{}
+	//		return true;
+	//	}
 
-		void Init(int index, const System::string& location)
-		{
-			m_location = location;
-			m_index = index;
-		}
+	//public:
+	//	Resource2<T, Policy>()
+	//		: m_index(-1)
+	//		, m_location(L"/")
+	//	{}
 
-		T* Get() 
-		{
-			if (!m_resource.get())
-			{
-				LoadResource();
-			}
-			return m_resource.get();
-		}
+	//	void Init(int index, const System::string& location)
+	//	{
+	//		m_location = location;
+	//		m_index = index;
+	//	}
 
-		void Set(T* item)
-		{
-			m_resource.reset(new T(*item));
-		}
+	//	T* Get() 
+	//	{
+	//		if (!m_resource.get())
+	//		{
+	//			LoadResource();
+	//		}
+	//		return m_resource.get();
+	//	}
 
-		void Unload()
-		{
-			m_resource.reset(0)
-		}
+	//	void Set(T* item)
+	//	{
+	//		m_resource.reset(item);
+	//	}
 
-		int GetTimeIntervalAccess();
+	//	void Unload()
+	//	{
+	//		m_resource.reset(0)
+	//	}
 
-		void Save()
-		{
-			wchar_t* name = wcsstr(m_location.Data(), L".");
-			const System::string file(name + Policy<T>::GetExtension());
-			char buf[2048];
-			file.ToANSI(buf, 2048);
-			std::wofstream out(buf);
-			out << m_index << L' ' << m_location.Data() << std::endl;
-			out.close();
-		}
+	//	int GetTimeIntervalAccess();
 
-		void Load(const System::string resource_file)
-		{
-			std::wifstream inp(file.Data());
-			out << m_index << L' ' << m_location.Data() << std::endl;
-			out.close();
-		}	
+	//	bool Save()
+	//	{
+	//		const wchar_t* name = wcsstr(m_location.Data(), L".");
+	//		const System::string file(name + Policy<T>::GetExtension());
+	//		char buf[2048];
+	//		file.ToANSI(buf, 2048);
+	//		std::wofstream out(buf);
+	//		out << m_index << L' ' << m_location.Data() << std::endl;
+	//		out.close();
+	//		return true;
+	//	}
 
-		const System::string& GetLocation() const { return m_location; }
-		int GetIndex() const { return m_index; }
-	};
+	//	bool Load(const System::string resource_file)
+	//	{
+	//		std::wifstream inp(file.Data());
+	//		out << m_index << L' ' << m_location.Data() << std::endl;
+	//		out.close();
+
+	//		return true;
+	//	}	
+
+	//	const System::string& GetLocation() const { return m_location; }
+	//	int GetIndex() const { return m_index; }
+	//};
 
 	template<class T, template<class U> class Policy> class ResourceManager2;
 
 	template<class T, template<class U> class Policy>
-	class ResourceManager2 : public AbstractManager
+	class ResourceManager2 
 	{
 	public:
-		static const int RESOURCE_TYPE = __COUNTER__;
-		typedef std::shared_ptr<Resource2<T, Policy>> ResourcePtr;
-		typedef std::vector<ResourcePtr> Collection;
+		typedef std::vector<Handle<T>> Collection;
 		typedef typename Collection::iterator iterator;
 		typedef typename Collection::const_iterator const_iterator;
 	private:
@@ -162,7 +166,7 @@ namespace System
 			fld.Close();
 		}
 
-		void LoadResources()
+		bool LoadResources()
 		{			
 			m_items.clear();
 			out_message() << L"Loading resources from " + Policy<T>::GetFolder() << std::endl;
@@ -182,14 +186,14 @@ namespace System
 					if (wcslen(buf) == 0)
 						break;
 
-					std::shared_ptr<Resource2<T, Policy>> res(new Resource2<T, Policy>);
 					System::string file(buf);
 					file = file.Trim(L" ");
-					res->Init(index, file);
+					Proxy<T> res(T::CreateFromFile(file));
+					// res->Init(index, file);
 					//	we should place a resource in specifed by index position
 					m_items.resize(std::max((int)m_items.size(), index + 1));
-					m_items[index] = res;
-					m_dictionary[file] = index;
+					m_items[index] = Handle<T>(res);
+					UpdateIndexCache(index, file);
 					out_message() << L"Resource " + System::string::Convert(index) + L" " + file + L" has been cached" << std::endl;
 				}							
 			}
@@ -199,6 +203,8 @@ namespace System
 			}
 			out_message() << L"Loading resources complete" << std::endl;
 			fld.Close();
+
+			return true;
 		}
 		
 		ResourceManager2<T, Policy>(const ResourceManager2<T, Policy>& );
@@ -215,6 +221,8 @@ namespace System
 		~ResourceManager2<T, Policy>()
 		{
 			Policy<T>::OnDestroy();
+			m_items.clear();
+			ClearIndexCache();
 		}
 
 		void Init()
@@ -252,44 +260,102 @@ namespace System
 			UpdateResourceFile(really_indexed);
 			out_message() << L"Resource caching complete" << std::endl;
 
-			LoadResources();
+			//LoadResources();
 		}
+		
+		//void Manage(const System::string& name, T* item)
+		//{
+		//	System::string location = name + Policy<T>::GetExtension().Replace(L"*", L"");
+		//	System::Folder fld;
+		//	fld.Open(Policy<T>::GetFolder());
+		//	std::ofstream out(location.Data(), std::ios_base::binary);
+		//	item->Save(out);
+		//	fld.Close();
+		//	
+		//	int index = m_items.size();
+		//	std::unique_ptr<T> res(new T);
+		//	res->SetStorageName(location);
+		//	//res->Init(index, location);
+		//	m_items.push_back(res.release());
+		//	m_dictionary[location] = index;
+		//}
 
-		void Manage(const System::string& name, T* item)
-		{
-			System::string location = name + Policy<T>::GetExtension().Replace(L"*", L"");
-			System::Folder fld;
-			fld.Open(Policy<T>::GetFolder());
-			std::ofstream out(location.Data(), std::ios_base::binary);
-			item->Save(out);
-			fld.Close();
-			
-			int index = m_items.size();
-			std::shared_ptr<Resource2<T, Policy>> res(new Resource2<T, Policy>);
-			res->Init(index, location);
-			m_items.push_back(res);
-			m_dictionary[location] = index;
-		}
-
-		virtual int GetResourceType() const
+		int GetResourceType() const
 		{
 			return Policy<T>::GetResourceType();
 		}
 
-		virtual HResource Load(const System::string& filename)
+		Handle<T> Load(const System::string& filename)
 		{			
 			auto it = m_dictionary.find(filename);
 			if (it == m_dictionary.end())
 			{
-				out_error() << filename + L" was not cached. Can't load." << std::endl;
-				return HResource();
+				out_warning() << filename + L" was not cached. Try to load." << std::endl;
+				Proxy<T> object(T::CreateFromFile(Policy<T>::GetFolder() + filename));
+				if (!object.IsValid())
+					return (out_error() << "Can't load " << filename << std::endl, nullptr);
+				UpdateIndexCache(m_items.size(), filename);
+				m_items.push_back(Handle<T>(object));
+				return object;
 			}
-			return HResource(GetResourceType(), it->second);
+			return m_items[it->second];
 		}
 
-		virtual PermanentData* Get(int index)
+		virtual bool Save(int index)
 		{
-			return m_items[index]->Get();
+			if (index < 0 || index >= (int)m_items.size())
+			{
+				out_error() << "Can't save resource with index " << index << std::endl;
+				return false;
+			}
+									
+			System::Folder fld;
+			fld.Open(Policy<T>::GetFolder());
+			std::ofstream out(m_reverse_dictionary[index].Data(), std::ios_base::binary);
+			if (!out.is_open())
+				return (out_error() << "Can't save resource: " << m_reverse_dictionary[index] << std::endl, false);
+			m_items[index]->Save(out);
+			fld.Close();
+			return true;
+		}
+
+		Handle<T> Get(int index)
+		{
+			return m_items[index];
+		}
+
+		const System::string GetResourceName(int index)
+		{
+			if (index < 0 || index >= (int)m_items.size())
+			{
+				out_error() << "Can't get resource name for index " << index << std::endl;
+				return L"";
+			}
+			return m_reverse_dictionary[index];
+		}
+
+		T* Create()
+		{
+			std::auto_ptr<T> p(new T);
+
+			return p.release();
+		}
+
+		bool Manage(const System::string& storage_name, T* data)
+		{
+			auto value = Proxy<T>(data);
+			if (!storage_name.Length())
+				return (out_error() << "Can't store data with empty storage name" << std::endl, false);
+			if (m_dictionary.find(storage_name) != m_dictionary.end())
+				return (out_error() << "Can't store data with the same name" << storage_name << std::endl, false);
+
+			if (!value.IsValid())
+				return (out_error() << "Can't manager resourse" << std::endl, false);
+
+			int index = m_items.size();	
+			m_items.push_back(value);
+			UpdateIndexCache(index, storage_name);
+			return true;
 		}
 
 		const Collection& GetAll() const { return m_items; }
@@ -299,7 +365,8 @@ namespace System
 			if (!m_instance.get())
 			{
 				m_instance.reset(new ResourceManager2<T, Policy>);
-				GlobalManager::Instance()->RegisterManager(m_instance.get());				
+//				GlobalManager::Instance()->RegisterManager(m_instance.get());
+				System::MegaDestroyer::Instance()->PushDestroyer(Destroy);
 			}
 			return m_instance.get();
 		}
@@ -307,18 +374,34 @@ namespace System
 		static void Destroy()
 		{
 			out_message() << "Destroying static object manager" << std::endl;
-			GlobalManager::Instance()->UnregisterManager(m_instance.get());
+	//		GlobalManager::Instance()->UnregisterManager(m_instance.get());
 			m_instance.reset(0);
+		}
+
+	private:
+
+		void UpdateIndexCache(int index, const System::string name)
+		{
+			m_dictionary[name] = index;
+			m_reverse_dictionary[index] = name;
+		}
+
+		void ClearIndexCache()
+		{
+			m_dictionary.clear();
+			m_reverse_dictionary.clear();
 		}
 
 	private:
 		
 		typedef std::map<const System::string, int> Dictionary;
+		typedef std::map<int, System::string> ReverseDictionary;
 
 		static std::auto_ptr<ResourceManager2> m_instance;
 
 		Collection m_items;
 		Dictionary m_dictionary;
+		ReverseDictionary m_reverse_dictionary;
 	};
 
 	template<class T, template <class U> class Policy> 

@@ -1,4 +1,5 @@
 #include "driver.h"
+#include "../system/window.h"
 
 namespace OpenGL
 {
@@ -9,16 +10,14 @@ namespace OpenGL
 	void Driver::Restart()
 	{
 		Shutdown();
-		Start(m_window);
+		Start();
 	}
 
-	void Driver::InitOpenGL()
+	void Driver::Init()
 	{
-		using namespace System;
-
 		Singletone<Logger>::Get()->WriteMessage(L"Initializing OpenGL...");
 
-		m_parameters.deviceContext = ::GetDC(*m_window);
+		m_parameters.deviceContext = ::GetDC(*System::Window::Instance());
 
 		if (m_parameters.fullScreen)
 		{

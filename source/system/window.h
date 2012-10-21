@@ -1,6 +1,6 @@
 /*
 	File: Window.h
-	Author: Abramau Mikalai
+	Author: Abramau Mikalaj
 	Description: Wrapper around os api
 */
 

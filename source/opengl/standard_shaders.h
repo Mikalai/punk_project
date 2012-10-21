@@ -1,6 +1,6 @@
 /*
 File: StandardShaders.h
-Author: Abramau Mikalai
+Author: Abramau Mikalaj
 Description: A collection of predefined shaders
 */
 

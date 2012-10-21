@@ -1,6 +1,6 @@
 /*
         File: window_linux.h
-	Author: Abramau Mikalai
+	Author: Abramau Mikalaj
 	Description: Wrapper around os api
 */
 

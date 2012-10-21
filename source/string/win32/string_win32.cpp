@@ -31,8 +31,8 @@ namespace System
 		void Erase(int start, int len);
 		void Insert(wchar_t chr, int pos);
 
-		void Save(std::ostream& stream) const;
-		void Load(std::istream& stream);
+		bool Save(std::ostream& stream) const;
+		bool Load(std::istream& stream);
 
 	private:
 		Representation(const Representation&);
@@ -414,14 +414,15 @@ namespace System
 		m_data[m_length] = 0;
 	}
 
-	void string::Representation::Save(std::ostream& stream) const
+	bool string::Representation::Save(std::ostream& stream) const
 	{
 		stream.write(reinterpret_cast<const char*>(&m_length), sizeof(m_length));
 		if (m_length)
 			stream.write(reinterpret_cast<const char*>(m_data), m_length*sizeof(wchar_t));
+		return true;
 	}
 
-	void string::Representation::Load(std::istream& stream)
+	bool string::Representation::Load(std::istream& stream)
 	{
 		stream.read(reinterpret_cast<char*>(&m_length), sizeof(m_length));
 		if (m_length)
@@ -434,6 +435,7 @@ namespace System
 		{
 			Assign(L"", 0);
 		}
+		return true;
 	}
 
 	const wchar_t* string::Data() const
@@ -758,15 +760,15 @@ namespace System
 		return m_frees_count;
 	}
 
-	void string::Save(std::ostream& stream) const
+	bool string::Save(std::ostream& stream) const
 	{
-		m_rep->Save(stream);
+		return m_rep->Save(stream);
 	}
 
-	void string::Load(std::istream& stream)
+	bool string::Load(std::istream& stream)
 	{
 		m_rep = m_rep->GetOwnCopy();
-		m_rep->Load(stream);
+		return m_rep->Load(stream);
 	}
 }/**/
 

@@ -6,7 +6,7 @@
 
 namespace Utility
 {
-	class Object;
+	class Entity;
 	class Armature;
 	class Camera;
 }
@@ -29,7 +29,7 @@ namespace Render
 
 		struct PUNK_ENGINE Parameters
 		{
-			Utility::Object* m_object;
+			Utility::Entity* m_object;
 			Utility::Camera* m_camera;
 			Math::Matrix4x4<float>* m_location;
 			OpenGL::RenderPass* m_render_pass;
@@ -49,7 +49,7 @@ namespace Render
 		
 		public:
 		
-			Parameters(Utility::Object* object, 
+			Parameters(Utility::Entity* object, 
 				Utility::Camera* camera, 
 				OpenGL::RenderPass* pass,
 				Math::Matrix4x4<float>* location,
@@ -76,7 +76,7 @@ namespace Render
 
 	private:
 
-		void Render(const Utility::Object* object, const Math::Matrix4x4<float>* parent, const Parameters* parameters);
+		void Render(const Utility::Entity* object, const Math::Matrix4x4<float>* parent, const Parameters* parameters);
 		struct SolidObjectRenderImpl;
 		std::auto_ptr<SolidObjectRenderImpl> impl;
 	};

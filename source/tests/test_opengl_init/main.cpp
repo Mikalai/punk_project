@@ -6,8 +6,9 @@ int main()
 	System::Mouse::Instance()->LockInWindow(false);
 
 	OpenGL::Driver::Instance()->Start();
-
 	System::Window::Instance()->Loop();
+
+	System::MegaDestroyer::Destroy();
 
 	return 0;
 }

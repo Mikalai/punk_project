@@ -7,7 +7,10 @@
 #include "system\system.h"
 #include "string\string.h"
 #include "utility\utility.h"
-//#include "scene\scene.h"
+#include "virtual\virtual.h"
+#include "scene\scene.h"
+#include "opencl\driver.h"
+
 //#include "gui\gui.h"
 #include "render\render.h"
 //#include "system\application\application.h"

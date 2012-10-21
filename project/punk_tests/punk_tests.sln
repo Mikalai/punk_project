@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_string_test", "punk_string_test\punk_string_test.vcxproj", "{E3CB2604-251D-4CC8-9791-EFC029E46FCF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_system_test", "punk_system_test\punk_system_test.vcxproj", "{428342BB-B1DF-4782-BCAD-93930282DC46}"
@@ -20,6 +20,16 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_static_vao_test", "punk_static_vao_test\punk_static_vao_test.vcxproj", "{CEB2F6C2-AD45-4E2E-800C-2732A1094FA6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_object_test", "punk_object_test\punk_object_test.vcxproj", "{D3E6D38E-8FFF-4690-AB94-08EA4809DD38}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_parser_test", "punk_parser_test\punk_parser_test.vcxproj", "{4D5F0C86-9927-4B0E-955F-8D779D8AF4C1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_scene_build_test", "punk_scene_build_test\punk_scene_build_test.vcxproj", "{95BDC1CC-3616-4C19-915A-41E043933820}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_web_camera_capture", "punk_web_camera_capture_file\punk_web_camera_capture_file.vcxproj", "{BC835926-6C75-49FD-8B81-835D7CD3EDE4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_quad_with_texture", "punk_quad_with_texture\punk_quad_with_texture.vcxproj", "{953F1DAC-499B-4DA2-B6DD-C3CC43FA4F13}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_world_creation_test", "punk_world_creation_test\punk_world_creation_test.vcxproj", "{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +77,26 @@ Global
 		{D3E6D38E-8FFF-4690-AB94-08EA4809DD38}.Debug|Win32.Build.0 = Debug|Win32
 		{D3E6D38E-8FFF-4690-AB94-08EA4809DD38}.Release|Win32.ActiveCfg = Release|Win32
 		{D3E6D38E-8FFF-4690-AB94-08EA4809DD38}.Release|Win32.Build.0 = Release|Win32
+		{4D5F0C86-9927-4B0E-955F-8D779D8AF4C1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4D5F0C86-9927-4B0E-955F-8D779D8AF4C1}.Debug|Win32.Build.0 = Debug|Win32
+		{4D5F0C86-9927-4B0E-955F-8D779D8AF4C1}.Release|Win32.ActiveCfg = Release|Win32
+		{4D5F0C86-9927-4B0E-955F-8D779D8AF4C1}.Release|Win32.Build.0 = Release|Win32
+		{95BDC1CC-3616-4C19-915A-41E043933820}.Debug|Win32.ActiveCfg = Debug|Win32
+		{95BDC1CC-3616-4C19-915A-41E043933820}.Debug|Win32.Build.0 = Debug|Win32
+		{95BDC1CC-3616-4C19-915A-41E043933820}.Release|Win32.ActiveCfg = Release|Win32
+		{95BDC1CC-3616-4C19-915A-41E043933820}.Release|Win32.Build.0 = Release|Win32
+		{BC835926-6C75-49FD-8B81-835D7CD3EDE4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BC835926-6C75-49FD-8B81-835D7CD3EDE4}.Debug|Win32.Build.0 = Debug|Win32
+		{BC835926-6C75-49FD-8B81-835D7CD3EDE4}.Release|Win32.ActiveCfg = Release|Win32
+		{BC835926-6C75-49FD-8B81-835D7CD3EDE4}.Release|Win32.Build.0 = Release|Win32
+		{953F1DAC-499B-4DA2-B6DD-C3CC43FA4F13}.Debug|Win32.ActiveCfg = Debug|Win32
+		{953F1DAC-499B-4DA2-B6DD-C3CC43FA4F13}.Debug|Win32.Build.0 = Debug|Win32
+		{953F1DAC-499B-4DA2-B6DD-C3CC43FA4F13}.Release|Win32.ActiveCfg = Release|Win32
+		{953F1DAC-499B-4DA2-B6DD-C3CC43FA4F13}.Release|Win32.Build.0 = Release|Win32
+		{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}.Debug|Win32.Build.0 = Debug|Win32
+		{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}.Release|Win32.ActiveCfg = Release|Win32
+		{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

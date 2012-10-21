@@ -2,31 +2,9 @@
 
 namespace System
 {
-    std::queue<KeyWCharEvent*> KeyWCharEvent::eventPool;
-
     KeyWCharEvent::KeyWCharEvent()
     {
         eventCode = EVENT_KEY_WCHAR;
-    }
-
-    void KeyWCharEvent::Release()
-    {
-        this->eventPool.push(this);
-    }
-
-    KeyWCharEvent* KeyWCharEvent::Raise()
-    {
-        if (eventPool.empty())
-        {
-            KeyWCharEvent* event = new KeyWCharEvent();
-            return event;
-        }
-        else
-        {
-            KeyWCharEvent* event = eventPool.front();
-            eventPool.pop();
-            return event;
-        }
     }
 
 	string KeyWCharEvent::ToString()

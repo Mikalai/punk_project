@@ -11,11 +11,10 @@ namespace System
 }
 
 namespace Utility
-{
-	SingletoneInterface(FontBuilder, PUNK_ENGINE);
-
-	class PUNK_ENGINE FontBuilder : public Singletone(FontBuilder)
+{	
+	class PUNK_ENGINE FontBuilder
 	{		
+		SingletoneInterface(FontBuilder);
 	public:
 		FontBuilder();
 		void Init();

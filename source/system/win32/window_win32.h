@@ -1,6 +1,6 @@
 /*
 File: Window.h
-	Author: Abramau Mikalai
+	Author: Abramau Mikalaj
 	Description: Wrapper around os api
 	*/
 
@@ -19,10 +19,10 @@ namespace System
 {
 	LRESULT CALLBACK WindowCallBack(HWND, UINT, WPARAM, LPARAM);
 
-	SingletoneInterface(Window, PUNK_ENGINE);
-
-	class PUNK_ENGINE Window : public Singletone(Window)
+	class PUNK_ENGINE Window
 	{
+		SingletoneInterface(Window)
+
 	public:
 		Window();
 		~Window();
@@ -51,11 +51,12 @@ namespace System
 		void DrawPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 		void DrawLine(int x1, int y1, int x2, int y2);
 		void SwapBuffer();
+
 	private:
 
 		//std::multimap<unsigned, Handler> m_handlers;
 		HWND m_windowHandle;
-		friend LRESULT CALLBACK WindowCallBack(HWND, UINT, WPARAM, LPARAM);
+		friend LRESULT CALLBACK WindowCallBack(HWND, UINT, WPARAM, LPARAM);	
 	};
 }
 

@@ -144,7 +144,7 @@ namespace OpenGL
 
 			if (generate_mip_maps)
 			{
-				//glGenerateMipmap(GL_TEXTURE_2D);
+				glGenerateMipmap(GL_TEXTURE_2D);
 				CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
 			}
 		}
@@ -197,6 +197,7 @@ namespace OpenGL
 
 		void Create(int width, int height, GLenum format, const unsigned char* data)
 		{
+			CHECK_GL_ERROR(L"Can't even start to create texture texture");
 			if (m_id != 0)
 			{
 				glDeleteTextures(1, &m_id);
@@ -272,6 +273,13 @@ namespace OpenGL
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 				CHECK_GL_ERROR(L"Can't GL_TEXTURE_WRAP_T mip map");
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+				CHECK_GL_ERROR(L"Can't glTexImage2D GL_RGBA8->GL_RGBA");
+			}
+			else 
+			{
+				m_format = GL_RGB;
+				m_internal_format = GL_R3_G3_B2;
+				glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, width, height, 0, m_format, GL_UNSIGNED_BYTE, data);
 				CHECK_GL_ERROR(L"Can't glTexImage2D GL_RGBA8->GL_RGBA");
 			}
 
@@ -477,6 +485,7 @@ namespace OpenGL
 			case ImageModule::IMAGE_FORMAT_RED: return GL_RED;
 			default:
 				out_error() << L"Unbelievable, but image format is not supported" << std::endl;
+				return -1;
 			}
 		}
 	};

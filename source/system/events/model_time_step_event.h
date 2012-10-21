@@ -5,18 +5,13 @@
 
 namespace System
 {
-
-    class PUNK_ENGINE ModelTimeStepEvent : public Event
-    {
-        static std::queue<ModelTimeStepEvent*> eventPool;		
-
-        ModelTimeStepEvent();
+	class PUNK_ENGINE ModelTimeStepEvent : public Event, public Poolable<ModelTimeStepEvent>
+    {        
         ModelTimeStepEvent(ModelTimeStepEvent&);
     public:
+		ModelTimeStepEvent();
 		unsigned elapsed_time_ms;
-        virtual void Release();
 		virtual string ToString();
-        static ModelTimeStepEvent* Raise();
     };	
 }
 

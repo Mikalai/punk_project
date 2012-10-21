@@ -36,13 +36,14 @@ namespace Audio
 		CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
 	}
 
-	void AudioBuffer::Save(std::ostream& stream)
+	bool AudioBuffer::Save(std::ostream& stream)
 	{				
 		//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));		
 		//m_file.Save(stream);
+		return false;
 	}
 
-	void AudioBuffer::Load(std::istream& stream)
+	bool AudioBuffer::Load(std::istream& stream)
 	{
 		{			
 			// check if this is a wave file
@@ -53,11 +54,13 @@ namespace Audio
 			{			
 				stream.seekg(0, std::ios_base::beg);
 				LoadFromWAV(stream);
+				return true;
 			}			
 		}					
+		return false;
 	}
 
-	void AudioBuffer::LoadFromWAV(std::istream& stream)
+	bool AudioBuffer::LoadFromWAV(std::istream& stream)
 	{			
 		alGenBuffers(1, &m_buffer);
 
@@ -65,6 +68,25 @@ namespace Audio
 		{
 			out_error() << L"Failed to load AudioBuffer file from stream" << std::endl;			
 			alDeleteBuffers(1, &m_buffer);
+			return false;
 		}
+		return true;
+	}
+
+	AudioBuffer* AudioBuffer::CreateFromFile(const System::string& path)
+	{
+		std::unique_ptr<AudioBuffer> buffer(new AudioBuffer);
+
+		std::ifstream stream(path.Data(), std::ios_base::binary);
+		if (!buffer->LoadFromWAV(stream))
+			return (out_error() << "Can't create audio buffer from file" << std::endl, nullptr);		
+		return buffer.release();
+	}
+
+	AudioBuffer* AudioBuffer::CreateFromStream(std::istream& stream)
+	{
+		std::unique_ptr<AudioBuffer> buffer(new AudioBuffer);
+		buffer->Load(stream);
+		return buffer.release();
 	}
 }

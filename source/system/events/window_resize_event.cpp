@@ -2,32 +2,14 @@
 
 namespace System
 {
-    std::queue<WindowResizeEvent*> WindowResizeEvent::eventPool;
 
     WindowResizeEvent::WindowResizeEvent()
     {
 		eventCode = EVENT_WINDOW_RESIZE;
     }
 
-    void WindowResizeEvent::Release()
-    {
-        this->eventPool.push(this);
-    }
-
-    WindowResizeEvent* WindowResizeEvent::Raise()
-    {
-        if (eventPool.empty())
-        {
-            WindowResizeEvent* event = new WindowResizeEvent();
-            return event;
-        }
-        else
-        {
-            WindowResizeEvent* event = eventPool.front();
-            eventPool.pop();
-            return event;
-        }
-    }
+	WindowResizeEvent::~WindowResizeEvent()
+	{}
 
 	string WindowResizeEvent::ToString()
 	{

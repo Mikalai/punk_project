@@ -7,10 +7,10 @@
 
 namespace System
 {
-	SingletoneInterface(Mouse, PUNK_ENGINE);
-
-	class PUNK_ENGINE Mouse : public Singletone(Mouse)
+	class PUNK_ENGINE Mouse
 	{
+		SingletoneInterface(Mouse);
+
 	public:
 		enum MouseButtons { LEFT_BUTTON, RIGHT_BUTTON, MIDDLE_BUTTON };
 

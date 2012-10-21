@@ -5,12 +5,11 @@
 
 namespace System
 {
-    class PUNK_ENGINE MouseMiddleButtonUpEvent : public Event
-    {
-        static std::queue<MouseMiddleButtonUpEvent*> eventPool;
-        MouseMiddleButtonUpEvent();
+	class PUNK_ENGINE MouseMiddleButtonUpEvent : public Event, public Poolable<MouseMiddleButtonUpEvent>
+    {             
         MouseMiddleButtonUpEvent(const MouseMiddleButtonUpEvent&);
-    public:        
+    public:  
+		MouseMiddleButtonUpEvent();
         int x, y;
 		int x_prev, y_prev;
         bool controlKey : 1;
@@ -21,9 +20,7 @@ namespace System
         bool xbutton1 : 1;
         bool xbutton2 : 1;
 
-        virtual void Release();
 		virtual string ToString();
-        static MouseMiddleButtonUpEvent* Raise();
     };
 }
 #endif // MOUSE_MIDDLE_BUTTON_UP_H

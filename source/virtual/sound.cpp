@@ -5,7 +5,7 @@
 
 namespace Utility
 {
-	void Sound::Save(std::ostream& stream)
+	bool Sound::Save(std::ostream& stream)
 	{
 		m_name.Save(stream);
 		m_filename.Save(stream);
@@ -17,9 +17,11 @@ namespace Utility
 		stream.write((char*)&m_cone_angle_outer, sizeof(m_cone_angle_outer));
 		stream.write((char*)&m_cone_volume_outer, sizeof(m_cone_volume_outer));
 		stream.write((char*)&m_attenuation, sizeof(m_attenuation));
+
+		return true;
 	}
 
-	void Sound::Load(std::istream& stream)
+	bool Sound::Load(std::istream& stream)
 	{
 		m_name.Load(stream);
 		m_filename.Load(stream);
@@ -31,5 +33,7 @@ namespace Utility
 		stream.read((char*)&m_cone_angle_outer, sizeof(m_cone_angle_outer));
 		stream.read((char*)&m_cone_volume_outer, sizeof(m_cone_volume_outer));
 		stream.read((char*)&m_attenuation, sizeof(m_attenuation));
+
+		return true;
 	}
 }

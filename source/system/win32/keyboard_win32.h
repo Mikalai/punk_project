@@ -6,12 +6,12 @@
 
 namespace System
 {
-	SingletoneInterface(Keyboard, PUNK_ENGINE);
-
-	class PUNK_ENGINE Keyboard : public Singletone(Keyboard)
+	class PUNK_ENGINE Keyboard
 	{
-		bool m_keys[256];
-		
+		SingletoneInterface(Keyboard);
+
+	private:
+		bool m_keys[256];		
 	public:
 
 		Keyboard();

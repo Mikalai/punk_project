@@ -44,8 +44,8 @@ namespace Math
 		FaceList Cross(const Line3D& line);
 		FaceList CrossAll(const Line3D& line) const;
 
-		void Save(std::ostream& stream);
-		void Load(std::istream& stream);
+		bool Save(std::ostream& stream);
+		bool Load(std::istream& stream);
 	};
 }
 

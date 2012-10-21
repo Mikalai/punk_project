@@ -2,31 +2,9 @@
 
 namespace System
 {
-    std::queue<ModelTimeStepEvent*> ModelTimeStepEvent::eventPool;
-
-    ModelTimeStepEvent::ModelTimeStepEvent()
+	ModelTimeStepEvent::ModelTimeStepEvent()
     {
 		eventCode = EVENT_MODEL_TIME_STEP;
-    }
-
-    void ModelTimeStepEvent::Release()
-    {
-        this->eventPool.push(this);
-    }
-
-    ModelTimeStepEvent* ModelTimeStepEvent::Raise()
-    {
-        if (eventPool.empty())
-        {
-            ModelTimeStepEvent* event = new ModelTimeStepEvent();
-            return event;
-        }
-        else
-        {
-            ModelTimeStepEvent* event = eventPool.front();
-            eventPool.pop();
-            return event;
-        }
     }
 
 	string ModelTimeStepEvent::ToString()

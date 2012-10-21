@@ -9,7 +9,7 @@ namespace ImageModule
 	{
 	}
 
-	void PngFile::Load(const wchar_t *file)
+	bool PngFile::Load(const wchar_t *file)
 	{
 		m_rep = m_rep->GetOwnCopy();
 
@@ -198,7 +198,7 @@ namespace ImageModule
 		png_destroy_read_struct ( &png_ptr, &info_ptr, &end_info );
 	}
 
-	void PngFile::Save(const wchar_t *file)
+	bool PngFile::Save(const wchar_t *file)
 	{
 		FILE *fp;
 		png_structp png_ptr;

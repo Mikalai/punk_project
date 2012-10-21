@@ -151,7 +151,7 @@ namespace OpenGL
 		glDepthFunc(GL_LEQUAL);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fb);
 		//static bool init = false;
-		//static std::auto_ptr<OpenGL::StaticObject> m_vao;
+		//static std::auto_ptr<OpenGL::StaticMesh> m_vao;
 		//static std::auto_ptr<OpenGL::RenderContextBumpMapping> m_rc;
 		//static std::auto_ptr<OpenGL::TextureContext> m_tc;
 
@@ -162,7 +162,7 @@ namespace OpenGL
 
 		//	System::Folder fld;
 		//	fld.Open(System::Environment::Instance()->GetModelFolder());
-		//	m_vao.reset(new OpenGL::StaticObject());
+		//	m_vao.reset(new OpenGL::StaticMesh());
 		//	m_vao->FromFileVAO(L"m16a2_rifle.vao");
 		//	fld.Close();
 		//	init = true;

@@ -47,8 +47,8 @@ namespace System
 			return Descriptor(0,0);
 		}
 
-		void Save(Buffer& buffer) const;
-		void Load(Buffer& buffer);
+		bool Save(Buffer& buffer) const;
+		bool Load(Buffer& buffer);
 	};
 }
 
