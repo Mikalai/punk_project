@@ -26,7 +26,6 @@ _UpgradeReport_Files
 *.x
 *.sdf
 *.opensdf
-*.filters
 project-build-*
 3rd
 data
