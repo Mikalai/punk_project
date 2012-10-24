@@ -1,3 +1,4 @@
+#include "../../system/environment.h"
 #include "importer.h"
 #include "importer_impl.h"
 #include "../error.h"
@@ -17,12 +18,14 @@ namespace ImageModule
 
 	Image* Importer::LoadAnyImage(const System::string& filename)
 	{
-		Load(filename);
+		if (Load(filename))
+		{
+			Image* image = new Image();
+			std::swap(image->impl_image, impl_image);
 
-		Image* image = new Image();
-		std::swap(image->impl_image, impl_image);
-
-		return image;
+			return image;
+		}
+		return nullptr;
 	}
 
 	RGBAImage* Importer::LoadRGBA(const System::string& filename)
@@ -67,8 +70,18 @@ namespace ImageModule
 		}
 		else
 		{
-			out_error() << L"Unsupported file format" << std::endl;
-			return false;
+			auto default_file_name = System::Environment::Instance()->GetTextureFolder() + L"default.png";
+			PngImporter importer;
+			if (importer.Load(default_file_name))
+			{
+				std::swap(impl_image, importer.impl_image);
+				return true;
+			}
+			else
+			{
+				out_error() << L"Unsupported file format" << std::endl;
+				return false;
+			}
 		}		
 	}
 }

@@ -185,6 +185,7 @@ namespace Render
 		start_state.m_tc = new OpenGL::TextureContext;
 		start_state.m_camera = m_active_camera;		
 		start_state.m_lights = light_finder.m_lights;
+		start_state.m_current_material = Virtual::Material::DefaultMaterial.get();
 
 		traverse->m_state = start_state;
 

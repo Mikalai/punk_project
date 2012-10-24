@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_quad_with_texture", "p
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_world_creation_test", "punk_world_creation_test\punk_world_creation_test.vcxproj", "{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_navi_mesh_test", "punk_navi_mesh_test\punk_navi_mesh_test.vcxproj", "{3388CF56-1E25-4917-A54B-4918BF03B588}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -97,6 +99,10 @@ Global
 		{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}.Debug|Win32.Build.0 = Debug|Win32
 		{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}.Release|Win32.ActiveCfg = Release|Win32
 		{1BB7ACF0-6D37-4F86-9266-9AE84806DF47}.Release|Win32.Build.0 = Release|Win32
+		{3388CF56-1E25-4917-A54B-4918BF03B588}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3388CF56-1E25-4917-A54B-4918BF03B588}.Debug|Win32.Build.0 = Debug|Win32
+		{3388CF56-1E25-4917-A54B-4918BF03B588}.Release|Win32.ActiveCfg = Release|Win32
+		{3388CF56-1E25-4917-A54B-4918BF03B588}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

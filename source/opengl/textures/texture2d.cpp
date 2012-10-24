@@ -136,9 +136,18 @@ namespace OpenGL
 	{		
 		ImageModule::Importer importer;
 		std::auto_ptr<ImageModule::Image> image(importer.LoadAnyImage(path));
-		std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
-		result->Create(*image);
-		return result.release();
+
+		if (image.get())
+		{
+			std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
+			result->Create(*image);
+			return result.release();
+		}
+		else
+		{
+			out_error() << "Can't create texture from" << path << std::endl;
+			return nullptr;
+		}
 	}
 
 	Texture2D* Texture2D::CreateFromStream(std::istream& stream)

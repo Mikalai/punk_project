@@ -1,0 +1,2173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="system">
+      <UniqueIdentifier>{f1176040-5a07-42ec-954f-40052bafb4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\events">
+      <UniqueIdentifier>{f7255437-7299-48ea-b0d7-32d8f8161966}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\linux">
+      <UniqueIdentifier>{4eab4f36-a885-4431-a3b2-f24b5392f636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\types">
+      <UniqueIdentifier>{48ef528b-873f-496f-95fe-e2dadc0f8b28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\win32">
+      <UniqueIdentifier>{0fe2ecb6-3ebb-41c4-a302-8fb57360d715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application">
+      <UniqueIdentifier>{e2a5bd39-63b1-43b3-ab93-701b37c7fe1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio">
+      <UniqueIdentifier>{056686a2-6f17-478a-a85f-3414f11b0470}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blender">
+      <UniqueIdentifier>{e1e1cc86-1e3f-4509-8c39-99590f6ebdd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{b25a062f-4968-436f-b2df-ffcb556ef3a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="images">
+      <UniqueIdentifier>{151ae606-88ea-48ab-96a5-738554b97ffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="images\import_export">
+      <UniqueIdentifier>{cdeea111-745c-43db-9291-ec255549f8c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="images\internal_images">
+      <UniqueIdentifier>{d328633e-abe3-4faa-b8ab-509737c274ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{cd2bc3a4-1441-4a26-9089-35cc53421528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl">
+      <UniqueIdentifier>{0d3e155a-f472-4140-878b-f8542486884e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\architecture">
+      <UniqueIdentifier>{0e4959ac-310a-4900-b3d3-e598286e2f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\linux">
+      <UniqueIdentifier>{1a620a7e-74e1-4a97-b41f-adac14bb08eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\nvtristrip">
+      <UniqueIdentifier>{8f8365ad-f73f-4e3c-8d38-8e774aa9bc29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\render">
+      <UniqueIdentifier>{c176e7e2-c05d-4db4-84a4-328ae426f6a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\render_context">
+      <UniqueIdentifier>{d576fab8-1eed-4920-84ed-39a2bc041676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\render_context\shaders">
+      <UniqueIdentifier>{cd853bb3-4498-47e1-8e2b-3e291f0fb36b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\render_context\shaders\fragment">
+      <UniqueIdentifier>{96a312fb-c60c-4488-834e-85a5cff7404c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\render_context\shaders\vertex">
+      <UniqueIdentifier>{b7477cb8-4dab-45f3-afc2-62c090c581ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\renderable">
+      <UniqueIdentifier>{6d6bb92b-0e9b-48ce-9616-2de1983e4352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\renderable\data">
+      <UniqueIdentifier>{9b851406-16d1-4a94-9551-ac72277b4ffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\renderable\managers">
+      <UniqueIdentifier>{e87f9983-16c4-4ec9-933e-b8ff2dcce203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\textures">
+      <UniqueIdentifier>{31403a0b-dccd-4456-a978-9e2562f9077c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\win32">
+      <UniqueIdentifier>{fcb65e64-5e77-40f4-8014-9e610c7b4ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render">
+      <UniqueIdentifier>{cd97ed0c-dc77-438f-9c54-8651ae8f5cc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{19fc9b71-bb19-47d2-bce4-48743a467d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="string">
+      <UniqueIdentifier>{9b17d7b6-206c-40f9-b531-124e1c705960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="string\win32">
+      <UniqueIdentifier>{60c3ac5f-eed3-4ff6-9f15-6ec61c515e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="string\linux">
+      <UniqueIdentifier>{41f01bb3-00e0-4e96-90d6-225bcf9d1df5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility">
+      <UniqueIdentifier>{132db92f-91b7-42a8-81bb-002781f66a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility\physics">
+      <UniqueIdentifier>{38bed494-bdfa-4bc3-8c48-bce922a20ca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual">
+      <UniqueIdentifier>{76ecf8f5-eaae-4cf0-b0e6-f0206632a924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\animation">
+      <UniqueIdentifier>{b4d9c4c0-f440-4d9f-8f58-b41281c7b8cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\motion">
+      <UniqueIdentifier>{23484284-e051-4661-8e68-38b088f86888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\data">
+      <UniqueIdentifier>{81443023-d844-4d46-89f4-9d1386d76e9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\data\cameras">
+      <UniqueIdentifier>{cd2a9afb-72b5-445a-9342-4536595765e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\controllers">
+      <UniqueIdentifier>{41cac85d-1b4d-4c37-a41a-30f4cbf00354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\skinning">
+      <UniqueIdentifier>{0f5b00fc-beca-45f6-84d3-80cc1195e6e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\openal">
+      <UniqueIdentifier>{76b43651-9659-4603-a02c-b779f26d5d03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility\model">
+      <UniqueIdentifier>{2fdfc604-0be1-4883-8ab9-63026cf387ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility\fonts">
+      <UniqueIdentifier>{83949fd8-d153-46f6-b5d2-351dbfe83afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility\descriptors">
+      <UniqueIdentifier>{62f72842-3ce8-4cde-83f3-4feeeaa03c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility\parser">
+      <UniqueIdentifier>{4ab716a7-c11b-4e75-aac7-78bb89559a9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\manager">
+      <UniqueIdentifier>{c72a20e8-3ead-4041-bb9c-46621a949d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\win32\web_camera">
+      <UniqueIdentifier>{87cc7e40-8a8a-41f0-8656-322f1fe664b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\render_context\shaders\glsl">
+      <UniqueIdentifier>{bedd6e38-cb26-49fa-b794-768170af5cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="images\converter">
+      <UniqueIdentifier>{a6e4e543-6e90-4616-bf91-4555a0fb956f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opencl">
+      <UniqueIdentifier>{10f1efa3-d754-47a5-832a-344bcced71f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opencl\programs">
+      <UniqueIdentifier>{eee6d7a4-afc7-46bc-9854-3994681f1bc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\smart_pointers">
+      <UniqueIdentifier>{6eceea16-93bc-47b0-8987-3f2911997456}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\signal_slot">
+      <UniqueIdentifier>{7dd9b0fe-9d5c-485d-a55b-fb6c05e4f572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\data\lights">
+      <UniqueIdentifier>{1e17001e-cd62-4145-b6e0-64a9a09e3c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ai">
+      <UniqueIdentifier>{dbff1295-f1d0-4716-ab9c-985de90ea4fa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\system\events\event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\event_type.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\events.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\focused.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\idle_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\key_char_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\key_down_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\key_up_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\key_wchar_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\model_time_step_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_enter.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_hoover_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_leave.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_left_button_down.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_left_button_up.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_middle_button_down.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_middle_button_up.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_move_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_right_button_down.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_right_button_up.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\mouse_wheel_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\unfocused.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\window_resize_event.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\linux\clock_linux.h">
+      <Filter>system\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\linux\folder_linux.h">
+      <Filter>system\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\linux\monitor_linux.h">
+      <Filter>system\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\linux\text_file_linux.h">
+      <Filter>system\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\linux\timer_linux.h">
+      <Filter>system\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\linux\types_linux.h">
+      <Filter>system\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\linux\window_linux.h">
+      <Filter>system\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\types\list.h">
+      <Filter>system\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\types\priority_list.h">
+      <Filter>system\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\assert_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\binary_file_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\buffer_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\clock_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\config_file_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\console_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\environment_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\error_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\folder_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\handle_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\keyboard_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\monitor_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\mouse_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\process_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\stack_trace_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\static_array.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\static_string.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\thread_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\timer_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\types_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\window_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\abstract_manager.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\allocator.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\binary_file.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\buffer.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\clock.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\config_file.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\console.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\dynamic_array.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\dynamic_data.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\environment.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\error.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\event_manager.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\folder.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\global_resource_manager.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\handle.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\hresource.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\keyboard.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\logger.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\module.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\monitor.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\monitor_scope.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\mouse.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\node.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\permanent_data.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\pool.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\process.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\profiler.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\region.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\resource.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\resource_manager_2.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\scene_graph.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\serializable.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\singletone.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\stack_trace.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\storable_data.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\system.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\system_clock.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\template_singletone.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\thread.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\thread_job.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\thread_pool.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\timer.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\types.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\window.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\application\application.h">
+      <Filter>application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_buffer.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_manager.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\player.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\punk_audio.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\resource.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\balloon.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\button.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\console.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\edit_box.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui_default_render.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui_render.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\horizontal_slider.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\int_watcher.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\layout.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\list_box.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\manager.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\static_text_area.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\tab_widget.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\trackball_viewer_3d.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\user_interface_control.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\vertical_scrollbar.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\vertical_slider.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\watcher.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\widget.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\import_export\exporter.h">
+      <Filter>images\import_export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\import_export\importer.h">
+      <Filter>images\import_export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\import_export\importer_impl.h">
+      <Filter>images\import_export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\import_export\png_exporter.h">
+      <Filter>images\import_export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\import_export\png_importer.h">
+      <Filter>images\import_export</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\internal_images\component.h">
+      <Filter>images\internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\internal_images\gray_image.h">
+      <Filter>images\internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\internal_images\image.h">
+      <Filter>images\internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\internal_images\image_impl.h">
+      <Filter>images\internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\internal_images\rgb_image.h">
+      <Filter>images\internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\internal_images\rgba_image.h">
+      <Filter>images\internal_images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\error.h">
+      <Filter>images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\formats.h">
+      <Filter>images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\image_file.h">
+      <Filter>images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\images.h">
+      <Filter>images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\png_file.h">
+      <Filter>images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\astar.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\bounding_box.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\camera.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\catmull_rom_spline.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\complex.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\constants.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\frustum.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\functions.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\header_matrix.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\helper.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\interpolation.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\line2d.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\line3d.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\low_level_math.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\mat2.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\mat3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\mat4.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\math.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\math_error.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\math_relations.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\matrix.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\noise.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\oct_tree.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\plane.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\quat.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\random.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\region.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\smart_matrix.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\triangle2d.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\triangle3d.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\type.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\vec2.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\vec3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\vec4.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\batch.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\batch_collection.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\batch_config.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\driver.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\frame.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\render_context.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\render_context_params.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\render_pass.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\render_pass_collection.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\render_target.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\architecture\vertex_array_object.h">
+      <Filter>opengl\architecture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\linux\driver_parameters_linux.h">
+      <Filter>opengl\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip.h">
+      <Filter>opengl\nvtristrip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip_objects.h">
+      <Filter>opengl\nvtristrip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\nvtristrip\vertex_cache.h">
+      <Filter>opengl\nvtristrip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\batch.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\frame.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\render.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\render_pass.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\render_target.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\render_target_back_buffer.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\render_target_texture.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_bump.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_grass.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_gui.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_light.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_particle.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_skinning.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_color.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_textured.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_terrain.h">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_bump.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_grass.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_gui.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_light.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle_system.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_skinning.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_solid_color.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_terrain.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transform_3d.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.h">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\shader.h">
+      <Filter>opengl\render_context\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\shader_impl.h">
+      <Filter>opengl\render_context\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\shaders.h">
+      <Filter>opengl\render_context\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\dummy_render_context_policy.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\rc_bump_mapping.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\rc_grass.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\rc_gui.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\rc_light.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\rc_particle_system.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\rc_skinning.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\rc_solid_color_3d.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\render_context_policy.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\render_contexts.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shader_vertex.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render_context\shader2.h">
+      <Filter>opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\renderable.h">
+      <Filter>opengl\renderable\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\vertex_array_object.h">
+      <Filter>opengl\renderable\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\vertex_attributes.h">
+      <Filter>opengl\renderable\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\renderable_data.h">
+      <Filter>opengl\renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\texture_2d_manager.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\texture_context.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\texture2d.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\texture2d_impl.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\textures.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\win32\driver_parameters_win32.h">
+      <Filter>opengl\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\win32\driver_win32.h">
+      <Filter>opengl\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\win32\extensions_win32.h">
+      <Filter>opengl\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\attribute_configer.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\driver.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\driver_parameters.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\error.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\extensions.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\frame_buffer.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\frame_buffer_with_depth.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\glsl_program.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\grid_object.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\grid_object_impl.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\light.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\light_manager.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\material.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\module.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\os.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\point_object.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\point_object_impl.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\quad_object.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\quad_object_impl.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\shader_program.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\standard_shaders.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\terrain_render.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\text_texture_2d.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\texture_bind_target.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\vao_manager.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\vbo.h">
+      <Filter>opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\bbox_render.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\character_render.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\render.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\solid_object_render.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\string\string.h">
+      <Filter>string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\string\win32\string_win32.h">
+      <Filter>string\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\building.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\intersection.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\scheme.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skeleton_animation.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\sound.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\texture_faces.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\track_pos.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\virtual.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\action.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\animation.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\animation_mixer.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\animation_track.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\bone_animation.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\object_animation.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\motions\key_based_strategy.h">
+      <Filter>virtual\motion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\motions\motion_strategy.h">
+      <Filter>virtual\motion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\config.h" />
+    <ClInclude Include="..\..\..\source\punk_engine.h" />
+    <ClInclude Include="..\..\..\source\scene\node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\entity.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\camera.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\cameras\fps_camera.h">
+      <Filter>virtual\data\cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\motions\static_motion_strategy.h">
+      <Filter>virtual\motion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\transform.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\armature.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\armature_manager.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\bone.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\bone_frame.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\types.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\armature_animation_mixer.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\object_animation_mixer.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\al.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\alc.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\aldlist.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\CWaves.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\efx.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\efx-creative.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\EFX-Util.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\Framework.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\LoadOAL.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\xram.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\anim.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\controllers\controllers.h">
+      <Filter>virtual\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\data.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\motions\motion.h">
+      <Filter>virtual\motion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\skinning.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\model\vertex.h">
+      <Filter>utility\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\model\vertex_bone_weight.h">
+      <Filter>utility\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\model\vertex_component.h">
+      <Filter>utility\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\model\vertex_index.h">
+      <Filter>utility\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\utility.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\fonts\font_builder.h">
+      <Filter>utility\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\action_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\anim_track_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\animation_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\armature_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\bone_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\descriptors.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\material_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\mesh_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\object_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\object_type_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\world_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\parser\keywords.h">
+      <Filter>utility\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\parser\base_parser.h">
+      <Filter>utility\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\parser\game_parser.h">
+      <Filter>utility\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\parser\parser.h">
+      <Filter>utility\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\decl_property.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\material.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\camera_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\static_mesh.h">
+      <Filter>opengl\renderable\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\skinned_mesh.h">
+      <Filter>opengl\renderable\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\data\quad_mesh.h">
+      <Filter>opengl\renderable\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\managers\quad_mesh_manager.h">
+      <Filter>opengl\renderable\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\managers\skinned_mesh_manager.h">
+      <Filter>opengl\renderable\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\managers\static_mesh_manager.h">
+      <Filter>opengl\renderable\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\pool_manager.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\mega_destroyer.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\world.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\manager\camera_manager.h">
+      <Filter>virtual\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\scene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\win32\camera_capture_win32.h">
+      <Filter>system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\camera_capture.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\converter\yuy2_to_rgb.h">
+      <Filter>images\converter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\platform.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\platform_impl.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\device.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\device_impl.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\context.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\context_impl.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\buffer.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\buffer_impl.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\command_queue.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\command_queue_impl.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\program.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\program_impl.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\kernel.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\kernel_impl.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opencl\driver.h">
+      <Filter>opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\simple_render.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\object.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\smart_pointers\handle.h">
+      <Filter>system\smart_pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\smart_pointers\proxy.h">
+      <Filter>system\smart_pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\smart_pointers\ref_count.h">
+      <Filter>system\smart_pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\signal_slot\signal_slot.h">
+      <Filter>system\signal_slot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\lights\point_light.h">
+      <Filter>virtual\data\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\light_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\proxy.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\light.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\ai\navi_mesh.h">
+      <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\ai\navi_triangle.h">
+      <Filter>ai</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\system\events\events.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\focused.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\idle_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\key_char_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\key_down_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\key_up_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\key_wchar_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\model_time_step_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_enter.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_hoover_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_leave.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_left_button_down.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_left_button_up.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_middle_button_down.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_middle_button_up.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_move_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_right_button_down.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_right_button_up.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\mouse_wheel_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\unfocused.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp">
+      <Filter>system\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\linux\clock_linux.cpp">
+      <Filter>system\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\linux\folder_linux.cpp">
+      <Filter>system\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\linux\text_file_linux.cpp">
+      <Filter>system\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\linux\timer_linux.cpp">
+      <Filter>system\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\linux\window_linux.cpp">
+      <Filter>system\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\types\list.cpp">
+      <Filter>system\types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\assert_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\binary_file_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\buffer_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\clock_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\config_file_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\console_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\error_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\folder_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\handle_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\keyboard_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\mouse_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\stack_trace_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\thread_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\window_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\clock.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\event_manager.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\global_resource_manager.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\hresource.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\logger.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\node.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\system_clock.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\thread_job.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\thread_pool.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\application\application.cpp">
+      <Filter>application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_manager.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\player.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\balloon.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\button.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\console.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\edit_box.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\gui_default_render.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\horizontal_slider.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\int_watcher.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\list_box.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\manager.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\static_text_area.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\tab_widget.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\trackball_viewer_3d.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\user_interface_control.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\vertical_scrollbar.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\vertical_slider.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\widget.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\import_export\exporter.cpp">
+      <Filter>images\import_export</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\import_export\importer.cpp">
+      <Filter>images\import_export</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\import_export\png_exporter.cpp">
+      <Filter>images\import_export</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\import_export\png_importer.cpp">
+      <Filter>images\import_export</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\internal_images\gray_image.cpp">
+      <Filter>images\internal_images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\internal_images\image.cpp">
+      <Filter>images\internal_images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\internal_images\rgb_image.cpp">
+      <Filter>images\internal_images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\internal_images\rgba_image.cpp">
+      <Filter>images\internal_images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\error.cpp">
+      <Filter>images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\image_file.cpp">
+      <Filter>images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\png_file.cpp">
+      <Filter>images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\astar.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\bounding_box.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\camera.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\frustum.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\functions.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\helper.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\line2d.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\line3d.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\math.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\math_error.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\noise.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\oct_tree.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\plane.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\random.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\triangle2d.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\triangle3d.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\architecture\vertex_array_object.cpp">
+      <Filter>opengl\architecture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\linux\driver_parameters_linux.cpp">
+      <Filter>opengl\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\linux\video_driver_linux.cpp">
+      <Filter>opengl\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip.cpp">
+      <Filter>opengl\nvtristrip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip_objects.cpp">
+      <Filter>opengl\nvtristrip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\nvtristrip\vertex_cache.cpp">
+      <Filter>opengl\nvtristrip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\batch.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\frame.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\render_pass.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\render_target.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\render_target_back_buffer.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\render_target_texture.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_bump.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_grass.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_gui.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_light.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_particle.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_skinning.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_color.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_textured.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_terrain.cpp">
+      <Filter>opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_bump.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_grass.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_gui.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_light.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle_system.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_skinning.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_solid_color.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_terrain.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transform_3d.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.cpp">
+      <Filter>opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\shader.cpp">
+      <Filter>opengl\render_context\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\dummy_render_context_policy.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_bump_mapping.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_grass.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_gui.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_light.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_particle_system.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_skinning.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_solid_color_3d.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\rc_solid_textured_3d.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render_context\render_contexts.cpp">
+      <Filter>opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\data\vertex_array_object.cpp">
+      <Filter>opengl\renderable\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\managers\managers.cpp">
+      <Filter>opengl\renderable\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\textures\texture_2d_manager.cpp">
+      <Filter>opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\textures\texture_context.cpp">
+      <Filter>opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\textures\texture2d.cpp">
+      <Filter>opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\win32\driver_parameters_win32.cpp">
+      <Filter>opengl\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\win32\driver_win32.cpp">
+      <Filter>opengl\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\win32\extensions_win32.cpp">
+      <Filter>opengl\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\win32\video_driver_win32.cpp">
+      <Filter>opengl\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\attribute_configer.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\driver.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\error.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\frame_buffer.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\frame_buffer_with_depth.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\glsl_program.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\grid_object.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\light.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\light_manager.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\material.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\module.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\point_object.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\quad_object.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\terrain_render.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\text_texture_2d.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\vao_manager.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\vbo.cpp">
+      <Filter>opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\bbox_render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\character_render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\solid_object_render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\string\string.cpp">
+      <Filter>string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\string\win32\string_win32.cpp">
+      <Filter>string\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\building.cpp">
+      <Filter>virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\scheme.cpp">
+      <Filter>virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\sound.cpp">
+      <Filter>virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\animation\action.cpp">
+      <Filter>virtual\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\animation\animation.cpp">
+      <Filter>virtual\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\animation\animation_mixer.cpp">
+      <Filter>virtual\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\animation\bone_animation.cpp">
+      <Filter>virtual\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\animation\object_animation.cpp">
+      <Filter>virtual\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\motions\motion_strategy.cpp">
+      <Filter>virtual\motion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\main.cpp" />
+    <ClCompile Include="..\..\..\source\scene\node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\entity.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\camera.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\transform.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\motions\static_motion_strategy.cpp">
+      <Filter>virtual\motion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\skinning\armature.cpp">
+      <Filter>virtual\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\skinning\armature_manager.cpp">
+      <Filter>virtual\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\skinning\bone.cpp">
+      <Filter>virtual\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\animation\armature_animation_mixer.cpp">
+      <Filter>virtual\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\animation\object_animation_mixer.cpp">
+      <Filter>virtual\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\storable.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\aldlist.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\CWaves.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\Framework.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\LoadOAL.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\fonts\font_builder.cpp">
+      <Filter>utility\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\action_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\armature_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\mesh_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\object_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\object_type_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\world_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\parser\base_parser.cpp">
+      <Filter>utility\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\parser\game_parser.cpp">
+      <Filter>utility\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\material.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\cameras\fps_camera.cpp">
+      <Filter>virtual\data\cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\animation_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\material_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\camera_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\bone_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\data\static_mesh.cpp">
+      <Filter>opengl\renderable\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\data\skinned_mesh.cpp">
+      <Filter>opengl\renderable\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\data\quad_mesh.cpp">
+      <Filter>opengl\renderable\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\poolable.h">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\pool_manager.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\mega_destroyer.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\world.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\win32\camera_capture_win32.cpp">
+      <Filter>system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\converter\yuy2_to_rgb.cpp">
+      <Filter>images\converter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opencl\platform.cpp">
+      <Filter>opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opencl\device.cpp">
+      <Filter>opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opencl\context.cpp">
+      <Filter>opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opencl\buffer.cpp">
+      <Filter>opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opencl\program.cpp">
+      <Filter>opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opencl\kernel.cpp">
+      <Filter>opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opencl\command_queue.cpp">
+      <Filter>opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\simple_render.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\object.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\descriptors\light_desc.cpp">
+      <Filter>utility\descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\lights\point_light.cpp">
+      <Filter>virtual\data\lights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\proxy.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\light.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\source\blender\punk_exporter_2_60.py">
+      <Filter>blender</Filter>
+    </None>
+    <None Include="..\..\..\source\system\poolable.inl">
+      <Filter>system</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\bump_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\bump_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\draw_normals.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\draw_normals.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\grass_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\grass_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\gui_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\gui_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_2d_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_2d_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_3d_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_3d_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\normals_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\normals_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\particle_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\particle_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\per_vertex_lighting_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\per_vertex_lighting_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\quad_330.geom">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\shaders.ini">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\skinning_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\skinning_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\solid_color_2d_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\solid_color_2d_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\solid_color_3d_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\solid_color_3d_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\static_mesh_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\static_mesh_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\terrain_330 - Copy.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\terrain_330 - Copy.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\terrain_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\terrain_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\textured_2d_330.frag">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\textured_2d_330.vert">
+      <Filter>opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\source\images\converter\yuy2_to_rgb.cl">
+      <Filter>images\converter</Filter>
+    </None>
+    <None Include="..\..\..\data\opencl\yuy2_to_rgb.cl">
+      <Filter>opencl\programs</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\source\opengl\nvtristrip\README.txt">
+      <Filter>opengl\nvtristrip</Filter>
+    </Text>
+    <Text Include="..\..\..\source\opengl\material.txt">
+      <Filter>opengl</Filter>
+    </Text>
+    <Text Include="..\..\..\source\opengl\model.txt">
+      <Filter>opengl</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
