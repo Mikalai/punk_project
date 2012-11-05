@@ -21,6 +21,113 @@ namespace Math
 	PUNK_ENGINE mat4 RotationMatrixFromQuaternion(const quat& q);
     PUNK_ENGINE mat3 NormalMatrixFromWorldView(const mat4& worldView);
 
+	template<class T>
+	inline T Abs(T x)
+	{
+		return abs(x);
+	}
+
+	template<class T>
+	inline T Floor(T x)
+	{
+		return floor(x);
+	}
+
+	template<class T>
+	inline T Fract(T x)
+    {
+		return x - Floor(x);
+    }
+
+	template<class T>
+    inline T Mod(T x, T y)
+    {
+        return x - y*Floor(x/y);
+    }
+
+	template<class T>
+	inline T Step(T edge, T x)
+    {
+        if (x < edge)
+            return T(0);
+        return T(1);
+    }
+
+	template<class T>
+    T SmoothStep(T edge0, T edge1, T x)
+    {
+        T t = Clamp((x-edge0)/(edge1-edge0), T(0), T(1));
+        return t*t*(T(3)-T(2)*t);
+    }
+    
+	template<class T>
+	T RoundUp(T value, T ratio)
+	{
+		T rest = value % ratio;
+		if (rest == 0)
+			return value;
+		else
+			return value + ratio - rest;
+	}
+
+	template<class T>
+	T Clamp(T min_val, T max_val, T x)
+	{
+		return Min(Max(x, min_val), max_val);
+	}
+
+    template<class T>
+    inline T Min(T x, T y)
+    {
+        return x < y ? x : y;
+    }
+
+    template<class T>
+    inline T Max(T x, T y)
+    {
+        return x > y ? x : y;
+    }
+
+	template<class T>
+	inline T Min(T a, T b, T c)
+	{
+		return Min(a, Min(b, c));
+	}
+
+	template<class T>
+	inline T Max(T a, T b, T c)
+	{
+		return Max(a, Max(b, c));
+	}
+
+    template<class T>
+    inline T Refract(T I, T N, float eta)
+    {
+        float k = 1.0f - eta*eta*(1.0f - N.Dot(I) * N.Dot(I));
+        if (k < 0.0f)
+            return T(0.0f);
+        else
+            return eta*I-(eta*N.Dot(I)+sqrt(k))*N;
+    }
+
+    template<class T>
+    inline T Reflect(T I, T N)
+    {
+        return I - N.Dot(N, I) * N;
+    }
+
+    template<class T>
+    inline T FaceForward(T N, T I, T Nref)
+    {
+        if (Nref.Dot(I) < 0)
+            return N;
+        return -N;
+    }
+    template<class T>
+    inline T Mix(T x, T y, float a)
+    {
+        return x*(1-a)+y*a;
+    }
 	template<class T> 
 	Vector3<T> CalculateNormal(const Vector3<T>& p1, const Vector3<T>& p2, const Vector3<T>& p3)
 	{

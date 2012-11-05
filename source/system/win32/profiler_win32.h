@@ -1,7 +1,9 @@
 #ifndef _H_PUNK_SYSTE_PROFILER_WIN32
 #define _H_PUNK_SYSTE_PROFILER_WIN32
 
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 
 #include "../../config.h"

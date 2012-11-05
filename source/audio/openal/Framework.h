@@ -3,6 +3,9 @@
 
 // Get some classic includes
 #include <iosfwd>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include<Windows.h>
 #include<stdio.h>
 #include<io.h>

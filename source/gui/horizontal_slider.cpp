@@ -2,8 +2,8 @@
 
 namespace GUI
 {
-	HorizontalSlider::HorizontalSlider(int x, int y, int width, int height, int min, int max, Widget* parent) :
-		Widget(x,y,width,height, parent), m_min(min), m_max(max), m_cur(0), m_prev(0)
+	HorizontalSlider::HorizontalSlider(int x, int y, int width, int height, int Min, int Max, Widget* parent) :
+		Widget(x,y,width,height, parent), m_min(Min), m_max(Max), m_cur(0), m_prev(0)
 	{
 		m_quadRender = Render::QuadRender::GetRender();
 		m_textRender = Render::TextAreaRender::GetRender();
@@ -13,14 +13,14 @@ namespace GUI
 	{
 	}
 
-	void HorizontalSlider::SetMin(int min)
+	void HorizontalSlider::SetMin(int Min)
 	{
-		m_min = min;
+		m_min = Min;
 	}
 
-	void HorizontalSlider::SetMax(int max)
+	void HorizontalSlider::SetMax(int Max)
 	{
-		m_max = max;
+		m_max = Max;
 	}
 
 	void HorizontalSlider::SetCurrent(int cur)

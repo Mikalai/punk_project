@@ -4,6 +4,9 @@
 
 #include <map>
 #include <list>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include "../../config.h"
 #include "../render/render_target.h"

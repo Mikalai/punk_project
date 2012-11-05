@@ -217,7 +217,7 @@ void main(void)\
                                                    float NDotL = dot(Normal, LightDir);    \
                                                                  vec3 Reflection = normalize(((2.0 * Normal)*NDotL) - LightDir); \
                                                                                    vec3 ViewDir = normalize(ViewDirection );\
-                                                                                                  float RDotV = max(0.0, dot(Reflection, ViewDir));\
+                                                                                                  float RDotV = Max(0.0, dot(Reflection, ViewDir));\
                                                                                                                 vec4 BaseColor = texture(uBaseMap, Texcoord);\
                                                                                                                                  vec4 TotalAmbient = uAmbient * BaseColor; \
                                                                                                                                                      vec4 TotalDiffuse = uDiffuse * NDotL * BaseColor; \
@@ -269,7 +269,7 @@ void main(void)\
                                                                                                 \
                                                                                                 vec3  fvReflection     = normalize( ( ( 2.0 * fvNormal ) * fNDotL ) - fvLightDirection ); \
                                                                                                                          vec3  fvViewDirection  = normalize( ViewDirection );\
-                                                                                                                                                  float fRDotV           = max( 0.0, dot( fvReflection, fvViewDirection ) );\
+                                                                                                                                                  float fRDotV           = Max( 0.0, dot( fvReflection, fvViewDirection ) );\
                                                                                                                                                                            \
                                                                                                                                                                            vec4  fvBaseColor      = texture2D( baseMap, Texcoord );\
                                                                                                                                                                                                     \

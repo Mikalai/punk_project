@@ -598,19 +598,19 @@
 //
 //		/*void CalculateMaximumFrameCount(const System::string& action_name)
 //		{
-//		int max = 0;
+//		int Max = 0;
 //		Action& action = m_skeleton_animation[action_name];
 //		SkeletonAnimation::iterator max_iter; 
 //		for (SkeletonAnimation::iterator bone_anim = action.m_pose.begin(); bone_anim != action.m_pose.end(); ++bone_anim)
 //		{
-//		if (max < (*bone_anim).second.m_frames.size())
+//		if (Max < (*bone_anim).second.m_frames.size())
 //		{
 //		max_iter = bone_anim;
-//		max = (*bone_anim).second.m_frames.size();
+//		Max = (*bone_anim).second.m_frames.size();
 //		}
 //		}
-//		action.m_key_count = max;
-//		m_frame_value[action_name].SetSize(1, max);
+//		action.m_key_count = Max;
+//		m_frame_value[action_name].SetSize(1, Max);
 //
 //		for (FramesCollection::iterator frame = (*max_iter).second.m_frames.begin(); frame != (*max_iter).second.m_frames.end(); ++frame)
 //		{
@@ -988,14 +988,14 @@
 //					//
 //					// зам€н€ем найменьш уплывовую в€ршыну
 //					//
-//					int min = 0;
+//					int Min = 0;
 //					for (int j = 0; j < 4; j++)
 //					{
-//						if (w[j] < w[min])
-//							min = j;
+//						if (w[j] < w[Min])
+//							Min = j;
 //					}
-//					b_id[min] = i;
-//					w[min] = weights.at(cur_bone->GetName());
+//					b_id[Min] = i;
+//					w[Min] = weights.at(cur_bone->GetName());
 //					used++;
 //				}
 //			}

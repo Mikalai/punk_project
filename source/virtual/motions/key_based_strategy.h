@@ -12,7 +12,7 @@ namespace Virtual
 {
 	class KeyBasedMotionStrategy : public MotionStrategy
 	{
-		std::auto_ptr<AnimationMixer> m_mixer;
+		std::auto_ptr<AnimationMixer> m_Mixer;
 		__int64 m_current_time_us;
 	public:		
 		virtual bool Save(std::ostream& stream);

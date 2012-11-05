@@ -1,6 +1,8 @@
 #ifdef _WIN32
 
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include "config_file_win32.h"
 #include "../logger.h"

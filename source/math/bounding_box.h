@@ -31,16 +31,16 @@ namespace Math
 		bool IsPointIn(const float *p) const;
 		bool DoCrossLine(const Line3D& line) const;
 
-		const vec3& Min() const;
-		const vec3& Max() const;
-		vec3& Min();
-		vec3& Max();		
+		const vec3& MinPoint() const;
+		const vec3& MaxPoint() const;
+		vec3& MinPoint();
+		vec3& MaxPoint();		
 		const vec3* TransformedPoints() const;
 
 		vec3& operator [] (int index);
 		const vec3& operator [] (int index) const;
 
-		const BoundingBox& Transform(const Math::mat4& transform, Math::vec3& min, Math::vec3& max) const;
+		const BoundingBox& Transform(const Math::mat4& transform, Math::vec3& Min, Math::vec3& Max) const;
 		const BoundingBox& Transform(const mat4& transform) const;
 
 		bool Save(std::ostream& stream);

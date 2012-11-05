@@ -31,6 +31,5 @@
 #include "camera.h"
 #include "helper.h"
 #include <exception>
-#include "functions.h"
 
 #endif // MATH_H

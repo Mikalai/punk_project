@@ -327,7 +327,7 @@ NvFaceInfo* NvStripifier::FindGoodResetPoint(NvFaceInfoVec &faceInfos, NvEdgeInf
 				break;
 			}
 
-			// update the index and clamp to 0-(numFaces-1)
+			// update the index and Clamp to 0-(numFaces-1)
 			if (++i >= numFaces)
 				i = 0;
 

@@ -3,9 +3,7 @@
 
 #include <stdio.h>
 #include "../string/string.h"
-#include "vec3.h"
-#include "vec4.h"
-#include "math_relations.h"
+#include "relations.h"
 
 namespace Math
 {	  
@@ -145,45 +143,30 @@ namespace Math
 			return m_v[0]*vec.m_v[0] + m_v[1]*vec.m_v[1];
 		}
 
-		Vector3<T> ToHomogeneous() const
-		{
-			return Vector3<T>(m_v[0], m_v[1], T(1));
-		}
-
-		Vector3<T> ToVector3() const
-		{
-			return Vector3<T>(m_v[0], m_v[1], T(0));
-		}
-
-		Vector4<T> ToVector4() const
-		{
-			return Vector4<T>(m_v[0], m_v[1], T(0), T(1));
-		}
-
 		System::string ToString() const
 		{
 			return System::string::Format(L"(%.3f; %.3f)", m_v[0], m_v[1]);
 		}
 
-		Point2DPositionClassification Classify(const Vector2<T>& p0, const Vector2<T> p1)
+		Relation Classify(const Vector2<T>& p0, const Vector2<T> p1)
 		{
 			Vector2<T> p2 = *this;
 			Vector2<T> a = p1 - p0;
 			Vector2<T> b = p2 - p0;
 			double sa = a.X() * b.Y() - b.X() - a.Y();
 			if (sa > 0.0)
-				return POINT2D_LEFT;
+				return Relation::LEFT;
 			if (sa < 0.0)
-				return POINT2D_RIGHT;
+				return Relation::RIGHT;
 			if ((a.X() * b.X() < 0.0) || (a.Y() * b.Y() < 0.0))
-				return POINT2D_BEHIND;
+				return Relation::BACK;
 			if (a.Length() < b.Length())
-				return POINT2D_BEYOND;
+				return Relation::FRONT;
 			if (p0 == p2)
-				return POINT2D_BEHIND;
+				return Relation::START;
 			if (p1 == p2)
-				return POINT2D_DESTINATION;
-			return POINT2D_BEHIND;            
+				return Relation::END;
+			return Relation::BACK;            
 		}
 	};
 
@@ -229,11 +212,24 @@ namespace Math
 		return !(a == b);
 	}
 
-	template class PUNK_ENGINE Vector2<float>;
-	template class PUNK_ENGINE Vector2<int>;
+	class PUNK_ENGINE vec2 : public Vector2<float>
+	{
+	public:
+		vec2() : Vector2<float>() {}
+		vec2(float x, float y) : Vector2<float>(x, y) {}
+		vec2(const vec2& vec) : Vector2<float>(vec) {}
+		vec2(const Vector2<float>& vec) : Vector2<float>(vec) {}
+	};
 
-	typedef Vector2<float> vec2;
-	typedef Vector2<int> ivec2;
+	class PUNK_ENGINE ivec2 : public Vector2<int>
+	{
+	public:
+		ivec2() : Vector2<int>() {}
+		ivec2(int x, int y) : Vector2<int>(x, y) {}
+		ivec2(const ivec2& vec) : Vector2<int>(vec) {}
+		ivec2(const Vector2<int>& vec) : Vector2<int>(vec) {}
+	};
+
 }
 
 #endif

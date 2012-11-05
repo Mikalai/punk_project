@@ -3,7 +3,7 @@
 
 #include <list>
 #include "../render_context/render_context_policy.h"
-#include "../renderable/data/renderable.h"
+#include "../renderable/primitives/renderable.h"
 #include "../../system/poolable.h"
 #include "../../system/smart_pointers/handle.h"
 

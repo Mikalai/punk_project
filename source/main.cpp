@@ -5,7 +5,9 @@
 #include <crtdbg.h>
 #endif	//	_DEBUG
 
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 
 #include "system/logger.h"

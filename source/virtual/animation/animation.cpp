@@ -17,17 +17,17 @@ namespace Virtual
 		m_rot_track = desc.m_rot_track;
 	}
 
-	void Animation::AddPositionKey(int frame, Math::Vector3<float>& position)
+	void Animation::AddPositionKey(int frame, Math::vec3& position)
 	{
 		m_pos_track.AddKey(frame, position);
 	}
 		
-	void Animation::AddRotationKey(int frame, Math::Quaternion<float>& rotation)
+	void Animation::AddRotationKey(int frame, Math::quat& rotation)
 	{
 		m_rot_track.AddKey(frame, rotation);
 	}
 		
-	Math::Vector3<float>& Animation::GetOrCreatePositionKey(int time)
+	Math::vec3& Animation::GetOrCreatePositionKey(int time)
 	{
 		if (!m_pos_track.HasKeyAt(time))
 			m_pos_track.AddKey(time, Math::vec3());
@@ -35,7 +35,7 @@ namespace Virtual
 		return m_pos_track.GetOriginalKey(time, flag);
 	}
 
-	Math::Quaternion<float>& Animation::GetOrCreateRotationKey(int time)
+	Math::quat& Animation::GetOrCreateRotationKey(int time)
 	{
 		if (!m_rot_track.HasKeyAt(time))
 			m_rot_track.AddKey(time, Math::quat());
@@ -43,12 +43,12 @@ namespace Virtual
 		return m_rot_track.GetOriginalKey(time, flag);
 	}
 
-	const Math::Vector3<float> Animation::GetPosition(float time) const
+	const Math::vec3 Animation::GetPosition(float time) const
 	{
 		return m_pos_track.GetKey(time);
 	}
 		
-	const Math::Quaternion<float> Animation::GetRotation(float time) const
+	const Math::quat Animation::GetRotation(float time) const
 	{
 		return m_rot_track.GetKey(time);
 	}

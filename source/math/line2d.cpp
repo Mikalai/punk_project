@@ -62,7 +62,7 @@ namespace Math
 		return m_destination;
 	}
 
-	IntersectionType Line2D::CrossLine(const Line2D& line, float& t)
+	Relation Line2D::CrossLine(const Line2D& line, float& t)
 	{
 		vec2 a = m_origin;
 		vec2 b = m_destination;
@@ -72,16 +72,17 @@ namespace Math
 		float denom = n.Dot(b - a);
 		if (denom == 0.0)
 		{
-			Point2DPositionClassification aclass = m_origin.Classify(line.Origin(), line.Destination());
-			if ((aclass == POINT2D_LEFT) || (aclass == POINT2D_RIGHT))
-				return PARALLEL;
+			Relation aclass = m_origin.Classify(line.Origin(), line.Destination());
+			if ((aclass == Relation::LEFT) || (aclass == Relation::RIGHT))
+				return Relation::PARALLEL;
 			else
-				return COLLINEAR;
+				return Relation::ON;
 		}
 
 		float num = n.Dot(a - c);
 		t = -num / denom;
-		return SKEW;
+
+		return Relation::INTERSECT;
 	}
 
 	const vec2 Line2D::Point(float t)

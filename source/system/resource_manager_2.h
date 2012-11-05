@@ -12,7 +12,7 @@
 #include "smart_pointers/handle.h"
 #include "string.h"
 #include "folder.h"
-
+#include "../math/helper.h"
 #include "logger.h"
 //#include "abstract_manager.h"
 #include "hresource.h"
@@ -191,7 +191,7 @@ namespace System
 					Proxy<T> res(T::CreateFromFile(file));
 					// res->Init(index, file);
 					//	we should place a resource in specifed by index position
-					m_items.resize(std::max((int)m_items.size(), index + 1));
+					m_items.resize(Math::Max((int)m_items.size(), index + 1));
 					m_items[index] = Handle<T>(res);
 					UpdateIndexCache(index, file);
 					out_message() << L"Resource " + System::string::Convert(index) + L" " + file + L" has been cached" << std::endl;

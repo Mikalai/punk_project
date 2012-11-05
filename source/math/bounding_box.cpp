@@ -7,7 +7,7 @@ Description: Bounding box emplementation
 #include "../system/logger.h"
 #include "bounding_box.h"
 #include "line3d.h"
-
+#include "helper.h"
 #include <algorithm>
 #include <limits>
 
@@ -44,8 +44,8 @@ namespace Math
 			return false;
 		}
 
-		*t0 = std::max(u0, *t0);
-		*t1 = std::max(u1, *t1);
+		*t0 = Max(u0, *t0);
+		*t1 = Max(u1, *t1);
 
 		if (*t1 < *t0)
 		{
@@ -55,23 +55,24 @@ namespace Math
 		return true;
 	}
 
-	bool ClipSegment3D(const vec3& A, const vec3& B, const vec3& Min, const vec3& Max)
+	bool ClipSegment3D(const vec3& A, const vec3& B, const vec3& min, const vec3& max)
 	{
 		float t0 = 0.0f, t1 = 1.0f;
 //		float S[3] = {A[0], A[1], A[2]};
 		float D[3] = {B[0]-A[0], B[1]-A[1], B[2]-A[2]};
 
-		if (!ClipSegment(Min[0], Max[0], A[0], B[0], D[0], &t0, &t1))
+		if (!ClipSegment(min[0], max[0], A[0], B[0], D[0], &t0, &t1))
 		{
 			return false;
 		}
 
-		if (!ClipSegment(Min[1], Max[1], A[1], B[1], D[1], &t0, &t1))
+		if (!ClipSegment(min[1], max[1], A[1], B[1], D[1], &t0, &t1))
 		{
 			return false;
 		}
 
-		if (!ClipSegment(Min[2], Max[2], A[2], B[2], D[2], &t0, &t1))
+		if (!ClipSegment(
+			min[2], max[2], A[2], B[2], D[2], &t0, &t1))
 		{
 			return false;
 		}
@@ -79,18 +80,18 @@ namespace Math
 		return true;
 	}
 
-	bool ClipSegment2D(const vec2& A, const vec2& B, const vec2& Min, const vec2& Max)
+	bool ClipSegment2D(const vec2& A, const vec2& B, const vec2& min, const vec2& max)
 	{
 		float t0 = 0.0f, t1 = 1.0f;
 //		float S[2] = {A[0], A[1]};
 		float D[2] = {B[0]-A[0], B[1]-A[1]};
 
-		if (!ClipSegment(Min[0], Max[0], A[0], B[0], D[0], &t0, &t1))
+		if (!ClipSegment(min[0], max[0], A[0], B[0], D[0], &t0, &t1))
 		{
 			return false;
 		}
 
-		if (!ClipSegment(Min[1], Max[1], A[1], B[1], D[1], &t0, &t1))
+		if (!ClipSegment(min[1], max[1], A[1], B[1], D[1], &t0, &t1))
 		{
 			return false;
 		}
@@ -144,22 +145,22 @@ namespace Math
 		return false;
 	}
 
-	const vec3& BoundingBox::Min() const
+	const vec3& BoundingBox::MinPoint() const
 	{
 		return m_min;
 	}
 
-	const vec3& BoundingBox::Max() const
+	const vec3& BoundingBox::MaxPoint() const
 	{
 		return m_max;
 	}
 
-	vec3& BoundingBox::Min() 
+	vec3& BoundingBox::MinPoint() 
 	{
 		return m_min;
 	}
 
-	vec3& BoundingBox::Max()
+	vec3& BoundingBox::MaxPoint()
 	{
 		return m_max;
 	}
@@ -171,29 +172,32 @@ namespace Math
 
 	const BoundingBox& BoundingBox::Transform(const Math::mat4& transform, Math::vec3& min, Math::vec3& max) const
 	{
-		m_transformed_points[0] = (transform * vec3(m_min[0], m_min[1], m_min[2]).ToHomogeneous()).XYZ();		
+		m_transformed_points[0] = (transform * vec4(m_min[0], m_min[1], m_min[2], 1)).XYZ();	
 		min = max = m_transformed_points[0];
-		m_transformed_points[1] = (transform * vec3(m_min[0], m_min[1], m_max[2]).ToHomogeneous()).XYZ();
-		min[0] = std::min(min[0], m_transformed_points[1][0]); min[1] = std::min(min[1], m_transformed_points[1][1]); min[2] = std::min(min[2], m_transformed_points[1][2]);
-		max[0] = std::max(max[0], m_transformed_points[1][0]); max[1] = std::max(max[1], m_transformed_points[1][1]); max[2] = std::max(max[2], m_transformed_points[1][2]);
-		m_transformed_points[2] = (transform * vec3(m_min[0], m_max[1], m_min[2]).ToHomogeneous()).XYZ();
-		min[0] = std::min(min[0], m_transformed_points[2][0]); min[1] = std::min(min[1], m_transformed_points[2][1]); min[2] = std::min(min[2], m_transformed_points[2][2]);
-		max[0] = std::max(max[0], m_transformed_points[2][0]); max[1] = std::max(max[1], m_transformed_points[2][1]); max[2] = std::max(max[2], m_transformed_points[2][2]);
-		m_transformed_points[3] = (transform * vec3(m_min[0], m_max[1], m_max[2]).ToHomogeneous()).XYZ();
-		min[0] = std::min(min[0], m_transformed_points[3][0]); min[1] = std::min(min[1], m_transformed_points[3][1]); min[2] = std::min(min[2], m_transformed_points[3][2]);
-		max[0] = std::max(max[0], m_transformed_points[3][0]); max[1] = std::max(max[1], m_transformed_points[3][1]); max[2] = std::max(max[2], m_transformed_points[3][2]);
-		m_transformed_points[4] = (transform * vec3(m_max[0], m_min[1], m_min[2]).ToHomogeneous()).XYZ();
-		min[0] = std::min(min[0], m_transformed_points[4][0]); min[1] = std::min(min[1], m_transformed_points[4][1]); min[2] = std::min(min[2], m_transformed_points[4][2]);
-		max[0] = std::max(max[0], m_transformed_points[4][0]); max[1] = std::max(max[1], m_transformed_points[4][1]); max[2] = std::max(max[2], m_transformed_points[4][2]);
-		m_transformed_points[5] = (transform * vec3(m_max[0], m_min[1], m_max[2]).ToHomogeneous()).XYZ();
-		min[0] = std::min(min[0], m_transformed_points[5][0]); min[1] = std::min(min[1], m_transformed_points[5][1]); min[2] = std::min(min[2], m_transformed_points[5][2]);
-		max[0] = std::max(max[0], m_transformed_points[5][0]); max[1] = std::max(max[1], m_transformed_points[5][1]); max[2] = std::max(max[2], m_transformed_points[5][2]);
-		m_transformed_points[6] = (transform * vec3(m_max[0], m_max[1], m_min[2]).ToHomogeneous()).XYZ();
-		min[0] = std::min(min[0], m_transformed_points[6][0]); min[1] = std::min(min[1], m_transformed_points[6][1]); min[2] = std::min(min[2], m_transformed_points[6][2]);
-		max[0] = std::max(max[0], m_transformed_points[6][0]); max[1] = std::max(max[1], m_transformed_points[6][1]); max[2] = std::max(max[2], m_transformed_points[6][2]);
-		m_transformed_points[7] = (transform * vec3(m_max[0], m_max[1], m_max[2]).ToHomogeneous()).XYZ();
-		min[0] = std::min(min[0], m_transformed_points[7][0]); min[1] = std::min(min[1], m_transformed_points[7][1]); min[2] = std::min(min[2], m_transformed_points[7][2]);
-		max[0] = std::max(max[0], m_transformed_points[7][0]); max[1] = std::max(max[1], m_transformed_points[7][1]); max[2] = std::max(max[2], m_transformed_points[7][2]);
+
+		m_transformed_points[1] = (transform * vec4(m_min[0], m_min[1], m_max[2], 1)).XYZ();
+
+		min[0] = Min(min[0], m_transformed_points[1][0]); min[1] = Min(min[1], m_transformed_points[1][1]); min[2] = Min(min[2], m_transformed_points[1][2]);
+		max[0] = Max(max[0], m_transformed_points[1][0]); max[1] = Max(max[1], m_transformed_points[1][1]); max[2] = Max(max[2], m_transformed_points[1][2]);
+
+		m_transformed_points[2] = (transform * vec4(m_min[0], m_max[1], m_min[2], 1)).XYZ();
+		min[0] = Min(min[0], m_transformed_points[2][0]); min[1] = Min(min[1], m_transformed_points[2][1]); min[2] = Min(min[2], m_transformed_points[2][2]);
+		max[0] = Max(max[0], m_transformed_points[2][0]); max[1] = Max(max[1], m_transformed_points[2][1]); max[2] = Max(max[2], m_transformed_points[2][2]);
+		m_transformed_points[3] = (transform * vec4(m_min[0], m_max[1], m_max[2], 1)).XYZ();
+		min[0] = Min(min[0], m_transformed_points[3][0]); min[1] = Min(min[1], m_transformed_points[3][1]); min[2] = Min(min[2], m_transformed_points[3][2]);
+		max[0] = Max(max[0], m_transformed_points[3][0]); max[1] = Max(max[1], m_transformed_points[3][1]); max[2] = Max(max[2], m_transformed_points[3][2]);
+		m_transformed_points[4] = (transform * vec4(m_max[0], m_min[1], m_min[2], 1)).XYZ();
+		min[0] = Min(min[0], m_transformed_points[4][0]); min[1] = Min(min[1], m_transformed_points[4][1]); min[2] = Min(min[2], m_transformed_points[4][2]);
+		max[0] = Max(max[0], m_transformed_points[4][0]); max[1] = Max(max[1], m_transformed_points[4][1]); max[2] = Max(max[2], m_transformed_points[4][2]);
+		m_transformed_points[5] = (transform * vec4(m_max[0], m_min[1], m_max[2], 1)).XYZ();
+		min[0] = Min(min[0], m_transformed_points[5][0]); min[1] = Min(min[1], m_transformed_points[5][1]); min[2] = Min(min[2], m_transformed_points[5][2]);
+		max[0] = Max(max[0], m_transformed_points[5][0]); max[1] = Max(max[1], m_transformed_points[5][1]); max[2] = Max(max[2], m_transformed_points[5][2]);
+		m_transformed_points[6] = (transform * vec4(m_max[0], m_max[1], m_min[2], 1)).XYZ();
+		min[0] = Min(min[0], m_transformed_points[6][0]); min[1] = Min(min[1], m_transformed_points[6][1]); min[2] = Min(min[2], m_transformed_points[6][2]);
+		max[0] = Max(max[0], m_transformed_points[6][0]); max[1] = Max(max[1], m_transformed_points[6][1]); max[2] = Max(max[2], m_transformed_points[6][2]);
+		m_transformed_points[7] = (transform * vec4(m_max[0], m_max[1], m_max[2], 1)).XYZ();
+		min[0] = Min(min[0], m_transformed_points[7][0]); min[1] = Min(min[1], m_transformed_points[7][1]); min[2] = Min(min[2], m_transformed_points[7][2]);
+		max[0] = Max(max[0], m_transformed_points[7][0]); max[1] = Max(max[1], m_transformed_points[7][1]); max[2] = Max(max[2], m_transformed_points[7][2]);
 		return *this;
 	}
 

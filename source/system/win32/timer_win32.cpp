@@ -1,7 +1,9 @@
 #ifdef _WIN32
 
 #include "timer_win32.h"
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 
 namespace System

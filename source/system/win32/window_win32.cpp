@@ -2,9 +2,13 @@
 
 #include <stdio.h>
 #include <algorithm>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 //#include "allocator_win32.h"
 #include "window_win32.h"
+#include "../../math/helper.h"
 #include "../event_manager.h"
 #include "../error.h"
 #include "../logger.h"
@@ -72,9 +76,9 @@ namespace System
 
 	void Window::DrawPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 	{
-		unsigned char rr = std::max((int)r - int(255 - a), 0);
-		unsigned char gg = std::max((int)g - int(255 - a), 0);
-		unsigned char bb = std::max((int)b - int(255 - a), 0);
+		unsigned char rr = Math::Max((int)r - int(255 - a), 0);
+		unsigned char gg = Math::Max((int)g - int(255 - a), 0);
+		unsigned char bb = Math::Max((int)b - int(255 - a), 0);
 
 		SetPixel(GetDC(m_windowHandle), x, y, RGB( rr, gg, bb));
 	}

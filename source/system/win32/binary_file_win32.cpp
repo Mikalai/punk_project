@@ -2,6 +2,9 @@
 #define _H_PUNK_BINARY_FILE
 
 #include <istream>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 
 #include "../error.h"

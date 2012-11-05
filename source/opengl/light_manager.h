@@ -2,6 +2,9 @@
 #define _LIGHT_MANAGER
 
 /*
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include <gl\gl.h>
 #include <gl\glext.h>

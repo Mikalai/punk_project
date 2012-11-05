@@ -7,6 +7,9 @@ and deinitialization rutines
 
 #ifdef _WIN32
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include <gl/gl3.h>
 #include "../driver.h"

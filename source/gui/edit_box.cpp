@@ -137,7 +137,7 @@ namespace GUI
 	void TextBox::SetText(const System::string& text)
 	{
 		Widget::SetText(text);
-		m_cursor_x = std::min(text.Length(), m_cursor_x);
+		m_cursor_x = Min(text.Length(), m_cursor_x);
 	}
 
 	void TextBox::OnKeyDown(System::KeyDownEvent* e)
@@ -163,7 +163,7 @@ namespace GUI
 						{
 							new_pos--;
 						}
-						m_cursor_x = std::max(0, new_pos);
+						m_cursor_x = Max(0, new_pos);
 					}
 				}
 				break;
@@ -183,7 +183,7 @@ namespace GUI
 						{
 							new_pos++;
 						}						
-						m_cursor_x = std::min(m_text.Length(), new_pos);
+						m_cursor_x = Min(m_text.Length(), new_pos);
 					}
 					break;
 				}

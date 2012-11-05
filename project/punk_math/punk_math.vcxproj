@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4E7D93AB-B9B6-49F7-8001-B9F7A92E4522}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>punk_math</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>PUNK_ENGINE_EXPORTS;WIN32;_DEBUG;_WINDOWS;_USRDLL;PUNK_MATH_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>dbghelp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>PUNK_ENGINE_EXPORTS;WIN32;NDEBUG;_WINDOWS;_USRDLL;PUNK_MATH_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>dbghelp.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\math\astar.cpp" />
+    <ClCompile Include="..\..\source\math\bounding_box.cpp" />
+    <ClCompile Include="..\..\source\math\camera.cpp" />
+    <ClCompile Include="..\..\source\math\frustum.cpp" />
+    <ClCompile Include="..\..\source\math\functions.cpp" />
+    <ClCompile Include="..\..\source\math\helper.cpp" />
+    <ClCompile Include="..\..\source\math\line2d.cpp" />
+    <ClCompile Include="..\..\source\math\line3d.cpp" />
+    <ClCompile Include="..\..\source\math\math.cpp" />
+    <ClCompile Include="..\..\source\math\math_error.cpp" />
+    <ClCompile Include="..\..\source\math\noise.cpp" />
+    <ClCompile Include="..\..\source\math\oct_tree.cpp" />
+    <ClCompile Include="..\..\source\math\plane.cpp" />
+    <ClCompile Include="..\..\source\math\random.cpp" />
+    <ClCompile Include="..\..\source\math\triangle2d.cpp" />
+    <ClCompile Include="..\..\source\math\triangle3d.cpp" />
+    <ClCompile Include="..\..\source\string\string.cpp" />
+    <ClCompile Include="..\..\source\string\win32\string_win32.cpp" />
+    <ClCompile Include="..\..\source\system\logger.cpp" />
+    <ClCompile Include="..\..\source\system\system_clock.cpp" />
+    <ClCompile Include="..\..\source\system\win32\console_win32.cpp" />
+    <ClCompile Include="..\..\source\system\win32\stack_trace_win32.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\math\astar.h" />
+    <ClInclude Include="..\..\source\math\bounding_box.h" />
+    <ClInclude Include="..\..\source\math\camera.h" />
+    <ClInclude Include="..\..\source\math\catmull_rom_spline.h" />
+    <ClInclude Include="..\..\source\math\complex.h" />
+    <ClInclude Include="..\..\source\math\constants.h" />
+    <ClInclude Include="..\..\source\math\frustum.h" />
+    <ClInclude Include="..\..\source\math\functions.h" />
+    <ClInclude Include="..\..\source\math\header_matrix.h" />
+    <ClInclude Include="..\..\source\math\helper.h" />
+    <ClInclude Include="..\..\source\math\interpolation.h" />
+    <ClInclude Include="..\..\source\math\line2d.h" />
+    <ClInclude Include="..\..\source\math\line3d.h" />
+    <ClInclude Include="..\..\source\math\low_level_math.h" />
+    <ClInclude Include="..\..\source\math\mat2.h" />
+    <ClInclude Include="..\..\source\math\mat3.h" />
+    <ClInclude Include="..\..\source\math\mat4.h" />
+    <ClInclude Include="..\..\source\math\math.h" />
+    <ClInclude Include="..\..\source\math\math_error.h" />
+    <ClInclude Include="..\..\source\math\math_relations.h" />
+    <ClInclude Include="..\..\source\math\matrix.h" />
+    <ClInclude Include="..\..\source\math\noise.h" />
+    <ClInclude Include="..\..\source\math\oct_tree.h" />
+    <ClInclude Include="..\..\source\math\plane.h" />
+    <ClInclude Include="..\..\source\math\quat.h" />
+    <ClInclude Include="..\..\source\math\random.h" />
+    <ClInclude Include="..\..\source\math\region.h" />
+    <ClInclude Include="..\..\source\math\smart_matrix.h" />
+    <ClInclude Include="..\..\source\math\triangle2d.h" />
+    <ClInclude Include="..\..\source\math\triangle3d.h" />
+    <ClInclude Include="..\..\source\math\type.h" />
+    <ClInclude Include="..\..\source\math\vec2.h" />
+    <ClInclude Include="..\..\source\math\vec3.h" />
+    <ClInclude Include="..\..\source\math\vec4.h" />
+    <ClInclude Include="..\..\source\string\string.h" />
+    <ClInclude Include="..\..\source\string\win32\string_win32.h" />
+    <ClInclude Include="..\..\source\system\console.h" />
+    <ClInclude Include="..\..\source\system\logger.h" />
+    <ClInclude Include="..\..\source\system\stack_trace.h" />
+    <ClInclude Include="..\..\source\system\system_clock.h" />
+    <ClInclude Include="..\..\source\system\types\priority_list.h" />
+    <ClInclude Include="..\..\source\system\win32\console_win32.h" />
+    <ClInclude Include="..\..\source\system\win32\stack_trace_win32.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

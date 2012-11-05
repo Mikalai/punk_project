@@ -232,7 +232,7 @@ namespace GUI
 				if (m_animation < m_animation_duration)
 				{
 					m_animation += time_in_s;
-					m_animation = std::min(m_animation, m_animation_duration);
+					m_animation = Min(m_animation, m_animation_duration);
 					m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
 					m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 				}
@@ -242,7 +242,7 @@ namespace GUI
 				if (m_animation > 0)
 				{
 					m_animation -= time_in_s;
-					m_animation = std::max(m_animation, float(0.0));
+					m_animation = Max(m_animation, float(0.0));
 					m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
 					m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 				}

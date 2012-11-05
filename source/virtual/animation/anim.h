@@ -3,11 +3,11 @@
 
 #include "action.h"
 #include "animation.h"
-#include "animation_mixer.h"
+#include "animation_Mixer.h"
 #include "animation_track.h"
-#include "armature_animation_mixer.h"
+#include "armature_animation_Mixer.h"
 #include "bone_animation.h"
 #include "object_animation.h"
-#include "object_animation_mixer.h"
+#include "object_animation_Mixer.h"
 
 #endif	//	_H_PUNK_VIRTUAL_ANIMATION_MAIN_HEADER

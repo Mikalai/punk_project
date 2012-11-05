@@ -4,7 +4,7 @@
 #include "CL/opencl.h"
 #include "kernel.h"
 #include "../system/logger.h"
-#include "../math/functions.h"
+#include "../math/helper.h"
 #include "buffer_impl.h"
 
 namespace OpenCL
@@ -30,7 +30,7 @@ namespace OpenCL
 		bool Call(int elements_to_process)
 		{
 			size_t local_size = 256;
-			size_t global_size = Math::round_up((size_t)elements_to_process, local_size);
+			size_t global_size = Math::RoundUp((size_t)elements_to_process, local_size);
 			cl_int error = clEnqueueNDRangeKernel(m_queue, m_kernel, 1, NULL, &global_size, &local_size, 0, NULL, NULL);
 			if (error != CL_SUCCESS)
 				return (out_error() << "Can't execute kernel" << std::endl, false);

@@ -9,7 +9,9 @@
 
 #include <time.h>
 #include "types_win32.h"
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 
 namespace System

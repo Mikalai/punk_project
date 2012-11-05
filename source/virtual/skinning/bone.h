@@ -54,7 +54,7 @@ namespace Virtual
 		const std::vector<Bone*>& GetChildren() const { return m_children; }
 
 		const Math::mat4& GetAnimatedGlobalMatrix(const Math::mat4& mesh_transform) const;
-		void UpdatePose(Virtual::AnimationMixer* mixer, float frame, bool deep = false);
+		void UpdatePose(Virtual::AnimationMixer* Mixer, float frame, bool deep = false);
 
 		/* Drops all precalculated staff */
 		void ResetCache();

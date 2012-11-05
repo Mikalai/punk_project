@@ -1,4 +1,6 @@
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include <DbgHelp.h>
 #include <ostream>

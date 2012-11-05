@@ -3,7 +3,7 @@
 
 #include "../config.h"
 #include "vec2.h"
-#include "math_relations.h"
+#include "relations.h"
 
 namespace Math
 {
@@ -23,7 +23,7 @@ namespace Math
 		vec2& Origin();
         const vec2& Destination() const;
 		vec2& Destination();
-		IntersectionType CrossLine(const Line2D& line, float& t);
+		Relation CrossLine(const Line2D& line, float& t);
         const vec2 Point(float t);
     };
 

@@ -2,6 +2,9 @@
 #define _H_PUNK_SYSTEM_CAMERA_CAPTURE_WIN32
 
 #include "../../config.h"
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include <dshow.h>
 

@@ -70,9 +70,6 @@
     <Filter Include="opengl\renderable">
       <UniqueIdentifier>{6d6bb92b-0e9b-48ce-9616-2de1983e4352}</UniqueIdentifier>
     </Filter>
-    <Filter Include="opengl\renderable\data">
-      <UniqueIdentifier>{9b851406-16d1-4a94-9551-ac72277b4ffa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="opengl\renderable\managers">
       <UniqueIdentifier>{e87f9983-16c4-4ec9-933e-b8ff2dcce203}</UniqueIdentifier>
     </Filter>
@@ -168,6 +165,9 @@
     </Filter>
     <Filter Include="ai">
       <UniqueIdentifier>{dbff1295-f1d0-4716-ab9c-985de90ea4fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="opengl\renderable\primitives">
+      <UniqueIdentifier>{9b851406-16d1-4a94-9551-ac72277b4ffa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -612,9 +612,6 @@
     <ClInclude Include="..\..\..\source\math\frustum.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\math\functions.h">
-      <Filter>math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\math\header_matrix.h">
       <Filter>math</Filter>
     </ClInclude>
@@ -646,9 +643,6 @@
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\math\math_error.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\math\math_relations.h">
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\math\matrix.h">
@@ -863,15 +857,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\render_context\shader2.h">
       <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\renderable.h">
-      <Filter>opengl\renderable\data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\vertex_array_object.h">
-      <Filter>opengl\renderable\data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\vertex_attributes.h">
-      <Filter>opengl\renderable\data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\renderable\renderable_data.h">
       <Filter>opengl\renderable</Filter>
@@ -1202,15 +1187,6 @@
     <ClInclude Include="..\..\..\source\utility\descriptors\camera_desc.h">
       <Filter>utility\descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\static_mesh.h">
-      <Filter>opengl\renderable\data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\skinned_mesh.h">
-      <Filter>opengl\renderable\data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\quad_mesh.h">
-      <Filter>opengl\renderable\data</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\renderable\managers\quad_mesh_manager.h">
       <Filter>opengl\renderable\managers</Filter>
     </ClInclude>
@@ -1324,6 +1300,36 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\ai\navi_triangle.h">
       <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\renderable.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\static_mesh.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\vertex_attributes.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\nrm.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\polygon.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\ray.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\relations.h">
+      <Filter>math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1594,9 +1600,6 @@
     <ClCompile Include="..\..\..\source\math\frustum.cpp">
       <Filter>math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\math\functions.cpp">
-      <Filter>math</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\math\helper.cpp">
       <Filter>math</Filter>
     </ClCompile>
@@ -1758,9 +1761,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\render_context\render_contexts.cpp">
       <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\vertex_array_object.cpp">
-      <Filter>opengl\renderable\data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\renderable\managers\managers.cpp">
       <Filter>opengl\renderable\managers</Filter>
@@ -1970,15 +1970,6 @@
     <ClCompile Include="..\..\..\source\utility\descriptors\bone_desc.cpp">
       <Filter>utility\descriptors</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\static_mesh.cpp">
-      <Filter>opengl\renderable\data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\skinned_mesh.cpp">
-      <Filter>opengl\renderable\data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\quad_mesh.cpp">
-      <Filter>opengl\renderable\data</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\poolable.h">
       <Filter>system</Filter>
     </ClCompile>
@@ -2035,6 +2026,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\data\light.cpp">
       <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\static_mesh.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\relations.cpp">
+      <Filter>math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

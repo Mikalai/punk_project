@@ -4,7 +4,7 @@
 #include "../../../config.h"
 #include "../../../system/resource_manager_2.h"
 #include "../../../system/environment.h"
-#include "../data/skinned_mesh.h"
+#include "../primitives/skinned_mesh.h"
 
 namespace System
 {

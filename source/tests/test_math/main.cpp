@@ -2,7 +2,7 @@
 #include <crtdbg.h>
 
 #include <stdio.h>
-#include "../punk_engine/math/math.h"
+#include "../../punk_engine.h"
 
 int main()
 {

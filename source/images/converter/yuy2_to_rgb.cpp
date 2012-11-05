@@ -1,6 +1,6 @@
 #include "yuy2_to_rgb.h"
 #include "../../system/logger.h"
-#include "../../math/functions.h"
+#include "../../math/helper.h"
 
 namespace ImageModule
 {
@@ -59,12 +59,12 @@ namespace ImageModule
 					movups a2, xmm1;					
 				}
 
-				dst[0] = clamp( 0, 255, (int)a1[0]);
-				dst[1] = clamp( 0, 255, (int)a1[1]);
-				dst[2] = clamp( 0, 255, (int)a1[2]);
-				dst[3] = clamp( 0, 255, (int)a2[0]);
-				dst[4] = clamp( 0, 255, (int)a2[1]);
-				dst[5] = clamp( 0, 255, (int)a2[2]);
+				dst[0] = Clamp( 0, 255, (int)a1[0]);
+				dst[1] = Clamp( 0, 255, (int)a1[1]);
+				dst[2] = Clamp( 0, 255, (int)a1[2]);
+				dst[3] = Clamp( 0, 255, (int)a2[0]);
+				dst[4] = Clamp( 0, 255, (int)a2[1]);
+				dst[5] = Clamp( 0, 255, (int)a2[2]);
 				dst += 6;
 			}
 		}

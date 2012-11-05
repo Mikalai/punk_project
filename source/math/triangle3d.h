@@ -4,7 +4,7 @@
 #include "../config.h"
 #include "vec3.h"
 #include "bounding_box.h"
-#include "math_relations.h"
+#include "relations.h"
 
 namespace Math
 {
@@ -15,6 +15,7 @@ namespace Math
 	{
 		vec3 m_v[3];
 		vec3 m_normal;
+		float m_distance;	//	distance from origin
 		BoundingBox m_bbox;		
 	public:
 
@@ -24,16 +25,15 @@ namespace Math
 		vec3& operator [] (unsigned i);
 		const BoundingBox& GetBoundingBox() const;
 		const vec3& GetNormal() const;
+		float GetDistance() const { return m_distance; }
+
+		bool GetBarycentric(const vec3& point, float& w0, float& w1, float& w2) const;
 
 		const Triangle2D ProjectXY() const;
 		const Triangle2D ProjectXZ() const;
-		const Triangle2D ProjectYZ() const;
-
-		bool CrossTriangle(const Triangle3D& t);
+		const Triangle2D ProjectYZ() const;		
 	};
-
-	PUNK_ENGINE IntersectionType LineCrossTriangle(const Line3D& e, const Triangle3D& p, float& t);
-	PUNK_ENGINE Point3DPositionClassification Classify(const vec3& v, const Triangle3D& t);
+	
 }
 
 #endif

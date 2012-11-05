@@ -1,5 +1,4 @@
 ﻿#include "triangle2d.h"
-#include "functions.h"
 #include <limits>
 
 namespace Math

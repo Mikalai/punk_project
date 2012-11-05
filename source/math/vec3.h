@@ -1,5 +1,5 @@
-#ifndef _H_VEC3_MATH
-#define _H_VEC3_MATH
+#ifndef _H_VEC3_MATH1
+#define _H_VEC3_MATH1
 
 #include <istream>
 #include <ostream>
@@ -10,11 +10,9 @@
 
 #include "../config.h"
 #include "vec2.h"
-#include "vec4.h"
 
 namespace Math
 {
-
 	template<class T>
 	class Vector3
 	{
@@ -96,11 +94,6 @@ namespace Math
 		Vector3<T> ComponentMult(const Vector3<T>& v)
 		{
 			return Vector3<T>(m_v[0]*v[0], m_v[1]*v[1], m_v[2]*v[2]);
-		}
-
-		Vector4<T> ToHomogeneous() const
-		{
-			return Vector4<T>(m_v[0], m_v[1], m_v[2], T(1));
 		}
 
 		Vector2<T> XY() const
@@ -336,14 +329,25 @@ namespace Math
 		return !(a == b);
 	}
 
-	//
-	//	instantiated abstract class for some exported types
-	//
-	template class PUNK_ENGINE Vector3<float>;
-	template class PUNK_ENGINE Vector3<int>;
+	class PUNK_ENGINE vec3 : public Vector3<float> 
+	{
+	public:
+		vec3() : Vector3<float>() {}
+		vec3(float x, float y, float z) : Vector3<float>(x, y, z) {}
+		vec3(const vec3& vec) : Vector3<float>(vec) {}
+		vec3(const Vector3<float>& vec) : Vector3<float>(vec) {}
+	};
 
-	typedef Vector3<float> vec3;
-	typedef Vector3<int> ivec3;	
+	class PUNK_ENGINE ivec3 : public Vector3<int> 
+	{
+	public:
+		ivec3() : Vector3<int>() {}
+		ivec3(int x, int y, int z) : Vector3<int>(x, y, z) {}
+		ivec3(const ivec3& vec) : Vector3<int>(vec) {}
+		ivec3(const Vector3<int>& vec) : Vector3<int>(vec) {}
+	};	
+
+	typedef std::vector<vec3> PointArray;
 }
 
 #endif

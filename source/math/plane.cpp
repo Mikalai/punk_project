@@ -1,6 +1,5 @@
 #include "plane.h"
 #include "vec4.h"
-#include "functions.h"
 #include "math.h"
 
 namespace Math
@@ -44,22 +43,6 @@ namespace Math
     {
         normal = (b-a).Cross(c-a).Normalized();
         distance = -normal.Dot(a);
-    }
-
-    Plane::Location Plane::Classify(const vec3& p) const
-    {
-        vec3 r = (p-normal*distance); // vector to the point to classify
-        float cosa = r.Dot(normal);
-        if (cosa < -EPS)
-            return BACK;
-        if (cosa > EPS)
-            return FRONT;
-        return ON;
-    }
-
-    float Plane::Distance(const vec3& p) const
-    {
-		return normal.Dot(p) + distance;
     }
 
     Plane Plane::Transform(const mat4 &matrix) const

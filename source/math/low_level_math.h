@@ -9,7 +9,7 @@ Description: Some math functions
 
 #include <string.h>
 #include <limits>
-#include <math.h>
+#include "helper.h"
 #include "vec3.h"
 #include "vec2.h"
 
@@ -114,24 +114,24 @@ namespace Math
 		return glDotProduct3fv(v1, v2) / (glLength3fv(v1)*glLength3fv(v2));
 	}
 
-	inline bool glClipSegment(float min, float max, float a, float b, float d, float* t0, float* t1)
+	inline bool glClipSegment(float Min, float Max, float a, float b, float d, float* t0, float* t1)
 	{
 		if (fabs(d) < threshold)
 		{
 			if (d > 0.0f)
 			{
-				return !(b < min || a > max);
+				return !(b < Min || a > Max);
 			}
 			else
 			{
-				return !(a < min || b > max);
+				return !(a < Min || b > Max);
 			}
 		}
 
 		float u0, u1;
 
-		u0 = (min - a) / (d);
-		u1 = (max - a) / (d);
+		u0 = (Min - a) / (d);
+		u1 = (Max - a) / (d);
 
 		if (u0 > u1)
 		{
@@ -156,23 +156,23 @@ namespace Math
 		return true;
 	}
 
-	inline bool glClipSegment3D(const float* A, const float* B, const float* Min, const float* Max)
+	inline bool glClipSegment3D(const float* A, const float* B, const float* min, const float* max)
 	{
 		float t0 = 0.0f, t1 = 1.0f;
 //		float S[3] = {A[0], A[1], A[2]};
 		float D[3] = {B[0]-A[0], B[1]-A[1], B[2]-A[2]};
 
-		if (!glClipSegment(Min[0], Max[0], A[0], B[0], D[0], &t0, &t1))
+		if (!glClipSegment(min[0], max[0], A[0], B[0], D[0], &t0, &t1))
 		{
 			return false;
 		}
 
-		if (!glClipSegment(Min[1], Max[1], A[1], B[1], D[1], &t0, &t1))
+		if (!glClipSegment(min[1], max[1], A[1], B[1], D[1], &t0, &t1))
 		{
 			return false;
 		}
 
-		if (!glClipSegment(Min[2], Max[2], A[2], B[2], D[2], &t0, &t1))
+		if (!glClipSegment(min[2], max[2], A[2], B[2], D[2], &t0, &t1))
 		{
 			return false;
 		}
@@ -180,18 +180,18 @@ namespace Math
 		return true;
 	}
 
-	inline bool glClipSegment2D(const float* A, const float* B, const float* Min, const float* Max)
+	inline bool glClipSegment2D(const float* A, const float* B, const float* min, const float* max)
 	{
 		float t0 = 0.0f, t1 = 1.0f;
 //		float S[2] = {A[0], A[1]};
 		float D[2] = {B[0]-A[0], B[1]-A[1]};
 
-		if (!glClipSegment(Min[0], Max[0], A[0], B[0], D[0], &t0, &t1))
+		if (!glClipSegment(min[0], max[0], A[0], B[0], D[0], &t0, &t1))
 		{
 			return false;
 		}
 
-		if (!glClipSegment(Min[1], Max[1], A[1], B[1], D[1], &t0, &t1))
+		if (!glClipSegment(min[1], max[1], A[1], B[1], D[1], &t0, &t1))
 		{
 			return false;
 		}

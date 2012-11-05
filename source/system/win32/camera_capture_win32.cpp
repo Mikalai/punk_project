@@ -3,6 +3,9 @@
 #include "../logger.h"
 #include <Vfw.h>
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include <dshow.h>
 

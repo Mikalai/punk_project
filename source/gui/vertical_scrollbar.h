@@ -29,7 +29,7 @@ namespace GUI
 		virtual void Render(IGUIRender* render) const;
 		int GetCurrent() const;
 		void SetCurrent(int value);
-		void SetMax(int max);
+		void SetMax(int Max);
 		void OnChangeValue(System::Handler handler);
 	};
 }

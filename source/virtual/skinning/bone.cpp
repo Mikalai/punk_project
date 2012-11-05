@@ -6,7 +6,7 @@
 #include "../../math/quat.h"
 #include "../../math/mat4.h"
 #include "../../math/vec3.h"
-#include "../animation/armature_animation_mixer.h"
+#include "../animation/armature_animation_Mixer.h"
 #include "../../utility/descriptors/bone_desc.h"
 
 namespace Virtual
@@ -113,23 +113,23 @@ namespace Virtual
 	{
 		if (!m || m->GetType() != System::DYNAMIC_RESOURCE_ARMATURE_ANIMATION_MIXER)
 		{
-			out_error() << "Can't update bone position " << m_name << ", because of bad animation mixer" << std::endl;
+			out_error() << "Can't update bone position " << m_name << ", because of bad animation Mixer" << std::endl;
 			return;
 		}
 
-		ArmatureAnimationMixer* mixer = static_cast<ArmatureAnimationMixer*>(m);
+		ArmatureAnimationMixer* Mixer = static_cast<ArmatureAnimationMixer*>(m);
 
 		if (m_last_get_global_matrix != frame)
 		{
 			m_last_get_global_matrix = frame;
-			mixer->GetBoneMatrix(m_name, m_last_local_matrix_update);			
+			Mixer->GetBoneMatrix(m_name, m_last_local_matrix_update);			
 			m_need_update_global_matrix = true;
 
 			if (deep)
 			{
 				for (auto bone : m_children)
 				{
-					bone->UpdatePose(mixer, frame, deep);
+					bone->UpdatePose(Mixer, frame, deep);
 				}
 			}
 		}		

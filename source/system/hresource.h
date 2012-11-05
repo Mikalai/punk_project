@@ -5,7 +5,7 @@
 
 namespace System
 {
-	enum ObjectType : unsigned
+	enum ObjectType : int
 	{
 		RESOURCE_NONE = -1,
 		PERMANENT_RESOURCE_STATIC_MESH,

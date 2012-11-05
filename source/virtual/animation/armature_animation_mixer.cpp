@@ -1,7 +1,7 @@
 #include <ostream>
 #include <math.h>
 #include <istream>
-#include "armature_animation_mixer.h"
+#include "armature_animation_Mixer.h"
 #include "bone_animation.h"
 #include "../skinning/armature.h"
 #include "../../system/logger.h"
@@ -58,7 +58,7 @@ namespace Virtual
 								while (time > options.m_max_time) time -= options.m_max_time;
 							else
 							{
-								out_error() << "Bad max time of the frame " << name << " with value " << options.m_max_time << std::endl;
+								out_error() << "Bad Max time of the frame " << name << " with value " << options.m_max_time << std::endl;
 								return;
 							}
 						else

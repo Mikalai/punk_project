@@ -64,9 +64,9 @@ namespace GUI
 		m_slider->SetCurrent(value);
 	}
 
-	void VerticalScrollBar::SetMax(int max)
+	void VerticalScrollBar::SetMax(int Max)
 	{
-		m_slider->SetBounds(0, max);
+		m_slider->SetBounds(0, Max);
 	}
 
 	void VerticalScrollBar::OnChangeValue(System::Handler handler)

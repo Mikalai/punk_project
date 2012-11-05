@@ -43,7 +43,7 @@ namespace GUI
 			}			
 			else
 			{
-				m_animation = std::min(m_animation, m_animation_duration);
+				m_animation = Min(m_animation, m_animation_duration);
 				m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
 				m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 			}

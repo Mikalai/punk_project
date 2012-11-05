@@ -22,6 +22,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include "LoadOAL.h"
 

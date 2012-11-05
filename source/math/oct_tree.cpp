@@ -76,48 +76,48 @@ namespace Math
 
 		if (m_parent == 0 || m_face_count > MaxFaceCount && m_face_count != m_parent->m_face_count)
 		{
-			const vec3& min = m_bbox.Min();
-			const vec3& max = m_bbox.Max();
-			const vec3 mid = (min + max) / 2.0f;
+			const vec3& Min = m_bbox.MinPoint();
+			const vec3& Max = m_bbox.MaxPoint();
+			const vec3 mid = (Min + Max) / 2.0f;
 			m_right_front_up.reset(new OctTree(this));
-			m_right_front_up->m_bbox.Min() = vec3(mid.X(), mid.Y(), mid.Z());
-			m_right_front_up->m_bbox.Max() = vec3(max.X(), max.Y(), max.Z());
+			m_right_front_up->m_bbox.MinPoint() = vec3(mid.X(), mid.Y(), mid.Z());
+			m_right_front_up->m_bbox.MaxPoint() = vec3(Max.X(), Max.Y(), Max.Z());
 			m_right_front_up->Build(temp_face_list, vertexList);
 
 			m_right_front_down.reset(new OctTree(this));
-			m_right_front_down->m_bbox.Min() = vec3(mid.X(), mid.Y(), min.Z());
-			m_right_front_down->m_bbox.Max() = vec3(max.X(), max.Y(), mid.Z());
+			m_right_front_down->m_bbox.MinPoint() = vec3(mid.X(), mid.Y(), Min.Z());
+			m_right_front_down->m_bbox.MaxPoint() = vec3(Max.X(), Max.Y(), mid.Z());
 			m_right_front_down->Build(temp_face_list, vertexList);
 
 			m_left_front_up.reset(new OctTree(this));
-			m_left_front_up->m_bbox.Min() = vec3(min.X(), mid.Y(), mid.Z());
-			m_left_front_up->m_bbox.Max() = vec3(mid.X(), max.Y(), max.Z());
+			m_left_front_up->m_bbox.MinPoint() = vec3(Min.X(), mid.Y(), mid.Z());
+			m_left_front_up->m_bbox.MaxPoint() = vec3(mid.X(), Max.Y(), Max.Z());
 			m_left_front_up->Build(temp_face_list,vertexList);
 
 			m_left_front_down.reset(new OctTree(this));
-			m_left_front_down->m_bbox.Min() = vec3(min.X(), mid.Y(), min.Z());
-			m_left_front_down->m_bbox.Max() = vec3(mid.X(), max.Y(), mid.Z());
+			m_left_front_down->m_bbox.MinPoint() = vec3(Min.X(), mid.Y(), Min.Z());
+			m_left_front_down->m_bbox.MaxPoint() = vec3(mid.X(), Max.Y(), mid.Z());
 			m_left_front_down->Build(temp_face_list,vertexList);
 			///////////////////////////////////////////////
 
 			m_right_back_up.reset(new OctTree(this));
-			m_right_back_up->m_bbox.Min() = vec3(mid.X(), min.Y(), mid.Z());
-			m_right_back_up->m_bbox.Max() = vec3(max.X(), mid.Y(), max.Z());
+			m_right_back_up->m_bbox.MinPoint() = vec3(mid.X(), Min.Y(), mid.Z());
+			m_right_back_up->m_bbox.MaxPoint() = vec3(Max.X(), mid.Y(), Max.Z());
 			m_right_back_up->Build(temp_face_list,vertexList);
 
 			m_right_back_down.reset(new OctTree(this));
-			m_right_back_down->m_bbox.Min() = vec3(mid.X(), min.Y(), min.Z());
-			m_right_back_down->m_bbox.Max() = vec3(max.X(), mid.Y(), mid.Z());
+			m_right_back_down->m_bbox.MinPoint() = vec3(mid.X(), Min.Y(), Min.Z());
+			m_right_back_down->m_bbox.MaxPoint() = vec3(Max.X(), mid.Y(), mid.Z());
 			m_right_back_down->Build(temp_face_list,vertexList);
 
 			m_left_back_up.reset(new OctTree(this));
-			m_left_back_up->m_bbox.Min() = vec3(min.X(), min.Y(), mid.Z());
-			m_left_back_up->m_bbox.Max() = vec3(mid.X(), mid.Y(), max.Z());
+			m_left_back_up->m_bbox.MinPoint() = vec3(Min.X(), Min.Y(), mid.Z());
+			m_left_back_up->m_bbox.MaxPoint() = vec3(mid.X(), mid.Y(), Max.Z());
 			m_left_back_up->Build(temp_face_list,vertexList);
 
 			m_left_back_down.reset(new OctTree(this));
-			m_left_back_down->m_bbox.Min() = vec3(min.X(), min.Y(), min.Z());
-			m_left_back_down->m_bbox.Max() = vec3(mid.X(), mid.Y(), mid.Z());
+			m_left_back_down->m_bbox.MinPoint() = vec3(Min.X(), Min.Y(), Min.Z());
+			m_left_back_down->m_bbox.MaxPoint() = vec3(mid.X(), mid.Y(), mid.Z());
 			m_left_back_down->Build(temp_face_list, vertexList);
 		}
 		else

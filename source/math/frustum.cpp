@@ -80,7 +80,7 @@ namespace Math
 			in = 0; out = 0;
 			for (int j = 0; j < 8; j++)
 			{
-				if (m_planes[i].Distance(point[j]) < 0)
+				if ((m_planes[i].GetNormal().Dot(point[j]) + m_planes[i].GetDistance()) < 0)
 					out++;
 				else
 					in++;

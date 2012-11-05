@@ -605,7 +605,7 @@ def export_sound(f, object):
     f.write("%f\n" % object.data.pitch)
     end_block(f)
     
-    #   export max distance
+    #   export Max distance
     start_block(f, "*max_distance")
     make_offset(f)
     f.write("%f\n" % object.data.distance_max)
@@ -785,7 +785,7 @@ class ExportPunkModel(bpy.types.Operator, ExportHelper):
     bl_idname = "export.punk_model"  
     bl_label = "Export PunkEngine Scene"
 
-    # ExportHelper mixin classed uses this
+    # ExportHelper Mixin classed uses this
     filename_ext = ".pmd"
 
     filter_glob = StringProperty(default="*.pmd", options = {'HIDDEN'})

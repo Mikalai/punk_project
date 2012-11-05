@@ -1,4 +1,7 @@
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include "environment_win32.h"
 #include "config_file_win32.h"

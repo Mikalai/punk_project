@@ -314,14 +314,14 @@ namespace Math
 				T z = (m[1] - m[4]) * s;
 				return Quaternion<T>(w, x, y, z);
 			}
-			int max = 0;
+			int Max = 0;
 			for (int i = 0; i < 4; i++)
 			{
-				if (m[max*4 + max] < m[i*4 + i])
-					max = i;
+				if (m[Max*4 + Max] < m[i*4 + i])
+					Max = i;
 			}
 
-			switch(max)
+			switch(Max)
 			{
 			case 0:
 				{
@@ -775,12 +775,15 @@ namespace Math
 		return stream;
 	}
 
-	//
-	//	instantiation 
-	//
-	template class PUNK_ENGINE Matrix4x4<float>;
+	
+	class PUNK_ENGINE mat4 : public Matrix4x4<float>
+	{
+	public:
+		mat4() : Matrix4x4<float> () {}
+		mat4(const mat4& m) : Matrix4x4<float>(m) {}
+		mat4(const Matrix4x4<float>& m) : Matrix4x4<float>(m) {}
+	};
 
-	typedef Matrix4x4<float> mat4;
 }
 
 #endif

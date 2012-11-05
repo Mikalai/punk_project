@@ -112,7 +112,7 @@ typedef void ALvoid;
 
 /**
  * Specify the pitch to be applied, either at source,
- *  or on mixer results, at listener.
+ *  or on Mixer results, at listener.
  * Range:   [0.5-2.0]
  * Default: 1.0
  */
@@ -467,7 +467,7 @@ AL_API void AL_APIENTRY alGetListeneriv( ALenum param, ALint* values );
  * Sources represent individual sound objects in 3D-space.
  * Sources take the PCM data provided in the specified Buffer,
  * apply Source-specific modifications, and then
- * submit them to be mixed according to spatial arrangement etc.
+ * submit them to be Mixed according to spatial arrangement etc.
  * 
  * Properties include: -
  *

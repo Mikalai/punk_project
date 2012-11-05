@@ -30,8 +30,8 @@ __kernel void YUY2toRGB(__global const Input* src, int size_in_chunks,__global O
 	float4 a1 = float4(dot(f[0], v1), dot(f[1], v1), dot(f[2], v1), 1);
 	float4 a2 = float4(dot(f[0], v2), dot(f[1], v2), dot(f[2], v2), 1);
 
-	float4 pixel_1 = clamp(a1, float4(0,0,0,0), float4(255,255,255,255));
-	float4 pixel_2 = clamp(a2, float4(0,0,0,0), float4(255,255,255,255));
+	float4 pixel_1 = Clamp(a1, float4(0,0,0,0), float4(255,255,255,255));
+	float4 pixel_2 = Clamp(a2, float4(0,0,0,0), float4(255,255,255,255));
 
 	dst[dst_id].r0 = (char)pixel_1[0];
 	dst[dst_id].g0 = (char)pixel_1[1];

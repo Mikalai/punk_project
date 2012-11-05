@@ -13,8 +13,8 @@ namespace Utility
 	public:
 		bool m_is_bone_anim;
 		System::string m_bone_name;
-		Virtual::AnimationTrack<Math::Vector3<float>> m_pos_track;
-		Virtual::AnimationTrack<Math::Quaternion<float>> m_rot_track;
+		Virtual::AnimationTrack<Math::vec3> m_pos_track;
+		Virtual::AnimationTrack<Math::quat> m_rot_track;
 
 		std::wostream& out_formatted(std::wostream& stream);
 	};

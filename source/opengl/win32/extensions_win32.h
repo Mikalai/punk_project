@@ -9,6 +9,9 @@ Description: Contains declarations of OpenGL extension functions
 
 #include "../../config.h"
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include "../gl/gl3.h"
 #include "../gl/glext.h"

@@ -6,6 +6,9 @@
 #define _CWAVES_H_
 
 #include <istream>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include <stdio.h>
 

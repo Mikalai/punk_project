@@ -30,14 +30,13 @@ namespace Math
         Plane(const vec3& point, const vec3& normal);
         Plane(const vec3& normal, float distances);
         Plane(const vec3& a, const vec3& b, const vec3& c);
-
-        Location Classify(const vec3& p) const;
-        float Distance(const vec3& p) const;        
-		
+        
+       		
 		void MakeFromPoints(const vec3& a, const vec3& b, const vec3& c);
 
         Plane Transform(const mat4& matrix) const;
-
+		const vec3& GetNormal() const { return normal; }
+		float GetDistance() const { return distance; }
 		friend class PUNK_ENGINE Line3D;
     };   
 }

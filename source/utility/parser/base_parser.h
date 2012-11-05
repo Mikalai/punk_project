@@ -28,12 +28,10 @@ namespace System
 
 namespace Math
 {
-	template<class T> class Vector2;
-	template<class T> class Vector3;
-	template<class T> class Vector4;
-
-	template<class T> class Matrix4x4;
-
+	class vec2;
+	class vec3;
+	class vec4;
+	class mat4;
 	class BoundingBox;
 }
 
@@ -75,13 +73,13 @@ namespace Utility
 		//
 		static bool ParseFloat(System::Buffer& buffer, float& value);
 		static bool ParseInteger(System::Buffer& buffer, int& value);
-		static bool ParseVector2f(System::Buffer& buffer, Math::Vector2<float>& value);
-		static bool ParseVector3f(System::Buffer& buffer, Math::Vector3<float>& value);
-		static bool ParseVector4f(System::Buffer& buffer, Math::Vector4<float>& value);
-		static bool ParseVector2i(System::Buffer& buffer, Math::Vector2<int>& value);
-		static bool ParseVector3i(System::Buffer& buffer, Math::Vector3<int>& value);
-		static bool ParseVector4i(System::Buffer& buffer, Math::Vector4<int>& value);
-		static bool ParseMatrix4x4f(System::Buffer& buffer, Math::Matrix4x4<float>& value);
+		static bool ParseVector2f(System::Buffer& buffer, Math::vec2& value);
+		static bool ParseVector3f(System::Buffer& buffer, Math::vec3& value);
+		static bool ParseVector4f(System::Buffer& buffer, Math::vec4& value);
+		static bool ParseVector2i(System::Buffer& buffer, Math::ivec2& value);
+		static bool ParseVector3i(System::Buffer& buffer, Math::ivec3& value);
+		static bool ParseVector4i(System::Buffer& buffer, Math::ivec4& value);
+		static bool ParseMatrix4x4f(System::Buffer& buffer, Math::mat4& value);
 		static bool ParseString(System::Buffer& buffer, System::string& value);
 
 		//
@@ -89,24 +87,24 @@ namespace Utility
 		//
 		static bool ParseBoundingBox(System::Buffer& buffer, Math::BoundingBox& value);
 		static bool ParseBlockedString(System::Buffer& buffer, System::string& value);	
-		static bool ParseBlockedVector3f(System::Buffer& buffer, Math::Vector3<float>& value);
-		static bool ParseBlockedMatrix4x4f(System::Buffer& buffer, Math::Matrix4x4<float>& value);
+		static bool ParseBlockedVector3f(System::Buffer& buffer, Math::vec3& value);
+		static bool ParseBlockedMatrix4x4f(System::Buffer& buffer, Math::mat4& value);
 		static bool ParseBlockedFloat(System::Buffer& buffer, float& value);
 		static bool ParseSubtype(System::Buffer& buffer, ObjectTypeDesc& value);	
 
-		static bool ParseVector4iv(System::Buffer& buffer, std::vector<Math::Vector4<int>>& value);
-		static bool ParseVector3fv(System::Buffer& Buffer, std::vector<Math::Vector3<float>>& value);
-		static bool ParseVector3iv(System::Buffer& Buffer, std::vector<Math::Vector3<int>>& value);
+		static bool ParseVector4iv(System::Buffer& buffer, std::vector<Math::ivec4>& value);
+		static bool ParseVector3fv(System::Buffer& Buffer, std::vector<Math::vec3>& value);
+		static bool ParseVector3iv(System::Buffer& Buffer, std::vector<Math::ivec3>& value);
 
 		//	used for mesh texture coordinates
-		static bool ParseVector4Vector2iv(System::Buffer& buffer, std::vector<Math::Vector4<Math::Vector2<float>>>& value);
+		static bool ParseVector4Vector2iv(System::Buffer& buffer, std::vector<Math::Vector4<Math::vec2>>& value);
 		static bool ParseBonesWeights(System::Buffer& buffer, Virtual::VertexBoneWeights& value);
 		
 
 		//
 		//	parse complex blocks
 		//
-		static bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::Vector2<float>>>>& value);		
+		static bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::vec2>>>& value);		
 
 		static bool ParseMesh(System::Buffer& buffer, MeshDesc& value);
 		static bool ParseObject(System::Buffer& buffer, ObjectDesc& value);

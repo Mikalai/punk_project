@@ -7,7 +7,9 @@ File: Window.h
 #ifndef _H_WIN32_WINDOW
 #define _H_WIN32_WINDOW
 
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include <map>
 #include "types_win32.h"

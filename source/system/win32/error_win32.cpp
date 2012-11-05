@@ -1,5 +1,7 @@
 #ifdef _WIN32
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include "error_win32.h"
 #include "stack_trace_win32.h"

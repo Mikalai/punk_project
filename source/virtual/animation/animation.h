@@ -19,20 +19,20 @@ namespace Virtual
 
 	class PUNK_ENGINE Animation : public System::Object
 	{
-		AnimationTrack<Math::Vector3<float>> m_pos_track;
-		AnimationTrack<Math::Quaternion<float>> m_rot_track;
+		AnimationTrack<Math::vec3> m_pos_track;
+		AnimationTrack<Math::quat> m_rot_track;
 		AnimationType m_animation_type;
 	public:
 		Animation();
 		Animation(Utility::AnimationDesc& desc);
-		void AddPositionKey(int frame, Math::Vector3<float>& position);
-		void AddRotationKey(int frame, Math::Quaternion<float>& rotation);
+		void AddPositionKey(int frame, Math::vec3& position);
+		void AddRotationKey(int frame, Math::quat& rotation);
 		
-		Math::Vector3<float>& GetOrCreatePositionKey(int frame);
-		Math::Quaternion<float>& GetOrCreateRotationKey(int frame);
+		Math::vec3& GetOrCreatePositionKey(int frame);
+		Math::quat& GetOrCreateRotationKey(int frame);
 
-		const Math::Vector3<float> GetPosition(float frame) const;
-		const Math::Quaternion<float> GetRotation(float frame) const;
+		const Math::vec3 GetPosition(float frame) const;
+		const Math::quat GetRotation(float frame) const;
 
 		AnimationType GetAnimationType() const { return m_animation_type; }
 

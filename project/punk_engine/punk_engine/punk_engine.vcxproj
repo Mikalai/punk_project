@@ -137,7 +137,6 @@
     <ClInclude Include="..\..\..\source\math\complex.h" />
     <ClInclude Include="..\..\..\source\math\constants.h" />
     <ClInclude Include="..\..\..\source\math\frustum.h" />
-    <ClInclude Include="..\..\..\source\math\functions.h" />
     <ClInclude Include="..\..\..\source\math\header_matrix.h" />
     <ClInclude Include="..\..\..\source\math\helper.h" />
     <ClInclude Include="..\..\..\source\math\interpolation.h" />
@@ -149,13 +148,16 @@
     <ClInclude Include="..\..\..\source\math\mat4.h" />
     <ClInclude Include="..\..\..\source\math\math.h" />
     <ClInclude Include="..\..\..\source\math\math_error.h" />
-    <ClInclude Include="..\..\..\source\math\math_relations.h" />
+    <ClInclude Include="..\..\..\source\math\relations.h" />
     <ClInclude Include="..\..\..\source\math\matrix.h" />
     <ClInclude Include="..\..\..\source\math\noise.h" />
+    <ClInclude Include="..\..\..\source\math\nrm.h" />
     <ClInclude Include="..\..\..\source\math\oct_tree.h" />
     <ClInclude Include="..\..\..\source\math\plane.h" />
+    <ClInclude Include="..\..\..\source\math\polygon.h" />
     <ClInclude Include="..\..\..\source\math\quat.h" />
     <ClInclude Include="..\..\..\source\math\random.h" />
+    <ClInclude Include="..\..\..\source\math\ray.h" />
     <ClInclude Include="..\..\..\source\math\region.h" />
     <ClInclude Include="..\..\..\source\math\smart_matrix.h" />
     <ClInclude Include="..\..\..\source\math\triangle2d.h" />
@@ -268,15 +270,15 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\quad_mesh.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\renderable.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\skinned_mesh.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\static_mesh.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\vertex_array_object.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\data\vertex_attributes.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\managers\quad_mesh_manager.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\managers\skinned_mesh_manager.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\managers\static_mesh_manager.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\renderable.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\static_mesh.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\vertex_attributes.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\renderable_data.h" />
     <ClInclude Include="..\..\..\source\opengl\render\batch.h" />
     <ClInclude Include="..\..\..\source\opengl\render\frame.h" />
@@ -672,7 +674,6 @@
     <ClCompile Include="..\..\..\source\math\bounding_box.cpp" />
     <ClCompile Include="..\..\..\source\math\camera.cpp" />
     <ClCompile Include="..\..\..\source\math\frustum.cpp" />
-    <ClCompile Include="..\..\..\source\math\functions.cpp" />
     <ClCompile Include="..\..\..\source\math\helper.cpp" />
     <ClCompile Include="..\..\..\source\math\line2d.cpp" />
     <ClCompile Include="..\..\..\source\math\line3d.cpp" />
@@ -682,6 +683,7 @@
     <ClCompile Include="..\..\..\source\math\oct_tree.cpp" />
     <ClCompile Include="..\..\..\source\math\plane.cpp" />
     <ClCompile Include="..\..\..\source\math\random.cpp" />
+    <ClCompile Include="..\..\..\source\math\relations.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle2d.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle3d.cpp" />
     <ClCompile Include="..\..\..\source\opencl\buffer.cpp" />
@@ -749,11 +751,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\quad_mesh.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\skinned_mesh.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\static_mesh.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\renderable\data\vertex_array_object.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\managers\managers.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\static_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\batch.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\frame.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\render_pass.cpp" />

@@ -1,7 +1,9 @@
 #ifndef _H_THREAD_POOL
 #define _H_THREAD_POOL
 
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include <vector>
 #include <stack>

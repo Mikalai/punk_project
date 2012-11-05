@@ -23,6 +23,9 @@
  */
 
 // Win32 version of the Creative Labs OpenAL 1.1 Framework for samples
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include<windows.h>
 #include<stdio.h>
 

@@ -49,7 +49,7 @@ namespace GUI
 	{
 		if (IsVisible() && IsEnabled())
 		{
-			m_startPosition = std::max(0, m_scrollBar->GetCurrent());
+			m_startPosition = Max(0, m_scrollBar->GetCurrent());
 			RenderTextToTexture();
 		}
 	}
@@ -78,7 +78,7 @@ namespace GUI
 			m_startPosition = m_currentSelection;
 		}
 		RenderTextToTexture();
-	//	m_startPosition = std::max(0, m_currentSelection);
+	//	m_startPosition = Max(0, m_currentSelection);
 
 		//m_scrollBar->SetCurrent(m_currentSelection);
 	}

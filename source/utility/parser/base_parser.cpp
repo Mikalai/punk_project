@@ -57,14 +57,14 @@ namespace Utility
 		return true;
 	}
 
-	bool Parser::ParseVector2f(System::Buffer& buffer, Math::Vector2<float>& value)
+	bool Parser::ParseVector2f(System::Buffer& buffer, Math::vec2& value)
 	{
 		value[0] = buffer.ReadWord().ToFloat();
 		value[1] = buffer.ReadWord().ToFloat();
 		return true;
 	}
 
-	bool Parser::ParseVector3f(System::Buffer& buffer, Math::Vector3<float>& value)
+	bool Parser::ParseVector3f(System::Buffer& buffer, Math::vec3& value)
 	{
 		value[0] = buffer.ReadWord().ToFloat();
 		value[1] = buffer.ReadWord().ToFloat();
@@ -72,7 +72,7 @@ namespace Utility
 		return true;
 	}
 
-	bool Parser::ParseVector4f(System::Buffer& buffer, Math::Vector4<float>& value)
+	bool Parser::ParseVector4f(System::Buffer& buffer, Math::vec4& value)
 	{
 		value[0] = buffer.ReadWord().ToFloat();
 		value[1] = buffer.ReadWord().ToFloat();
@@ -81,14 +81,14 @@ namespace Utility
 		return true;
 	}
 
-	bool Parser::ParseVector2i(System::Buffer& buffer, Math::Vector2<int>& value)
+	bool Parser::ParseVector2i(System::Buffer& buffer, Math::ivec2& value)
 	{
 		value[0] = buffer.ReadWord().ToInt32();
 		value[1] = buffer.ReadWord().ToInt32();
 		return true;
 	}
 
-	bool Parser::ParseVector3i(System::Buffer& buffer, Math::Vector3<int>& value)
+	bool Parser::ParseVector3i(System::Buffer& buffer, Math::ivec3& value)
 	{
 		value[0] = buffer.ReadWord().ToInt32();
 		value[1] = buffer.ReadWord().ToInt32();
@@ -96,7 +96,7 @@ namespace Utility
 		return true;
 	}
 
-	bool Parser::ParseVector4i(System::Buffer& buffer, Math::Vector4<int>& value)
+	bool Parser::ParseVector4i(System::Buffer& buffer, Math::ivec4& value)
 	{
 		value[0] = buffer.ReadWord().ToInt32();
 		value[1] = buffer.ReadWord().ToInt32();
@@ -105,7 +105,7 @@ namespace Utility
 		return true;
 	}
 
-	bool Parser::ParseMatrix4x4f(System::Buffer& buffer, Math::Matrix4x4<float>& value)
+	bool Parser::ParseMatrix4x4f(System::Buffer& buffer, Math::mat4& value)
 	{
 		for (int i = 0; i < 16; ++i)
 			value[i] = buffer.ReadWord().ToFloat();
@@ -159,7 +159,7 @@ namespace Utility
 		return true;
 	}
 
-	bool Parser::ParseBlockedVector3f(System::Buffer& buffer, Math::Vector3<float>& value)
+	bool Parser::ParseBlockedVector3f(System::Buffer& buffer, Math::vec3& value)
 	{
 		CHECK_START(buffer);
 		if (!ParseVector3f(buffer, value))
@@ -168,7 +168,7 @@ namespace Utility
 		return true;
 	}
 
-	bool Parser::ParseBlockedMatrix4x4f(System::Buffer& buffer, Math::Matrix4x4<float>& value)
+	bool Parser::ParseBlockedMatrix4x4f(System::Buffer& buffer, Math::mat4& value)
 	{
 		CHECK_START(buffer);
 		if (!ParseMatrix4x4f(buffer, value))
@@ -177,7 +177,7 @@ namespace Utility
 		return true;
 	}
 
-	bool Parser::ParseVector3fv(System::Buffer& buffer, std::vector<Math::Vector3<float>>& value)
+	bool Parser::ParseVector3fv(System::Buffer& buffer, std::vector<Math::vec3>& value)
 	{
 		CHECK_START(buffer);
 		while (1)
@@ -191,7 +191,7 @@ namespace Utility
 			float y = buffer.ReadWord().ToFloat();
 			float z = buffer.ReadWord().ToFloat();
 
-			Math::Vector3<float> v;
+			Math::vec3 v;
 			v.Set(x,y,z);
 
 			value.push_back(v);
@@ -199,7 +199,7 @@ namespace Utility
 		return (out_error() << "Unable to parse array ov vec3f" << std::endl, false);
 	}
 
-	bool Parser::ParseVector3iv(System::Buffer& buffer, std::vector<Math::Vector3<int>>& value)
+	bool Parser::ParseVector3iv(System::Buffer& buffer, std::vector<Math::ivec3>& value)
 	{
 		CHECK_START(buffer);
 		while (1)
@@ -213,7 +213,7 @@ namespace Utility
 			int y = buffer.ReadWord().ToInt32();
 			int z = buffer.ReadWord().ToInt32();
 
-			Math::Vector3<int> v;
+			Math::ivec3 v;
 			v.Set(x,y,z);
 
 			value.push_back(v);
@@ -221,7 +221,7 @@ namespace Utility
 		return (out_error() << "Unable to parse vector of vec3i" << std::endl, false);
 	}
 
-	bool Parser::ParseVector4iv(System::Buffer& buffer, std::vector<Math::Vector4<int>>& value)
+	bool Parser::ParseVector4iv(System::Buffer& buffer, std::vector<Math::ivec4>& value)
 	{
 		CHECK_START(buffer);
 		while (1)
@@ -236,7 +236,7 @@ namespace Utility
 			int z = buffer.ReadWord().ToInt32();
 			int w = buffer.ReadWord().ToInt32();
 
-			Math::Vector4<int> v;
+			Math::ivec4 v;
 			v.Set(x,y,z,w);
 
 			value.push_back(v);
@@ -244,7 +244,7 @@ namespace Utility
 		return (out_error() << "Unable to parse vector of vec4i" << std::endl, false);
 	}
 
-	bool Parser::ParseVector4Vector2iv(System::Buffer& buffer, std::vector<Math::Vector4<Math::Vector2<float>>>& value)
+	bool Parser::ParseVector4Vector2iv(System::Buffer& buffer, std::vector<Math::Vector4<Math::vec2>>& value)
 	{
 		CHECK_START(buffer);
 		while (1)
@@ -263,7 +263,7 @@ namespace Utility
 			float u4 = buffer.ReadWord().ToFloat();
 			float v4 = buffer.ReadWord().ToFloat();
 
-			Math::Vector4<Math::Vector2<float>> v;
+			Math::Vector4<Math::vec2> v;
 			v[0].Set(u1, v1);
 			v[1].Set(u2, v2);
 			v[2].Set(u3, v3);
@@ -274,7 +274,7 @@ namespace Utility
 		return (out_error() << "Unable to parse vector of vec4<vec2f>" << std::endl, false);
 	}
 
-	bool Parser::ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::Vector2<float>>>>& value)
+	bool Parser::ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::vec2>>>& value)
 	{
 		CHECK_START(buffer);
 
@@ -615,7 +615,7 @@ namespace Utility
 			float y = buffer.ReadWord().ToFloat();
 			float z = buffer.ReadWord().ToFloat();
 
-			Math::Vector3<float> v;
+			Math::vec3 v;
 			v.Set(x,y,z);
 
 			value.AddKey(frame, v);

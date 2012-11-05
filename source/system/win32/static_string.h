@@ -2,7 +2,9 @@
 #define _H_STATIC_STRING
 
 //#undef _STRICT_ANSI
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include <string.h>
 #include <stdarg.h>

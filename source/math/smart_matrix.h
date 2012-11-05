@@ -745,35 +745,35 @@ Matrix<T> operator * (const Matrix<T>& m1, const Matrix<T>& m2)
 template<class T>
 T FindRowMinimum(const Matrix<T>& m, int row, int& min_col)
 {
-    T min = m.At(row, 0);
+    T Min = m.At(row, 0);
     min_col = 0;
     for (int col = 0; col < m.ColumnCount(); ++col)
     {
         T cur = m.At(row, col);
-        if (cur <= min)
+        if (cur <= Min)
         {
-            min = m.At(row, col);
+            Min = m.At(row, col);
             min_col = col;
         }
     }
-    return min;
+    return Min;
 }
 
 template<class T>
 T FindRowMaximum(const Matrix<T>& m, int row, int& max_col)
 {
-    T max = m.At(row, 0);
+    T Max = m.At(row, 0);
     max_col = 0;
     for (int col = 0; col < m.ColumnCount(); ++col)
     {
         T cur = m.At(row, col);
-        if (cur >= max)
+        if (cur >= Max)
         {
-            max = m.At(row, col);
+            Max = m.At(row, col);
             max_col = col;
         }
     }
-    return max;
+    return Max;
 }
 
 template<class T>

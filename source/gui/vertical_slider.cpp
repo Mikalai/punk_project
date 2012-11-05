@@ -3,8 +3,8 @@
 
 namespace GUI
 {
-	VerticalSlider::VerticalSlider(float x, float y, float width, float height, int min, int max, Widget* parent) 
-		: Widget(x, y, width, height, L"", parent), m_min(min), m_max(max), m_cur(0), m_prev(0)
+	VerticalSlider::VerticalSlider(float x, float y, float width, float height, int Min, int Max, Widget* parent) 
+		: Widget(x, y, width, height, L"", parent), m_min(Min), m_max(Max), m_cur(0), m_prev(0)
 	{
 		m_text = "Vertical Slider";
 	}
@@ -13,14 +13,14 @@ namespace GUI
 	{
 	}
 
-	void VerticalSlider::SetMin(int min)
+	void VerticalSlider::SetMin(int Min)
 	{
-		m_min = min;
+		m_min = Min;
 	}
 
-	void VerticalSlider::SetMax(int max)
+	void VerticalSlider::SetMax(int Max)
 	{
-		m_max = max;
+		m_max = Max;
 	}
 
 	void VerticalSlider::SetCurrent(int cur)
@@ -44,10 +44,10 @@ namespace GUI
 		return m_cur;
 	}
 
-	void VerticalSlider::SetBounds(int min, int max)
+	void VerticalSlider::SetBounds(int Min, int Max)
 	{
-		m_min = min;
-		m_max = max;
+		m_min = Min;
+		m_max = Max;
 	}
 
 	void VerticalSlider::OnChangeValue(System::Handler handler)

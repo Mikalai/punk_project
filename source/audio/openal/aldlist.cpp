@@ -23,6 +23,11 @@
  */
 
 #include "aldlist.h"
+
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
 #include <windows.h>
 #include "alc.h"
 
@@ -303,7 +308,7 @@ int ALDeviceList::GetNextFilteredDevice()
 }
 
 /*
- * Internal function to detemine max number of Sources that can be generated
+ * Internal function to detemine Max number of Sources that can be generated
  */
 unsigned int ALDeviceList::GetMaxNumSources()
 {

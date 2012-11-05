@@ -4,7 +4,7 @@
 #include <cmath>
 #include <stdio.h>
 #include "../string/string.h"
-#include "vec3.h"
+#include "vec4.h"
 
 namespace Math
 {
@@ -99,8 +99,6 @@ namespace Math
 
 			if (i < 4)
 				return m_vec[i-1];
-
-			throw MathIndexOutOfRange();
 		}
 
 		void Set(T w, T x, T y, T z)
@@ -303,8 +301,16 @@ namespace Math
 	}
 
 
+	class PUNK_ENGINE quat : public Quaternion<float>
+	{
+	public:
+		quat() : Quaternion<float>() {}
+		quat(float w, float x, float y, float z) : Quaternion<float>(w, x, y, z) {}
+		quat(float w, const vec3& v) : Quaternion<float>(w, v) {}		
+		quat(const Quaternion<float>& q) : Quaternion<float>(q) {}
+	};
 
-	typedef Quaternion<float> quat;
+	//typedef Quaternion<float> quat;
 }
 
 /*

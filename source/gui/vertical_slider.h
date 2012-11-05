@@ -25,13 +25,13 @@ namespace GUI
 	public:
 		VerticalSlider(float x = 0, float y = 0, float width = 1, float height = 0.1, int min_value = 0, int max_value = 100, Widget* parent = 0);
 		virtual ~VerticalSlider();
-		void SetMin(int min);
-		void SetMax(int max);
+		void SetMin(int Min);
+		void SetMax(int Max);
 		void SetCurrent(int value);
 		int GetMin() const;
 		int GetMax() const;
 		int GetCurrent() const;
-		void SetBounds(int min, int max);
+		void SetBounds(int Min, int Max);
 		void OnChangeValue(System::Handler onChangeValue);
 
 		const VerticalSlider* GetSlider() const;

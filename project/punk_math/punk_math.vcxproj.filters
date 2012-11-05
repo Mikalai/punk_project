@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\source\string\string.cpp">
+      <Filter>dependncies\string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\string\win32\string_win32.cpp">
+      <Filter>dependncies\string\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\system\logger.cpp">
+      <Filter>dependncies\system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\system\system_clock.cpp">
+      <Filter>dependncies\system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\system\win32\stack_trace_win32.cpp">
+      <Filter>dependncies\system\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\math\astar.cpp" />
+    <ClCompile Include="..\..\source\math\bounding_box.cpp" />
+    <ClCompile Include="..\..\source\math\camera.cpp" />
+    <ClCompile Include="..\..\source\math\frustum.cpp" />
+    <ClCompile Include="..\..\source\math\functions.cpp" />
+    <ClCompile Include="..\..\source\math\helper.cpp" />
+    <ClCompile Include="..\..\source\math\line2d.cpp" />
+    <ClCompile Include="..\..\source\math\line3d.cpp" />
+    <ClCompile Include="..\..\source\math\math.cpp" />
+    <ClCompile Include="..\..\source\math\math_error.cpp" />
+    <ClCompile Include="..\..\source\math\noise.cpp" />
+    <ClCompile Include="..\..\source\math\oct_tree.cpp" />
+    <ClCompile Include="..\..\source\math\plane.cpp" />
+    <ClCompile Include="..\..\source\math\random.cpp" />
+    <ClCompile Include="..\..\source\math\triangle2d.cpp" />
+    <ClCompile Include="..\..\source\math\triangle3d.cpp" />
+    <ClCompile Include="..\..\source\system\win32\console_win32.cpp">
+      <Filter>dependncies\system\win32</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\string\string.h">
+      <Filter>dependncies\string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\string\win32\string_win32.h">
+      <Filter>dependncies\string\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\logger.h">
+      <Filter>dependncies\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\system_clock.h">
+      <Filter>dependncies\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\stack_trace.h">
+      <Filter>dependncies\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\win32\stack_trace_win32.h">
+      <Filter>dependncies\system\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\types\priority_list.h">
+      <Filter>dependncies\system\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\math\astar.h" />
+    <ClInclude Include="..\..\source\math\bounding_box.h" />
+    <ClInclude Include="..\..\source\math\camera.h" />
+    <ClInclude Include="..\..\source\math\catmull_rom_spline.h" />
+    <ClInclude Include="..\..\source\math\complex.h" />
+    <ClInclude Include="..\..\source\math\constants.h" />
+    <ClInclude Include="..\..\source\math\frustum.h" />
+    <ClInclude Include="..\..\source\math\functions.h" />
+    <ClInclude Include="..\..\source\math\header_matrix.h" />
+    <ClInclude Include="..\..\source\math\helper.h" />
+    <ClInclude Include="..\..\source\math\interpolation.h" />
+    <ClInclude Include="..\..\source\math\line2d.h" />
+    <ClInclude Include="..\..\source\math\line3d.h" />
+    <ClInclude Include="..\..\source\math\low_level_math.h" />
+    <ClInclude Include="..\..\source\math\mat2.h" />
+    <ClInclude Include="..\..\source\math\mat3.h" />
+    <ClInclude Include="..\..\source\math\mat4.h" />
+    <ClInclude Include="..\..\source\math\math.h" />
+    <ClInclude Include="..\..\source\math\math_error.h" />
+    <ClInclude Include="..\..\source\math\math_relations.h" />
+    <ClInclude Include="..\..\source\math\matrix.h" />
+    <ClInclude Include="..\..\source\math\noise.h" />
+    <ClInclude Include="..\..\source\math\oct_tree.h" />
+    <ClInclude Include="..\..\source\math\plane.h" />
+    <ClInclude Include="..\..\source\math\quat.h" />
+    <ClInclude Include="..\..\source\math\random.h" />
+    <ClInclude Include="..\..\source\math\region.h" />
+    <ClInclude Include="..\..\source\math\smart_matrix.h" />
+    <ClInclude Include="..\..\source\math\triangle2d.h" />
+    <ClInclude Include="..\..\source\math\triangle3d.h" />
+    <ClInclude Include="..\..\source\math\type.h" />
+    <ClInclude Include="..\..\source\math\vec2.h" />
+    <ClInclude Include="..\..\source\math\vec3.h" />
+    <ClInclude Include="..\..\source\math\vec4.h" />
+    <ClInclude Include="..\..\source\system\console.h">
+      <Filter>dependncies\system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\system\win32\console_win32.h">
+      <Filter>dependncies\system\win32</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="dependncies">
+      <UniqueIdentifier>{dd4a1eb6-1395-4d3f-acf5-786e1abc6d1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependncies\string">
+      <UniqueIdentifier>{90efc5ce-5a87-4339-b36f-6ec5cc1eb73d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependncies\string\win32">
+      <UniqueIdentifier>{1e057c1b-21f0-49d4-a0fc-7a795cd21618}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependncies\system">
+      <UniqueIdentifier>{b41d57a1-20ec-49d4-ae61-88b761692223}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependncies\system\win32">
+      <UniqueIdentifier>{6ff78c24-1297-401d-af4c-c2c007285eda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependncies\system\types">
+      <UniqueIdentifier>{19b29bf4-e51c-42e8-b2a2-c62763c97ee6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

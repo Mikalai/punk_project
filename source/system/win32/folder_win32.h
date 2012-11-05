@@ -1,7 +1,9 @@
 #ifndef FOLDER_WIN32_H
 #define FOLDER_WIN32_H
 
-
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #include <list>
 #include "../../string/string.h"

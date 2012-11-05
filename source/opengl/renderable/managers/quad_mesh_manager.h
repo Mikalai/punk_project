@@ -4,7 +4,7 @@
 #include "../../../config.h"
 #include "../../../system/resource_manager_2.h"
 #include "../../../system/environment.h"
-#include "../data/quad_mesh.h"
+#include "../primitives/quad_mesh.h"
 
 namespace System
 {

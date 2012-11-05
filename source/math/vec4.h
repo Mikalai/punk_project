@@ -7,15 +7,15 @@ AUTHOR: Mikalai Abramau
 #define _H_VEC4_MATH
 
 #include <iosfwd>
-#include "../string/string.h"
 #include <stdio.h>
 #include <cmath>
 
+#include "../string/string.h"
+#include "vec3.h"
+#include "vec2.h"
+
 namespace Math
 {
-	template<class T> class Vector3;
-	template<class T> class Vector2;
-
 	template<class T>
 	class  Vector4
 	{
@@ -41,7 +41,7 @@ namespace Math
 			m_v[3] = w;
 		}
 
-		Vector4<T>(Vector4<T>& origin, Vector4<T>& destination)
+		Vector4<T>(const Vector4<T>& origin, const Vector4<T>& destination)
 		{
 			for (int i = 0; i < Size_c; i++)
 			{
@@ -166,22 +166,6 @@ namespace Math
 			return System::string::Format(L"(%.3f; %.3f; %.3f; %.3f)", m_v[0], m_v[1], m_v[2], m_v[3]);
 		}
 
-	/*	bool Save(System::Buffer& buffer) const
-		{
-			buffer.WriteReal32(m_v[0]);
-			buffer.WriteReal32(m_v[1]);
-			buffer.WriteReal32(m_v[2]);
-			buffer.WriteReal32(m_v[3]);
-		}
-
-		bool Load()
-		{
-			m_v[0] = buffer.ReadReal32();
-			m_v[1] = buffer.ReadReal32();
-			m_v[2] = buffer.ReadReal32();
-			m_v[3] = buffer.ReadReal32();
-		}
-*/
 		Vector2<T> XY() const
 		{
 			return Vector2<T>(m_v[0], m_v[1]);
@@ -441,9 +425,6 @@ namespace Math
 			{
 				return false;
 			}
-
-			throw MathTestFailed();
-			//	should be completed somewhen
 		}
 
 		bool Save(std::ostream& stream)
@@ -501,11 +482,25 @@ namespace Math
 		return !(a == b);
 	}
 
-//	template class PUNK_ENGINE Vector4<float>;
-//	template class PUNK_ENGINE Vector4<int>;
+	class PUNK_ENGINE vec4 : public Vector4<float> 
+	{
+	public:
+		vec4() : Vector4<float>() {}
+		vec4(float x, float y, float z, float w) : Vector4<float>(x, y, z, w) {}
+		vec4(const vec4& origin, const vec4& destination) : Vector4<float>(origin, destination) {}
+		vec4(const vec3& p, float d = 1) : Vector4<float>(p, d) {}
+		vec4(const vec4& vec) : Vector4<float>(vec) {}
+		vec4(const Vector4<float>& vec) : Vector4<float>(vec) {}
+	};
 
-	typedef Vector4<float> vec4;
-	typedef Vector4<int> ivec4;
+	class PUNK_ENGINE ivec4 : public Vector4<int> 
+	{
+	public:
+		ivec4() : Vector4<int>() {}
+		ivec4(int x, int y, int z, int w) : Vector4<int>(x, y, z, w) {}
+		ivec4(const ivec4& vec) : Vector4<int>(vec) {}
+		ivec4(const Vector4<int>& vec) : Vector4<int>(vec) {}
+	};	
 }
 
 #endif

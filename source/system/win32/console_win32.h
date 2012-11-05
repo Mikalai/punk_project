@@ -1,6 +1,9 @@
 #ifndef _H_SYSTEM_CONSOLE_WIN32
 #define _H_SYSTEM_CONSOLE_WIN32
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 
 #include <Windows.h>
 #include <memory>

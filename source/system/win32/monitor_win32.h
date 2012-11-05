@@ -9,6 +9,9 @@
 
 #include "../config.h"
 
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 
 class PUNK_ENGINE Monitor
