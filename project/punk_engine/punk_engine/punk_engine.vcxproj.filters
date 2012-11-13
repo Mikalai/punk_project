@@ -169,6 +169,9 @@
     <Filter Include="opengl\renderable\primitives">
       <UniqueIdentifier>{9b851406-16d1-4a94-9551-ac72277b4ffa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="raytracer">
+      <UniqueIdentifier>{ab3c2290-1b65-43ca-9fef-777b4db8f726}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -1331,6 +1334,33 @@
     <ClInclude Include="..\..\..\source\math\relations.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\math\sphere.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\root_find.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\raytracer\scene.h">
+      <Filter>raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\raytracer\point.h">
+      <Filter>raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\raytracer\render.h">
+      <Filter>raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\raytracer\raytracer.h">
+      <Filter>raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\raytracer\render_impl1.h">
+      <Filter>raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\raytracer\scene_impl1.h">
+      <Filter>raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\polygon3d.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2041,6 +2071,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\math\relations.cpp">
       <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\root_find.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\raytracer\scene.cpp">
+      <Filter>raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\raytracer\render.cpp">
+      <Filter>raytracer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

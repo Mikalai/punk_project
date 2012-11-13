@@ -10,6 +10,7 @@
 #include "virtual\virtual.h"
 #include "scene\scene.h"
 #include "opencl\driver.h"
+#include "raytracer\raytracer.h"
 
 //#include "gui\gui.h"
 #include "render\render.h"

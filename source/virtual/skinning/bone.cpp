@@ -6,6 +6,7 @@
 #include "../../math/quat.h"
 #include "../../math/mat4.h"
 #include "../../math/vec3.h"
+#include "../../math/helper.h"
 #include "../animation/armature_animation_Mixer.h"
 #include "../../utility/descriptors/bone_desc.h"
 
@@ -94,8 +95,8 @@ namespace Virtual
 				//m_last_global_matrix_update = m_parent->GetAnimatedGlobalMatrix(mesh_transform) * mesh_transform.Inversed() * m_global_matrix * m * m_bone_matrix * m_global_matrix.Inversed() * mesh_transform;
 				m_last_global_matrix_update = m_parent->GetAnimatedGlobalMatrix(mesh_transform) * m_global_matrix * m * m_bone_matrix * m_global_matrix.Inversed() ;
 				/*m_last_global_matrix_update = m_parent->GetAnimatedGlobalMatrix() * m_armature->GetMeshOffset().Inversed() * m_global_matrix * m * m_global_matrix.Inversed() * m_armature->GetMeshOffset();*/
-				Math::vec3 t = m_last_global_matrix_update.TranslationPart();
-				Math::quat q = m_last_global_matrix_update.ToQuaternion();
+				const Math::vec3 t = m_last_global_matrix_update.TranslationPart();
+				const Math::quat q = Math::Matrix4x4ToQuaternion(m_last_global_matrix_update);
 				Math::vec4 angle_axis = q.ToAngleAxis();
 				angle_axis = angle_axis;
 			}

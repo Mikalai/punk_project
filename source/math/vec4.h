@@ -425,6 +425,7 @@ namespace Math
 			{
 				return false;
 			}
+			return true;
 		}
 
 		bool Save(std::ostream& stream)

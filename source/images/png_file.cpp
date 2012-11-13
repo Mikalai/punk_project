@@ -196,6 +196,8 @@ namespace ImageModule
 
 		png_read_end            ( png_ptr, end_info );
 		png_destroy_read_struct ( &png_ptr, &info_ptr, &end_info );
+
+		return true;
 	}
 
 	bool PngFile::Save(const wchar_t *file)
@@ -327,5 +329,7 @@ namespace ImageModule
 
 		/* close the file */
 		fclose(fp);
+
+		return true;
 	}
 }

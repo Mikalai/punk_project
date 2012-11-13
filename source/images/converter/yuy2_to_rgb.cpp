@@ -16,8 +16,6 @@ namespace ImageModule
 			if (*out_length < ((length * 6) >> 2))
 				return (out_error() << "Bad destination buffer size: " << *out_length << ". Shoudl be: " << ((length * 6) >> 2) << std::endl, false);
 
-			int i;
-
 #pragma omp for
 			for ( int i = 0; i < length; i += 4 )
 			{
@@ -29,8 +27,8 @@ namespace ImageModule
 				float f[16] = {1.164383f,  1.596027f,  0.000f, -222.912f,
 					1.164383f, -0.813000f, -0.391f,  135.488f,
 					1.164383f,  0.000000f,  2.018f, -276.928f};
-				float v1[4] = {y0, v0, u0, 1};
-				float v2[4] = {y1, v0, u0, 1};
+				float v1[4] = {(float)y0, (float)v0, (float)u0, 1};
+				float v2[4] = {(float)y1, (float)v0, (float)u0, 1};
 
 				float a1[4];
 				float a2[4];
@@ -74,5 +72,6 @@ namespace ImageModule
 				return (out_error() << "Invalid arguments for conversion from YUY2 to RGB" << std::endl, false);
 			*out_length = (length * 6) >> 2;
 		}
+		return true;
 	}
 }

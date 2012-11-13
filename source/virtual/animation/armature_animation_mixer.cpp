@@ -1,7 +1,8 @@
 #include <ostream>
 #include <math.h>
 #include <istream>
-#include "armature_animation_Mixer.h"
+#include "../../math/helper.h"
+#include "armature_animation_mixer.h"
 #include "bone_animation.h"
 #include "../skinning/armature.h"
 #include "../../system/logger.h"
@@ -21,7 +22,7 @@ namespace Virtual
 		try
 		{
 			Math::mat4 pos = Math::mat4::CreateTranslate(m_result.at(bone).m_position);
-			Math::mat4 rot = m_result.at(bone).m_rotation.ToMatrix4x4();
+			Math::mat4 rot = Math::QuaternionToMatrix4x4(m_result.at(bone).m_rotation);
 			matrix = pos*rot;
 			return true;
 		}

@@ -170,6 +170,13 @@ namespace Math
 			return *this;
 		}
 
+		Matrix3x3<T>& SetRow(int row, const Vector3<T>& v)
+		{
+			for (int i = 0; i < 3; ++i)
+				m[3*i + row] = v[i];
+			return *this;
+		}
+
 		/*********************************************************
 		* makes current matrix identity
 		* **********************************************************/
@@ -479,7 +486,14 @@ namespace Math
 		return res;
 	}
 
-	typedef Matrix3x3<float> mat3;
+	class PUNK_ENGINE mat3 : public Matrix3x3<float>
+	{
+	public:
+		mat3() : Matrix3x3<float> () {}
+		mat3(const mat3& m) : Matrix3x3<float>(m) {}
+		mat3(const Matrix3x3<float>& m) : Matrix3x3<float>(m) {}
+	};
+
 }
 
 #endif

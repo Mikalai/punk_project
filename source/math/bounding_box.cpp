@@ -219,7 +219,7 @@ namespace Math
 
 	bool BoundingBox::DoCrossLine(const Line3D& line) const
 	{
-		if (!ClipSegment3D(line.Origin(), line.Destination(), m_min, m_max))
+		if (!ClipSegment3D(line.GetOrigin(), line.GetDestination(), m_min, m_max))
 			return false;
 		else
 			return true;

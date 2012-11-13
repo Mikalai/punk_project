@@ -8,8 +8,6 @@
 
 namespace Math
 {
-	template<class T> class Matrix4x4;
-
 	/// Class to work with quaternions. Supports most of quaternions properties
 	template<class T>
 	class Quaternion
@@ -30,10 +28,10 @@ namespace Math
 		static Quaternion<T> FromAngleAxis(T angle, const Vector3<T>& axis)
 		{
 			Quaternion<T> q;
-			q.m_scalar = std::cos(angle / 2.0);
-			q.m_vec[0] = axis[0] * std::sin(angle / 2.0);
-			q.m_vec[1] = axis[1] * std::sin(angle / 2.0);
-			q.m_vec[2] = axis[2] * std::sin(angle / 2.0);
+			q.m_scalar = std::cos(angle / T(2.0));
+			q.m_vec[0] = axis[0] * std::sin(angle / T(2.0));
+			q.m_vec[1] = axis[1] * std::sin(angle / T(2.0));
+			q.m_vec[2] = axis[2] * std::sin(angle / T(2.0));
 
 			q.Normalize();
 
@@ -50,10 +48,10 @@ namespace Math
 			return m_vec;
 		}
 
-		Vector4<T> ToAngleAxis()
+		const Vector4<T> ToAngleAxis() const
 		{
 			Vector4<T> res;
-			Normalize();
+			//Normalize();
 			float angle = 2 * acosf(m_scalar);
 			double s = sqrt(1-m_scalar*m_scalar); // assuming quaternion normalised then w is less than 1, so term always positive.
 			if (s < 0.001)
@@ -90,6 +88,7 @@ namespace Math
 				return m_scalar;
 			if (i < 4)
 				return m_vec[i-1];
+			throw std::out_of_range("Index out of range");
 		}
 
 		const T& operator[] (int i) const
@@ -99,6 +98,8 @@ namespace Math
 
 			if (i < 4)
 				return m_vec[i-1];
+
+			throw std::out_of_range("Index out of range");
 		}
 
 		void Set(T w, T x, T y, T z)
@@ -199,38 +200,6 @@ namespace Math
 			p = *this * p * conj;
 
 			return Vector3<T>(p.X(), p.Y(), p.Z());
-		}
-
-		Matrix4x4<T> ToMatrix4x4() const
-		{
-			Matrix4x4<T> m;
-			T xx = m_vec.X()*m_vec.X();
-			T xy = m_vec.X()*m_vec.Y();
-			T xz = m_vec.X()*m_vec.Z();
-			T xw = m_vec.X()*m_scalar;
-
-			T yy = m_vec.Y()*m_vec.Y();
-			T yz = m_vec.Y()*m_vec.Z();
-			T yw = m_vec.Y()*m_scalar;
-
-			T zz = m_vec.Z()*m_vec.Z();
-			T zw = m_vec.Z()*m_scalar;
-
-			m[0] = T(1.0) - T(2.0) * (yy + zz);
-			m[1] = T(2.0) * (xy - zw);
-			m[2] = T(2.0) * (xz + yw);
-
-			m[4] = T(2.0) * (xy + zw);
-			m[5] = T(1.0) - T(2.0) * (xx + zz);
-			m[6] = T(2.0) * (yz - xw);
-
-			m[8] = T(2.0) * (xz - yw);
-			m[9] = T(2.0) * (yz + xw);
-			m[10] = T(1.0) - T(2.0) * (xx + yy);
-			m[3] = m[7] = m[11] = m[12] = m[13] = m[14] = T(0.0);
-			m[15] = T(1.0);
-
-			return m.Transposed();
 		}
 
 		bool operator == (const Quaternion<T>& q) const

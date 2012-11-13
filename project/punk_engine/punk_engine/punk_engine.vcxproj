@@ -148,6 +148,7 @@
     <ClInclude Include="..\..\..\source\math\mat4.h" />
     <ClInclude Include="..\..\..\source\math\math.h" />
     <ClInclude Include="..\..\..\source\math\math_error.h" />
+    <ClInclude Include="..\..\..\source\math\polygon3d.h" />
     <ClInclude Include="..\..\..\source\math\relations.h" />
     <ClInclude Include="..\..\..\source\math\matrix.h" />
     <ClInclude Include="..\..\..\source\math\noise.h" />
@@ -159,7 +160,9 @@
     <ClInclude Include="..\..\..\source\math\random.h" />
     <ClInclude Include="..\..\..\source\math\ray.h" />
     <ClInclude Include="..\..\..\source\math\region.h" />
+    <ClInclude Include="..\..\..\source\math\root_find.h" />
     <ClInclude Include="..\..\..\source\math\smart_matrix.h" />
+    <ClInclude Include="..\..\..\source\math\sphere.h" />
     <ClInclude Include="..\..\..\source\math\triangle2d.h" />
     <ClInclude Include="..\..\..\source\math\triangle3d.h" />
     <ClInclude Include="..\..\..\source\math\type.h" />
@@ -389,6 +392,12 @@
     <ClInclude Include="..\..\..\source\opengl\win32\driver_win32.h" />
     <ClInclude Include="..\..\..\source\opengl\win32\extensions_win32.h" />
     <ClInclude Include="..\..\..\source\punk_engine.h" />
+    <ClInclude Include="..\..\..\source\raytracer\point.h" />
+    <ClInclude Include="..\..\..\source\raytracer\raytracer.h" />
+    <ClInclude Include="..\..\..\source\raytracer\render.h" />
+    <ClInclude Include="..\..\..\source\raytracer\render_impl1.h" />
+    <ClInclude Include="..\..\..\source\raytracer\scene.h" />
+    <ClInclude Include="..\..\..\source\raytracer\scene_impl1.h" />
     <ClInclude Include="..\..\..\source\render\bbox_render.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -684,6 +693,7 @@
     <ClCompile Include="..\..\..\source\math\plane.cpp" />
     <ClCompile Include="..\..\..\source\math\random.cpp" />
     <ClCompile Include="..\..\..\source\math\relations.cpp" />
+    <ClCompile Include="..\..\..\source\math\root_find.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle2d.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle3d.cpp" />
     <ClCompile Include="..\..\..\source\opencl\buffer.cpp" />
@@ -846,6 +856,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\raytracer\render.cpp" />
+    <ClCompile Include="..\..\..\source\raytracer\scene.cpp" />
     <ClCompile Include="..\..\..\source\render\bbox_render.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

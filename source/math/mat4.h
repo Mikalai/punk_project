@@ -10,7 +10,6 @@
 #include "mat3.h"
 #include "vec4.h"
 #include "vec3.h"
-#include "quat.h"
 
 namespace Math
 {
@@ -301,59 +300,6 @@ namespace Math
 		{
 			return m;
 		}*/
-
-		Quaternion<T> ToQuaternion() const
-		{
-			T t = m[0] + m[5] + m[10] + T(1);
-			if (t > 0)
-			{
-				T s = T(0.5) / (T)sqrtf((float)t);
-				T w = T(0.25) / s;
-				T x = (m[6] - m[9]) * s;
-				T y = (m[8] - m[2]) * s;
-				T z = (m[1] - m[4]) * s;
-				return Quaternion<T>(w, x, y, z);
-			}
-			int Max = 0;
-			for (int i = 0; i < 4; i++)
-			{
-				if (m[Max*4 + Max] < m[i*4 + i])
-					Max = i;
-			}
-
-			switch(Max)
-			{
-			case 0:
-				{
-					T s = sqrt(T(1.0) + m[0] - m[5] - m[10]) * T(2.0);
-					T x = T(0.5) / s;
-					T y = (m[1] + m[4]) / s;
-					T z = (m[2] + m[8]) / s;
-					T w = (m[6] + m[9]) / s;
-					return Quaternion<T>(w, x, y, z);
-				}
-			case 1:
-				{
-					T s = sqrt(T(1.0) + m[5] - m[0] - m[10]) * T(2.0);
-					T x = (m[1] + m[4]) / s;
-					T y = T(0.5) / s;
-					T z = (m[6] + m[9]) / s;
-					T w = (m[2] + m[8]) / s;
-					return Quaternion<T>(w, x, y, z);
-				}
-			case 2:
-				{
-					T s = sqrt(T(1.0) + m[10] - m[0] - m[5]) * T(2.0);
-					T x = (m[2] + m[8]) / s;
-					T y = (m[6] + m[9]) / s;
-					T z = T(0.5) / s;
-					T w = (m[1] + m[4]) / s;
-					return Quaternion<T>(w, x, y, z);
-				}
-			default:
-				throw MathError(L"Can't convert matrix to quaternion");
-			}
-		}
 
 		//  inverse
 		Matrix4x4<T> Inversed() const

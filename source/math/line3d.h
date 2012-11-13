@@ -17,12 +17,17 @@ namespace Math
 		Line3D();
 		Line3D(const vec3& org, const vec3& dir);
 		const vec3 PointAt(float t) const;		
-		const vec3& Direction() const;
-		const vec3& Origin() const;
+		
+		const vec3& GetDirection() const { return m_direction; }
+		const vec3& GetOrigin() const { return m_origin; }
+		const vec3& GetDestination() const { return m_destination; }
+
 		void SetOrigin(const vec3& origin);
-		const vec3& Destination() const;
 		void SetDestination(const vec3& destination);
 		float SegmentLength() const;
+
+		Line3D& SetOriginDirection(const vec3& org, const vec3& dir);
+		Line3D& SetOriginDestination(const vec3& org, const vec3& dst);
 	};
 }
 #endif // LINE_H

@@ -80,8 +80,8 @@ namespace OpenGL
 
 				det = (det < 0) ? -1.0f : 1.0f;
 
-				vb[index].m_position = position[index_0].ToHomogeneous();
-				vb[index].m_normal = normal[index_0].ToHomogeneous();
+				vb[index].m_position = position[index_0];
+				vb[index].m_normal = normal[index_0];
 				vb[index].m_texture0.Set(texture[index_0][0], texture[index_0][1], 0, 0);
 				vb[index].m_tangent.Set(tgn[0], tgn[1], tgn[2], det);
 				vb[index].m_bitangent.Set(btn[0], btn[1], btn[2], 0);
@@ -125,9 +125,9 @@ namespace OpenGL
 				Utility::Vertex<VertexType>* v = &vb[j];
 				if (base_index[j] == i)
 				{					
-					v->m_normal = norm.ToHomogeneous();
+					v->m_normal = norm;
 					v->m_tangent.Set(tang[0], tang[1], tang[2], w);
-					v->m_bitangent = btan.ToHomogeneous();
+					v->m_bitangent = btan;
 				}				
 			}
 		}

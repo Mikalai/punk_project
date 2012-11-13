@@ -16,7 +16,7 @@ namespace Math
 	class  Matrix2x2
 	{
 		T m[4];
-	private:
+	public:
 
 		Matrix2x2<T>()
 		{

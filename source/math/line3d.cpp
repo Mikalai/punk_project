@@ -17,25 +17,10 @@ namespace Math
 		return m_origin + t * (m_destination - m_origin);
 	}
 
-	const vec3& Line3D::Direction() const
-	{
-		return m_direction;
-	}
-
-	const vec3& Line3D::Origin() const
-	{
-		return m_origin;
-	}
-
 	void Line3D::SetOrigin(const vec3& origin)
 	{
 		m_origin = origin;
 		m_direction = (m_destination - m_origin).Normalized();
-	}
-
-	const vec3& Line3D::Destination() const
-	{
-		return m_destination;
 	}
 
 	void Line3D::SetDestination(const vec3& destination)
@@ -47,5 +32,21 @@ namespace Math
 	float Line3D::SegmentLength() const
 	{
 		return (m_destination - m_origin).Length();
+	}
+
+	Line3D& Line3D::SetOriginDirection(const vec3& org, const vec3& dir)
+	{
+		m_origin = org;
+		m_direction = dir;
+		m_destination = m_origin + m_direction;
+		return *this;
+	}
+
+	Line3D& Line3D::SetOriginDestination(const vec3& org, const vec3& dst)
+	{
+		m_origin = org;
+		m_destination = dst;
+		m_direction = (m_destination - m_origin).Normalized();
+		return *this;
 	}
 }

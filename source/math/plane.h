@@ -34,7 +34,7 @@ namespace Math
        		
 		void MakeFromPoints(const vec3& a, const vec3& b, const vec3& c);
 
-        Plane Transform(const mat4& matrix) const;
+        const Plane Transform(const mat4& matrix) const;
 		const vec3& GetNormal() const { return normal; }
 		float GetDistance() const { return distance; }
 		friend class PUNK_ENGINE Line3D;

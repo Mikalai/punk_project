@@ -91,7 +91,7 @@ namespace Math
 			return *this;
 		}
 
-		Vector3<T> ComponentMult(const Vector3<T>& v)
+		const Vector3<T> ComponentMult(const Vector3<T>& v) const
 		{
 			return Vector3<T>(m_v[0]*v[0], m_v[1]*v[1], m_v[2]*v[2]);
 		}
@@ -175,6 +175,14 @@ namespace Math
 			m_v[0] -= vec.m_v[0];
 			m_v[1] -= vec.m_v[1];
 			m_v[2] -= vec.m_v[2];
+			return *this;
+		}
+
+		Vector3<T>& operator *= (T value)
+		{
+			m_v[0] *= value;
+			m_v[1] *= value;
+			m_v[2] *= value;
 			return *this;
 		}
 

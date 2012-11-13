@@ -45,7 +45,7 @@ namespace Math
         distance = -normal.Dot(a);
     }
 
-    Plane Plane::Transform(const mat4 &matrix) const
+    const Plane Plane::Transform(const mat4 &matrix) const
     {
         vec4 p(normal, distance);
         mat4 m = matrix.Inversed().Transposed();
