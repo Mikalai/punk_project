@@ -396,6 +396,7 @@
     <ClInclude Include="..\..\..\source\raytracer\raytracer.h" />
     <ClInclude Include="..\..\..\source\raytracer\render.h" />
     <ClInclude Include="..\..\..\source\raytracer\render_impl1.h" />
+    <ClInclude Include="..\..\..\source\raytracer\render_impl2.h" />
     <ClInclude Include="..\..\..\source\raytracer\scene.h" />
     <ClInclude Include="..\..\..\source\raytracer\scene_impl1.h" />
     <ClInclude Include="..\..\..\source\render\bbox_render.h">
@@ -858,6 +859,7 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\raytracer\render.cpp" />
     <ClCompile Include="..\..\..\source\raytracer\scene.cpp" />
+    <ClCompile Include="..\..\..\source\raytracer\scene_impl2.h" />
     <ClCompile Include="..\..\..\source\render\bbox_render.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

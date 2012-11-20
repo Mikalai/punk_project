@@ -2,7 +2,7 @@
 
 int main()
 {
-	Raytracer::Scene scene = Raytracer::Scene::CreateRandomScene(30);	
+	Raytracer::Scene scene = Raytracer::Scene::CreateRandomScene(25);	
 	Raytracer::Render render(1920, 1080);
 	ImageModule::Image image;
 

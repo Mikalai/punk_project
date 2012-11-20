@@ -1361,6 +1361,9 @@
     <ClInclude Include="..\..\..\source\math\polygon3d.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\raytracer\render_impl2.h">
+      <Filter>raytracer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2079,6 +2082,9 @@
       <Filter>raytracer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\raytracer\render.cpp">
+      <Filter>raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\raytracer\scene_impl2.h">
       <Filter>raytracer</Filter>
     </ClCompile>
   </ItemGroup>

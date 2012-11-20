@@ -1,4 +1,4 @@
-#include "render_impl1.h"
+#include "render_impl2.h"
 
 namespace Raytracer
 {

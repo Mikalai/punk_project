@@ -212,7 +212,7 @@ namespace Math
 			return tm;
 		}
 
-		System::string ToString() const
+		const System::string ToString() const
 		{
 			return System::string::Format(L"\n%7.3f %7.3f %7.3f\n%7.3f %7.3f %7.3f\n%7.3f %7.3f %7.3f\n", m[0], m[3], m[6], m[1], m[4], m[7], m[2], m[5], m[8]);
 		}
@@ -354,12 +354,9 @@ namespace Math
 		}
 	};
 
-	template<class T>
-	wchar_t Matrix3x3<T>::m_buffer[128];
-
 	//  mult matrix
 	template<class T>
-	static Matrix3x3<T> operator *(const Matrix3x3<T>& a, const Matrix3x3<T>& b)
+	static const Matrix3x3<T> operator *(const Matrix3x3<T>& a, const Matrix3x3<T>& b)
 	{
 		Matrix3x3<T> c;
 		c.SetColumn(0, Vector3<T>(
@@ -381,7 +378,7 @@ namespace Math
 	//	mult on scalar
 	//
 	template<class T> 
-	static Matrix3x3<T> operator * (const T& s, const Matrix3x3<T>& a)
+	static const Matrix3x3<T> operator * (const T& s, const Matrix3x3<T>& a)
 	{
 		Matrix3x3<T> m;
 		m[0] = a[0] * s;
@@ -400,7 +397,7 @@ namespace Math
 	//	mult on scalar
 	//
 	template<class T> 
-	static Matrix3x3<T> operator * (const Matrix3x3<T>& a, const T& s)
+	static const Matrix3x3<T> operator * (const Matrix3x3<T>& a, const T& s)
 	{
 		Matrix3x3<T> m;
 		m[0] = a[0] * s;
@@ -419,7 +416,7 @@ namespace Math
 	//	divide on scalar
 	//
 	template<class T>
-	static Matrix3x3<T> operator / (const Matrix3x3<T>& a, const T& s)
+	static const Matrix3x3<T> operator / (const Matrix3x3<T>& a, const T& s)
 	{
 		Matrix3x3<T> m;
 		m[0] = a[0] / s;
@@ -438,7 +435,7 @@ namespace Math
 	//	add 2 matrix
 	//
 	template<class T>
-	static Matrix3x3<T> operator + (const Matrix3x3<T>& a, const Matrix3x3<T>& b)
+	static const Matrix3x3<T> operator + (const Matrix3x3<T>& a, const Matrix3x3<T>& b)
 	{
 		Matrix3x3<T> m;
 		m[0] = a[0] + b[0];
@@ -457,7 +454,7 @@ namespace Math
 	//	add 2 matrix
 	//
 	template<class T>
-	static Matrix3x3<T> operator - (const Matrix3x3<T>& a, const Matrix3x3<T>& b)
+	static const Matrix3x3<T> operator - (const Matrix3x3<T>& a, const Matrix3x3<T>& b)
 	{
 		Matrix3x3<T> m;
 		m[0] = a[0] - b[0];
@@ -469,6 +466,25 @@ namespace Math
 		m[6] = a[6] - b[6];
 		m[7] = a[7] - b[7];
 		m[8] = a[8] - b[8];
+		return m;
+	}
+
+	template<class T>
+	static const Matrix3x3<T> MultTransposed(const Vector3<T>& a, const Vector3<T>& b)
+	{
+		Matrix3x3<T> m;
+		m[0*3 + 0] = a[0]*b[0];
+		m[0*3 + 1] = a[0]*b[1];
+		m[0*3 + 2] = a[0]*b[2];
+
+		m[1*3 + 0] = a[1]*b[0];
+		m[1*3 + 1] = a[1]*b[1];
+		m[1*3 + 2] = a[1]*b[2];
+
+		m[2*3 + 0] = a[2]*b[0];
+		m[2*3 + 1] = a[2]*b[1];
+		m[2*3 + 2] = a[2]*b[2];
+
 		return m;
 	}
 
