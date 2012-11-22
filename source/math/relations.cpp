@@ -214,7 +214,7 @@ namespace Math
 		const vec3 dir = line.GetDestination() - line.GetOrigin();
 		float a = dir.SquareLength();
 		float b = 2 * org.Dot(dir);
-		float c = org.SquareLength() - sphere.GetRadius();
+		float c = org.SquareLength() - sphere.GetRadius()*sphere.GetRadius();
 
 		float in[] = {c, b, a};
 		float out[2];
