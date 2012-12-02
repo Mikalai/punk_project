@@ -2,195 +2,213 @@
 #define _H_PUNK_VIRTUAL_KEY_WORDS
 
 namespace Utility
-{
+{	
 	enum KeywordCode
 	{
-		WORD_BAD_KEYWORD,
-		WORD_OPEN_BRACKET,
-		WORD_CLOSE_BRACKET,
-		WORD_OBJECT,
-		WORD_BOUNDING_BOX,
-		WORD_LOCATION,
-		WORD_WORLD_MATRIX,
-		WORD_LOCAL_MATRIX,
-		WORD_MESH,
-		WORD_VERTEX_POSITION,
-		WORD_NORMALS,
-		WORD_FACES,
-		WORD_VERTEX_POSITIONS_ID,
-		WORD_BONES_WEIGHT,
-		WORD_ARMATURE,
-		WORD_BONE,
-		WORD_NAME,
-		WORD_ACTIONS,
-		WORD_POS_X,
-		WORD_POS_Y,
-		WORD_POS_Z,
-		WORD_ROT_W,
-		WORD_ROT_X,
-		WORD_ROT_Y,
-		WORD_ROT_Z,
-		WORD_PARENT,
-		WORD_TEXTURE_COORD,
-		WORD_MATERIAL,
-		WORD_NORMAL_MAP,
-		WORD_DIFFUSE_MAP,
-		WORD_MATERIALS,
-		WORD_GIMBAL_TRANSFORM,
-		WORD_BONE_MATRIX,
-		WORD_ACTION,
-		WORD_ARMATURES,
-		WORD_FRAMES, 
-		WORD_TEXTURE,
-		WORD_TIMING,
-		WORD_PARENT_INVERSED_MATRIX,
-		WORD_LENGTH,																								
-		WORD_ALPHA,									//	L"*alpha", 
-		WORD_AMBIENT,								//	L"*ambient",
-		WORD_DARKNESS,								//	L"*darkness",
-		WORD_DIFFUSE_COLOR,							//	L"*diffuse_color", 
-		WORD_DIFFUSE_FRESNEL,						//	L"*diffuse_fresnel", 
-		WORD_DIFFUSE_FRESNEL_FACTOR,				//	L"*diffuse_fresnel_factor",
-		WORD_DIFFUSE_INTENSITY,						//	L"*diffuse_intensity",
-		WORD_EMIT,									//	L"*emit",
-		WORD_MIRROR_COLOR,							//	L"*mirror_color",
-		WORD_ROUGHNESS,								//	L"*roughness",
-		WORD_SPECULAR_ALPHA,						//	L"*specular_alpha",
-		WORD_SPECULAR_COLOR,						//	L"*specular_color",
-		WORD_SPECULAR_HARDNESS,						//	L"*specular_hardness",
-		WORD_SPECULAR_INTENSITY,					//	L"*specular_intensity",
-		WORD_SPECULAR_IOR,							//	L"*specular_ior",
-		WORD_SPECULAR_SLOPE,						//	L"*specular_slope",
-		WORD_TRANSLUCENCY,							//	L"*translucency",
-		WORD_SOUND,
-		WORD_FILENAME,
-		WORD_VOLUME,
-		WORD_PITCH,
-		WORD_MAX_DISTANCE,
-		WORD_REFERENCE_DISTANCE,
-		WORD_CONE_ANGLE_INNER,
-		WORD_CONE_ANGLE_OUTER,
-		WORD_CONE_VOLUME_OUTER,
-		WORD_ATTENUATION,
-		WORD_TYPE, 
-		WORD_POINT_LIGHT,
-		WORD_LIGHT_TYPE,
-		WORD_COLOR,
-		WORD_DISTANCE,
-		WORD_ENERGY,
-		WORD_FALLOFF_TYPE,
-		WORD_LINEAR_ATTENUATION,
-		WORD_QUADRATIC_ATTENUATION,
-		WORD_REFERENCE, 
-		WORD_BONE_ANIMATION,
-		WORD_OBJECT_ANIMATION,
-		WORD_POSITION_TRACK,
-		WORD_ROTATION_TRACK,
-		WORD_MATERIAL_REF,
-		WORD_ACTIONS_REF,
-		WORD_ACTION_REF,
-		WORD_CAMERA,
-		WORD_FOV,
-		WORD_NEAR_PLANE,
-		WORD_FAR_PLANE,
-		WORD_FOCUS,
-		WORD_ORTHO_SCALE,
-		WORD_COLLISION_MESH
+		WORD_BAD_KEYWORD,					// 0
+		WORD_OPEN_BRACKET,					// 1
+		WORD_CLOSE_BRACKET,					// 2
+		WORD_OBJECT,						// 3
+		WORD_BOUNDING_BOX,					// 4
+		WORD_LOCATION,						// 5
+		WORD_WORLD_MATRIX,					// 7
+		WORD_LOCAL_MATRIX,					// 8
+		WORD_MESH,							// 9
+		WORD_VERTEX_POSITION,				// 10
+		WORD_NORMALS,						// 11
+		WORD_FACES,							// 12
+		WORD_VERTEX_POSITIONS_ID,			// 13
+		WORD_BONES_WEIGHT,					// 14
+		WORD_ARMATURE,						// 15
+		WORD_BONE,							// 16
+		WORD_NAME,							// 17
+		WORD_ACTIONS,						// 18
+		WORD_POS_X,							// 19
+		WORD_POS_Y,					// 6
+		WORD_POS_Z,					// 6
+		WORD_ROT_W,					// 6
+		WORD_ROT_X,					// 6
+		WORD_ROT_Y,					// 6
+		WORD_ROT_Z,					// 6
+		WORD_PARENT,					// 6
+		WORD_TEXTURE_COORD,					// 6
+		WORD_MATERIAL,					// 6
+		WORD_NORMAL_MAP,					// 6
+		WORD_DIFFUSE_MAP,					// 6
+		WORD_MATERIALS,					// 6
+		WORD_GIMBAL_TRANSFORM,					// 6
+		WORD_BONE_MATRIX,					// 6
+		WORD_ACTION,					// 6
+		WORD_ARMATURES,					// 6
+		WORD_FRAMES,					// 6
+		WORD_TEXTURE,					// 6
+		WORD_TIMING,					// 6
+		WORD_PARENT_INVERSED_MATRIX,					// 6
+		WORD_LENGTH,					// 6
+		WORD_ALPHA,									//{ , L"*alpha" }, 
+		WORD_AMBIENT,								//{ , L"*ambient" },
+		WORD_DARKNESS,								//{ , L"*darkness" },
+		WORD_DIFFUSE_COLOR,							//{ , L"*diffuse_color" }, 
+		WORD_DIFFUSE_FRESNEL,						//{ , L"*diffuse_fresnel" }, 
+		WORD_DIFFUSE_FRESNEL_FACTOR,				//{ , L"*diffuse_fresnel_factor" },
+		WORD_DIFFUSE_INTENSITY,						//{ , L"*diffuse_intensity" },
+		WORD_EMIT,									//{ , L"*emit" },
+		WORD_MIRROR_COLOR,							//{ , L"*mirror_color" },
+		WORD_ROUGHNESS,								//{ , L"*roughness" },
+		WORD_SPECULAR_ALPHA,						//{ , L"*specular_alpha" },
+		WORD_SPECULAR_COLOR,						//{ , L"*specular_color" },
+		WORD_SPECULAR_HARDNESS,						//{ , L"*specular_hardness" },
+		WORD_SPECULAR_INTENSITY,					//{ , L"*specular_intensity" },
+		WORD_SPECULAR_IOR,							//{ , L"*specular_ior" },
+		WORD_SPECULAR_SLOPE,						//{ , L"*specular_slope" },
+		WORD_TRANSLUCENCY,							//{ , L"*translucency" },
+		WORD_SOUND,					// 6
+		WORD_FILENAME,					// 6
+		WORD_VOLUME,					// 6
+		WORD_PITCH,					// 6
+		WORD_MAX_DISTANCE,					// 6
+		WORD_REFERENCE_DISTANCE,					// 6
+		WORD_CONE_ANGLE_INNER,					// 6
+		WORD_CONE_ANGLE_OUTER,					// 6
+		WORD_CONE_VOLUME_OUTER,					// 6
+		WORD_ATTENUATION,					// 6
+		WORD_TYPE,					// 6
+		WORD_POINT_LIGHT,					// 6
+		WORD_LIGHT_TYPE,					// 6
+		WORD_COLOR,					// 6
+		WORD_DISTANCE,					// 6
+		WORD_ENERGY,					// 6
+		WORD_FALLOFF_TYPE,					// 6
+		WORD_LINEAR_ATTENUATION,					// 6
+		WORD_QUADRATIC_ATTENUATION,					// 6
+		WORD_REFERENCE, 					// 6
+		WORD_BONE_ANIMATION,					// 6
+		WORD_OBJECT_ANIMATION,					// 6
+		WORD_POSITION_TRACK,					// 6
+		WORD_ROTATION_TRACK,					// 6
+		WORD_MATERIAL_REF,					// 6
+		WORD_ACTIONS_REF,					// 6
+		WORD_ACTION_REF,					// 6
+		WORD_CAMERA,					// 6
+		WORD_FOV,					// 6
+		WORD_NEAR_PLANE,					// 6
+		WORD_FAR_PLANE,					// 6
+		WORD_FOCUS,					// 6
+		WORD_ORTHO_SCALE,					// 6
+		WORD_COLLISION_MESH,					// 6
+		WORD_LOCATION_INDOOR,					// 6
+		WORD_CONVEX_MESH,					// 6
+		WORD_MATERIAL_NODE,					// 6
+		WORD_TRANSFORM_NODE,					// 6
+		WORD_PORTAL,					// 6
+		WORD_PORTAL_NODE,					// 6
+		WORD_STATIC_MESH					// 6
 	};
 
-	static const wchar_t* Keyword[] = {
-		L"",
-		L"{",
-		L"}",
-		L"*object",
-		L"*bounding_box",
-		L"*location",
-		L"*world_matrix",
-		L"*local_matrix",
-		L"*mesh",
-		L"*vertex_position",
-		L"*normals",
-		L"*faces",
-		L"*vertex_positions_id",
-		L"*bones_weight",
-		L"*armature",
-		L"*bone",
-		L"*name",
-		L"*actions",
-		L"*pos_x",
-		L"*pos_y",
-		L"*pos_z",
-		L"*rot_w",
-		L"*rot_x",
-		L"*rot_y",
-		L"*rot_z",
-		L"*parent",
-		L"*tex_coord",
-		L"*material",
-		L"*normal_map",
-		L"*diffuse_map",
-		L"*materials",
-		L"*gimbal_transform",
-		L"*bone_matrix",
-		L"*action",
-		L"*armatures",
-		L"*frames", 
-		L"*texture",
-		L"*timing",
-		L"*parent_inverse_matrix",
-		L"*length",
-		L"*alpha", 
-		L"*ambient",
-		L"*darkness",
-		L"*diffuse_color", 
-		L"*diffuse_fresnel", 
-		L"*diffuse_fresnel_factor",
-		L"*diffuse_intensity",
-		L"*emit",
-		L"*mirror_color",
-		L"*roughness",
-		L"*specular_alpha",
-		L"*specular_color",
-		L"*specular_hardness",
-		L"*specular_intensity",
-		L"*specular_ior",
-		L"*specular_slope",
-		L"*translucency",
-		L"*sound",
-		L"*filename",
-		L"*volume",
-		L"*pitch",
-		L"*max_distance",
-		L"*reference_distance",
-		L"*cone_angle_inner",
-		L"*cone_angle_outer",
-		L"*cone_volume_outer",
-		L"*attenuation",
-		L"*type",
-		L"*point_light",
-		L"*light_type",
-		L"*color",
-		L"*distance",
-		L"*energy",
-		L"*fallof_type",
-		L"*linear_attenuation",
-		L"*quadratic_attenuation",
-		L"*reference",
-		L"*bone_animation",
-		L"*object_animation",
-		L"*position_track",
-		L"*rotation_track",
-		L"*material_ref",
-		L"*actions_ref",
-		L"*action_ref",
-		L"*camera",
-		L"*fov",
-		L"*near",
-		L"*far",
-		L"*focus",
-		L"*ortho_scale",
-		L"*collision_mesh"
+	struct Record
+	{
+		KeywordCode code;
+		const wchar_t* word;
+	};
+
+	static const Record Keyword[] = {
+		{ WORD_BAD_KEYWORD,				L"" },
+		{ WORD_OPEN_BRACKET,			L"{" },
+		{ WORD_CLOSE_BRACKET,			L"}" },
+		{ WORD_OBJECT,					L"*object" },
+		{ WORD_BOUNDING_BOX,			L"*bounding_box" },
+		{ WORD_LOCATION,				L"*location" },
+		{ WORD_WORLD_MATRIX,			L"*world_matrix" },
+		{ WORD_LOCAL_MATRIX,			L"*local_matrix" },
+		{ WORD_MESH,					L"*mesh" },
+		{ WORD_VERTEX_POSITION,			L"*vertex_position" },
+		{ WORD_NORMALS,					L"*normals" },
+		{ WORD_FACES,					L"*faces" },
+		{ WORD_VERTEX_POSITIONS_ID,		L"*vertex_positions_id" },
+		{ WORD_BONES_WEIGHT,			L"*bones_weight" },
+		{ WORD_ARMATURE,				L"*armature" },
+		{ WORD_BONE,					L"*bone" },
+		{ WORD_NAME,					L"*name" },
+		{ WORD_ACTIONS,					L"*actions" },
+		{ WORD_POS_X,					L"*pos_x" },
+		{ WORD_POS_Y,					L"*pos_y" },
+		{ WORD_POS_Z,					L"*pos_z" },
+		{ WORD_ROT_W,					L"*rot_w" },
+		{ WORD_ROT_X,					L"*rot_x" },
+		{ WORD_ROT_Y,					L"*rot_y" },
+		{ WORD_ROT_Z,					L"*rot_z" },
+		{ WORD_PARENT,					L"*parent" },
+		{ WORD_TEXTURE_COORD,			L"*tex_coord" },
+		{ WORD_MATERIAL,				L"*material" },
+		{ WORD_NORMAL_MAP,				L"*normal_map" },
+		{ WORD_DIFFUSE_MAP,				L"*diffuse_map" },
+		{ WORD_MATERIALS,				L"*materials" },
+		{ WORD_GIMBAL_TRANSFORM,		L"*gimbal_transform" },
+		{ WORD_BONE_MATRIX,				L"*bone_matrix" },
+		{ WORD_ACTION,					L"*action" },
+		{ WORD_ARMATURES,				L"*armatures" },
+		{ WORD_FRAMES,					L"*frames" }, 
+		{ WORD_TEXTURE,					L"*texture" },
+		{ WORD_TIMING,					L"*timing" },
+		{ WORD_PARENT_INVERSED_MATRIX,	L"*parent_inverse_matrix" },
+		{ WORD_LENGTH,					L"*length" },
+		{ WORD_ALPHA,					L"*alpha" }, 
+		{ WORD_AMBIENT,					L"*ambient" },
+		{ WORD_DARKNESS,				L"*darkness" },
+		{ WORD_DIFFUSE_COLOR,			L"*diffuse_color" }, 
+		{ WORD_DIFFUSE_FRESNEL,			L"*diffuse_fresnel" }, 
+		{ WORD_DIFFUSE_FRESNEL_FACTOR,	L"*diffuse_fresnel_factor" },
+		{ WORD_DIFFUSE_INTENSITY,		L"*diffuse_intensity" },
+		{ WORD_EMIT,					L"*emit" },
+		{ WORD_MIRROR_COLOR,			L"*mirror_color" },
+		{ WORD_ROUGHNESS,				L"*roughness" },
+		{ WORD_SPECULAR_ALPHA,			L"*specular_alpha" },
+		{ WORD_SPECULAR_COLOR,			L"*specular_color" },
+		{ WORD_SPECULAR_HARDNESS,		L"*specular_hardness" },
+		{ WORD_SPECULAR_INTENSITY,		L"*specular_intensity" },
+		{ WORD_SPECULAR_IOR,			L"*specular_ior" },
+		{ WORD_SPECULAR_SLOPE,			L"*specular_slope" },
+		{ WORD_TRANSLUCENCY,			L"*translucency" },
+		{ WORD_SOUND,					L"*sound" },
+		{ WORD_FILENAME,				L"*filename" },
+		{ WORD_VOLUME,					L"*volume" },
+		{ WORD_PITCH,					L"*pitch" },
+		{ WORD_MAX_DISTANCE,			L"*max_distance" },
+		{ WORD_REFERENCE_DISTANCE,		L"*reference_distance" },
+		{ WORD_CONE_ANGLE_INNER,		L"*cone_angle_inner" },
+		{ WORD_CONE_ANGLE_OUTER,		L"*cone_angle_outer" },
+		{ WORD_CONE_VOLUME_OUTER,		L"*cone_volume_outer" },
+		{ WORD_ATTENUATION,				L"*attenuation" },
+		{ WORD_TYPE,					L"*type" },
+		{ WORD_POINT_LIGHT,				L"*point_light" },
+		{ WORD_LIGHT_TYPE,				L"*light_type" },
+		{ WORD_COLOR,					L"*color" },
+		{ WORD_DISTANCE,				L"*distance" },
+		{ WORD_ENERGY,					L"*energy" },
+		{ WORD_FALLOFF_TYPE,			L"*fallof_type" },
+		{ WORD_LINEAR_ATTENUATION,		L"*linear_attenuation" },
+		{ WORD_QUADRATIC_ATTENUATION,	L"*quadratic_attenuation" },		
+		{ WORD_BONE_ANIMATION,			L"*bone_animation" },
+		{ WORD_OBJECT_ANIMATION,		L"*object_animation" },
+		{ WORD_POSITION_TRACK,			L"*position_track" },
+		{ WORD_ROTATION_TRACK,			L"*rotation_track" },
+		{ WORD_MATERIAL_REF,			L"*material_ref" },
+		{ WORD_ACTIONS_REF,				L"*actions_ref" },
+		{ WORD_ACTION_REF,				L"*action_ref" },
+		{ WORD_CAMERA,					L"*camera" },
+		{ WORD_FOV,						L"*fov" },
+		{ WORD_NEAR_PLANE,				L"*near" },
+		{ WORD_FAR_PLANE,				L"*far" },
+		{ WORD_FOCUS,					L"*focus" },
+		{ WORD_ORTHO_SCALE,				L"*ortho_scale" },
+		{ WORD_COLLISION_MESH,			L"*collision_mesh" },
+		{ WORD_LOCATION_INDOOR,			L"*location_indoor" },
+		{ WORD_CONVEX_MESH,				L"*convex_mesh" },
+		{ WORD_MATERIAL_NODE,			L"*material_node" },
+		{ WORD_TRANSFORM_NODE,			L"*transform_node"},
+		{ WORD_PORTAL,					L"*portal" },
+		{ WORD_PORTAL_NODE,				L"*portal_node" },
+		{ WORD_STATIC_MESH,				L"*static_mesh" },		
 	};
 }
-
 #endif	//	_H_PUNK_VIRTUAL_KEY_WORDS

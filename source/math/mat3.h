@@ -7,6 +7,7 @@
 #ifndef _H_MAT3X3_MATH
 #define _H_MAT3X3_MATH
 
+//#include <algorithm>
 #include "math_error.h"
 #include "mat2.h"
 #include "vec3.h"
@@ -17,7 +18,6 @@ namespace Math
 	template<class T>
 	class  Matrix3x3
 	{
-		static wchar_t m_buffer[128];
 		T m[9];
 
 	public:
@@ -47,6 +47,13 @@ namespace Math
 			{
 				memcpy(m, mat.m, sizeof(m));
 			}
+		}
+
+		template<class U>
+		Matrix3x3<T>(const Matrix3x3<U>& mat)
+		{
+			for (int i = 0; i < 9; ++i)
+				m[i] = (T)mat[i];
 		}
 
 		Matrix3x3<T>& operator = (const Matrix3x3<T>& mat)
@@ -84,6 +91,20 @@ namespace Math
 			return m;
 		}
 
+		Matrix3x3<T>& operator += (const Matrix3x3<T>& v)
+		{
+			for (int i = 0; i < 9; ++i)
+				m[i] += v[i];
+			return *this;
+		}
+
+		Matrix3x3<T>& operator -= (const Matrix3x3<T>& v)
+		{
+			for (int i = 0; i < 9; ++i)
+				m[i] -= v[i];
+			return *this;
+		}
+
 		Matrix3x3<T>& operator *= (T s)
 		{
 			for (int i = 0; i < 9; i++)
@@ -104,17 +125,35 @@ namespace Math
 		//
 		//  find determinant
 		//
-		T Determinant()
+		T Determinant() const
 		{
 			return m[0] * (m[4] * m[8] - m[5] * m[7])
 				- m[1] * (m[3] * m[8] - m[5] * m[6])
 				+ m[2] * (m[3] * m[7] - m[4] * m[6]);
 		}
 
+		const T At(int row, int col) const
+		{
+			return m[col*3 + row];
+		}
+
+		T& At(int row, int col) 
+		{
+			return m[col*3 + row];
+		}
+		
+		Matrix3x3<T>& SwapRows(int row1, int row2)
+		{
+			int size = 3;
+			for (int col = 0; col < size; ++col)
+				std::swap(At(row1, col), At(row2, col));
+			return *this;
+		}
+
 		//
 		//	returned inversed copy
 		//
-		Matrix3x3<T> Inversed()
+		const Matrix3x3<T> Inversed() const
 		{
 			Matrix3x3<T> inversedMatrix;
 			inversedMatrix[0] = m[4] * m[8] - m[5] * m[7];
@@ -135,7 +174,7 @@ namespace Math
 			return inversedMatrix * d;
 		}
 
-		Matrix3x3<T>& Invers()
+		Matrix3x3<T>& Inverse()
 		{
 			T d = Determinant();
 			T tm[9];
@@ -191,10 +230,16 @@ namespace Math
 			return *this;
 		}
 
+		Matrix3x3<T>& Zerofy()
+		{
+			memset(m, 0, sizeof(m));
+			return *this;
+		}
+
 		//
 		//	Translation part
 		//
-		Vector2<T> TranslationPart() const
+		const Vector2<T> TranslationPart() const
 		{
 			return Vector2<T>(m[6], m[7]);
 		}
@@ -202,7 +247,7 @@ namespace Math
 		//
 		//	Rotation part
 		//
-		Matrix2x2<T> RotationPart() const
+		const Matrix2x2<T> RotationPart() const
 		{
 			Matrix2x2<T> tm;
 			tm[0] = m[0];
@@ -262,7 +307,7 @@ namespace Math
 			return *this;
 		}
 
-		static Matrix3x3<T> Create2DTranslate(T dx, T dy)
+		static const Matrix3x3<T> Create2DTranslate(T dx, T dy)
 		{
 			Matrix3x3<T> res;
 			res[0] = res[4] = res[8] = T(1);
@@ -272,12 +317,12 @@ namespace Math
 		}
 
 		
-		static Matrix3x3<T> Create2DTranslate(const Vector2<T>& v)
+		static const Matrix3x3<T> Create2DTranslate(const Vector2<T>& v)
 		{
 			return Create2DTranslate(v.X(), v.Y());
 		}
 
-		static Matrix3x3<T> Create2DRotate(T angle)
+		static const Matrix3x3<T> Create2DRotate(T angle)
 		{
 			Matrix3x3<T> res;
 			res[0] = cos(angle);
@@ -292,17 +337,17 @@ namespace Math
 			return res;
 		}
 
-		static Matrix3x3<T> CreateFreeForm2DRotate(T angle, T x, T y)
+		static const Matrix3x3<T> CreateFreeForm2DRotate(T angle, T x, T y)
 		{
 			return Create2DTranslate(x, y) * Create2DRotate(angle) * Create2DTranslate(x, y).Inversed();
 		}
 
-		static Matrix3x3<T> CreateFreeForm2DRotate(T angle, const Vector2<T>& v)
+		static const Matrix3x3<T> CreateFreeForm2DRotate(T angle, const Vector2<T>& v)
 		{
 			return CreateFreeForm2DRotate(angle, v.X(), v.Y());
 		}
 
-		static Matrix3x3<T> Create2DScale(T sx, T sy)
+		static const Matrix3x3<T> Create2DScale(T sx, T sy)
 		{
 			Matrix3x3<T> m;
 			m[0] = sx;
@@ -311,22 +356,27 @@ namespace Math
 			return m;
 		}
 
-		static Matrix3x3<T> Create2DScale(const Vector2<T>& v)
+		static const Matrix3x3<T> Create2DScale(const Vector2<T>& v)
 		{
 			return Create2DScale(v[0], v[1]);
 		}
 
-		static Matrix3x3<T> Create2DFreeFormScale(T sx, T sy, const Vector2<T>& v)
+		static const Matrix3x3<T> CreateIdentity() 
+		{
+			return Matrix3x3<T>();
+		}
+
+		static const Matrix3x3<T> Create2DFreeFormScale(T sx, T sy, const Vector2<T>& v)
 		{
 			return Create2DTranslate(v) * Create2DScale(sx, sy) * Create2DTranslate(v).Inversed();
 		}
 
-		static Matrix3x3<T> Create2DFreeFormScale(T sx, T sy, T x, T y)
+		static const Matrix3x3<T> Create2DFreeFormScale(T sx, T sy, T x, T y)
 		{
 			return Create2DTranslate(x, y) * Create2DScale(sx, sy) * Create2DTranslate(x, y).Inversed();
 		}		
 
-		static Matrix3x3<T> Create2DReflectionX()
+		static const Matrix3x3<T> Create2DReflectionX()
 		{
 			Matrix3x3<T> m;
 			m[0] = 1;
@@ -335,7 +385,7 @@ namespace Math
 			return m;
 		}
 
-		static Matrix3x3<T> Create2DReflectionY()
+		static const Matrix3x3<T> Create2DReflectionY()
 		{
 			Matrix3x3<T> m;
 			m[0] = -1;
@@ -344,7 +394,7 @@ namespace Math
 			return m;
 		}
 
-		static Matrix3x3<T> Create2DOriginReflection()
+		static const Matrix3x3<T> Create2DOriginReflection()
 		{
 			Matrix3x3<T> m;
 			m[0] = -1;
@@ -473,17 +523,17 @@ namespace Math
 	static const Matrix3x3<T> MultTransposed(const Vector3<T>& a, const Vector3<T>& b)
 	{
 		Matrix3x3<T> m;
-		m[0*3 + 0] = a[0]*b[0];
-		m[0*3 + 1] = a[0]*b[1];
-		m[0*3 + 2] = a[0]*b[2];
+		m[0] = a[0]*b[0];
+		m[3] = a[0]*b[1];
+		m[6] = a[0]*b[2];
 
-		m[1*3 + 0] = a[1]*b[0];
-		m[1*3 + 1] = a[1]*b[1];
-		m[1*3 + 2] = a[1]*b[2];
+		m[1] = a[1]*b[0];
+		m[4] = a[1]*b[1];
+		m[7] = a[1]*b[2];
 
-		m[2*3 + 0] = a[2]*b[0];
-		m[2*3 + 1] = a[2]*b[1];
-		m[2*3 + 2] = a[2]*b[2];
+		m[2] = a[2]*b[0];
+		m[5] = a[2]*b[1];
+		m[8] = a[2]*b[2];
 
 		return m;
 	}

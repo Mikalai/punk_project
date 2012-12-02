@@ -4,41 +4,41 @@
 
 namespace OpenGL
 {
-	DummyRenderPolicy::DummyRenderPolicy()
+	AbstractRenderPolicy::AbstractRenderPolicy()
 		: m_program(0)
 		, m_was_modified(false)
 		, m_vertex_attributes(Utility::COMPONENT_NONE)
 	{}
 
-	void DummyRenderPolicy::InitUniforms()
+	void AbstractRenderPolicy::InitUniforms()
 	{
 		out_warning() << "InitUniforms() not implemented" << std::endl;		
 	}
 
-	void DummyRenderPolicy::BindParameters(const DummyParameters& params)
+	void AbstractRenderPolicy::BindParameters(const System::Proxy<State>& params)
 	{	
 		out_warning() << "BindParameters() not implemented" << std::endl;
 	}
 
-	Utility::VertexAttributes DummyRenderPolicy::GetRequiredAttributesSet() const 
+	Utility::VertexAttributes AbstractRenderPolicy::GetRequiredAttributesSet() const 
 	{
 		return Utility::COMPONENT_NONE;
 	}
 
-	void DummyRenderPolicy::Begin()
+	void AbstractRenderPolicy::Begin()
 	{
 		glUseProgram(m_program);
 		//out_warning() << "Begin() not implemented" << std::endl;
 	}
 
-	void DummyRenderPolicy::End()
+	void AbstractRenderPolicy::End()
 	{
 		glUseProgram(0);
 		//out_warning() << "End() not implemented" << std::endl;
 	}
 
 
-	void DummyRenderPolicy::Init()
+	void AbstractRenderPolicy::Init()
 	{
 		if (m_was_modified || !m_program)
 		{
@@ -105,7 +105,7 @@ namespace OpenGL
 		}
 	}
 
-	bool DummyRenderPolicy::SetUniformVector4f(const char * name, const float* value)
+	bool AbstractRenderPolicy::SetUniformVector4f(const char * name, const float* value)
 	{
 		int loc = glGetUniformLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get uniform location");
@@ -114,14 +114,14 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformVector4f( int loc, const float* value )
+	bool AbstractRenderPolicy::SetUniformVector4f( int loc, const float* value )
 	{
 		glUniform4fv(loc, 1, value);
 		CHECK_GL_ERROR(L"Unable to set value");
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformVector3f(const char * name, const float* value )
+	bool AbstractRenderPolicy::SetUniformVector3f(const char * name, const float* value )
 	{
 		int loc = glGetUniformLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get uniform location");				
@@ -130,14 +130,14 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformVector3f(int loc, const float* value)
+	bool AbstractRenderPolicy::SetUniformVector3f(int loc, const float* value)
 	{
 		glUniform3fv(loc, 1, value);
 		CHECK_GL_ERROR(L"Unable to set value");
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformVector2f(const char * name, const float* value )
+	bool AbstractRenderPolicy::SetUniformVector2f(const char * name, const float* value )
 	{
 		int loc = glGetUniformLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get uniform location");				
@@ -146,14 +146,14 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformVector2f(int loc, const float* value )
+	bool AbstractRenderPolicy::SetUniformVector2f(int loc, const float* value )
 	{
 		glUniform2fv(loc, 1, value);
 		CHECK_GL_ERROR(L"Unable to set value");
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformFloat(const char * name, float value)
+	bool AbstractRenderPolicy::SetUniformFloat(const char * name, float value)
 	{
 		int loc = glGetUniformLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get uniform location");				
@@ -162,14 +162,14 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformFloat(int loc, float value)
+	bool AbstractRenderPolicy::SetUniformFloat(int loc, float value)
 	{
 		glUniform1f ( loc, value );
 		CHECK_GL_ERROR(L"Unable to set value");
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformInt(const char * name, int value)
+	bool AbstractRenderPolicy::SetUniformInt(const char * name, int value)
 	{
 		int loc = glGetUniformLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get uniform location");				
@@ -178,14 +178,14 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformInt(int loc, int value)
+	bool AbstractRenderPolicy::SetUniformInt(int loc, int value)
 	{
 		glUniform1i( loc, value);
 		CHECK_GL_ERROR(L"Unable to set value");
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformMatrix3f(const char * name, const float* value)
+	bool AbstractRenderPolicy::SetUniformMatrix3f(const char * name, const float* value)
 	{
 		int loc = glGetUniformLocation ( m_program, name );
 		CHECK_GL_ERROR(L"Unable to get uniform location");				
@@ -194,14 +194,14 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformMatrix3f( int loc, const float* value)
+	bool AbstractRenderPolicy::SetUniformMatrix3f( int loc, const float* value)
 	{
 		glUniformMatrix3fv(loc, 1, GL_FALSE, value);
 		CHECK_GL_ERROR(L"Unable to set value");
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformMatrix4f(const char * name, const float* value)
+	bool AbstractRenderPolicy::SetUniformMatrix4f(const char * name, const float* value)
 	{
 		int loc = glGetUniformLocation ( m_program, name );
 		CHECK_GL_ERROR(L"Unable to get uniform location");				
@@ -210,14 +210,14 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformMatrix4f( int loc, const float* value)
+	bool AbstractRenderPolicy::SetUniformMatrix4f( int loc, const float* value)
 	{
 		glUniformMatrix4fv(loc, 1, GL_FALSE, value);
 		CHECK_GL_ERROR(L"Unable to set value");
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetUniformArrayMatrix4f(int loc, int count, const float* value)
+	bool AbstractRenderPolicy::SetUniformArrayMatrix4f(int loc, int count, const float* value)
 	{
 		glUniformMatrix4fv(loc, count, GL_FALSE, value);
 		CHECK_GL_ERROR(L"Unable to set value");
@@ -225,21 +225,21 @@ namespace OpenGL
 	}
 
 
-	int DummyRenderPolicy::GetUniformLocation(const char * name)
+	int AbstractRenderPolicy::GetUniformLocation(const char * name)
 	{
 		GLint res = glGetUniformLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get uniform location");				
 		return res;
 	}
 
-	void DummyRenderPolicy::GetUniformVector(const char * name, float* out)
+	void AbstractRenderPolicy::GetUniformVector(const char * name, float* out)
 	{
 		int loc = glGetUniformLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get uniform location");				
 		glGetUniformfv(m_program, loc, out);
 	}
 
-	bool DummyRenderPolicy::SetTexture(const char * name, int texUnit)
+	bool AbstractRenderPolicy::SetTexture(const char * name, int texUnit)
 	{
 		int loc = glGetUniformLocation ( m_program, name );
 		//	if ( loc == -1 )
@@ -249,7 +249,7 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetTexture(int loc, int texUnit)
+	bool AbstractRenderPolicy::SetTexture(int loc, int texUnit)
 	{
 		//	if ( loc < 0 )
 		//	throw System::SystemError(L"Can't set texture");
@@ -258,14 +258,14 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::BindAttributeTo(int loc, const char * name)
+	bool AbstractRenderPolicy::BindAttributeTo(int loc, const char * name)
 	{
 		glBindAttribLocation(m_program, loc, name);
 		CHECK_GL_ERROR(L"Unable to bind attribute");
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetAttribute(const char * name, const float* value)
+	bool AbstractRenderPolicy::SetAttribute(const char * name, const float* value)
 	{
 		int index = glGetAttribLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get attribute location");
@@ -274,21 +274,21 @@ namespace OpenGL
 		return true;
 	}
 
-	bool DummyRenderPolicy::SetAttribute(int index, const float* value)
+	bool AbstractRenderPolicy::SetAttribute(int index, const float* value)
 	{
 		glVertexAttrib4fv(index, value);
 		CHECK_GL_ERROR(L"Unable to get attribute value");
 		return true;
 	}
 
-	int DummyRenderPolicy::IndexForAttrName(const char * name)
+	int AbstractRenderPolicy::IndexForAttrName(const char * name)
 	{
 		int res = glGetAttribLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get attribute index");
 		return res;
 	}
 
-	void DummyRenderPolicy::GetAttribute(const char * name, float* out)
+	void AbstractRenderPolicy::GetAttribute(const char * name, float* out)
 	{
 		int index = glGetAttribLocation(m_program, name);
 		CHECK_GL_ERROR(L"Unable to get attribute index");
@@ -296,12 +296,12 @@ namespace OpenGL
 		CHECK_GL_ERROR(L"Unable to get attribute value");
 	}
 
-	void DummyRenderPolicy::GetAttribute(int index, float* out)
+	void AbstractRenderPolicy::GetAttribute(int index, float* out)
 	{
 		glGetVertexAttribfv ( index, GL_CURRENT_VERTEX_ATTRIB, out);
 	}
 
-	DummyRenderPolicy::~DummyRenderPolicy()
+	AbstractRenderPolicy::~AbstractRenderPolicy()
 	{
 		if (m_program)
 		{

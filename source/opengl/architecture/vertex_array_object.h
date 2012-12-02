@@ -207,7 +207,7 @@ namespace OpenGL
 			}
 		}
 
-		bool Save(std::ostream& stream)
+		bool Save(std::ostream& stream) const
 		{
 			//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));
 			//m_location.Save(stream);

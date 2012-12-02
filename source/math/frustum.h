@@ -4,7 +4,8 @@
 #include "../config.h"
 #include "mat4.h"
 #include "plane.h"
-#include "bounding_box.h"
+#include "aabb.h"
+#include "clip_space.h"
 
 namespace Math
 {
@@ -13,8 +14,28 @@ namespace Math
 	public:
 
 		enum FrustumPlane {PLANE_TOP, PLANE_BOTTOM, PLANE_FAR, PLANE_NEAR, PLANE_LEFT, PLANE_RIGHT};
-		enum CameraType {CAMERA_TARGET, CAMERA_FREE};
 		enum Classification {OUTSIDE, INSIDE, INTERSECT};
+
+	public:
+
+		Frustum();
+
+		void SetProperties(float fov, float aspect, float near, float far);
+		void SetPositionAndTarget(const vec3& position, const vec3& target, const vec3& up);
+		void SetPositionAndDirection(const vec3& position, const vec3& direction, const vec3& up);
+		void SetPosition(const vec3& position);
+		void SetProjectionMatrix(const Math::mat4& matrix);
+
+		Classification BoxInFrustum(const AxisAlignedBox& m_bbox) const;
+
+		const mat4& GetProjectionMatrix() const;
+		const mat4& GetViewMatrix() const;
+		const mat4& GetViewProjectionMatrix() const;
+		const vec3& GetPosition() const;
+		const ClipSpace ToClipSpace() const;
+
+		bool Save(std::ostream& stream) const;
+		bool Load(std::istream& stream);
 
 	protected:
 
@@ -39,27 +60,8 @@ namespace Math
 		vec3 m_up;
 		vec3 m_direction;
 
-		CameraType m_type;
-
 		void UpdateMatrix();
 		void CalculatePlanes();
-
-	public:
-
-		Frustum();
-
-		void SetProperties(float fov, float aspect, float near, float far);
-		void SetPositionAndTarget(const vec3& position, const vec3& target, const vec3& up);
-		void SetPositionAndDirection(const vec3& position, const vec3& direction, const vec3& up);
-		void SetPosition(const vec3& position);
-		void SetProjectionMatrix(const Math::mat4& matrix);
-
-		Classification BoxInFrustum(const BoundingBox& m_bbox) const;
-
-		const mat4& GetProjectionMatrix() const;
-		const mat4& GetViewMatrix() const;
-		const mat4& GetViewProjectionMatrix() const;
-		const vec3& GetPosition() const;
 	};
 }
 

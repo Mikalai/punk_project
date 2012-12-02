@@ -1,58 +1,68 @@
-﻿/*
-File: BoundingBox.h
-Author: Abramaŭ Mikałaj
-Description: A bounding box
-*/
+#ifndef _H_PUNK_MATH_BOUNDING_BOX
+#define _H_PUNK_MATH_BOUNDING_BOX
 
-#ifndef _H_BOUNDING_BOX
-#define _H_BOUNDING_BOX
-
-#include <iosfwd>
 #include "../config.h"
-#include "mat4.h"
 #include "vec3.h"
+#include "plane.h"
 
 namespace Math
 {
-	class Line3D;
-
 	class PUNK_ENGINE BoundingBox
 	{
-		mutable vec3 m_transformed_points[8];
-
-		vec3 m_border_points[8];
-		vec3 m_min;
-		vec3 m_max;
-
 	public:
-		
-		void Create(const float* data, unsigned offset, int count);
-		bool DoCrossTriangle(const vec3& p1, const vec3& p2, const vec3& p3) const;
-		bool IsPointIn(const float *p) const;
-		bool DoCrossLine(const Line3D& line) const;
 
-		const vec3& MinPoint() const;
-		const vec3& MaxPoint() const;
-		vec3& MinPoint();
-		vec3& MaxPoint();		
-		const vec3* TransformedPoints() const;
+		/**
+		*	Initialize bounding box with array of vertex
+		*/
+		bool Create(const float* vbuffer, int count, unsigned vertex_size);
 
-		vec3& operator [] (int index);
-		const vec3& operator [] (int index) const;
+		const vec3& GetR() const { return m_r; }
+		const vec3& GetS() const { return m_s; }
+		const vec3& GetT() const { return m_t; }
+		const vec3& GetCenter() const { return m_center; }
+		const vec3& GetMassCenter() const { return m_center_of_mass; }
 
-		const BoundingBox& Transform(const Math::mat4& transform, Math::vec3& Min, Math::vec3& Max) const;
-		const BoundingBox& Transform(const mat4& transform) const;
-
-		bool Save(std::ostream& stream);
+		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 
-		friend PUNK_ENGINE BoundingBox Merge(const BoundingBox* b1, const BoundingBox* b2);
+	private:
 
-		std::wostream& out_formatted(std::wostream& stream);
+		//	natural center
+		vec3 m_center_of_mass;
+		
+		//	bbox center
+		vec3 m_center;
+
+		//	natural axes
+		vec3 m_r;
+		vec3 m_s;
+		vec3 m_t;
+
+		//	natural planes of the bbox 
+		Plane m_plane[6];
+
+		friend const BoundingBox operator * (const mat4& m, const BoundingBox& bbox);
 	};
 
-	PUNK_ENGINE BoundingBox Merge(const BoundingBox* b1, const BoundingBox* b2);
+	inline const BoundingBox operator * (const mat4& m, const BoundingBox& bbox)
+	{
+		BoundingBox res;
+		mat4 plane_matrix = m.Inversed().Transposed();
+		mat3 normal_matrix = plane_matrix.RotationPart();
 
+		res.m_center_of_mass = m * bbox.m_center_of_mass;
+		res.m_center = m * bbox.m_center;
+		res.m_r = normal_matrix * bbox.m_r;
+		res.m_s = normal_matrix * bbox.m_s;
+		res.m_t = normal_matrix * bbox.m_t;
+
+		for (int i = 0; i < 6; ++i)
+		{
+			res.m_plane[i] = plane_matrix * bbox.m_plane[i];
+		}
+
+		return res;
+	}
 }
 
-#endif
+#endif	//	_H_PUNK_MATH_BOUNDING_BOX

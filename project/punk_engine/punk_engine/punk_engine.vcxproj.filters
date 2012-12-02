@@ -82,9 +82,6 @@
     <Filter Include="render">
       <UniqueIdentifier>{cd97ed0c-dc77-438f-9c54-8651ae8f5cc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="scene">
-      <UniqueIdentifier>{19fc9b71-bb19-47d2-bce4-48743a467d54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="string">
       <UniqueIdentifier>{9b17d7b6-206c-40f9-b531-124e1c705960}</UniqueIdentifier>
     </Filter>
@@ -171,6 +168,9 @@
     </Filter>
     <Filter Include="raytracer">
       <UniqueIdentifier>{ab3c2290-1b65-43ca-9fef-777b4db8f726}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{19fc9b71-bb19-47d2-bce4-48743a467d54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -378,9 +378,6 @@
     <ClInclude Include="..\..\..\source\system\global_resource_manager.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\handle.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\hresource.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -403,9 +400,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\node.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\permanent_data.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\pool.h">
@@ -1211,9 +1205,6 @@
     <ClInclude Include="..\..\..\source\virtual\manager\camera_manager.h">
       <Filter>virtual\manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\scene\scene.h">
-      <Filter>scene</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\camera_capture_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
@@ -1363,6 +1354,108 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\raytracer\render_impl2.h">
       <Filter>raytracer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\portal.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\aabb.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\ellipsoid.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\light_set.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\compound_object.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\clip_space.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\bounding_shere.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\location.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\interior_location.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\door.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\render_state.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\geometry_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\transform_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\light_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\material_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\camera_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\manager\material_manager.h">
+      <Filter>virtual\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\manager\manager.h">
+      <Filter>virtual\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\primitive_types.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\type.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\factory.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\resource_creator.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\scene_graph.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\visitor.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\descriptors\indoor_desc.h">
+      <Filter>utility\descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\parser\base_parser2.h">
+      <Filter>utility\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\location_indoor.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\portal_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\old_shape_mesh.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\convex_shape_mesh.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\point_light_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\geometry.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\static_geometry.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\default_visitor.h">
+      <Filter>scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2086,6 +2179,84 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\raytracer\scene_impl2.h">
       <Filter>raytracer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\aabb.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\ellipsoid.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\compound_object.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\clip_space.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\portal.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\bounding_sphere.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\sphere.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\light_set.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\render_state.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\manager\material_manager.cpp">
+      <Filter>virtual\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\geometry_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\renderable.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\transform_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\camera_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\light_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\manager\camera_manager.cpp">
+      <Filter>virtual\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\factory.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\material_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\scene_graph.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\parser\base_parser2.cpp">
+      <Filter>utility\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\location_indoor.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\convex_shape_mesh.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\portal_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\point_light_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\static_geometry.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\default_visitor.cpp">
+      <Filter>scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

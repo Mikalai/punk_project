@@ -15,7 +15,7 @@ namespace Virtual
 		std::auto_ptr<AnimationMixer> m_Mixer;
 		__int64 m_current_time_us;
 	public:		
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual bool GetLocalTransform(Math::Matrix4x4<float>& value);
 		virtual bool SetLocalTransform(const Math::Matrix4x4<float>& value);

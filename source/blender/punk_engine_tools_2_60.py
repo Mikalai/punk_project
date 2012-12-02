@@ -73,6 +73,20 @@ class OBJECT_PT_punk_engine_tools(Panel):
         elif ob.punk_entity_type == 'RIGID':
             layout.prop(ob, "name")
             layout.prop(ob, "punk_mass")
+        elif ob.punk_entity_type == 'PORTAL':
+            layout.prop(ob, "name")     
+        elif ob.punk_entity_type == 'LOCATION_INDOOR':
+            layout.prop(ob, "name")               
+        elif ob.punk_entity_type == 'LIGHT':
+            light = ob.data
+            layout.prop(ob, "name")
+            layout.prop(light, "type")
+            layout.prop(light, "color")
+            layout.prop(light, "distance")
+            layout.prop(light, "energy")
+            layout.prop(light, "fallof_type")
+            layout.prop(light, "linear_attenuation")
+            layout.prop(light, "quadratic_attenuation")
                  
 
 def register():  
@@ -85,7 +99,13 @@ def register():
                  ("NAVI",   "Navigation Mesh", "Navigation mesh",      2), \
                  ("SOUND_2D",  "2D Sound", "Sound",                    3), \
                  ("SOUND_3D",  "3D Sound", "Sound",                    4), \
-                 ("RIGID",  "Rigid Body", "Sound",                    5)])
+                 ("RIGID",  "Rigid Body", "Sound",                     5), \
+                 ("PORTAL", "Portal", "Scene portal",                  6), \
+                 ("LIGHT", "Light", "Scene light",                     7), \
+                 ("LOCATION_INDOOR", "Indoor location", "Interior location",         8), \
+                 ("CHARACTER", "Character", "Character armature and skin", 9), \
+                 ("CAMERA", "Camera", "A camera that can be used in game", 10),
+                 ("TRANSFORM", "Transform", "A simple transorm",           11)])
                          
 def unregister():
     del bpy.types.Object.punk_entity_type

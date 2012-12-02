@@ -1,287 +1,103 @@
-﻿/*
-File: BoundingBox.cpp
-Author: Abramaŭ Mikałaj and a guy who wrote that amazing clip functions
-Description: Bounding box emplementation
-*/
+﻿#include <ostream>
+#include <istream>
 
 #include "../system/logger.h"
 #include "bounding_box.h"
-#include "line3d.h"
+#include "mat3.h"
 #include "helper.h"
-#include <algorithm>
-#include <limits>
 
 namespace Math
 {
-	bool ClipSegment(float min, float max, float a, float b, float d, float* t0, float* t1)
+	bool BoundingBox::Save(std::ostream& stream) const
 	{
-		if (fabs(d) < std::numeric_limits<float>().epsilon())
-		{
-			if (d > 0.0f)
-			{
-				return !(b < min || a > max);
-			}
-			else
-			{
-				return !(a < min || b > max);
-			}
-		}
-
-		float u0, u1;
-
-		u0 = (min - a) / (d);
-		u1 = (max - a) / (d);
-
-		if (u0 > u1)
-		{
-			float temp = u0;
-			u0 = u1;
-			u1 = temp;
-		}
-
-		if (u1 < *t0 || u0 > *t1)
-		{
-			return false;
-		}
-
-		*t0 = Max(u0, *t0);
-		*t1 = Max(u1, *t1);
-
-		if (*t1 < *t0)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	bool ClipSegment3D(const vec3& A, const vec3& B, const vec3& min, const vec3& max)
-	{
-		float t0 = 0.0f, t1 = 1.0f;
-//		float S[3] = {A[0], A[1], A[2]};
-		float D[3] = {B[0]-A[0], B[1]-A[1], B[2]-A[2]};
-
-		if (!ClipSegment(min[0], max[0], A[0], B[0], D[0], &t0, &t1))
-		{
-			return false;
-		}
-
-		if (!ClipSegment(min[1], max[1], A[1], B[1], D[1], &t0, &t1))
-		{
-			return false;
-		}
-
-		if (!ClipSegment(
-			min[2], max[2], A[2], B[2], D[2], &t0, &t1))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	bool ClipSegment2D(const vec2& A, const vec2& B, const vec2& min, const vec2& max)
-	{
-		float t0 = 0.0f, t1 = 1.0f;
-//		float S[2] = {A[0], A[1]};
-		float D[2] = {B[0]-A[0], B[1]-A[1]};
-
-		if (!ClipSegment(min[0], max[0], A[0], B[0], D[0], &t0, &t1))
-		{
-			return false;
-		}
-
-		if (!ClipSegment(min[1], max[1], A[1], B[1], D[1], &t0, &t1))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	void BoundingBox::Create(const float* data, unsigned offset, int count)
-	{
-		unsigned off = offset/sizeof(float);
-		m_min[0] = m_max[0] = data[0];
-		m_min[1] = m_max[1] = data[1];
-		m_min[2] = m_max[2] = data[2];
-		for (int i = 0; i < count; i ++)
-		{
-			if (m_min[0] > *(data + i*off + 0))
-				m_min[0] = *(data + i*off + 0);
-			if (m_min[1] > *(data + i*off + 1))
-				m_min[1] = *(data + i*off + 1);
-			if (m_min[2] > *(data + i*off + 2))
-				m_min[2] = *(data + i*off + 2);
-			if (m_max[0] < *(data + i*off + 0))
-				m_max[0] = *(data + i*off + 0);
-			if (m_max[1] < *(data + i*off + 1))
-				m_max[1] = *(data + i*off + 1);
-			if (m_max[2] < *(data + i*off + 2))
-				m_max[2] = *(data + i*off + 2);
-		}
-	}
-
-	BoundingBox Merge(const BoundingBox* b1, const BoundingBox* b2)
-	{
-		BoundingBox res;
-		res.m_min[0] = b1->m_min[0] < b2->m_min[0] ? b1->m_min[0] : b2->m_min[0];
-		res.m_min[1] = b1->m_min[1] < b2->m_min[1] ? b1->m_min[1] : b2->m_min[1];
-		res.m_min[2] = b1->m_min[2] < b2->m_min[2] ? b1->m_min[2] : b2->m_min[2];
-
-		res.m_max[0] = b1->m_max[0] > b2->m_max[0] ? b1->m_max[0] : b2->m_max[0];
-		res.m_max[1] = b1->m_max[1] > b2->m_max[1] ? b1->m_max[1] : b2->m_max[1];
-		res.m_max[2] = b1->m_max[2] > b2->m_max[2] ? b1->m_max[2] : b2->m_max[2];
-
-		return res;
-	}
-
-	bool BoundingBox::IsPointIn(const float* p) const
-	{
-		if (p[0] >= m_min[0] && p[0] <= m_max[0] &&
-			p[1] >= m_min[1] && p[1] <= m_max[1] &&
-			p[2] >= m_min[2] && p[2] <= m_max[2])
-			return true;
-		return false;
-	}
-
-	const vec3& BoundingBox::MinPoint() const
-	{
-		return m_min;
-	}
-
-	const vec3& BoundingBox::MaxPoint() const
-	{
-		return m_max;
-	}
-
-	vec3& BoundingBox::MinPoint() 
-	{
-		return m_min;
-	}
-
-	vec3& BoundingBox::MaxPoint()
-	{
-		return m_max;
-	}
-
-	const vec3* BoundingBox::TransformedPoints() const
-	{
-		return m_transformed_points;
-	}
-
-	const BoundingBox& BoundingBox::Transform(const Math::mat4& transform, Math::vec3& min, Math::vec3& max) const
-	{
-		m_transformed_points[0] = (transform * vec4(m_min[0], m_min[1], m_min[2], 1)).XYZ();	
-		min = max = m_transformed_points[0];
-
-		m_transformed_points[1] = (transform * vec4(m_min[0], m_min[1], m_max[2], 1)).XYZ();
-
-		min[0] = Min(min[0], m_transformed_points[1][0]); min[1] = Min(min[1], m_transformed_points[1][1]); min[2] = Min(min[2], m_transformed_points[1][2]);
-		max[0] = Max(max[0], m_transformed_points[1][0]); max[1] = Max(max[1], m_transformed_points[1][1]); max[2] = Max(max[2], m_transformed_points[1][2]);
-
-		m_transformed_points[2] = (transform * vec4(m_min[0], m_max[1], m_min[2], 1)).XYZ();
-		min[0] = Min(min[0], m_transformed_points[2][0]); min[1] = Min(min[1], m_transformed_points[2][1]); min[2] = Min(min[2], m_transformed_points[2][2]);
-		max[0] = Max(max[0], m_transformed_points[2][0]); max[1] = Max(max[1], m_transformed_points[2][1]); max[2] = Max(max[2], m_transformed_points[2][2]);
-		m_transformed_points[3] = (transform * vec4(m_min[0], m_max[1], m_max[2], 1)).XYZ();
-		min[0] = Min(min[0], m_transformed_points[3][0]); min[1] = Min(min[1], m_transformed_points[3][1]); min[2] = Min(min[2], m_transformed_points[3][2]);
-		max[0] = Max(max[0], m_transformed_points[3][0]); max[1] = Max(max[1], m_transformed_points[3][1]); max[2] = Max(max[2], m_transformed_points[3][2]);
-		m_transformed_points[4] = (transform * vec4(m_max[0], m_min[1], m_min[2], 1)).XYZ();
-		min[0] = Min(min[0], m_transformed_points[4][0]); min[1] = Min(min[1], m_transformed_points[4][1]); min[2] = Min(min[2], m_transformed_points[4][2]);
-		max[0] = Max(max[0], m_transformed_points[4][0]); max[1] = Max(max[1], m_transformed_points[4][1]); max[2] = Max(max[2], m_transformed_points[4][2]);
-		m_transformed_points[5] = (transform * vec4(m_max[0], m_min[1], m_max[2], 1)).XYZ();
-		min[0] = Min(min[0], m_transformed_points[5][0]); min[1] = Min(min[1], m_transformed_points[5][1]); min[2] = Min(min[2], m_transformed_points[5][2]);
-		max[0] = Max(max[0], m_transformed_points[5][0]); max[1] = Max(max[1], m_transformed_points[5][1]); max[2] = Max(max[2], m_transformed_points[5][2]);
-		m_transformed_points[6] = (transform * vec4(m_max[0], m_max[1], m_min[2], 1)).XYZ();
-		min[0] = Min(min[0], m_transformed_points[6][0]); min[1] = Min(min[1], m_transformed_points[6][1]); min[2] = Min(min[2], m_transformed_points[6][2]);
-		max[0] = Max(max[0], m_transformed_points[6][0]); max[1] = Max(max[1], m_transformed_points[6][1]); max[2] = Max(max[2], m_transformed_points[6][2]);
-		m_transformed_points[7] = (transform * vec4(m_max[0], m_max[1], m_max[2], 1)).XYZ();
-		min[0] = Min(min[0], m_transformed_points[7][0]); min[1] = Min(min[1], m_transformed_points[7][1]); min[2] = Min(min[2], m_transformed_points[7][2]);
-		max[0] = Max(max[0], m_transformed_points[7][0]); max[1] = Max(max[1], m_transformed_points[7][1]); max[2] = Max(max[2], m_transformed_points[7][2]);
-		return *this;
-	}
-
-	const BoundingBox& BoundingBox::Transform(const Math::mat4& transform) const
-	{
-		Math::vec3 p1, p2;
-		return Transform(transform, p1, p2);
-	}
-
-	vec3& BoundingBox::operator [] (int index)
-	{
-		return m_border_points[index];
-	}
-
-	const vec3& BoundingBox::operator [] (int index) const
-	{
-		return m_border_points[index];
-	}
-
-	bool BoundingBox::DoCrossLine(const Line3D& line) const
-	{
-		if (!ClipSegment3D(line.GetOrigin(), line.GetDestination(), m_min, m_max))
-			return false;
-		else
-			return true;
-	}
-
-	bool BoundingBox::Save(std::ostream& stream)
-	{
-		stream.write((char*)&m_transformed_points, sizeof(m_transformed_points));
-		stream.write((char*)&m_border_points, sizeof(m_border_points));
-		stream.write((char*)&m_min, sizeof(m_min));
-		stream.write((char*)&m_max, sizeof(m_max));
+		m_center_of_mass.Save(stream);
+		m_center.Save(stream);
+		m_r.Save(stream);
+		m_s.Save(stream);
+		m_t.Save(stream);
+		for (int i = 0; i < 6; ++i)
+			m_plane[i].Save(stream);
 		return true;
 	}
 
 	bool BoundingBox::Load(std::istream& stream)
 	{
-		stream.read((char*)&m_transformed_points, sizeof(m_transformed_points));
-		stream.read((char*)&m_border_points, sizeof(m_border_points));
-		stream.read((char*)&m_min, sizeof(m_min));
-		stream.read((char*)&m_max, sizeof(m_max));
+		m_center_of_mass.Load(stream);
+		m_center.Load(stream);
+		m_r.Load(stream);
+		m_s.Load(stream);
+		m_t.Load(stream);
+		for (int i = 0; i < 6; ++i)
+			m_plane[i].Load(stream);
 		return true;
 	}
 
-	bool BoundingBox::DoCrossTriangle(const vec3& pp1, const vec3& pp2, const vec3& pp3) const
+	bool BoundingBox::Create(const float* vertex, int count, unsigned vertex_size)
 	{
-		if (pp1[0] > m_max[0] && pp2[0] > m_max[0] && pp3[0] > m_max[0])
-			return false;
-		if (pp1[0] < m_min[0] && pp2[0] < m_min[0] && pp3[0] < m_min[0])
-			return false;
-		if (pp1[1] > m_max[1] && pp2[1] > m_max[1] && pp3[1] > m_max[1])
-			return false;
-		if (pp1[1] < m_min[1] && pp2[1] < m_min[1] && pp3[1] < m_min[1])
-			return false;
-		if (pp1[2] > m_max[2] && pp2[2] > m_max[2] && pp3[2] > m_max[2])
-			return false;
-		if (pp1[2] < m_min[2] && pp2[2] < m_min[2] && pp3[2] < m_min[2])
-			return false;
-		//
-		//  the simpliest test
-		//
-		if (IsPointIn(pp1) ||
-			IsPointIn(pp2) ||
-			IsPointIn(pp3))
-			return true;
+		//	check input data
+		if (vertex == nullptr || count == 0 || vertex_size == 0)
+			return (out_error() << "Bad arguments" << std::endl, false);
+		
+		//	find average of the vertices
+		m_center_of_mass = CalculateAverage(vertex, count, vertex_size);
 
-		if (ClipSegment3D(pp1, pp2, m_min, m_max))
-			return true;
-		if (ClipSegment3D(pp2, pp3, m_min, m_max))
-			return true;
-		if (ClipSegment3D(pp3, pp1, m_min, m_max))
-			return true;
+		if (!CalculateNativeAxis(vertex, count, vertex_size, m_r, m_s, m_t))
+			return (out_error() << "Can't create bounding box" << std::endl, false);
 
-		return false;
-	}
+		//	find plane distances
+		float d[6];
 
-	std::wostream& BoundingBox::out_formatted(std::wostream& stream)
-	{
-		stream << Tab() << typeid(*this).name() << std::endl;
-		Tab::Inc();
-		stream << Tab() << "Min: " << m_min.ToString().Data() << std::endl;
-		stream << Tab() << "Max: " << m_max.ToString().Data() << std::endl;		
-		stream << Tab::Dec() << typeid(*this).name();
-		return stream;
+		//	init distances with appropriate values
+		const vec3 v(vertex[0], vertex[1], vertex[2]);
+		d[0] = v.Dot(m_r);
+		d[1] = v.Dot(m_r);
+		
+		d[2] = v.Dot(m_s);
+		d[3] = v.Dot(m_s);
+
+		d[4] = v.Dot(m_t);
+		d[5] = v.Dot(m_t);
+		
+		for (int i = 0; i < count; ++i)
+		{
+			const vec3 v(vertex[i*(vertex_size/sizeof(float)) + 0], vertex[i*(vertex_size/sizeof(float)) + 1], vertex[i*(vertex_size/sizeof(float)) + 2]);
+			
+			float r = m_r.Dot(v);
+			if (d[0] > r)
+				d[0] = r;
+			if (d[1] < r)
+				d[1] = r;
+
+			float s = m_s.Dot(v);
+			if (d[2] > r)
+				d[2] = r;
+			if (d[3] < r)
+				d[3] = r;
+
+			float t = m_t.Dot(v);
+			if (d[4] > r)
+				d[4] = r;
+			if (d[5] < r)
+				d[5] = r;
+		}
+
+		//	find natural planes
+		m_plane[0].Set(m_r, -d[0]);
+		m_plane[1].Set(-m_r, d[1]);
+		m_plane[2].Set(m_s, -d[2]);
+		m_plane[3].Set(-m_s, d[3]);
+		m_plane[4].Set(m_t, -d[4]);
+		m_plane[5].Set(-m_t, d[5]);
+
+		//	find bbox center
+		{
+			float a = -(d[0] + d[1]) / 2.0f;
+			float b = -(d[2] + d[3]) / 2.0f;
+			float c = -(d[4] + d[5]) / 2.0f;
+
+			m_center = a*m_r + b*m_s + c*m_t;
+		}
+
+		return true;
 	}
 }

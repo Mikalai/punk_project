@@ -16,13 +16,15 @@ namespace OpenGL
 		enum { VertexType = Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_BITANGENT|Utility::COMPONENT_TANGENT|Utility::COMPONENT_TEXTURE };
 	public:
 		
-		virtual bool Save(std::ostream& stream);
+		StaticMesh();
+
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
 		bool Cook(Utility::MeshDesc* desc);		
 
-		static StaticMesh* CreateFromFile(const System::string& path);
-		static StaticMesh* CreateFromStream(std::istream& stream);
+		static System::Proxy<StaticMesh> CreateFromFile(const System::string& path);
+		static System::Proxy<StaticMesh> CreateFromStream(std::istream& stream);
 
 	protected:				
 	};

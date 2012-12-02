@@ -48,7 +48,7 @@ namespace Math
 		T C = c[0] / c[3];
 
 		T p = B / T(3.0) - A*A / T(9.0);
-		T q = A*A*A/T(27.0) - A*B/6.0 + C/T(2.0);
+		T q = A*A*A/T(27) - A*B/T(6) + C/T(2.0);
 
 		T D = q*q + p*p*p;
 
@@ -56,11 +56,11 @@ namespace Math
 		{
 			T cos_phy = - q / sqrt(-(p*p*p));
 			T phy = acos(cos_phy);
-			out[0] = 2 * sqrt(-p)*cos(phy/3);
-			out[1] = -2.0*sqrt(-p)*cos((phy+T(3.141519265358979323846))/T(3.0));
+			out[0] = T(2) * sqrt(-p)*cos(phy/T(3));
+			out[1] = -T(2) *sqrt(-p)*cos((phy+T(3.141519265358979323846))/T(3.0));
 
-			out[0] = out[0] - A/T(3.0);
-			out[1] = out[1] - A/T(3.0);
+			out[0] = out[0] - A / T(3);
+			out[1] = out[1] - A / T(3);
 			out[2] = out[1];
 			return RootFindResult::RESULT_TWO_SOLUTIONS;		
 		}
@@ -69,10 +69,10 @@ namespace Math
 		{
 			T qq, s;
 			qq = -q+sqrt(D);
-			s = (qq >= 0) ? 1 : -1;
+			s = (qq >= 0) ? T(1) : -T(1);
 			T u = s*pow(fabs(qq), T(1.0/3.0));
 			qq = -q-sqrt(D);
-			s = (qq >= 0) ? 1 : -1;
+			s = (qq >= 0) ? T(1) : -T(1);
 			T v = s*pow(fabs(qq), T(1.0/3.0));
 			out[0] = u + v;
 			out[0] = out[0] - A/T(3.0);
@@ -87,15 +87,17 @@ namespace Math
 		{
 			T cos_phy = - q / sqrt(-(p*p*p));
 			T phy = acos(cos_phy);
-			out[0] = 2 * sqrt(-p)*cos(phy/3);
-			out[1] = -2*sqrt(-p)*cos((phy+T(3.141519265358979323846)/3.0));
-			out[2] = -2*sqrt(-p)*cos((phy-T(3.141519265358979323846)/3.0));
+			out[0] = 2 * sqrt(-p)*cos(phy/T(3));
+			out[1] = -2*sqrt(-p)*cos((phy/T(3)+T(3.141519265358979323846)/T(3) ));
+			out[2] = -2*sqrt(-p)*cos((phy/T(3)-T(3.141519265358979323846)/T(3) ));
 
 			out[0] = out[0] - A/T(3.0);
 			out[1] = out[1] - A/T(3.0);
 			out[2] = out[2] - A/T(3.0);
 			return RootFindResult::RESULT_THREE_SOLUTIONS;
 		}
+
+		return RootFindResult::RESULT_NO_SOLUTION;
 	}
 
 	template<class T>

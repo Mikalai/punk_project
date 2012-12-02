@@ -40,7 +40,7 @@ namespace Virtual
 
 		void PrintDebug(Bone* parent, int level = 0);
 
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual ~Armature();
 

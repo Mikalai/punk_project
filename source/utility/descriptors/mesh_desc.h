@@ -29,7 +29,7 @@ namespace Utility
 		TextureMeshes m_tex_coords;
 		std::vector<System::string> m_material_ref;
 
-		bool Save(std::ostream& stream);
+		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 
 		std::wostream& out_formatted(std::wostream& stream);

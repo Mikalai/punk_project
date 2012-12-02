@@ -111,7 +111,7 @@ namespace Virtual
 		m_options[track_name].m_loop = flag;
 	}
 
-	bool ArmatureAnimationMixer::Save(std::ostream& stream)
+	bool ArmatureAnimationMixer::Save(std::ostream& stream) const
 	{
 		return false;
 	}

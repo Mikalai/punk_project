@@ -1,12 +1,14 @@
 #ifndef _H_MAT4X4_MATH
 #define _H_MAT4X4_MATH
 
-#include "../system/logger.h"
 #include <stdio.h>
 #include <ostream>
 #include <istream>
 #include <cmath>
+
 #include "../config.h"
+#include "../system/logger.h"
+
 #include "mat3.h"
 #include "vec4.h"
 #include "vec3.h"
@@ -293,12 +295,12 @@ namespace Math
 
 		/*operator T*()
 		{
-			return m;
+		return m;
 		}
 
 		operator const T* ()
 		{
-			return m;
+		return m;
 		}*/
 
 		//  inverse
@@ -609,7 +611,7 @@ namespace Math
 				m[0], m[4], m[8], m[12], m[1], m[5], m[9], m[13], m[2], m[6], m[10], m[14], m[3], m[7], m[11], m[15]);
 		}
 
-		bool Save(std::ostream& stream)
+		bool Save(std::ostream& stream) const
 		{
 			stream.write(reinterpret_cast<const char*>(m), sizeof(m));
 			return true;
@@ -685,6 +687,12 @@ namespace Math
 	}
 
 	template<class T>
+	static Vector3<T> operator * (const Matrix4x4<T>& m, const Vector3<T>& v)
+	{
+		return (m * Vector4<T>(v[0], v[1], v[2], T(1))).XYZ();
+	}
+
+	template<class T>
 	const Matrix4x4<T> operator * (const Matrix4x4<T>& m, const T& v)
 	{
 		Math::Matrix4x4<T> res;
@@ -721,7 +729,7 @@ namespace Math
 		return stream;
 	}
 
-	
+
 	class PUNK_ENGINE mat4 : public Matrix4x4<float>
 	{
 	public:

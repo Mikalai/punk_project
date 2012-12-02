@@ -1,5 +1,5 @@
 ﻿#include "oct_tree.h"
-#include "bounding_box.h"
+#include "aabb.h"
 #include "line3d.h"
 
 #include <istream>
@@ -173,7 +173,7 @@ namespace Math
 		return FaceList();
 	}
 
-	bool OctTree::Save(std::ostream& stream)
+	bool OctTree::Save(std::ostream& stream) const
 	{
 		stream.write((char*)&m_cur_depth, sizeof(m_cur_depth));		
 		m_bbox.Save(stream);

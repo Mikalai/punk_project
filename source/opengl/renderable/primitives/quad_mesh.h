@@ -10,6 +10,8 @@ namespace OpenGL
 		enum { PrimitiveType = GL_TRIANGLES };
 		enum { VertexType = Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TEXTURE };
 	public:
+		QuadObject();
+
 		void Cook(float width, float height);
 	};
 }

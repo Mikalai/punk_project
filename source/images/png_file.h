@@ -11,8 +11,8 @@ namespace ImageModule
 	public:
 		PngFile();
 
-		virtual bool Load(const wchar_t* file);
-		virtual bool Save(const wchar_t* file);
+		virtual bool Save(const wchar_t* file) const;
+		virtual bool Load(const wchar_t* file);		
 
 	};
 }

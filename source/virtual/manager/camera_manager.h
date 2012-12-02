@@ -3,34 +3,38 @@
 
 #include "../../system/resource_manager_2.h"
 #include "../../system/environment.h"
+#include "../data/cameras/fps_camera.h"
 
 namespace Virtual
 {		
-	class Camera;
+	namespace Cameras
+	{
+		class FirstPersonCamera;
+	}
 }
 
 namespace System
 {
-	template<> class PUNK_ENGINE Policy<Virtual::Camera>
+	template<> class PUNK_ENGINE Policy<Virtual::Cameras::FirstPersonCamera>
 	{
 	public:
 		static const System::string GetResourceFile() { return L"resource"; }
-		static const System::string GetExtension() { return L"*.camera"; }
+		static const System::string GetExtension() { return L"*.fps_camera"; }
 		static const System::string GetFolder() { return System::Environment::Instance()->GetSoundFolder(); }	
-		static const int GetResourceType() { return System::PERMANENT_RESOURCE_AUDIO_BUFFER; }
-		static void OnInit();
-		static void OnDestroy();
+		static System::ObjectType GetResourceType() { return System::ObjectType::FPS_CAMERA; }
+		static void OnInit() {}
+		static void OnDestroy() {}
 	};
 }
 
 namespace Virtual
 {
-	class PUNK_ENGINE CameraManager : public System::ResourceManager2<Camera, System::Policy>
+	class PUNK_ENGINE FirstPersonCameraManager : public System::ResourceManager2<Cameras::FirstPersonCamera, System::Policy>
 	{
-		CameraManager(const CameraManager&);
-		CameraManager& operator = (const CameraManager&);		
+		FirstPersonCameraManager(const FirstPersonCameraManager&);
+		FirstPersonCameraManager& operator = (const FirstPersonCameraManager&);		
 	public:
-		CameraManager();
+		FirstPersonCameraManager() {}
 	};
 }
 

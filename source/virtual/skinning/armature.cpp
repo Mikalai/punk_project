@@ -131,7 +131,7 @@ namespace Virtual
 
 	}
 
-	bool Armature::Save(std::ostream& stream)
+	bool Armature::Save(std::ostream& stream) const
 	{
 		m_name.Save(stream);
 		int count = m_root_bones.size();

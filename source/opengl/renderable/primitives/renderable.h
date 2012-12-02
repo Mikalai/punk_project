@@ -3,7 +3,7 @@
 
 #include "../../../config.h"
 #include "../../../system/logger.h"
-//#include "../../../system/object.h"
+#include "../../../system/smart_pointers/proxy.h"
 #include "../../../utility/model/vertex_component.h"
 
 namespace OpenGL
@@ -11,6 +11,10 @@ namespace OpenGL
 	class PUNK_ENGINE Renderable 
 	{
 	public:
+
+		Renderable();
+
+		virtual ~Renderable() {}
 
 		virtual void Bind(Utility::VertexAttributes supported_by_context)
 		{
@@ -27,9 +31,16 @@ namespace OpenGL
 			out_warning() << "Load() not implemented" << std::endl;
 		}
 
-		virtual ~Renderable()
-		{
-		}
+		virtual bool Save(std::ostream& stream) const;
+
+		virtual bool Load(std::istream& stream);
+
+		static System::Proxy<Renderable> CreateFromStream(std::istream& stream);
+		static System::Proxy<Renderable> CreateFromFile(const System::string& path);
+
+	protected:
+
+		int m_primitive_type;
 	};
 }
 

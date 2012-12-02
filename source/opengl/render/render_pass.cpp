@@ -1,5 +1,6 @@
 #include "render_pass.h"
 #include "render_target.h"
+#include "render_state.h"
 #include "../textures/texture_context.h"
 
 namespace OpenGL
@@ -14,59 +15,37 @@ namespace OpenGL
 		m_render_target->Activate();
 		for (auto it = m_batches.begin(); it != m_batches.end(); ++it)
 		{
-			TextureContext* textures = it->first;
-			//if (textures)
-			//	textures->Bind();
-
-			for (auto renders = it->second.begin(); renders != it->second.end(); ++renders)
+			Batch* batch = *it;					
+			if (batch->m_state->m_tc.IsValid())
 			{
-				for (auto batch_it = renders->second.begin(); batch_it != renders->second.end(); ++batch_it)
-				{				
-					Batch* batch = *batch_it;
-					int slot = 0;
-					if (textures)
-					{
-						for each (const auto texture in batch->m_textures)
-						{
-							textures->SetTexture(slot, texture);
-							slot++;
-						}
-						textures->Bind();
-					}
-
-					DummyRenderPolicy* cur_policy = renders->first;
-					cur_policy->Begin();
-					cur_policy->BindParameters(*(batch->m_parameters));
-					batch->m_renderable->Bind(cur_policy->GetRequiredAttributesSet());
-					batch->m_renderable->Render();
-					batch->m_renderable->Unbind();
-				}
+				batch->m_state->m_tc->Bind();
 			}
 
-			if (textures)
-				textures->Unbind();
+			auto cur_policy = batch->m_state->m_render_policy;
+			cur_policy->Begin();
+			cur_policy->BindParameters(batch->m_state);
+			batch->m_renderable->Bind(cur_policy->GetRequiredAttributesSet());
+			batch->m_renderable->Render();
+			batch->m_renderable->Unbind();
+
+			if (batch->m_state->m_tc.IsValid())
+			{
+				batch->m_state->m_tc->Unbind();
+			}
 		}
 		m_render_target->Deactivate();
 	}
 
-	void RenderPass::AddBatch(TextureContext* textures, DummyRenderPolicy* policy, Batch* batch)
+	void RenderPass::AddBatch(Batch* batch)
 	{
-		m_batches[textures][policy].push_back(batch);
+		m_batches.push_back(batch);
 	}
 
 	RenderPass::~RenderPass()
 	{
 		for (auto it = m_batches.begin(); it != m_batches.end(); ++it)
 		{
-			for (auto renders = it->second.begin(); renders != it->second.end(); ++renders)
-			{
-				for (auto batch_it = renders->second.begin(); batch_it != renders->second.end(); ++batch_it)
-				{				
-					Batch* batch = *batch_it;
-					delete batch;
-				}
-			}
-			delete it->first;
+			delete *it;
 		}
 	}
 }

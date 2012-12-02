@@ -5,7 +5,7 @@
 
 namespace Utility
 {
-	bool Sound::Save(std::ostream& stream)
+	bool Sound::Save(std::ostream& stream) const
 	{
 		m_name.Save(stream);
 		m_filename.Save(stream);

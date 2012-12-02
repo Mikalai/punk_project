@@ -2,12 +2,15 @@
 #define _H_PUNK_OPENGL_SHADER_POLICY
 
 #include <iostream>
+#include "../render/render_state.h"
+#include "../../system/smart_pointers/proxy.h"
 #include "dummy_render_context_policy.h"
 #include "shaders/shaders.h"
 #include "../extensions.h"
 #include "../../math/mat4.h"
 #include "../../math/vec4.h"
 #include "../../system/poolable.h"
+#include "../../virtual/data/data.h"
 
 namespace OpenGL
 {
@@ -19,20 +22,11 @@ namespace OpenGL
 	/**********************************************************************************************/
 	/*			POSITION TEXTURE 3D
 	/**********************************************************************************************/
-	template<> class RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader> : public DummyRenderPolicy
+	template<> class RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader> : public AbstractRenderPolicy
 	{	
 		unsigned uProjViewWorld;
 		unsigned uDiffuseColor;
 		unsigned uDiffuseMap;
-
-	public:
-
-		struct PUNK_ENGINE PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
-		{
-			Math::mat4 m_proj_view_world;
-			Math::vec4 m_diffuse_color;
-			int m_diffuse_texture;
-		};
 
 	public:
 
@@ -51,7 +45,7 @@ namespace OpenGL
 		{
 			if (m_was_modified || !m_program)
 			{
-				DummyRenderPolicy::Init();
+				AbstractRenderPolicy::Init();
 				InitUniforms();
 			}
 		}
@@ -63,12 +57,13 @@ namespace OpenGL
 			uDiffuseMap = GetUniformLocation("uDiffuseMap");
 		}
 
-		virtual void BindParameters(const DummyParameters& pparams)
-		{			
-			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			SetUniformMatrix4f(uProjViewWorld, &(params.m_proj_view_world[0]));
-			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
-			SetUniformInt(uDiffuseMap, params.m_diffuse_texture);
+		virtual void BindParameters(const System::Proxy<State>& params)
+		{						
+			const State* state = params.Get();
+			const Math::mat4 proj_view_world = params->m_camera->GetProjectionMatrix() * params->m_camera->GetViewMatrix() * params->m_local;
+			SetUniformMatrix4f(uProjViewWorld, &(proj_view_world[0]));
+			SetUniformVector4f(uDiffuseColor, &(state->m_current_material->GetDiffuseColor())[0]);
+			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
 		}
 		
 		virtual Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -90,30 +85,22 @@ namespace OpenGL
 			*/
 
 			Init();
-			DummyRenderPolicy::Begin();
+			AbstractRenderPolicy::Begin();
 		}
 
 		virtual void End()
 		{
-			DummyRenderPolicy::End();			
+			AbstractRenderPolicy::End();			
 		}		
 	};
 
 	/**********************************************************************************************/
 	/*			POSITION SOLID 3D
 	/**********************************************************************************************/
-	template<> class RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader> : public DummyRenderPolicy
+	template<> class RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader> : public AbstractRenderPolicy
 	{	
 		unsigned uProjViewWorld;
 		unsigned uDiffuseColor;
-
-	public:
-
-		struct PUNK_ENGINE PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
-		{
-			Math::mat4 m_proj_view_world;
-			Math::vec4 m_diffuse_color;
-		};
 
 	public:
 
@@ -132,7 +119,7 @@ namespace OpenGL
 		{
 			if (m_was_modified || !m_program)
 			{
-				DummyRenderPolicy::Init();
+				AbstractRenderPolicy::Init();
 				InitUniforms();
 			}
 		}
@@ -143,11 +130,11 @@ namespace OpenGL
 			uDiffuseColor = GetUniformLocation("uDiffuseColor");
 		}
 
-		virtual void BindParameters(const DummyParameters& pparams)
+		virtual void BindParameters(const System::Proxy<State>& params)
 		{			
-			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			SetUniformMatrix4f(uProjViewWorld, &(params.m_proj_view_world[0]));
-			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
+			const Math::mat4 proj_view_world = params->m_camera->GetProjectionMatrix() * params->m_camera->GetViewMatrix() * params->m_local;
+			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
+			SetUniformVector4f(uDiffuseColor, &(params->m_current_material->GetDiffuseColor())[0]);
 		}
 		
 		virtual Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -158,19 +145,19 @@ namespace OpenGL
 		virtual void Begin()
 		{
 			Init();
-			DummyRenderPolicy::Begin();
+			AbstractRenderPolicy::Begin();
 		}
 
 		virtual void End()
 		{
-			DummyRenderPolicy::End();			
+			AbstractRenderPolicy::End();			
 		}		
 	};
 
 	/**********************************************************************************************/
 	/*			BUMP MAPPING 3D
 	/**********************************************************************************************/
-	template<> class RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader> : public DummyRenderPolicy
+	template<> class RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader> : public AbstractRenderPolicy
 	{	
 		unsigned uWorld;
 		unsigned uView;
@@ -186,23 +173,6 @@ namespace OpenGL
 
 	public:
 
-		struct PUNK_ENGINE PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
-		{
-			Math::mat4 m_world;
-			Math::mat4 m_view;
-			Math::mat4 m_proj;
-			Math::mat3 m_normal_matrix;
-			Math::vec3 m_light_position;
-			Math::vec4 m_ambient;
-			Math::vec4 m_specular;
-			Math::vec4 m_diffuse;
-			float m_specular_power;
-			int m_diffuse_texture;
-			int m_normal_texture;
-		};
-
-	public:
-
 		RenderContextPolicy()
 		{
 			m_vertex_shader.reset(new VertexShaderBump);
@@ -214,7 +184,7 @@ namespace OpenGL
 		{
 			if (m_was_modified || !m_program)
 			{
-				DummyRenderPolicy::Init();
+				AbstractRenderPolicy::Init();
 				InitUniforms();
 			}			
 		}
@@ -234,20 +204,21 @@ namespace OpenGL
 			uNormalMap = GetUniformLocation("uNormalMap");
 		}
 
-		void BindParameters(const DummyParameters& pparams)
-		{						
-			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			SetUniformMatrix4f(uWorld, &params.m_world[0]);
-			SetUniformMatrix4f(uView, &params.m_view[0]);
-			SetUniformMatrix4f(uProj, &params.m_proj[0]);
-			SetUniformMatrix3f(uNormalMatrix, &params.m_normal_matrix[0]);
-			SetUniformVector3f(uLightPosition, &params.m_light_position[0]);
-			SetUniformVector4f(uAmbient, &params.m_ambient[0]);
-			SetUniformVector4f(uSpecular, &params.m_specular[0]);
-			SetUniformVector4f(uDiffuse, &params.m_diffuse[0]);
-			SetUniformFloat(uSpecularPower, params.m_specular_power);
-			SetUniformInt(uDiffuseMap, params.m_diffuse_texture);
-			SetUniformInt(uNormalMap, params.m_normal_texture);			
+		void BindParameters(const System::Proxy<State>& pparams)
+		{									
+			const State* state = pparams.Get();
+			Math::mat3 normal_matrix = (state->m_camera->GetViewMatrix() * state->m_local).Inversed().Transposed().RotationPart();
+			SetUniformMatrix4f(uWorld, &state->m_local[0]);
+			SetUniformMatrix4f(uView, &state->m_camera->GetViewMatrix()[0]);
+			SetUniformMatrix4f(uProj, &state->m_camera->GetProjectionMatrix()[0]);
+			SetUniformMatrix3f(uNormalMatrix, &normal_matrix[0]);
+			SetUniformVector3f(uLightPosition, &state->m_current_light_set->GetLight(0)->GetPosition()[0]);
+			SetUniformVector4f(uAmbient, &(Math::vec4(state->m_current_material->GetAmbient()))[0]);
+			SetUniformVector4f(uSpecular, &state->m_current_material->GetSpecularColor()[0]);
+			SetUniformVector4f(uDiffuse, &state->m_current_material->GetDiffuseColor()[0]);
+			SetUniformFloat(uSpecularPower, state->m_current_material->GetSpecularIntensity());
+			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
+			SetUniformInt(uNormalMap, state->m_normal_slot);			
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -258,7 +229,7 @@ namespace OpenGL
 		virtual void Begin()
 		{
 			Init();
-			DummyRenderPolicy::Begin();
+			AbstractRenderPolicy::Begin();
 
 			glEnable(GL_DEPTH_TEST);
 			CHECK_GL_ERROR(L"Unable to enable depth test");
@@ -280,7 +251,7 @@ namespace OpenGL
 
 		virtual void End()
 		{
-			DummyRenderPolicy::End();			
+			AbstractRenderPolicy::End();			
 
 			//glEnable(GL_DEPTH_TEST);			
 			//glDepthFunc(GL_LESS);
@@ -293,7 +264,7 @@ namespace OpenGL
 	/**********************************************************************************************/
 	/*			GRASS RENDER 3D
 	/**********************************************************************************************/
-	template<> class RenderContextPolicy<VertexShaderGrass, FragmentShaderGrass, NoShader> : public DummyRenderPolicy
+	template<> class RenderContextPolicy<VertexShaderGrass, FragmentShaderGrass, NoShader> : public AbstractRenderPolicy
 	{	
 		unsigned uProjView;
 		unsigned uHeightMap;
@@ -303,20 +274,6 @@ namespace OpenGL
 		unsigned uWindDirection;
 		unsigned uDiffuseColor;
 		unsigned uDiffuseMap;
-
-	public:
-
-		struct PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
-		{
-			Math::vec3 m_position;
-			Math::mat4 m_proj_view;
-			Math::vec4 m_diffuse_color;
-			Math::vec3 m_wind_direction;
-			float m_time;
-			float m_wind_strength;
-			int m_diffuse_texture;
-			int m_height_map_texture;
-		};
 
 	public:
 
@@ -331,7 +288,7 @@ namespace OpenGL
 		{
 			if (m_was_modified || !m_program)
 			{
-				DummyRenderPolicy::Init();
+				AbstractRenderPolicy::Init();
 				InitUniforms();
 			}
 		}
@@ -348,17 +305,17 @@ namespace OpenGL
 			uDiffuseMap = GetUniformLocation("uDiffuseMap");
 		}
 
-		void BindParameters(const DummyParameters& pparams)
+		void BindParameters(const System::Proxy<State>& pparams)
 		{	
-			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			SetUniformMatrix4f(uProjView, &params.m_proj_view[0]);
-			SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
-			SetUniformVector3f(uPosition, &params.m_position[0]);
-			SetUniformFloat(uTime, params.m_time);
-			SetUniformFloat(uWindStrength, params.m_wind_strength);
-			SetUniformVector3f(uWindDirection, &params.m_wind_direction[0]);
-			SetUniformInt(uDiffuseMap, 0);
-			SetUniformInt(uHeightMap, 1);	
+			//const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
+			//SetUniformMatrix4f(uProjView, &params.m_proj_view[0]);
+			//SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
+			//SetUniformVector3f(uPosition, &params.m_position[0]);
+			//SetUniformFloat(uTime, params.m_time);
+			//SetUniformFloat(uWindStrength, params.m_wind_strength);
+			//SetUniformVector3f(uWindDirection, &params.m_wind_direction[0]);
+			//SetUniformInt(uDiffuseMap, 0);
+			//SetUniformInt(uHeightMap, 1);	
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -369,19 +326,19 @@ namespace OpenGL
 		virtual void Begin()
 		{
 			Init();
-			DummyRenderPolicy::Begin();
+			AbstractRenderPolicy::Begin();
 		}
 
 		virtual void End()
 		{
-			DummyRenderPolicy::End();			
+			AbstractRenderPolicy::End();			
 		}			
 	};
 
 	/**********************************************************************************************/
 	/*			GUI RENDER 2D
 	/**********************************************************************************************/
-	template<> class RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> : public DummyRenderPolicy
+	template<> class RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> : public AbstractRenderPolicy
 	{	
 		unsigned uProjViewWorld;
 		unsigned uDiffuseColor;
@@ -389,18 +346,6 @@ namespace OpenGL
 		unsigned uNoDiffuseTexture;
 		unsigned uDiffuseMap;
 		unsigned uTextMap;
-
-	public:
-
-		struct PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
-		{
-			Math::mat4 m_proj_view_world;
-			Math::vec4 m_diffuse_color;
-			Math::vec4 m_text_color;
-			Math::vec4 m_no_diffuse_texture;
-			int m_diffuse_texture;
-			int m_text_texture;
-		};
 
 	public:
 
@@ -415,7 +360,7 @@ namespace OpenGL
 		{
 			if (m_was_modified || !m_program)
 			{
-				DummyRenderPolicy::Init();
+				AbstractRenderPolicy::Init();
 				InitUniforms();
 			}
 		}
@@ -430,15 +375,15 @@ namespace OpenGL
 			uTextMap = GetUniformLocation("uTextMap");
 		}
 
-		void BindParameters(const DummyParameters& pparams)
+		void BindParameters(const System::Proxy<State>& pparams)
 		{									
-			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
-			SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
-			SetUniformVector4f(uTextColor, &params.m_text_color[0]);
-			SetUniformVector4f(uNoDiffuseTexture, &params.m_no_diffuse_texture[0]);
-			SetUniformInt(uDiffuseMap, params.m_diffuse_texture);
-			SetUniformInt(uTextMap, params.m_text_texture);
+			//const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
+			//SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
+			//SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
+			//SetUniformVector4f(uTextColor, &params.m_text_color[0]);
+			//SetUniformVector4f(uNoDiffuseTexture, &params.m_no_diffuse_texture[0]);
+			//SetUniformInt(uDiffuseMap, params.m_diffuse_texture);
+			//SetUniformInt(uTextMap, params.m_text_texture);
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -449,19 +394,19 @@ namespace OpenGL
 		virtual void Begin()
 		{
 			Init();
-			DummyRenderPolicy::Begin();
+			AbstractRenderPolicy::Begin();
 		}
 
 		virtual void End()
 		{
-			DummyRenderPolicy::End();			
+			AbstractRenderPolicy::End();			
 		}		
 	};
 
 	/**********************************************************************************************/
 	/*			TERRAIN RENDER 3D
 	/**********************************************************************************************/
-	template<> class RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader> : public DummyRenderPolicy
+	template<> class RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader> : public AbstractRenderPolicy
 	{	
 		unsigned uWorld;
 		unsigned uView;
@@ -482,25 +427,25 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
-		{
-			Math::mat4 m_world;
-			Math::mat4 m_view;
-			Math::mat4 m_proj;
-			Math::mat4 m_proj_view_world;
-			Math::mat3 m_normal_tranform;
-			Math::vec4 m_diffuse_color;
-			Math::vec2 m_position;
-			Math::vec3 m_light_position;
-			Math::vec3 m_light_direction;
-			float m_vert_scale;
-			float m_level;
-			unsigned m_i;
-			unsigned m_j;
-			int m_height_map_texture;
-			int m_diffuse_map_1_texture;
-			int m_diffuse_map_2_texture;
-		};
+		//struct PolicyParameters : public AbstractRenderPolicyParameters, public System::Poolable<PolicyParameters>
+		//{
+		//	Math::mat4 m_world;
+		//	Math::mat4 m_view;
+		//	Math::mat4 m_proj;
+		//	Math::mat4 m_proj_view_world;
+		//	Math::mat3 m_normal_tranform;
+		//	Math::vec4 m_diffuse_color;
+		//	Math::vec2 m_position;
+		//	Math::vec3 m_light_position;
+		//	Math::vec3 m_light_direction;
+		//	float m_vert_scale;
+		//	float m_level;
+		//	unsigned m_i;
+		//	unsigned m_j;
+		//	int m_height_map_texture;
+		//	int m_diffuse_map_1_texture;
+		//	int m_diffuse_map_2_texture;
+		//};
 
 	public:
 
@@ -515,7 +460,7 @@ namespace OpenGL
 		{
 			if (m_was_modified || !m_program)
 			{
-				DummyRenderPolicy::Init();
+				AbstractRenderPolicy::Init();
 				InitUniforms();
 			}
 		}
@@ -540,9 +485,9 @@ namespace OpenGL
 			uLightDirection = GetUniformLocation("uLightDirection");
 		}
 
-		void BindParameters(const DummyParameters& pparams)
+		void BindParameters(const System::Proxy<State>& pparams)
 		{										
-			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
+/*			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
 			SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
 			SetUniformMatrix4f(uWorld, &params.m_world[0]);
 			SetUniformMatrix4f(uView, &params.m_view[0]);
@@ -557,7 +502,7 @@ namespace OpenGL
 			SetUniformFloat(uLevel, float(params.m_level));
 			SetUniformInt(ui, params.m_i);
 			SetUniformInt(uj, params.m_j);
-			SetUniformFloat(uScale, params.m_vert_scale);			
+			SetUniformFloat(uScale, params.m_vert_scale);*/			
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -568,12 +513,12 @@ namespace OpenGL
 		virtual void Begin()
 		{
 			Init();
-			DummyRenderPolicy::Begin();
+			AbstractRenderPolicy::Begin();
 		}
 
 		virtual void End()
 		{
-			DummyRenderPolicy::End();			
+			AbstractRenderPolicy::End();			
 		}	
 	};
 
@@ -581,7 +526,7 @@ namespace OpenGL
 	/**********************************************************************************************/
 	/*			SKINNING 3D
 	/**********************************************************************************************/
-	template<> class RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> : public DummyRenderPolicy
+	template<> class RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> : public AbstractRenderPolicy
 	{	
 		static const int MAX_BONES = 64;
 
@@ -604,25 +549,25 @@ namespace OpenGL
 
 	public:
 
-		struct PolicyParameters : public DummyParameters, public System::Poolable<PolicyParameters>
-		{
-			Math::mat4 m_world;
-			Math::mat4 m_view;
-			Math::mat4 m_proj;
-			Math::mat4 m_mesh_matrix;
-			Math::mat4 m_mesh_matrix_inversed;
-			Math::mat3 m_normal_matrix;
-			Math::mat4 m_proj_view_world;
-			Math::mat4 m_view_world;
-			Math::vec3 m_light_position;
-			Math::mat4 m_bone[MAX_BONES];
-			Math::vec4 m_ambient;
-			Math::vec4 m_specular;
-			Math::vec4 m_diffuse;			
-			float m_specular_power;
-			unsigned m_diffuse_texture;
-			unsigned m_normal_texture;
-		};
+		//struct PolicyParameters : public AbstractRenderPolicyParameters, public System::Poolable<PolicyParameters>
+		//{
+		//	Math::mat4 m_world;
+		//	Math::mat4 m_view;
+		//	Math::mat4 m_proj;
+		//	Math::mat4 m_mesh_matrix;
+		//	Math::mat4 m_mesh_matrix_inversed;
+		//	Math::mat3 m_normal_matrix;
+		//	Math::mat4 m_proj_view_world;
+		//	Math::mat4 m_view_world;
+		//	Math::vec3 m_light_position;
+		//	Math::mat4 m_bone[MAX_BONES];
+		//	Math::vec4 m_ambient;
+		//	Math::vec4 m_specular;
+		//	Math::vec4 m_diffuse;			
+		//	float m_specular_power;
+		//	unsigned m_diffuse_texture;
+		//	unsigned m_normal_texture;
+		//};
 
 	public:
 
@@ -637,7 +582,7 @@ namespace OpenGL
 		{
 			if (m_was_modified || !m_program)
 			{
-				DummyRenderPolicy::Init();
+				AbstractRenderPolicy::Init();
 				InitUniforms();
 			}			
 		}
@@ -667,26 +612,26 @@ namespace OpenGL
 			uNormalMap = GetUniformLocation("uNormalMap");
 		}
 
-		void BindParameters(const DummyParameters& pparams)
+		void BindParameters(const System::Proxy<State>& pparams)
 		{						
-			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			SetUniformMatrix4f(uWorld, &params.m_world[0]);
-			SetUniformMatrix4f(uView, &params.m_view[0]);
-			SetUniformMatrix4f(uWorld, &params.m_proj[0]);
-			SetUniformMatrix4f(uMeshMatrix, &params.m_mesh_matrix[0]);
-			SetUniformMatrix4f(uMeshMatrixInversed, &params.m_mesh_matrix_inversed[0]);
-			SetUniformMatrix3f(uNormalMatrix, &params.m_normal_matrix[0]);
-			SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
-			SetUniformMatrix4f(uViewWorld, &params.m_view_world[0]);
-			SetUniformVector3f(uLightPosition, &params.m_light_position[0]);
-			for (int i = 0; i < MAX_BONES; ++i)
-				SetUniformMatrix4f(uBones[i], &params.m_bone[i][0]);
-			SetUniformVector4f(uAmbient, &params.m_ambient[0]);
-			SetUniformVector4f(uSpecular, &params.m_specular[0]);
-			SetUniformVector4f(uDiffuse, &params.m_diffuse[0]);
-			SetUniformFloat(uSpecularPower, params.m_specular_power);
-			SetUniformInt(uDiffuseMap, params.m_diffuse_texture);
-			SetUniformInt(uNormalMap, params.m_normal_texture);
+			//const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
+			//SetUniformMatrix4f(uWorld, &params.m_world[0]);
+			//SetUniformMatrix4f(uView, &params.m_view[0]);
+			//SetUniformMatrix4f(uWorld, &params.m_proj[0]);
+			//SetUniformMatrix4f(uMeshMatrix, &params.m_mesh_matrix[0]);
+			//SetUniformMatrix4f(uMeshMatrixInversed, &params.m_mesh_matrix_inversed[0]);
+			//SetUniformMatrix3f(uNormalMatrix, &params.m_normal_matrix[0]);
+			//SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
+			//SetUniformMatrix4f(uViewWorld, &params.m_view_world[0]);
+			//SetUniformVector3f(uLightPosition, &params.m_light_position[0]);
+			//for (int i = 0; i < MAX_BONES; ++i)
+			//	SetUniformMatrix4f(uBones[i], &params.m_bone[i][0]);
+			//SetUniformVector4f(uAmbient, &params.m_ambient[0]);
+			//SetUniformVector4f(uSpecular, &params.m_specular[0]);
+			//SetUniformVector4f(uDiffuse, &params.m_diffuse[0]);
+			//SetUniformFloat(uSpecularPower, params.m_specular_power);
+			//SetUniformInt(uDiffuseMap, params.m_diffuse_texture);
+			//SetUniformInt(uNormalMap, params.m_normal_texture);
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -697,7 +642,7 @@ namespace OpenGL
 		virtual void Begin()
 		{
 			Init();
-			DummyRenderPolicy::Begin();
+			AbstractRenderPolicy::Begin();
 
 			glEnable(GL_DEPTH_TEST);
 			CHECK_GL_ERROR(L"Unable to enable depth test");
@@ -719,7 +664,7 @@ namespace OpenGL
 
 		virtual void End()
 		{
-			DummyRenderPolicy::End();			
+			AbstractRenderPolicy::End();			
 
 			//glEnable(GL_DEPTH_TEST);			
 			//glDepthFunc(GL_LESS);

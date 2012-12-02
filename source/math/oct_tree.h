@@ -6,7 +6,7 @@
 #include <iosfwd>
 
 #include "../config.h"
-#include "bounding_box.h"
+#include "aabb.h"
 
 namespace Math
 {
@@ -30,7 +30,7 @@ namespace Math
 		std::auto_ptr<OctTree> m_left_back_up;
 		std::auto_ptr<OctTree> m_left_back_down;
 		OctTree* m_parent;
-		BoundingBox m_bbox;
+		AxisAlignedBox m_bbox;
 		int m_face_count;
 		FaceList m_face_list;
 		//VertexList vertexList;
@@ -44,7 +44,7 @@ namespace Math
 		FaceList Cross(const Line3D& line);
 		FaceList CrossAll(const Line3D& line) const;
 
-		bool Save(std::ostream& stream);
+		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 	};
 }

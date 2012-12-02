@@ -2,80 +2,41 @@
 #define _H_PUNK_SCENE_NODE
 
 #include <vector>
-
-#include "../system/object.h"
-#include "../system/hresource.h"
+#include "../system/compound_object.h"
+#include "../system/resource_manager_2.h"
 #include "../string/string.h"
+#include "visitor.h"
 
 namespace Virtual { class Entity; }
 
 namespace Scene
 {
-	class Node;
 
-	class PUNK_ENGINE NodeVisitor
+	class PUNK_ENGINE Node : public System::CompoundObject
 	{
-	public:
-		virtual void PreEnter() = 0;
-		virtual bool operator () (Node* value) = 0;
-		virtual void PostEnter() = 0;
-	};
-
-	class PUNK_ENGINE Node : System::Object
-	{
-	public:
-		typedef std::vector<Node*> Collection;
 
 	public:
 		Node();
-
-		void SetParent(Node* obj) { m_parent_name = (m_parent = obj) == nullptr ? L"" : m_parent->GetName(); }
-
-		Node* GetParent() { return m_parent; }
-		const Node* GetParent() const { return m_parent; }
-
-		void SetParentName(const System::string& name) { m_parent_name = name; }
-		const System::string& GetParentName() const { return m_parent_name; }
-		System::string& GetParentName() { return m_parent_name; }
-
-		Collection& GetChildren() { return m_children; }
-		const Collection& GetChildren() const { return m_children; }
-
-		Node* GetChild(int index) { return m_children[index]; }
-		const Node* GetChild(int index) const { return m_children[index]; }
-		Node* GetChild(const System::string& name, bool deep_search = true);
-		const Node* GetChild(const System::string& name, bool deep_search = true) const;
-		int GetChildIndex(const System::string& name);
-
-		const System::string& GetName() const { return m_name; }
-		void SetName(const System::string& name) { m_name = name; }
-
-		void AddChild(Node* child) { m_children.push_back(child); }
-
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
+		virtual ~Node();		
 
-		virtual ~Node();
+		static System::Proxy<Node> CreateFromFile(const System::string& path);
+		static System::Proxy<Node> CreateFromStream(std::istream& stream);
+			
+		virtual bool Apply(AbstractVisitor* visitor);
 
-		bool Apply(NodeVisitor* value);
-
-		void SetData(System::Object* value) { m_data = value; }
-		System::Object* GetData() const { return m_data; }
-
+	protected:
+		virtual bool Update(int time_ms);
 	private:
+
 		Node(const Node&);
 		Node& operator = (const Node&);
-
 		void Init();
-		void Clear();
-
-	private:
-		Node* m_parent;
-		System::string m_name;		
-		System::string m_parent_name;
-		System::Object* m_data;		
-		std::vector<Node*> m_children;
+		void Clear();	
 	};
 }
+
+REGISTER_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node);
 
 #endif	//	H_PUNK_SCENE_NODE

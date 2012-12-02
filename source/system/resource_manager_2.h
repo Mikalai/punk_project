@@ -14,10 +14,35 @@
 #include "folder.h"
 #include "../math/helper.h"
 #include "logger.h"
-//#include "abstract_manager.h"
 #include "hresource.h"
 #include "global_resource_manager.h"
 #include "singletone.h"
+#include "resource_creator.h"
+#include "factory.h"
+#include "environment.h"
+
+#define REGISTER_MANAGER(THE_FILE, THE_EXT, THE_FOLDER, THE_TYPE_CODE, THE_NAMESPACE, THE_TYPE) \
+namespace THE_NAMESPACE { class PUNK_ENGINE THE_TYPE##Manager; } \
+namespace System { \
+	template<> class PUNK_ENGINE Policy<THE_NAMESPACE::THE_TYPE>  { \
+	public: \
+		static const System::string GetResourceFile() { return THE_FILE; } \
+		static const System::string GetExtension() { return THE_EXT; } \
+		static const System::string GetFolder() { return THE_FOLDER; }	\
+		static System::ObjectType GetResourceType() { return THE_TYPE_CODE; } \
+		static void OnInit() {} \
+		static void OnDestroy() {}\
+	};\
+} \
+namespace THE_NAMESPACE { \
+	class PUNK_ENGINE THE_TYPE##Manager : public System::ResourceManager2<THE_TYPE, System::Policy> { \
+		THE_TYPE##Manager(const THE_TYPE##Manager&); \
+		THE_TYPE##Manager& operator = (const THE_TYPE##Manager&);		\
+	public:\
+		THE_TYPE##Manager() {}\
+	}; \
+}
+
 
 namespace System
 {
@@ -27,98 +52,20 @@ namespace System
 		static const System::string GetResourceFile() { return L"BAD_FILE"; }
 		static const System::string GetExtension() { return L"BAD_EXTENSION"; }
 		static const System::string GetFolder() { return L"BAD_FILDER"; }
-		static const int GetResourceType() { return -1; }
+		static const System::ObjectType GetResourceType() { return System::ObjectType::RESOURCE_NONE; }
 	};
-
-	//template<class T, template<class> class Policy> 
-	//class Resource2
-	//{
-	//	int m_index;
-	//	System::string m_location;
-	//	std::auto_ptr<T> m_resource;
-
-	//	Resource2<T, Policy>(const Resource2<T, Policy>&);
-	//	Resource2<T, Policy>& operator = (const Resource2<T, Policy>&);
-
-	//	bool LoadResource()
-	//	{
-	//		m_resource.reset(new T());			
-	//		out_message() << L"Loading " + Policy<T>::GetFolder() + m_location << std::endl;
-	//		std::ifstream inp((Policy<T>::GetFolder() + m_location).Data(), std::ios_base::binary);
-	//		m_resource->Load(inp);
-	//		inp.close();
-
-	//		return true;
-	//	}
-
-	//public:
-	//	Resource2<T, Policy>()
-	//		: m_index(-1)
-	//		, m_location(L"/")
-	//	{}
-
-	//	void Init(int index, const System::string& location)
-	//	{
-	//		m_location = location;
-	//		m_index = index;
-	//	}
-
-	//	T* Get() 
-	//	{
-	//		if (!m_resource.get())
-	//		{
-	//			LoadResource();
-	//		}
-	//		return m_resource.get();
-	//	}
-
-	//	void Set(T* item)
-	//	{
-	//		m_resource.reset(item);
-	//	}
-
-	//	void Unload()
-	//	{
-	//		m_resource.reset(0)
-	//	}
-
-	//	int GetTimeIntervalAccess();
-
-	//	bool Save()
-	//	{
-	//		const wchar_t* name = wcsstr(m_location.Data(), L".");
-	//		const System::string file(name + Policy<T>::GetExtension());
-	//		char buf[2048];
-	//		file.ToANSI(buf, 2048);
-	//		std::wofstream out(buf);
-	//		out << m_index << L' ' << m_location.Data() << std::endl;
-	//		out.close();
-	//		return true;
-	//	}
-
-	//	bool Load(const System::string resource_file)
-	//	{
-	//		std::wifstream inp(file.Data());
-	//		out << m_index << L' ' << m_location.Data() << std::endl;
-	//		out.close();
-
-	//		return true;
-	//	}	
-
-	//	const System::string& GetLocation() const { return m_location; }
-	//	int GetIndex() const { return m_index; }
-	//};
 
 	template<class T, template<class U> class Policy> class ResourceManager2;
 
 	template<class T, template<class U> class Policy>
-	class ResourceManager2 
+	class ResourceManager2 : public ResourceCreator
 	{
 	public:
-		typedef std::vector<Handle<T>> Collection;
+		typedef std::vector<Proxy<T>> Collection;
 		typedef typename Collection::iterator iterator;
 		typedef typename Collection::const_iterator const_iterator;
 	private:
+		
 		std::list<System::string> ReadResourcFile()
 		{
 			out_message() << L"Reading all resources in " + Policy<T>::GetFolder() << std::endl;
@@ -227,6 +174,8 @@ namespace System
 
 		void Init()
 		{
+			System::Factory::Instance()->RegisterCreator(Policy<T>::GetResourceType(), this);
+
 			out_message() << L"Start caching resources of the manager" << std::endl;
 			std::list<System::string> indexed = ReadResourcFile();
 			System::Folder fld;
@@ -263,29 +212,12 @@ namespace System
 			//LoadResources();
 		}
 		
-		//void Manage(const System::string& name, T* item)
-		//{
-		//	System::string location = name + Policy<T>::GetExtension().Replace(L"*", L"");
-		//	System::Folder fld;
-		//	fld.Open(Policy<T>::GetFolder());
-		//	std::ofstream out(location.Data(), std::ios_base::binary);
-		//	item->Save(out);
-		//	fld.Close();
-		//	
-		//	int index = m_items.size();
-		//	std::unique_ptr<T> res(new T);
-		//	res->SetStorageName(location);
-		//	//res->Init(index, location);
-		//	m_items.push_back(res.release());
-		//	m_dictionary[location] = index;
-		//}
-
 		int GetResourceType() const
 		{
 			return Policy<T>::GetResourceType();
 		}
 
-		Handle<T> Load(const System::string& filename)
+		Proxy<T> Load(const System::string& filename)
 		{			
 			auto it = m_dictionary.find(filename);
 			if (it == m_dictionary.end())
@@ -293,15 +225,15 @@ namespace System
 				out_warning() << filename + L" was not cached. Try to load." << std::endl;
 				Proxy<T> object(T::CreateFromFile(Policy<T>::GetFolder() + filename));
 				if (!object.IsValid())
-					return (out_error() << "Can't load " << filename << std::endl, nullptr);
+					return (out_error() << "Can't load " << filename << std::endl, Proxy<T>(nullptr));
 				UpdateIndexCache(m_items.size(), filename);
-				m_items.push_back(Handle<T>(object));
+				m_items.push_back(object);
 				return object;
 			}
 			return m_items[it->second];
 		}
 
-		virtual bool Save(int index)
+		virtual bool Save(int index) const
 		{
 			if (index < 0 || index >= (int)m_items.size())
 			{
@@ -311,15 +243,30 @@ namespace System
 									
 			System::Folder fld;
 			fld.Open(Policy<T>::GetFolder());
-			std::ofstream out(m_reverse_dictionary[index].Data(), std::ios_base::binary);
+			std::ofstream out(m_reverse_dictionary.at(index).Data(), std::ios_base::binary);
 			if (!out.is_open())
-				return (out_error() << "Can't save resource: " << m_reverse_dictionary[index] << std::endl, false);
+				return (out_error() << "Can't save resource: " << m_reverse_dictionary.at(index) << std::endl, false);
 			m_items[index]->Save(out);
 			fld.Close();
 			return true;
 		}
 
-		Handle<T> Get(int index)
+		virtual Proxy<Object> Create()
+		{
+			Proxy<T> object(new T);
+			string name = string::Format(L"%d", m_items.size());
+			Manage(name, object);
+			return object;
+		}
+
+		virtual Proxy<Object> Create(const string& name)
+		{
+			Proxy<T> object(new T);
+			Manage(name, object);
+			return object;
+		}
+
+		Proxy<T> Get(int index)
 		{
 			return m_items[index];
 		}
@@ -334,16 +281,9 @@ namespace System
 			return m_reverse_dictionary[index];
 		}
 
-		T* Create()
+		bool Manage(const System::string& storage_name, Proxy<T> data)
 		{
-			std::auto_ptr<T> p(new T);
-
-			return p.release();
-		}
-
-		bool Manage(const System::string& storage_name, T* data)
-		{
-			auto value = Proxy<T>(data);
+			auto value = data;
 			if (!storage_name.Length())
 				return (out_error() << "Can't store data with empty storage name" << std::endl, false);
 			if (m_dictionary.find(storage_name) != m_dictionary.end())

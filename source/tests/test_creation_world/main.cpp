@@ -78,8 +78,7 @@ void CreateWorld()
 int main()
 {
 	System::Window::Instance()->SetTitle(L"OpenGL Init test");
-	System::Mouse::Instance()->LockInWindow(false);
-	
+	System::Mouse::Instance()->LockInWindow(false);	
 	OpenGL::Driver::Instance()->Start();
 
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(Idle));

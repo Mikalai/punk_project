@@ -53,7 +53,7 @@ namespace Virtual
 		return m_rot_track.GetKey(time);
 	}
 
-	bool Animation::Save(std::ostream& stream)
+	bool Animation::Save(std::ostream& stream) const
 	{
 		//stream.write(reinterpret_cast<const char*>(&m_is_enabled), sizeof(m_is_enabled));		
 		stream.write((char*)&m_animation_type, sizeof(m_animation_type));

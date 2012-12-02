@@ -6,5 +6,5 @@
 #include "data\data.h"
 #include "motions\motion.h"
 #include "skinning\skinning.h"
-
+#include "manager\manager.h"
 #endif

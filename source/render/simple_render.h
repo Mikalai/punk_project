@@ -16,6 +16,7 @@ namespace Render
 		Virtual::Cameras::Camera* m_active_camera;		
 		OpenGL::RenderTarget* m_target;
 	public:
+		SimpleRender(Systme::Proxy<Scene::SceneGraph> scene
 		bool Render(const Virtual::World& world, OpenGL::Frame& frame);
 
 		void SetActiveCamera(Virtual::Cameras::Camera* value) { m_active_camera = value; }

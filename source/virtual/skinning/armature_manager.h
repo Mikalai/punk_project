@@ -14,7 +14,7 @@ namespace System
 		static const System::string GetResourceFile() { return L"resource"; }
 		static const System::string GetExtension() { return L"*.armature"; }
 		static const System::string GetFolder() { return System::Environment::Instance()->GetArmatureFolder(); }
-		static const int GetResourceType() { return System::PERMANENT_RESOURCE_ARMATURE; }
+		static System::ObjectType GetResourceType() { return System::ObjectType::ARMATURE; }
 		static void OnInit() {}
 		static void OnDestroy() {}
 	};

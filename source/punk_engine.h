@@ -8,7 +8,7 @@
 #include "string\string.h"
 #include "utility\utility.h"
 #include "virtual\virtual.h"
-#include "scene\scene.h"
+#include "scene\scene_graph.h"
 #include "opencl\driver.h"
 #include "raytracer\raytracer.h"
 

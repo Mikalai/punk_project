@@ -34,7 +34,7 @@ namespace Math
 		return m_v[i];
 	}
 
-	const BoundingBox& Triangle3D::GetBoundingBox() const
+	const AxisAlignedBox& Triangle3D::GetAxisAlignedBox() const
 	{
 		return m_bbox;
 	}

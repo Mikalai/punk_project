@@ -15,8 +15,6 @@ namespace Math
 		m_up = vec3(0,1,0);
 		m_direction = vec3(0,0,1);
 
-		m_type = CAMERA_FREE;
-
 		UpdateMatrix();
 	}
 
@@ -68,7 +66,7 @@ namespace Math
 		m_projection_matrix = matrix;
 	}
 
-	Frustum::Classification Frustum::BoxInFrustum(const BoundingBox& m_bbox) const
+	Frustum::Classification Frustum::BoxInFrustum(const AxisAlignedBox& m_bbox) const
 	{
 		int in, out;
 		Classification result = INSIDE;
@@ -96,12 +94,12 @@ namespace Math
 
 	void Frustum::UpdateMatrix()
 	{
-		if (m_type == CAMERA_TARGET)
+//		if (m_type == CAMERA_TARGET)
 			m_view_matrix = mat4::CreateTargetCameraMatrix(m_position, m_target, m_up);
-		else if (m_type == CAMERA_FREE)
-			m_view_matrix = mat4::CreateTargetCameraMatrix(m_position, m_position + m_direction, m_up);
-		else
-			throw MathError(L"Unknown frustum type in update matrix");
+//		else if (m_type == CAMERA_FREE)
+//			m_view_matrix = mat4::CreateTargetCameraMatrix(m_position, m_position + m_direction, m_up);
+//		else
+//			throw MathError(L"Unknown frustum type in update matrix");
 
 		m_projection_matrix = mat4::CreatePerspectiveProjection(m_fov, m_aspect, m_znear, m_zfar);
 		m_projection_view_matrix =  m_projection_matrix*m_view_matrix;
@@ -114,7 +112,7 @@ namespace Math
 		m_position = pos;
 		m_direction = dir;
 		m_up = up;
-		m_type = CAMERA_FREE;
+//		m_type = CAMERA_FREE;
 
 		UpdateMatrix();
 	}
@@ -124,7 +122,7 @@ namespace Math
 		m_position = pos;
 		m_target = target;
 		m_up = up;
-		m_type = CAMERA_TARGET;
+//		m_type = CAMERA_TARGET;
 
 		UpdateMatrix();
 	}
@@ -157,5 +155,96 @@ namespace Math
 	const vec3& Frustum::GetPosition() const
 	{
 		return m_position;
+	}
+
+	const ClipSpace Frustum::ToClipSpace() const
+	{
+		ClipSpace res;
+		for (int i = 0; i < 6; ++i)
+		{
+			res.Add(m_planes[i]);
+		}
+		return res;
+	}
+
+	bool Frustum::Save(std::ostream& stream) const
+	{
+		for (int i = 0; i < 6; ++i)
+			if (!m_planes[i].Save(stream))
+				return (out_error() << "Can't save frustum" << std::endl, false);
+
+		if (!m_projection_matrix.Save(stream))
+			return (out_error() << "Can't save frustum" << std::endl, false);
+
+		if (!m_view_matrix.Save(stream))
+			return (out_error() << "Can't save frustum" << std::endl, false);
+
+		if (!m_projection_view_matrix.Save(stream))
+			return (out_error() << "Can't save frustum" << std::endl, false);
+
+		stream.write((char*)&m_fov, sizeof(m_fov));
+		stream.write((char*)&m_aspect, sizeof(m_aspect));
+		stream.write((char*)&m_znear, sizeof(m_znear));
+		stream.write((char*)&m_zfar, sizeof(m_zfar));
+
+		stream.write((char*)&m_near_width, sizeof(m_near_width));
+		stream.write((char*)&m_near_height, sizeof(m_near_height));
+		stream.write((char*)&m_far_width, sizeof(m_far_width));
+		stream.write((char*)&m_far_height, sizeof(m_far_height));
+
+		if (!m_position.Save(stream))
+			return (out_error() << "Can't save frustum" << std::endl, false);
+
+		if (!m_target.Save(stream))
+			return (out_error() << "Can't save frustum" << std::endl, false);
+
+		if (!m_up.Save(stream))
+			return (out_error() << "Can't save frustum" << std::endl, false);
+
+		if (!m_direction.Save(stream))
+			return (out_error() << "Can't save frustum" << std::endl, false);
+
+		return true;
+	}
+
+	bool Frustum::Load(std::istream& stream)
+	{
+		
+		for (int i = 0; i < 6; ++i)
+			if (!m_planes[i].Load(stream))
+				return (out_error() << "Can't load frustum" << std::endl, false);
+
+		if (!m_projection_matrix.Load(stream))
+			return (out_error() << "Can't load frustum" << std::endl, false);
+
+		if (!m_view_matrix.Load(stream))
+			return (out_error() << "Can't load frustum" << std::endl, false);
+
+		if (!m_projection_view_matrix.Load(stream))
+			return (out_error() << "Can't load frustum" << std::endl, false);
+
+		stream.read((char*)&m_fov, sizeof(m_fov));
+		stream.read((char*)&m_aspect, sizeof(m_aspect));
+		stream.read((char*)&m_znear, sizeof(m_znear));
+		stream.read((char*)&m_zfar, sizeof(m_zfar));
+
+		stream.read((char*)&m_near_width, sizeof(m_near_width));
+		stream.read((char*)&m_near_height, sizeof(m_near_height));
+		stream.read((char*)&m_far_width, sizeof(m_far_width));
+		stream.read((char*)&m_far_height, sizeof(m_far_height));
+
+		if (!m_position.Load(stream))
+			return (out_error() << "Can't load frustum" << std::endl, false);
+
+		if (!m_target.Load(stream))
+			return (out_error() << "Can't load frustum" << std::endl, false);
+
+		if (!m_up.Load(stream))
+			return (out_error() << "Can't load frustum" << std::endl, false);
+
+		if (!m_direction.Load(stream))
+			return (out_error() << "Can't load frustum" << std::endl, false);
+
+		return true;
 	}
 }

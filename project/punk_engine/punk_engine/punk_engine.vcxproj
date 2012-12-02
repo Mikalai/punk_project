@@ -130,12 +130,16 @@
     <ClInclude Include="..\..\..\source\images\internal_images\rgba_image.h" />
     <ClInclude Include="..\..\..\source\images\internal_images\rgb_image.h" />
     <ClInclude Include="..\..\..\source\images\png_file.h" />
+    <ClInclude Include="..\..\..\source\math\aabb.h" />
     <ClInclude Include="..\..\..\source\math\astar.h" />
     <ClInclude Include="..\..\..\source\math\bounding_box.h" />
+    <ClInclude Include="..\..\..\source\math\bounding_shere.h" />
     <ClInclude Include="..\..\..\source\math\camera.h" />
     <ClInclude Include="..\..\..\source\math\catmull_rom_spline.h" />
+    <ClInclude Include="..\..\..\source\math\clip_space.h" />
     <ClInclude Include="..\..\..\source\math\complex.h" />
     <ClInclude Include="..\..\..\source\math\constants.h" />
+    <ClInclude Include="..\..\..\source\math\ellipsoid.h" />
     <ClInclude Include="..\..\..\source\math\frustum.h" />
     <ClInclude Include="..\..\..\source\math\header_matrix.h" />
     <ClInclude Include="..\..\..\source\math\helper.h" />
@@ -149,6 +153,7 @@
     <ClInclude Include="..\..\..\source\math\math.h" />
     <ClInclude Include="..\..\..\source\math\math_error.h" />
     <ClInclude Include="..\..\..\source\math\polygon3d.h" />
+    <ClInclude Include="..\..\..\source\math\portal.h" />
     <ClInclude Include="..\..\..\source\math\relations.h" />
     <ClInclude Include="..\..\..\source\math\matrix.h" />
     <ClInclude Include="..\..\..\source\math\noise.h" />
@@ -161,6 +166,7 @@
     <ClInclude Include="..\..\..\source\math\ray.h" />
     <ClInclude Include="..\..\..\source\math\region.h" />
     <ClInclude Include="..\..\..\source\math\root_find.h" />
+    <ClInclude Include="..\..\..\source\math\convex_shape_mesh.h" />
     <ClInclude Include="..\..\..\source\math\smart_matrix.h" />
     <ClInclude Include="..\..\..\source\math\sphere.h" />
     <ClInclude Include="..\..\..\source\math\triangle2d.h" />
@@ -276,6 +282,7 @@
     <ClInclude Include="..\..\..\source\opengl\renderable\managers\quad_mesh_manager.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\managers\skinned_mesh_manager.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\managers\static_mesh_manager.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\primitive_types.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\renderable.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.h" />
@@ -287,6 +294,7 @@
     <ClInclude Include="..\..\..\source\opengl\render\frame.h" />
     <ClInclude Include="..\..\..\source\opengl\render\render.h" />
     <ClInclude Include="..\..\..\source\opengl\render\render_pass.h" />
+    <ClInclude Include="..\..\..\source\opengl\render\render_state.h" />
     <ClInclude Include="..\..\..\source\opengl\render\render_target.h" />
     <ClInclude Include="..\..\..\source\opengl\render\render_target_back_buffer.h" />
     <ClInclude Include="..\..\..\source\opengl\render\render_target_texture.h" />
@@ -416,8 +424,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\camera_node.h" />
+    <ClInclude Include="..\..\..\source\scene\default_visitor.h" />
+    <ClInclude Include="..\..\..\source\scene\geometry_node.h" />
+    <ClInclude Include="..\..\..\source\scene\light_node.h" />
+    <ClInclude Include="..\..\..\source\scene\location_indoor.h" />
+    <ClInclude Include="..\..\..\source\scene\material_node.h" />
     <ClInclude Include="..\..\..\source\scene\node.h" />
-    <ClInclude Include="..\..\..\source\scene\scene.h" />
+    <ClInclude Include="..\..\..\source\scene\point_light_node.h" />
+    <ClInclude Include="..\..\..\source\scene\portal_node.h" />
+    <ClInclude Include="..\..\..\source\scene\scene_graph.h" />
+    <ClInclude Include="..\..\..\source\scene\transform_node.h" />
+    <ClInclude Include="..\..\..\source\scene\visitor.h" />
     <ClInclude Include="..\..\..\source\string\string.h" />
     <ClInclude Include="..\..\..\source\string\win32\string_win32.h" />
     <ClInclude Include="..\..\..\source\system\abstract_manager.h" />
@@ -426,6 +444,7 @@
     <ClInclude Include="..\..\..\source\system\buffer.h" />
     <ClInclude Include="..\..\..\source\system\camera_capture.h" />
     <ClInclude Include="..\..\..\source\system\clock.h" />
+    <ClInclude Include="..\..\..\source\system\compound_object.h" />
     <ClInclude Include="..\..\..\source\system\config_file.h" />
     <ClInclude Include="..\..\..\source\system\console.h" />
     <ClInclude Include="..\..\..\source\system\decl_property.h" />
@@ -457,9 +476,9 @@
     <ClInclude Include="..\..\..\source\system\events\unfocused.h" />
     <ClInclude Include="..\..\..\source\system\events\window_resize_event.h" />
     <ClInclude Include="..\..\..\source\system\event_manager.h" />
+    <ClInclude Include="..\..\..\source\system\factory.h" />
     <ClInclude Include="..\..\..\source\system\folder.h" />
     <ClInclude Include="..\..\..\source\system\global_resource_manager.h" />
-    <ClInclude Include="..\..\..\source\system\handle.h" />
     <ClInclude Include="..\..\..\source\system\hresource.h" />
     <ClInclude Include="..\..\..\source\system\keyboard.h" />
     <ClInclude Include="..\..\..\source\system\linux\clock_linux.h" />
@@ -477,13 +496,13 @@
     <ClInclude Include="..\..\..\source\system\mouse.h" />
     <ClInclude Include="..\..\..\source\system\node.h" />
     <ClInclude Include="..\..\..\source\system\object.h" />
-    <ClInclude Include="..\..\..\source\system\permanent_data.h" />
     <ClInclude Include="..\..\..\source\system\pool.h" />
     <ClInclude Include="..\..\..\source\system\pool_manager.h" />
     <ClInclude Include="..\..\..\source\system\process.h" />
     <ClInclude Include="..\..\..\source\system\profiler.h" />
     <ClInclude Include="..\..\..\source\system\region.h" />
     <ClInclude Include="..\..\..\source\system\resource.h" />
+    <ClInclude Include="..\..\..\source\system\resource_creator.h" />
     <ClInclude Include="..\..\..\source\system\resource_manager_2.h" />
     <ClInclude Include="..\..\..\source\system\scene_graph.h" />
     <ClInclude Include="..\..\..\source\system\serializable.h" />
@@ -501,6 +520,7 @@
     <ClInclude Include="..\..\..\source\system\thread_job.h" />
     <ClInclude Include="..\..\..\source\system\thread_pool.h" />
     <ClInclude Include="..\..\..\source\system\timer.h" />
+    <ClInclude Include="..\..\..\source\system\type.h" />
     <ClInclude Include="..\..\..\source\system\types.h" />
     <ClInclude Include="..\..\..\source\system\types\list.h" />
     <ClInclude Include="..\..\..\source\system\types\priority_list.h" />
@@ -535,6 +555,7 @@
     <ClInclude Include="..\..\..\source\utility\descriptors\bone_desc.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\camera_desc.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\descriptors.h" />
+    <ClInclude Include="..\..\..\source\utility\descriptors\indoor_desc.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\material_desc.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\mesh_desc.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\object_desc.h" />
@@ -546,7 +567,10 @@
     <ClInclude Include="..\..\..\source\utility\model\vertex_bone_weight.h" />
     <ClInclude Include="..\..\..\source\utility\model\vertex_component.h" />
     <ClInclude Include="..\..\..\source\utility\model\vertex_index.h" />
-    <ClInclude Include="..\..\..\source\utility\parser\base_parser.h" />
+    <ClInclude Include="..\..\..\source\utility\parser\base_parser.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\parser\base_parser2.h" />
     <ClInclude Include="..\..\..\source\utility\parser\game_parser.h" />
     <ClInclude Include="..\..\..\source\utility\parser\keywords.h" />
     <ClInclude Include="..\..\..\source\utility\parser\parser.h" />
@@ -565,15 +589,24 @@
     <ClInclude Include="..\..\..\source\virtual\data\camera.h" />
     <ClInclude Include="..\..\..\source\virtual\data\cameras\fps_camera.h" />
     <ClInclude Include="..\..\..\source\virtual\data\data.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\door.h" />
     <ClInclude Include="..\..\..\source\virtual\data\entity.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\geometry.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\interior_location.h" />
     <ClInclude Include="..\..\..\source\virtual\data\light.h" />
     <ClInclude Include="..\..\..\source\virtual\data\lights\point_light.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\light_set.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\location.h" />
     <ClInclude Include="..\..\..\source\virtual\data\material.h" />
     <ClInclude Include="..\..\..\source\virtual\data\proxy.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\old_shape_mesh.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\static_geometry.h" />
     <ClInclude Include="..\..\..\source\virtual\data\transform.h" />
     <ClInclude Include="..\..\..\source\virtual\data\world.h" />
     <ClInclude Include="..\..\..\source\virtual\intersection.h" />
     <ClInclude Include="..\..\..\source\virtual\manager\camera_manager.h" />
+    <ClInclude Include="..\..\..\source\virtual\manager\manager.h" />
+    <ClInclude Include="..\..\..\source\virtual\manager\material_manager.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\key_based_strategy.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\motion.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\motion_strategy.h" />
@@ -680,9 +713,13 @@
     <ClCompile Include="..\..\..\source\images\internal_images\rgb_image.cpp" />
     <ClCompile Include="..\..\..\source\images\png_file.cpp" />
     <ClCompile Include="..\..\..\source\main.cpp" />
+    <ClCompile Include="..\..\..\source\math\aabb.cpp" />
     <ClCompile Include="..\..\..\source\math\astar.cpp" />
     <ClCompile Include="..\..\..\source\math\bounding_box.cpp" />
+    <ClCompile Include="..\..\..\source\math\bounding_sphere.cpp" />
     <ClCompile Include="..\..\..\source\math\camera.cpp" />
+    <ClCompile Include="..\..\..\source\math\clip_space.cpp" />
+    <ClCompile Include="..\..\..\source\math\ellipsoid.cpp" />
     <ClCompile Include="..\..\..\source\math\frustum.cpp" />
     <ClCompile Include="..\..\..\source\math\helper.cpp" />
     <ClCompile Include="..\..\..\source\math\line2d.cpp" />
@@ -692,9 +729,12 @@
     <ClCompile Include="..\..\..\source\math\noise.cpp" />
     <ClCompile Include="..\..\..\source\math\oct_tree.cpp" />
     <ClCompile Include="..\..\..\source\math\plane.cpp" />
+    <ClCompile Include="..\..\..\source\math\portal.cpp" />
     <ClCompile Include="..\..\..\source\math\random.cpp" />
     <ClCompile Include="..\..\..\source\math\relations.cpp" />
     <ClCompile Include="..\..\..\source\math\root_find.cpp" />
+    <ClCompile Include="..\..\..\source\math\convex_shape_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\math\sphere.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle2d.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle3d.cpp" />
     <ClCompile Include="..\..\..\source\opencl\buffer.cpp" />
@@ -764,12 +804,14 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\renderable\managers\managers.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\renderable.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\static_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\batch.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\frame.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\render_pass.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\render\render_state.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\render_target.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\render_target_back_buffer.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\render_target_texture.cpp" />
@@ -873,10 +915,21 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\camera_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\default_visitor.cpp" />
+    <ClCompile Include="..\..\..\source\scene\geometry_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\light_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\location_indoor.cpp" />
+    <ClCompile Include="..\..\..\source\scene\material_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\point_light_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\portal_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\scene_graph.cpp" />
+    <ClCompile Include="..\..\..\source\scene\transform_node.cpp" />
     <ClCompile Include="..\..\..\source\string\string.cpp" />
     <ClCompile Include="..\..\..\source\string\win32\string_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\clock.cpp" />
+    <ClCompile Include="..\..\..\source\system\compound_object.cpp" />
     <ClCompile Include="..\..\..\source\system\events\events.cpp" />
     <ClCompile Include="..\..\..\source\system\events\focused.cpp" />
     <ClCompile Include="..\..\..\source\system\events\idle_event.cpp" />
@@ -899,6 +952,7 @@
     <ClCompile Include="..\..\..\source\system\events\unfocused.cpp" />
     <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp" />
     <ClCompile Include="..\..\..\source\system\event_manager.cpp" />
+    <ClCompile Include="..\..\..\source\system\factory.cpp" />
     <ClCompile Include="..\..\..\source\system\global_resource_manager.cpp" />
     <ClCompile Include="..\..\..\source\system\hresource.cpp" />
     <ClCompile Include="..\..\..\source\system\linux\clock_linux.cpp" />
@@ -948,7 +1002,10 @@
     <ClCompile Include="..\..\..\source\utility\descriptors\object_type_desc.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\world_desc.cpp" />
     <ClCompile Include="..\..\..\source\utility\fonts\font_builder.cpp" />
-    <ClCompile Include="..\..\..\source\utility\parser\base_parser.cpp" />
+    <ClCompile Include="..\..\..\source\utility\parser\base_parser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\utility\parser\base_parser2.cpp" />
     <ClCompile Include="..\..\..\source\utility\parser\game_parser.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\action.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\animation.cpp" />
@@ -963,10 +1020,14 @@
     <ClCompile Include="..\..\..\source\virtual\data\entity.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\light.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\lights\point_light.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\light_set.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\material.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\proxy.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\static_geometry.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\transform.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\world.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\manager\camera_manager.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\manager\material_manager.cpp" />
     <ClCompile Include="..\..\..\source\virtual\motions\motion_strategy.cpp" />
     <ClCompile Include="..\..\..\source\virtual\motions\static_motion_strategy.cpp" />
     <ClCompile Include="..\..\..\source\virtual\scheme.cpp" />

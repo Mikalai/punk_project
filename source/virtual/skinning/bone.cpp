@@ -112,7 +112,7 @@ namespace Virtual
 
 	void Bone::UpdatePose(Virtual::AnimationMixer* m, float frame, bool deep)
 	{
-		if (!m || m->GetType() != System::DYNAMIC_RESOURCE_ARMATURE_ANIMATION_MIXER)
+		if (!m || m->GetType() != System::ObjectType::ARMATURE_ANIMATION_MIXER)
 		{
 			out_error() << "Can't update bone position " << m_name << ", because of bad animation Mixer" << std::endl;
 			return;
@@ -161,7 +161,7 @@ namespace Virtual
 		m_need_update_global_matrix = true;
 	}
 
-	bool Bone::Save(std::ostream& stream)
+	bool Bone::Save(std::ostream& stream) const
 	{		
 		m_name.Save(stream);
 		stream.write(reinterpret_cast<const char*>(&m_index_in_armature), sizeof(m_index_in_armature));

@@ -8,7 +8,7 @@
 #define _H_PUNK_PLANE
 
 #include "../config.h"
-#include "vec3.h"
+#include "vec4.h"
 #include "mat4.h"
 
 namespace Math
@@ -17,8 +17,6 @@ namespace Math
 
     class PUNK_ENGINE Plane
     {        
-        vec3 normal;
-        float distance;
     public:
 
         enum Location {ON, FRONT, BACK};
@@ -31,14 +29,43 @@ namespace Math
         Plane(const vec3& normal, float distances);
         Plane(const vec3& a, const vec3& b, const vec3& c);
         
+		void Set(const vec3& normal, float dst) { (m_normal = normal, m_distance = dst); }
        		
 		void MakeFromPoints(const vec3& a, const vec3& b, const vec3& c);
 
-        const Plane Transform(const mat4& matrix) const;
-		const vec3& GetNormal() const { return normal; }
-		float GetDistance() const { return distance; }
+        const Plane TransformNode(const mat4& matrix) const;
+		const vec3& GetNormal() const { return m_normal; }
+		float GetDistance() const { return m_distance; }
 		friend class PUNK_ENGINE Line3D;
+
+		bool Save(std::ostream& stream) const;
+		bool Load(std::istream& stream);
+
+	private:
+
+		vec3 m_normal;
+        float m_distance;
     };   
+
+	inline float operator * (const Plane& plane, const vec3& v)
+	{
+		float res = plane.GetNormal().Dot(v) + plane.GetDistance();
+		return res;
+	}
+
+	inline float operator * (const Plane& plane, const vec4& v)
+	{
+		float res = plane.GetNormal().Dot(v.XYZ()) + plane.GetDistance()*v.W();
+		return res;
+	}
+
+	inline const Plane operator * (const mat4& m, const Plane& p)
+	{
+		const vec4 v(p.GetNormal(), p.GetDistance());
+		vec4 t = m * v;
+		Plane res(t.XYZ(), t.W());
+		return res;
+	}
 }
 
 #endif

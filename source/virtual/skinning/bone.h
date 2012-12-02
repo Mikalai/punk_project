@@ -59,7 +59,7 @@ namespace Virtual
 		/* Drops all precalculated staff */
 		void ResetCache();
 
-		bool Save(std::ostream& stream);
+		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 	private:
 		Bone(const Bone&);

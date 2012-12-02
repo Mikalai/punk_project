@@ -44,8 +44,9 @@ namespace OpenGL
 		unsigned GetCode() const;
 		void Create(const ImageModule::Image& image);
 
-		bool Load(std::istream& stream);
-		bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
+		virtual bool Load(std::istream& stream);		
+		
 		void SetSourceFile(const System::string& filename);
 		const System::string& GetSourceFile() const;
 		void SetIndex(int index);

@@ -16,7 +16,7 @@ namespace System
 		void SetStorageName(const System::string& value) { m_storage_name = value; }
 		const System::string GetStorageName() const { return m_storage_name; }
 
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
 		virtual ~StorableData() {}

@@ -22,6 +22,7 @@
 #include "../descriptors/material_desc.h"
 #include "../descriptors/camera_desc.h"
 #include "../descriptors/light_desc.h"
+#include "../descriptors/indoor_desc.h"
 
 namespace Utility
 {
@@ -122,9 +123,12 @@ namespace Utility
 	bool Parser::ParseBoundingBox(System::Buffer& buffer, Math::BoundingBox& value)
 	{
 		CHECK_START(buffer);
+		Math::vec3 p[8];
 		for (int i = 0; i < 8; ++i)
-			if (!ParseVector3f(buffer, value[i]))
+			if (!ParseVector3f(buffer, p[i]))
 				return (out_error() << "Unable to parse bounding box" << std::endl, false);
+		if (!value.Create(reinterpret_cast<const float*>(p), 8, sizeof(Math::vec3)))
+			return (out_error() << "Unable to make bounding box from points" << std::endl, false);
 		CHECK_END(buffer);
 		return true;
 	}
@@ -408,6 +412,196 @@ namespace Utility
 			}
 		}
 	}
+
+	//bool Parser::ParseLocationIndoor(System::Buffer& buffer, LocationIndoorDesc& o)
+	//{
+	//	CHECK_START(buffer);
+
+	//	while (1)
+	//	{
+	//		if (buffer.IsEnd())
+	//		{
+	//			out_error() << L"Can't parse object" << std::endl;
+	//			return false;
+	//		}
+
+	//		System::string word = buffer.ReadWord(); 
+
+	//		KeywordCode index;
+	//		switch(index = Parse(word))
+	//		{
+	//		case WORD_CLOSE_BRACKET:
+	//			return true;
+	//		case WORD_TYPE:
+	//			{
+	//				if (!ParseBlockedString(buffer, o.m_type))
+	//				{
+	//					out_error() << "Unable to parse object type" << std::endl;
+	//					return false;
+	//				}
+	//				out_message() << L"Type " + o.m_type << std::endl;
+	//			}
+	//			break;
+	//		case WORD_NAME:
+	//			{
+	//				if (!ParseBlockedString(buffer, o.m_name))
+	//				{
+	//					out_error() << "Unable to parse object name" << std::endl;
+	//					return false;
+	//				}
+	//				out_message() << L"Parsing " + o.m_name << std::endl;
+	//			}
+	//			break;
+	//		case WORD_PARENT:
+	//			{
+	//				if (!ParseBlockedString(buffer, o.m_parent))
+	//				{
+	//					out_error() << "Unable to parse object parent" << std::endl;
+	//					return false;
+	//				}
+	//				out_message() << L"Parent " + o.m_type << std::endl;
+	//			}
+	//			break;
+	//		case WORD_BOUNDING_BOX:
+	//			{
+	//				if (!ParseBoundingBox(buffer, o.m_bbox))
+	//				{
+	//					out_error() << "Unable to parse object bounding box" << std::endl;
+	//					return false;
+	//				}
+	//			}				
+	//			break;
+	//		case WORD_LOCATION:
+	//			{
+	//				if (!ParseBlockedVector3f(buffer, o.m_location))
+	//				{
+	//					out_error() << "Unable to parse object location" << std::endl;
+	//					return false;
+	//				}
+	//			}
+	//			break;
+	//		case WORD_WORLD_MATRIX:
+	//			{
+	//				if (!ParseBlockedMatrix4x4f(buffer, o.m_world))
+	//				{
+	//					out_error() << "Unable to parse object world matrix" << std::endl;
+	//					return false;
+	//				}
+	//			}
+	//			break;
+	//		case WORD_PARENT_INVERSED_MATRIX:
+	//			{
+	//				if (!ParseBlockedMatrix4x4f(buffer, o.m_inv_parent))
+	//				{
+	//					out_error() << "Unable to parse object inversed parent matrix" << std::endl;
+	//					return false;
+	//				}
+	//			}
+	//			break;
+	//		case WORD_LOCAL_MATRIX:
+	//			{
+	//				if (!ParseBlockedMatrix4x4f(buffer, o.m_local))
+	//				{
+	//					out_error() << "Unable to parse local matrix" << std::endl;
+	//					return false;
+	//				}
+	//			}
+	//			break;
+	//		case WORD_MESH:
+	//			{
+	//				std::unique_ptr<MeshDesc> mesh(new MeshDesc);
+	//				if (!ParseMesh(buffer, *mesh))
+	//				{
+	//					out_error() << "Unable to parse object mesh data" << std::endl;
+	//					return false;
+	//				}
+	//				o.m_mesh_desc.reset(mesh.release());
+	//			}
+	//			break;
+	//		case WORD_ARMATURE:
+	//			{
+	//				std::unique_ptr<ArmatureDesc> armature(new ArmatureDesc);
+	//				if (!ParseArmature(buffer, *armature))
+	//				{
+	//					out_error() << "Unable to parse armature" << std::endl;
+	//					return false;
+	//				}
+	//				o.m_armature_desc.reset(armature.release());
+	//			}
+	//			break;
+	//		case WORD_CAMERA:
+	//			{
+	//				std::unique_ptr<CameraDesc> camera(new CameraDesc);
+	//				if (!ParseCamera(buffer, *camera))
+	//				{
+	//					out_error() << "Unable to parse camera" << std::endl;
+	//					return false;
+	//				}
+	//				o.m_camera_desc.reset(camera.release());
+	//			}
+	//			break;
+	//		case WORD_POINT_LIGHT:
+	//			{
+	//				std::unique_ptr<LightDesc> light(new LightDesc);
+	//				if (!ParseLight(buffer, *light))
+	//				{
+	//					out_error() << "Unable to parse light" << std::endl;
+	//					return false;
+	//				}
+	//				o.m_light_desc.reset(light.release());
+	//			}
+	//			break;
+	//		case WORD_MATERIAL_REF:
+	//			{
+	//				if (!ParseBlockedString(buffer, o.m_material))
+	//				{
+	//					out_error() << "Unable to parse object material" << std::endl;
+	//					return false;
+	//				}
+	//			}
+	//			break;
+	//		case WORD_REFERENCE:
+	//			{
+	//				if (!ParseBlockedString(buffer, o.m_reference))
+	//				{
+	//					out_error() << "Unable to parse object reference" << std::endl;
+	//					return false;
+	//				}
+	//			}
+	//			break;
+	//		case WORD_ACTIONS_REF:
+	//			{
+	//				if (!ParseActionsRef(buffer, o.m_supported_animations))
+	//				{
+	//					out_error() << "Unable to parse animation references" << std::endl;
+	//					return false;
+	//				}
+	//			}
+	//			break;
+	//		case WORD_COLLISION_MESH:
+	//			{
+	//				std::unique_ptr<MeshDesc> mesh(new MeshDesc);
+	//				if (!ParseMesh(buffer, *mesh))
+	//					return (out_error() << "Unable to parse collision mesh" << std::endl, false);
+	//				o.m_mesh_collision_desc.reset(mesh.release());
+	//			}
+	//			break;
+	//		case WORD_OBJECT:
+	//			{					
+	//				std::auto_ptr<ObjectDesc> child(new ObjectDesc);
+	//				if (!ParseObject(buffer, *child))
+	//				{
+	//					out_error() << "Unable to parse child object" << std::endl;
+	//					return false;
+	//				}
+	//				o.m_children.push_back(child.release());
+	//			}
+	//			break;
+	//		default:
+	//			return (out_error() << System::string::Format(L"Unexpected keyword %s", Keyword[index]) << std::endl, false);
+	//		}
+	//	}
+	//}
 
 	/// Perform parsing object chunk
 	bool Parser::ParseObject(System::Buffer &buffer, ObjectDesc& o)
@@ -1133,7 +1327,7 @@ namespace Utility
 						out_error() << "Unable to parse object" << std::endl;
 						return false;
 					}
-					value.m_objects.push_back(object.release());
+					value.m_children.push_back(object.release());
 				}
 				break;
 			case WORD_MATERIALS:

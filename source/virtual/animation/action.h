@@ -26,7 +26,7 @@ namespace Virtual
 		int GetStartFrame() const { return m_start_frame; }		
 		int GetEndFrame() const { return m_end_frame; }
 		
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual ~Action();
 

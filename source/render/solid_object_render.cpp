@@ -88,7 +88,7 @@ namespace Render
 					OpenGL::StaticMesh* vao = static_cast<OpenGL::StaticMesh*>(*OpenGL::StaticMeshManager::Instance()->Load(proxy->GetName() + L".static_vao"));
 					if (vao)
 					{
-						Math::BoundingBox bbox = vao->GetBoundingBox().Transform(*parent**location);
+						Math::BoundingBox bbox = vao->GetBoundingBox().TransformNode(*parent**location);
 						if (camera->BoxInFrustum(bbox))
 						{
 							std::auto_ptr<OpenGL::RenderContextBumpMapping::PolicyParameters> p(new OpenGL::RenderContextBumpMapping::PolicyParameters);
@@ -116,7 +116,7 @@ namespace Render
 				}
 			}
 
-			Math::BoundingBox bbox = object->AsBoundingBox().Transform(*parent**location);
+			Math::BoundingBox bbox = object->AsBoundingBox().TransformNode(*parent**location);
 			if (object->IsMesh() && camera->BoxInFrustum(bbox))
 			{
 				const Utility::Material& material = object->GetMaterial();

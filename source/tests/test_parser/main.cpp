@@ -1,21 +1,20 @@
 #include "../../punk_engine.h"
 
-void Test()
+bool Test()
 {
-	std::unique_ptr<Utility::WorldDesc> world(new Utility::WorldDesc);
+	System::Proxy<Scene::SceneGraph> scene = System::Factory::Instance()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"portal_test2.pmd");
 
-	if (!Utility::Parser::LoadWorld(System::Environment::Instance()->GetModelFolder() + L"untitled.pmd", *world))
-	{
-		out_error() << "Unable to create world from file" << std::endl;
-		return;
-	}
+	if (!scene.IsValid())
+		return (out_error() << "Unable to create world from file" << std::endl, false);
 
-	System::string s = world->ToString();
-	std::wcout << s.Data() << std::endl;
+	Scene::DefaultVisitor v;
+	scene->GetRootNode()->Apply(&v);
+	return true;
 }
 
 int main()
 {
 	Test();
+	std::cout << "End" << std::endl;
 	return 0;
 }

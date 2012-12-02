@@ -12,7 +12,7 @@ namespace Virtual
 		BoneAnimation();
 		void SetBoneName(const System::string& value) { m_bone_name = value; }
 		const System::string& GetBoneName() const { return m_bone_name; }
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual ~BoneAnimation();
 	};

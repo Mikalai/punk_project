@@ -30,13 +30,14 @@ namespace OpenGL
 		Utility::COMPONENT_BONE_WEIGHT};
 	public:
 		
-		virtual bool Save(std::ostream& stream);
+		SkinnedMesh();
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
 		bool Cook(const Utility::MeshDesc* mesh, const Utility::ArmatureDesc* armature);		
 		
-		static SkinnedMesh* CreateFromFile(const System::string& path);
-		static SkinnedMesh* CreateFromStream(std::istream& stream);
+		static System::Proxy<SkinnedMesh> CreateFromFile(const System::string& path);
+		static System::Proxy<SkinnedMesh> CreateFromStream(std::istream& stream);
 
 	protected:				
 		bool CookOneVertexWithBone(const Utility::MeshDesc* o, const Utility::ArmatureDesc* armature, int index, Math::Vector4<float>& bone, Math::Vector4<float>& weight) const;

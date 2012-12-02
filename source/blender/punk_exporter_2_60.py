@@ -103,18 +103,6 @@ def export_bounding_box(f, object):
     return
 
 #
-#   export relative location to parent, if no parent consider it as world
-#   position
-#
-def export_location(f, object):
-    start_block(f, "*location")
-    
-    make_offset(f)
-    f.write("%16f%16f%16f\n" % (object.location.x, object.location.y, object.location.z))
-    end_block(f)
-    return
-
-#
 #   export world matrix, if a child it will differ from local
 #
 def export_world_matrix(f, object):
@@ -670,22 +658,6 @@ def export_properties(f, object):
     except:
         print("No properties")
     return
-
-#
-#   export lamps from the scene
-#
-def export_point_lamp(f, lamp):
-    start_block(f, "*point_light")
-    export_string(f, "*light_type", lamp.type)
-    export_string(f, "*name", lamp.name)
-    export_vec3(f, "*color", lamp.color)
-    export_float(f, "*distance", lamp.distance)
-    export_float(f, "*energy", lamp.energy)
-    export_string(f, "*fallof_type", lamp.falloff_type)
-    export_float(f, "*linear_attenuation", lamp.linear_attenuation)
-    export_float(f, "*quadratic_attenuation", lamp.quadratic_attenuation)
-    end_block(f);
-    
        
 #
 #   export animation tracks for the object
@@ -709,7 +681,21 @@ def export_animation_tracks(f, object):
         used_actions.add(track.strips[0].action.name)
         
     end_block(f)
-    
+
+#
+#   export lamps from the scene
+#
+def export_point_lamp(f, lamp):
+    start_block(f, "*point_light")
+    export_string(f, "*name", lamp.name)
+    export_vec3(f, "*color", lamp.color)
+    export_float(f, "*distance", lamp.distance)
+    export_float(f, "*energy", lamp.energy)
+#    export_string(f, "*fallof_type", lamp.falloff_type)
+    export_float(f, "*linear_attenuation", lamp.linear_attenuation)
+    export_float(f, "*quadratic_attenuation", lamp.quadratic_attenuation)
+    end_block(f);
+        
 #
 #   export camera
 #
@@ -723,13 +709,97 @@ def export_camera(f, camera):
     export_float(f, "*focus", camera.dof_distance)
     export_float(f, "*ortho_scale", camera.ortho_scale)   
     end_block(f)
-    
-#
-#   export the whole object with all data i can imaginge
-#
-def export_object(f, object): 
-    start_block(f, "*object")   
-    
+ 
+def export_light(f, object):
+    start_block(f, "*transform_node")
+    export_string(f, "*name", object.name + "_transform")
+    export_local_matrix(f, object)
+    if type(object.data) == bpy.types.PointLamp:
+        export_point_lamp(f, object.data)
+    end_block(f)
+    return
+ 
+def export_portal(f, object):
+    if type(object.data) == bpy.types.Mesh:        
+        start_block(f, "*portal_node")
+        export_string(f, "*name", object.name)
+        export_local_matrix(f, object)
+        export_vertex_position(f, object.data)
+        end_block(f)
+    return
+
+def export_static_mesh(f, object): 
+    if object.data == None:
+        return
+    mesh = object.data
+    if not((mesh == None) or (len(mesh.materials) == 0)):
+        start_block(f, "*material_node")
+        used_materials.add(mesh.materials[0].name)
+        export_string(f, "*name", mesh.materials[0].name)
+     
+    start_block(f, "*transform_node")
+    export_string(f, "*name", object.name + "_transform")
+    export_local_matrix(f, object)
+
+    if type(object.data) == bpy.types.Mesh:
+        start_block(f, "*static_mesh")
+        export_string(f, "*name", object.name)
+        export_vertex_position(f, object.data)
+        export_normals(f, object.data)
+        export_faces(f, object.data)
+        export_tex_coords(f, object.data)
+        end_block(f)    #   static_mesh        
+    end_block(f) #  transform
+    if not((mesh == None) or (len(mesh.materials) == 0)):
+        end_block(f)    #   material
+    return
+
+def export_convex_mesh(f, object): 
+    if object.data == None:
+        return       
+    if type(object.data) == bpy.types.Mesh:
+        start_block(f, "*convex_mesh")      
+        export_vertex_position(f, object.data)
+        export_normals(f, object.data)
+        export_faces(f, object.data)
+        end_block(f)
+    return
+
+def export_sound_2d(f, object):
+    start_block(f, "*sound_2d")
+    export_common(f, object)
+    if type(object.data) == bpy.types.Speaker:
+        export_sound(f, object)
+    end_block(f)
+    return
+
+def export_sound_3d(f, object):
+    start_block(f, "*sound_3d")
+    export_common(f, object)
+    if type(object.data) == bpy.types.Speaker:
+        export_sound(f, object)
+    end_block(f)
+    return
+
+def export_character(f, object):
+    start_block(f, "*character")
+    export_common(f, object)
+    if type(object.data) == bpy.types.Armature:
+        export_armature(f, object.data)
+    export_children(f, object)       
+    end_block(f)
+    return
+
+def export_location_indoor(f, object):
+    if type(object.data) == bpy.types.Mesh:
+        start_block(f, "*location_indoor")
+        export_local_matrix(f, object)
+        export_convex_mesh(f, object)
+        export_children(f, object)        
+        end_block(f)
+    return
+
+def export_common(f, object):
     export_properties(f, object)
     export_name(f, object)
     
@@ -737,36 +807,44 @@ def export_object(f, object):
         export_string(f, "*parent", object.parent.name)
         
     export_bounding_box(f, object)
-    export_location(f, object)
     export_world_matrix(f, object)
     export_local_matrix(f, object)
     export_parent_inverse_matrix(f, object)
-    
-    if "type" in object:
-        if object["type"] == "collision_mesh":
-            export_collision_mesh(f, object)
-    else:
-        if type(object.data) == bpy.types.Mesh:
-            export_mesh(f, object)  
-            
-        if type(object.data) == bpy.types.Speaker:
-            export_sound(f, object)
-            
-        if type(object.data) == bpy.types.PointLamp:
-            export_point_lamp(f, object.data)
-            
-        if type(object.data) == bpy.types.Armature:
-            export_armature(f, object.data)
-            
+    return
+
+def export_children(f, object):
+    for child in object.children:
+        export_object(f, child)    
+    return
+   
+#
+#   export the whole object with all data i can imaginge
+#
+def export_object(f, object):        
+    if object.punk_entity_type == "LOCATION_INDOOR":
+        export_location_indoor(f, object)
+    elif object.punk_entity_type == "LIGHT":
+        export_light(f, object)
+    elif object.punk_entity_type == "PORTAL":
+        export_portal(f, object)
+    elif object.punk_entity_type == "STATIC":
+        export_static_mesh(f, object)        
+    elif object.punk_entity_type == "NAVI":
+        export_navi_mesh(f, object)
+    elif object.punk_entity_type == "SOUND_2D":
+        export_sound_2d(f, object)
+    elif object.punk_entity_type == "SOUND_3D":
+        export_sound_3d(f, object)
+    elif object.punk_entity_type == "RIGID":
+        export_rigid_body(f, object)
+    elif object.punk_entity_type == "CHARACTER":
+        export_character(f, object)
+    elif object.punk_entity_type == "CAMERA":   
         if type(object.data) == bpy.types.Camera:
             export_camera(f, object.data)
                  
     export_animation_tracks(f, object)
     
-    for child in object.children:
-        export_object(f, child)    
-           
-    end_block(f)
     return     
 
 
@@ -775,7 +853,6 @@ def export_model(context, filepath, anim_in_separate_file):
     for obj in bpy.context.selected_objects:
         export_object(f, obj)
     export_materials(f, bpy.data.materials)
-    #export_bones(f)    
     export_actions(f)
     f.close()
     return {'FINISHED'}
@@ -822,4 +899,4 @@ if __name__ == "__main__":
     register()
 
     # test call
-#    bpy.ops.export.punk_model('INVOKE_DEFAULT')
+bpy.ops.export.punk_model('INVOKE_DEFAULT')

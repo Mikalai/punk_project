@@ -11,16 +11,25 @@
 
 namespace Math
 {
-	PUNK_ENGINE mat4 ProjectionMatrix(float fov, float aspect, float zNear, float zFar);
-	PUNK_ENGINE mat4 OrthoMatrix(float width, float height, float bottom, float top);
-	PUNK_ENGINE mat4 Rotate(vec4 v);
-	PUNK_ENGINE mat4 Translate(vec3 pos);
-	PUNK_ENGINE mat4 Scale(vec3 scale);
-	PUNK_ENGINE mat4 TargetCamera(vec3 eye, vec3 pos, vec3 up);
-	PUNK_ENGINE mat4 FreeCamera(vec3 pos, vec3 dir, vec3 up);
-	PUNK_ENGINE mat4 RotationMatrixFromQuaternion(const quat& q);
-	PUNK_ENGINE mat3 NormalMatrixFromWorldView(const mat4& worldView);
+	PUNK_ENGINE const mat4 ProjectionMatrix(float fov, float aspect, float zNear, float zFar);
+	PUNK_ENGINE const mat4 OrthoMatrix(float width, float height, float bottom, float top);
+	PUNK_ENGINE const mat4 Rotate(vec4 v);
+	PUNK_ENGINE const mat4 Translate(vec3 pos);
+	PUNK_ENGINE const mat4 Scale(vec3 scale);
+	PUNK_ENGINE const mat4 TargetCamera(vec3 eye, vec3 pos, vec3 up);
+	PUNK_ENGINE const mat4 FreeCamera(vec3 pos, vec3 dir, vec3 up);
+	PUNK_ENGINE const mat4 RotationMatrixFromQuaternion(const quat& q);
+	PUNK_ENGINE const mat3 NormalMatrixFromWorldView(const mat4& worldView);
 
+	//	used to find ceter of the mass of the object
+	PUNK_ENGINE const vec3 CalculateAverage(const float* points, int count, unsigned offset);
+	PUNK_ENGINE const mat3 CreateCovarianceMatrix(const float* points, int count, unsigned offset);
+	PUNK_ENGINE bool DiagonalizeMatrix(const mat3& m, mat3& res);
+	PUNK_ENGINE bool EigenValues(const mat3& m, vec3& res);
+	PUNK_ENGINE bool EigenVectors(const mat3& m, const vec3& value, vec3 res[3]);
+	//	used to find native axis of the point set
+	PUNK_ENGINE bool CalculateNativeAxis(const float* points, int count, unsigned offset, vec3& r, vec3& s, vec3& t);
+	
 	template<class T>
 	const Quaternion<T> Matrix4x4ToQuaternion(const Matrix4x4<T>& m) 
 	{

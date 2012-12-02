@@ -3,7 +3,7 @@
 
 namespace System
 {
-	bool StorableData::Save(std::ostream& stream)
+	bool StorableData::Save(std::ostream& stream) const
 	{
 		return m_storage_name.Save(stream);		
 	}

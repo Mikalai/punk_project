@@ -62,7 +62,7 @@ namespace Math
 			return m_v[1];
 		}
 
-		T& Y() 
+		T& Y()	
 		{
 			return m_v[1];
 		}
@@ -186,6 +186,14 @@ namespace Math
 			return *this;
 		}
 
+		Vector3<T>& operator /= (T value)
+		{
+			m_v[0] /= value;
+			m_v[1] /= value;
+			m_v[2] /= value;
+			return *this;
+		}
+
 		T& operator [] (int i)
 		{
 			return m_v[i];
@@ -270,7 +278,7 @@ namespace Math
 			return System::string::Format(L"(%.3f; %.3f; %.3f)", m_v[0], m_v[1], m_v[2]);
 		}
 
-		bool Save(std::ostream& stream) 
+		bool Save(std::ostream& stream) const
 		{
 			stream.write((char*)m_v, sizeof(m_v));
 			return true;

@@ -23,7 +23,7 @@ namespace Audio
 		void Init();
 		void Clear();
 		
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);		
 
 		/// wav, ogg etc.

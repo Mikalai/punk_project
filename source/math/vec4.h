@@ -41,6 +41,14 @@ namespace Math
 			m_v[3] = w;
 		}
 
+		Vector4<T>(T x)
+		{
+			m_v[0] = x;
+			m_v[1] = x;
+			m_v[2] = x;
+			m_v[3] = x;
+		}
+
 		Vector4<T>(const Vector4<T>& origin, const Vector4<T>& destination)
 		{
 			for (int i = 0; i < Size_c; i++)
@@ -146,6 +154,14 @@ namespace Math
 		T Dot(const Vector4<T>& vec)
 		{
 			return m_v[0] * vec.m_v[0] + m_v[1] * vec.m_v[1] + m_v[2] * vec.m_v[2] + m_v[3] * vec.m_v[3];
+		}
+
+		void Set(T x)
+		{
+			m_v[0] = x;
+			m_v[1] = x;
+			m_v[2] = x;
+			m_v[3] = x;
 		}
 
 		void Set(T x, T y, T z, T w)
@@ -428,7 +444,7 @@ namespace Math
 			return true;
 		}
 
-		bool Save(std::ostream& stream)
+		bool Save(std::ostream& stream) const
 		{
 			stream.write((char*)m_v, sizeof(m_v));
 			return true;
@@ -488,6 +504,7 @@ namespace Math
 	public:
 		vec4() : Vector4<float>() {}
 		vec4(float x, float y, float z, float w) : Vector4<float>(x, y, z, w) {}
+		vec4(float x) : Vector4<float>(x) {}
 		vec4(const vec4& origin, const vec4& destination) : Vector4<float>(origin, destination) {}
 		vec4(const vec3& p, float d = 1) : Vector4<float>(p, d) {}
 		vec4(const vec4& vec) : Vector4<float>(vec) {}
@@ -499,6 +516,7 @@ namespace Math
 	public:
 		ivec4() : Vector4<int>() {}
 		ivec4(int x, int y, int z, int w) : Vector4<int>(x, y, z, w) {}
+		ivec4(int x) : Vector4<int>(x) {}
 		ivec4(const ivec4& vec) : Vector4<int>(vec) {}
 		ivec4(const Vector4<int>& vec) : Vector4<int>(vec) {}
 	};	

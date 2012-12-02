@@ -127,7 +127,7 @@ namespace OpenGL
 		return true;
 	}
 
-	bool Texture2D::Save(std::ostream& stream)
+	bool Texture2D::Save(std::ostream& stream) const
 	{	
 		return false;
 	}

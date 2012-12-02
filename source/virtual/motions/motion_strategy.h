@@ -11,7 +11,7 @@ namespace Math
 
 namespace Virtual
 {
-	class Transform;
+	class TransformNode;
 
 	enum MotionStrategyType : char { MOTION_STRATEGY_TYPE_NONE, MOTION_STRATEGY_TYPE_STATIC };
 
@@ -19,23 +19,23 @@ namespace Virtual
 	{
 	public:
 		MotionStrategy();
-		void SetTargetTransform(Transform* value) { m_transform = value; }
-		Transform* GetTargetTransform() { return m_transform; }
-		const Transform* GetTargetTransform() const { return m_transform; }
+		void SetTargetTransform(TransformNode* value) { m_transform = value; }
+		TransformNode* GetTargetTransform() { return m_transform; }
+		const TransformNode* GetTargetTransform() const { return m_transform; }
 		MotionStrategyType GetMotionStrategyType() const { return m_motion_type; }
 
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual bool Update(__int64 current_time_us, __int64 delta_us) = 0;
 		virtual ~MotionStrategy();
 
 	protected:
-		Transform* GetTransform() { return m_transform; }		
-		const Transform* GetTransform() const { return m_transform; }
+		TransformNode* GetTransform() { return m_transform; }		
+		const TransformNode* GetTransform() const { return m_transform; }
 		void SetMotionStrategyType(MotionStrategyType value) { m_motion_type = value; }
 	private:
 		MotionStrategyType m_motion_type;
-		Transform* m_transform;
+		TransformNode* m_transform;
 	};	
 }
 

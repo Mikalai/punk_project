@@ -1,55 +1,56 @@
-#ifndef _H_PUNK_SCENE_GRAPH
-#define _H_PUNK_SCENE_GRAPH
+#ifndef _H_PUNK_SCENE_MAIN_HEADER
+#define _H_PUNK_SCENE_MAIN_HEADER
 
-#include "config.h"
-#include <memory>
-
-namespace System
-{
-	class string;
-	class Buffer;
-	class Descriptor;
-}
+#include "../system/resource_manager_2.h"
+#include "../system/object.h"
+#include "node.h"
+#include "geometry_node.h"
+#include "transform_node.h"
+#include "camera_node.h"
+#include "light_node.h"
+#include "location_indoor.h"
+#include "portal_node.h"
+#include "point_light_node.h"
+#include "material_node.h"
+#include "default_visitor.h"
 
 namespace Scene
 {
-	class Visitor;
-
-	/*! This class is supposed to contain the whole whole world. But instead of holding 
-		object instances themselves it contains only their handlers. While in game process
-		supposed to be happaned different events. To keep this graph up-to-date objects
-		must inform it by sending events of special type. Through the build in mechanism of sending
-		and subscribing events this event will be delivered to scene graph if it was subscribed.
-		Than for response it will change himself.
-		This structure can be used for searching of objects in the world. Requesting list of all objects
-		in some region. To render scene. And some other staff maybe.
-	*/
-	class  LIB_SCENE SceneGraph
+	class PUNK_ENGINE SceneGraph : public System::Object
 	{
-		static std::auto_ptr<SceneGraph> m_instance;
-		struct SceneGraphImpl;
-		std::auto_ptr<SceneGraphImpl> impl_sg;
-
-		SceneGraph();
-		SceneGraph(const SceneGraph& graph);
-		SceneGraph& operator = (const SceneGraph& graph);		
 	public:
+		typedef std::vector<System::Proxy<Virtual::Material>> MaterialsCollection;
 
-		void Visit(Visitor* visitor);
+	public:
+		SceneGraph();
 
-		void Add(const System::Descriptor& parent, const System::Descriptor& child);		
-		bool Is_a_Parent_of_b(const System::Descriptor& a, const System::Descriptor& b);
-		bool Is_a_Child_of_b(const System::Descriptor& a, const System::Descriptor& b);
-		void RemoveChunk(const System::Descriptor& a);
+		virtual bool Save(std::ostream& stream) const;
+		virtual bool Load(std::istream& stream);
+				
+		static System::Proxy<SceneGraph> CreateFromFile(const System::string& path);
+		static System::Proxy<SceneGraph> CreateFromStream(std::istream& stream);
 
-		void Save(System::Buffer& buffer) const;
-		void Load(System::Buffer& buffer);
+		void SetRootNode(System::Proxy<Node> value) { m_root = value; }
+		System::Proxy<Node> GetRootNode() { return m_root; }
 
-		static SceneGraph* Instance();
-		static void Destroy();
-		
-		~SceneGraph();
+		void AddMaterial(System::Proxy<Virtual::Material> value) { m_used_materials.push_back(value); }
+
+		void SetActiveCamera(System::Proxy<Virtual::Cameras::Camera> value);
+		System::Proxy<CameraNode> GetCameraNode() { return m_camera_node; }
+
+	private:	
+		SceneGraph(const SceneGraph&);
+		SceneGraph& operator = (const SceneGraph&);
+
+	private:
+
+		System::Proxy<CameraNode> m_camera_node;
+		System::Proxy<Node> m_root;
+		MaterialsCollection m_used_materials;
+
 	};
 }
 
-#endif
+REGISTER_MANAGER(L"resource.scenes", L"*.scene_graph", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SCENE_GRAPH, Scene, SceneGraph);
+
+#endif	//	_H_PUNK_SCENE_MAIN_HEADER

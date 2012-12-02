@@ -13,7 +13,7 @@ namespace OpenGL
 	class RenderTarget;
 	class PUNK_ENGINE RenderPass : public System::Poolable<RenderPass>
 	{
-		std::map<TextureContext*, std::map<DummyRenderPolicy*, std::list<Batch*> > > m_batches;
+		std::vector<Batch*> m_batches;
 		RenderTarget* m_render_target;
 		//
 		//	TODO: Add render target
@@ -25,7 +25,7 @@ namespace OpenGL
 		void SetRenderTarget(RenderTarget* target) { m_render_target = target; }
 		RenderTarget* GetRenderTarget() { return m_render_target; }
 		const RenderTarget* GetRenderTarget() const { return m_render_target; }
-		void AddBatch(TextureContext* textures, DummyRenderPolicy* context, Batch* batch);
+		void AddBatch(Batch* batch);
 	};
 }
 

@@ -18,7 +18,7 @@ namespace Utility
 	class PUNK_ENGINE WorldDesc
 	{
 	public:
-		std::vector<ObjectDesc*> m_objects;
+		std::vector<ObjectDesc*> m_children;
 		std::map<System::string, MaterialDesc*> m_materials;		
 		std::map<System::string, ActionDesc*> m_actions;
 		~WorldDesc();

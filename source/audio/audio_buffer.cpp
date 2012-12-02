@@ -36,7 +36,7 @@ namespace Audio
 		CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
 	}
 
-	bool AudioBuffer::Save(std::ostream& stream)
+	bool AudioBuffer::Save(std::ostream& stream) const
 	{				
 		//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));		
 		//m_file.Save(stream);

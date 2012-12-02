@@ -10,7 +10,7 @@ namespace System
 	class Serializable 
 	{
 	public:
-		virtual bool Save(std::ostream& stream) = 0;
+		virtual bool Save(std::ostream& stream) const = 0;
 		virtual bool Load(std::istream& stream) = 0;
 	};
 };

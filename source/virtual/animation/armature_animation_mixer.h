@@ -30,7 +30,7 @@ namespace Virtual
 		void SetTrackTime(float time);
 		float GetTrackTime() const { return m_current_time; }
 
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual ~ArmatureAnimationMixer();
 

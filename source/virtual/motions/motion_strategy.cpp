@@ -12,7 +12,7 @@ namespace Virtual
 	MotionStrategy::~MotionStrategy()
 	{}
 
-	bool MotionStrategy::Save(std::ostream& stream)
+	bool MotionStrategy::Save(std::ostream& stream) const
 	{
 		if (!System::Object::Save(stream))
 		{

@@ -23,7 +23,7 @@ namespace Utility
 		PROPERTY(float, ConeAngleOuter, m_cone_angle_outer);
 		PROPERTY(float, ConeVolumeOuter, m_cone_volume_outer);
 		PROPERTY(float, Attenuation, m_attenuation);
-		bool Save(std::ostream& stream);
+		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 	private:
 		System::string m_name;

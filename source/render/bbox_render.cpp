@@ -7,7 +7,7 @@ namespace Render
 {
 	void BBoxRender::Render(const Math::BoundingBox& bbox, const Math::mat4& world, const Math::mat4& view, const Math::mat4& proj)
 	{
-		bbox.Transform(world);
+		bbox.TransformNode(world);
 		const Math::vec3* p = bbox.TransformedPoints();
 		
 		line.SetColor(0,1,0,1);
@@ -33,7 +33,7 @@ namespace Render
 	{				
 		Math::vec3 m_min;
 		Math::vec3 m_max;
-		bbox.Transform(world, m_min, m_max);
+		bbox.TransformNode(world, m_min, m_max);
 
 		Math::vec3 p[8];
 

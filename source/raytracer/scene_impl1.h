@@ -39,14 +39,14 @@ namespace Raytracer
 		};
 
 		std::vector<Light> m_lights;
-		std::vector<Object> m_objects;
+		std::vector<Object> m_children;
 	
 		SceneImpl()
 		{}
 
 		void Add(const Object& o)
 		{
-			m_objects.push_back(o);
+			m_children.push_back(o);
 		}
 
 		const Math::vec3 CalclLightOmni(const Light& light, const Math::vec3& point, const Math::vec3& normal, const Math::vec3& diffuse)
@@ -98,7 +98,7 @@ namespace Raytracer
 			float min_t1 = 1e10;
 			const Object* near_object = nullptr;
 			Math::vec3 color;
-			for each (auto& object in m_objects)
+			for each (auto& object in m_children)
 			{
 				float t1, t2;				
 				Math::vec3 p1, p2;

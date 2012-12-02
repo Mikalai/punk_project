@@ -7,41 +7,53 @@
 #include "../../../utility/descriptors/mesh_desc.h"
 
 #include "static_mesh.h"
-
+#include "primitive_types.h"
 
 namespace OpenGL
 {
+	StaticMesh::StaticMesh()
+	{
+		m_primitive_type = PrimitiveTypes::STATIC_MESH; 
+	}
 
-	StaticMesh* StaticMesh::CreateFromFile(const System::string& path)
+	System::Proxy<StaticMesh> StaticMesh::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios_base::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't load static mesh from " << path << std::endl, nullptr);
-		std::unique_ptr<StaticMesh> mesh(new StaticMesh);
+			return (out_error() << "Can't load static mesh from " << path << std::endl, System::Proxy<StaticMesh>(nullptr));
+		System::Proxy<StaticMesh> mesh(new StaticMesh);
 		mesh->Load(stream);
-		return mesh.release();
+		return mesh;
 	}
 
-	StaticMesh* StaticMesh::CreateFromStream(std::istream& stream)
+	System::Proxy<StaticMesh> StaticMesh::CreateFromStream(std::istream& stream)
 	{
-		std::unique_ptr<StaticMesh> mesh(new StaticMesh);
+		System::Proxy<StaticMesh> mesh(new StaticMesh);
 		mesh->Load(stream);
-		return mesh.release();
+		return mesh;
 	}
 
-	bool StaticMesh::Save(std::ostream& stream)
+	bool StaticMesh::Save(std::ostream& stream) const
 	{
-		return VertexArrayObject2<PrimitiveType, VertexType>::Save(stream);
+		if (!VertexArrayObject2<PrimitiveType, VertexType>::Save(stream))
+			return (out_error() << "Can't save static mesh" << std::endl, false);
+		if (!Object::Save(stream))
+			return (out_error() << "Can't save static mesh" << std::endl, false);
+		return true;
 	}
 
 	bool StaticMesh::Load(std::istream& stream)
 	{
-		return VertexArrayObject2<PrimitiveType, VertexType>::Load(stream);
+		if (!VertexArrayObject2<PrimitiveType, VertexType>::Load(stream))
+			return (out_error() << "Can't load static mesh" << std::endl, false);
+		if (!Object::Load(stream))
+			return (out_error() << "Can't load static mesh" << std::endl, false);
+		return true;	
 	}
 
 	bool StaticMesh::Cook(Utility::MeshDesc* mesh)
 	{				
-		SetType(System::PERMANENT_RESOURCE_STATIC_MESH);
+		SetType(System::ObjectType::STATIC_MESH);
 		if (mesh->m_vertices.empty())
 			return (out_error() << "Can't create static mesh from empty vertex list in mesh descriptor" << std::endl, false);
 		if (mesh->m_tex_coords.empty())

@@ -20,7 +20,7 @@ namespace Utility
 		return stream;
 	}
 
-	bool MeshDesc::Save(std::ostream& stream)
+	bool MeshDesc::Save(std::ostream& stream) const
 	{
 		{
 			int size = (int)m_vertices.size();

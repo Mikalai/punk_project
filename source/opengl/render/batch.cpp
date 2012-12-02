@@ -4,6 +4,6 @@ namespace OpenGL
 {
 	Batch::~Batch()
 	{
-		delete m_parameters;
+//		delete m_parameters;
 	}
 }

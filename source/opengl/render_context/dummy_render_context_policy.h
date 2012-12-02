@@ -4,30 +4,17 @@
 #include "../../config.h"
 #include "../../utility/model/vertex_component.h"
 #include "shaders/shader.h"
+#include "../render/render_state.h"
+#include "../../system/smart_pointers/proxy.h"
 
 namespace OpenGL
 {
-	class PUNK_ENGINE DummyRenderPolicy
+	class PUNK_ENGINE AbstractRenderPolicy
 	{
 	public:
-		struct PUNK_ENGINE DummyParameters
-		{
-			virtual ~DummyParameters() {}
-		};
-
-	protected:
-		std::auto_ptr<Shader> m_vertex_shader;
-		std::auto_ptr<Shader> m_fragment_shader;
-		std::auto_ptr<Shader> m_geometry_shader;
-
-		unsigned m_program;
-		bool m_was_modified;
-		Utility::VertexAttributes m_vertex_attributes;
-	
-	public:
-		DummyRenderPolicy();
+		AbstractRenderPolicy();
 		virtual void InitUniforms();
-		virtual void BindParameters(const DummyParameters& params);
+		virtual void BindParameters(const System::Proxy<State>& params);
 		virtual Utility::VertexAttributes GetRequiredAttributesSet() const;
 		virtual void Begin();
 		virtual void End();
@@ -57,7 +44,16 @@ namespace OpenGL
 		int IndexForAttrName(const char * name);
 		void GetAttribute(const char * name, float* out);
 		void GetAttribute(int index, float* out);
-		virtual ~DummyRenderPolicy();
+		virtual ~AbstractRenderPolicy();
+
+	protected:
+		std::auto_ptr<Shader> m_vertex_shader;
+		std::auto_ptr<Shader> m_fragment_shader;
+		std::auto_ptr<Shader> m_geometry_shader;
+
+		unsigned m_program;
+		bool m_was_modified;
+		Utility::VertexAttributes m_vertex_attributes;
 	};
 }
 #endif	//	_H_PUNK_OPENGL_DUMMY_RENDER_CONTEXT

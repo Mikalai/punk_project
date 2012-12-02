@@ -18,7 +18,7 @@
 #include "line2d.h"
 #include "triangle2d.h"
 #include "triangle3d.h"
-#include "bounding_box.h"
+#include "aabb.h"
 #include "low_level_math.h"
 #include "interpolation.h"
 #include "complex.h"

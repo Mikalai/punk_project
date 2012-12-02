@@ -3,13 +3,12 @@
 
 #include "../config.h"
 #include "vec3.h"
+#include "mat4.h"
 
 namespace Math
 {
 	class PUNK_ENGINE Sphere
-	{
-		vec3 m_center;
-		float m_radius;
+	{		
 	public:
 		Sphere() : m_center(), m_radius(1) {}
 		Sphere(const vec3& center, float radius) : m_center(center), m_radius(radius) {}
@@ -19,7 +18,25 @@ namespace Math
 
 		float GetRadius() const { return m_radius; }
 		const vec3& GetCenter() const { return m_center; }
+
+		friend const Sphere operator * (const mat4& m, const Sphere& s);
+
+		bool Save(std::ostream& stream) const;
+		bool Load(std::istream& stream);
+
+	private:
+		vec3 m_center;
+		float m_radius;
 	};
+
+	inline const Sphere operator * (const mat4& m, const Sphere& s)
+	{
+		Sphere res;
+		res.m_center = m * s.GetCenter();
+		//	consider that transform do not effect the radius
+		res.m_radius = s.GetRadius();
+		return res;
+	}
 }
 
 #endif

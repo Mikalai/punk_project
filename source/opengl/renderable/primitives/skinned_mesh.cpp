@@ -7,29 +7,35 @@
 #include "../../../utility/descriptors/bone_desc.h"
 
 #include "skinned_mesh.h"
+#include "primitive_types.h"
 
 namespace OpenGL
 {
-	SkinnedMesh* SkinnedMesh::CreateFromFile(const System::string& path)
+	SkinnedMesh::SkinnedMesh()
+	{
+		m_primitive_type = PrimitiveTypes::SKINNED_MESH;
+	}
+
+	System::Proxy<SkinnedMesh> SkinnedMesh::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios_base::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't load skinned mesh from " << path << std::endl, nullptr);
-		std::unique_ptr<SkinnedMesh> mesh(new SkinnedMesh);
+			return (out_error() << "Can't load skinned mesh from " << path << std::endl, System::Proxy<SkinnedMesh>(nullptr));
+		System::Proxy<SkinnedMesh> mesh(new SkinnedMesh);
 		mesh->Load(stream);
-		return mesh.release();
+		return mesh;
 	}
 
-	SkinnedMesh* SkinnedMesh::CreateFromStream(std::istream& stream)
+	System::Proxy<SkinnedMesh> SkinnedMesh::CreateFromStream(std::istream& stream)
 	{
-		std::unique_ptr<SkinnedMesh> mesh(new SkinnedMesh);
+		System::Proxy<SkinnedMesh> mesh(new SkinnedMesh);
 		mesh->Load(stream);
-		return mesh.release();
+		return mesh;
 	}
 
 	bool SkinnedMesh::Cook(const Utility::MeshDesc* mesh, const Utility::ArmatureDesc* armature)
 	{				
-		SetType(System::PERMANENT_RESOURCE_SKINNED_MESH);
+		SetType(System::ObjectType::SKINNED_MESH);
 		if (!mesh)
 			return (out_error() << "Can't created skinned mesh from NULL mesh descriptor" << std::endl, false);
 		if (mesh->m_vertices.empty())
@@ -183,7 +189,7 @@ namespace OpenGL
 		return true;
 	}
 
-	bool SkinnedMesh::Save(std::ostream& stream)
+	bool SkinnedMesh::Save(std::ostream& stream) const
 	{
 		return VertexArrayObject2<PrimitiveType, VertexType>::Save(stream);
 	}

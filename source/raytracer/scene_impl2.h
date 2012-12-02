@@ -43,7 +43,7 @@ namespace Raytracer
 		};
 
 		std::vector<Light> m_lights;
-		std::vector<Object> m_objects;
+		std::vector<Object> m_children;
 		float m_env_factor;
 
 		SceneImpl()
@@ -52,7 +52,7 @@ namespace Raytracer
 
 		void Add(const Object& o)
 		{
-			m_objects.push_back(o);
+			m_children.push_back(o);
 		}
 
 		float FresnelFactorFunction(const Math::vec3& view, const Math::vec3& light, float factor)
@@ -160,7 +160,7 @@ namespace Raytracer
 			float min_t1 = 1e10;
 			const Object* near_object = nullptr;
 			Math::vec3 color;
-			for each (auto& object in m_objects)
+			for each (auto& object in m_children)
 			{
 				float t1, t2;				
 				Math::vec3 p1, p2;

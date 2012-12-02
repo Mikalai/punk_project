@@ -46,8 +46,8 @@ namespace ImageModule
 
 		virtual ~ImageFile();
 
-		virtual bool Load(const wchar_t* file) { return false; }
-		virtual bool Save(const wchar_t* file) { return false; }
+		virtual bool Save(const wchar_t* file) const { return false; }
+		virtual bool Load(const wchar_t* file) { return false; }		
 
 		virtual void Store(System::Buffer& buffer);
 		virtual void Restore(System::Buffer& buffer);

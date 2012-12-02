@@ -11,14 +11,13 @@ namespace OpenGL
 {	
 	class TextureContext;
 	class Texture2D;
-
+	class State;
 	class PUNK_ENGINE Batch : public System::Poolable<Batch>
 	{		
 	public:
 		~Batch();
-		std::list<System::Handle<Texture2D>> m_textures;
-		DummyRenderPolicy::DummyParameters* m_parameters;
-		Renderable* m_renderable;
+		System::Proxy<State> m_state;
+		System::Proxy<Renderable> m_renderable;
 	};
 }
 

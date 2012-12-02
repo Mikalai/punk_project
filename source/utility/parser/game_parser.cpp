@@ -55,7 +55,7 @@
 //		//	struct 		
 //		typedef std::map<System::string, std::shared_ptr<Entity>> Objects;
 //		System::string m_material;
-//		Objects m_objects;
+//		Objects m_children;
 //		Math::BoundingBox m_bbox;
 //	//	SkeletonID m_skeleton_id;
 //		//ActionCollection m_skeleton_animation;
@@ -78,7 +78,7 @@
 //		SceneImpl::SceneImpl(const SceneImpl& impl)
 //			: m_material(impl.m_material)
 //			, m_bbox(impl.m_bbox)
-//			, m_objects(impl.m_objects)
+//			, m_children(impl.m_children)
 ////			, m_skeleton_id(impl.m_skeleton_id)
 ////			, m_skeleton_animation(impl.m_skeleton_animation)
 //			, m_materials(impl.m_materials)
@@ -96,11 +96,11 @@
 //
 //		bool Save(std::ostream& stream)
 //		{
-//			int size = (int)m_objects.size();
+//			int size = (int)m_children.size();
 //			stream.write((char*)&size, sizeof(int));
 //			if (size)
 //			{
-//				for each (auto object in m_objects)
+//				for each (auto object in m_children)
 //				{				
 //					object.second->Save(stream);
 //				}
@@ -144,7 +144,7 @@
 //			{
 //				std::shared_ptr<Entity> object(new Entity);
 //				object->Load(stream);
-//				m_objects[object->GetName()] = object;
+//				m_children[object->GetName()] = object;
 //			}				
 //
 //			m_bbox.Load(stream);
@@ -461,7 +461,7 @@
 //
 //		const Entity* FindObjectByName(const System::string& obj) const
 //		{
-//			for each (auto object in m_objects)
+//			for each (auto object in m_children)
 //			{
 //				if (object.second->GetName() == obj)
 //					return object.second.get();
@@ -509,7 +509,7 @@
 //
 //		bool IntersectWithRay(const Math::Vector3<float>& start, const Math::Vector3<float>& end, IntersectionCollection& res)
 //		{
-//			for each (auto record in m_objects)
+//			for each (auto record in m_children)
 //			{
 //				record.second->IntersectWithRay(start, end, res);
 //			}
@@ -647,15 +647,15 @@
 //		*/
 //		int GetObjectsCount() const
 //		{
-//			return m_objects.size();
+//			return m_children.size();
 //		}
 //
 //		const System::string GetObjectName(int index) const
 //		{
-//			if (index >= (int)m_objects.size())
+//			if (index >= (int)m_children.size())
 //				throw System::SystemError(L"Index out of range");
 //			int i = 0;
-//			for (Objects::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+//			for (Objects::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
 //			{
 //				if (i == index)
 //					return it->first;
@@ -1056,7 +1056,7 @@
 //
 //		void PrintDebug()
 //		{
-//			for each (auto object in m_objects)
+//			for each (auto object in m_children)
 //			{
 //				std::wcout << object.first.Data() << std::endl;
 //				for each (auto child in object.second->GetChildren())

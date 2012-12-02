@@ -5,7 +5,7 @@
 
 namespace Virtual
 {
-	bool Action::Save(std::ostream& stream)
+	bool Action::Save(std::ostream& stream) const
 	{
 		if (!System::Object::Save(stream))
 		{

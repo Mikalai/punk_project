@@ -7,7 +7,7 @@ namespace Virtual
 	{
 	}
 
-	bool ObjectAnimation::Save(std::ostream& stream)
+	bool ObjectAnimation::Save(std::ostream& stream) const
 	{
 		if (!Animation::Save(stream))
 			return false;

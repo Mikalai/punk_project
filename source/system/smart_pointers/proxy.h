@@ -19,13 +19,20 @@ namespace System
 			~Impl() { delete m_data; }
 		};
 
-		Impl* m_impl;
+		mutable Impl* m_impl;
 
 	public:
 
 		Proxy() : m_impl(0) {}
+		
+		explicit Proxy(T* data) : m_impl(0)
+		{
+			if (data)
+				m_impl = new Impl(data);
+		}
 
-		Proxy(T* data) : m_impl(0)
+		template<class U>
+		explicit Proxy(U* data)
 		{
 			if (data)
 				m_impl = new Impl(data);
@@ -38,10 +45,32 @@ namespace System
 				m_impl->m_count++;
 		}
 
+		template<class U>
+		Proxy(const Proxy<U>& v)
+		{		
+			m_impl = (Impl*)(v.m_impl);
+			if (m_impl)
+				m_impl->m_count++;
+		}
+
 		Proxy<T>& operator = (const Proxy<T>& v)
 		{		
 			Proxy<T> temp(v);
 			std::swap(temp.m_impl, m_impl);
+			return *this;
+		}
+
+		template<class U>
+		Proxy<T>& operator = (const Proxy<U>& v)
+		{
+			const T* flag = dynamic_cast<T*>(v.m_impl->m_data);
+			if (flag)
+			{
+				Proxy<T> temp(v);
+				std::swap(temp.m_impl, m_impl);
+				return *this;
+			}	
+			out_warning() << "Can't convert types from " << typeid(U).name() << " to " << typeid(T).name() << std::endl;
 			return *this;
 		}
 
@@ -86,8 +115,20 @@ namespace System
 			assert(m_impl);
 			return m_impl->m_data; 
 		}
+		
+		const T* operator -> () const
+		{ 
+			assert(m_impl);
+			return m_impl->m_data; 
+		}
 
 		operator T* () 
+		{
+			assert(m_impl);
+			return m_impl->m_data;		
+		}
+
+		operator const T* () const
 		{
 			assert(m_impl);
 			return m_impl->m_data;		
@@ -106,6 +147,21 @@ namespace System
 			delete m_impl->m_data;
 			m_impl->m_data = data;
 		}
+
+		T* Get()
+		{
+			assert(m_impl);
+			return m_impl->m_data;
+		}
+
+		const T* Get() const
+		{
+			assert(m_impl);
+			return m_impl->m_data;
+		}
+
+		template<class U>
+		friend class Proxy;
 	};
 }
 

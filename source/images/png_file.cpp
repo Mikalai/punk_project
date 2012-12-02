@@ -200,7 +200,7 @@ namespace ImageModule
 		return true;
 	}
 
-	bool PngFile::Save(const wchar_t *file)
+	bool PngFile::Save(const wchar_t *file) const
 	{
 		FILE *fp;
 		png_structp png_ptr;

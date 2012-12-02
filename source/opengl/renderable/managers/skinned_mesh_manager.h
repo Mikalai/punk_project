@@ -14,7 +14,7 @@ namespace System
 		static const System::string GetResourceFile() { return L"resource.res_skinned_vao"; }
 		static const System::string GetExtension() { return L"*.skinned_vao"; }
 		static const System::string GetFolder() { return System::Environment::Instance()->GetModelFolder(); }	
-		static const int GetResourceType() { return System::PERMANENT_RESOURCE_SKINNED_MESH; }
+		static System::ObjectType GetResourceType() { return System::ObjectType::SKINNED_MESH; }
 		static void OnInit() {};
 		static void OnDestroy() {};
 	};

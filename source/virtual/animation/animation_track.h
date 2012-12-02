@@ -23,7 +23,7 @@ namespace Virtual
 		bool HasKeyAt(int frame);
 		T& GetOriginalKey(int frame, bool& flag);
 		const T& GetOriginalKey(int frame, bool& flag) const;
-		bool Save(std::ostream& stream);
+		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 		std::wostream& out_formatted(std::wostream& stream);
 	};
@@ -141,7 +141,7 @@ namespace Virtual
 	}	
 
 	template<class T>
-	inline bool AnimationTrack<T>::Save(std::ostream& stream)
+	inline bool AnimationTrack<T>::Save(std::ostream& stream) const
 	{
 		int frame_count = m_keys.size();
 		stream.write(reinterpret_cast<const char*>(&frame_count), sizeof(frame_count));

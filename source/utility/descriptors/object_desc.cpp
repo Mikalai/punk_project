@@ -26,7 +26,7 @@ namespace Utility
 		if (m_reference.Size())
 			stream << Tab() << "Referenced object: " << m_reference.Data() << std::endl;
 		stream << Tab() << "Location: "; m_location.out_formatted(stream) << std::endl;
-		stream << Tab() << "Bounding box: \n"; m_bbox.out_formatted(stream) << std::endl;
+//		stream << Tab() << "Bounding box: \n"; m_bbox.out_formatted(stream) << std::endl;
 		stream << Tab() << "World matrix: \n" << m_world << std::endl;
 		stream << Tab() << "Inversed parent: \n" << m_inv_parent << std::endl;
 		stream << Tab() << "Local matrix: \n" << m_local << std::endl;

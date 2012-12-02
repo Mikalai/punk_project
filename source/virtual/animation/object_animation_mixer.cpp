@@ -100,7 +100,7 @@ namespace Virtual
 		}
 	}
 
-	bool ObjectAnimationMixer::Save(std::ostream& stream)
+	bool ObjectAnimationMixer::Save(std::ostream& stream) const
 	{
 		int track_count = m_tracks.size();
 		stream.write(reinterpret_cast<const char*>(&track_count), sizeof(track_count));
@@ -110,8 +110,8 @@ namespace Virtual
 			name.Save(stream);
 			it->second->Save(stream);
 
-			bool is_active = m_active[name];
-			float factor = m_factors[name];
+			bool is_active = m_active.at(name);
+			float factor = m_factors.at(name);
 			stream.write(reinterpret_cast<const char*>(&is_active), sizeof(is_active));
 			stream.write(reinterpret_cast<const char*>(&factor), sizeof(factor));			
 		}

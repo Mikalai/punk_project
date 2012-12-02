@@ -16,7 +16,7 @@ namespace System
 		static const System::string GetResourceFile() { return L"resource"; }
 		static const System::string GetExtension() { return L"*.png"; }
 		static const System::string GetFolder() { return System::Environment::Instance()->GetTextureFolder(); }	
-		static const int GetResourceType() { return System::PERMANENT_RESOURCE_TEXTURE2D; }
+		static System::ObjectType GetResourceType() { return System::ObjectType::TEXTURE_2D; }
 		static void OnInit() {}
 		static void OnDestroy() {}
 	};

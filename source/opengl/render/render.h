@@ -7,5 +7,7 @@
 #include "render_target.h"
 #include "render_target_back_buffer.h"
 #include "render_target_texture.h"
+#include "render_state.h"
+#include "simple_render.h"
 
 #endif

@@ -36,7 +36,7 @@ namespace Virtual
 
 		AnimationType GetAnimationType() const { return m_animation_type; }
 
-		virtual bool Save(std::ostream& stream);
+		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 	};
 }

@@ -3,7 +3,7 @@
 
 #include "../config.h"
 #include "vec3.h"
-#include "bounding_box.h"
+#include "aabb.h"
 #include "relations.h"
 
 namespace Math
@@ -16,14 +16,14 @@ namespace Math
 		vec3 m_v[3];
 		vec3 m_normal;
 		float m_distance;	//	distance from origin
-		BoundingBox m_bbox;		
+		AxisAlignedBox m_bbox;		
 	public:
 
 		Triangle3D();
 		Triangle3D(const vec3& v0, const vec3& v1, const vec3& v2);
 		const vec3& operator [] (unsigned i) const;
 		vec3& operator [] (unsigned i);
-		const BoundingBox& GetBoundingBox() const;
+		const AxisAlignedBox& GetAxisAlignedBox() const;
 		const vec3& GetNormal() const;
 		float GetDistance() const { return m_distance; }
 

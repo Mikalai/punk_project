@@ -13,7 +13,7 @@ namespace Utility
 		Tab::Inc();
 		stream << Tab() << L"Objects: " << std::endl;
 		Tab::Inc();
-		for (auto object : m_objects)
+		for (auto object : m_children)
 			object->out_formatted(stream) << std::endl;
 		Tab::Dec();
 		stream << Tab() << L"Materials: " << std::endl;
@@ -42,7 +42,7 @@ namespace Utility
 
 	WorldDesc::~WorldDesc()
 	{
-		for (auto object : m_objects)
+		for (auto object : m_children)
 			delete object;
 
 		for (auto material : m_materials)

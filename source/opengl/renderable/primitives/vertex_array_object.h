@@ -51,7 +51,7 @@ namespace OpenGL
 			Clear();
 		}
 
-		void Bind(Utility::VertexAttributes supported_by_context)
+		void Bind(Utility::VertexAttributes supported_by_context) 
 		{
 			if (m_was_modified)
 			{
@@ -233,12 +233,15 @@ namespace OpenGL
 			}
 		}
 
-		bool Save(std::ostream& stream)
+		bool Save(std::ostream& stream) const
 		{
+			if (!Renderable::Save(stream))
+				return (out_error() << "Can't save vertex array object " << std::endl, false);
+
 			//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));
 			//m_location.Save(stream);
 
-			Bind(VertexType);
+			const_cast<VertexArrayObject2<PrimitiveType, VertexType>*>(this)->Bind(VertexType);
 
 			GLvoid* vb = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
 			stream.write(reinterpret_cast<const char*>(&m_vb_size), sizeof(m_vb_size));
@@ -259,13 +262,16 @@ namespace OpenGL
 			stream.write(reinterpret_cast<const char*>(&combination), sizeof(combination));
 			stream.write(reinterpret_cast<const char*>(&m_primitive_count), sizeof(m_primitive_count));
 
-			Clear();
+//			Clear();
 
 			return true;
 		}
 
 		bool Load(std::istream& stream)
 		{
+			if (!Renderable::Load(stream))
+				return (out_error() << "Can't load vertex array object" << std::endl, false);
+
 			//stream.read(reinterpret_cast<char*>(&m_index), sizeof(m_index));
 			//m_location.Load(stream);
 			stream.read(reinterpret_cast<char*>(&m_vb_size), sizeof(m_vb_size));

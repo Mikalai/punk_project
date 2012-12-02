@@ -12,170 +12,58 @@
 namespace Scene
 {
 	Node::Node()
-		: m_parent(nullptr)
-		, m_data(nullptr)
-	{}
+	{
+		SetType(System::ObjectType::NODE);
+	}
 
 	Node::~Node()
 	{
-		for (auto obj : m_children)
-		{
-			delete obj;
-		}
 	}
 
-	bool Node::Save(std::ostream& stream)
+	bool Node::Save(std::ostream& stream) const
 	{		
-		System::Object::Save(stream);
-
-		m_parent_name.Save(stream);
-		m_name.Save(stream);
-		int flag = (m_data == nullptr) ? 0 : 1;
-		stream.write((char*)&flag, sizeof(flag));
-		if (flag)
-		{
-			System::ObjectType type = m_data->GetType();
-			stream.write((char*)&type, sizeof(type));
-			m_data->Save(stream);
-		}
-
-		int size = (int)m_children.size();
-		stream.write((char*)&size, sizeof(size));
-		for (auto child : m_children)
-		{
-			child->Save(stream);
-		}
-
+		if (!System::Object::Save(stream))
+			return (out_error() << "Can't save node " << GetName() << std::endl, false);
 		return true;
 	}
 
 	bool Node::Load(std::istream& stream)
 	{
-		System::Object::Load(stream);
-
-		m_parent_name.Load(stream);
-		m_name.Load(stream);
-		int flag = 0;
-		stream.read((char*)&flag, sizeof(flag));
-		if (flag)
-		{
-			System::ObjectType type;
-			stream.read((char*)&type, sizeof(type));
-			switch (type)
-			{
-			case System::RESOURCE_NONE:
-				break;
-			case System::PERMANENT_RESOURCE_STATIC_MESH:
-				m_data = OpenGL::StaticMesh::CreateFromStream(stream);
-				break;
-			case System::PERMANENT_RESOURCE_SKINNED_MESH:
-				m_data = OpenGL::SkinnedMesh::CreateFromStream(stream);
-				break;
-			case System::PERMANENT_RESOURCE_AUDIO_BUFFER:
-				m_data = Audio::AudioBuffer::CreateFromStream(stream);
-				break;
-			case System::PERMANENT_RESOURCE_COLLISION_SHAPE:
-				break;
-			case System::PERMANENT_RESOURCE_TEXTURE2D:
-				m_data = OpenGL::Texture2D::CreateFromStream(stream);
-				break;
-			case System::PERMANENT_RESOURCE_SCENE:
-				break;
-			case System::PERMANENT_RESOURCE_ARMATURE:
-				m_data = Virtual::Armature::CreateFromStream(stream);
-				break;
-			case System::PERMANENT_RESOURCE_WEAPON_TYPE:
-				break;
-			case System::DYNAMIC_RESOURCE_START:
-				break;
-			case System::DYNAMIC_RESOURCE_CAMERA_FPS:
-				m_data = Virtual::Cameras::FirstPersonCamera::CreateFromStream(stream);
-				break;
-			case System::DYNAMIC_RESOURCE_CAMERA_1:
-				break;
-			case System::DYNAMIC_RESOURCE_CAMERA_2:
-				break;
-			case System::DYNAMIC_RESOURCE_PROXY:
-				break;
-			case System::DYNAMIC_RESOURCE_TRANSFORM:
-				break;
-			case System::DYNAMIC_RESOURCE_POINT_LIGHT:
-				m_data = Virtual::PointLight::CreateFromStream(stream);
-				break;
-			case System::DYNAMIC_RESOURCE_SPOT_LIGHT:
-				break;
-			case System::DYNAMIC_RESOURCE_MATERIAL:
-				m_data = Virtual::Material::CreateFromStream(stream);
-				break;
-			case System::DYNAMIC_RESOURCE_ARMATURE_ANIMATION_MIXER:
-				break;
-			case System::DYNAMIC_RESOURCE_OBJECT_ANIMATION_MIXER:
-				break;
-			default:
-				break;
-			}
-		}
-
-		int size = (int)m_children.size();
-		stream.read((char*)&size, sizeof(size));
-		for (auto child : m_children)
-		{
-			child->Load(stream);
-		}
-
+		if (!System::Object::Load(stream))
+			return (out_error() << "Can't load node " << std::endl, false);
 		return true;
 	}
 
-	Node* Node::GetChild(const System::string& name, bool deep_search)
+	bool Node::Update(int time_ms)
 	{
-		return const_cast<Node*>(static_cast<const Node*>(this)->GetChild(name, deep_search));
-	}
-
-	const Node* Node::GetChild(const System::string& name, bool deep_search) const
-	{
-		for (auto obj : m_children)
+		for each (System::Proxy<Node> child in (*this))
 		{
-			if (obj && obj->GetName() == name)
-				return obj;
-
-			if (deep_search && obj)
-			{
-				const Node* res = obj->GetChild(name, deep_search);
-				if (res)
-				{
-					return res;
-				}
-			}
-		}
-		return 0;
-	}
-
-	int Node::GetChildIndex(const System::string& name)
-	{
-		int index = 0;
-		for (auto child : m_children)
-		{
-			if (child->GetName() == name)
-				return index;
-			index++;
-		}
-		return -1;
-	}
-
-	bool Node::Apply(NodeVisitor* value)
-	{
-		if (!(*value)(this))
-			return false;
-
-		for (auto child : m_children)
-		{
-			value->PreEnter();
-			auto flag = child->Apply(value);
-			value->PostEnter();
-			if (!flag)
-				return false;
+			if (child.IsValid())
+				if (!child->Update(time_ms))
+					return false;
 		}
 		return true;
+	}
+
+	System::Proxy<Node> Node::CreateFromFile(const System::string& path)
+	{
+		std::ifstream stream(path.Data(), std::ios::binary);
+		if (!stream.is_open())
+			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<Node>(nullptr));
+		return CreateFromStream(stream);
+	}
+
+	System::Proxy<Node> Node::CreateFromStream(std::istream& stream)
+	{
+		System::Proxy<Node> node(new Node);
+		if (!node->Load(stream))
+			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<Node>(nullptr));
+		return node;
+	}
+
+	bool Node::Apply(AbstractVisitor* visitor)
+	{
+		return visitor->Visit(this);
 	}
 }
 
