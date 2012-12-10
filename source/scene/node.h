@@ -6,6 +6,7 @@
 #include "../system/resource_manager_2.h"
 #include "../string/string.h"
 #include "visitor.h"
+#include "../math/bounding_box.h"
 
 namespace Virtual { class Entity; }
 
@@ -30,6 +31,7 @@ namespace Scene
 		virtual bool Update(int time_ms);
 	private:
 
+		Math::BoundingBox m_bbox;
 		Node(const Node&);
 		Node& operator = (const Node&);
 		void Init();

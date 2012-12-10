@@ -86,7 +86,8 @@ namespace OpenGL
 
 		void Render()
 		{
-			glDrawElements(PrimitiveType, m_index_count, GL_UNSIGNED_INT, 0);
+			int type = PrimitiveType;
+			glDrawElements(type, m_index_count, GL_UNSIGNED_INT, 0);
 			CHECK_GL_ERROR(L"Unable to draw elements");
 		}
 
@@ -111,7 +112,7 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to unbind vertex buffer");		
 			glBindVertexArray(0);
 			CHECK_GL_ERROR(L"Unable to generate vertex buffer");		
-			m_bbox.Create(reinterpret_cast<const float*>(vbuffer), sizeof(CurrentVertex), m_vb_size/sizeof(CurrentVertex));
+			m_bbox.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
 			m_was_modified = true;
 		}
 

@@ -15,6 +15,7 @@
 #include "clip_space.h"
 #include "bounding_box.h"
 #include "convex_shape_mesh.h"
+#include "frustum.h"
 
 namespace Math
 {
@@ -46,13 +47,11 @@ namespace Math
 		const vec3& n = plane.GetNormal();
 		float dst = plane.GetDistance();
 
-		vec3 r = (p-n*dst); // vector to the point to classify
+		auto s = n.Dot(p) + dst;
 
-		float cosa = r.Dot(n);
-
-		if (cosa < -EPS)
+		if (s < -EPS)
 			return Relation::BACK;
-		if (cosa > EPS)
+		if (s > EPS)
 			return Relation::FRONT;
 		return Relation::ON;
 	}
@@ -93,8 +92,37 @@ namespace Math
 		return Relation::FRONT;		
 	}
 
+	Relation ClassifyPoint(const vec3& point, const BoundingBox& bbox)
+	{
+		for (int i = 0; i < 6; ++i)
+		{
+			const Plane& p = bbox.GetPlane(i);
+			Relation relation = ClassifyPoint(point, p);
+			if (relation == Relation::BACK)
+				return Relation::OUTSIDE;
+		}
+		return Relation::INSIDE;
+	}
+
+	Relation ClassifyPoint(const vec3& point, const BoundingSphere& sphere)
+	{
+		float sqr_dst = (point - sphere.GetCenter()).SquareLength();
+		float r = sphere.GetRadius();
+		if (sqr_dst > r*r)
+			return Relation::OUTSIDE;
+		return Relation::INSIDE;
+	}
+
 	Relation ClassifyPoint(const vec3& point, const ConvexShapeMesh& mesh)
 	{
+		Relation relation = ClassifyPoint(point, mesh.GetBoundingSphere());
+		if (relation == Relation::OUTSIDE)
+			return Relation::OUTSIDE;
+
+		relation = ClassifyPoint(point, mesh.GetBoundingBox());
+		if (relation == Relation::OUTSIDE)
+			return Relation::OUTSIDE;
+
 		const ConvexShapeMesh::PointsCollection& points = mesh.GetPoints();
 		const ConvexShapeMesh::FacesCollection& faces = mesh.GetFaces();
 		const ConvexShapeMesh::NormalsCollection& normals = mesh.GetNormals();
@@ -103,7 +131,7 @@ namespace Math
 		{
 			Plane p(points[faces[i][0]], normals[i]);
 			Relation relation = ClassifyPoint(point, p);
-			if (relation == Relation::OUTSIDE)
+			if (relation == Relation::BACK)
 				return Relation::OUTSIDE;
 		}
 		return Relation::INSIDE;
@@ -226,7 +254,7 @@ namespace Math
 		const vec3& dst = line.GetDestination();	
 		const vec3& n = p.GetNormal();
 		float org_dst = p.GetDistance();
-		const vec3& dir = line.GetDirection();
+		const vec3 dir = dst - org;
 		float v = n.Dot(dir);
 
 		if (Math::Abs(v) < EPS)
@@ -715,9 +743,17 @@ namespace Math
 	//	clipping should be performed in camera space
 	Relation ClipPortal(const ClipSpace& clipper, const Portal& portal, Portal& clipped_portal, ClipSpace& reduced_frustum)
 	{		
+		//	check negative side of the portal
+		if (portal.GetDistance() < 0)
+		{
+			//out_message() << "PORTAL NOT VISIBLE" << std::endl;
+			return Relation::NOT_VISIBLE;
+		}
+
 		Relation result = Relation::NOT_VISIBLE;
 		bool partial_visible = false;
 		Portal temp(portal);
+		Frustum::FrustumPlane p = (Frustum::FrustumPlane)0;
 		for each (const auto& plane in clipper)
 		{
 			std::vector<int> in_points; in_points.reserve(portal.size());
@@ -727,7 +763,7 @@ namespace Math
 
 			for (int i = 0; i < (int)temp.size(); ++i)
 			{
-				const vec3& point = portal[i];
+				const vec3& point = temp[i];
 				auto dst = plane * point;
 
 				if (dst < - 0.001)	//	back
@@ -748,14 +784,21 @@ namespace Math
 			}
 
 			//	if no points inside than portal is invisible
-			if (in_points.empty())
+			if (in_points.empty() && !out_points.empty())
+			{
+			//	out_message() << "PORTAL NOT VISIBLE" << std::endl;
 				return Relation::NOT_VISIBLE;
+			}
 
 			//	if no points outside than portal is visible
 			if (out_points.empty())
+			{
+			//	out_message() << "PORTAL VISIBLE" << std::endl;
 				continue;
+			}
 
 			// otherwise portal should be clipped
+		//	out_message() << "PORTAL PARTIALLY VISIBLE" << std::endl;
 			int mod = temp.size();			
 			Portal::PointsCollection new_points;
 			for (int i = 0; i < (int)temp.size(); ++i)
@@ -763,7 +806,14 @@ namespace Math
 				if (flags[i] == Relation::FRONT || flags[i] == Relation::ON)
 					new_points.push_back(temp[i]);
 
-				if (flags[i] != flags[(i + 1) % mod] && (flags[i] != Relation::ON || flags[(i+1) % mod] != Relation::ON))
+				if (flags[i] == Relation::FRONT && flags[(i + 1) % mod] == Relation::BACK)
+				{
+					vec3 new_point;
+					CrossLinePlane(Line3D(temp[i], temp[(i+1) % mod]), plane, new_point);
+					new_points.push_back(new_point);
+				}
+
+				if (flags[i] == Relation::BACK && flags[(i + 1) % mod] == Relation::FRONT)
 				{
 					vec3 new_point;
 					CrossLinePlane(Line3D(temp[i], temp[(i+1) % mod]), plane, new_point);
@@ -771,6 +821,7 @@ namespace Math
 				}
 			}
 
+			p = (Frustum::FrustumPlane)((int)p + 1);
 			temp.SetPoints(new_points);
 		}
 

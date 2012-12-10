@@ -1,5 +1,7 @@
 #include "portal_node.h"
 
+IMPLEMENT_MANAGER(L"resource.portal_nodes", L"*.portal_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::PORTAL_NODE, Scene, PortalNode);
+
 namespace Scene
 {
 	PortalNode::PortalNode()

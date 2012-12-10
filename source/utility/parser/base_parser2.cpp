@@ -339,7 +339,7 @@ namespace Utility
 					mesh.SetFaces(f);
 				}
 				break;
-			case WORD_NORMALS:
+			case WORD_FACE_NORMALS:
 				{
 					Math::ConvexShapeMesh::NormalsCollection n;
 					if (!ParseVector3fv(buffer, n))
@@ -1498,7 +1498,8 @@ namespace Utility
 					System::Proxy<Virtual::Material> m(new Virtual::Material);					
 					if (!ParseMaterial(buffer, m))
 						return (out_error() << "Unable to parse material" << std::endl, false);
-					scene->AddMaterial(m);					
+					Virtual::MaterialManager::Instance()->Manage(m->GetStorageName(), m);
+					scene->AddMaterial(m);
 				}
 				break;
 			default:
@@ -1661,6 +1662,30 @@ namespace Utility
 					transform->Add(node);
 				}
 				break;
+			case WORD_MATERIAL_NODE:
+				{
+					System::Proxy<Scene::MaterialNode> node(new Scene::MaterialNode);
+					if (!ParseMaterialNode(buffer, node))
+						return (out_error() << "Can't parse material node" << std::endl, false);
+					transform->Add(node);
+				}
+				break;
+			case WORD_TRANSFORM_NODE:
+				{
+					System::Proxy<Scene::TransformNode> node(new Scene::TransformNode);
+					if (!ParseTransformNode(buffer, node))
+						return (out_error() << "Can't parse transform node" << std::endl, false);
+					transform->Add(node);
+				}
+				break;
+			case WORD_LOCATION_INDOOR:
+				{
+					System::Proxy<Scene::LocationIndoorNode> node(new Scene::LocationIndoorNode);
+					if (!ParseLocationIndoor(buffer, node))
+						return (out_error() << "Can't parse location indoor node" << std::endl, false);
+					transform->Add(node);
+				}
+				break;
 			default:
 				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
@@ -1796,7 +1821,15 @@ namespace Utility
 						return (out_error() << "Can't parse location indoor" << std::endl, false);
 					root->Add(node);
 				}
-				break;			
+				break;	
+			case WORD_TRANSFORM_NODE:
+				{
+					System::Proxy<Scene::TransformNode> node(new Scene::TransformNode);
+					if (!ParseTransformNode(buffer, node))
+						return (out_error() << "Can't parse transform node" << std::endl, false);
+					root->Add(node);
+				}
+				break;
 			case WORD_MATERIALS:
 				{									
 					if (!ParseMaterials(buffer, scene))

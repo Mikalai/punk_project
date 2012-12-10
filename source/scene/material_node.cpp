@@ -1,5 +1,7 @@
 #include "material_node.h"
 
+IMPLEMENT_MANAGER(L"resource.material_nodes", L"*.material_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::MATERIAL_NODE, Scene, MaterialNode);
+
 namespace Scene
 {
 	MaterialNode::MaterialNode()
@@ -12,7 +14,7 @@ namespace Scene
 		if (!Node::Save(stream))
 			return (out_error() << "Can't save light node" << std::endl, false);
 		
-		if (!System::Factory::Instance()->SaveToStream(stream, m_material))
+		if (!System::GetFactory()->SaveToStream(stream, m_material))
 			return (out_error() << "Can't save material in the material node" << std::endl, false);
 
 		return true;
@@ -23,7 +25,7 @@ namespace Scene
 		if (!Node::Load(stream))
 			return (out_error() << "Can't load light node" << std::endl, false);
 
-		m_material = System::Factory::Instance()->LoadFromStream(stream);
+		m_material = System::GetFactory()->LoadFromStream(stream);
 		if (!m_material.IsValid())
 			return (out_error() << "Can't load material in the material node" << std::endl, false);
 

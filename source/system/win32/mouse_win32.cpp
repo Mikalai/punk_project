@@ -2,7 +2,21 @@
 
 namespace System
 {
-	SingletoneImplementation(Mouse);
+	Mouse* Mouse::m_instance;
+
+	Mouse* Mouse::Instance()
+	{
+		if (!m_instance)
+			m_instance = new Mouse;
+		return m_instance;
+	}
+
+	void Mouse::Destroy()
+	{
+		delete m_instance;
+		m_instance = 0;
+	}
+
 
 	Mouse::Mouse() : m_region(0)
 	{

@@ -13,7 +13,7 @@ namespace Scene
 		if (!Node::Save(stream))
 			return (out_error() << "Can't save light node" << std::endl, false);
 		
-		//if (!System::Factory::Instance()->SaveToStream(stream, m_light_set))
+		//if (!System::GetFactory()->SaveToStream(stream, m_light_set))
 		//	return (out_error() << "Can't save light node" << std::endl, false);
 
 		return true;
@@ -24,7 +24,7 @@ namespace Scene
 		if (!Node::Load(stream))
 			return (out_error() << "Can't load light node" << std::endl, false);
 
-		//m_light_set = System::Factory::Instance()->LoadFromStream(stream);
+		//m_light_set = System::GetFactory()->LoadFromStream(stream);
 		//if (!m_light_set.IsValid())
 		//	return (out_error() << "Can't load light node" << std::endl, false);
 

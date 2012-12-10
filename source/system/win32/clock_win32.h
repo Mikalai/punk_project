@@ -16,16 +16,7 @@
 namespace System
 {
 	class PUNK_ENGINE Clock
-    {
-		SingletoneInterface(Clock);
-
-	private:
-        static const int timeSize = 64;
-        wchar_t the_time[timeSize];
-		__int64 m_time;
-		__int64 m_us;
-		tm m_date;
-
+    {	
     public:
 		Clock();
 
@@ -47,6 +38,18 @@ namespace System
 
 		void Store(Buffer& buffer);
 		void Restore(Buffer& buffer);
+
+		static Clock* Instance();
+		static void Destroy();
+
+	private:
+		static Clock* m_instance;
+
+        static const int timeSize = 64;
+        wchar_t the_time[timeSize];
+		__int64 m_time;
+		__int64 m_us;
+		tm m_date;
     };
 }
 

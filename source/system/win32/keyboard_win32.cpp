@@ -3,7 +3,20 @@
 
 namespace System
 {
-	SingletoneImplementation(Keyboard);
+	Keyboard* Keyboard::m_instance;
+
+	Keyboard* Keyboard::Instance()
+	{
+		if (!m_instance)
+			m_instance = new Keyboard;
+		return m_instance;
+	}
+
+	void Keyboard::Destroy()
+	{
+		delete m_instance;
+		m_instance = 0;
+	}
 
 	Keyboard::Keyboard() 
 	{

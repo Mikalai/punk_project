@@ -1,5 +1,7 @@
 #include "location_indoor.h"
 
+IMPLEMENT_MANAGER(L"resource.indoor_locations", L"*.indoor", System::Environment::Instance()->GetModelFolder(), System::ObjectType::LOCATION_INDOOR, Scene, LocationIndoorNode);
+
 namespace Scene
 {
 	LocationIndoorNode::LocationIndoorNode()

@@ -141,7 +141,7 @@ namespace Math
 
 		return res;
 	}
-	
+
 	const mat4 RotationMatrixFromQuaternion(const quat& q)
 	{
 		float wx, wy, wz, xx, yy, yz, xy, xz, zz, x2, y2, z2;
@@ -174,7 +174,7 @@ namespace Math
 		}
 
 		center /= (float)count;
-		
+
 		return center;
 	}
 
@@ -182,7 +182,7 @@ namespace Math
 	{
 		//	find average of the vertices
 		vec3 center = CalculateAverage(points, count, point_size);
-		
+
 		//	find covariance matrix
 		mat3 res;
 		res.Zerofy();
@@ -222,7 +222,7 @@ namespace Math
 		double in[] = {d, c, b, a};
 		double out[3];
 		auto result = SolveCubic(in, out);
-		if (result != RootFindResult::RESULT_THREE_SOLUTIONS)
+		if (result == RootFindResult::RESULT_NO_SOLUTION)
 			return false;
 
 		std::sort(out, out+3);
@@ -249,7 +249,7 @@ namespace Math
 				bb.Normalize();	
 				d = fabs(1.0f + bb.Dot(bb0));
 			}
-			while (d > 1e-5);
+			while (d > 1e-5 && fabs(d - 2.0f) > 1e-5);
 
 			res[v] = bb;
 			out_message() << res[v].ToString() << std::endl;
@@ -287,6 +287,23 @@ namespace Math
 		mat3 tt = a.Transposed() * c * a;
 
 		out_message() << "Matrix tt: " << tt.ToString() << std::endl;
+		return true;
+	}
+
+	bool YawPitchRollToUpDirection(float yaw, float pitch, float roll, vec3& up, vec3& dir)
+	{
+		float cos_yaw = cos(yaw);
+		float cos_pitch = cos(pitch);
+		float cos_roll = cos(roll);
+		float sin_yaw = sin(yaw);
+		float sin_pitch = sin(pitch);
+		float sin_roll = sin(roll);
+
+		dir.Set(sin_yaw * cos_pitch, sin_pitch, cos_pitch * -cos_yaw);
+		up.Set(-cos_yaw * sin_roll - sin_yaw * sin_pitch * cos_roll, cos_pitch * cos_roll, -sin_yaw * sin_roll - sin_pitch * cos_roll * -cos_yaw);
+
+		up.Normalize();
+		dir.Normalize();
 		return true;
 	}
 }

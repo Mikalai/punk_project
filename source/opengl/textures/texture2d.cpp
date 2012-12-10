@@ -9,6 +9,8 @@ Description: Texture2D implementation
 #include "texture2d.h"
 #include "texture2d_impl.h"
 
+IMPLEMENT_MANAGER(L"resource.textures", L"*.texture", System::Environment::Instance()->GetTextureFolder(), System::ObjectType::TEXTURE_2D, OpenGL, Texture2D);
+
 namespace OpenGL
 {
 	Texture2D::Texture2D()

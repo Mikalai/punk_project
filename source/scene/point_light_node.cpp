@@ -1,5 +1,7 @@
 #include "point_light_node.h"
 
+IMPLEMENT_MANAGER(L"resource.point_light_nodes", L"*.point_light_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::POINT_LIGHT_NODE, Scene, PointLightNode);
+
 namespace Scene
 {
 	PointLightNode::PointLightNode()
@@ -12,7 +14,7 @@ namespace Scene
 		if (!LightNode::Save(stream))
 			return (out_error() << "Can't save point light " << GetName() << std::endl, false);
 
-		if (!System::Factory::Instance()->SaveToStream(stream, m_point_light))
+		if (!System::GetFactory()->SaveToStream(stream, m_point_light))
 			return (out_error() << "Can't save point light " << GetName() << std::endl, false);
 		return true;
 	}
@@ -22,7 +24,7 @@ namespace Scene
 		if (!LightNode::Load(stream))
 			return (out_error() << "Can't load point light " << std::endl, false);
 
-		m_point_light = System::Factory::Instance()->LoadFromStream(stream);
+		m_point_light = System::GetFactory()->LoadFromStream(stream);
 
 		if (!m_point_light.IsValid())
 			return (out_error() << "Can't load point light " << std::endl, false);

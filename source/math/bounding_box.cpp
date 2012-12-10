@@ -69,16 +69,16 @@ namespace Math
 				d[1] = r;
 
 			float s = m_s.Dot(v);
-			if (d[2] > r)
-				d[2] = r;
-			if (d[3] < r)
-				d[3] = r;
+			if (d[2] > s)
+				d[2] = s;
+			if (d[3] < s)
+				d[3] = s;
 
 			float t = m_t.Dot(v);
-			if (d[4] > r)
-				d[4] = r;
-			if (d[5] < r)
-				d[5] = r;
+			if (d[4] > t)
+				d[4] = t;
+			if (d[5] < t)
+				d[5] = t;
 		}
 
 		//	find natural planes

@@ -4,6 +4,8 @@ System::Proxy<Scene::SceneGraph> scene;
 
 bool m_left_down = false;
 
+OpenGL::SimpleRender render;
+
 float x = 0;
 float y = 0;
 
@@ -21,17 +23,29 @@ void OnMouseMove(System::Event* ee)
 {
 	System::MouseMoveEvent* e = static_cast<System::MouseMoveEvent*>(ee);
 
-	if (m_left_down)
+	//if (m_left_down)
 	{
 		x += 0.001 * (float)(e->x - e->x_prev);
-		y += 0.001 * (float)(e->y - e->y_prev);
+		y += 0.001 * (float)(e->y - e->y_prev);		
+
+		System::Proxy<Virtual::Cameras::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
+		c->SetYawRollPitch(x, y, 0);
 	}
 }
 
 void Idle(System::Event*)
-{
-	OpenGL::SimpleRender render(scene);
-	render->Render();
+{	
+	render.Render();
+	System::Proxy<Virtual::Cameras::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
+	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
+		c->SetPosition(c->GetPosition() + c->GetRightVector() * -0.01f);
+	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_D))
+		c->SetPosition(c->GetPosition() + c->GetRightVector() * 0.01f);
+	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_W))
+		c->SetPosition(c->GetPosition() + c->GetDirection() * 0.01f);
+	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_S))
+		c->SetPosition(c->GetPosition() + c->GetDirection() * -0.01f);
+		
 	//OpenGL::Driver* d = OpenGL::Driver::Instance();
 	//OpenGL::RenderPass* pass = new OpenGL::RenderPass;
 	//Math::mat4 m = Math::mat4::CreateRotation(1, 0, 0, y)*Math::mat4::CreateRotation(0, 1, 0, x);;
@@ -47,16 +61,20 @@ void Idle(System::Event*)
 int main()
 {
 	System::Window::Instance()->SetTitle(L"OpenGL object test");
-	System::Mouse::Instance()->LockInWindow(false);
+	System::Mouse::Instance()->LockInWindow(true);
 	OpenGL::Driver::Instance()->Start();
 
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(Idle));
-	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(OnMouseLeftButtonDown	
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(OnMouseLeftButtonDown));
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_UP, System::EventHandler(OnMouseLeftButtonUp));
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(OnMouseMove));
 
-	scene = System::Factory::Instance()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"portal_test2.pmd");
-	
+	scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"portal_test2.pmd");
+
+	render.SetScene(scene);
+
+	System::Proxy<Virtual::Cameras::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();	
+
 	System::Window::Instance()->Loop();
 
 	return 0;

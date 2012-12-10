@@ -26,7 +26,11 @@ namespace System
 		const string GetWeaponFolder();
 		const string GetOpenCLFolder();
 
-		SingletoneInterface(Environment)
+		static Environment* Instance();
+		static void Destroy();
+	private:
+		static Environment* m_instance;
+
 	};
 }
 

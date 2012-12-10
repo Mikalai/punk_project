@@ -10,8 +10,21 @@
 
 namespace System
 {
-	SingletoneImplementation(Environment)
+	Environment* Environment::m_instance;
 
+	Environment* Environment::Instance()
+	{
+		if (!m_instance)
+			m_instance = new Environment;
+		return m_instance;
+	}
+
+	void Environment::Destroy()
+	{
+		delete m_instance;
+		m_instance = 0;
+	}
+	
 	Environment::Environment()
 	{
 		System::ConfigFile file;

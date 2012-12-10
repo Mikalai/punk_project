@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_SYSTEM_LOGGER
 #define _H_PUNK_SYSTEM_LOGGER
 
+#include <memory>
 #include <iostream>
 #include <ostream>
 #include <fstream>
@@ -22,186 +23,212 @@ namespace System
 		LOG_ERROR = 2,
 	};
 
+	struct PUNK_ENGINE Streamer
+	{
+	private:
+		typedef std::basic_ostream<wchar_t, std::char_traits<wchar_t>> _Myt;
+		typedef std::basic_ios<wchar_t, std::char_traits<wchar_t>> _Myios;
+	public:
+		Streamer()
+		{
+			string cur_time = SystemClock::Instance()->NowAsUTC();
+			// cook a nice name for the log file
+			cur_time[3] = cur_time[7] = cur_time[10] = cur_time[19] = 0;		//	split string into several strings
+			const wchar_t* buf = cur_time.Data();
+			//	makefile name according to the current date
+			string filename(L"log_" + string(&buf[20]) + L"_" + string(&buf[4]) + L"_" + string(&buf[8]));
+			m_stream.open(filename.Data(), std::ios_base::app);
+		}
+
+		Streamer& operator << (const string& s)
+		{
+			std::wcout << s.Data();
+			if (m_stream.is_open())
+				m_stream << s.Data();
+			return *this;
+		}
+
+		Streamer& operator << (const char* v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (const wchar_t* v)
+		{
+			std::wcout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (const std::string& v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v.c_str();
+			return *this;
+		}
+
+		Streamer& operator << (char v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (wchar_t v)
+		{
+			std::wcout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (unsigned char v)
+		{				
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (short v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (unsigned short v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (long v)
+		{			
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (unsigned long v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (int v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (unsigned int v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (__int64 v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (unsigned __int64 v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (float v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (double v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (long double v)
+		{
+			std::cout << v;
+			if (m_stream.is_open())
+				m_stream << v;
+			return *this;
+		}
+
+		Streamer& operator << (_Myt& (__cdecl *_Pfn)(_Myt&))
+		{
+			std::wcout << _Pfn;
+			if (m_stream.is_open())
+				m_stream << _Pfn;
+			return *this;
+		}
+
+		Streamer& operator << (_Myios& (__cdecl *_Pfn)(_Myios&))
+		{	
+			std::wcout << _Pfn;
+			if (m_stream.is_open())
+				m_stream << _Pfn;
+			return *this;
+		}	
+
+		Streamer& operator << (std::ios_base& (__cdecl *_Pfn)(std::ios_base&))
+		{	
+			std::wcout << _Pfn;
+			if (m_stream.is_open())
+				m_stream << _Pfn;
+			return *this;
+		}		
+
+		static Streamer& Instance();
+		static void Destroy();
+
+	private:
+		static std::auto_ptr<Streamer> m_instance;
+
+		std::ofstream m_stream;
+	};
+
 	//	wired message outputer, suitable only for ASCII symbols
 	template<LoggerType type>
 	class Logger
 	{		
 	public:
 
-		struct Streamer
-		{
-		private:
-			typedef std::basic_ostream<wchar_t, std::char_traits<wchar_t>> _Myt;
-			typedef std::basic_ios<wchar_t, std::char_traits<wchar_t>> _Myios;
-		public:
-			Streamer()
-			{
-				string cur_time = SystemClock::Instance()->NowAsUTC();
-				// cook a nice name for the log file
-				cur_time[3] = cur_time[7] = cur_time[10] = cur_time[19] = 0;		//	split string into several strings
-				const wchar_t* buf = cur_time.Data();
-				//	makefile name according to the current date
-				string filename(L"log_" + string(&buf[20]) + L"_" + string(&buf[4]) + L"_" + string(&buf[8]));
-				m_stream.open(filename.Data(), std::ios_base::app);
-			}
-
-			Streamer& operator << (const string& s)
-			{
-				std::wcout << s.Data();
-				m_stream << s.Data();
-				return *this;
-			}
-
-			Streamer& operator << (const char* v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (const wchar_t* v)
-			{
-				std::wcout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (const std::string& v)
-			{
-				std::cout << v;
-				m_stream << v.c_str();
-				return *this;
-			}
-
-			Streamer& operator << (char v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (wchar_t v)
-			{
-				std::wcout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (unsigned char v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (short v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (unsigned short v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (long v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (unsigned long v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-
-
-			Streamer& operator << (int v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (unsigned int v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (__int64 v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (unsigned __int64 v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (float v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (double v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (long double v)
-			{
-				std::cout << v;
-				m_stream << v;
-				return *this;
-			}
-
-			Streamer& operator << (_Myt& (__cdecl *_Pfn)(_Myt&))
-			{
-				std::wcout << _Pfn;
-				m_stream << _Pfn;
-				return *this;
-			}
-
-			Streamer& operator << (_Myios& (__cdecl *_Pfn)(_Myios&))
-			{	
-				std::wcout << _Pfn;
-				m_stream << _Pfn;
-				return *this;
-			}	
-
-			Streamer& operator << (std::ios_base& (__cdecl *_Pfn)(std::ios_base&))
-			{	
-				std::wcout << _Pfn;
-				m_stream << _Pfn;
-				return *this;
-			}		
-
-		private:
-			std::ofstream m_stream;
-		};
+		Logger() {}
 
 	public:
 
 		Streamer& operator () ()
-		{
+		{			
 			Header<type>();
 			return m_stream;
 		}
@@ -214,7 +241,7 @@ namespace System
 		void Header()
 		{			
 			Console::Instance()->SetTextColor(Console::COLOR_WHITE);
-			m_stream << SystemClock::Instance()->NowAsLocal();
+			Streamer::Instance() << SystemClock::Instance()->NowAsLocal();
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 
@@ -222,7 +249,7 @@ namespace System
 		void Header<LOG_MESSAGE>()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGREEN);
-			m_stream << SystemClock::Instance()->NowAsLocal() << L": Message: ";
+			Streamer::Instance() << SystemClock::Instance()->NowAsLocal() << L": Message: ";
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 
@@ -230,7 +257,7 @@ namespace System
 		void Header<LOG_WARNING>()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_YELLOW);
-			m_stream << SystemClock::Instance()->NowAsLocal() << L": Warning: ";
+			Streamer::Instance() << SystemClock::Instance()->NowAsLocal() << L": Warning: ";
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 
@@ -243,11 +270,11 @@ namespace System
 			Stack walker;	
 			walker.Print(stream);
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTRED);
-			m_stream << SystemClock::Instance()->NowAsLocal().Data() << ": Error occured in the program. " << stream.str().c_str() << L"User message: ";			
+			Streamer::Instance() << SystemClock::Instance()->NowAsLocal().Data() << ": Error occured in the program. " << stream.str().c_str() << L"User message: ";			
 #endif
 #ifndef _DEBUG
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTRED);
-			m_stream << SystemClock::Instance()->NowAsLocal() << ": Error: ";			
+			Streamer::Instance()<< SystemClock::Instance()->NowAsLocal() << ": Error: ";			
 #endif			
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}

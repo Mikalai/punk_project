@@ -2,6 +2,8 @@
 #include "../opengl/renderable/renderable_data.h"
 #include "../virtual/virtual.h"
 
+IMPLEMENT_MANAGER(L"resource.scenes", L"*.scene_graph", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SCENE_GRAPH, Scene, SceneGraph);
+
 namespace Scene
 {
 	SceneGraph::SceneGraph()
@@ -21,10 +23,10 @@ namespace Scene
 		if (!Object::Save(stream))
 			return (out_error() << "Can't save scene graph" << std::endl, false);
 
-		if (!System::Factory::Instance()->SaveToStream(stream, m_root))		
+		if (!System::GetFactory()->SaveToStream(stream, m_root))		
 			return (out_error() << "Can't save root node" << std::endl, false);
 
-		if (!System::Factory::Instance()->SaveToStream(stream, m_camera_node))		
+		if (!System::GetFactory()->SaveToStream(stream, m_camera_node))		
 			return (out_error() << "Can't save root node" << std::endl, false);
 
 		return true;
@@ -35,11 +37,11 @@ namespace Scene
 		if (!Object::Load(stream))
 			return (out_error() << "Can't load scene graph" << std::endl, false);
 
-		m_root = System::Factory::Instance()->LoadFromStream(stream);
+		m_root = System::GetFactory()->LoadFromStream(stream);
 		if (!m_root.IsValid())
 			return (out_error() << "Can't load root node" << std::endl, false);
 
-		m_camera_node = System::Factory::Instance()->LoadFromStream(stream);
+		m_camera_node = System::GetFactory()->LoadFromStream(stream);
 		if (!m_camera_node.IsValid())
 			return (out_error() << "Can't load root node" << std::endl, false);
 

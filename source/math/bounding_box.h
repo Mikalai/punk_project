@@ -22,6 +22,7 @@ namespace Math
 		const vec3& GetCenter() const { return m_center; }
 		const vec3& GetMassCenter() const { return m_center_of_mass; }
 
+		const Plane& GetPlane(int index) const { return m_plane[index]; }
 		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 

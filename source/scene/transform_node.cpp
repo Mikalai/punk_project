@@ -1,5 +1,7 @@
 #include "transform_node.h"
 
+IMPLEMENT_MANAGER(L"resource.transform_nodes", L"*.transform_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::TRANSFORM_NODE, Scene, TransformNode);
+
 namespace Scene
 {
 	TransformNode::TransformNode()

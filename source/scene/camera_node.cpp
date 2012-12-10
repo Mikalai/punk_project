@@ -2,6 +2,8 @@
 #include "../system/factory.h"
 #include "../virtual/manager/manager.h"
 
+IMPLEMENT_MANAGER(L"resource.camera_nodes", L"*.camera_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::CAMERA_NODE, Scene, CameraNode);
+
 namespace Scene
 {
 	CameraNode::CameraNode()
@@ -14,7 +16,7 @@ namespace Scene
 		if (!Node::Save(stream))
 			return (out_error() << "Can't save camera node" << std::endl, false);
 
-		if (!System::Factory::Instance()->SaveToStream(stream, m_camera))
+		if (!System::GetFactory()->SaveToStream(stream, m_camera))
 			return (out_error() << "Can't save camera object to stream" << std::endl, false);
 
 		return true;		
@@ -25,7 +27,7 @@ namespace Scene
 		if (!Node::Load(stream))
 			return (out_error() << "Can't load camera node" << std::endl, false);
 		
-		m_camera = System::Factory::Instance()->LoadFromStream(stream);
+		m_camera = System::GetFactory()->LoadFromStream(stream);
 		if (m_camera.IsValid())
 			return (out_error() << "Can't load camera object from stream" << std::endl, false);
 

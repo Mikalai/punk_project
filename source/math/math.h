@@ -28,7 +28,6 @@
 #include "noise.h"
 #include "constants.h"
 #include "oct_tree.h"
-#include "camera.h"
 #include "helper.h"
 #include <exception>
 

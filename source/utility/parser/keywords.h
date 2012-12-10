@@ -102,7 +102,8 @@ namespace Utility
 		WORD_TRANSFORM_NODE,					// 6
 		WORD_PORTAL,					// 6
 		WORD_PORTAL_NODE,					// 6
-		WORD_STATIC_MESH					// 6
+		WORD_STATIC_MESH,					// 6
+		WORD_FACE_NORMALS
 	};
 
 	struct Record
@@ -209,6 +210,7 @@ namespace Utility
 		{ WORD_PORTAL,					L"*portal" },
 		{ WORD_PORTAL_NODE,				L"*portal_node" },
 		{ WORD_STATIC_MESH,				L"*static_mesh" },		
+		{ WORD_FACE_NORMALS,			L"*face_normals" }
 	};
 }
 #endif	//	_H_PUNK_VIRTUAL_KEY_WORDS

@@ -26,7 +26,7 @@ namespace OpenGL
 		System::Proxy<Virtual::Cameras::Camera> m_camera;		
 		System::Proxy<Virtual::Material> m_current_material;
 		System::Proxy<TextureContext> m_tc;
-		System::Proxy<RenderPass> m_pass;					
+		//System::Proxy<RenderPass> m_pass;					
 		System::Proxy<Virtual::LightSet> m_current_light_set;
 		System::Proxy<AbstractRenderPolicy> m_render_policy;
 		Math::ClipSpace m_clip_space;

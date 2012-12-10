@@ -8,7 +8,20 @@
 
 namespace System
 {
-	SingletoneImplementation(Clock)
+	Clock* Clock::m_instance;
+
+	Clock* Clock::Instance()
+	{
+		if (!m_instance)
+			m_instance = new Clock;
+		return m_instance;
+	}
+
+	void Clock::Destroy()
+	{
+		delete m_instance;
+		m_instance = 0;
+	}		
 
 	Clock::Clock()
 	{

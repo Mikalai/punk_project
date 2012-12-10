@@ -9,6 +9,8 @@
 
 #include "node.h"
 
+IMPLEMENT_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node);
+
 namespace Scene
 {
 	Node::Node()

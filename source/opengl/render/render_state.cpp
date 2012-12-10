@@ -15,6 +15,7 @@ namespace OpenGL
 
 		m_current_state = m_states.top();
 		m_states.pop();
+		return true;
 	}
 
 	void StateManager::Clear()

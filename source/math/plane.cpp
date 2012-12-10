@@ -25,8 +25,7 @@ namespace Math
 
     Plane::Plane(const vec3& a, const vec3& b, const vec3& c)
     {
-        m_normal = (b-a).Cross(c-a).Normalized();
-        m_distance = -m_normal.Dot(a);
+		Set(a, b, c);
     }
 
 	Plane& Plane::operator = (const Plane& plane)
@@ -39,7 +38,7 @@ namespace Math
 		return *this;
 	}
 
-	void Plane::MakeFromPoints(const vec3& a, const vec3& b, const vec3& c)
+	void Plane::Set(const vec3& a, const vec3& b, const vec3& c)
     {
         m_normal = (b-a).Cross(c-a).Normalized();
         m_distance = -m_normal.Dot(a);

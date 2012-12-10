@@ -207,16 +207,23 @@ namespace OpenGL
 		void BindParameters(const System::Proxy<State>& pparams)
 		{									
 			const State* state = pparams.Get();
+			//Math::mat4 p = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
+			//Math::mat4 p2 = state->m_camera->GetProjectionMatrix();
+			//Math::mat4 v = Math::mat4::CreateTargetCameraMatrix(Math::vec3(0, 5, 5), Math::vec3(0,0,0), Math::vec3(0,1,0));
+			//Math::mat4 w = Math::mat4::CreateIdentity();			
 			Math::mat3 normal_matrix = (state->m_camera->GetViewMatrix() * state->m_local).Inversed().Transposed().RotationPart();
 			SetUniformMatrix4f(uWorld, &state->m_local[0]);
+			//SetUniformMatrix4f(uWorld, &w[0]);
 			SetUniformMatrix4f(uView, &state->m_camera->GetViewMatrix()[0]);
+			//SetUniformMatrix4f(uView, &v[0]);
 			SetUniformMatrix4f(uProj, &state->m_camera->GetProjectionMatrix()[0]);
+			//SetUniformMatrix4f(uProj, &p[0]);
 			SetUniformMatrix3f(uNormalMatrix, &normal_matrix[0]);
 			SetUniformVector3f(uLightPosition, &state->m_current_light_set->GetLight(0)->GetPosition()[0]);
 			SetUniformVector4f(uAmbient, &(Math::vec4(state->m_current_material->GetAmbient()))[0]);
 			SetUniformVector4f(uSpecular, &state->m_current_material->GetSpecularColor()[0]);
 			SetUniformVector4f(uDiffuse, &state->m_current_material->GetDiffuseColor()[0]);
-			SetUniformFloat(uSpecularPower, state->m_current_material->GetSpecularIntensity());
+			SetUniformFloat(uSpecularPower, state->m_current_material->GetSpecularFactor());
 			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
 			SetUniformInt(uNormalMap, state->m_normal_slot);			
 		}
@@ -232,13 +239,13 @@ namespace OpenGL
 			AbstractRenderPolicy::Begin();
 
 			glEnable(GL_DEPTH_TEST);
-			CHECK_GL_ERROR(L"Unable to enable depth test");
-			glDepthFunc(GL_LESS);
-			CHECK_GL_ERROR(L"Unable to set less depth function");
-			glDepthMask(GL_TRUE);
-			CHECK_GL_ERROR(L"Unable to enable depth mask");
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			CHECK_GL_ERROR(L"Unable to set polygon mode");
+			//CHECK_GL_ERROR(L"Unable to enable depth test");
+			//glDepthFunc(GL_LESS);
+			//CHECK_GL_ERROR(L"Unable to set less depth function");
+			//glDepthMask(GL_TRUE);
+			//CHECK_GL_ERROR(L"Unable to enable depth mask");
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			//CHECK_GL_ERROR(L"Unable to set polygon mode");
 			/*glEnable(GL_BLEND);
 			CHECK_GL_ERROR(L"Unable to enable blend");
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

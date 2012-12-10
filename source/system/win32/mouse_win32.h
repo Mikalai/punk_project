@@ -9,8 +9,6 @@ namespace System
 {
 	class PUNK_ENGINE Mouse
 	{
-		SingletoneInterface(Mouse);
-
 	public:
 		enum MouseButtons { LEFT_BUTTON, RIGHT_BUTTON, MIDDLE_BUTTON };
 
@@ -39,6 +37,12 @@ namespace System
 		bool IsLocked() const;
 		bool IsVisible() const;
 		const Window* GetBoundedWindow() const;
+
+		static Mouse* Instance();
+		static void Destroy();
+    private:
+		static Mouse* m_instance;
+
 	};
 }
 

@@ -9,7 +9,7 @@ namespace Math
 	Line3D::Line3D(const vec3& org, const vec3& dst) 
 		: m_origin(org)
 		, m_destination(dst) 
-		, m_direction((org-dst).Normalized())
+		, m_direction((dst-org).Normalized())
 	{}
 
 	const vec3 Line3D::PointAt(float t) const

@@ -7,8 +7,20 @@
 
 namespace Utility
 {
-	SingletoneImplementation(FontBuilder);
+	FontBuilder* FontBuilder::m_instance;
 
+	FontBuilder* FontBuilder::Instance()
+	{
+		if (!m_instance)
+			m_instance = new FontBuilder;
+		return m_instance;
+	}
+
+	void FontBuilder::Destroy()
+	{
+		delete m_instance;
+		m_instance = 0;
+	}
 	struct CacheData
 	{
 		unsigned char* buffer;

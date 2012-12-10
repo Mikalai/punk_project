@@ -1,5 +1,7 @@
 #include "geometry_node.h"
 
+IMPLEMENT_MANAGER(L"resource.geom_nodes", L"*.geometry_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::GEOMETRY_NODE, Scene, GeometryNode);
+
 namespace Scene
 {
 	GeometryNode::GeometryNode()
@@ -12,7 +14,7 @@ namespace Scene
 		if (!Node::Save(stream))
 			return (out_error() << "Can't save geometry " << std::endl, false);
 				
-		if (!System::Factory::Instance()->SaveToStream(stream, m_geometry))
+		if (!System::GetFactory()->SaveToStream(stream, m_geometry))
 			return (out_error() << "Can't save geometry " << std::endl, false);
 
 		return true;
@@ -23,7 +25,7 @@ namespace Scene
 		if (!Node::Load(stream))
 			return (out_error() << "Can't save geometry " << std::endl, false);
 
-		m_geometry = System::Factory::Instance()->LoadFromStream(stream);
+		m_geometry = System::GetFactory()->LoadFromStream(stream);
 		if (!m_geometry.IsValid())
 			return true;
 

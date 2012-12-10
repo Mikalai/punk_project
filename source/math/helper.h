@@ -29,7 +29,8 @@ namespace Math
 	PUNK_ENGINE bool EigenVectors(const mat3& m, const vec3& value, vec3 res[3]);
 	//	used to find native axis of the point set
 	PUNK_ENGINE bool CalculateNativeAxis(const float* points, int count, unsigned offset, vec3& r, vec3& s, vec3& t);
-	
+	PUNK_ENGINE bool YawPitchRollToUpDirection(float yaw, float pitch, float roll, vec3& up, vec3& dir);
+
 	template<class T>
 	const Quaternion<T> Matrix4x4ToQuaternion(const Matrix4x4<T>& m) 
 	{

@@ -22,9 +22,7 @@ namespace System
 	LRESULT CALLBACK WindowCallBack(HWND, UINT, WPARAM, LPARAM);
 
 	class PUNK_ENGINE Window
-	{
-		SingletoneInterface(Window)
-
+	{	
 	public:
 		Window();
 		~Window();
@@ -54,8 +52,10 @@ namespace System
 		void DrawLine(int x1, int y1, int x2, int y2);
 		void SwapBuffer();
 
+		static Window* Instance();
+		static void Destroy();
 	private:
-
+		static Window* m_instance;
 		//std::multimap<unsigned, Handler> m_handlers;
 		HWND m_windowHandle;
 		friend LRESULT CALLBACK WindowCallBack(HWND, UINT, WPARAM, LPARAM);	

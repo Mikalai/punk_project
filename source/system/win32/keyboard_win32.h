@@ -7,11 +7,7 @@
 namespace System
 {
 	class PUNK_ENGINE Keyboard
-	{
-		SingletoneInterface(Keyboard);
-
-	private:
-		bool m_keys[256];		
+	{	
 	public:
 
 		Keyboard();
@@ -21,6 +17,12 @@ namespace System
 
 		void SetKeyState(int key, bool state);
 		bool GetKeyState(int key) const;
+
+		static Keyboard* Instance();
+		static void Destroy();
+	private:
+		static Keyboard* m_instance;
+		bool m_keys[256];		
 	};
 }
 

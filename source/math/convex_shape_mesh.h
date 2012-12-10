@@ -35,8 +35,8 @@ namespace Math
 
 		bool UpdateBoundingVolumes();
 
-		const Math::BoundingBox GetBoundingBox() { return m_bbox; }
-		const Math::BoundingSphere GetBoundingSphere() { return m_bsphere; }
+		const Math::BoundingBox& GetBoundingBox() const { return m_bbox; }
+		const Math::BoundingSphere& GetBoundingSphere() const { return m_bsphere; }
 
 	private:
 		Math::BoundingBox m_bbox;

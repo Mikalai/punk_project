@@ -594,9 +594,6 @@
     <ClInclude Include="..\..\..\source\math\bounding_box.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\math\camera.h">
-      <Filter>math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\math\catmull_rom_spline.h">
       <Filter>math</Filter>
     </ClInclude>
@@ -1027,7 +1024,6 @@
       <Filter>virtual\motion</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\config.h" />
-    <ClInclude Include="..\..\..\source\punk_engine.h" />
     <ClInclude Include="..\..\..\source\scene\node.h">
       <Filter>scene</Filter>
     </ClInclude>
@@ -1457,6 +1453,10 @@
     <ClInclude Include="..\..\..\source\scene\default_visitor.h">
       <Filter>scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\simple_render.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\punk_engine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -1718,9 +1718,6 @@
       <Filter>math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\math\bounding_box.cpp">
-      <Filter>math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\math\camera.cpp">
       <Filter>math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\math\frustum.cpp">
@@ -2005,7 +2002,6 @@
     <ClCompile Include="..\..\..\source\virtual\motions\motion_strategy.cpp">
       <Filter>virtual\motion</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\main.cpp" />
     <ClCompile Include="..\..\..\source\scene\node.cpp">
       <Filter>scene</Filter>
     </ClCompile>
@@ -2258,6 +2254,10 @@
     <ClCompile Include="..\..\..\source\scene\default_visitor.cpp">
       <Filter>scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\simple_render.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\source\blender\punk_exporter_2_60.py">

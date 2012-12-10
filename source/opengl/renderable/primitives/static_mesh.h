@@ -1,10 +1,11 @@
 #ifndef _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 #define _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 
+#include "../../../system/resource_manager_2.h"
 #include "../../../system/object.h"
 #include "vertex_array_object.h"
 
-namespace Utility {	class MeshDesc; }
+namespace Virtual { class StaticGeometry; }
 
 namespace OpenGL
 {	
@@ -21,7 +22,7 @@ namespace OpenGL
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
-		bool Cook(Utility::MeshDesc* desc);		
+		bool Cook(System::Proxy<Virtual::StaticGeometry> desc);		
 
 		static System::Proxy<StaticMesh> CreateFromFile(const System::string& path);
 		static System::Proxy<StaticMesh> CreateFromStream(std::istream& stream);
@@ -31,5 +32,7 @@ namespace OpenGL
 
 	typedef StaticMesh* StaticEntityRef;
 }
+
+REGISTER_MANAGER(L"resource.static_meshs", L"*.static_mesh", System::Environment::Instance()->GetModelFolder(), System::ObjectType::STATIC_MESH, OpenGL, StaticMesh);
 
 #endif

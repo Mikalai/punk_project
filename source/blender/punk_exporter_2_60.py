@@ -165,6 +165,19 @@ def export_faces(f, mesh):
     return
 
 #
+#   eports face normals
+#
+def export_face_normals(f, mesh):
+    if (mesh == None) or len(mesh.polygons) == 0:
+        return
+    start_block(f, "*face_normals")
+    for face in mesh.polygons:
+        make_offset(f)
+        f.write("%16d%16f%16f%16f\n" % (face.index, face.normal[0], face.normal[1], face.normal[2]))
+    end_block(f)
+    return
+
+#
 #   export bones weights
 #
 def export_bones_weight(f, object):    
@@ -719,6 +732,14 @@ def export_light(f, object):
     end_block(f)
     return
  
+def export_transform(f, object):
+    start_block(f, "*transform_node")
+    export_string(f, "*name", object.name + "_transform")
+    export_local_matrix(f, object)
+    export_children(f, object)        
+    end_block(f)
+    return
+
 def export_portal(f, object):
     if type(object.data) == bpy.types.Mesh:        
         start_block(f, "*portal_node")
@@ -760,7 +781,7 @@ def export_convex_mesh(f, object):
     if type(object.data) == bpy.types.Mesh:
         start_block(f, "*convex_mesh")      
         export_vertex_position(f, object.data)
-        export_normals(f, object.data)
+        export_face_normals(f, object.data)
         export_faces(f, object.data)
         end_block(f)
     return
@@ -823,6 +844,8 @@ def export_children(f, object):
 def export_object(f, object):        
     if object.punk_entity_type == "LOCATION_INDOOR":
         export_location_indoor(f, object)
+    elif object.punk_entity_type == "TRANSFORM":
+        export_transform(f, object)
     elif object.punk_entity_type == "LIGHT":
         export_light(f, object)
     elif object.punk_entity_type == "PORTAL":

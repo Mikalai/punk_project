@@ -13,8 +13,21 @@
 
 namespace OpenGL
 {
-	SingletoneImplementation(Driver);
+	Driver* Driver::m_instance;
+	
+	Driver* Driver::Instance()
+	{
+		if (!m_instance)
+			m_instance = new Driver;
+		return m_instance;
+	}
 
+	void Driver::Destroy()
+	{
+		delete m_instance;
+		m_instance = 0;
+	}
+	
 	Driver::~Driver()
 	{
 		Shutdown();
@@ -225,7 +238,8 @@ namespace OpenGL
 
 	void Driver::SwapBuffers()
 	{
-		::SwapBuffers(::GetDC(*System::Window::Instance()));
+		if (!::SwapBuffers(::GetDC(*System::Window::Instance())))
+			out_error() << "Swap buffer failed" << std::endl;
 	}
 
 	void* Driver::GetProcAddress(const char* name)

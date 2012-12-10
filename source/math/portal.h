@@ -5,6 +5,8 @@
 #include "../config.h"
 
 #include "vec3.h"
+#include "mat4.h"
+#include "plane.h"
 
 namespace Math
 {
@@ -30,10 +32,18 @@ namespace Math
 		const vec3& operator [] (int index) const { return m_points[index]; }
 		vec3& operator [] (int index) { return m_points[index]; }
 
+		const vec3& GetNormal() const { return m_plane.GetNormal(); }
+		float GetDistance() const { return m_plane.GetDistance(); }
+
 	private:
 		PointsCollection m_points;
-		vec3 m_normal;
+		Plane m_plane;
+
+		friend PUNK_ENGINE const Portal operator * (const mat4& m, const Portal& p);
 	};
+
+	//	transforms portal to other space
+	PUNK_ENGINE const Portal operator * (const mat4& m, const Portal& p);
 }
 
 #endif	//	_H_PUNK_MATH_PORTAL

@@ -30,8 +30,15 @@ namespace Math
         Plane(const vec3& a, const vec3& b, const vec3& c);
         
 		void Set(const vec3& normal, float dst) { (m_normal = normal, m_distance = dst); }
-       		
-		void MakeFromPoints(const vec3& a, const vec3& b, const vec3& c);
+		void Set(const vec4& value) 
+		{ 
+			(m_normal = value.XYZ(), m_distance = value.W()); 
+			float l = m_normal.Length();
+			m_normal.Normalize();
+			m_distance /= l;
+		}       		
+
+		void Set(const vec3& a, const vec3& b, const vec3& c);
 
         const Plane TransformNode(const mat4& matrix) const;
 		const vec3& GetNormal() const { return m_normal; }

@@ -54,6 +54,63 @@ namespace Math
 			return res;
 		}
 
+		static Matrix4x4<T> CreatePerspectiveProjectionInfinity(T left, T right, T top, T bottom, T znear)
+		{
+			Matrix4x4<T> res;
+
+			float* m = &res[0];
+
+			m[0*4 + 0] = T(2)*znear / (right - left);
+			m[0*4 + 1] = 0.0f;
+			m[0*4 + 2] = 0.0f;
+			m[0*4 + 3] = 0.0f;
+
+			m[1*4 + 0] = 0.0f;
+			m[1*4 + 1] = T(2)*znear / (top - bottom);
+			m[1*4 + 2] = 0.0f;
+			m[1*4 + 3] = 0.0f;
+
+			m[2*4 + 0] = (right + left) / (right - left);
+			m[2*4 + 1] = (top + bottom) / (top - bottom);
+			m[2*4 + 2] = -1;
+			m[2*4 + 3] = -1.0f;
+
+			m[3*4 + 0] = 0.0f;
+			m[3*4 + 1] = 0.0f;
+			m[3*4 + 2] = -(2.0f * znear);
+			m[3*4 + 3] = 0.0f;
+
+			return res;
+		}
+
+		static Matrix4x4<T> CreatePerspectiveProjection(T left, T right, T top, T bottom, T znear, T zfar)
+		{
+			Matrix4x4<T> res;
+
+			float* m = &res[0];
+
+			m[0*4 + 0] = T(2)*znear / (right - left);
+			m[0*4 + 1] = 0.0f;
+			m[0*4 + 2] = 0.0f;
+			m[0*4 + 3] = 0.0f;
+
+			m[1*4 + 0] = 0.0f;
+			m[1*4 + 1] = T(2)*znear / (top - bottom);
+			m[1*4 + 2] = 0.0f;
+			m[1*4 + 3] = 0.0f;
+
+			m[2*4 + 0] = (right + left) / (right - left);
+			m[2*4 + 1] = (top + bottom) / (top - bottom);
+			m[2*4 + 2] = -(zfar+znear) / (zfar - znear);
+			m[2*4 + 3] = -1.0f;
+
+			m[3*4 + 0] = 0.0f;
+			m[3*4 + 1] = 0.0f;
+			m[3*4 + 2] = -(2.0f * znear * zfar) / (zfar - znear);
+			m[3*4 + 3] = 0.0f;
+
+			return res;
+		}
 
 		static Matrix4x4<T> CreateTargetCameraMatrix(const Vector3<T>& eye, const Vector3<T>& target, const Vector3<T>& up)
 		{
@@ -245,6 +302,21 @@ namespace Math
 			return m;
 		}
 
+		static Matrix4x4<T> CreateFromYawPitchRoll(const Vector3<T>& eye, T yaw, T pitch, T roll)
+		{
+			T cos_yaw = cos(yaw);
+			T cos_pitch = cos(pitch);
+			T cos_roll = cos(roll);
+			T sin_yaw = sin(yaw);
+			T sin_pitch = sin(pitch);
+			T sin_roll = sin(roll);
+
+			Math::Vector3<T> dir(sin_yaw * cos_pitch, sin_pitch, cos_pitch * -cos_yaw);
+			Math::Vector3<T> up(-cos_yaw * sin_roll - sin_yaw * sin_pitch * cos_roll, cos_pitch * cos_roll, -sin_yaw * sin_roll - sin_pitch * cos_roll * -cos_yaw);
+
+			return CreateTargetCameraMatrix(eye, eye + dir, up);
+		}
+
 		/*
 		0 4 8
 		1 5 9
@@ -281,7 +353,13 @@ namespace Math
 				m[6] = m[7] = m[8] = m[9] = m[10] = m[11] =
 				m[12] = m[13] = m[14] = m[15] = T(0);
 			m[0] = m[5] = m[10] = m[15] = T(1);
-		}       
+		} 
+
+		Matrix4x4<T>(const Matrix4x4<T>& v)
+		{
+			for (int i = 0; i < 16; ++i)
+				m[i] = v[i];			
+		} 
 
 		T& operator [] (int i)
 		{
@@ -634,6 +712,33 @@ namespace Math
 		buffer.ReadBuffer(m, sizeof(m));
 		}
 		*/
+
+		Matrix4x4<T> operator *= (const Matrix4x4<T>& b)
+		{
+			Matrix4x4<T> a = *this;
+			SetColumn(0, Vector4<T>(
+			b[0] * a[0] + b[1] * a[4] + b[2] * a[8] + b[3] * a[12],
+			b[0] * a[1] + b[1] * a[5] + b[2] * a[9] + b[3] * a[13],
+			b[0] * a[2] + b[1] * a[6] + b[2] * a[10] + b[3] * a[14],
+			b[0] * a[3] + b[1] * a[7] + b[2] * a[11] + b[3] * a[15]));
+			SetColumn(1, Vector4<T>(
+			b[4] * a[0] + b[5] * a[4] + b[6] * a[8] + b[7] * a[12],
+			b[4] * a[1] + b[5] * a[5] + b[6] * a[9] + b[7] * a[13],
+			b[4] * a[2] + b[5] * a[6] + b[6] * a[10] + b[7] * a[14],
+			b[4] * a[3] + b[5] * a[7] + b[6] * a[11] + b[7] * a[15]));
+			SetColumn(2, Vector4<T>(
+			b[8] * a[0] + b[9] * a[4] + b[10] * a[8] + b[11] * a[12],
+			b[8] * a[1] + b[9] * a[5] + b[10] * a[9] + b[11] * a[13],
+			b[8] * a[2] + b[9] * a[6] + b[10] * a[10] + b[11] * a[14],
+			b[8] * a[3] + b[9] * a[7] + b[10] * a[11] + b[11] * a[15]));
+			SetColumn(3, Vector4<T>(
+			b[12] * a[0] + b[13] * a[4] + b[14] * a[8] + b[15] * a[12],
+			b[12] * a[1] + b[13] * a[5] + b[14] * a[9] + b[15] * a[13],
+			b[12] * a[2] + b[13] * a[6] + b[14] * a[10] + b[15] * a[14],
+			b[12] * a[3] + b[13] * a[7] + b[14] * a[11] + b[15] * a[15]));
+
+			return *this;
+		}
 	};
 
 	//  mult matrix

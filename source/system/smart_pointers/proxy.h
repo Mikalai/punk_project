@@ -47,10 +47,19 @@ namespace System
 
 		template<class U>
 		Proxy(const Proxy<U>& v)
-		{		
-			m_impl = (Impl*)(v.m_impl);
-			if (m_impl)
-				m_impl->m_count++;
+		{	
+			if (v.m_impl != nullptr)
+			{
+				const T* flag = dynamic_cast<const T*>(v.m_impl->m_data);
+				if (flag)
+				{
+					m_impl = (Impl*)(v.m_impl);
+					if (m_impl)
+						m_impl->m_count++;
+				}
+				else
+					m_impl = 0;
+			}
 		}
 
 		Proxy<T>& operator = (const Proxy<T>& v)
@@ -63,14 +72,17 @@ namespace System
 		template<class U>
 		Proxy<T>& operator = (const Proxy<U>& v)
 		{
-			const T* flag = dynamic_cast<T*>(v.m_impl->m_data);
-			if (flag)
+			if (v.m_impl->m_data != nullptr)
 			{
-				Proxy<T> temp(v);
-				std::swap(temp.m_impl, m_impl);
-				return *this;
-			}	
-			out_warning() << "Can't convert types from " << typeid(U).name() << " to " << typeid(T).name() << std::endl;
+				const T* flag = dynamic_cast<T*>(v.m_impl->m_data);
+				if (flag)
+				{
+					Proxy<T> temp(v);
+					std::swap(temp.m_impl, m_impl);
+					return *this;
+				}				
+				out_warning() << "Can't convert types from " << typeid(U).name() << " to " << typeid(T).name() << std::endl;
+			}
 			return *this;
 		}
 
@@ -83,8 +95,8 @@ namespace System
 		{				
 			if (m_impl)
 			{
-				delete m_impl->m_data;
-				m_impl->m_data = data;
+				Release();
+				m_impl = new Impl(data);				
 			}
 			else
 				m_impl = new Impl(data);

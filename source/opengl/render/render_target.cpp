@@ -63,6 +63,8 @@ namespace OpenGL
 
 	void RenderTarget::SetViewport(float x, float y, float width, float height)
 	{
+		Activate();
 		glViewport((GLsizei)x, (GLsizei)y, (GLsizei)width, (GLsizei)height);
+		Deactivate();
 	}
 }

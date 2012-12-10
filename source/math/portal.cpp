@@ -14,11 +14,8 @@ namespace Math
 		const vec3& p1 = m_points[1];
 		const vec3& p2 = m_points[2];
 
-		m_normal = (p1 - p0).Cross(p2 - p0).Normalize();
-
-		if (m_normal.Length() < 0.9)
-			return (out_error() << "Bad normal in portal " << std::endl, false);
-
+		m_plane.Set(p0, p1, p2);
+		
 		return true;
 	}
 
@@ -30,7 +27,7 @@ namespace Math
 		int size = (int)m_points.size();
 		stream.write((char*)&size, sizeof(size));
 		stream.write((char*)&m_points[0], sizeof(m_points[0]));
-		m_normal.Save(stream);
+		m_plane.Save(stream);
 		return true;
 	}
 
@@ -40,7 +37,19 @@ namespace Math
 		stream.read((char*)&size, sizeof(size));
 		m_points.resize(size);
 		stream.read((char*)&m_points[0], sizeof(m_points[0]));
-		m_normal.Load(stream);
+		m_plane.Load(stream);
 		return true;
+	}
+
+	const Portal operator * (const mat4& m, const Portal& p)
+	{
+		Portal::PointsCollection points;
+		for each (auto& point in p)
+		{
+			points.push_back(m*point);
+		}
+		Portal result;
+		result.SetPoints(points);
+		return result;
 	}
 }

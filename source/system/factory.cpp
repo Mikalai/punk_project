@@ -16,16 +16,28 @@
 
 namespace System
 {
-	std::auto_ptr<Factory> Factory::m_instance;
+	Factory* m_instance;
+
+	PUNK_ENGINE Factory* GetFactory()
+	{
+		if (!m_instance)
+			m_instance = new Factory();
+		return m_instance;
+	}
+
+	Factory::~Factory()
+	{
+		out_message() << "Factory destroyed" << std::endl;
+	}
 
 	bool Factory::RegisterCreator(ObjectType type, ResourceCreator* creator)
 	{
 		auto it = m_creator.find(type);
 		if (it != m_creator.end())
-			return (out_error() << "Can't register second creator for the same type. Unregister first" << std::endl, false);
+			return (out_warning() << "Can't register second creator for the same type " << System::AsString(type).Data() << ". Unregister first" << std::endl, false);
 		m_creator[type] = creator;
 
-		return (out_message() << "Creator for " << System::AsString(type) << " was registered" << std::endl, true);
+		return (out_message() << L"Creator for " << System::AsString(type).Data() << L" was registered" << std::endl, true);
 	}
 
 	bool Factory::UnregisterCreator(ObjectType type)
@@ -82,7 +94,7 @@ namespace System
 		stream.read((char*)&type, sizeof(type));
 		if (flag)
 		{
-			System::Proxy<Object> o = Factory::Instance()->Create(type);
+			System::Proxy<Object> o = GetFactory()->Create(type);
 			if (!o->Load(stream))
 				return (out_error() << "Can't load compound object" << std::endl, System::Proxy<Object>(nullptr));
 			return o;
@@ -91,22 +103,22 @@ namespace System
 		{
 			System::string storage;
 			storage.Load(stream);
-			System::Proxy<Object> o = Factory::Instance()->Create(storage, type);
+			System::Proxy<Object> o = GetFactory()->Create(storage, type);
 			return o;
 		}		
 	}
 
-	Factory* Factory::Instance()
-	{
-		if (!m_instance.get())
-			m_instance.reset(new Factory);
-		return m_instance.get();
-	}
+	//Factory* GetFactory()
+	//{
+	//	if (!m_instance.get())
+	//		m_instance.reset(new Factory);
+	//	return m_instance.get();
+	//}
 
-	void Factory::Destroy()
-	{
-		m_instance.reset(nullptr);
-	}
+	//void Factory::Destroy()
+	//{
+	//	m_instance.reset(nullptr);
+	//}
 	
 	Proxy<Object> Factory::CreateFromTextFile(const string& path)
 	{		

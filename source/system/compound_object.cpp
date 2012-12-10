@@ -14,7 +14,7 @@ namespace System
 
 		for each (const auto& o in m_children)
 		{
-			System::Factory::Instance()->SaveToStream(stream, o);
+			System::GetFactory()->SaveToStream(stream, o);
 		}
 
 		return true;
@@ -30,7 +30,7 @@ namespace System
 
 		for (int i = 0; i < total_count; ++i)
 		{
-			Proxy<Object> o = Factory::Instance()->LoadFromStream(stream);
+			Proxy<Object> o = GetFactory()->LoadFromStream(stream);
 			if (!o.IsValid())
 				return (out_error() << "Can't load compound object" << std::endl, false);
 			if (!Add(o))

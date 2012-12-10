@@ -9,7 +9,7 @@ namespace System
 	enum ObjectType : int
 	{
 		RESOURCE_NONE = -1,
-		STATIC_MESH,
+		STATIC_MESH = 10,
 		SKINNED_MESH,
 		QUAD,
 		SOUND_2D,

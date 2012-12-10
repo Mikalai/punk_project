@@ -39,10 +39,29 @@ namespace THE_NAMESPACE { \
 		THE_TYPE##Manager(const THE_TYPE##Manager&); \
 		THE_TYPE##Manager& operator = (const THE_TYPE##Manager&);		\
 	public:\
-		THE_TYPE##Manager() {}\
+		THE_TYPE##Manager() { \
+			System::GetFactory()->RegisterCreator(System::Policy<THE_TYPE>::GetResourceType(), this); }\
+		static THE_TYPE##Manager* Instance()  { \
+			if (!m_instance##THE_TYPE) { \
+				m_instance##THE_TYPE = new THE_TYPE##Manager; \
+				System::MegaDestroyer::Instance()->PushDestroyer(Destroy); \
+			}\
+			return m_instance##THE_TYPE;\
+		}\
+		static void Destroy() {\
+			out_message() << "Destroying static object manager" << std::endl;\
+			delete m_instance##THE_TYPE; m_instance##THE_TYPE = 0;\
+		}\
+	private:\
+		static THE_TYPE##Manager* m_instance##THE_TYPE;\
 	}; \
+	\
+	static THE_TYPE##Manager* THE_TYPE##temp = THE_TYPE##Manager::Instance(); \
 }
 
+#define IMPLEMENT_MANAGER(THE_FILE, THE_EXT, THE_FOLDER, THE_TYPE_CODE, THE_NAMESPACE, THE_TYPE) \
+	namespace THE_NAMESPACE { \
+	THE_TYPE##Manager* THE_TYPE##Manager::m_instance##THE_TYPE; }
 
 namespace System
 {
@@ -91,7 +110,8 @@ namespace System
 			}
 			else
 			{
-				out_error() << System::string(L"Resource file ") + Policy<T>::GetResourceFile() + L" was not created in " + Policy<T>::GetFolder() + L" yet. " << std::endl;
+				fld.Close();
+				return std::list<System::string>();
 			}
 			fld.Close();
 			out_message() << L"Reading resources complete" << std::endl;
@@ -160,8 +180,8 @@ namespace System
 	public:		
 
 		ResourceManager2<T, Policy>()
-		{
-			Init();
+		{			
+			Init();			
 			Policy<T>::OnInit();
 		}
 
@@ -173,9 +193,7 @@ namespace System
 		}
 
 		void Init()
-		{
-			System::Factory::Instance()->RegisterCreator(Policy<T>::GetResourceType(), this);
-
+		{	
 			out_message() << L"Start caching resources of the manager" << std::endl;
 			std::list<System::string> indexed = ReadResourcFile();
 			System::Folder fld;
@@ -261,8 +279,9 @@ namespace System
 
 		virtual Proxy<Object> Create(const string& name)
 		{
-			Proxy<T> object(new T);
+			Proxy<Object> object(new T);
 			Manage(name, object);
+			object->SetStorageName(name);
 			return object;
 		}
 
@@ -282,7 +301,7 @@ namespace System
 		}
 
 		bool Manage(const System::string& storage_name, Proxy<T> data)
-		{
+		{						
 			auto value = data;
 			if (!storage_name.Length())
 				return (out_error() << "Can't store data with empty storage name" << std::endl, false);
@@ -299,24 +318,6 @@ namespace System
 		}
 
 		const Collection& GetAll() const { return m_items; }
-
-		static ResourceManager2<T, Policy>* Instance()
-		{
-			if (!m_instance.get())
-			{
-				m_instance.reset(new ResourceManager2<T, Policy>);
-//				GlobalManager::Instance()->RegisterManager(m_instance.get());
-				System::MegaDestroyer::Instance()->PushDestroyer(Destroy);
-			}
-			return m_instance.get();
-		}
-
-		static void Destroy()
-		{
-			out_message() << "Destroying static object manager" << std::endl;
-	//		GlobalManager::Instance()->UnregisterManager(m_instance.get());
-			m_instance.reset(0);
-		}
 
 	private:
 
@@ -335,17 +336,12 @@ namespace System
 	private:
 		
 		typedef std::map<const System::string, int> Dictionary;
-		typedef std::map<int, System::string> ReverseDictionary;
-
-		static std::auto_ptr<ResourceManager2> m_instance;
+		typedef std::map<int, System::string> ReverseDictionary;		
 
 		Collection m_items;
 		Dictionary m_dictionary;
 		ReverseDictionary m_reverse_dictionary;
-	};
-
-	template<class T, template <class U> class Policy> 
-	std::auto_ptr<ResourceManager2<T, Policy>> ResourceManager2<T, Policy>::m_instance;
+	};	
 }
 
 #endif _H_RESOURCE_MANAGER2

@@ -4,15 +4,18 @@
 
 #include "../../../system/logger.h"
 #include "../../../math/helper.h"
-#include "../../../utility/descriptors/mesh_desc.h"
+#include "../../../virtual/data/static_geometry.h"
 
 #include "static_mesh.h"
 #include "primitive_types.h"
+
+IMPLEMENT_MANAGER(L"resource.static_meshs", L"*.static_mesh", System::Environment::Instance()->GetModelFolder(), System::ObjectType::STATIC_MESH, OpenGL, StaticMesh);
 
 namespace OpenGL
 {
 	StaticMesh::StaticMesh()
 	{
+		SetType(System::ObjectType::STATIC_MESH);
 		m_primitive_type = PrimitiveTypes::STATIC_MESH; 
 	}
 
@@ -51,31 +54,30 @@ namespace OpenGL
 		return true;	
 	}
 
-	bool StaticMesh::Cook(Utility::MeshDesc* mesh)
-	{				
-		SetType(System::ObjectType::STATIC_MESH);
-		if (mesh->m_vertices.empty())
+	bool StaticMesh::Cook(System::Proxy<Virtual::StaticGeometry> mesh)
+	{						
+		if (mesh->GetVertices().empty())
 			return (out_error() << "Can't create static mesh from empty vertex list in mesh descriptor" << std::endl, false);
-		if (mesh->m_tex_coords.empty())
+		if (mesh->GetTextureMeshes().empty())
 			return (out_error() << "Can't create static mesh from mesh descriptor with empty texture coordinates list" << std::endl, false);
-		if (mesh->m_normals.empty())
+		if (mesh->GetNormals().empty())
 			return (out_error() << "Can't create static mesh from mesh descriptor with empty normals list" << std::endl, false);
 
-		std::vector<unsigned> ib(mesh->m_faces.size()*3);
+		std::vector<unsigned> ib(mesh->GetFaces().size()*3);
 
 		for (unsigned i = 0; i < ib.size(); i++)
 			ib[i] = i;
 
-		std::vector<Utility::Vertex<VertexType>> vb(mesh->m_faces.size()*3);			
+		std::vector<Utility::Vertex<VertexType>> vb(mesh->GetFaces().size()*3);			
 
 		std::vector<int> base_index;		/// contains vertex index in the source array
 		int index = 0;
-		for (unsigned i = 0, max_i = mesh->m_tex_coords.begin()->second.size(); i < max_i; i++)
+		for (unsigned i = 0, max_i = mesh->GetTextureMeshes().begin()->second.size(); i < max_i; i++)
 		{
-			const Math::ivec3& f = mesh->m_faces[i];
-			const Math::vec3 position[3] = { mesh->m_vertices[f[0]], mesh->m_vertices[f[1]], mesh->m_vertices[f[2]] };
-			const Math::vec2 texture[3] = { mesh->m_tex_coords.begin()->second[i][0], mesh->m_tex_coords.begin()->second[i][1], mesh->m_tex_coords.begin()->second[i][2] };
-			const Math::vec3 normal[3] = { mesh->m_normals[f[0]], mesh->m_normals[f[1]], mesh->m_normals[f[2]] };
+			const Math::ivec3& f = mesh->GetFaces()[i];
+			const Math::vec3 position[3] = { mesh->GetVertices()[f[0]], mesh->GetVertices()[f[1]], mesh->GetVertices()[f[2]] };
+			const Math::vec2 texture[3] = { mesh->GetTextureMeshes().begin()->second[i][0], mesh->GetTextureMeshes().begin()->second[i][1], mesh->GetTextureMeshes().begin()->second[i][2] };
+			const Math::vec3 normal[3] = { mesh->GetNormals()[f[0]], mesh->GetNormals()[f[1]], mesh->GetNormals()[f[2]] };
 
 			Math::vec3 tgn;
 			Math::vec3 nrm;

@@ -12,6 +12,8 @@ namespace System
 	{
 	public:
 		
+		~Factory();
+
 		bool RegisterCreator(ObjectType type, ResourceCreator* creator);
 		bool UnregisterCreator(ObjectType type);
 		Proxy<Object> Create(ObjectType type);
@@ -22,13 +24,14 @@ namespace System
 		bool SaveToStream(std::ostream& stream, Proxy<Object> object);
 		Proxy<Object> LoadFromStream(std::istream& stream);
 
-		static Factory* Instance();
-		static void Destroy();
+	///	static Factory* Instance();
+	///	static void Destroy();
 
-	private:
-		static std::auto_ptr<Factory> m_instance;
+	private:		
 		std::map<ObjectType, ResourceCreator*> m_creator;
 	};
+
+	PUNK_ENGINE Factory* GetFactory();
 }
 
 #endif	//	_H_PUNK_SYSTEM_FACTORY

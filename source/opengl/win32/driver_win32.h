@@ -33,8 +33,6 @@ namespace OpenGL
 
 	class PUNK_ENGINE Driver
 	{
-		SingletoneInterface(Driver);
-
 	private:
 		int m_width;
 		int m_height;
@@ -66,7 +64,12 @@ namespace OpenGL
 		void* GetProcAddress(const char* name);
 		void RenderFrame(Frame* frame);
 		RenderTarget* CreateRenderTarget(RenderTarget::Properties* props);
+		
+		static Driver* Instance();
+		static void Destroy();
+
 	private:
+		static Driver* m_instance;
 		std::list<RenderTarget*> m_targets;
 	};
 }

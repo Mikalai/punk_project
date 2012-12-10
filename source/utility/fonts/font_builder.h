@@ -14,7 +14,6 @@ namespace Utility
 {	
 	class PUNK_ENGINE FontBuilder
 	{		
-		SingletoneInterface(FontBuilder);
 	public:
 		FontBuilder();
 		void Init();
@@ -25,7 +24,12 @@ namespace Utility
 		int CalculateLength(const wchar_t* text);
 		int GetHeight(wchar_t s);
 		int GetWidth(wchar_t s);
-	private:
+		
+		static FontBuilder* Instance();
+		static void Destroy();
+    private:
+		static FontBuilder* m_instance;
+		
 		void CacheSymbol(wchar_t symb);
 	};
 }
