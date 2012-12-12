@@ -7,7 +7,7 @@
 #ifndef _H_PUNK_GUI_MANAGER
 #define _H_PUNK_GUI_MANAGER
 
-#include "config.h"
+#include "../config.h"
 #include "widget.h"
 #include "../system/events/events.h"
 #include "../system/window.h"
@@ -18,7 +18,7 @@ namespace GUI
 {
 	class IGUIRender;
 
-	class LIB_GUI Manager
+	class PUNK_ENGINE Manager
 	{
 		std::vector<std::shared_ptr<Widget>> rootWidgets;
 		Widget* m_focusWidget;

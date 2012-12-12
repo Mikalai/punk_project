@@ -1457,6 +1457,12 @@
       <Filter>opengl\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\punk_engine.h" />
+    <ClInclude Include="..\..\..\source\opengl\textures\text_surface.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\internal_formats.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2258,6 +2264,12 @@
       <Filter>opengl\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\main.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\textures\text_surface.cpp">
+      <Filter>opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\textures\internal_formats.cpp">
+      <Filter>opengl\textures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\source\blender\punk_exporter_2_60.py">

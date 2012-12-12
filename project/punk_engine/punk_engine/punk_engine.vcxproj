@@ -381,11 +381,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\internal_formats.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\texture2d.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\texture2d_impl.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\textures.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\texture_2d_manager.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\texture_context.h" />
+    <ClInclude Include="..\..\..\source\opengl\textures\text_surface.h" />
     <ClInclude Include="..\..\..\source\opengl\texture_bind_target.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -889,9 +891,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\textures\internal_formats.cpp" />
     <ClCompile Include="..\..\..\source\opengl\textures\texture2d.cpp" />
     <ClCompile Include="..\..\..\source\opengl\textures\texture_2d_manager.cpp" />
     <ClCompile Include="..\..\..\source\opengl\textures\texture_context.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\textures\text_surface.cpp" />
     <ClCompile Include="..\..\..\source\opengl\text_texture_2d.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

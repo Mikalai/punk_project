@@ -2,6 +2,8 @@
 #define _H_PUNK_RENDER_SIMPLE_RENDER
 
 #include "../config.h"
+#include "../system/smart_pointers/proxy.h"
+#include "../scene/scene_graph.h"
 
 namespace OpenGL { class Frame; }
 namespace OpenGL { class RenderTarget; }

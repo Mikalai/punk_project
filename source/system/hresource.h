@@ -32,49 +32,15 @@ namespace System
 		GEOMETRY_NODE,
 		TRANSFORM_NODE,
 		LOCATION_INDOOR,
-		STATIC_GEOMETRY
+		STATIC_GEOMETRY,
+		GUI_WIDGET,
+		GUI_BUTTON,
+		GUI_LABEL,
+		GUI_TEXT_BOX
 	};
 
 	PUNK_ENGINE const System::string AsString(ObjectType type);
 
-	/*class StorableData;
-	class AbstractManager;
-
-	class PUNK_ENGINE HResource
-	{
-		int m_type;
-		int m_index;
-		AbstractManager* m_manager;
-	public:
-
-		HResource(int type = -1, int index = -1);
-		StorableData* operator -> ();
-		StorableData* operator * ();
-		const StorableData* operator -> () const;
-		bool IsValid() const { return m_index != -1 && m_type != -1; }
-		int GetType() { return m_type; }
-		int GetIndex() { return m_index; }
-
-		bool IsPermanent() { return m_type < DYNAMIC_RESOURCE_START; }
-		bool IsDynamic() { return m_type >= DYNAMIC_RESOURCE_START; }
-
-		bool Save(std::ostream& stream);
-		bool Load(std::istream& stream);
-
-		template<class T> 
-		const T* As() const
-		{
-			if (T::GetType() == m_type && m_index >= 0)
-				return static_cast<T*>(operator * ());
-			return 0;
-		}		
-
-		template<class T>
-		T* As() 
-		{
-			return const_cast<T*>(static_cast<const T*>(this)->As<T>());
-		}
-	};*/
 }
 
 #endif	//	_H_PUNK_SYSTEM_H_RESOURCE

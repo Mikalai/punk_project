@@ -27,6 +27,7 @@ namespace OpenGL
 		unsigned uProjViewWorld;
 		unsigned uDiffuseColor;
 		unsigned uDiffuseMap;
+		unsigned uTextureMatrix;
 
 	public:
 
@@ -55,15 +56,17 @@ namespace OpenGL
 			uProjViewWorld = GetUniformLocation("uProjViewWorld");
 			uDiffuseColor = GetUniformLocation("uDiffuseColor");
 			uDiffuseMap = GetUniformLocation("uDiffuseMap");
+			uTextureMatrix = GetUniformLocation("uTextureMatrix");
 		}
 
 		virtual void BindParameters(const System::Proxy<State>& params)
 		{						
 			const State* state = params.Get();
-			const Math::mat4 proj_view_world = params->m_camera->GetProjectionMatrix() * params->m_camera->GetViewMatrix() * params->m_local;
+			const Math::mat4 proj_view_world = params->m_projection * params->m_view * params->m_local;
 			SetUniformMatrix4f(uProjViewWorld, &(proj_view_world[0]));
-			SetUniformVector4f(uDiffuseColor, &(state->m_current_material->GetDiffuseColor())[0]);
+			SetUniformVector4f(uDiffuseColor, &(state->m_diffuse_color[0]));
 			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
+			SetUniformMatrix2f(uTextureMatrix, &state->m_texture_matrix[0]);
 		}
 		
 		virtual Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -132,9 +135,9 @@ namespace OpenGL
 
 		virtual void BindParameters(const System::Proxy<State>& params)
 		{			
-			const Math::mat4 proj_view_world = params->m_camera->GetProjectionMatrix() * params->m_camera->GetViewMatrix() * params->m_local;
+			const Math::mat4 proj_view_world = params->m_projection * params->m_view * params->m_local;
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
-			SetUniformVector4f(uDiffuseColor, &(params->m_current_material->GetDiffuseColor())[0]);
+			SetUniformVector4f(uDiffuseColor, &(params->m_diffuse_color[0]));
 		}
 		
 		virtual Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -349,6 +352,7 @@ namespace OpenGL
 	{	
 		unsigned uProjViewWorld;
 		unsigned uDiffuseColor;
+		unsigned uTextureMatrix;
 		unsigned uTextColor;
 		unsigned uNoDiffuseTexture;
 		unsigned uDiffuseMap;
@@ -380,17 +384,20 @@ namespace OpenGL
 			uNoDiffuseTexture = GetUniformLocation("uNoDiffuseTexture");
 			uDiffuseMap = GetUniformLocation("uDiffuseMap");
 			uTextMap = GetUniformLocation("uTextMap");
+			uTextureMatrix = GetUniformLocation("uTextureMatrix");
 		}
 
 		void BindParameters(const System::Proxy<State>& pparams)
 		{									
-			//const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			//SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
-			//SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
-			//SetUniformVector4f(uTextColor, &params.m_text_color[0]);
-			//SetUniformVector4f(uNoDiffuseTexture, &params.m_no_diffuse_texture[0]);
-			//SetUniformInt(uDiffuseMap, params.m_diffuse_texture);
-			//SetUniformInt(uTextMap, params.m_text_texture);
+			const State* state = pparams.Get();
+			Math::mat4 proj_view_world = state->m_projection * state->m_view * state->m_local;
+			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
+			SetUniformMatrix2f(uTextureMatrix, &state->m_texture_matrix[0]);
+			SetUniformVector4f(uDiffuseColor, &state->m_diffuse_color[0]);
+			SetUniformVector4f(uTextColor, &state->m_text_color[0]);
+			SetUniformVector4f(uNoDiffuseTexture, &state->m_no_diffuse_texture_color[0]);
+			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
+			SetUniformInt(uTextMap, state->m_text_slot);
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 

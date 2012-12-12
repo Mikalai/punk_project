@@ -11,8 +11,13 @@ namespace OpenGL
 		enum { VertexType = Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TEXTURE };
 	public:
 		QuadObject();
-
 		void Cook(float width, float height);
+
+		static QuadObject* Instance();
+		static void Destroy();
+
+	private:
+		static std::auto_ptr<QuadObject> m_instance;
 	};
 }
 

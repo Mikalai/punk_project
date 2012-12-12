@@ -8,6 +8,7 @@ Description: Texture2D implementation
 #include <ostream>
 #include "texture2d.h"
 #include "texture2d_impl.h"
+#include "internal_formats.h"
 
 IMPLEMENT_MANAGER(L"resource.textures", L"*.texture", System::Environment::Instance()->GetTextureFolder(), System::ObjectType::TEXTURE_2D, OpenGL, Texture2D);
 
@@ -49,9 +50,9 @@ namespace OpenGL
 		impl_texture_2d.reset(0);
 	}
 
-	void Texture2D::CopyFromCPU(int x, int y, int width, int height, int format, const unsigned char* data)
+	void Texture2D::CopyFromCPU(int x, int y, int width, int height, ImageModule::ImageFormat format, const unsigned char* data)
 	{
-		impl_texture_2d->CopyFromCPU(x, y, width, height, format, data);
+		impl_texture_2d->CopyFromCPU(x, y, width, height, ImageFormatToOpenGL(format), data);
 	}
 
 	void Texture2D::Resize(int width, int height)
@@ -59,10 +60,10 @@ namespace OpenGL
 		impl_texture_2d->Resize(width, height);
 	}
 
-	void Texture2D::Create(int width, int height, int format, const unsigned char* data)
+	void Texture2D::Create(int width, int height, ImageModule::ImageFormat format, const unsigned char* data)
 	{
-		impl_texture_2d.reset(new Texture2DImpl);
-		impl_texture_2d->Create(width, height, format, data);
+		impl_texture_2d.reset(new Texture2DImpl);		
+		impl_texture_2d->Create(width, height, ImageFormatToOpenGL(format), data);
 	}
 
 	void Texture2D::Create(const ImageModule::Image& image)

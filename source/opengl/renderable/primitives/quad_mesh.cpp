@@ -6,6 +6,25 @@
 
 namespace OpenGL
 {
+	std::auto_ptr<QuadObject> QuadObject::m_instance;
+	
+	QuadObject* QuadObject::Instance()
+	{
+		if (!m_instance.get())
+		{
+			m_instance.reset(new QuadObject);
+			m_instance->Cook(1,1);
+		}
+		return m_instance.get();
+	}
+
+	void QuadObject::Destroy()
+	{
+		m_instance.reset(nullptr);
+	}		
+
+	QuadObject::QuadObject() {}
+
 	void QuadObject::Cook(float width, float height)
 	{				
 		std::vector<Utility::Vertex<VertexType>> vb(4);

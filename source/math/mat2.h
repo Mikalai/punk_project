@@ -18,6 +18,42 @@ namespace Math
 		T m[4];
 	public:
 
+		static Matrix2x2<T> CreateIdentity()
+		{
+			return Matrix2x2<T>();
+		}
+
+		static Matrix2x2<T> CreateMirrorX()
+		{
+			Matrix2x2<T> m;
+			m[0] = 1;
+			m[1] = 0;
+			m[2] = 0;
+			m[3] = -1;
+			return m;
+
+		}
+
+		static Matrix2x2<T> CreateMirrorY()
+		{
+			Matrix2x2<T> m;
+			m[0] = -1;
+			m[1] = 0;
+			m[2] = 0;
+			m[3] = 1;
+			return m;
+		}
+
+		static Matrix2x2<T> CreateMirrorXY()
+		{
+			Matrix2x2<T> m;
+			m[0] = -1;
+			m[1] = 0;
+			m[2] = 0;
+			m[3] = -1;
+			return m;
+		}
+
 		Matrix2x2<T>()
 		{
 			memset(m, 0, sizeof(m));
@@ -197,9 +233,14 @@ namespace Math
 		return m;
 	}
 
-	template class PUNK_ENGINE Matrix2x2<float>;
+	class PUNK_ENGINE mat2 : public Matrix2x2<float>
+	{
+	public:
+		mat2() : Matrix2x2<float> () {}
+		mat2(const mat2& m) : Matrix2x2<float>(m) {}
+		mat2(const Matrix2x2<float>& m) : Matrix2x2<float>(m) {}
+	};
 
-	typedef Matrix2x2<float> mat2;
 }
 
 #endif

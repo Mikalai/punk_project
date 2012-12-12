@@ -108,11 +108,36 @@ namespace Utility
 			if (!data)
 				CacheSymbol(*cur);	
 
-			data = wcache[curSize][curFace][*cur];			
+			data = wcache[curSize][curFace][*cur];	
+			if (res != 0)
+				res += data->x_offset;
 			res += data->x_advance;
 			cur++;
 		}
 		return res;
+	}
+
+	int FontBuilder::CalculateHeight(const wchar_t* text)
+	{
+		int res = 0;
+		int min_h = 0;
+		int max_h = 0;
+		const wchar_t* cur = text;
+		while (*cur)
+		{
+			CacheData* data = wcache[curSize][curFace][*cur];
+			
+			if (!data)
+				CacheSymbol(*cur);	
+
+			data = wcache[curSize][curFace][*cur];				
+			if (max_h < data->y_offset)
+				max_h = data->y_offset;
+			if (min_h > data->y_offset - data->height)
+				min_h = data->y_offset - data->height;						
+			cur++;
+		}
+		return max_h - min_h;
 	}
 
 	int FontBuilder::GetWidth(wchar_t s)
@@ -122,7 +147,7 @@ namespace Utility
 			CacheSymbol(s);	
 
 		data = wcache[curSize][curFace][s];			
-		return data->x_advance;
+		return data->x_advance ;
 	}
 
 	int FontBuilder::GetHeight(wchar_t s)
@@ -132,7 +157,53 @@ namespace Utility
 			CacheSymbol(s);	
 
 		data = wcache[curSize][curFace][s];			
-		return data->height + data->y_offset;
+		return data->height + abs(data->y_offset);
+	}
+
+	int FontBuilder::GetMaxOffset(const System::string& s)
+	{
+		int res = 0;
+		for (int i = 0, max_i = s.Length(); i < max_i; ++i)
+		{
+			wchar_t c = s[i];
+			int v = GetMaxOffset(c);
+			if (res < v)
+				res = v;
+		}
+		return res;
+	}
+
+	int FontBuilder::GetMinOffset(const System::string& s)
+	{
+		int res = 0;
+		for (int i = 0, max_i = s.Length(); i < max_i; ++i)
+		{
+			wchar_t c = s[i];
+			int v = GetMinOffset(c);
+			if (res > v)
+				res = v;
+		}
+		return res;
+	}
+
+	int FontBuilder::GetMaxOffset(wchar_t s)
+	{
+		CacheData* data = wcache[curSize][curFace][s];
+		if (!data)
+			CacheSymbol(s);	
+
+		data = wcache[curSize][curFace][s];			
+		return data->y_offset ;
+	}
+
+	int FontBuilder::GetMinOffset(wchar_t s)
+	{
+		CacheData* data = wcache[curSize][curFace][s];
+		if (!data)
+			CacheSymbol(s);	
+
+		data = wcache[curSize][curFace][s];			
+		return data->y_offset - data->height;
 	}
 
 	void FontBuilder::RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
@@ -203,24 +274,11 @@ namespace Utility
 	void FontBuilder::Init()
 	{
 		System::string iniFontsFile;
-		System::string pathToFonts;
+		System::string pathToFonts = System::Environment::Instance()->GetFontFolder();
 
 		System::ConfigFile conf;
 		
-		conf.Open(System::Window::Instance()->GetTitle());
-		if (conf.IsExistOption(L"fonts"))
-		{
-			if (conf.ReadOptionString(L"fonts", pathToFonts))
-			{
-				iniFontsFile = pathToFonts + L"fonts.ini";
-			}
-		}
-		else
-		{
-			iniFontsFile = (pathToFonts = "d:\\project\\data\\font\\");
-			conf.WriteOptionString(L"fonts", iniFontsFile);
-		}
-		conf.Close();
+		iniFontsFile = System::Environment::Instance()->GetFontFolder() + L"fonts.ini";	
 
 		FT_Error error = FT_Init_FreeType(&library);
 		if (error)

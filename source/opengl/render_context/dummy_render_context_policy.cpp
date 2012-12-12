@@ -185,6 +185,22 @@ namespace OpenGL
 		return true;
 	}
 
+	bool AbstractRenderPolicy::SetUniformMatrix2f(const char * name, const float* value)
+	{
+		int loc = glGetUniformLocation ( m_program, name );
+		CHECK_GL_ERROR(L"Unable to get uniform location");				
+		glUniformMatrix2fv(loc, 1, GL_FALSE, value);
+		CHECK_GL_ERROR(L"Unable to set value");
+		return true;
+	}
+
+	bool AbstractRenderPolicy::SetUniformMatrix2f( int loc, const float* value)
+	{		
+		glUniformMatrix2fv(loc, 1, GL_FALSE, value);
+		CHECK_GL_ERROR(L"Unable to set value");
+		return true;
+	}
+
 	bool AbstractRenderPolicy::SetUniformMatrix3f(const char * name, const float* value)
 	{
 		int loc = glGetUniformLocation ( m_program, name );
@@ -195,7 +211,7 @@ namespace OpenGL
 	}
 
 	bool AbstractRenderPolicy::SetUniformMatrix3f( int loc, const float* value)
-	{
+	{		
 		glUniformMatrix3fv(loc, 1, GL_FALSE, value);
 		CHECK_GL_ERROR(L"Unable to set value");
 		return true;

@@ -11,6 +11,9 @@ namespace Scene { class SceneGraph; }
 
 namespace OpenGL
 {
+	class Texture2D;
+	class TextSurface;
+
 	class PUNK_ENGINE MeshCooker : public Scene::AbstractVisitor
 	{
 	public:
@@ -43,12 +46,20 @@ namespace OpenGL
 		virtual bool Visit(Scene::LocationIndoorNode* node);		
 		virtual bool Visit(Scene::PortalNode* node);
 
+		void RenderQuad(float x, float y, float width, float height, const Math::vec4& color);
+		void RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture);
+		void RenderText(float x, float y, const System::string& text, const Math::vec4& color);
+
 	private:
 		RenderTarget* m_rt;
 		System::Proxy<Scene::SceneGraph> m_scene;
 		MeshCooker m_cooker;
 		System::Proxy<RenderContextBumpMapping> m_context;
+		System::Proxy<RenderContextSolid3D> m_solid_rc;
+		System::Proxy<RenderContextSolidTexture3D> m_textured_rc;
+		System::Proxy<RenderContextGUI> m_gui_rc;
 		System::Proxy<TextureContext> m_tc;
+		System::Proxy<TextSurface> m_text;
 		StateManager m_states;
 	};
 }

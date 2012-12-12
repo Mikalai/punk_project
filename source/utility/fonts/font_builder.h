@@ -22,8 +22,13 @@ namespace Utility
 		void SetCharSize(int width, int height);
 		void RenderChar(wchar_t symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer);
 		int CalculateLength(const wchar_t* text);
+		int CalculateHeight(const wchar_t* text);
 		int GetHeight(wchar_t s);
 		int GetWidth(wchar_t s);
+		int GetMaxOffset(const System::string& s);		
+		int GetMinOffset(const System::string& s);		
+		int GetMaxOffset(wchar_t s);
+		int GetMinOffset(wchar_t s);
 		
 		static FontBuilder* Instance();
 		static void Destroy();

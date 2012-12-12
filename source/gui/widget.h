@@ -3,9 +3,9 @@
 
 #include <vector>
 #include <memory>
-#include "../system/system.h"
+#include "../system/compound_object.h"
 #include "../string/string.h"
-#include "config.h"
+#include "../config.h"
 #include "../opengl/driver.h"
 #include "../math/math.h"
 
@@ -20,7 +20,7 @@ namespace GUI
 
 	class Manager;
 
-	class LIB_GUI Widget
+	class PUNK_ENGINE Widget : public System::CompoundObject
 	{
 	public:
 
@@ -28,6 +28,115 @@ namespace GUI
 
 		enum VerticalAlign { VERTICAL_ALIGN_TOP, VERTICAL_ALIGN_CENTER, VERTICAL_ALIGN_BOTTOM };
 		enum HorizontalAlign { HORIZONTAL_ALIGHT_LEFT, HORIZONTAL_ALIGN_CENTER, HORIZONTAL_ALIGN_RIGHT};
+
+	public:
+
+		Widget(float x = 0, float y = 0, float width = 1, float height = 1, const System::string& text = L"", Widget* parent = 0);
+
+		void RemoveChild(Widget* child);
+		void RemoveAll();
+		void AddChild(Widget* child);
+
+		virtual ~Widget();
+		virtual void SetText(const System::string& text);
+
+		void SetVerticalTextAlign(VerticalAlign v) { m_vertical_align = v; }
+		void SetHorizontalTextAlign(HorizontalAlign v) { m_horizontal_align = v; }
+		VerticalAlign SetVerticalTextAlign(VerticalAlign v) const { return m_vertical_align; }
+		HorizontalAlign SetHorizontalTextAlign(HorizontalAlign v) const { return m_horizontal_align; }
+
+		void SetWidth(float width);
+		void SetHeight(float height);
+		float GetWidth() const;
+		float GetHeight() const;
+		float GetScreenWidth() const;
+		float GetScreenHeight() const;		
+		float GetX() const;
+		float GetY() const;
+		float GetScreenX() const;
+		float GetScreenY() const;
+		void SetX(float x);
+		void SetY(float y);
+		bool IsVisible() const;
+		bool IsEnabled() const;
+		void Show(bool isVisible);
+		void Enable(bool isEnabled);
+		void SetParent(Widget* parent);
+		Widget* GetParent();
+		const Widget* GetParent() const;
+		void FixPosition(bool isFixed);
+		bool IsFixedPosition() const;
+		void SetSize(float x, float y, float width, float height);
+		void SetColor(ColorType type, float r, float g, float b, float a);		
+		void SetFont(const char* fontName);
+		void SetTextSize(int size);
+		int GetTextSize() const {return m_fontSize;}
+		Widget* GetChild(int index);
+		const Widget* GetChild(int index) const;
+		unsigned GetChildrenCount() const;
+		void SetAnyData(void* data);
+		void* GetAnyData();
+
+
+		const System::string& GetText() const;
+		void SetFocuse(bool isFocused);
+
+		virtual void SetNextWidget(Widget* widget);	
+		virtual void SetPrevWidget(Widget* widget);
+		Widget* GetNextWidget() { return m_next_widget; }
+		Widget* GetPrevWidget() { return m_prev_widget; }
+		virtual void Render(IGUIRender* render) const;
+
+		bool IsPointIn(const Math::vec2& point_in_viewport) const;
+		Widget* GetFocused(float x, float y);
+		bool IsCursorIn() const;
+
+		void Store(System::Buffer& buffer) {}
+		void Restore(System::Buffer& buffer) {}
+
+		const OpenGL::Texture2D* GetTextTexture() const;
+		void SetBackgroundTexture(OpenGL::Texture2D* texture);
+		const OpenGL::Texture2D* GetBackgroundTexture() const;
+
+		const Manager* GetManager() const;
+		Manager* GetManager();
+		void SetManager(Manager* manager);
+
+		/// Work with color goes here
+		Math::Vector4<float>& BackColor0();
+		Math::Vector4<float>& BackColor1();
+		Math::Vector4<float>& TextColor0();
+		Math::Vector4<float>& TextColor1();
+
+		const Math::Vector4<float>& BackColor0() const;
+		const Math::Vector4<float>& BackColor1() const;
+		const Math::Vector4<float>& TextColor0() const;
+		const Math::Vector4<float>& TextColor1() const;
+
+		const Math::Vector4<float>& TextColor() const;
+		const Math::Vector4<float>& BackColor() const;
+
+		/*********************************************************************/
+		/*	Handlers
+		/*********************************************************************/
+
+		void SetMouseLeftClickHandler(System::Handler onLeftClick);
+		void SetMouseRightClickHandler(System::Handler onRightClick);
+		void SetMouseMiddleClickHandler(System::Handler onMiddleClick);
+		void SetMouseEnterHandler(System::Handler onMouseEnter);
+		void SetMouseLeaveHandler(System::Handler onMouseLeave);
+		void SetMouseMoveHandler(System::Handler onMouseMove);
+		void SetCharHandler(System::Handler onChar);
+		void SetKeyDownHandler(System::Handler onKeyDown);
+		void SetKeyUpHandler(System::Handler onKeyUp);
+		void SetWheelHandler(System::Handler onWheel);
+		void SetIdleHandler(System::Handler onIdle);
+		void SetResizedHandler(System::Handler onResized);
+
+
+		friend class Manager;
+
+		static const Math::Vector2<float> WindowToViewport(float x, float y);
 
 	protected:
 
@@ -73,7 +182,7 @@ namespace GUI
 		void* m_any_data;
 
 		Manager* m_manager;
-	
+
 		/******************************************************************/
 		/*			LIST OF HANDLERS
 		/******************************************************************/
@@ -107,114 +216,6 @@ namespace GUI
 
 		int CalculateTextXOffset(const wchar_t* text);
 		int CalculateTextYOffset(const wchar_t* text);
-	public:
-
-		Widget(float x = 0, float y = 0, float width = 1, float height = 1, const System::string& text = L"", Widget* parent = 0);
-		
-		void RemoveChild(Widget* child);
-		void RemoveAll();
-		void AddChild(Widget* child);
-
-		virtual ~Widget();
-		virtual void SetText(const System::string& text);
-
-		void SetVerticalTextAlign(VerticalAlign v) { m_vertical_align = v; }
-		void SetHorizontalTextAlign(HorizontalAlign v) { m_horizontal_align = v; }
-		VerticalAlign SetVerticalTextAlign(VerticalAlign v) const { return m_vertical_align; }
-		HorizontalAlign SetHorizontalTextAlign(HorizontalAlign v) const { return m_horizontal_align; }
-
-		void SetWidth(float width);
-		void SetHeight(float height);
-		float GetWidth() const;
-		float GetHeight() const;
-		float GetScreenWidth() const;
-		float GetScreenHeight() const;		
-		float GetX() const;
-		float GetY() const;
-		float GetScreenX() const;
-		float GetScreenY() const;
-		void SetX(float x);
-		void SetY(float y);
-		bool IsVisible() const;
-		bool IsEnabled() const;
-		void Show(bool isVisible);
-		void Enable(bool isEnabled);
-		void SetParent(Widget* parent);
-		Widget* GetParent();
-		const Widget* GetParent() const;
-		void FixPosition(bool isFixed);
-		bool IsFixedPosition() const;
-		void SetSize(float x, float y, float width, float height);
-		void SetColor(ColorType type, float r, float g, float b, float a);		
-		void SetFont(const char* fontName);
-		void SetTextSize(int size);
-		int GetTextSize() const {return m_fontSize;}
-		Widget* GetChild(int index);
-		const Widget* GetChild(int index) const;
-		unsigned GetChildrenCount() const;
-		void SetAnyData(void* data);
-		void* GetAnyData();
-
-			
-		const System::string& GetText() const;
-		void SetFocuse(bool isFocused);
-
-		virtual void SetNextWidget(Widget* widget);	
-		virtual void SetPrevWidget(Widget* widget);
-		Widget* GetNextWidget() { return m_next_widget; }
-		Widget* GetPrevWidget() { return m_prev_widget; }
-		virtual void Render(IGUIRender* render) const;
-
-		bool IsPointIn(const Math::vec2& point_in_viewport) const;
-		Widget* GetFocused(float x, float y);
-		bool IsCursorIn() const;
-
-		void Store(System::Buffer& buffer) {}
-		void Restore(System::Buffer& buffer) {}
-		
-		const OpenGL::Texture2D* GetTextTexture() const;
-		void SetBackgroundTexture(OpenGL::Texture2D* texture);
-		const OpenGL::Texture2D* GetBackgroundTexture() const;
-
-		const Manager* GetManager() const;
-		Manager* GetManager();
-		void SetManager(Manager* manager);
-
-		/// Work with color goes here
-		Math::Vector4<float>& BackColor0();
-		Math::Vector4<float>& BackColor1();
-		Math::Vector4<float>& TextColor0();
-		Math::Vector4<float>& TextColor1();
-		
-		const Math::Vector4<float>& BackColor0() const;
-		const Math::Vector4<float>& BackColor1() const;
-		const Math::Vector4<float>& TextColor0() const;
-		const Math::Vector4<float>& TextColor1() const;
-
-		const Math::Vector4<float>& TextColor() const;
-		const Math::Vector4<float>& BackColor() const;
-
-		/*********************************************************************/
-		/*	Handlers
-		/*********************************************************************/
-
-		void SetMouseLeftClickHandler(System::Handler onLeftClick);
-		void SetMouseRightClickHandler(System::Handler onRightClick);
-		void SetMouseMiddleClickHandler(System::Handler onMiddleClick);
-		void SetMouseEnterHandler(System::Handler onMouseEnter);
-		void SetMouseLeaveHandler(System::Handler onMouseLeave);
-		void SetMouseMoveHandler(System::Handler onMouseMove);
-		void SetCharHandler(System::Handler onChar);
-		void SetKeyDownHandler(System::Handler onKeyDown);
-		void SetKeyUpHandler(System::Handler onKeyUp);
-		void SetWheelHandler(System::Handler onWheel);
-		void SetIdleHandler(System::Handler onIdle);
-		void SetResizedHandler(System::Handler onResized);
-
-
-		friend class Manager;
-
-		static const Math::Vector2<float> WindowToViewport(float x, float y);
 	};
 }
 

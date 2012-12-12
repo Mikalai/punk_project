@@ -29,6 +29,8 @@ namespace OpenGL
 		bool SetUniformFloat(int loc, float value);
 		bool SetUniformInt(const char * name, int value);
 		bool SetUniformInt(int loc, int value);
+		bool SetUniformMatrix2f(const char * name, const float* value);
+		bool SetUniformMatrix2f( int loc, const float* value);
 		bool SetUniformMatrix3f(const char * name, const float* value);
 		bool SetUniformMatrix3f( int loc, const float* value);
 		bool SetUniformMatrix4f(const char * name, const float* value);

@@ -22,7 +22,16 @@ namespace OpenGL
 	public:
 
 		Math::mat4 m_local;		
-		
+		Math::mat4 m_projection;
+		Math::mat4 m_view;
+		Math::vec4 m_diffuse_color;
+		Math::vec4 m_text_color;
+		Math::vec4 m_no_diffuse_texture_color;
+		Math::vec4 m_specular_color;
+		Math::vec4 m_specular_factor;		
+		Math::vec3 m_camera_position;
+		Math::mat2 m_texture_matrix;
+
 		System::Proxy<Virtual::Cameras::Camera> m_camera;		
 		System::Proxy<Virtual::Material> m_current_material;
 		System::Proxy<TextureContext> m_tc;
@@ -39,6 +48,7 @@ namespace OpenGL
 
 		int m_diffuse_slot;
 		int m_normal_slot;
+		int m_text_slot;
 	};
 
 	class StateManager

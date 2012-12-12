@@ -29,7 +29,7 @@ namespace OpenGL
 		glGenFramebuffers(1, &m_fb);
 		//	create color texture
 		m_color_texture.reset(new Texture2D);
-		m_color_texture->Create(p->m_texture_width, p->m_texture_height, GL_RGBA8, 0);
+		m_color_texture->Create(p->m_texture_width, p->m_texture_height, ImageModule::IMAGE_FORMAT_RGBA8, 0);
 
 		//	if multisample
 		//	generate render buffers
