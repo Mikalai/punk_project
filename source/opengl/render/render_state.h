@@ -8,7 +8,7 @@
 
 namespace Virtual { class LightSet; }
 namespace Virtual { class Material; }
-namespace Virtual { namespace Cameras { class Camera; } }
+namespace Virtual { class Camera; } 
 
 namespace OpenGL
 {
@@ -32,7 +32,7 @@ namespace OpenGL
 		Math::vec3 m_camera_position;
 		Math::mat2 m_texture_matrix;
 
-		System::Proxy<Virtual::Cameras::Camera> m_camera;		
+		System::Proxy<Virtual::Camera> m_camera;		
 		System::Proxy<Virtual::Material> m_current_material;
 		System::Proxy<TextureContext> m_tc;
 		//System::Proxy<RenderPass> m_pass;					

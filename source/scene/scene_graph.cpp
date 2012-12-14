@@ -12,7 +12,7 @@ namespace Scene
 		m_camera_node.Reset(new CameraNode);
 	}
 
-	void SceneGraph::SetActiveCamera(System::Proxy<Virtual::Cameras::Camera> value)
+	void SceneGraph::SetActiveCamera(System::Proxy<Virtual::Camera> value)
 	{
 		m_camera_node->SetCamera(value);
 	}

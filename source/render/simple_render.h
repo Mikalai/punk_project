@@ -15,16 +15,16 @@ namespace Render
 {
 	class PUNK_ENGINE SimpleRender
 	{
-		Virtual::Cameras::Camera* m_active_camera;		
+		Virtual::Camera* m_active_camera;		
 		OpenGL::RenderTarget* m_target;
 	public:
 		SimpleRender(System::Proxy<Scene::SceneGraph> scene);
 
 		bool Render(const Virtual::World& world, OpenGL::Frame& frame);
 
-		void SetActiveCamera(Virtual::Cameras::Camera* value) { m_active_camera = value; }
-		Virtual::Cameras::Camera* GetActiveCamera() { return m_active_camera; }
-		const Virtual::Cameras::Camera* GetActiveCamera() const { return m_active_camera; }
+		void SetActiveCamera(Virtual::Camera* value) { m_active_camera = value; }
+		Virtual::Camera* GetActiveCamera() { return m_active_camera; }
+		const Virtual::Camera* GetActiveCamera() const { return m_active_camera; }
 
 		void SetRenderTarget(OpenGL::RenderTarget* value) { m_target = value; }
 		OpenGL::RenderTarget* GetRenderTarget() { return m_target; }

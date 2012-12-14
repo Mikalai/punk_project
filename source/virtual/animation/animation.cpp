@@ -6,13 +6,13 @@
 namespace Virtual
 {
 	Animation::Animation()
-		: m_animation_type(AnimationType::NONE)
+		: m_animation_type(AnimationType::ANIMATION_NONE)
 	{
 	}
 
 	Animation::Animation(Utility::AnimationDesc& desc)
 	{
-		m_animation_type = (desc.m_is_bone_anim) ? AnimationType::BONE : AnimationType::OBJECT;
+		m_animation_type = (desc.m_is_bone_anim) ? AnimationType::ANIMATION_BONE : AnimationType::ANIMATION_OBJECT;
 		m_pos_track = desc.m_pos_track;
 		m_rot_track = desc.m_rot_track;
 	}

@@ -13,6 +13,7 @@ namespace Scene
 	{
 		if (!TransformNode::Save(stream))
 			return (out_error() << "Can't save TransformNode" << std::endl, false);
+		m_convex_mesh.Save(stream);
 		return true;
 	}
 
@@ -20,6 +21,7 @@ namespace Scene
 	{
 		if (!TransformNode::Load(stream))
 			return (out_error() << "Can't save TransformNode" << std::endl, false);
+		m_convex_mesh.Load(stream);
 		return true;
 	}
 

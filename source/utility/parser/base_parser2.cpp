@@ -1861,7 +1861,7 @@ namespace Utility
 		if (!ParseWorld(buffer, scene))
 			return (out_error() << "Can't load world from " << path << std::endl, System::Proxy<Scene::SceneGraph>(nullptr));
 
-		scene->SetActiveCamera(System::Proxy<Virtual::Cameras::Camera>(new Virtual::Cameras::FirstPersonCamera()));
+		scene->SetActiveCamera(System::Proxy<Virtual::Camera>(new Virtual::FirstPersonCamera()));
 
 		return scene;
 	}

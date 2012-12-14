@@ -28,15 +28,38 @@ void OnMouseMove(System::Event* ee)
 		x += 0.001 * (float)(e->x - e->x_prev);
 		y += 0.001 * (float)(e->y - e->y_prev);		
 
-		System::Proxy<Virtual::Cameras::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
+		System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
 		c->SetYawRollPitch(x, y, 0);
+	}
+}
+
+void OnKeyDown(System::Event* ee)
+{
+	System::KeyDownEvent* e = static_cast<System::KeyDownEvent*>(ee);
+	switch (e->key)
+	{
+	case System::PUNK_KEY_F5:
+		{
+			std::ofstream stream("scene.save", std::ios_base::binary);
+			scene->Save(stream);
+		}
+		break;
+	case System::PUNK_KEY_F9:
+		{			
+			scene.Reset(new Scene::SceneGraph);
+			std::ifstream stream("scene.save", std::ios_base::binary);
+			scene->Load(stream);
+			render.SetScene(scene);
+		}
+	default:
+		break;
 	}
 }
 
 void Idle(System::Event*)
 {	
 	render.Render();
-	System::Proxy<Virtual::Cameras::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
+	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
 	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
 		c->SetPosition(c->GetPosition() + c->GetRightVector() * -0.01f);
 	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_D))
@@ -68,12 +91,13 @@ int main()
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(OnMouseLeftButtonDown));
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_UP, System::EventHandler(OnMouseLeftButtonUp));
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(OnMouseMove));
+	System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(OnKeyDown));
 
-	scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"portal_test2.pmd");
+	scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"portal_test3.pmd");
 
 	render.SetScene(scene);
 
-	System::Proxy<Virtual::Cameras::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();	
+	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();	
 
 	System::Window::Instance()->Loop();
 

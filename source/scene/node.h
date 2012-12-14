@@ -32,6 +32,8 @@ namespace Scene
 	private:
 
 		Math::BoundingBox m_bbox;
+
+	private:
 		Node(const Node&);
 		Node& operator = (const Node&);
 		void Init();

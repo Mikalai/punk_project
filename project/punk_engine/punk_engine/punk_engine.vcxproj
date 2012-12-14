@@ -517,6 +517,7 @@
     <ClInclude Include="..\..\..\source\system\resource.h" />
     <ClInclude Include="..\..\..\source\system\resource_creator.h" />
     <ClInclude Include="..\..\..\source\system\resource_manager_2.h" />
+    <ClInclude Include="..\..\..\source\system\resource_manager_3.h" />
     <ClInclude Include="..\..\..\source\system\scene_graph.h" />
     <ClInclude Include="..\..\..\source\system\serializable.h" />
     <ClInclude Include="..\..\..\source\system\signal_slot\signal_slot.h" />
@@ -987,6 +988,7 @@
     <ClCompile Include="..\..\..\source\system\object.cpp" />
     <ClCompile Include="..\..\..\source\system\poolable.h" />
     <ClCompile Include="..\..\..\source\system\pool_manager.cpp" />
+    <ClCompile Include="..\..\..\source\system\resource_manager_3.cpp" />
     <ClCompile Include="..\..\..\source\system\storable.cpp" />
     <ClCompile Include="..\..\..\source\system\system_clock.cpp" />
     <ClCompile Include="..\..\..\source\system\thread_job.cpp" />

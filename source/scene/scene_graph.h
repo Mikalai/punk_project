@@ -35,7 +35,7 @@ namespace Scene
 
 		void AddMaterial(System::Proxy<Virtual::Material> value) { m_used_materials.push_back(value); }
 
-		void SetActiveCamera(System::Proxy<Virtual::Cameras::Camera> value);
+		void SetActiveCamera(System::Proxy<Virtual::Camera> value);
 		System::Proxy<CameraNode> GetCameraNode() { return m_camera_node; }
 
 	private:	

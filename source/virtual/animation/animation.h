@@ -15,7 +15,7 @@ namespace Utility
 
 namespace Virtual
 {
-	enum AnimationType { NONE, OBJECT, BONE };
+	enum AnimationType { ANIMATION_NONE, ANIMATION_OBJECT, ANIMATION_BONE };
 
 	class PUNK_ENGINE Animation : public System::Object
 	{

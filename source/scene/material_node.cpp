@@ -14,8 +14,11 @@ namespace Scene
 		if (!Node::Save(stream))
 			return (out_error() << "Can't save light node" << std::endl, false);
 		
-		if (!System::GetFactory()->SaveToStream(stream, m_material))
-			return (out_error() << "Can't save material in the material node" << std::endl, false);
+		bool flag = m_material.IsValid();
+		stream.write((char*)&flag, sizeof(flag));
+		if (flag)
+			if (!System::GetFactory()->SaveToStream(stream, m_material))
+				return (out_error() << "Can't save material in the material node" << std::endl, false);
 
 		return true;
 	}
@@ -25,9 +28,14 @@ namespace Scene
 		if (!Node::Load(stream))
 			return (out_error() << "Can't load light node" << std::endl, false);
 
-		m_material = System::GetFactory()->LoadFromStream(stream);
-		if (!m_material.IsValid())
-			return (out_error() << "Can't load material in the material node" << std::endl, false);
+		bool flag;
+		stream.read((char*)&flag, sizeof(flag));
+		if (flag)
+		{
+			m_material = System::GetFactory()->LoadFromStream(stream);
+			if (!m_material.IsValid())
+				return (out_error() << "Can't load material in the material node" << std::endl, false);
+		}
 
 		return true;
 	}

@@ -28,7 +28,7 @@ namespace Scene
 			return (out_error() << "Can't load camera node" << std::endl, false);
 		
 		m_camera = System::GetFactory()->LoadFromStream(stream);
-		if (m_camera.IsValid())
+		if (!m_camera.IsValid())
 			return (out_error() << "Can't load camera object from stream" << std::endl, false);
 
 		return true;

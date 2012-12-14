@@ -20,11 +20,11 @@ namespace Scene
 
 		virtual bool Apply(AbstractVisitor* visitor);
 
-		void SetCamera(System::Proxy<Virtual::Cameras::Camera> value) { m_camera = value; }
-		System::Proxy<Virtual::Cameras::Camera> GetCamera() { return m_camera; }
+		void SetCamera(System::Proxy<Virtual::Camera> value) { m_camera = value; }
+		System::Proxy<Virtual::Camera> GetCamera() { return m_camera; }
 
 	private:
-		System::Proxy<Virtual::Cameras::Camera> m_camera;
+		System::Proxy<Virtual::Camera> m_camera;
 	};
 }
 

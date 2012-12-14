@@ -1463,6 +1463,9 @@
     <ClInclude Include="..\..\..\source\opengl\textures\internal_formats.h">
       <Filter>opengl\textures</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\system\resource_manager_3.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2269,6 +2272,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\textures\internal_formats.cpp">
       <Filter>opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\resource_manager_3.cpp">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

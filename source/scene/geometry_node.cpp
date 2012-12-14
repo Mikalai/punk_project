@@ -27,9 +27,9 @@ namespace Scene
 
 		m_geometry = System::GetFactory()->LoadFromStream(stream);
 		if (!m_geometry.IsValid())
-			return true;
+			return false;
 
-		return false;
+		return true;
 	}
 
 	System::Proxy<GeometryNode> GeometryNode::CreateFromFile(const System::string& path)

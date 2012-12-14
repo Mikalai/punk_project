@@ -24,15 +24,21 @@ namespace Scene
 
 	bool Node::Save(std::ostream& stream) const
 	{		
-		if (!System::Object::Save(stream))
+		if (!System::CompoundObject::Save(stream))
 			return (out_error() << "Can't save node " << GetName() << std::endl, false);
+
+		m_bbox.Save(stream);
+
 		return true;
 	}
 
 	bool Node::Load(std::istream& stream)
 	{
-		if (!System::Object::Load(stream))
+		if (!System::CompoundObject::Load(stream))
 			return (out_error() << "Can't load node " << std::endl, false);
+
+		m_bbox.Load(stream);
+
 		return true;
 	}
 

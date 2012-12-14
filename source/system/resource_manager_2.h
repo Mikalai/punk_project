@@ -279,6 +279,10 @@ namespace System
 
 		virtual Proxy<Object> Create(const string& name)
 		{
+			System::Proxy<Object> o = Load(name);
+			if (o.IsValid())
+				return o;
+
 			Proxy<Object> object(new T);
 			Manage(name, object);
 			object->SetStorageName(name);
