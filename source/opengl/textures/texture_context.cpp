@@ -52,7 +52,7 @@ namespace OpenGL
 		}
 	}
 
-	void TextureContext::SetTexture(int slot, System::Handle<Texture2D> map)
+	void TextureContext::SetTexture(int slot, System::Proxy<Texture2D> map)
 	{
 		m_textures[slot] = map;
 	}

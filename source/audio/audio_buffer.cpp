@@ -2,13 +2,32 @@
 #include <vector>
 #include <ostream>
 #include <istream>
-#include "audio_manager.h"
 #include <openal\Framework.h>
 
 #include "../system/environment.h"
 
+IMPLEMENT_MANAGER(L"resource.wav_sounds", L"*.wav_sound", System::Environment::Instance()->GetSoundFolder(), System::ObjectType::AUDIO_WAV, Audio, AudioBuffer);
+
 namespace Audio
 {
+	void OnInit()
+	{
+		ALFWInit();
+
+		if (!ALFWInitOpenAL())
+		{
+			out_error() << L"Failed to initialize OpenAL" << std::endl;
+			ALFWShutdown();
+			return;
+		}
+	}
+
+	void OnDestroy()
+	{
+		ALFWShutdownOpenAL();
+		ALFWShutdown();
+	}
+
 	AudioBuffer::AudioBuffer()
 		: m_buffer(0)
 //		, m_index(-1)

@@ -28,6 +28,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.camera_nodes", L"*.camera_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::CAMERA_NODE, Scene, CameraNode);
+REGISTER_MANAGER(L"resource.camera_nodes", L"*.camera_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::CAMERA_NODE, Scene, CameraNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_CAMERA_NODE

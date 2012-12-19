@@ -9,7 +9,7 @@ Description: Contains a Texture2D class
 
 #include <iosfwd>
 #include "../../config.h"
-#include "../../system/resource_manager_2.h"
+#include "../../system/resource_manager.h"
 #include "../../system/object.h"
 #include "../../system/buffer.h"
 #include "../../images/formats.h"
@@ -62,6 +62,6 @@ namespace OpenGL
 	typedef Texture2D* Texture2DRef;
 }
 
-REGISTER_MANAGER(L"resource.textures", L"*.texture", System::Environment::Instance()->GetTextureFolder(), System::ObjectType::TEXTURE_2D, OpenGL, Texture2D);
+REGISTER_MANAGER(L"resource.textures", L"*.texture", System::Environment::Instance()->GetTextureFolder(), System::ObjectType::TEXTURE_2D, OpenGL, Texture2D, return, return);
 
 #endif	// _H_Texture2D

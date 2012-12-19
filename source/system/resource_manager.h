@@ -1,0 +1,6 @@
+#ifndef _H_PUNK_SYSTEM_RESOURCE_SOME_MANAGER
+#define _H_PUNK_SYSTEM_RESOURCE_SOME_MANAGER
+
+#include "resource_manager_3.h"
+
+#endif	//	_H_PUNK_SYSTEM_RESOURCE_SOME_MANAGER

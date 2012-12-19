@@ -12,19 +12,8 @@
 #include "../../system/logger.h"
 #include "../../system/binary_file.h"
 #include "../../virtual/data/data.h"
-
-#include "../descriptors/object_type_desc.h"
-#include "../descriptors/mesh_desc.h"
-#include "../descriptors/object_desc.h"
-#include "../descriptors/world_desc.h"
-#include "../descriptors/action_desc.h"
-#include "../descriptors/animation_desc.h"
-#include "../descriptors/armature_desc.h"
-#include "../descriptors/bone_desc.h"
-#include "../descriptors/material_desc.h"
-#include "../descriptors/camera_desc.h"
-#include "../descriptors/light_desc.h"
-#include "../descriptors/indoor_desc.h"
+#include "../../virtual/skinning/skinning.h"
+#include "../../virtual/animation/anim.h"
 
 #include "../../scene/scene_graph.h"
 
@@ -45,6 +34,8 @@
 namespace Utility
 {
 	extern System::Proxy<System::Object> LoadWorld(const System::string& path);
+	extern bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::vec2>>>& value);		
+	extern bool ParseBonesWeights(System::Buffer& buffer, std::map<int, std::map<System::string, float>>& value);
 	extern bool ParseWorld(System::Buffer& buffer, System::Proxy<Scene::SceneGraph> scene);
 	extern bool ParseLocationIndoor(System::Buffer& buffer, System::Proxy<Scene::LocationIndoorNode> location);
 	extern bool ParsePortalNode(System::Buffer& buffer, System::Proxy<Scene::PortalNode> node);
@@ -53,11 +44,24 @@ namespace Utility
 	extern bool ParsePointLightNode(System::Buffer& buffer, System::Proxy<Scene::PointLightNode> value);
 	extern bool ParseMaterials(System::Buffer& buffer, System::Proxy<Scene::SceneGraph> scene);
 	extern bool ParseMaterial(System::Buffer& buffer, System::Proxy<Virtual::Material> mat);
-	extern bool ParseStaticMesh(System::Buffer& buffer, System::Proxy<Scene::GeometryNode> geometry);
-	extern bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::vec2>>>& value);
-
+	extern bool ParseStaticMeshes(System::Buffer& buffer);
+	extern bool ParseStaticMesh(System::Buffer& buffer, System::Proxy<Virtual::StaticGeometry> geometry);
+	extern bool ParseStaticMeshNode(System::Buffer& buffer, System::Proxy<Scene::StaticMeshNode> static_node);
+	extern bool ParseSkinMeshes(System::Buffer& buffer);
+	extern bool ParseSkinMesh(System::Buffer& buffer, System::Proxy<Virtual::SkinGeometry> geometry);
+	extern bool ParseSkinMeshNode(System::Buffer& buffer, System::Proxy<Scene::SkinMeshNode> skin_node);
+	extern bool ParseBone(System::Buffer& buffer, Virtual::Bone* bone);
+	extern bool ParseArmature(System::Buffer& buffer, System::Proxy<Virtual::Armature> armature);
+	extern bool ParseArmatures(System::Buffer& buffer);
+	extern bool ParseArmatureNode(System::Buffer& buffer, System::Proxy<Scene::ArmatureNode> armature_node);
+	extern bool ParseActions(System::Buffer& buffer);
+	extern bool ParseAction(System::Buffer& buffer, System::Proxy<Virtual::Action> action);
+	extern bool ParseAnimation(System::Buffer& buffer, System::Proxy<Virtual::Animation> animation);
+	extern bool ParsePositionTrack(System::Buffer& buffer, Virtual::AnimationTrack<Math::vec3>& track);
+	extern bool ParseRotationTrack(System::Buffer& buffer, Virtual::AnimationTrack<Math::quat>& track);
+	
 	/// This function convert a string representation of the file into code
-	KeywordCode Parse(System::string& word)
+	KeywordCode Parse(const System::string& word)
 	{
 		for (int i = 0; i < sizeof(Keyword)/sizeof(Record); i++)
 		{
@@ -172,17 +176,17 @@ namespace Utility
 		return true;
 	}
 
-	bool ParseSubtype(System::Buffer& buffer, ObjectTypeDesc& value)
-	{
-		CHECK_START(buffer);
-		System::string s;
-		if (!ParseString(buffer, s))
-			return (out_error() << "Unable to parse sub type" << std::endl, false);
-		if (!value.BuildFromString(s))
-			return (out_error() << "Unable to parse sub type" << std::endl, false);
-		CHECK_END(buffer);
-		return true;
-	}
+	//bool ParseSubtype(System::Buffer& buffer, ObjectTypeDesc& value)
+	//{
+	//	CHECK_START(buffer);
+	//	System::string s;
+	//	if (!ParseString(buffer, s))
+	//		return (out_error() << "Unable to parse sub type" << std::endl, false);
+	//	if (!value.BuildFromString(s))
+	//		return (out_error() << "Unable to parse sub type" << std::endl, false);
+	//	CHECK_END(buffer);
+	//	return true;
+	//}
 
 	bool ParseBlockedFloat(System::Buffer& buffer, float& value)
 	{
@@ -354,7 +358,7 @@ namespace Utility
 	}
 
 
-	bool ParseBonesWeights(System::Buffer& buffer, Virtual::VertexBoneWeights& value)
+	bool ParseBonesWeights(System::Buffer& buffer, std::map<int, std::map<System::string, float>>& value)
 	{
 		CHECK_START(buffer);
 
@@ -799,7 +803,7 @@ namespace Utility
 		return (out_error() << "Unable to parse rotation track" << std::endl, false);
 	}
 
-	bool ParseAnimation(System::Buffer& buffer, AnimationDesc& value)
+	bool ParseAnimation(System::Buffer& buffer, System::Proxy<Virtual::Animation> animation)
 	{
 		CHECK_START(buffer);
 
@@ -813,46 +817,45 @@ namespace Utility
 				return false;
 			}
 
-			KeywordCode index;				
-			switch(index = Parse(buffer.ReadWord()))
+			const System::string word = buffer.ReadWord();
+			KeywordCode index = Parse(word);
+			switch(index)
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
 			case WORD_NAME:
 				{
-					if (!ParseBlockedString(buffer, value.m_bone_name))
-					{
-						out_error() << "Unable to parse animation name" << std::endl;
-						return false;
-					}
+					System::string name;
+					if (!ParseBlockedString(buffer, name))
+						return (out_error() << "Unable to parse animation name" << std::endl, false);
+					animation->SetName(name);
+					animation->SetStorageName(name);
 				}
 				break;
 			case WORD_POSITION_TRACK:
 				{
-					if (!ParsePositionTrack(buffer, value.m_pos_track))
-					{
-						out_error() << "Unable to parse animation position track" << std::endl;
-						return false;
-					}
+					Virtual::AnimationTrack<Math::vec3> track;
+					if (!ParsePositionTrack(buffer, track))
+						return (out_error() << "Unable to parse animation position track" << std::endl, false);
+					animation->SetPositionTrack(track);
 				}
 				break;
 			case WORD_ROTATION_TRACK:
 				{
-					if (!ParseRotationTrack(buffer, value.m_rot_track))
-					{
-						out_error() << "Unable to parse animation rotation track" << std::endl;
-						return false;
-					}
+					Virtual::AnimationTrack<Math::quat> track;
+					if (!ParseRotationTrack(buffer, track))
+						return (out_error() << "Unable to parse animation rotation track" << std::endl, false);
+					animation->SetRotationTrack(track);
 				}
 				break;
 			default:
-				return (out_error() << System::string::Format(L"Unexpected keyword %s", Keyword[index]) << std::endl, false);
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
 		}
 		return false;
 	}
 
-	bool ParseAction(System::Buffer& buffer, ActionDesc& value)
+	bool ParseAction(System::Buffer& buffer, System::Proxy<Virtual::Action> action)
 	{
 		CHECK_START(buffer);
 
@@ -866,63 +869,55 @@ namespace Utility
 				return false;
 			}
 
+			const System::string word = buffer.ReadWord();
 			KeywordCode index;				
-			switch(index = Parse(buffer.ReadWord()))
+			switch(index = Parse(word))
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
 			case WORD_NAME:
 				{
-					if (!ParseBlockedString(buffer, value.m_name))
-					{
-						out_error() << "Unable to parse action name" << std::endl;
-						return false;
-					}
+					System::string value;
+					if (!ParseBlockedString(buffer, value))
+						return (out_error() << "Unable to parse material name" << std::endl, false);
+					action->SetName(value);
+					action->SetStorageName(value);
 				}
 				break;
 			case WORD_TIMING:
 				{
 					CHECK_START(buffer);
-					value.m_start = buffer.ReadWord().ToInt32();
-					value.m_end = buffer.ReadWord().ToInt32();
+					action->SetStartFrame(buffer.ReadWord().ToInt32());
+					action->SetEndFrame(buffer.ReadWord().ToInt32());
 					if (Parse(buffer.ReadWord()) != WORD_CLOSE_BRACKET)
-					{
-						out_error() << L"Can't parse action timing" << std::endl;		
-						return false;
-					}					
+						return (out_error() << L"Can't parse action timing" << std::endl, false);		
 				}
 				break;
 			case WORD_BONE_ANIMATION:
 				{
-					std::unique_ptr<AnimationDesc> anim(new AnimationDesc);
-					anim->m_is_bone_anim = true;
-					if (!ParseAnimation(buffer, *anim))
-					{
-						out_error() << "Unable to parse bone animation" << std::endl;
-						return false;
-					}
-					value.m_animation.push_back(anim.release());
+					System::Proxy<Virtual::Animation> animation(new Virtual::Animation);
+					animation->SetAnimationType(Virtual::ANIMATION_BONE);
+					if (!ParseAnimation(buffer, animation))
+						return (out_error() << "Unable to parse bone animation" << std::endl, false);
+					action->Add(animation);
 				}
 				break;
 			case WORD_OBJECT_ANIMATION:
 				{
-					std::unique_ptr<AnimationDesc> anim(new AnimationDesc);
-					anim->m_is_bone_anim = false;
-					if (!ParseAnimation(buffer, *anim))
-					{
-						out_error() << "Unable to parse action animation" << std::endl;
-						return false;
-					}
-					value.m_animation.push_back(anim.release());
+					System::Proxy<Virtual::Animation> animation(new Virtual::Animation);
+					animation->SetAnimationType(Virtual::ANIMATION_OBJECT);
+					if (!ParseAnimation(buffer, animation))
+						return (out_error() << "Unable to parse bone animation" << std::endl, false);
+					action->Add(animation);
 				}
 				break;
 			default:
-				return (out_error() << System::string::Format(L"Unexpected keyword %s", Keyword[index]) << std::endl, false);
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
 		}
 	}
 
-	bool ParseActions(System::Buffer& buffer, std::map<System::string, ActionDesc*>& value)
+	bool ParseActions(System::Buffer& buffer)
 	{
 		CHECK_START(buffer);
 
@@ -934,83 +929,127 @@ namespace Utility
 				return false;
 			}
 
+			System::string word = buffer.ReadWord();
 			KeywordCode index;
-			switch(index = Parse(buffer.ReadWord()))
+			switch(index = Parse(word))
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
 			case WORD_ACTION:
 				{	
-					std::unique_ptr<ActionDesc> action(new ActionDesc);
-					if (!ParseAction(buffer, *action))
+					System::Proxy<Virtual::Action> action(new Virtual::Action);
+					if (!ParseAction(buffer, action))
 					{
 						out_error() << "Unable to parse action" << std::endl;
 						return false;
 					}
-					value[action->m_name] = action.get();
-					action.release();
+					Virtual::ActionManager::Instance()->Manage(action->GetName(), action);
 				}
 				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
 		}
 		return false;
 	}
 
-	bool ParseBone(System::Buffer& buffer, BoneDesc& value)
+	bool ParseStaticMeshes(System::Buffer& buffer)
+	{
+		CHECK_START(buffer);
+
+		while (1)
+		{
+			if (buffer.IsEnd())
+			{
+				out_error() << L"Can't parse object" << std::endl;
+				return false;
+			}
+
+			System::string word = buffer.ReadWord();
+			KeywordCode index;
+			switch(index = Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:
+				return true;
+			case WORD_STATIC_MESH:
+				{	
+					System::Proxy<Virtual::StaticGeometry> action(new Virtual::StaticGeometry);
+					if (!ParseStaticMesh(buffer, action))
+					{
+						out_error() << "Unable to parse action" << std::endl;
+						return false;
+					}
+					Virtual::ActionManager::Instance()->Manage(action->GetName(), action);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return false;
+	}
+
+	bool ParseBone(System::Buffer& buffer, Virtual::Bone* bone)
 	{
 		CHECK_START(buffer);
 		System::string name, parent;
 		while (1)
 		{
-			switch(int code = Parse(buffer.ReadWord()))
+			const System::string word = buffer.ReadWord();
+			KeywordCode code = Parse(word);
+			switch(code)
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
 			case WORD_NAME:
 				{
-					if (!ParseBlockedString(buffer, value.m_name))
-					{
-						out_error() << "Unable to parse bone name" << std::endl;
-						return false;
-					}
+					System::string name;
+					if (!ParseBlockedString(buffer, name))
+						return (out_error() << "Unable to parse bone name" << std::endl, false);
+					bone->SetName(name);
 				}
 				break;
 			case WORD_PARENT:
 				{
-					if (!ParseBlockedString(buffer, value.m_parent))
-					{
-						out_error() << "Unable to parse bone parent name" << std::endl;
-						return false;
-					}
+					System::string name;
+					if (!ParseBlockedString(buffer, name))
+						return (out_error() << "Unable to parse bone parent name" << std::endl, false);
+					bone->SetParentName(name);
 				}
 				break;
 			case WORD_LOCAL_MATRIX:
 				{
-					if (!ParseBlockedMatrix4x4f(buffer, value.m_local))
-					{
-						out_error() << "Unable to parse bone local matrix" << std::endl;
-						return false;
-					}
+					Math::mat4 m;
+					if (!ParseBlockedMatrix4x4f(buffer, m))
+						return (out_error() << "Unable to parse bone local matrix" << std::endl, false);
+					bone->SetLocalMatrix(m);
+				}
+				break;
+			case WORD_BONE_MATRIX:
+				{
+					Math::mat4 m;
+					if (!ParseBlockedMatrix4x4f(buffer, m))
+						return (out_error() << "Unable to parse bone local matrix" << std::endl, false);
+					//bone->SetBoneMatrix(m);
 				}
 				break;
 			case WORD_LENGTH:
 				{
-					if (!ParseBlockedFloat(buffer, value.m_length))
-					{
-						out_error() << "Unable to parse bone length" << std::endl;
-						return false;
-					}
+					float l;
+					if (!ParseBlockedFloat(buffer, l))
+						return (out_error() << "Unable to parse bone length" << std::endl, false);
+					bone->SetLength(l);
 				}
 				break;
 			default:
-				return (out_error() << System::string::Format(L"Unexpected keyword %s", Keyword[code]) << std::endl, false);
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
 		}
 		return false;
 	}
 
 	/// Parse single armature
-	bool ParseArmature(System::Buffer& buffer, ArmatureDesc& value)
+	bool ParseArmature(System::Buffer& buffer, System::Proxy<Virtual::Armature> armature)
 	{
 		CHECK_START(buffer);
 		while (1)
@@ -1020,69 +1059,69 @@ namespace Utility
 				out_error() << L"Can't parse object" << std::endl;
 				return false;
 			}
-
-			int index;
-			System::string name;
-			switch(index = Parse(name = buffer.ReadWord()))
+			
+			System::string word = buffer.ReadWord();
+			KeywordCode index;
+			switch(index = Parse(word))
 			{
 			case WORD_CLOSE_BRACKET:
+				armature->UpdateHierarchy();
 				return true;
 			case WORD_NAME:
 				{
-					if (!ParseBlockedString(buffer, value.m_name))
-					{
-						out_error() << "Unable to parse armature name" << std::endl;
-						return false;
-					}
+					System::string name;
+					if (!ParseBlockedString(buffer, name))
+						return (out_error() << "Unable to parse armature name" << std::endl, false);
+					armature->SetName(name);
+					armature->SetStorageName(name);
 				}
 				break;
 			case WORD_BONE:
 				{
-					std::unique_ptr<BoneDesc> bone(new BoneDesc);
-					if (!ParseBone(buffer, *bone))
-					{
-						out_error() << "Unable to parse armature bone" << std::endl;
-						return false;
-					}
-					value.m_bones.push_back(bone.release());
+					std::unique_ptr<Virtual::Bone> bone(new Virtual::Bone);
+					if (!ParseBone(buffer, bone.get()))
+						return (out_error() << "Unable to parse armature bone" << std::endl, false);
+					Virtual::Bone* parent = armature->GetBoneByName(bone->GetParentName());
+					if (parent)
+						parent->AddChild(bone.release());
+					else
+						armature->AddRootBone(bone.release());
 				}
 				break;
 			default:
-				return (out_error() << L"Unknown keyword: " + name << std::endl, false);
+				return (out_error() << L"Unknown keyword: " << word << std::endl, false);
 			}
 		}
 		return false;
 	}
 
-	bool ParseActionsRef(System::Buffer& buffer, std::vector<System::string>& value)
+	bool ParseArmatures(System::Buffer& buffer)
 	{
 		CHECK_START(buffer);
 		System::string name;
 		while (1)
 		{
-			switch(KeywordCode code = Parse(buffer.ReadWord()))
+			System::string word = buffer.ReadWord();
+			switch(KeywordCode code = Parse(word))
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
-			case WORD_ACTION_REF:
+			case WORD_ARMATURE:
 				{
-					System::string s;
-					if (!ParseBlockedString(buffer, s))
-					{
-						out_error() << "Unable to parse action reference" << std::endl;
-						return false;
-					}
-					value.push_back(s);
+					System::Proxy<Virtual::Armature> armature(new Virtual::Armature);					
+					if (!ParseArmature(buffer, armature))
+						return (out_error() << "Unable to parse armature" << std::endl, false);
+					Virtual::ArmatureManager::Instance()->Manage(armature->GetStorageName(), armature);
 				}
 				break;
 			default:
-				return (out_error() << System::string::Format(L"Unexpected keyword %s", Keyword[code]) << std::endl, false);
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
 		}
 		return false;
 	}
 
-	bool ParseCamera(System::Buffer& buffer, CameraDesc& value)
+	/*bool ParseCamera(System::Buffer& buffer, CameraDesc& value)
 	{
 		CHECK_START(buffer);
 		while (!buffer.IsEnd())
@@ -1125,7 +1164,7 @@ namespace Utility
 			}
 		}
 		return true;
-	}
+	}*/
 
 	bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::vec2>>>& value)
 	{
@@ -1163,86 +1202,35 @@ namespace Utility
 		return true;
 	}
 
-	
-	bool ParseMesh(System::Buffer& buffer, MeshDesc& value)
+	/*bool ParseStaticMeshes(System::Buffer& buffer)
 	{
 		CHECK_START(buffer);
-
+		System::string name;
 		while (1)
 		{
-			if (buffer.IsEnd())
-			{
-				out_error() << L"Can't parse object" << std::endl;
-				return false;
-			}
-
-			switch(int index = Parse(buffer.ReadWord()))
+			System::string word = buffer.ReadWord();
+			switch(KeywordCode code = Parse(word))
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
-			case WORD_VERTEX_POSITION:
-				std::cout << "Loading vertex position..." << std::endl;
-				if (!ParseVector3fv(buffer, value.m_vertices))
+			case WORD_STATIC_MESH:
 				{
-					out_error() << "Unable to parse vertex positions" << std::endl;
-					return false;
-				}
-				break;					
-			case WORD_NORMALS:
-				std::cout << "Loading normals..." << std::endl;
-				if (!ParseVector3fv(buffer, value.m_normals))
-				{
-					out_error() << "Unable to parse vertex normals" << std::endl;
-					return false;
-				}
-				break;
-			case WORD_FACES:
-				std::cout << "Loading faces..." << std::endl;
-				if (!ParseVector3iv(buffer, value.m_faces))
-				{
-					out_error() << "Unable to parse mesh faces" << std::endl;
-					return false;
-				}
-				break;
-			case WORD_BONES_WEIGHT:
-				{
-					if (!ParseBonesWeights(buffer, value.m_bone_weights))
-					{
-						out_error() << "Unable to parse textures bones weights" << std::endl;
-						return false;
-					}
-				}
-				break;
-			case WORD_TEXTURE:
-				{										
-					if (!ParseTextures(buffer, value.m_tex_coords))
-					{
-						out_error() << "Unable to parse mesh texture coords" << std::endl;
-						return false;
-					}
-				}
-				break;
-			case WORD_MATERIAL_REF:
-				{
-					System::string name;
-					if (!ParseBlockedString(buffer, name))
-					{
-						out_error() << "Unable to parse material reference" << std::endl;
-						return false;
-					}
-					value.m_material_ref.push_back(name);
+					System::Proxy<Virtual::StaticGeometry> mesh(new Virtual::StaticGeometry);
+					if (!ParseStaticMesh(buffer, mesh))
+						return (out_error() << "Unable to parse static mesh" << std::endl, false);
+					Virtual::StaticGeometryManager::Instance()->Manage(mesh->GetStorageName(), mesh);
 				}
 				break;
 			default:
-				return (out_error() << System::string::Format(L"Unexpected keyword %s", Keyword[index]) << std::endl, false);
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
 		}
-	}
+		return false;
+	}*/
 
-	bool ParseStaticMesh(System::Buffer& buffer, System::Proxy<Scene::GeometryNode> geometry)
+	bool ParseStaticMesh(System::Buffer& buffer, System::Proxy<Virtual::StaticGeometry> geometry)
 	{
 		CHECK_START(buffer);
-		System::Proxy<Virtual::StaticGeometry> value(new Virtual::StaticGeometry);
 		while (1)
 		{
 			if (buffer.IsEnd())
@@ -1251,8 +1239,7 @@ namespace Utility
 
 			switch(int index = Parse(word))
 			{
-			case WORD_CLOSE_BRACKET:
-				geometry->SetGeometry(value);
+			case WORD_CLOSE_BRACKET:				
 				return true;
 			case WORD_NAME:
 				{
@@ -1261,8 +1248,6 @@ namespace Utility
 						return (out_error() << "Can't parse mesh name" << std::endl, false);
 					geometry->SetName(name);
 					geometry->SetStorageName(name);
-					value->SetName(name);
-					value->SetStorageName(name);
 				}
 				break;
 			case WORD_VERTEX_POSITION:
@@ -1270,7 +1255,7 @@ namespace Utility
 					Virtual::StaticGeometry::Vertices v;
 					if (!ParseVector3fv(buffer, v))
 						return (out_error() << "Unable to parse vertex positions" << std::endl, false);
-					value->SetVertices(v);
+					geometry->SetVertices(v);
 				}
 				break;					
 			case WORD_NORMALS:
@@ -1278,7 +1263,7 @@ namespace Utility
 					Virtual::StaticGeometry::Normals n;
 					if (!ParseVector3fv(buffer, n))
 						return (out_error() << "Unable to parse vertex normals" << std::endl, false);
-					value->SetNormals(n);
+					geometry->SetNormals(n);
 				}
 				break;
 			case WORD_FACES:
@@ -1286,7 +1271,7 @@ namespace Utility
 					Virtual::StaticGeometry::Faces f;
 					if (!ParseVector3iv(buffer, f))
 						return (out_error() << "Unable to parse mesh faces" << std::endl, false);
-					value->SetFaces(f);
+					geometry->SetFaces(f);
 				}
 				break;
 			case WORD_TEXTURE:
@@ -1294,13 +1279,107 @@ namespace Utility
 					Virtual::StaticGeometry::TextureMeshes t;
 					if (!ParseTextures(buffer, t))
 						return (out_error() << "Unable to parse mesh texture coords" << std::endl, false);
-					value->SetTextureMeshes(t);
+					geometry->SetTextureMeshes(t);
 				}
 				break;
 			default:
 				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
 		}
+	}
+
+	bool ParseSkinMesh(System::Buffer& buffer, System::Proxy<Virtual::SkinGeometry> geometry)
+	{
+		CHECK_START(buffer);
+		while (1)
+		{
+			if (buffer.IsEnd())
+				return (out_error() << L"Can't parse object" << std::endl, false);
+			System::string word = buffer.ReadWord();
+
+			switch(int index = Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:				
+				return true;
+			case WORD_NAME:
+				{
+					System::string name;
+					if (!ParseBlockedString(buffer, name))
+						return (out_error() << "Can't parse mesh name" << std::endl, false);
+					geometry->SetName(name);
+					geometry->SetStorageName(name);
+				}
+				break;
+			case WORD_VERTEX_POSITION:
+				{
+					Virtual::SkinGeometry::Vertices v;
+					if (!ParseVector3fv(buffer, v))
+						return (out_error() << "Unable to parse vertex positions" << std::endl, false);
+					geometry->SetVertices(v);
+				}
+				break;					
+			case WORD_NORMALS:
+				{
+					Virtual::SkinGeometry::Normals n;
+					if (!ParseVector3fv(buffer, n))
+						return (out_error() << "Unable to parse vertex normals" << std::endl, false);
+					geometry->SetNormals(n);
+				}
+				break;
+			case WORD_FACES:
+				{
+					Virtual::SkinGeometry::Faces f;
+					if (!ParseVector3iv(buffer, f))
+						return (out_error() << "Unable to parse mesh faces" << std::endl, false);
+					geometry->SetFaces(f);
+				}
+				break;
+			case WORD_TEXTURE:
+				{										
+					Virtual::SkinGeometry::TextureMeshes t;
+					if (!ParseTextures(buffer, t))
+						return (out_error() << "Unable to parse mesh texture coords" << std::endl, false);
+					geometry->SetTextureMeshes(t);
+				}
+				break;
+			case WORD_BONES_WEIGHT:
+				{
+					Virtual::SkinGeometry::BoneWeights b;
+					if (!ParseBonesWeights(buffer, b))
+						return (out_error() << "Unable to parse mesh bone weights" << std::endl, false);
+					geometry->SetBoneWeights(b);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+	}
+
+	bool ParseSkinMeshes(System::Buffer& buffer)
+	{
+		CHECK_START(buffer);
+		System::string name;
+		while (1)
+		{
+			System::string word = buffer.ReadWord();
+			switch(KeywordCode code = Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:
+				return true;
+			case WORD_SKIN_MESH:
+				{
+					System::Proxy<Virtual::SkinGeometry> mesh(new Virtual::SkinGeometry);
+					if (!ParseSkinMesh(buffer, mesh))
+						return (out_error() << "Unable to parse static mesh" << std::endl, false);
+					Virtual::SkinGeometryManager::Instance()->Manage(mesh->GetStorageName(), mesh);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return false;
 	}
 
 	bool ParseMaterial(System::Buffer& buffer, System::Proxy<Virtual::Material> mat)
@@ -1577,6 +1656,58 @@ namespace Utility
 		return true;
 	}
 
+	bool ParseStaticMeshNode(System::Buffer& buffer, System::Proxy<Scene::StaticMeshNode> mesh)
+	{
+			CHECK_START(buffer);
+		while (!buffer.IsEnd())
+		{
+			System::string word = buffer.ReadWord();
+			switch (Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:
+				return true;
+			case WORD_NAME:
+				{
+					System::string value;
+					if (!ParseBlockedString(buffer, value))
+						return (out_error() << "Can't parse material node name" << std::endl, false);
+					mesh->SetName(value);
+					mesh->SetStorageName(value);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return false;
+	}
+
+	bool ParseSkinMeshNode(System::Buffer& buffer, System::Proxy<Scene::SkinMeshNode> mesh)
+	{
+			CHECK_START(buffer);
+		while (!buffer.IsEnd())
+		{
+			System::string word = buffer.ReadWord();
+			switch (Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:
+				return true;
+			case WORD_NAME:
+				{
+					System::string value;
+					if (!ParseBlockedString(buffer, value))
+						return (out_error() << "Can't parse material node name" << std::endl, false);
+					mesh->SetName(value);
+					mesh->SetStorageName(value);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return false;
+	}
+
 	bool ParseMaterialNode(System::Buffer& buffer, System::Proxy<Scene::MaterialNode> material)
 	{
 		CHECK_START(buffer);
@@ -1596,11 +1727,19 @@ namespace Utility
 					material->SetStorageName(value);
 				}
 				break;
-			case WORD_STATIC_MESH:
+			case WORD_STATIC_MESH_NODE:
 				{
-					System::Proxy<Scene::GeometryNode> node(new Scene::GeometryNode);
-					if (!ParseStaticMesh(buffer, node))
+					System::Proxy<Scene::StaticMeshNode> node(new Scene::StaticMeshNode);
+					if (!ParseStaticMeshNode(buffer, node))
 						return (out_error() << "Can't parse static mesh node" << std::endl, false);
+					material->Add(node);
+				}
+				break;
+			case WORD_SKIN_MESH_NODE:
+				{
+					System::Proxy<Scene::SkinMeshNode> node(new Scene::SkinMeshNode);
+					if (!ParseSkinMeshNode(buffer, node))
+						return (out_error() << "Can't parse skin mesh node" << std::endl, false);
 					material->Add(node);
 				}
 				break;
@@ -1610,6 +1749,40 @@ namespace Utility
 					if (!ParseTransformNode(buffer, node))
 						return (out_error() << "Can't parse transform node" << std::endl, false);
 					material->Add(node);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return false;
+	}
+
+	bool ParseArmatureNode(System::Buffer& buffer, System::Proxy<Scene::ArmatureNode> armature_node)
+	{
+		CHECK_START(buffer);
+		while (!buffer.IsEnd())
+		{
+			System::string word = buffer.ReadWord();
+			switch (Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:
+				return true;
+			case WORD_NAME:
+				{
+					System::string value;
+					if (!ParseBlockedString(buffer, value))
+						return (out_error() << "Can't parse transform name" << std::endl, false);
+					armature_node->SetName(value);
+					armature_node->SetStorageName(value);
+				}
+				break;
+			case WORD_MATERIAL_NODE:
+				{
+					System::Proxy<Scene::MaterialNode> node(new Scene::MaterialNode);
+					if (!ParseMaterialNode(buffer, node))
+						return (out_error() << "Can't parse material node" << std::endl, false);
+					armature_node->Add(node);
 				}
 				break;
 			default:
@@ -1654,11 +1827,27 @@ namespace Utility
 					transform->Add(node);
 				}
 				break;
-			case WORD_STATIC_MESH:
+			case WORD_STATIC_MESH_NODE:
 				{
-					System::Proxy<Scene::GeometryNode> node(new Scene::GeometryNode);
-					if (!ParseStaticMesh(buffer, node))
+					System::Proxy<Scene::StaticMeshNode> node(new Scene::StaticMeshNode);
+					if (!ParseStaticMeshNode(buffer, node))
 						return (out_error() << "Can't parse static mesh node" << std::endl, false);
+					transform->Add(node);
+				}
+				break;
+			case WORD_SKIN_MESH_NODE:
+				{
+					System::Proxy<Scene::SkinMeshNode> node(new Scene::SkinMeshNode);
+					if (!ParseSkinMeshNode(buffer, node))
+						return (out_error() << "Can't parse skin mesh node" << std::endl, false);
+					transform->Add(node);
+				}
+				break;
+			case WORD_ARMATURE_NODE:
+				{
+					System::Proxy<Scene::ArmatureNode> node(new Scene::ArmatureNode);
+					if (!ParseArmatureNode(buffer, node))
+						return (out_error() << "Can't parse armature node" << std::endl, false);
 					transform->Add(node);
 				}
 				break;
@@ -1836,14 +2025,30 @@ namespace Utility
 						return (out_error() << "Unable to parse materials" << std::endl, false);
 				}
 				break;
-				//case WORD_ACTIONS:
-				//	out_message() << "Parsing actions..." << std::endl;
-				//	if (!ParseActions(buffer, value.m_actions))
-				//	{
-				//		out_error() << "Unable to parse actions" << std::endl;
-				//		return false;
-				//	}
-				//	break;
+			case WORD_STATIC_MESHES:
+				{
+					if (!ParseStaticMeshes(buffer))
+						return (out_error() << "Unable to parse static meshes" << std::endl, false);
+				}
+				break;
+			case WORD_SKIN_MESHES:
+				{
+					if (!ParseSkinMeshes(buffer))
+						return (out_error() << "Unable to parse skin meshes" << std::endl, false);
+				}
+				break;
+			case WORD_ACTIONS:
+				{
+					if (!ParseActions(buffer))
+						return (out_error() << "Unable to parse actions" << std::endl, false);
+				}
+				break;
+			case WORD_ARMATURES:
+				{
+					if (!ParseArmatures(buffer))
+						return (out_error() << "Unable to parse armatures" << std::endl, false);
+				}
+				break;
 			default:
 				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}

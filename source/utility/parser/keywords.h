@@ -13,13 +13,20 @@ namespace Utility
 		WORD_LOCATION,						// 5
 		WORD_WORLD_MATRIX,					// 7
 		WORD_LOCAL_MATRIX,					// 8
-		WORD_MESH,							// 9
+		WORD_STATIC_MESH,					// 9
+		WORD_STATIC_MESHES,					// 9
+		WORD_STATIC_MESH_NODE,
+		WORD_BONE_MATRIX,
+		WORD_SKIN_MESH,
+		WORD_SKIN_MESHES,
+		WORD_SKIN_MESH_NODE,
 		WORD_VERTEX_POSITION,				// 10
 		WORD_NORMALS,						// 11
 		WORD_FACES,							// 12
 		WORD_VERTEX_POSITIONS_ID,			// 13
 		WORD_BONES_WEIGHT,					// 14
 		WORD_ARMATURE,						// 15
+		WORD_ARMATURE_NODE,
 		WORD_BONE,							// 16
 		WORD_NAME,							// 17
 		WORD_ACTIONS,						// 18
@@ -37,7 +44,6 @@ namespace Utility
 		WORD_DIFFUSE_MAP,					// 6
 		WORD_MATERIALS,					// 6
 		WORD_GIMBAL_TRANSFORM,					// 6
-		WORD_BONE_MATRIX,					// 6
 		WORD_ACTION,					// 6
 		WORD_ARMATURES,					// 6
 		WORD_FRAMES,					// 6
@@ -102,7 +108,6 @@ namespace Utility
 		WORD_TRANSFORM_NODE,					// 6
 		WORD_PORTAL,					// 6
 		WORD_PORTAL_NODE,					// 6
-		WORD_STATIC_MESH,					// 6
 		WORD_FACE_NORMALS
 	};
 
@@ -121,12 +126,19 @@ namespace Utility
 		{ WORD_LOCATION,				L"*location" },
 		{ WORD_WORLD_MATRIX,			L"*world_matrix" },
 		{ WORD_LOCAL_MATRIX,			L"*local_matrix" },
-		{ WORD_MESH,					L"*mesh" },
+		{ WORD_BONE_MATRIX,				L"*bone_matrix" },
+		{ WORD_STATIC_MESH,				L"*static_mesh" },
+		{ WORD_STATIC_MESHES,			L"*static_meshes" },
+		{ WORD_STATIC_MESH_NODE,		L"*static_mesh_node" },
+		{ WORD_SKIN_MESH,				L"*skin_mesh" },
+		{ WORD_SKIN_MESHES,				L"*skin_meshes" },
+		{ WORD_SKIN_MESH_NODE,			L"*skin_mesh_node" },
 		{ WORD_VERTEX_POSITION,			L"*vertex_position" },
 		{ WORD_NORMALS,					L"*normals" },
 		{ WORD_FACES,					L"*faces" },
 		{ WORD_VERTEX_POSITIONS_ID,		L"*vertex_positions_id" },
 		{ WORD_BONES_WEIGHT,			L"*bones_weight" },
+		{ WORD_ARMATURE_NODE,			L"*armature_node" },
 		{ WORD_ARMATURE,				L"*armature" },
 		{ WORD_BONE,					L"*bone" },
 		{ WORD_NAME,					L"*name" },
@@ -145,7 +157,6 @@ namespace Utility
 		{ WORD_DIFFUSE_MAP,				L"*diffuse_map" },
 		{ WORD_MATERIALS,				L"*materials" },
 		{ WORD_GIMBAL_TRANSFORM,		L"*gimbal_transform" },
-		{ WORD_BONE_MATRIX,				L"*bone_matrix" },
 		{ WORD_ACTION,					L"*action" },
 		{ WORD_ARMATURES,				L"*armatures" },
 		{ WORD_FRAMES,					L"*frames" }, 

@@ -14,6 +14,7 @@ namespace System
 		
 		~Factory();
 
+		bool Init();
 		bool RegisterCreator(ObjectType type, ResourceCreator* creator);
 		bool UnregisterCreator(ObjectType type);
 		Proxy<Object> Create(ObjectType type);

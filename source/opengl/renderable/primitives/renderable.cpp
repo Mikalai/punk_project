@@ -1,6 +1,6 @@
 #include "renderable.h"
 #include "static_mesh.h"
-#include "skinned_mesh.h"
+#include "skin_mesh.h"
 #include "quad_mesh.h"
 #include "primitive_types.h"
 
@@ -38,8 +38,8 @@ namespace OpenGL
 		{
 		case OpenGL::QUAD:
 			return QuadObject::CreateFromStream(stream);
-		case OpenGL::SKINNED_MESH:
-			return SkinnedMesh::CreateFromStream(stream);
+		case OpenGL::SKIN_MESH:
+			return SkinMesh::CreateFromStream(stream);
 		case OpenGL::STATIC_MESH:
 			return StaticMesh::CreateFromStream(stream);
 		default:

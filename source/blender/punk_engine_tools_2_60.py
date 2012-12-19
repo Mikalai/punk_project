@@ -19,6 +19,10 @@ class OBJECT_PT_punk_engine_tools(Panel):
             layout.prop(text = "Triangles count", data = ob.data, property = "polygons")
             layout.prop(ob, "name", expand = True)
             layout.prop(ob.data.materials[0], "diffuse_color", expand = True)
+        elif ob.punk_entity_type == 'SKIN':
+            layout.prop(text = "Triangles count", data = ob.data, property = "polygons")
+            layout.prop(ob, "name", expand = True)
+            layout.prop(ob.data.materials[0], "diffuse_color", expand = True)
         elif ob.punk_entity_type == 'NAVI':
             layout.prop(text = "Triangles count", data = ob.data, property = "polygons")
         elif ob.punk_entity_type == 'SOUND_3D':
@@ -77,6 +81,8 @@ class OBJECT_PT_punk_engine_tools(Panel):
             layout.prop(ob, "name")     
         elif ob.punk_entity_type == 'LOCATION_INDOOR':
             layout.prop(ob, "name")               
+        elif ob.punk_entity_type == 'ARMATURE':
+            layout.prop(ob, "name")
         elif ob.punk_entity_type == 'LIGHT':
             light = ob.data
             layout.prop(ob, "name")
@@ -86,7 +92,7 @@ class OBJECT_PT_punk_engine_tools(Panel):
             layout.prop(light, "energy")
             layout.prop(light, "fallof_type")
             layout.prop(light, "linear_attenuation")
-            layout.prop(light, "quadratic_attenuation")
+            layout.prop(light, "quadratic_attenuation")        
                  
 
 def register():  
@@ -104,8 +110,10 @@ def register():
                  ("LIGHT", "Light", "Scene light",                     7), \
                  ("LOCATION_INDOOR", "Indoor location", "Interior location",         8), \
                  ("CHARACTER", "Character", "Character armature and skin", 9), \
-                 ("CAMERA", "Camera", "A camera that can be used in game", 10),
-                 ("TRANSFORM", "Transform", "A simple transorm",           11)])
+                 ("CAMERA", "Camera", "A camera that can be used in game", 10),\
+                 ("TRANSFORM", "Transform", "A simple transorm",           11),\
+                 ("ARMATURE", "Armature", "Animated armature",             12),\
+                 ("SKIN", "Skin",   "Skin object. Has geometry",           13)])
                          
 def unregister():
     del bpy.types.Object.punk_entity_type

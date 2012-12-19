@@ -211,9 +211,9 @@ namespace Utility
 		return -1;
 	}
 
-	SkinnedMesh* RawScene::CookSkinnedMesh(const System::string& name)
+	SkinMesh* RawScene::CookSkinnedMesh(const System::string& name)
 	{
-		SkinnedMesh* res = 0;
+		SkinMesh* res = 0;
 		const aiScene* scene = importer.GetScene();
 		if (!scene->HasMeshes())
 			return res;
@@ -226,7 +226,7 @@ namespace Utility
 		if (!mesh->HasBones())
 			return res;
 
-		res = new SkinnedMesh();
+		res = new SkinMesh();
 		res->SetIndexCount(mesh->mNumFaces*3);
 		res->SetIndexBuffer(new unsigned[mesh->mNumFaces*3]);
 

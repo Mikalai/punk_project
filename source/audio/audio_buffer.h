@@ -3,6 +3,7 @@
 
 #include <iosfwd>
 #include "../system/object.h"
+#include "../system/resource_manager.h"
 #include "../string/string.h"
 
 #include "../config.h"
@@ -42,6 +43,11 @@ namespace Audio
 		friend class AudioManager;
 		friend class Player;
 	};	
+
+	extern PUNK_ENGINE void OnInit();
+	extern PUNK_ENGINE void OnDestroy();
 }
+
+REGISTER_MANAGER(L"resource.wav_sounds", L"*.wav_sound", System::Environment::Instance()->GetSoundFolder(), System::ObjectType::AUDIO_WAV, Audio, AudioBuffer, Audio::OnInit(), Audio::OnDestroy());
 
 #endif//	_H_PUNK_AudioBuffer

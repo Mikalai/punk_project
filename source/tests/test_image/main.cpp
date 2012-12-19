@@ -1,50 +1,39 @@
 #include <stdio.h>
-#include "../punk_engine/images/images.h"
-#include "../punk_engine/system/window.h"
-#include "../punk_engine/system/mouse.h"
-#include "../punk_engine/system/event_manager.h"
+#include "../../punk_engine.h"
 
 class Test
 {
-	ImageModule::RGBAImage m_image_rgba;
-	ImageModule::RGBImage m_image_rgb;
-	ImageModule::GrayImage m_image_gray;
+	System::Proxy<ImageModule::Image> image;
+
 public:
 	Test()
 	{
 		ImageModule::Importer file;
-		m_image_rgb = file.LoadRGB(L"d:\\project\\data\\textures\\checker.png");
-		m_image_rgba = file.LoadRGBA(L"d:\\project\\data\\textures\\rgba.png");		
-		m_image_gray = file.LoadGray(L"d:\\project\\data\\textures\\gray.png");		
-
-		ImageModule::Exporter exporter;
-		exporter.Export(L"rgb.png", m_image_rgb);
-		exporter.Export(L"rgba.png", m_image_rgba);
-		exporter.Export(L"gray.png", m_image_gray);
+		image.Reset(file.LoadAnyImage(System::Environment::Instance()->GetTextureFolder() + L"face_diffuse.jpg"));
 	}
 
 	void OnMouseClick(System::Event* event)
 	{
-		for (int y = 0; y < m_image_rgba.GetHeight(); ++y)
-			for (int x = 0; x < m_image_rgba.GetWidth(); ++x)
+		for (int y = 0; y < image->GetHeight(); ++y)
+			for (int x = 0; x < image->GetWidth(); ++x)
 			{				
-				const ImageModule::Component* p = m_image_rgba.GetPixelComponent(x, y, 0);
-				System::Window::Instance()->DrawPixel(x, y, p[0], p[1], p[2], p[3]);			
+				const ImageModule::Component* p = image->GetPixelComponent(x, y, 0);
+				System::Window::Instance()->DrawPixel(x, y, p[0], p[1], p[2], 255);			
 			}
 
-		for (int y = 0; y < m_image_rgb.GetHeight(); ++y)
-			for (int x = 0; x < m_image_rgb.GetWidth(); ++x)
-			{				
-				const ImageModule::Component* p = m_image_rgb.GetPixelComponent(x, y, 0);
-				System::Window::Instance()->DrawPixel(x, m_image_rgba.GetHeight() + y, p[0], p[1], p[2], 255);			
-			}
+		//for (int y = 0; y < m_image_rgb.GetHeight(); ++y)
+		//	for (int x = 0; x < m_image_rgb.GetWidth(); ++x)
+		//	{				
+		//		const ImageModule::Component* p = m_image_rgb.GetPixelComponent(x, y, 0);
+		//		System::Window::Instance()->DrawPixel(x, m_image_rgba.GetHeight() + y, p[0], p[1], p[2], 255);			
+		//	}
 
-		for (int y = 0; y < m_image_gray.GetHeight(); ++y)
-			for (int x = 0; x < m_image_gray.GetWidth(); ++x)
-			{				
-				const ImageModule::Component* p = m_image_gray.GetPixelComponent(x, y, 0);
-				System::Window::Instance()->DrawPixel(m_image_rgba.GetWidth() + x, y, p[0], p[0], p[0], 255);			
-			}
+		//for (int y = 0; y < m_image_gray.GetHeight(); ++y)
+		//	for (int x = 0; x < m_image_gray.GetWidth(); ++x)
+		//	{				
+		//		const ImageModule::Component* p = m_image_gray.GetPixelComponent(x, y, 0);
+		//		System::Window::Instance()->DrawPixel(m_image_rgba.GetWidth() + x, y, p[0], p[0], p[0], 255);			
+		//	}
 	}
 };
 

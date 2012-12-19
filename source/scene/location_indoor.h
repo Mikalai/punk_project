@@ -28,6 +28,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.indoor_locations", L"*.indoor", System::Environment::Instance()->GetModelFolder(), System::ObjectType::LOCATION_INDOOR, Scene, LocationIndoorNode);
+REGISTER_MANAGER(L"resource.indoor_locations", L"*.indoor", System::Environment::Instance()->GetModelFolder(), System::ObjectType::LOCATION_INDOOR, Scene, LocationIndoorNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_LOCATION_INDOOR

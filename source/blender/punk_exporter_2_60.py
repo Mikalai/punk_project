@@ -11,16 +11,22 @@ bl_info = {
 #mesh.materials['Material'].texture_slots['bump].texture.image.name
 import bpy
 import copy
+import mathutils
 
 # ExportHelper is a helper class, defines filename and
 # invoke() function which calls the file selector.
 from bpy_extras.io_utils import ExportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty
 from copy import deepcopy
+from mathutils import Matrix
 
 text_offset = 0 #used to print data nice
 used_materials = set()
 used_actions = set()
+used_armatures = set()
+used_skin_meshes = set()
+used_static_meshes = set()
+vertex_groups = {}
 
 #   export single float
 def export_float(f, name, value):
@@ -51,6 +57,14 @@ def export_string(f, name, value):
     start_block(f, name)
     make_offset(f)
     f.write("%s\n" % value)
+    end_block(f)
+    return
+
+def export_mat4(f, name, matrix):
+    start_block(f, name)
+    for v in matrix:  
+        make_offset(f)      
+        f.write("%16f%16f%16f%16f\n" % (v[0], v[1], v[2], v[3]))
     end_block(f)
     return
 
@@ -180,13 +194,13 @@ def export_face_normals(f, mesh):
 #
 #   export bones weights
 #
-def export_bones_weight(f, object):    
-    if len(object.vertex_groups) == 0:
+def export_bones_weight(f, data):    
+    if len(vertex_groups) == 0:
         return
     
     start_block(f, "*bones_weight")    
-    for vert in object.data.vertices:
-        for group in object.vertex_groups:
+    for vert in data.vertices:
+        for group in vertex_groups[data.name]:
             try:
                 ind = vert.index
                 #print(ind)
@@ -272,19 +286,19 @@ def export_mesh_material(f, mesh):
 #
 #   export only mesh
 #
-def export_mesh(f, object):
-    if object.data == None:
-        return
-    if type(object.data) == bpy.types.Mesh:
-        start_block(f, "*mesh")
-        export_vertex_position(f, object.data)
-        export_normals(f, object.data)
-        export_faces(f, object.data)
-        export_tex_coords(f, object.data)
-        export_mesh_material(f, object.data)
-        export_bones_weight(f, object) 
-        end_block(f)
-    return
+#def export_mesh(f, object):
+#    if object.data == None:
+#        return
+#    if type(object.data) == bpy.types.Mesh:
+#        start_block(f, "*mesh")
+#        export_vertex_position(f, object.data)
+#        export_normals(f, object.data)
+#        export_faces(f, object.data)
+#        export_tex_coords(f, object.data)
+#        export_mesh_material(f, object.data)
+#        export_bones_weight(f, object) 
+#        end_block(f)
+#    return
 
 #
 #   exort collision mesh
@@ -308,68 +322,48 @@ def export_bones(f):
     for armature in armatures:
         export_armature(f, armature)
     end_block(f)    #*armatures
-    
+
 #
 #   export armature skeleton
 #
-def export_armature(f, armature):
-    start_block(f, "*armature")    
+def export_armatures(f, armatures):    
+    start_block(f, "*armatures")
+    for armature_name in used_armatures:        
+        armature = armatures[armature_name]
+        start_block(f, "*armature")
+        export_string(f, "*name", armature.name)    
+        for bone in armature.bones:
+            #   export bone
+            start_block(f, "*bone")
+            #   write bone name
+            export_string(f, "*name", bone.name)
+            #   write bone length
+            export_float(f, "*length", bone.length)
+            #   write bone parent
+            if bone.parent != None:
+                export_string(f, "*parent", bone.parent.name)
+            #   write bone matrix
+            m = bone.matrix.to_4x4()
+            export_mat4(f, "*bone_matrix", m)
+            #   write bone matrix relative to armature
+            export_mat4(f, "*local_matrix", bone.matrix_local)
+            end_block(f)    #*bone
+        end_block(f)    #*armature        
+        end_block(f)    #*armatures
+    return
     
-    start_block(f, "*name")
-    make_offset(f)
-    f.write("%s\n" % armature.name)
-    end_block(f)    #*name
-    
-    for bone in armature.bones:
-        #
-        #   export bone
-        #
-        start_block(f, "*bone")
-        
-        #
-        #   write bone name
-        #
-        
-        start_block(f, "*name")
-        make_offset(f)
-        f.write("%s\n" % bone.name)
-        end_block(f)
-        
-        #
-        #   write bone length
-        #
-        start_block(f, "*length")
-        make_offset(f)
-        f.write("%f\n" % bone.length)
-        end_block(f)
-        
-        #
-        #   write bone parent
-        #
-        
-        if bone.parent != None:
-            start_block(f, "*parent")
-            make_offset(f);
-            f.write("%s\n" % bone.parent.name);
-            end_block(f);
-        
-        #
-        #   write bone matrix
-        #
-        start_block(f, "*local_matrix")
-        m = bone.matrix_local
-        make_offset(f)
-        f.write("%f %f %f %f\n" % (m[0][0], m[0][1], m[0][2], m[0][3]))
-        make_offset(f)
-        f.write("%f %f %f %f\n" % (m[1][0], m[1][1], m[1][2], m[1][3]))
-        make_offset(f)
-        f.write("%f %f %f %f\n" % (m[2][0], m[2][1], m[2][2], m[2][3]))
-        make_offset(f)
-        f.write("%f %f %f %f\n\n" % (m[3][0], m[3][1], m[3][2], m[3][3]))        
-        end_block(f)    #*local_matrix
-        end_block(f)    #*bone
-    end_block(f)    #*armature
-    
+#
+#   used to export animation data
+#
+def export_action_ref(f, object):
+    if object.animation_data == None:
+        return
+    animation = object.animation_data
+    for track in animation.nla_tracks:        
+        for strip in track.strips:
+            used_actions.add(strip.name)
+    return
+
 #
 #   export all animation
 #    
@@ -377,7 +371,7 @@ def export_actions(f):
     if len(used_actions) == 0:
         return
     if len(bpy.data.actions) == 0:
-        return
+        return    
     
     start_block(f, "*actions")
     for action_name in used_actions:
@@ -491,7 +485,7 @@ def export_action(f, action):
 def export_materials(f, materials):
     if len(used_materials) == 0:
         return
-    
+        
     if (len(materials) == 0):
         return
     
@@ -499,81 +493,66 @@ def export_materials(f, materials):
     for material in used_materials:
         m = materials[material]
         start_block(f, "*material")        
-        
-        #   export name
         export_string(f, "*name", m.name)
-        
-        #   export alpha
         export_float(f, "*alpha", m.alpha)
-        
-        #   export ambient
         export_float(f, "*ambient", m.ambient)
-        
-        #   export darkness
         export_float(f, "*darkness", m.darkness)
- 
-        #   export diffuse color
         export_vec3(f, "*diffuse_color", m.diffuse_color)
-        
-        #   export diffuse fresnel
         export_float(f, "*diffuse_fresnel", m.diffuse_fresnel)
-        
-        #   export diffuse fresnel factor
         export_float(f, "*diffuse_fresnel_factor", m.diffuse_fresnel_factor)
-        
-        #   export diffuse intensity
         export_float(f, "*diffuse_intensity", m.diffuse_intensity)
-        
-        #   export emit 
         export_float(f, "*emit", m.emit)
-        
-        #   export mirrot color
         export_vec3(f, "*mirror_color", m.mirror_color)
-        
-        #   export roughness
         export_float(f, "*roughness", m.roughness)
-        
-        #   export specular alpha
         export_float(f, "*specular_alpha", m.specular_alpha)
-        
-        #   export specular color
         export_vec3(f, "*specular_color", m.specular_color)
-        
-        #   export specular hardness
         export_float(f, "*specular_hardness", m.specular_hardness)
-        
-        #   export specular intensity
         export_float(f, "*specular_intensity", m.specular_intensity)
-        
-        #   export specular index of refraction
         export_float(f, "*specular_ior", m.specular_ior)
-        
-        #   export specular slope
         export_float(f, "*specular_slope", m.specular_slope)
-        
-        #   export translucency
         export_float(f, "*translucency", m.translucency)
-                
-        
-        try:
-            file_name = m.texture_slots[0].texture.image.name
-            start_block(f, "*diffuse_map")      
-            make_offset(f)            
-            f.write("%s\n" % file_name)
-            end_block(f)                        
+
+        try:            
+            export_string(f, "*diffuse_map", m.texture_slots[0].texture.image.name)   
         except:
             print("No texture found")
         
         try:
-            file_name = m.texture_slots[1].texture.image.name
-            start_block(f, "*normal_map")
-            make_offset(f)
-            f.write("%s\n" % file_name)
-            end_block(f)
+            export_string(f, "*normal_map", m.texture_slots[1].texture.image.name)
         except:
             print("No texture found")
-        end_block(f)    
-    end_block(f)
+                        
+        end_block(f)  # *material
+    end_block(f)    #   *materials
+    return
+
+def export_static_meshes(f, meshes): 
+    start_block(f, "*static_meshes")
+    for name in used_static_meshes:
+        data = meshes[name]
+        start_block(f, "*static_mesh")
+        export_string(f, "*name", data.name)
+        export_vertex_position(f, data)
+        export_normals(f, data)
+        export_faces(f, data)
+        export_tex_coords(f, data)
+        end_block(f)    #   static_mesh        
+    end_block(f)    #   *static_meshes
+    return
+
+def export_skin_meshes(f, skins):     
+    start_block(f, "*skin_meshes")
+    for name in used_skin_meshes:
+        data = skins[name]
+        start_block(f, "*skin_mesh")
+        export_string(f, "*name", data.name)
+        export_vertex_position(f, data)
+        export_normals(f, data)
+        export_faces(f, data)
+        export_tex_coords(f, data)
+        export_bones_weight(f, data)
+        end_block(f)    #   skin_mesh        
+    end_block(f)    #   skin_meshes
     return
 
 #
@@ -581,69 +560,17 @@ def export_materials(f, materials):
 #
 def export_sound(f, object):
     start_block(f, "*sound")
-
-    #   export name
-    start_block(f, "*name")    
-    make_offset(f)
-    f.write("%s\n" % object.data.name)
-    end_block(f)
-    
-    #   export filename
-    start_block(f, "*filename")
-    make_offset(f)
-    f.write("%s\n" % object.data.sound.name)
-    end_block(f)
-    
-    #   export volume
-    start_block(f, "*volume")
-    make_offset(f)
-    f.write("%f\n" % object.data.volume)
-    end_block(f)
-    
-    #   export pitch
-    start_block(f, "*pitch")
-    make_offset(f)
-    f.write("%f\n" % object.data.pitch)
-    end_block(f)
-    
-    #   export Max distance
-    start_block(f, "*max_distance")
-    make_offset(f)
-    f.write("%f\n" % object.data.distance_max)
-    end_block(f)
-    
-    #   exoirt ref distance
-    start_block(f, "*reference_distance")
-    make_offset(f)
-    f.write("%f\n" % object.data.distance_reference)
-    end_block(f)
-    
-    #   exoirt inner cone angle in degreese
-    start_block(f, "*cone_angle_inner")
-    make_offset(f)
-    f.write("%f\n" % object.data.cone_angle_inner)
-    end_block(f)
-    
-    #   export outer cone angle
-    start_block(f, "*cone_angle_outer")
-    make_offset(f)
-    f.write("%f\n" % object.data.cone_angle_outer)
-    end_block(f)
-    
-    #   export outer cone volumn
-    start_block(f, "*cone_volume_outer")
-    make_offset(f)
-    f.write("%f\n" % object.data.cone_volume_outer)
-    end_block(f)
-    
-    #   export attenuation
-    start_block(f, "*attenuation")
-    make_offset(f)
-    f.write("%f\n" % object.data.attenuation)
-    end_block(f)
-    
-
-    end_block(f)
+    export_string(f, "*name", object.data.name)    
+    export_string(f, "*filename", object.data.sound.name)
+    export_float(f, "*volume", object.data.volume)
+    export_float(f, "*pitch", object.data.pitch)
+    export_float(f, "*max_distance", object.data.distance_max)
+    export_float(f, "*reference_distance", object.data.distance_reference)
+    export_float(f, "*cone_angle_inner", object.data.cone_angle_inner)
+    export_float(f, "*cone_angle_outer", object.data.cone_angle_outer)
+    export_float(f, "*cone_volume_outer", object.data.cone_volume_outer)
+    export_float(f, "*attenuation", object.data.attenuation)
+    end_block(f)    #   *sound
     return
 
 #
@@ -675,25 +602,25 @@ def export_properties(f, object):
 #
 #   export animation tracks for the object
 #
-def export_animation_tracks(f, object):
-    if object.animation_data == None:
-        return
-    
-    if len(object.animation_data.nla_tracks) == 0:
-        return
-    
-    start_block(f, "*actions_ref")
-    for track in object.animation_data.nla_tracks:        
-        if len(track.strips) == 0:
-            print("No strips in track %s", track.name)
-            return        
-        if len(track.strips) != 1:
-            print("Wanring: only first strip will be exported")
-        export_string(f, "*action_ref", track.strips[0].action.name)
-        
-        used_actions.add(track.strips[0].action.name)
-        
-    end_block(f)
+#def export_animation_tracks(f, object):
+#    if object.animation_data == None:
+#        return
+#    
+#    if len(object.animation_data.nla_tracks) == 0:
+#        return
+#    
+#    start_block(f, "*actions_ref")
+#    for track in object.animation_data.nla_tracks:        
+#        if len(track.strips) == 0:
+#            print("No strips in track %s", track.name)
+#            return        
+#        if len(track.strips) != 1:
+#            print("Wanring: only first strip will be exported")
+#       export_string(f, "*action_ref", track.strips[0].action.name)
+#        
+#        used_actions.add(track.strips[0].action.name)
+#        
+#    end_block(f)
 
 #
 #   export lamps from the scene
@@ -749,7 +676,7 @@ def export_portal(f, object):
         end_block(f)
     return
 
-def export_static_mesh(f, object): 
+def export_static_mesh_node(f, object): 
     if object.data == None:
         return
     mesh = object.data
@@ -759,20 +686,61 @@ def export_static_mesh(f, object):
         export_string(f, "*name", mesh.materials[0].name)
      
     start_block(f, "*transform_node")
-    export_string(f, "*name", object.name + "_transform")
+    export_string(f, "*name", object.name)
     export_local_matrix(f, object)
 
     if type(object.data) == bpy.types.Mesh:
-        start_block(f, "*static_mesh")
-        export_string(f, "*name", object.name)
-        export_vertex_position(f, object.data)
-        export_normals(f, object.data)
-        export_faces(f, object.data)
-        export_tex_coords(f, object.data)
-        end_block(f)    #   static_mesh        
+        start_block(f, "*static_mesh_node")
+        export_string(f, "*name", object.data.name)
+        used_static_meshes.add(object.data.name)
+        end_block(f)    #   static_mesh_node        
     end_block(f) #  transform
     if not((mesh == None) or (len(mesh.materials) == 0)):
         end_block(f)    #   material
+    return
+
+def export_skin_mesh_node(f, object): 
+    if object.data == None:
+        return
+    mesh = object.data
+    if not((mesh == None) or (len(mesh.materials) == 0)):
+        start_block(f, "*material_node")
+        used_materials.add(mesh.materials[0].name)
+        export_string(f, "*name", mesh.materials[0].name)
+     
+    start_block(f, "*transform_node")
+    export_string(f, "*name", object.name)
+    export_local_matrix(f, object)
+
+    if type(object.data) == bpy.types.Mesh:
+        start_block(f, "*skin_mesh_node")
+        export_string(f, "*name", object.data.name)
+        vertex_groups[object.data.name] = object.vertex_groups
+        used_skin_meshes.add(object.data.name)
+        end_block(f)    #   *skin_mesh_node
+    end_block(f) #  transform
+    if not((mesh == None) or (len(mesh.materials) == 0)):
+        end_block(f)    #   material
+    return
+
+def export_armature_node(f, object):
+    if object.data == None:
+        return
+     
+    start_block(f, "*transform_node")
+    export_string(f, "*name", object.name)
+    export_local_matrix(f, object)
+    
+    armature = object.data
+    start_block(f, "*armature_node")    
+    export_string(f, "*name", armature.name)  
+    used_armatures.add(armature.name)  
+    #   export animation
+    export_action_ref(f, object)
+    #   export all children
+    export_children(f, object)        
+    end_block(f)    #*armature_node
+    end_block(f)    #*transform
     return
 
 def export_convex_mesh(f, object): 
@@ -846,12 +814,16 @@ def export_object(f, object):
         export_location_indoor(f, object)
     elif object.punk_entity_type == "TRANSFORM":
         export_transform(f, object)
+    elif object.punk_entity_type == "ARMATURE":
+        export_armature_node(f, object)
     elif object.punk_entity_type == "LIGHT":
         export_light(f, object)
     elif object.punk_entity_type == "PORTAL":
         export_portal(f, object)
     elif object.punk_entity_type == "STATIC":
-        export_static_mesh(f, object)        
+        export_static_mesh_node(f, object)        
+    elif object.punk_entity_type == "SKIN":
+        export_skin_mesh_node(f, object)
     elif object.punk_entity_type == "NAVI":
         export_navi_mesh(f, object)
     elif object.punk_entity_type == "SOUND_2D":
@@ -864,10 +836,7 @@ def export_object(f, object):
         export_character(f, object)
     elif object.punk_entity_type == "CAMERA":   
         if type(object.data) == bpy.types.Camera:
-            export_camera(f, object.data)
-                 
-    export_animation_tracks(f, object)
-    
+            export_camera(f, object.data)                    
     return     
 
 
@@ -875,6 +844,9 @@ def export_model(context, filepath, anim_in_separate_file):
     f = open(filepath, 'w')
     for obj in bpy.context.selected_objects:
         export_object(f, obj)
+    export_static_meshes(f, bpy.data.meshes)
+    export_skin_meshes(f, bpy.data.meshes)
+    export_armatures(f, bpy.data.armatures)
     export_materials(f, bpy.data.materials)
     export_actions(f)
     f.close()

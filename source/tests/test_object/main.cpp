@@ -83,6 +83,8 @@ void Idle(System::Event*)
 
 int main()
 {
+	System::GetFactory()->Init();
+
 	System::Window::Instance()->SetTitle(L"OpenGL object test");
 	System::Mouse::Instance()->LockInWindow(true);
 	OpenGL::Driver::Instance()->Start();

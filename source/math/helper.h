@@ -45,7 +45,7 @@ namespace Math
 			return Quaternion<T>(w, x, y, z);
 		}
 		int Max = 0;
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			if (m[Max*4 + Max] < m[i*4 + i])
 				Max = i;
@@ -81,7 +81,9 @@ namespace Math
 				return Quaternion<T>(w, x, y, z);
 			}
 		default:
-			throw MathError(L"Can't convert matrix to quaternion");
+			out_message() << m.ToString() << std::endl;
+			out_message() << "Max is " << Max << std::endl;
+			out_error() << L"Can't convert matrix to quaternion" << std::endl;
 		}
 	}
 

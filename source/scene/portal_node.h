@@ -29,6 +29,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.portal_nodes", L"*.portal_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::PORTAL_NODE, Scene, PortalNode);
+REGISTER_MANAGER(L"resource.portal_nodes", L"*.portal_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::PORTAL_NODE, Scene, PortalNode, return, return);
 
 #endif

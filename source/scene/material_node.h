@@ -28,6 +28,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.material_nodes", L"*.material_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::MATERIAL_NODE, Scene, MaterialNode);
+REGISTER_MANAGER(L"resource.material_nodes", L"*.material_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::MATERIAL_NODE, Scene, MaterialNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_MATERIAL_NODE

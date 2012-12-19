@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <string>
 #include "../../system/environment.h"
 #include "importer.h"
 #include "importer_impl.h"
@@ -6,9 +8,9 @@
 #include "../internal_images/rgb_image.h"
 #include "../internal_images/gray_image.h"
 #include "../internal_images/image_impl.h"
-#include "png_importer.h"
 #include "../../system/logger.h"
-#include <string>
+#include "png_importer.h"
+#include "jpg_importer.h"
 
 namespace ImageModule
 {
@@ -61,9 +63,17 @@ namespace ImageModule
 	bool Importer::Load(const System::string& filename)
 	{
 		std::wstring file(filename.Data());
+		std::transform(file.begin(), file.end(), file.begin(), ::towlower);
 		if (file.rfind(L".png") != std::wstring::npos)
 		{
 			PngImporter importer;
+			importer.Load(filename);
+			std::swap(impl_image, importer.impl_image);
+			return true;
+		}		
+		else if (file.rfind(L".jpeg") != std::wstring::npos || file.rfind(L".jpg") != std::wstring::npos)
+		{
+			JpgImporter importer;
 			importer.Load(filename);
 			std::swap(impl_image, importer.impl_image);
 			return true;

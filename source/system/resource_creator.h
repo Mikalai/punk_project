@@ -6,11 +6,12 @@
 
 namespace System
 {
-	class ResourceCreator
+	class PUNK_ENGINE ResourceCreator
 	{
 	public:
 		virtual Proxy<Object> Create() = 0;
 		virtual Proxy<Object> Create(const string& name) = 0;
+		virtual bool Init() = 0;
 	};
 }
 

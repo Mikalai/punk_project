@@ -22,7 +22,7 @@ namespace OpenGL
 		TextureContext& operator = (const TextureContext& tc);
 		~TextureContext();
 
-		void SetTexture(int slot, System::Handle<Texture2D> map);
+		void SetTexture(int slot, System::Proxy<Texture2D> map);
 
 		void Bind();	
 		void Unbind();

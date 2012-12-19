@@ -1,20 +1,15 @@
 #include <ostream>
 #include <istream>
-#include "../../utility/descriptors/animation_desc.h"
 #include "animation.h"
+
+IMPLEMENT_MANAGER(L"resource.animations", L"*.animation", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ANIMATION, Virtual, Animation);
 
 namespace Virtual
 {
 	Animation::Animation()
 		: m_animation_type(AnimationType::ANIMATION_NONE)
 	{
-	}
-
-	Animation::Animation(Utility::AnimationDesc& desc)
-	{
-		m_animation_type = (desc.m_is_bone_anim) ? AnimationType::ANIMATION_BONE : AnimationType::ANIMATION_OBJECT;
-		m_pos_track = desc.m_pos_track;
-		m_rot_track = desc.m_rot_track;
+		SetType(System::ObjectType::ANIMATION);
 	}
 
 	void Animation::AddPositionKey(int frame, Math::vec3& position)
@@ -55,7 +50,9 @@ namespace Virtual
 
 	bool Animation::Save(std::ostream& stream) const
 	{
-		//stream.write(reinterpret_cast<const char*>(&m_is_enabled), sizeof(m_is_enabled));		
+		if (!System::Object::Save(stream))
+			return (out_error() << "Can't save animation" << std::endl, false);
+
 		stream.write((char*)&m_animation_type, sizeof(m_animation_type));
 		m_pos_track.Save(stream);
 		m_rot_track.Save(stream);
@@ -64,10 +61,28 @@ namespace Virtual
 
 	bool Animation::Load(std::istream& stream)
 	{
-		//stream.read(reinterpret_cast<char*>(&m_is_enabled), sizeof(m_is_enabled));		
+		if (!System::Object::Load(stream))
+			return (out_error() << "Can't save animation" << std::endl, false);
+
 		stream.read((char*)&m_animation_type, sizeof(m_animation_type));
 		m_pos_track.Load(stream);
 		m_rot_track.Load(stream);
 		return true;
+	}
+
+	System::Proxy<Animation> Animation::CreateFromFile(const System::string& path)
+	{
+		std::ifstream stream(path.Data(), std::ios::binary);
+		if (!stream.is_open())
+			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<Animation>(nullptr));
+		return CreateFromStream(stream);
+	}
+
+	System::Proxy<Animation> Animation::CreateFromStream(std::istream& stream)
+	{
+		System::Proxy<Animation> node(new Animation);
+		if (!node->Load(stream))
+			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<Animation>(nullptr));
+		return node;
 	}
 }

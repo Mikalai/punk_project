@@ -117,7 +117,7 @@ namespace Render
 			{
 				OpenGL::Batch batch;
 				batch.m_parameters
-				OpenGL::SkinnedMesh* vao = OpenGL::SkinnedMeshManager::Instance()->Load(object->GetName() + L".skinned_vao");
+				OpenGL::SkinMesh* vao = OpenGL::SkinnedMeshManager::Instance()->Load(object->GetName() + L".skinned_vao");
 				if (vao)
 				{
 					impl->m_rc->SetMeshMatrix(vao->GetMeshTransform());				

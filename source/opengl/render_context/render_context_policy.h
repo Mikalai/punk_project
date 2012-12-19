@@ -11,6 +11,7 @@
 #include "../../math/vec4.h"
 #include "../../system/poolable.h"
 #include "../../virtual/data/data.h"
+#include "../../virtual/skinning/skinning.h"
 
 namespace OpenGL
 {
@@ -222,7 +223,14 @@ namespace OpenGL
 			SetUniformMatrix4f(uProj, &state->m_camera->GetProjectionMatrix()[0]);
 			//SetUniformMatrix4f(uProj, &p[0]);
 			SetUniformMatrix3f(uNormalMatrix, &normal_matrix[0]);
-			SetUniformVector3f(uLightPosition, &state->m_current_light_set->GetLight(0)->GetPosition()[0]);
+			if (!state->m_current_light_set.empty())
+				SetUniformVector3f(uLightPosition, &state->m_current_light_set[0]->GetPosition()[0]);
+			else
+			{
+				Math::vec3 v(0,0,0);
+				SetUniformVector3f(uLightPosition, &v[0]);
+			}
+
 			SetUniformVector4f(uAmbient, &(Math::vec4(state->m_current_material->GetAmbient()))[0]);
 			SetUniformVector4f(uSpecular, &state->m_current_material->GetSpecularColor()[0]);
 			SetUniformVector4f(uDiffuse, &state->m_current_material->GetDiffuseColor()[0]);
@@ -627,25 +635,42 @@ namespace OpenGL
 		}
 
 		void BindParameters(const System::Proxy<State>& pparams)
-		{						
-			//const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			//SetUniformMatrix4f(uWorld, &params.m_world[0]);
-			//SetUniformMatrix4f(uView, &params.m_view[0]);
-			//SetUniformMatrix4f(uWorld, &params.m_proj[0]);
-			//SetUniformMatrix4f(uMeshMatrix, &params.m_mesh_matrix[0]);
-			//SetUniformMatrix4f(uMeshMatrixInversed, &params.m_mesh_matrix_inversed[0]);
-			//SetUniformMatrix3f(uNormalMatrix, &params.m_normal_matrix[0]);
-			//SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
-			//SetUniformMatrix4f(uViewWorld, &params.m_view_world[0]);
-			//SetUniformVector3f(uLightPosition, &params.m_light_position[0]);
-			//for (int i = 0; i < MAX_BONES; ++i)
-			//	SetUniformMatrix4f(uBones[i], &params.m_bone[i][0]);
-			//SetUniformVector4f(uAmbient, &params.m_ambient[0]);
-			//SetUniformVector4f(uSpecular, &params.m_specular[0]);
-			//SetUniformVector4f(uDiffuse, &params.m_diffuse[0]);
-			//SetUniformFloat(uSpecularPower, params.m_specular_power);
-			//SetUniformInt(uDiffuseMap, params.m_diffuse_texture);
-			//SetUniformInt(uNormalMap, params.m_normal_texture);
+		{				
+			const State* state = pparams.Get();		
+			Math::mat4 mesh_matrix = Math::mat4::CreateIdentity();
+			Math::mat4 view_world = state->m_camera->GetViewMatrix() * state->m_local;
+			Math::mat4 proj_view_world = state->m_camera->GetProjectionMatrix() * state->m_camera->GetViewMatrix() * state->m_local;
+			Math::mat3 normal_matrix = (state->m_camera->GetViewMatrix() * state->m_local).Inversed().Transposed().RotationPart();
+			SetUniformMatrix4f(uWorld, &state->m_local[0]);			
+			SetUniformMatrix4f(uView, &state->m_camera->GetViewMatrix()[0]);			
+			SetUniformMatrix4f(uProj, &state->m_camera->GetProjectionMatrix()[0]);			
+			SetUniformMatrix4f(uMeshMatrix, &mesh_matrix[0]);//state->m_mesh_matrix[0]);
+			SetUniformMatrix4f(uMeshMatrixInversed, &mesh_matrix[0]);//state->m_mesh_matrix.Inversed()[0]);
+			SetUniformMatrix3f(uNormalMatrix, &normal_matrix[0]);
+			if (!state->m_current_light_set.empty())
+				SetUniformVector3f(uLightPosition, &state->m_current_light_set[0]->GetPosition()[0]);
+			else
+			{
+				Math::vec3 v(0,0,0);
+				SetUniformVector3f(uLightPosition, &v[0]);
+			}
+			SetUniformVector4f(uAmbient, &(Math::vec4(state->m_current_material->GetAmbient()))[0]);
+			SetUniformVector4f(uSpecular, &state->m_current_material->GetSpecularColor()[0]);
+			SetUniformVector4f(uDiffuse, &state->m_current_material->GetDiffuseColor()[0]);
+			SetUniformFloat(uSpecularPower, state->m_current_material->GetSpecularFactor());
+			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
+			SetUniformInt(uNormalMap, state->m_normal_slot);				
+			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
+			SetUniformMatrix4f(uViewWorld, &view_world[0]);
+			for (int i = 0; i < state->m_armature->GetBonesCount(); ++i)
+			{
+				const Virtual::Bone* bone = state->m_armature->GetBoneByIndex(i);
+				Math::mat4 m;
+				//out_message() << bone->GetName() << ": " << bone->GetAnimatedGlobalMatrix().ToString() << std::endl;
+				//SetUniformMatrix4f(uBones[i], &(m[0]));
+				//SetUniformMatrix4f(uBones[i], &(bone->GetAnimatedGlobalMatrix())[0]);
+				SetUniformMatrix4f(uBones[i], &(state->m_mesh_matrix_local.Inversed() * bone->GetAnimatedGlobalMatrix() * state->m_mesh_matrix_local)[0]);
+			}
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 

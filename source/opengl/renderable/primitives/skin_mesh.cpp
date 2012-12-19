@@ -2,67 +2,67 @@
 
 #include "../../../system/logger.h"
 #include "../../../math/helper.h"
-#include "../../../utility/descriptors/mesh_desc.h"
-#include "../../../utility/descriptors/armature_desc.h"
-#include "../../../utility/descriptors/bone_desc.h"
+#include "../../../virtual/skinning/skinning.h"
+#include "../../../virtual/data/skin_geometry.h"
 
-#include "skinned_mesh.h"
+#include "skin_mesh.h"
 #include "primitive_types.h"
+
+IMPLEMENT_MANAGER(L"resource.skinned_meshes", L"*.skin_mesh", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SKIN_MESH, OpenGL, SkinMesh);
 
 namespace OpenGL
 {
-	SkinnedMesh::SkinnedMesh()
+	SkinMesh::SkinMesh()
 	{
-		m_primitive_type = PrimitiveTypes::SKINNED_MESH;
+		m_primitive_type = PrimitiveTypes::SKIN_MESH;
 	}
 
-	System::Proxy<SkinnedMesh> SkinnedMesh::CreateFromFile(const System::string& path)
+	System::Proxy<SkinMesh> SkinMesh::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios_base::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't load skinned mesh from " << path << std::endl, System::Proxy<SkinnedMesh>(nullptr));
-		System::Proxy<SkinnedMesh> mesh(new SkinnedMesh);
+			return (out_error() << "Can't load skinned mesh from " << path << std::endl, System::Proxy<SkinMesh>(nullptr));
+		System::Proxy<SkinMesh> mesh(new SkinMesh);
 		mesh->Load(stream);
 		return mesh;
 	}
 
-	System::Proxy<SkinnedMesh> SkinnedMesh::CreateFromStream(std::istream& stream)
+	System::Proxy<SkinMesh> SkinMesh::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<SkinnedMesh> mesh(new SkinnedMesh);
+		System::Proxy<SkinMesh> mesh(new SkinMesh);
 		mesh->Load(stream);
 		return mesh;
 	}
 
-	bool SkinnedMesh::Cook(const Utility::MeshDesc* mesh, const Utility::ArmatureDesc* armature)
+	bool SkinMesh::Cook(const System::Proxy<Virtual::SkinGeometry> mesh, const System::Proxy<Virtual::Armature> armature)
 	{				
-		SetType(System::ObjectType::SKINNED_MESH);
-		if (!mesh)
+		SetType(System::ObjectType::SKIN_MESH);
+		if (!mesh.IsValid())
 			return (out_error() << "Can't created skinned mesh from NULL mesh descriptor" << std::endl, false);
-		if (mesh->m_vertices.empty())
+		if (mesh->GetVertices().empty())
 			return (out_error() << "Can't create skinned mesh from empty vertex list in mesh descriptor" << std::endl, false);
-		if (mesh->m_tex_coords.empty())
+		if (mesh->GetTextureMeshes().empty())
 			return (out_error() << "Can't create skinned mesh from mesh descriptor with empty texture coordinates list" << std::endl, false);
-		if (mesh->m_normals.empty())
+		if (mesh->GetNormals().empty())
 			return (out_error() << "Can't create skinned mesh from mesh descriptor with empty normals list" << std::endl, false);
-		if (mesh->m_bone_weights.empty())
+		if (mesh->GetBoneWeights().empty())
 			return (out_error() << "Can't create skinned mesh from mesh descriptor with empty bones weights list" << std::endl, false);
 		
-		std::vector<unsigned> ib(mesh->m_faces.size()*3);
-		for (unsigned i = 0; i < mesh->m_faces.size()*3; i++)
+		std::vector<unsigned> ib(mesh->GetFaces().size()*3);
+
+		for (unsigned i = 0; i < ib.size(); i++)
 			ib[i] = i;
 
-		std::vector<Utility::Vertex<VertexType>> vb(mesh->m_faces.size()*3);
+		std::vector<Utility::Vertex<VertexType>> vb(mesh->GetFaces().size()*3);
 
 		std::vector<int> base_index;		/// contains vertex index in the source array
-
 		int index = 0;
-		for (unsigned i = 0, max_i = mesh->m_tex_coords.begin()->second.size(); i < max_i; i++)
+		for (unsigned i = 0, max_i = mesh->GetTextureMeshes().begin()->second.size(); i < max_i; i++)
 		{
-			const Math::ivec3& f = mesh->m_faces[i];
-			const Math::vec3 position[3] = { mesh->m_vertices[f[0]], mesh->m_vertices[f[1]], mesh->m_vertices[f[2]] };
-			const Math::vec2 texture[3] = { mesh->m_tex_coords.begin()->second[i][0], mesh->m_tex_coords.begin()->second[i][1], mesh->m_tex_coords.begin()->second[i][2] };
-			const Math::vec3 normal[3] = { mesh->m_normals[f[0]], mesh->m_normals[f[1]], mesh->m_normals[f[2]] };
-
+			const Math::ivec3& f = mesh->GetFaces()[i];
+			const Math::vec3 position[3] = { mesh->GetVertices()[f[0]], mesh->GetVertices()[f[1]], mesh->GetVertices()[f[2]] };
+			const Math::vec2 texture[3] = { mesh->GetTextureMeshes().begin()->second[i][0], mesh->GetTextureMeshes().begin()->second[i][1], mesh->GetTextureMeshes().begin()->second[i][2] };
+			const Math::vec3 normal[3] = { mesh->GetNormals()[f[0]], mesh->GetNormals()[f[1]], mesh->GetNormals()[f[2]] };
 
 			Math::vec3 tgn;
 			Math::vec3 nrm;
@@ -137,23 +137,24 @@ namespace OpenGL
 		SetVertexBuffer(vb);
 		SetIndexBuffer(ib);
 
-		return true;
+		int vt = VertexType;
+		return VertexArrayObject2<PrimitiveType, VertexType>::Cook();
 	}
 
-	bool SkinnedMesh::CookOneVertexWithBone(const Utility::MeshDesc* mesh, const Utility::ArmatureDesc* armature, int index, Math::Vector4<float>& bone, Math::Vector4<float>& weight) const
+	bool SkinMesh::CookOneVertexWithBone(const System::Proxy<Virtual::SkinGeometry> mesh, const System::Proxy<Virtual::Armature> armature, int index, Math::Vector4<float>& bone, Math::Vector4<float>& weight) const
 	{
 		try
 		{
-			const Virtual::BoneWeights& weights = mesh->m_bone_weights.at(index);
+			const Virtual::BoneWeights& weights = mesh->GetBoneWeights().at(index);
 
 			int b_id[4] = {0, 0, 0, 0};
 			float w[4] = {0, 0, 0, 0};
 
 			int used = 0;
-			for (int i = 0, max_i = armature->m_bones.size(); i < max_i; ++i)
+			for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
 			{
-				const Utility::BoneDesc* cur_bone = armature->m_bones[i];
-				if (weights.find(cur_bone->m_name) != weights.end())
+				const Virtual::Bone* cur_bone = armature->GetBoneByIndex(i);
+				if (weights.find(cur_bone->GetName()) != weights.end())
 				{	
 					// replace the least significant bone
 					int Min = 0;
@@ -163,7 +164,7 @@ namespace OpenGL
 							Min = j;
 					}
 					b_id[Min] = i;
-					w[Min] = weights.at(cur_bone->m_name);
+					w[Min] = weights.at(cur_bone->GetName());
 					used++;
 				}
 			}
@@ -189,12 +190,12 @@ namespace OpenGL
 		return true;
 	}
 
-	bool SkinnedMesh::Save(std::ostream& stream) const
+	bool SkinMesh::Save(std::ostream& stream) const
 	{
 		return VertexArrayObject2<PrimitiveType, VertexType>::Save(stream);
 	}
 
-	bool SkinnedMesh::Load(std::istream& stream)
+	bool SkinMesh::Load(std::istream& stream)
 	{
 		return VertexArrayObject2<PrimitiveType, VertexType>::Load(stream);
 	}

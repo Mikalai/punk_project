@@ -9,12 +9,12 @@
 #include "render_target_back_buffer.h"
 #include "../../system/window.h"
 #include "../../utility/fonts/font_builder.h"
-
+#include "../../virtual/animation/anim.h"
 namespace OpenGL
 {
 	MeshCooker::MeshCooker()
 	{
-		m_light_set.Reset(new Virtual::LightSet);
+		//m_light_set.Reset(new Virtual::LightSet);
 	}
 
 	bool MeshCooker::Visit(Scene::CameraNode* node)
@@ -22,11 +22,33 @@ namespace OpenGL
 		return true;
 	}
 
-	bool MeshCooker::Visit(Scene::GeometryNode* node)
+	bool MeshCooker::Visit(Scene::SkinMeshNode* node)
+	{
+		System::Proxy<Virtual::SkinGeometry> geom = Virtual::SkinGeometryManager::Instance()->Load(node->GetStorageName());
+		
+		System::Proxy<SkinMesh> mesh = System::GetFactory()->Create(geom->GetStorageName(), System::ObjectType::SKIN_MESH);
+
+		if (!mesh->Cook(geom, m_current_armature))
+			return (out_error() << "Can't cook static mesh from static geometry" << std::endl, false);
+		return true;
+	}
+
+	bool MeshCooker::Visit(Scene::ArmatureNode* node)
 	{		
-		if (node->GetGeometry()->GetType() != System::ObjectType::STATIC_GEOMETRY)
-			return true;
-		System::Proxy<Virtual::StaticGeometry> geom = node->GetGeometry();	
+		m_current_armature = Virtual::ArmatureManager::Instance()->Load(node->GetStorageName());
+		m_current_armature->UpdateHierarchy();
+		for each (System::Proxy<Scene::Node> child in *node)
+		{
+			if (!child->Apply(this))
+				return false;
+		}
+		m_current_armature.Release();
+		return true;
+	}
+
+	bool MeshCooker::Visit(Scene::StaticMeshNode* node)
+	{				
+		System::Proxy<Virtual::StaticGeometry> geom = node->GetStaticGeometry();	
 		
 		System::Proxy<StaticMesh> mesh = System::GetFactory()->Create(geom->GetStorageName(), System::ObjectType::STATIC_MESH);
 
@@ -37,7 +59,7 @@ namespace OpenGL
 
 	bool MeshCooker::Visit(Scene::LightNode* node)
 	{
-		m_light_set->Add(node->GetLight());
+		m_light_set.push_back(node->GetLight());
 		for each (System::Proxy<Scene::Node> child in *node)
 		{
 			if (!child->Apply(this))
@@ -107,9 +129,9 @@ namespace OpenGL
 		return true;
 	}
 
-	bool SimpleRender::Visit(Scene::GeometryNode* node)
+	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
 	{		
-		System::Proxy<StaticMesh> mesh = StaticMeshManager::Instance()->Load(node->GetGeometry()->GetStorageName());		
+		System::Proxy<StaticMesh> mesh = StaticMeshManager::Instance()->Load(node->GetStorageName());		
 		m_states.CurrentState()->m_tc->Bind();
 		m_states.CurrentState()->m_render_policy->Begin();
 		m_states.CurrentState()->m_render_policy->BindParameters(m_states.CurrentState());		
@@ -118,6 +140,60 @@ namespace OpenGL
 		mesh->Unbind();		
 		m_states.CurrentState()->m_render_policy->End();		
 		m_states.CurrentState()->m_tc->Unbind();
+		return true;
+	}
+
+	bool SimpleRender::Visit(Scene::SkinMeshNode* node)
+	{				
+		System::Proxy<Virtual::Armature> armature = m_states.CurrentState()->m_armature;
+		//out_message() << "Mesh matrix: " << m_states.CurrentState()->m_mesh_matrix_local.ToString() << std::endl;
+		//for (int i = 0; i < armature->GetBonesCount(); ++i)
+		//{
+		//	Virtual::Bone* bone = armature->GetBoneByIndex(i);
+		//	out_message() << bone->GetName() << ": " << std::endl << (m_states.CurrentState()->m_armature_world * bone->GetAnimatedGlobalMatrix()).ToString() << std::endl;
+		//}
+
+		System::Proxy<SkinMesh> mesh = SkinMeshManager::Instance()->Load(node->GetStorageName());				
+		m_states.CurrentState()->m_tc->Bind();
+		m_states.CurrentState()->m_render_policy->Begin();
+		m_states.CurrentState()->m_render_policy->BindParameters(m_states.CurrentState());		
+		mesh->Bind(m_states.CurrentState()->m_render_policy->GetRequiredAttributesSet());
+		mesh->Render();
+		mesh->Unbind();		
+		m_states.CurrentState()->m_render_policy->End();		
+		m_states.CurrentState()->m_tc->Unbind();
+		return true;
+	}
+
+	bool SimpleRender::Visit(Scene::ArmatureNode* node)
+	{
+		m_states.Push();
+				
+		System::Proxy<Virtual::Armature> armature = Virtual::ArmatureManager::Instance()->Load(node->GetStorageName());
+		System::Proxy<Virtual::Action> action = Virtual::ActionManager::Instance()->Load(L"sitdown");
+		for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
+		{
+			Virtual::Bone* bone = armature->GetBoneByIndex(i);
+			System::Proxy<Virtual::Animation> anim = action->Find(bone->GetName());
+			if (!anim.IsValid())
+				return (out_error() << "Can't get animation for " << bone->GetName() << std::endl, false);
+			auto pos = anim->GetPosition(m_time);
+			auto rot = anim->GetRotation(m_time);			
+			Math::mat4 m = Math::mat4::CreateTranslate(pos) * Math::QuaternionToMatrix4x4(rot);
+			bone->SetBoneMatrix(m);
+		}
+
+		m_states.CurrentState()->m_armature = armature;
+		m_states.CurrentState()->m_armature_world = m_states.CurrentState()->m_local;
+		m_states.CurrentState()->m_render_policy = m_skin_rc;
+
+		for each (System::Proxy<Scene::Node> child in *node)
+		{
+			if (child.IsValid())
+				if (!child->Apply(this))
+					return false;
+		}
+		m_states.Pop();
 		return true;
 	}
 
@@ -141,7 +217,7 @@ namespace OpenGL
 		m_states.CurrentState()->m_tc->SetTexture(1, Texture2DManager::Instance()->Load(m_states.CurrentState()->m_current_material->GetNormalMap()));
 		m_states.CurrentState()->m_diffuse_slot = 0;
 		m_states.CurrentState()->m_normal_slot = 1;
-		m_states.CurrentState()->m_render_policy = m_context;
+		//m_states.CurrentState()->m_render_policy = m_context;
 		//m_states.CurrentState()->m_render_policy->Init();
 		for each (System::Proxy<Scene::Node> child in *node)
 		{
@@ -166,6 +242,7 @@ namespace OpenGL
 	bool SimpleRender::Visit(Scene::TransformNode* node)
 	{
 		m_states.Push();
+		m_states.CurrentState()->m_mesh_matrix_local = node->GetLocalMatrix();
 		m_states.CurrentState()->m_local *= node->GetLocalMatrix();
 		for each (System::Proxy<Scene::Node> child in *node)
 		{
@@ -309,6 +386,7 @@ namespace OpenGL
 
 	bool SimpleRender::Render()
 	{
+		m_time += 0.01;
 		m_states.CurrentState()->m_camera_position = m_scene->GetCameraNode()->GetCamera()->GetPosition();
 		m_states.CurrentState()->m_projection = m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix();
 		m_states.CurrentState()->m_view = m_scene->GetCameraNode()->GetCamera()->GetViewMatrix();
@@ -323,6 +401,7 @@ namespace OpenGL
 
 	void SimpleRender::SetScene(System::Proxy<Scene::SceneGraph> scene)
 	{
+		m_time = 0;
 		RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
 		m_rt = Driver::Instance()->CreateRenderTarget(&p);
 		m_scene = scene;
@@ -332,7 +411,7 @@ namespace OpenGL
 		m_solid_rc.Reset(new RenderContextSolid3D);
 		m_textured_rc.Reset(new RenderContextSolidTexture3D);
 		m_gui_rc.Reset(new RenderContextGUI);
-
+		m_skin_rc.Reset(new RenderContextSkinning);
 		m_text.Reset(new TextSurface);
 		m_text->SetSize(System::Window::Instance()->GetWidth() * 0.5, System::Window::Instance()->GetHeight()*0.5);
 	}

@@ -112,7 +112,7 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to unbind vertex buffer");		
 			glBindVertexArray(0);
 			CHECK_GL_ERROR(L"Unable to generate vertex buffer");		
-			m_bbox.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
+			//m_bbox.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
 			m_was_modified = true;
 		}
 

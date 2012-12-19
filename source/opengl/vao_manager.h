@@ -2,7 +2,7 @@
 #define _H_VAO_MANAGER
 
 #include "../config.h"
-#include "../system/resource_manager_2.h"
+#include "../system/resource_manager.h"
 #include "../system/environment.h"
 #include "vertex_array_object.h"
 

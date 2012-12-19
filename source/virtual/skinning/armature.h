@@ -10,13 +10,8 @@
 #include "types.h"
 
 #include "../../system/object.h"
+#include "../../system/resource_manager.h"
 #include "../../string/string.h"
-
-namespace Utility
-{
-	class ArmatureDesc;
-	class BoneDesc;
-}
 
 namespace Virtual
 {
@@ -26,16 +21,16 @@ namespace Virtual
 	{
 	public:
 		Armature();
-		Armature(const Utility::ArmatureDesc& desc);
+		Armature(const Armature&);
+		Armature& operator = (const Armature&);
 
-		void SetName(const System::string& name);
-		const System::string& GetName() const;
-
+		void AddRootBone(Bone* bone);
 		Bone* GetBoneByName(const System::string& name);
 		const Bone* GetBoneByName(const System::string& name) const;
 		Bone* GetBoneByIndex(int index);
 		const Bone* GetBoneByIndex(int index) const;		
-
+		int GetRootsBonesCount() const { return m_root_bones.size(); }
+		Bone* GetRootBone(int index) { return m_root_bones[index]; }
 		int GetBonesCount() const;
 
 		void PrintDebug(Bone* parent, int level = 0);
@@ -44,22 +39,21 @@ namespace Virtual
 		virtual bool Load(std::istream& stream);
 		virtual ~Armature();
 
-		static Armature* CreateFromFile(const System::string& path);
-		static Armature* CreateFromStream(std::istream& stream);
+		static System::Proxy<Armature> CreateFromFile(const System::string& path);
+		static System::Proxy<Armature> CreateFromStream(std::istream& stream);
 
-	private:
-		Armature(const Armature&);
-		Armature& operator = (const Armature&);
-
+		void UpdateHierarchy();
 	private:
 		void CacheBones(Bone* b);
-		bool BuildSkeleton(const std::vector<Utility::BoneDesc*>& bones);
-		bool BuildBone(Bone* bone, const std::vector<Utility::BoneDesc*>& bones);
-		System::string m_name;
+		void Clear();
+
+	private:
 		std::vector<Bone*> m_root_bones;
 		BonesCache m_cache;
 		BonesNamedCache m_named_cache;
 	};
 }
+
+REGISTER_MANAGER(L"resource.armatures", L"*.armature", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE, Virtual, Armature, return, return);
 
 #endif	//	_H_PUNK_VIRTUAL_ARMATURE

@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_SCENE_MAIN_HEADER
 #define _H_PUNK_SCENE_MAIN_HEADER
 
-#include "../system/resource_manager_2.h"
+#include "../system/resource_manager.h"
 #include "../system/object.h"
 #include "node.h"
 #include "geometry_node.h"
@@ -13,6 +13,9 @@
 #include "point_light_node.h"
 #include "material_node.h"
 #include "default_visitor.h"
+#include "armature_node.h"
+#include "static_mesh_node.h"
+#include "skin_mesh_node.h"
 
 namespace Scene
 {
@@ -51,6 +54,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.scenes", L"*.scene_graph", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SCENE_GRAPH, Scene, SceneGraph);
+REGISTER_MANAGER(L"resource.scenes", L"*.scene_graph", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SCENE_GRAPH, Scene, SceneGraph, return, return);
 
 #endif	//	_H_PUNK_SCENE_MAIN_HEADER

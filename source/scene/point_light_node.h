@@ -31,6 +31,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.point_light_nodes", L"*.point_light_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::POINT_LIGHT_NODE, Scene, PointLightNode);
+REGISTER_MANAGER(L"resource.point_light_nodes", L"*.point_light_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::POINT_LIGHT_NODE, Scene, PointLightNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_POINT_LIGHT_NODE

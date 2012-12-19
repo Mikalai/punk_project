@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include "scene_graph.h"
+#include "../virtual/skinning/skinning.h"
 
 namespace Scene
 {
@@ -8,7 +9,7 @@ namespace Scene
 
 	bool DefaultVisitor::Visit(CameraNode* node)
 	{
-		std::cout << std::string(m_level, ' ') << "CameraNode" << std::endl;			
+		std::cout << std::string(m_level, ' ') << "CameraNode " << std::endl;			
 		m_level++;
 		for each (System::Proxy<Node> child in *node)
 			child->Apply(this);
@@ -16,9 +17,36 @@ namespace Scene
 		return true;
 	}
 
-	bool DefaultVisitor::Visit(GeometryNode* node)
+	bool DefaultVisitor::Visit(StaticMeshNode* node)
 	{
-		std::cout << std::string(m_level, ' ') << "GeometryNode" << std::endl;			
+		std::cout << std::string(m_level, ' ') << "StaticMeshNode" << std::endl;			
+		m_level++;
+		for each (System::Proxy<Node> child in *node)
+			child->Apply(this);
+		m_level--;
+		return true;
+	}
+
+	bool DefaultVisitor::Visit(SkinMeshNode* node)
+	{
+		std::cout << std::string(m_level, ' ') << "SkinMeshNode" << std::endl;			
+		m_level++;
+		for each (System::Proxy<Node> child in *node)
+			child->Apply(this);
+		m_level--;
+		return true;
+	}
+
+	bool DefaultVisitor::Visit(ArmatureNode* node)
+	{		
+		std::cout << std::string(m_level, ' ') << "ArmatureNode" << std::endl;			
+		System::Proxy<Virtual::Armature> armature = Virtual::ArmatureManager::Instance()->Load(node->GetStorageName());
+		for (int i = 0; i < armature->GetBonesCount(); ++i)
+		{
+			Virtual::Bone* bone = armature->GetBoneByIndex(i);
+			out_message() << bone->GetName() << ": " << std::endl << bone->GetAnimatedGlobalMatrix().ToString() << std::endl;
+		}
+
 		m_level++;
 		for each (System::Proxy<Node> child in *node)
 			child->Apply(this);

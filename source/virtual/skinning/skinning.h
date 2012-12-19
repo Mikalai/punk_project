@@ -3,7 +3,6 @@
 
 #include "types.h"
 #include "armature.h"
-#include "armature_manager.h"
 #include "bone.h"
 #include "bone_frame.h"
 

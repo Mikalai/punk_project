@@ -14,7 +14,6 @@ namespace Scene
 		GeometryNode();
 
 		void SetGeometry(System::Proxy<Virtual::Geometry> value) { m_geometry = value; }
-		const System::Proxy<Virtual::Geometry> GetGeometry() const { return m_geometry; }
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
@@ -23,13 +22,15 @@ namespace Scene
 		static System::Proxy<GeometryNode> CreateFromStream(std::istream& stream);
 
 		virtual bool Apply(AbstractVisitor* visitor);			
+		
+	protected:
+		System::Proxy<Virtual::Geometry> GetGeometry() { return m_geometry; }
 
 	private:		
-
 		System::Proxy<Virtual::Geometry> m_geometry;		
 	};
 }
 
-REGISTER_MANAGER(L"resource.geom_nodes", L"*.geometry_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::GEOMETRY_NODE, Scene, GeometryNode);
+REGISTER_MANAGER(L"resource.geom_nodes", L"*.geometry_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::GEOMETRY_NODE, Scene, GeometryNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_GEOMETRY

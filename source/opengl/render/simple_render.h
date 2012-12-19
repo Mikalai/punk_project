@@ -19,7 +19,9 @@ namespace OpenGL
 	public:
 		MeshCooker();
 		virtual bool Visit(Scene::CameraNode* node);
-		virtual bool Visit(Scene::GeometryNode* node);
+		virtual bool Visit(Scene::StaticMeshNode* node);
+		virtual bool Visit(Scene::SkinMeshNode* node);
+		virtual bool Visit(Scene::ArmatureNode* node);
 		virtual bool Visit(Scene::LightNode* node);
 		virtual bool Visit(Scene::MaterialNode* node);
 		virtual bool Visit(Scene::Node* node);
@@ -27,7 +29,8 @@ namespace OpenGL
 		virtual bool Visit(Scene::LocationIndoorNode* node);		
 		virtual bool Visit(Scene::PortalNode* node);
 
-		System::Proxy<Virtual::LightSet> m_light_set;
+		std::vector<System::Proxy<Virtual::Light>> m_light_set;
+		System::Proxy<Virtual::Armature> m_current_armature;
 	};
 
 	class PUNK_ENGINE SimpleRender : public Scene::AbstractVisitor
@@ -38,7 +41,9 @@ namespace OpenGL
 		void SetScene(System::Proxy<Scene::SceneGraph> scene);
 
 		virtual bool Visit(Scene::CameraNode* node);
-		virtual bool Visit(Scene::GeometryNode* node);
+		virtual bool Visit(Scene::StaticMeshNode* node);
+		virtual bool Visit(Scene::SkinMeshNode* node);
+		virtual bool Visit(Scene::ArmatureNode* node);
 		virtual bool Visit(Scene::LightNode* node);
 		virtual bool Visit(Scene::MaterialNode* node);
 		virtual bool Visit(Scene::Node* node);
@@ -54,13 +59,15 @@ namespace OpenGL
 		RenderTarget* m_rt;
 		System::Proxy<Scene::SceneGraph> m_scene;
 		MeshCooker m_cooker;
+		System::Proxy<RenderContextSkinning> m_skin_rc;
 		System::Proxy<RenderContextBumpMapping> m_context;
 		System::Proxy<RenderContextSolid3D> m_solid_rc;
 		System::Proxy<RenderContextSolidTexture3D> m_textured_rc;
 		System::Proxy<RenderContextGUI> m_gui_rc;
 		System::Proxy<TextureContext> m_tc;
-		System::Proxy<TextSurface> m_text;
+		System::Proxy<TextSurface> m_text;		
 		StateManager m_states;
+		float m_time;
 	};
 }
 

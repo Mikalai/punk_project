@@ -30,6 +30,15 @@ namespace System
 		out_message() << "Factory destroyed" << std::endl;
 	}
 
+	bool Factory::Init()
+	{
+		for each (auto creator in m_creator)
+		{
+			creator.second->Init();
+		}
+		return true;
+	}
+
 	bool Factory::RegisterCreator(ObjectType type, ResourceCreator* creator)
 	{
 		auto it = m_creator.find(type);

@@ -4,9 +4,7 @@ namespace System
 {
 
 	ResourceManager3::ResourceManager3(Policy* policy) : m_policy(policy)
-	{			
-		Init();			
-		m_policy->OnInit();
+	{						
 	}
 
 	ResourceManager3::~ResourceManager3()
@@ -16,8 +14,9 @@ namespace System
 		ClearIndexCache();
 	}
 
-	void ResourceManager3::Init()
+	bool ResourceManager3::Init()
 	{	
+		m_policy->OnInit();
 		out_message() << L"Start caching resources of the manager" << std::endl;
 		std::list<System::string> indexed = ReadResourcFile();
 		System::Folder fld;
@@ -51,7 +50,7 @@ namespace System
 		UpdateResourceFile(really_indexed);
 		out_message() << L"Resource caching complete" << std::endl;
 
-		//LoadResources();
+		return true;
 	}
 
 	int ResourceManager3::GetResourceType() const
@@ -68,9 +67,11 @@ namespace System
 			Proxy<Object> object = m_policy->Create();
 			if (!object.IsValid())
 				return (out_error() << "Can't create " << AsString(m_policy->GetResourceType()) << std::endl, Proxy<Object>(nullptr));
-			object->Load(m_policy->GetFolder() + filename);
-			if (!object.IsValid())
+			std::ifstream stream((m_policy->GetFolder() + filename).Data(), std::ios_base::binary);
+			if (!stream.is_open())
 				return (out_error() << "Can't load " << filename << std::endl, Proxy<Object>(nullptr));
+			object->Load(stream);
+			stream.close();				
 			UpdateIndexCache(m_items.size(), filename);
 			m_items.push_back(object);
 			return object;
@@ -106,14 +107,15 @@ namespace System
 
 	Proxy<Object> ResourceManager3::Create(const string& name)
 	{
-		System::Proxy<Object> o = Load(name);
-		if (o.IsValid())
-			return o;
-
-		Proxy<Object> object = m_policy->Create();
-		Manage(name, object);
-		object->SetStorageName(name);
-		return object;
+		auto it = m_dictionary.find(name);
+		if (it == m_dictionary.end())
+		{
+			Proxy<Object> object = m_policy->Create();
+			Manage(name, object);
+			object->SetStorageName(name);
+			return object;
+		}
+		return m_items[it->second];
 	}
 
 	Proxy<Object> ResourceManager3::Get(int index)
@@ -147,8 +149,6 @@ namespace System
 		UpdateIndexCache(index, storage_name);
 		return true;
 	}
-
-	const Collection& ResourceManager3::GetAll() const { return m_items; }
 
 	void ResourceManager3::UpdateIndexCache(int index, const System::string name)
 	{

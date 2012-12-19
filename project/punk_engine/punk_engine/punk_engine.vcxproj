@@ -18,7 +18,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\audio\audio_buffer.h" />
-    <ClInclude Include="..\..\..\source\audio\audio_manager.h" />
     <ClInclude Include="..\..\..\source\audio\openal\al.h" />
     <ClInclude Include="..\..\..\source\audio\openal\alc.h" />
     <ClInclude Include="..\..\..\source\audio\openal\aldlist.h" />
@@ -121,6 +120,7 @@
     <ClInclude Include="..\..\..\source\images\import_export\exporter.h" />
     <ClInclude Include="..\..\..\source\images\import_export\importer.h" />
     <ClInclude Include="..\..\..\source\images\import_export\importer_impl.h" />
+    <ClInclude Include="..\..\..\source\images\import_export\jpg_importer.h" />
     <ClInclude Include="..\..\..\source\images\import_export\png_exporter.h" />
     <ClInclude Include="..\..\..\source\images\import_export\png_importer.h" />
     <ClInclude Include="..\..\..\source\images\internal_images\component.h" />
@@ -278,22 +278,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\quad_mesh_manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\skinned_mesh_manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\static_mesh_manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\primitive_types.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\renderable.h" />
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\static_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\vertex_attributes.h" />
@@ -437,6 +425,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\armature_node.h" />
     <ClInclude Include="..\..\..\source\scene\camera_node.h" />
     <ClInclude Include="..\..\..\source\scene\default_visitor.h" />
     <ClInclude Include="..\..\..\source\scene\geometry_node.h" />
@@ -447,6 +436,8 @@
     <ClInclude Include="..\..\..\source\scene\point_light_node.h" />
     <ClInclude Include="..\..\..\source\scene\portal_node.h" />
     <ClInclude Include="..\..\..\source\scene\scene_graph.h" />
+    <ClInclude Include="..\..\..\source\scene\skin_mesh_node.h" />
+    <ClInclude Include="..\..\..\source\scene\static_mesh_node.h" />
     <ClInclude Include="..\..\..\source\scene\transform_node.h" />
     <ClInclude Include="..\..\..\source\scene\visitor.h" />
     <ClInclude Include="..\..\..\source\string\string.h" />
@@ -516,7 +507,8 @@
     <ClInclude Include="..\..\..\source\system\region.h" />
     <ClInclude Include="..\..\..\source\system\resource.h" />
     <ClInclude Include="..\..\..\source\system\resource_creator.h" />
-    <ClInclude Include="..\..\..\source\system\resource_manager_2.h" />
+    <ClInclude Include="..\..\..\source\system\resource_manager.h" />
+    <ClInclude Include="..\..\..\source\system\resource_manager_2_old.h" />
     <ClInclude Include="..\..\..\source\system\resource_manager_3.h" />
     <ClInclude Include="..\..\..\source\system\scene_graph.h" />
     <ClInclude Include="..\..\..\source\system\serializable.h" />
@@ -615,6 +607,7 @@
     <ClInclude Include="..\..\..\source\virtual\data\material.h" />
     <ClInclude Include="..\..\..\source\virtual\data\proxy.h" />
     <ClInclude Include="..\..\..\source\virtual\data\old_shape_mesh.h" />
+    <ClInclude Include="..\..\..\source\virtual\data\skin_geometry.h" />
     <ClInclude Include="..\..\..\source\virtual\data\static_geometry.h" />
     <ClInclude Include="..\..\..\source\virtual\data\transform.h" />
     <ClInclude Include="..\..\..\source\virtual\data\world.h" />
@@ -629,7 +622,6 @@
     <ClInclude Include="..\..\..\source\virtual\scheme.h" />
     <ClInclude Include="..\..\..\source\virtual\skeleton_animation.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\armature.h" />
-    <ClInclude Include="..\..\..\source\virtual\skinning\armature_manager.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\bone.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\bone_frame.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\skinning.h" />
@@ -645,7 +637,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp" />
-    <ClCompile Include="..\..\..\source\audio\audio_manager.cpp" />
     <ClCompile Include="..\..\..\source\audio\openal\aldlist.cpp" />
     <ClCompile Include="..\..\..\source\audio\openal\CWaves.cpp" />
     <ClCompile Include="..\..\..\source\audio\openal\Framework.cpp" />
@@ -720,6 +711,7 @@
     <ClCompile Include="..\..\..\source\images\image_file.cpp" />
     <ClCompile Include="..\..\..\source\images\import_export\exporter.cpp" />
     <ClCompile Include="..\..\..\source\images\import_export\importer.cpp" />
+    <ClCompile Include="..\..\..\source\images\import_export\jpg_importer.cpp" />
     <ClCompile Include="..\..\..\source\images\import_export\png_exporter.cpp" />
     <ClCompile Include="..\..\..\source\images\import_export\png_importer.cpp" />
     <ClCompile Include="..\..\..\source\images\internal_images\gray_image.cpp" />
@@ -816,13 +808,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\managers\managers.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\renderable.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\static_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.cpp" />
     <ClCompile Include="..\..\..\source\opengl\render\batch.cpp" />
@@ -937,6 +925,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\armature_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\camera_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\default_visitor.cpp" />
     <ClCompile Include="..\..\..\source\scene\geometry_node.cpp" />
@@ -947,6 +936,8 @@
     <ClCompile Include="..\..\..\source\scene\point_light_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\portal_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\scene_graph.cpp" />
+    <ClCompile Include="..\..\..\source\scene\skin_mesh_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\static_mesh_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\transform_node.cpp" />
     <ClCompile Include="..\..\..\source\string\string.cpp" />
     <ClCompile Include="..\..\..\source\string\win32\string_win32.cpp" />
@@ -1047,6 +1038,7 @@
     <ClCompile Include="..\..\..\source\virtual\data\light_set.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\material.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\proxy.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\data\skin_geometry.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\static_geometry.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\transform.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\world.cpp" />
@@ -1056,7 +1048,6 @@
     <ClCompile Include="..\..\..\source\virtual\motions\static_motion_strategy.cpp" />
     <ClCompile Include="..\..\..\source\virtual\scheme.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\armature.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\skinning\armature_manager.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\bone.cpp" />
     <ClCompile Include="..\..\..\source\virtual\sound.cpp" />
   </ItemGroup>
@@ -1157,7 +1148,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>NOMINMAX;WIN32;_DEBUG;_WINDOWS;_USRDLL;PUNK_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\OpenCL\common\inc\;$(SolutionDir)..\..\3rd\bullet\src;$(SolutionDir)..\..\3rd\src\;$(SolutionDir)..\..\3rd\src\freetype-2.4.6\include;$(SolutionDir)..\..\3rd\src\lpng154</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\OpenCL\common\inc\;$(SolutionDir)..\..\3rd\bullet\src;$(SolutionDir)..\..\3rd\src\;$(SolutionDir)..\..\3rd\src\freetype-2.4.6\include;$(SolutionDir)..\..\3rd\src\lpng154;$(SolutionDir)..\..\3rd\src\jpeg-8d</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
@@ -1167,7 +1158,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\OpenCL\common\lib\Win32\;$(SolutionDir)..\..\3rd\lib\$(ConfigurationName);$(SolutionDir)..\..\3rd\bullet\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;BulletCollision_debug.lib;BulletDynamics_debug.lib;BulletSoftBody_debug.lib;ConvexDecomposition_debug.lib;LinearMath_debug.lib;freetype246_D.lib;libpngd.lib;OpenAL32.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>jpeg.lib;OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;BulletCollision_debug.lib;BulletDynamics_debug.lib;BulletSoftBody_debug.lib;ConvexDecomposition_debug.lib;LinearMath_debug.lib;freetype246_D.lib;libpngd.lib;OpenAL32.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -1179,7 +1170,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NOMINMAX;WIN32;NDEBUG;_WINDOWS;_USRDLL;PUNK_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\bullet\src;$(SolutionDir)..\..\3rd\OpenCL\common\inc\;$(SolutionDir)..\..\3rd\src\;$(SolutionDir)..\..\3rd\src\freetype-2.4.6\include;$(SolutionDir)..\..\3rd\src\lpng154</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\bullet\src;$(SolutionDir)..\..\3rd\OpenCL\common\inc\;$(SolutionDir)..\..\3rd\src\;$(SolutionDir)..\..\3rd\src\freetype-2.4.6\include;$(SolutionDir)..\..\3rd\src\lpng154;$(SolutionDir)..\..\3rd\src\jpeg-8d</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -1191,7 +1182,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\OpenCL\common\lib\Win32\;$(SolutionDir)..\..\3rd\lib\$(ConfigurationName);$(SolutionDir)..\..\3rd\bullet\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;EFX-Util.lib;freetype246.lib;libpng.lib;OpenAL32.lib;zlib.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;ConvexDecomposition.lib;HACD.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>jpeg.lib;OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;EFX-Util.lib;freetype246.lib;libpng.lib;OpenAL32.lib;zlib.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;ConvexDecomposition.lib;HACD.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

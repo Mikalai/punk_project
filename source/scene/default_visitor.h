@@ -3,7 +3,7 @@
 
 #include "../config.h"
 #include "visitor.h"
-
+#include "../opengl/render/render_state.h"
 namespace Scene
 {
 	class PUNK_ENGINE DefaultVisitor : public AbstractVisitor
@@ -12,7 +12,9 @@ namespace Scene
 		DefaultVisitor();
 
 		virtual bool Visit(CameraNode* node);
-		virtual bool Visit(GeometryNode* node);
+		virtual bool Visit(StaticMeshNode* node);
+		virtual bool Visit(SkinMeshNode* node);
+		virtual bool Visit(ArmatureNode* node);
 		virtual bool Visit(LightNode* node);
 		virtual bool Visit(MaterialNode* node);
 		virtual bool Visit(Node* node);
@@ -22,6 +24,7 @@ namespace Scene
 
 	private:
 		int m_level;
+		OpenGL::StateManager m_state_manager;
 	};
 }
 

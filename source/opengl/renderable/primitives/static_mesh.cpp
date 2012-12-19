@@ -68,7 +68,7 @@ namespace OpenGL
 		for (unsigned i = 0; i < ib.size(); i++)
 			ib[i] = i;
 
-		std::vector<Utility::Vertex<VertexType>> vb(mesh->GetFaces().size()*3);			
+		std::vector<Utility::Vertex<VertexType>> vb(mesh->GetFaces().size()*3);
 
 		std::vector<int> base_index;		/// contains vertex index in the source array
 		int index = 0;

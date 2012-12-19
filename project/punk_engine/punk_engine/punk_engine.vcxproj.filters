@@ -70,9 +70,6 @@
     <Filter Include="opengl\renderable">
       <UniqueIdentifier>{6d6bb92b-0e9b-48ce-9616-2de1983e4352}</UniqueIdentifier>
     </Filter>
-    <Filter Include="opengl\renderable\managers">
-      <UniqueIdentifier>{e87f9983-16c4-4ec9-933e-b8ff2dcce203}</UniqueIdentifier>
-    </Filter>
     <Filter Include="opengl\textures">
       <UniqueIdentifier>{31403a0b-dccd-4456-a978-9e2562f9077c}</UniqueIdentifier>
     </Filter>
@@ -417,9 +414,6 @@
     <ClInclude Include="..\..\..\source\system\resource.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\resource_manager_2.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\scene_graph.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -466,9 +460,6 @@
       <Filter>application</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\audio\audio_buffer.h">
-      <Filter>audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\audio_manager.h">
       <Filter>audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\audio\player.h">
@@ -1045,9 +1036,6 @@
     <ClInclude Include="..\..\..\source\virtual\skinning\armature.h">
       <Filter>virtual\skinning</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\virtual\skinning\armature_manager.h">
-      <Filter>virtual\skinning</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\skinning\bone.h">
       <Filter>virtual\skinning</Filter>
     </ClInclude>
@@ -1180,15 +1168,6 @@
     <ClInclude Include="..\..\..\source\utility\descriptors\camera_desc.h">
       <Filter>utility\descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\quad_mesh_manager.h">
-      <Filter>opengl\renderable\managers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\skinned_mesh_manager.h">
-      <Filter>opengl\renderable\managers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\managers\static_mesh_manager.h">
-      <Filter>opengl\renderable\managers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\pool_manager.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -1295,9 +1274,6 @@
       <Filter>opengl\renderable\primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\renderable.h">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.h">
       <Filter>opengl\renderable\primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\static_mesh.h">
@@ -1465,6 +1441,30 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\resource_manager_3.h">
       <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\resource_manager_2_old.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\resource_manager.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\armature_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\static_mesh_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\skin_mesh_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\skin_geometry.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\import_export\jpg_importer.h">
+      <Filter>images\import_export</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1634,9 +1634,6 @@
       <Filter>application</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp">
-      <Filter>audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\audio\audio_manager.cpp">
       <Filter>audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\audio\player.cpp">
@@ -1894,9 +1891,6 @@
     <ClCompile Include="..\..\..\source\opengl\render_context\render_contexts.cpp">
       <Filter>opengl\render_context</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\managers\managers.cpp">
-      <Filter>opengl\renderable\managers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\textures\texture_2d_manager.cpp">
       <Filter>opengl\textures</Filter>
     </ClCompile>
@@ -2029,9 +2023,6 @@
     <ClCompile Include="..\..\..\source\virtual\skinning\armature.cpp">
       <Filter>virtual\skinning</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\virtual\skinning\armature_manager.cpp">
-      <Filter>virtual\skinning</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\skinning\bone.cpp">
       <Filter>virtual\skinning</Filter>
     </ClCompile>
@@ -2161,9 +2152,6 @@
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.cpp">
       <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skinned_mesh.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\static_mesh.cpp">
       <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
@@ -2275,6 +2263,24 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\resource_manager_3.cpp">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\armature_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\skin_mesh_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\static_mesh_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\skin_geometry.cpp">
+      <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\images\import_export\jpg_importer.cpp">
+      <Filter>images\import_export</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

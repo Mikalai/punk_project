@@ -32,6 +32,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.transform_nodes", L"*.transform_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::TRANSFORM_NODE, Scene, TransformNode);
+REGISTER_MANAGER(L"resource.transform_nodes", L"*.transform_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::TRANSFORM_NODE, Scene, TransformNode, return, return);
 
 #endif

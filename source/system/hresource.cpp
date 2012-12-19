@@ -17,8 +17,8 @@ namespace System
 			return L"BAD_RESOURCE";
 		case System::STATIC_MESH:
 			return L"STATIC_MESH";
-		case System::SKINNED_MESH:
-			return L"SKINNED_MESH";
+		case System::SKIN_MESH:
+			return L"SKIN_MESH";
 		case System::QUAD:
 			return L"QUAD";
 		case System::SOUND_2D:

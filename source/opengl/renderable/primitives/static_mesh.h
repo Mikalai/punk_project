@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 #define _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 
-#include "../../../system/resource_manager_2.h"
+#include "../../../system/resource_manager.h"
 #include "../../../system/object.h"
 #include "vertex_array_object.h"
 
@@ -33,6 +33,6 @@ namespace OpenGL
 	typedef StaticMesh* StaticEntityRef;
 }
 
-REGISTER_MANAGER(L"resource.static_meshs", L"*.static_mesh", System::Environment::Instance()->GetModelFolder(), System::ObjectType::STATIC_MESH, OpenGL, StaticMesh);
+REGISTER_MANAGER(L"resource.static_meshs", L"*.static_mesh", System::Environment::Instance()->GetModelFolder(), System::ObjectType::STATIC_MESH, OpenGL, StaticMesh, return, return);
 
 #endif

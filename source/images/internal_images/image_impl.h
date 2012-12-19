@@ -10,6 +10,7 @@
 #include "../../system/buffer.h"
 #include "../../system/handle.h"
 #include "../import_export/png_importer.h"
+#include "../import_export/jpg_importer.h"
 
 namespace ImageModule
 {

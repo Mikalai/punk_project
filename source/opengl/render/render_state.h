@@ -7,8 +7,10 @@
 #include "../../math/clip_space.h"
 
 namespace Virtual { class LightSet; }
+namespace Virtual { class Light; }
 namespace Virtual { class Material; }
 namespace Virtual { class Camera; } 
+namespace Virtual { class Armature; }
 
 namespace OpenGL
 {
@@ -24,6 +26,9 @@ namespace OpenGL
 		Math::mat4 m_local;		
 		Math::mat4 m_projection;
 		Math::mat4 m_view;
+		Math::mat4 m_mesh_matrix_local;
+		//	corresponds to the part of the world matrix of the skin mesh
+		Math::mat4 m_armature_world;
 		Math::vec4 m_diffuse_color;
 		Math::vec4 m_text_color;
 		Math::vec4 m_no_diffuse_texture_color;
@@ -32,11 +37,12 @@ namespace OpenGL
 		Math::vec3 m_camera_position;
 		Math::mat2 m_texture_matrix;
 
+		System::Proxy<Virtual::Armature> m_armature;
 		System::Proxy<Virtual::Camera> m_camera;		
 		System::Proxy<Virtual::Material> m_current_material;
 		System::Proxy<TextureContext> m_tc;
 		//System::Proxy<RenderPass> m_pass;					
-		System::Proxy<Virtual::LightSet> m_current_light_set;
+		std::vector<System::Proxy<Virtual::Light>> m_current_light_set;
 		System::Proxy<AbstractRenderPolicy> m_render_policy;
 		Math::ClipSpace m_clip_space;
 

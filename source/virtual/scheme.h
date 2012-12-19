@@ -14,7 +14,7 @@
 namespace Utility
 {
 	class StaticMesh;
-	class SkinnedMesh;
+	class SkinMesh;
 	class SkinAnimation;
 
 	typedef std::map<System::string, Material> MaterialCollection;
@@ -25,7 +25,7 @@ namespace Utility
 	public:
 		void OpenFile(const System::string& filename);
 		StaticMesh* CookStaticMesh(const System::string& name);
-		SkinnedMesh* CookSkinnedMesh(const System::string& name);
+		SkinMesh* CookSkinnedMesh(const System::string& name);
 		SkinAnimation* CookSkinAnimation(const System::string& mesh_name, unsigned anim_id);		
 
 		Material GetMaterial(const System::string& name) const;

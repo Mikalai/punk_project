@@ -1,7 +1,7 @@
 //#ifndef _H_PUNK_VIRTUAL_CAMERA_MANAGER
 //#define _H_PUNK_VIRTUAL_CAMERA_MANAGER
 //
-//#include "../../system/resource_manager_2.h"
+//#include "../../system/resource_manager.h"
 //#include "../../system/environment.h"
 //#include "../data/cameras/fps_camera.h"
 //

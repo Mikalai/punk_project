@@ -6,7 +6,7 @@ namespace OpenGL
 	enum PrimitiveTypes {
 		NONE,
 		QUAD,
-		SKINNED_MESH,
+		SKIN_MESH,
 		STATIC_MESH
 	};
 }

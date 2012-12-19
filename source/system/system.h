@@ -27,7 +27,7 @@
 #include "handle.h"
 #include "resource.h"
 #include "template_singletone.h"
-#include "resource_manager_2.h"
+#include "resource_manager.h"
 #include "node.h"
 #include "profiler.h"
 #include "camera_capture.h"

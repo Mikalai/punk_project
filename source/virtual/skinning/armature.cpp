@@ -7,91 +7,57 @@
 
 #include "../../system/logger.h"
 
+IMPLEMENT_MANAGER(L"resource.armatures", L"*.armature", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE, Virtual, Armature);
+
 namespace Virtual
 {
-	Armature::Armature() {}
-
-	Armature::Armature(const Utility::ArmatureDesc& desc)
+	Armature::Armature()
 	{
-		m_name = desc.m_name;
-		if (!BuildSkeleton(desc.m_bones))
+		SetType(System::ObjectType::ARMATURE);
+	}
+
+	Armature::Armature(const Armature& armature)
+	{
+		for each (auto bone in armature.m_root_bones)
 		{
-			out_error() << "Can't build armature from provided descriptor" << std::endl;
-			return;
+			Bone* root_bone = new Bone(*bone);
+			m_root_bones.push_back(root_bone);
+			CacheBones(root_bone);
 		}
 	}
 
-	bool Armature::BuildSkeleton(const std::vector<Utility::BoneDesc*>& bones)
+	Armature& Armature::operator = (const Armature& armature)
 	{
-		bool result = false;
-		m_cache.clear();
-		m_named_cache.clear();
-
-		for (auto root_it : bones)
+		if (this != &armature)
 		{
-			if (root_it->m_parent == L"")
+			Clear();
+			for each(Bone* bone in armature.m_root_bones)
 			{
-
-				std::auto_ptr<Bone> root(new Bone(*root_it));
-				root->SetParent(nullptr);
-				root->SetArmature(this);
-				root->SetIndexInArmature(0);
-
-				//	insert first cache record
-				m_cache.push_back(root.get());
-				m_named_cache[root->GetName()] = root.get();
-
-				if (!BuildBone(root.get(), bones))
-				{
-					out_error() << "Error occured while building bone hierarchy" << std::endl;
-					return false;
-				}
-
-				m_root_bones.push_back(root.get());
-				root.release();				
-				result = true;
+				Bone* root_bone = new Bone(*bone);
+				m_root_bones.push_back(root_bone);
+				CacheBones(root_bone);
 			}
 		}
-		return result;
-	}
-
-	bool Armature::BuildBone(Bone* parent, const std::vector<Utility::BoneDesc*>& bones)
-	{
-		for (auto desc : bones)
-		{
-			if (desc->m_parent == parent->GetName())
-			{
-
-				std::unique_ptr<Bone> bone(new Bone(*desc));
-				bone->SetParent(parent);
-				bone->SetArmature(this);
-				bone->SetIndexInArmature(m_cache.size());
-				m_cache.push_back(bone.get());;
-				m_named_cache[bone->GetName()] = bone.get();
-				parent->AddChild(bone.get());
-
-				if (!BuildBone(bone.get(), bones))
-					return false;			
-
-				bone.release();
-			}
-		}
-		return true;
-	}
-
-	void Armature::SetName(const System::string& name)
-	{
-		m_name = name;
-	}
-
-	const System::string& Armature::GetName() const
-	{
-		return m_name;
+		return *this;
 	}
 
 	Bone* Armature::GetBoneByName(const System::string& name)
 	{
-		return m_named_cache.at(name);
+		auto it = m_named_cache.find(name);
+		if (it == m_named_cache.end())
+		{
+			//	try to find in root bones
+			for each (Bone* bone in m_root_bones)
+			{
+				if (bone->GetName() == name)
+					return bone;
+				Bone* res = bone->Find(name);
+				if (res)
+					return res;
+			}
+			return nullptr;
+		}
+		return it->second;
 	}
 
 	const Bone* Armature::GetBoneByName(const System::string& name) const
@@ -109,9 +75,20 @@ namespace Virtual
 		return m_cache[index];
 	}
 
+	void Armature::UpdateHierarchy()
+	{
+		m_cache.clear();
+		m_named_cache.clear();
+		for each (auto bone in m_root_bones)
+		{
+			bone->UpdatePose(0, 0, true);
+			CacheBones(bone);
+		}
+	}
+
 	void Armature::CacheBones(Bone* b)
 	{
-		b->SetIndexInArmature(m_cache.size());
+//		b->SetIndexInArmature(m_cache.size());
 		m_cache.push_back(b);
 		m_named_cache[b->GetName()] = b;
 
@@ -119,6 +96,12 @@ namespace Virtual
 		{
 			CacheBones(bone);
 		}
+	}
+
+	void Armature::AddRootBone(Bone* b)
+	{
+		m_root_bones.push_back(b);
+		CacheBones(b);
 	}
 
 	int Armature::GetBonesCount() const
@@ -133,8 +116,10 @@ namespace Virtual
 
 	bool Armature::Save(std::ostream& stream) const
 	{
-		m_name.Save(stream);
-		int count = m_root_bones.size();
+		if (System::Object::Save(stream))
+			return (out_error() << "Can't save armature" << std::endl, false);
+
+		int count = (int)m_root_bones.size();
 		stream.write((char*)&count, sizeof(count));
 		for (auto root : m_cache)
 		{
@@ -145,7 +130,11 @@ namespace Virtual
 
 	bool Armature::Load(std::istream& stream)
 	{
-		m_name.Load(stream);
+		Clear();
+
+		if (System::Object::Load(stream))
+			return (out_error() << "Can't load armature" << std::endl, false);
+
 		int count = 0;
 		stream.read((char*)&count, sizeof(count));
 		for (int i = 0; i < count; ++i)
@@ -158,26 +147,91 @@ namespace Virtual
 		return true;
 	}
 
-	Armature::~Armature()
+	void Armature::Clear()
 	{
 		for (auto bone : m_root_bones)
 			delete bone;
+		m_root_bones.clear();
+		m_cache.clear();
+		m_named_cache.clear();
 	}
 
-	Armature* Armature::CreateFromFile(const System::string& path)
+	Armature::~Armature()
 	{
-		std::unique_ptr<Armature> result(new Armature);
-		std::ifstream stream(path.Data(), std::ios_base::binary);
-		if (!result->Load(stream))
-			return (out_error() << "Can't create armature from file " << path << std::endl, nullptr);
-		return result.release();
+		Clear();
 	}
 
-	Armature* Armature::CreateFromStream(std::istream& stream)
+	System::Proxy<Armature> Armature::CreateFromFile(const System::string& path)
 	{
-		std::unique_ptr<Armature> result(new Armature);
-		if (!result->Load(stream))
-			return (out_error() << "Can't create armature from stream" << std::endl, nullptr);
-		return result.release();
+		std::ifstream stream(path.Data(), std::ios::binary);
+		if (!stream.is_open())
+			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<Armature>(nullptr));
+		return CreateFromStream(stream);
+	}
+
+	System::Proxy<Armature> Armature::CreateFromStream(std::istream& stream)
+	{
+		System::Proxy<Armature> node(new Armature);
+		if (!node->Load(stream))
+			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<Armature>(nullptr));
+		return node;
 	}
 }
+
+	//bool Armature::BuildSkeleton(const std::vector<Utility::BoneDesc*>& bones)
+	//{
+	//	bool result = false;
+	//	m_cache.clear();
+	//	m_named_cache.clear();
+
+	//	for (auto root_it : bones)
+	//	{
+	//		if (root_it->m_parent == L"")
+	//		{
+
+	//			std::auto_ptr<Bone> root(new Bone(*root_it));
+	//			root->SetParent(nullptr);
+	//			root->SetArmature(this);
+	//			root->SetIndexInArmature(0);
+
+	//			//	insert first cache record
+	//			m_cache.push_back(root.get());
+	//			m_named_cache[root->GetName()] = root.get();
+
+	//			if (!BuildBone(root.get(), bones))
+	//			{
+	//				out_error() << "Error occured while building bone hierarchy" << std::endl;
+	//				return false;
+	//			}
+
+	//			m_root_bones.push_back(root.get());
+	//			root.release();				
+	//			result = true;
+	//		}
+	//	}
+	//	return result;
+	//}
+
+	//bool Armature::BuildBone(Bone* parent, const std::vector<Utility::BoneDesc*>& bones)
+	//{
+	//	for (auto desc : bones)
+	//	{
+	//		if (desc->m_parent == parent->GetName())
+	//		{
+
+	//			std::unique_ptr<Bone> bone(new Bone(*desc));
+	//			bone->SetParent(parent);
+	//			bone->SetArmature(this);
+	//			bone->SetIndexInArmature(m_cache.size());
+	//			m_cache.push_back(bone.get());;
+	//			m_named_cache[bone->GetName()] = bone.get();
+	//			parent->AddChild(bone.get());
+
+	//			if (!BuildBone(bone.get(), bones))
+	//				return false;			
+
+	//			bone.release();
+	//		}
+	//	}
+	//	return true;
+	//}

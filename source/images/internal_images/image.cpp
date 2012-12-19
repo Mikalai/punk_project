@@ -45,6 +45,14 @@ namespace ImageModule
 				PngImporter importer;
 				return importer.Load(stream, this);
 			}
+
+			unsigned char jpg[] = {0xFF, 0xD8};
+			if (!memcmp(header, jpg, 2))
+			{
+				stream.seekg(0, std::ios_base::beg);
+				JpgImporter importer;
+				return importer.Load(stream, this);
+			}
 			return false;
 		}
 	}

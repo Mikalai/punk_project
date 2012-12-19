@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "../system/compound_object.h"
-#include "../system/resource_manager_2.h"
+#include "../system/resource_manager.h"
 #include "../string/string.h"
 #include "visitor.h"
 #include "../math/bounding_box.h"
@@ -41,6 +41,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node);
+REGISTER_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node, return, return);
 
 #endif	//	H_PUNK_SCENE_NODE

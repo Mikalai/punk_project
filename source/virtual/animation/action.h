@@ -1,13 +1,9 @@
 #ifndef _H_PUNK_UTILITY_ACTION
 #define _H_PUNK_UTILITY_ACTION
 
-#include "../../system/object.h"
+#include "../../system/compound_object.h"
+#include "../../system/resource_manager.h"
 #include "../../string/string.h"
-
-namespace Utility
-{
-	class ActionDesc;
-}
 
 namespace Virtual
 {
@@ -16,24 +12,23 @@ namespace Virtual
 
 namespace Virtual
 {
-	class Action : public System::Object
+	//	Animation is a child of Action
+	class Action : public System::CompoundObject
 	{			
 	public:		
 		Action();
-		Action(Utility::ActionDesc& desc);
 
-		const System::string& GetName() const { return m_name; }
 		int GetStartFrame() const { return m_start_frame; }		
 		int GetEndFrame() const { return m_end_frame; }
-		
+
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual ~Action();
 
-	protected:
-//		void AddAnimation(Animation* value) { m_animations.push_back(value); }
+		static System::Proxy<Action> CreateFromFile(const System::string& path);
+		static System::Proxy<Action> CreateFromStream(std::istream& stream);
+
 		void SetEndFrame(const int frame) { m_end_frame = frame; }
-		void SetName(const System::string& name);
 		void SetStartFrame(int frame) { m_start_frame = frame; }
 
 	private:
@@ -41,11 +36,12 @@ namespace Virtual
 		Action& operator = (const Action&);
 
 	private:
-		System::string m_name;
 		int m_start_frame;
-		int m_end_frame;	
-		std::vector<Animation*> m_animations;
+		int m_end_frame;			
 	};
 }
+
+REGISTER_MANAGER(L"resource.actions", L"*.action", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ACTION, Virtual, Action, return, return);
+
 
 #endif
