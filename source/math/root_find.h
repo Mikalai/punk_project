@@ -55,6 +55,10 @@ namespace Math
 		if (Abs(D) < 1e-6)
 		{
 			T cos_phy = - q / sqrt(-(p*p*p));
+			if (cos_phy < -1)
+				cos_phy = -1;
+			else if (cos_phy > 1)
+				cos_phy = 1;
 			T phy = acos(cos_phy);
 			out[0] = T(2) * sqrt(-p)*cos(phy/T(3));
 			out[1] = -T(2) *sqrt(-p)*cos((phy+T(3.141519265358979323846))/T(3.0));
@@ -86,6 +90,10 @@ namespace Math
 		if (D < 0.0)
 		{
 			T cos_phy = - q / sqrt(-(p*p*p));
+			if (cos_phy < -1)
+				cos_phy = -1;
+			else if (cos_phy > 1)
+				cos_phy = 1;
 			T phy = acos(cos_phy);
 			out[0] = 2 * sqrt(-p)*cos(phy/T(3));
 			out[1] = -2*sqrt(-p)*cos((phy/T(3)+T(3.141519265358979323846)/T(3) ));

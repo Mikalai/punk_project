@@ -200,6 +200,7 @@ namespace OpenGL
 	extern PFNGLPOINTPARAMETERFPROC glPointParameterf;
 
 	extern PFNGLCULLFACEPROC glCullFace;
+	extern PFNGLLINEWIDTHPROC glLineWidth;
 
 	extern void InitExtensions(Driver* driver);
 	extern bool IsSupported(const char* name);

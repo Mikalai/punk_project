@@ -21,10 +21,10 @@ namespace Scene
 		virtual bool Visit(TransformNode* node);
 		virtual bool Visit(LocationIndoorNode* node);		
 		virtual bool Visit(PortalNode* node);
+		virtual bool Visit(BoneNode* node) = 0;
 
 	private:
-		int m_level;
-		OpenGL::StateManager m_state_manager;
+		int m_level;		
 	};
 }
 

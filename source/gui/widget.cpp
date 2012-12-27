@@ -2,11 +2,10 @@
 #include "widget.h"
 #include "manager.h"
 #include "../math/math.h"
-#include "../utility/font_builder.h"
-//#include "../render/render.h"
+#include "../utility/fonts/font_builder.h"
+#include "../system/keyboard.h"
 #include "../system/event_manager.h"
 #include "gui_render.h"
-#include <algorithm>
 
 namespace GUI
 {
@@ -25,7 +24,6 @@ namespace GUI
 		, m_isFocused(false)
 		, m_text(text)
 		, m_fontSize(14)
-		, m_parent(parent)
 		, m_back_color_0(0.6f, 0.6f, 0.6f, 0.5f)
 		, m_back_color_1(1, 1, 1, 0.8f)
 		, m_text_color_0(0, 0, 0, 1)
@@ -39,94 +37,95 @@ namespace GUI
 		, m_manager(0)
 		, m_vertical_align(VERTICAL_ALIGN_CENTER)
 		, m_horizontal_align(HORIZONTAL_ALIGN_CENTER)
+		, m_parent(parent)
 	{
-		m_text_texture = new OpenGL::Texture2D;;
-		m_text_texture->Create(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()), GL_RED, 0);
-		m_background_texture = 0;
-		RenderTextToTexture();
-		if (m_parent)
-			m_parent->AddChild(this);
+		m_text_texture.Reset(new OpenGL::TextSurface);
+		m_text_texture->SetSize(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()));
+		m_text_texture->SetVerticalAlignment(OpenGL::TextSurface::VERTICAL_CENTER);
+		m_text_texture->SetHorizontalAlignment(OpenGL::TextSurface::HORIZONTAL_CENTER);
+		m_text_texture->SetText(m_text);
+		SetManager(GUI::Manager::Instance());	
 	}
 
 	Widget::~Widget()
 	{
 	}
 
-	void Widget::RemoveChild(Widget* child)
+	bool Widget::OnResize(System::WindowResizeEvent* e)
 	{
-		std::vector<std::shared_ptr<Widget>>::iterator it;
-		for (it = m_children.begin(); it != m_children.end(); ++it)
-		{
-			if (it->get() == child)
-				break;
-		}
-		if (it != m_children.end())
-			m_children.erase(it);
-	}
-
-	void Widget::RemoveAll()
-	{
-		m_children.clear();
-	}
-
-	void Widget::AddChild(Widget* child)
-	{
-		m_children.push_back(std::shared_ptr<Widget>(child));
-		child->SetParent(this);		
-	}
-
-	void Widget::OnResize(System::WindowResizeEvent* e)
-	{
-		m_text_texture->Create(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()), GL_RED, 0);
-		RenderTextToTexture();
-		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnResize(e); } );
-
+		bool result = false;
+		m_text_texture->SetSize(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()));
+		m_text_texture->SetText(m_text);
+		for each (System::Proxy<Widget> child in *this)
+			if (child.IsValid())
+				child->OnResize(e);
 		m_OnResized(e);
+		return result;
 	}
 
-	void Widget::OnMouseMove(System::MouseMoveEvent* e)
+	bool Widget::OnMouseMove(System::MouseMoveEvent* e)
 	{
-		if (IsVisible() && IsEnabled())
+		bool result = false;
+		bool child_processed = false;
+		for each (System::Proxy<Widget> w in *this)
 		{
-			m_OnMouseMove(e);
+			if (w.IsValid())
+				if (w->OnMouseMove(e))
+					child_processed = true;
+
+		}
+
+		if (!child_processed && IsVisible() && IsEnabled())
+		{			
 			bool wasIn = IsPointIn(Widget::WindowToViewport(float(e->x_prev), float(e->y_prev)));
 			bool isIn = IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y)));
 			if (!wasIn && isIn)
 			{
-				System::MouseEnterEvent* new_event = System::MouseEnterEvent::Raise();
+				System::MouseEnterEvent* new_event = new System::MouseEnterEvent;
 				new_event->anyData = this;
 				System::EventManager::Instance()->FixEvent(new_event);
+				result = true;
 			}
 
 			if (wasIn && !isIn)
 			{
-				System::MouseLeaveEvent* new_event = System::MouseLeaveEvent::Raise();
+				System::MouseLeaveEvent* new_event = new System::MouseLeaveEvent;
 				new_event->anyData = this;
 				System::EventManager::Instance()->FixEvent(new_event);
-			}
+				result = true;
+			}			
 
-			if (m_leftButtonDown && m_moveable)
+			if (!child_processed && m_leftButtonDown && m_moveable)
 			{
-				m_x += e->x - e->x_prev;
-				m_y += e->y - e->y_prev;
+				m_x += (e->x - e->x_prev) / (float)System::Window::Instance()->GetWidth();
+				m_y += (e->y - e->y_prev) / (float)System::Window::Instance()->GetHeight();
+				result = true;
+			}			
+
+			if (isIn)
+			{
+				m_OnMouseMove(e);
+				result = true;
 			}
 		}
-
-		std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseMove(e); } );
+		return result;
 	}
 
-	void Widget::OnMouseEnter(System::MouseEnterEvent* e)
+	bool Widget::OnMouseEnter(System::MouseEnterEvent* e)
 	{
+		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
 			m_isCursorIn = true;
 			m_OnMouseEnter(e);
 			//std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseEnter(e); } );
 		}
+		return result;
 	}
 
-	void Widget::OnMouseLeave(System::MouseLeaveEvent* e)
+	bool Widget::OnMouseLeave(System::MouseLeaveEvent* e)
 	{
+		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
 			m_isCursorIn = false;
@@ -134,12 +133,17 @@ namespace GUI
 			m_rightButtonDown = false;
 			m_middleButtonDown = false;
 			m_OnMouseLeave(e);
-			std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseLeave(e); } );
+			for each(System::Proxy<Widget> w in *this)
+			{
+				w->OnMouseLeave(e);
+			}
 		}
+		return false;
 	}
 
-	void Widget::OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* e)
+	bool Widget::OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* e)
 	{
+		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
 			if (m_isCursorIn)
@@ -150,45 +154,76 @@ namespace GUI
 					m_OnLeftClick(e);
 				}
 			}
-			std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseLeftButtonUp(e); } );
+			for each (System::Proxy<Widget> w in *this)
+			{
+				if (w.IsValid())
+					w->OnMouseLeftButtonUp(e);
+			}
 		}
+		return false;
 	}
-
-	void Widget::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
+	
+	bool Widget::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
 	{
-		if (IsVisible() && IsEnabled())
+		if (!IsVisible() || !IsEnabled())
+			return false;
+
+		bool result = false;
+		bool child_processed = false;
+
+		for each (System::Proxy<Widget> w in *this)
+		{
+			if (w.IsValid())
+				child_processed = w->OnMouseLeftButtonDown(e);
+		}
+		
+		if (!child_processed)
 		{
 			if (m_isCursorIn)
 			{
 				m_leftButtonDown = true;
+				result = true;
 			}
 			else
 			{
 				if (m_isFocused)
 					m_isFocused = false;
 			}
-			std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseLeftButtonDown(e); } );
 		}
+		return result;
 	}
 
-	void Widget::OnMouseWheel(System::MouseWheelEvent* e)
+	bool Widget::OnMouseWheel(System::MouseWheelEvent* e)
 	{
+		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
-			std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnMouseWheel(e); } );
+			for each (System::Proxy<Widget> w in *this)
+			{
+				if (w.IsValid())
+					w->OnMouseWheel(e);
+			}
 		}
+		return result;
 	}
 
-	void Widget::OnKeyChar(System::KeyCharEvent* e)
+	bool Widget::OnKeyChar(System::KeyCharEvent* e)
 	{
+		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
-			std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnKeyChar(e); } );
+			for each (System::Proxy<Widget> w in *this)
+			{
+				if (w.IsValid())
+					w->OnKeyChar(e);
+			}
 		}
+		return result;
 	}
 
-	void Widget::OnKeyDown(System::KeyDownEvent* event)
+	bool Widget::OnKeyDown(System::KeyDownEvent* event)
 	{ 
+		bool result = false;
 		if (m_isFocused)
 			m_OnKeyDown(event);
 
@@ -217,10 +252,12 @@ namespace GUI
 			}
 			break;
 		}
+		return result;
 	}
 
-	void Widget::OnIdle(System::IdleEvent* e)
+	bool Widget::OnIdle(System::IdleEvent* e)
 	{		
+		bool result = false;
 		if (m_isFocused)
 			m_OnIdle(e);
 
@@ -232,7 +269,7 @@ namespace GUI
 				if (m_animation < m_animation_duration)
 				{
 					m_animation += time_in_s;
-					m_animation = Min(m_animation, m_animation_duration);
+					m_animation = Math::Min(m_animation, m_animation_duration);
 					m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
 					m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 				}
@@ -242,13 +279,18 @@ namespace GUI
 				if (m_animation > 0)
 				{
 					m_animation -= time_in_s;
-					m_animation = Max(m_animation, float(0.0));
+					m_animation = Math::Max(m_animation, float(0.0));
 					m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
 					m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 				}
 			}			
-			std::for_each(m_children.begin(), m_children.end(), [&e] (std::shared_ptr<Widget>& w) { w->OnIdle(e); } );
+			for each (System::Proxy<Widget> w in *this)
+			{
+				if (w.IsValid())
+					w->OnIdle(e);
+			}
 		}
+		return result;
 	}
 
 	void Widget::FixPosition(bool isFixed)
@@ -274,20 +316,22 @@ namespace GUI
 	void Widget::SetText(const System::string& text)
 	{
 		m_text = text;		
-		RenderTextToTexture();
+		m_text_texture->SetText(m_text);
 		//m_textRender->SetText(m_text.c_str());
 	}
 
-	void Widget::SetFont(const char* font)
+	void Widget::SetFont(const System::string& font)
 	{
 		m_font = font;		
-		RenderTextToTexture();
+		m_text_texture->SetFont(font);
+		m_text_texture->SetText(m_text);
 	}
 
 	void Widget::SetTextSize(int size)
 	{
 		m_fontSize = size;
-		RenderTextToTexture();
+		m_text_texture->SetTextSize(size);
+		m_text_texture->SetText(m_text);
 		//m_textRender->SetTextSize(size);
 	}
 
@@ -309,7 +353,7 @@ namespace GUI
 			c = m_text_color_1;
 			break;
 		default:
-			throw System::SystemError(L"Bad color type" + LOG_LOCATION_STRING);
+			out_error() << L"Bad color type" << std::endl;
 		}
 
 		c[0] = r;
@@ -320,16 +364,16 @@ namespace GUI
 
 	float Widget::GetWidth() const
 	{
-		if (m_parent == 0)
+		if (GetParent() == nullptr)
 			return m_width;
-		return m_width * m_parent->GetWidth();
+		return m_width * GetParent()->GetWidth();
 	}
 
 	float Widget::GetHeight() const
 	{
-		if (m_parent == 0)
+		if (GetParent() == nullptr)
 			return m_height;
-		return m_height * m_parent->GetHeight();
+		return m_height * GetParent()->GetHeight();
 	}
 
 	float Widget::GetScreenWidth() const
@@ -344,16 +388,16 @@ namespace GUI
 
 	float Widget::GetX() const
 	{
-		if (m_parent == 0)
+		if (GetParent() == nullptr)
 			return m_x;
-		return m_parent->GetX() + m_x * m_parent->GetWidth();
+		return GetParent()->GetX() + m_x * GetParent()->GetWidth();
 	}
 
 	float Widget::GetY() const
 	{
-		if (m_parent == 0)
+		if (GetParent() == nullptr)
 			return m_y;
-		return m_parent->GetY() + m_y * m_parent->GetHeight();
+		return GetParent()->GetY() + m_y * GetParent()->GetHeight();
 	}
 
 	float Widget::GetScreenX() const
@@ -366,17 +410,17 @@ namespace GUI
 		return GetY() * (float)System::Window::Instance()->GetHeight();
 	}
 
-	const OpenGL::Texture2D* Widget::GetBackgroundTexture() const
+	System::Proxy<OpenGL::Texture2D> Widget::GetBackgroundTexture() const
 	{
 		return m_background_texture;
 	}
 
-	const OpenGL::Texture2D* Widget::GetTextTexture() const
+	System::Proxy<OpenGL::Texture2D> Widget::GetTextTexture() const
 	{
-		return m_text_texture;
+		return m_text_texture->GetTexture();
 	}
 
-	void Widget::SetBackgroundTexture(OpenGL::Texture2D* texture)
+	void Widget::SetBackgroundTexture(System::Proxy<OpenGL::Texture2D> texture)
 	{
 		m_background_texture = texture;
 	}
@@ -385,112 +429,6 @@ namespace GUI
 	{
 		if (m_isVisible)
 			render->RenderWidget(this);
-	}
-
-	Widget* Widget::GetChild(int index)
-	{
-		return m_children[index].get();
-	}
-
-	const Widget* Widget::GetChild(int index) const
-	{
-		return m_children[index].get();
-	}
-
-	void Widget::SetParent(Widget* widget)
-	{
-		m_parent = widget;
-		OnResize(0);
-	}
-
-	Widget* Widget::GetParent() 
-	{
-		return m_parent;
-	}
-
-	int Widget::CalculateTextXOffset(const wchar_t* text)
-	{
-		int start_x;
-		if (HORIZONTAL_ALIGHT_LEFT == m_horizontal_align)
-			start_x = 0;
-		else if (HORIZONTAL_ALIGN_CENTER == m_horizontal_align)
-		{
-			int length = Utility::FontBuilder::Instance()->CalculateLength(text);
-			if (length >= m_text_texture->GetWidth())
-				start_x = 0;
-			else
-				start_x = (m_text_texture->GetWidth() - length) / 2;
-		}
-		else if (HORIZONTAL_ALIGN_RIGHT == m_horizontal_align)
-		{
-			int length = Utility::FontBuilder::Instance()->CalculateLength(text);
-			if (length >= m_text_texture->GetWidth())
-				start_x = 0;
-			else
-				start_x = m_text_texture->GetWidth() - length;
-		}
-		return start_x;
-	}
-
-	int Widget::CalculateTextYOffset(const wchar_t* text)
-	{
-		const wchar_t* cur = text;		
-		int length = Utility::FontBuilder::Instance()->CalculateLength(cur);
-		if (length == 0)
-			return 1;		
-		int height_M = Utility::FontBuilder::Instance()->GetHeight(L'M');
-		int lines = m_text_texture->GetHeight() / height_M;
-		int start_y = 0;
-		if (VERTICAL_ALIGN_BOTTOM == m_vertical_align)
-		{
-			start_y = 0;
-		}
-		else if (VERTICAL_ALIGN_CENTER == m_vertical_align)
-		{
-			start_y = m_text_texture->GetHeight() / 2 - lines*height_M / 2;
-		}
-		else if (VERTICAL_ALIGN_TOP == m_vertical_align)
-		{
-			start_y = m_text_texture->GetHeight() - height_M;
-		}
-		return start_y;
-	}
-
-	void Widget::RenderTextToTexture()
-	{
-		if (m_text.Length() == 0)
-		{
-			m_text_texture->Fill(0);
-			return;
-		}
-
-		int x = CalculateTextXOffset(m_text.Data());
-		int y = CalculateTextYOffset(m_text.Data());
-		m_text_texture->Fill(0);
-		Utility::FontBuilder::Instance()->SetCurrentFace(m_font);
-		Utility::FontBuilder::Instance()->SetCharSize(m_fontSize, m_fontSize);
-		for (const wchar_t* a = m_text.Data(); *a; a++)
-		{ 
-			int width;
-			int height;
-			int x_offset;
-			int y_offset;
-			int x_advance;
-			int y_advance;
-			unsigned char* buffer;
-			Utility::FontBuilder::Instance()->RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
-			if (x_offset < 0 && x == 0)
-				x += -x_offset;
-			if (x + x_offset + width >= m_text_texture->GetWidth())
-			{
-				y -= Utility::FontBuilder::Instance()->GetHeight(L'M');
-				x = CalculateTextXOffset(a);
-				if (y < 0)
-					return;
-			}							
-			m_text_texture->CopyFromCPU(x + x_offset, m_text_texture->GetHeight() - (y + y_offset), width, height, GL_RED, buffer);			
-			x += x_advance;				
-		}/**/
 	}
 
 	const System::string& Widget::GetText() const
@@ -506,10 +444,11 @@ namespace GUI
 
 	Widget* Widget::GetFocused(float x, float y)
 	{		
-		for (auto it = m_children.begin(); it != m_children.end(); ++it)
+		for each(System::Proxy<Widget> child in *this)
 		{
-			if ((*it)->IsVisible() && (*it)->IsEnabled() && (*it)->IsPointIn(WindowToViewport(x, y)))
-				return (*it)->GetFocused(x, y);
+			if (child.IsValid())
+			if (child->IsVisible() && child->IsEnabled() && child->IsPointIn(WindowToViewport(x, y)))
+				return child->GetFocused(x, y);
 		}
 		return this;/**/
 	}
@@ -517,12 +456,8 @@ namespace GUI
 	void Widget::SetSize(float x, float y, float width, float height)
 	{
 		m_x = x; m_y = y; m_width = width; m_height = height;
-		m_text_texture->Resize(int(GetScreenWidth()), int(GetScreenHeight()));
-	}
-
-	unsigned Widget::GetChildrenCount() const
-	{
-		return m_children.size();
+		m_text_texture->SetSize(int(GetScreenWidth()), int(GetScreenHeight()));
+		m_text_texture->SetText(m_text);
 	}
 
 	void Widget::SetAnyData(void* data)
@@ -727,4 +662,20 @@ namespace GUI
 	{
 		m_manager = manager;
 	}
+	
+	bool Widget::OnAdd(System::Proxy<System::Object> object)
+	{
+		System::Proxy<Widget> w = object;
+		if (w.IsValid())
+			w->SetParent(this);
+		return true;
+	}
+
+	/*bool OnRemove(System::Proxy<System::Object> object)
+	{
+		System::Proxy<Widget> w = object;
+		if (w.IsValid())
+			w->SetParent(nullptr);
+		return true;
+	}*/
 }

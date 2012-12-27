@@ -20,21 +20,15 @@ namespace GUI
 
 	class PUNK_ENGINE Manager
 	{
-		std::vector<std::shared_ptr<Widget>> rootWidgets;
-		Widget* m_focusWidget;
-		IGUIRender* m_render;
 	public:
-		Manager();
-		~Manager();
-
 		void Render();
 
 		void SetFocusedWidget(Widget* widget);
 		Widget* GetFocusedWidget() { return m_focusWidget; }
 		const Widget* GetFocusedWidget() const { return m_focusWidget; }
 		void SetGUIRender(IGUIRender* render);
-		void AddRootWidget(Widget* widget);
-		void RemoveRootWidget(Widget* widget);
+		void AddRootWidget(System::Proxy<Widget> widget);
+		void RemoveRootWidget(System::Proxy<Widget> widget);
 		void OnMouseMove(System::Event* event);
 		void OnMouseLeftDown(System::Event* event);
 		void OnMouseLeftUp(System::Event* event);
@@ -47,6 +41,18 @@ namespace GUI
 		void OnKeyUpHandler(System::Event* event);
 		void OnMouseEnter(System::Event* event);
 		void OnMouseLeave(System::Event* event);
+
+		static Manager* Instance();
+		static void Destroy();
+		~Manager();
+
+	private:
+		static std::auto_ptr<Manager> m_instance;
+		std::vector<System::Proxy<Widget>> rootWidgets;
+		Widget* m_focusWidget;
+		IGUIRender* m_render;
+
+		Manager();		
 	};
 }
 

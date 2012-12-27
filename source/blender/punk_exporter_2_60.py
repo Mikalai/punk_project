@@ -11,14 +11,12 @@ bl_info = {
 #mesh.materials['Material'].texture_slots['bump].texture.image.name
 import bpy
 import copy
-import mathutils
 
 # ExportHelper is a helper class, defines filename and
 # invoke() function which calls the file selector.
 from bpy_extras.io_utils import ExportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty
 from copy import deepcopy
-from mathutils import Matrix
 
 text_offset = 0 #used to print data nice
 used_materials = set()
@@ -343,13 +341,10 @@ def export_armatures(f, armatures):
             if bone.parent != None:
                 export_string(f, "*parent", bone.parent.name)
             #   write bone matrix
-            m = bone.matrix.to_4x4()
-            export_mat4(f, "*bone_matrix", m)
-            #   write bone matrix relative to armature
             export_mat4(f, "*local_matrix", bone.matrix_local)
             end_block(f)    #*bone
         end_block(f)    #*armature        
-        end_block(f)    #*armatures
+    end_block(f)    #*armatures
     return
     
 #
@@ -654,17 +649,24 @@ def export_light(f, object):
     start_block(f, "*transform_node")
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
+    export_bounding_box(f, object)
     if type(object.data) == bpy.types.PointLamp:
         export_point_lamp(f, object.data)
     end_block(f)
     return
  
 def export_transform(f, object):
+    #   transform node can be bound to the bone, thus check this fact
+    if object.parent_bone != '':
+        start_block(f, "*bone_node")
+        export_string(f, "*name", object.parent_bone)
     start_block(f, "*transform_node")
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     export_children(f, object)        
     end_block(f)
+    if object.parent_bone != '':
+        end_block(f)    #*bone_node
     return
 
 def export_portal(f, object):
@@ -688,6 +690,7 @@ def export_static_mesh_node(f, object):
     start_block(f, "*transform_node")
     export_string(f, "*name", object.name)
     export_local_matrix(f, object)
+    export_bounding_box(f, object)
 
     if type(object.data) == bpy.types.Mesh:
         start_block(f, "*static_mesh_node")
@@ -710,6 +713,7 @@ def export_skin_mesh_node(f, object):
      
     start_block(f, "*transform_node")
     export_string(f, "*name", object.name)
+    export_bounding_box(f, object)    
     export_local_matrix(f, object)
 
     if type(object.data) == bpy.types.Mesh:
@@ -730,6 +734,7 @@ def export_armature_node(f, object):
     start_block(f, "*transform_node")
     export_string(f, "*name", object.name)
     export_local_matrix(f, object)
+    export_bounding_box(f, object)
     
     armature = object.data
     start_block(f, "*armature_node")    
@@ -806,6 +811,9 @@ def export_children(f, object):
         export_object(f, child)    
     return
    
+def export_collision_mesh(f, object):
+    return
+
 #
 #   export the whole object with all data i can imaginge
 #
@@ -836,7 +844,9 @@ def export_object(f, object):
         export_character(f, object)
     elif object.punk_entity_type == "CAMERA":   
         if type(object.data) == bpy.types.Camera:
-            export_camera(f, object.data)                    
+            export_camera(f, object.data)   
+    elif object.punk_entity_type == "COLLISION_MESH":
+        export_collision_mesh(f, object)                 
     return     
 
 

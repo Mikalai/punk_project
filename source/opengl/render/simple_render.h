@@ -6,6 +6,9 @@
 #include "render_state.h"
 #include "../render_context/render_contexts.h"
 #include "render_target.h"
+#include "../../gui/widget.h"
+#include "../../system/state_manager.h"
+#include "ogl_gui_render.h"
 
 namespace Scene { class SceneGraph; }
 
@@ -28,6 +31,7 @@ namespace OpenGL
 		virtual bool Visit(Scene::TransformNode* node);
 		virtual bool Visit(Scene::LocationIndoorNode* node);		
 		virtual bool Visit(Scene::PortalNode* node);
+		virtual bool Visit(Scene::BoneNode* node);
 
 		std::vector<System::Proxy<Virtual::Light>> m_light_set;
 		System::Proxy<Virtual::Armature> m_current_armature;
@@ -38,6 +42,7 @@ namespace OpenGL
 	public:
 		
 		bool Render();
+		void SetGUIHud(System::Proxy<GUI::Widget> root) { m_root = root; }
 		void SetScene(System::Proxy<Scene::SceneGraph> scene);
 
 		virtual bool Visit(Scene::CameraNode* node);
@@ -50,10 +55,13 @@ namespace OpenGL
 		virtual bool Visit(Scene::TransformNode* node);
 		virtual bool Visit(Scene::LocationIndoorNode* node);		
 		virtual bool Visit(Scene::PortalNode* node);
+		virtual bool Visit(Scene::BoneNode* node);
 
 		void RenderQuad(float x, float y, float width, float height, const Math::vec4& color);
 		void RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture);
 		void RenderText(float x, float y, const System::string& text, const Math::vec4& color);
+		void RenderCube(float width, float height, float depth);
+		void RenderSphere(const Math::vec3& position, float radius, const Math::vec4& color = Math::vec4(1,1,1,1));
 
 	private:
 		RenderTarget* m_rt;
@@ -66,7 +74,9 @@ namespace OpenGL
 		System::Proxy<RenderContextGUI> m_gui_rc;
 		System::Proxy<TextureContext> m_tc;
 		System::Proxy<TextSurface> m_text;		
-		StateManager m_states;
+		System::StateManager<CoreState> m_states;
+		System::Proxy<GUI::Widget> m_root;
+		System::Proxy<GUIRender> m_gui_render;
 		float m_time;
 	};
 }

@@ -3,16 +3,13 @@
 
 #include <vector>
 #include <memory>
+#include "../system/types.h"
 #include "../system/compound_object.h"
 #include "../string/string.h"
 #include "../config.h"
-#include "../opengl/driver.h"
+//#include "../opengl/driver.h"
 #include "../math/math.h"
-
-namespace OpenGL
-{
-	class Texture2D;
-}
+#include "../opengl/textures/text_surface.h"
 
 namespace GUI
 {
@@ -33,10 +30,6 @@ namespace GUI
 
 		Widget(float x = 0, float y = 0, float width = 1, float height = 1, const System::string& text = L"", Widget* parent = 0);
 
-		void RemoveChild(Widget* child);
-		void RemoveAll();
-		void AddChild(Widget* child);
-
 		virtual ~Widget();
 		virtual void SetText(const System::string& text);
 
@@ -44,6 +37,10 @@ namespace GUI
 		void SetHorizontalTextAlign(HorizontalAlign v) { m_horizontal_align = v; }
 		VerticalAlign SetVerticalTextAlign(VerticalAlign v) const { return m_vertical_align; }
 		HorizontalAlign SetHorizontalTextAlign(HorizontalAlign v) const { return m_horizontal_align; }
+
+		void SetParent(Widget* w) { m_parent = w; }
+		Widget* GetParent() { return m_parent; }
+		const Widget* GetParent() const { return m_parent; }
 
 		void SetWidth(float width);
 		void SetHeight(float height);
@@ -61,19 +58,13 @@ namespace GUI
 		bool IsEnabled() const;
 		void Show(bool isVisible);
 		void Enable(bool isEnabled);
-		void SetParent(Widget* parent);
-		Widget* GetParent();
-		const Widget* GetParent() const;
 		void FixPosition(bool isFixed);
 		bool IsFixedPosition() const;
 		void SetSize(float x, float y, float width, float height);
 		void SetColor(ColorType type, float r, float g, float b, float a);		
-		void SetFont(const char* fontName);
+		void SetFont(const System::string& font);
 		void SetTextSize(int size);
 		int GetTextSize() const {return m_fontSize;}
-		Widget* GetChild(int index);
-		const Widget* GetChild(int index) const;
-		unsigned GetChildrenCount() const;
 		void SetAnyData(void* data);
 		void* GetAnyData();
 
@@ -94,9 +85,9 @@ namespace GUI
 		void Store(System::Buffer& buffer) {}
 		void Restore(System::Buffer& buffer) {}
 
-		const OpenGL::Texture2D* GetTextTexture() const;
-		void SetBackgroundTexture(OpenGL::Texture2D* texture);
-		const OpenGL::Texture2D* GetBackgroundTexture() const;
+		System::Proxy<OpenGL::Texture2D> GetTextTexture() const;
+		void SetBackgroundTexture(System::Proxy<OpenGL::Texture2D> texture);
+		System::Proxy<OpenGL::Texture2D> GetBackgroundTexture() const;
 
 		const Manager* GetManager() const;
 		Manager* GetManager();
@@ -171,16 +162,15 @@ namespace GUI
 		System::string m_text;
 		System::string m_font;
 
-		Widget* m_parent;	
 		Widget* m_next_widget;	
 		Widget* m_prev_widget;
-		std::vector<std::shared_ptr<Widget>> m_children;
 
-		OpenGL::Texture2D* m_text_texture;
-		OpenGL::Texture2D* m_background_texture;
+		System::Proxy<OpenGL::TextSurface> m_text_texture;
+		System::Proxy<OpenGL::Texture2D> m_background_texture;
 
 		void* m_any_data;
 
+		Widget* m_parent;
 		Manager* m_manager;
 
 		/******************************************************************/
@@ -202,20 +192,18 @@ namespace GUI
 		System::Handler m_OnResized;
 
 	protected:		
-		virtual void RenderTextToTexture();
-		virtual void OnResize(System::WindowResizeEvent* event);
-		virtual void OnMouseMove(System::MouseMoveEvent* event);
-		virtual void OnIdle(System::IdleEvent* event);
-		virtual void OnMouseEnter(System::MouseEnterEvent* event);
-		virtual void OnMouseLeave(System::MouseLeaveEvent* event);
-		virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
-		virtual void OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* event);
-		virtual void OnMouseWheel(System::MouseWheelEvent* event);
-		virtual void OnKeyChar(System::KeyCharEvent* event);	
-		virtual void OnKeyDown(System::KeyDownEvent* event);	
-
-		int CalculateTextXOffset(const wchar_t* text);
-		int CalculateTextYOffset(const wchar_t* text);
+		virtual bool OnResize(System::WindowResizeEvent* event);
+		virtual bool OnMouseMove(System::MouseMoveEvent* event);
+		virtual bool OnIdle(System::IdleEvent* event);
+		virtual bool OnMouseEnter(System::MouseEnterEvent* event);
+		virtual bool OnMouseLeave(System::MouseLeaveEvent* event);
+		virtual bool OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
+		virtual bool OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* event);
+		virtual bool OnMouseWheel(System::MouseWheelEvent* event);
+		virtual bool OnKeyChar(System::KeyCharEvent* event);	
+		virtual bool OnKeyDown(System::KeyDownEvent* event);	
+		virtual bool OnAdd(System::Proxy<System::Object> object);
+		//virtual bool OnRemove(System::Proxy<System::Object> object);
 	};
 }
 

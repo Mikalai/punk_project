@@ -16,7 +16,7 @@ namespace OpenGL
 	{		
 	public:
 		~Batch();
-		System::Proxy<State> m_state;
+		//System::Proxy<State> m_state;
 		System::Proxy<Renderable> m_renderable;
 	};
 }

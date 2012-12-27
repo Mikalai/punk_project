@@ -14,7 +14,7 @@ namespace OpenGL
 	public:
 		AbstractRenderPolicy();
 		virtual void InitUniforms();
-		virtual void BindParameters(const System::Proxy<State>& params);
+		virtual void BindParameters(const CoreState& params);
 		virtual Utility::VertexAttributes GetRequiredAttributesSet() const;
 		virtual void Begin();
 		virtual void End();

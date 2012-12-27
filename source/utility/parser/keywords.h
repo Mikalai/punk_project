@@ -105,6 +105,7 @@ namespace Utility
 		WORD_LOCATION_INDOOR,					// 6
 		WORD_CONVEX_MESH,					// 6
 		WORD_MATERIAL_NODE,					// 6
+		WORD_BONE_NODE,
 		WORD_TRANSFORM_NODE,					// 6
 		WORD_PORTAL,					// 6
 		WORD_PORTAL_NODE,					// 6
@@ -221,7 +222,8 @@ namespace Utility
 		{ WORD_PORTAL,					L"*portal" },
 		{ WORD_PORTAL_NODE,				L"*portal_node" },
 		{ WORD_STATIC_MESH,				L"*static_mesh" },		
-		{ WORD_FACE_NORMALS,			L"*face_normals" }
+		{ WORD_FACE_NORMALS,			L"*face_normals" },
+		{ WORD_BONE_NODE,			    L"*bone_node" }
 	};
 }
 #endif	//	_H_PUNK_VIRTUAL_KEY_WORDS

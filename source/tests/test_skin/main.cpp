@@ -5,6 +5,7 @@ System::Proxy<Scene::SceneGraph> scene;
 bool m_left_down = false;
 
 OpenGL::SimpleRender render;
+Scene::BoundingVolumeUpdater updater;
 
 float x = 0;
 float y = 0;
@@ -57,7 +58,8 @@ void OnKeyDown(System::Event* ee)
 }
 
 void Idle(System::Event*)
-{	
+{		
+	updater.Update();
 	render.Render();
 	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
 	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
@@ -95,9 +97,10 @@ int main()
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(OnMouseMove));
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(OnKeyDown));
 
-	scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"engineer3.pmd");
+	scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"engineer4.pmd");
 
 	render.SetScene(scene);
+	updater.SetScene(scene);
 
 	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();	
 

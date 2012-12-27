@@ -54,6 +54,7 @@ namespace Virtual
 		Bone* Find(const System::string& name);
 
 		const Math::mat4& GetAnimatedGlobalMatrix() const;
+		const Math::mat4& GetAnimatedGlobalMatrix2() const;
 		void UpdatePose(Virtual::AnimationMixer* Mixer, float frame, bool deep = false);
 
 		/* Drops all precalculated staff */
@@ -79,6 +80,9 @@ namespace Virtual
 		float				m_last_get_global_matrix;
 		float				m_length;
 		mutable bool		m_need_update_global_matrix;
+
+		mutable Math::mat4	m_last_global_matrix_update2;
+		mutable bool		m_need_update_global_matrix2;
 		//Armature*			m_armature;
 	};
 }

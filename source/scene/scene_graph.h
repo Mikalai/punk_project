@@ -16,6 +16,13 @@
 #include "armature_node.h"
 #include "static_mesh_node.h"
 #include "skin_mesh_node.h"
+#include "bone_node.h"
+#include "bounding_volume_updater.h"
+
+namespace GUI
+{
+	class Widget;
+}
 
 namespace Scene
 {

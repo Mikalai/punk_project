@@ -92,7 +92,13 @@ class OBJECT_PT_punk_engine_tools(Panel):
             layout.prop(light, "energy")
             layout.prop(light, "fallof_type")
             layout.prop(light, "linear_attenuation")
-            layout.prop(light, "quadratic_attenuation")        
+            layout.prop(light, "quadratic_attenuation")     
+        elif ob.punk_entity_type == 'CHARACTER':
+            empty = ob.data
+            layout.prop(ob, "name")
+        elif ob.punk_entity_type == 'COLLISION_MESH':
+            empty = ob.data
+            layout.prop(ob, "name")
                  
 
 def register():  
@@ -113,7 +119,8 @@ def register():
                  ("CAMERA", "Camera", "A camera that can be used in game", 10),\
                  ("TRANSFORM", "Transform", "A simple transorm",           11),\
                  ("ARMATURE", "Armature", "Animated armature",             12),\
-                 ("SKIN", "Skin",   "Skin object. Has geometry",           13)])
+                 ("SKIN", "Skin",   "Skin object. Has geometry",           13),\
+                 ("COLLISION_MESH", "Collision mesh", "Collision mesh",    14)])
                          
 def unregister():
     del bpy.types.Object.punk_entity_type

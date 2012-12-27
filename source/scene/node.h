@@ -7,6 +7,7 @@
 #include "../string/string.h"
 #include "visitor.h"
 #include "../math/bounding_box.h"
+#include "../math/bounding_shere.h"
 
 namespace Virtual { class Entity; }
 
@@ -27,11 +28,18 @@ namespace Scene
 			
 		virtual bool Apply(AbstractVisitor* visitor);
 
+		void SetBoundingBox(const Math::BoundingBox& bbox) { m_bbox = bbox; }
+		const Math::BoundingBox& GetBoundingBox() const { return m_bbox; }
+
+		void SetBoundingSphere(const Math::BoundingSphere& value) { m_bsphere = value; }
+		const Math::BoundingSphere& GetBoundingSphere() const { return m_bsphere; }
+
 	protected:
 		virtual bool Update(int time_ms);
 	private:
 
 		Math::BoundingBox m_bbox;
+		Math::BoundingSphere m_bsphere;
 
 	private:
 		Node(const Node&);

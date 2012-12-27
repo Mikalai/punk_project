@@ -13,20 +13,22 @@ namespace Scene
 	class LocationIndoorNode;
 	class PortalNode;
 	class ArmatureNode;
+	class BoneNode;
 
 	class AbstractVisitor
 	{
 	public:
 		virtual bool Visit(CameraNode* node) = 0;
-		virtual bool Visit(Scene::StaticMeshNode* node) = 0;
-		virtual bool Visit(Scene::SkinMeshNode* node) = 0;
-		virtual bool Visit(Scene::ArmatureNode* node) = 0;
+		virtual bool Visit(StaticMeshNode* node) = 0;
+		virtual bool Visit(SkinMeshNode* node) = 0;
+		virtual bool Visit(ArmatureNode* node) = 0;
 		virtual bool Visit(LightNode* node) = 0;
 		virtual bool Visit(MaterialNode* node) = 0;
 		virtual bool Visit(Node* node) = 0;
 		virtual bool Visit(TransformNode* node) = 0;
 		virtual bool Visit(LocationIndoorNode* node) = 0;		
 		virtual bool Visit(PortalNode* node) = 0;
+		virtual bool Visit(BoneNode* node) = 0;
 	};
 }
 

@@ -28,7 +28,7 @@ namespace System
 		unsigned total_count = 0;
 		stream.read((char*)&total_count, sizeof(total_count));
 
-		for (int i = 0; i < total_count; ++i)
+		for (int i = 0; i < (int)total_count; ++i)
 		{
 			Proxy<Object> o = GetFactory()->LoadFromStream(stream);
 			if (!o.IsValid())

@@ -2,28 +2,13 @@
 
 namespace OpenGL
 {
-	void StateManager::Push()
+	CoreState::CoreState()
 	{
-		m_states.push(m_current_state);
-		m_current_state.Reset(new State(*m_current_state));
-	}
-
-	bool StateManager::Pop()
-	{		
-		if (m_states.empty())
-			return (out_error() << "Error in render state stack" << std::endl, false);
-
-		m_current_state = m_states.top();
-		m_states.pop();
-		return true;
-	}
-
-	void StateManager::Clear()
-	{
-	}
-
-	void StateManager::Init()
-	{		
-		m_current_state.Reset(new State);
+		m_depth_test = true;
+		m_blending = false;
+		m_line_smooth = true;
+		m_multisample = true;
+		m_polygon_smooth = true;
+		m_wireframe = false;
 	}
 }

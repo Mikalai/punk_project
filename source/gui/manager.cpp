@@ -1,14 +1,29 @@
 #include "../system/event_manager.h"
 #include "manager.h"
-#include "console.h"
-#include "gui_default_render.h"
+#include "gui_render.h"
+//#include "console.h"
+//#include "gui_default_render.h"
 
 namespace GUI
 {
+	std::auto_ptr<Manager> Manager::m_instance;
+	
+	Manager* Manager::Instance()
+	{
+		if (!m_instance.get())
+			m_instance.reset(new Manager);
+		return m_instance.get();
+	}
+
+	void Manager::Destroy()
+	{
+		m_instance.reset(nullptr);
+	}
+
 	Manager::Manager()
 	{
 		m_focusWidget = 0;
-		m_render = new DefaultGUIRender();
+		//m_render = new DefaultGUIRender();
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Manager::OnMouseMove));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(this, &Manager::OnMouseLeftDown));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_UP, System::EventHandler(this, &Manager::OnMouseLeftUp));
@@ -43,10 +58,10 @@ namespace GUI
 		m_render = render;
 	}
 
-	void Manager::AddRootWidget(Widget* widget)
+	void Manager::AddRootWidget(System::Proxy<Widget> widget)
 	{
 		widget->SetManager(this);
-		rootWidgets.push_back(std::shared_ptr<Widget>(widget));
+		rootWidgets.push_back(widget);
 	}
 
 	void Manager::OnMouseHoover(System::Event* event)
@@ -85,16 +100,16 @@ namespace GUI
 	{
 		if (newFocuseWidget)
 		{
-			System::Logger::Instance()->WriteMessage(newFocuseWidget->GetText());
+			out_message() << newFocuseWidget->GetText() << std::endl;
 			if (m_focusWidget)
 			{
-				System::SetUnFocusedEvent* unfocuseEvent = System::SetUnFocusedEvent::Raise();
+				System::SetUnFocusedEvent* unfocuseEvent = new System::SetUnFocusedEvent;
 				unfocuseEvent->anyData = m_focusWidget;
 				System::EventManager::Instance()->FixEvent(unfocuseEvent);
 				m_focusWidget->SetFocuse(false);					
 			}
 
-			System::SetFocusedEvent* focuseEvent = System::SetFocusedEvent::Raise();
+			System::SetFocusedEvent* focuseEvent = new System::SetFocusedEvent;
 			focuseEvent->anyData = newFocuseWidget;
 			System::EventManager::Instance()->FixEvent(focuseEvent);
 
@@ -121,16 +136,16 @@ namespace GUI
 		}
 		if (newFocuseWidget)
 		{
-			System::Logger::Instance()->WriteMessage(newFocuseWidget->GetText());
+			out_message() << newFocuseWidget->GetText() << std::endl;
 			if (m_focusWidget)
 			{
-				System::SetUnFocusedEvent* unfocuseEvent = System::SetUnFocusedEvent::Raise();
+				System::SetUnFocusedEvent* unfocuseEvent = new System::SetUnFocusedEvent;
 				unfocuseEvent->anyData = m_focusWidget;
 				System::EventManager::Instance()->FixEvent(unfocuseEvent);
 				m_focusWidget->SetFocuse(false);					
 			}
 
-			System::SetFocusedEvent* focuseEvent = System::SetFocusedEvent::Raise();
+			System::SetFocusedEvent* focuseEvent = new System::SetFocusedEvent;
 			focuseEvent->anyData = newFocuseWidget;
 			System::EventManager::Instance()->FixEvent(focuseEvent);
 
@@ -157,30 +172,33 @@ namespace GUI
 	void Manager::OnMouseMove(System::Event* event)
 	{
 		System::MouseMoveEvent* e = static_cast<System::MouseMoveEvent*>(event);
-		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
+		for each(System::Proxy<Widget> root in rootWidgets)
 		{
-			if (!(*it)->IsVisible() || !(*it)->IsEnabled())
+			if (!root.IsValid())
 				continue;
-			bool wasIn = (*it)->IsPointIn(Widget::WindowToViewport(float(e->x_prev), float(e->y_prev)));
-			bool isIn = (*it)->IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y)));
+
+			if (!root->IsVisible() || !root->IsEnabled())
+				continue;
+			bool wasIn = root->IsPointIn(Widget::WindowToViewport(float(e->x_prev), float(e->y_prev)));
+			bool isIn = root->IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y)));
 
 			if (!wasIn && isIn)
 			{
-				System::MouseEnterEvent* new_event = System::MouseEnterEvent::Raise();
-				new_event->anyData = (*it).get();
+				System::MouseEnterEvent* new_event = new System::MouseEnterEvent;
+				new_event->anyData = root.Get();
 				System::EventManager::Instance()->FixEvent(new_event);
 			}
 
 			if (wasIn && !isIn)
 			{
-				System::MouseLeaveEvent* new_event = System::MouseLeaveEvent::Raise();
-				new_event->anyData = (*it).get();
+				System::MouseLeaveEvent* new_event = new System::MouseLeaveEvent;
+				new_event->anyData = root.Get();
 				System::EventManager::Instance()->FixEvent(new_event);
 			}
 
 			if (isIn)
 			{
-				(*it)->OnMouseMove(e);
+				root->OnMouseMove(e);
 			}
 		}
 	}
@@ -188,11 +206,12 @@ namespace GUI
 	void Manager::OnIdle(System::Event* event)
 	{		
 		System::IdleEvent* e = static_cast<System::IdleEvent*>(event);
-		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
+		for each(System::Proxy<Widget> root in rootWidgets)
 		{
-			(*it)->OnIdle(e);			
+			if (!root.IsValid())
+				continue;
+			root->OnIdle(e);			
 		}
-
 	}
 
 	void Manager::OnKeyChar(System::Event* event)
@@ -204,13 +223,15 @@ namespace GUI
 	void Manager::OnResize(System::Event* event)
 	{
 		System::WindowResizeEvent* e = static_cast<System::WindowResizeEvent*>(event);
-		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); ++it)
+		for each(System::Proxy<Widget> root in rootWidgets)
 		{
-			(*it)->OnResize(e);			
-			for (int i = 0; i < (int)(*it)->GetChildrenCount(); ++i)
-			{
-				(*it)->GetChild(i)->OnResize(e);
-			}
+			if (!root.IsValid())
+				continue;
+			root->OnResize(e);			
+			//for each(System::Proxy<Widget> child in *root)
+			//{
+			//	child->OnResize(e);
+			//}
 		}
 	}
 

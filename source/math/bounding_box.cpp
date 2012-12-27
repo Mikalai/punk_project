@@ -96,6 +96,10 @@ namespace Math
 			float c = -(d[4] + d[5]) / 2.0f;
 
 			m_center = a*m_r + b*m_s + c*m_t;
+
+			m_r *= (d[1] - d[0]);
+			m_s *= (d[3] - d[2]);
+			m_t *= (d[5] - d[4]);
 		}
 
 		return true;

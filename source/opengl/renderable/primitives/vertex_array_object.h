@@ -5,6 +5,7 @@
 #include "renderable.h"
 #include "../../attribute_configer.h"
 #include "../../../math/bounding_box.h"
+#include "../../../math/bounding_shere.h"
 
 namespace OpenGL
 {
@@ -23,6 +24,7 @@ namespace OpenGL
 		int m_vb_size;
 		int m_ib_size;		
 		Math::BoundingBox m_bbox;
+		Math::BoundingSphere m_sphere;
 		bool m_was_modified;
 
 	public:
@@ -112,7 +114,8 @@ namespace OpenGL
 			CHECK_GL_ERROR(L"Unable to unbind vertex buffer");		
 			glBindVertexArray(0);
 			CHECK_GL_ERROR(L"Unable to generate vertex buffer");		
-			//m_bbox.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
+			m_bbox.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
+			m_sphere.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
 			m_was_modified = true;
 		}
 
@@ -337,6 +340,16 @@ namespace OpenGL
 		const Math::BoundingBox& GetBoundingBox() const
 		{
 			return m_bbox;
+		}
+
+		Math::BoundingSphere& GetBoundingSphere()
+		{
+			return m_sphere;
+		}
+
+		const Math::BoundingSphere& GetBoundingSphere() const
+		{
+			return m_sphere;
 		}
 	};
 };

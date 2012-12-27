@@ -60,14 +60,13 @@ namespace OpenGL
 			uTextureMatrix = GetUniformLocation("uTextureMatrix");
 		}
 
-		virtual void BindParameters(const System::Proxy<State>& params)
-		{						
-			const State* state = params.Get();
-			const Math::mat4 proj_view_world = params->m_projection * params->m_view * params->m_local;
+		virtual void BindParameters(const CoreState& params)
+		{									
+			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_local;
 			SetUniformMatrix4f(uProjViewWorld, &(proj_view_world[0]));
-			SetUniformVector4f(uDiffuseColor, &(state->m_diffuse_color[0]));
-			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
-			SetUniformMatrix2f(uTextureMatrix, &state->m_texture_matrix[0]);
+			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
+			SetUniformInt(uDiffuseMap, params.m_diffuse_slot);
+			SetUniformMatrix2f(uTextureMatrix, &params.m_texture_matrix[0]);
 		}
 		
 		virtual Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -134,11 +133,24 @@ namespace OpenGL
 			uDiffuseColor = GetUniformLocation("uDiffuseColor");
 		}
 
-		virtual void BindParameters(const System::Proxy<State>& params)
+		virtual void BindParameters(const CoreState& params)
 		{			
-			const Math::mat4 proj_view_world = params->m_projection * params->m_view * params->m_local;
+			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_local;
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
-			SetUniformVector4f(uDiffuseColor, &(params->m_diffuse_color[0]));
+			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
+			
+			glLineWidth(params.m_line_width);
+
+			if (params.m_wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				CHECK_GL_ERROR(L"Can't change polygon mode");
+			}			
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				CHECK_GL_ERROR(L"Can't change polygon mode");
+			}
 		}
 		
 		virtual Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -208,35 +220,44 @@ namespace OpenGL
 			uNormalMap = GetUniformLocation("uNormalMap");
 		}
 
-		void BindParameters(const System::Proxy<State>& pparams)
+		void BindParameters(const CoreState& pparams)
 		{									
-			const State* state = pparams.Get();
 			//Math::mat4 p = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
-			//Math::mat4 p2 = state->m_camera->GetProjectionMatrix();
+			//Math::mat4 p2 = pparams.m_camera->GetProjectionMatrix();
 			//Math::mat4 v = Math::mat4::CreateTargetCameraMatrix(Math::vec3(0, 5, 5), Math::vec3(0,0,0), Math::vec3(0,1,0));
 			//Math::mat4 w = Math::mat4::CreateIdentity();			
-			Math::mat3 normal_matrix = (state->m_camera->GetViewMatrix() * state->m_local).Inversed().Transposed().RotationPart();
-			SetUniformMatrix4f(uWorld, &state->m_local[0]);
+			Math::mat3 normal_matrix = (pparams.m_camera->GetViewMatrix() * pparams.m_local).Inversed().Transposed().RotationPart();
+			SetUniformMatrix4f(uWorld, &pparams.m_local[0]);
 			//SetUniformMatrix4f(uWorld, &w[0]);
-			SetUniformMatrix4f(uView, &state->m_camera->GetViewMatrix()[0]);
+			SetUniformMatrix4f(uView, &pparams.m_camera->GetViewMatrix()[0]);
 			//SetUniformMatrix4f(uView, &v[0]);
-			SetUniformMatrix4f(uProj, &state->m_camera->GetProjectionMatrix()[0]);
+			SetUniformMatrix4f(uProj, &pparams.m_camera->GetProjectionMatrix()[0]);
 			//SetUniformMatrix4f(uProj, &p[0]);
 			SetUniformMatrix3f(uNormalMatrix, &normal_matrix[0]);
-			if (!state->m_current_light_set.empty())
-				SetUniformVector3f(uLightPosition, &state->m_current_light_set[0]->GetPosition()[0]);
+			if (!pparams.m_current_light_set.empty())
+				SetUniformVector3f(uLightPosition, &pparams.m_current_light_set[0]->GetPosition()[0]);
 			else
 			{
 				Math::vec3 v(0,0,0);
 				SetUniformVector3f(uLightPosition, &v[0]);
 			}
 
-			SetUniformVector4f(uAmbient, &(Math::vec4(state->m_current_material->GetAmbient()))[0]);
-			SetUniformVector4f(uSpecular, &state->m_current_material->GetSpecularColor()[0]);
-			SetUniformVector4f(uDiffuse, &state->m_current_material->GetDiffuseColor()[0]);
-			SetUniformFloat(uSpecularPower, state->m_current_material->GetSpecularFactor());
-			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
-			SetUniformInt(uNormalMap, state->m_normal_slot);			
+			SetUniformVector4f(uAmbient, &(Math::vec4(pparams.m_current_material->GetAmbient()))[0]);
+			SetUniformVector4f(uSpecular, &pparams.m_current_material->GetSpecularColor()[0]);
+			SetUniformVector4f(uDiffuse, &pparams.m_current_material->GetDiffuseColor()[0]);
+			SetUniformFloat(uSpecularPower, pparams.m_current_material->GetSpecularFactor());
+			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot);
+			SetUniformInt(uNormalMap, pparams.m_normal_slot);		
+			if (pparams.m_wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				CHECK_GL_ERROR(L"Can't change polygon mode");
+			}			
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				CHECK_GL_ERROR(L"Can't change polygon mode");
+			}
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -323,7 +344,7 @@ namespace OpenGL
 			uDiffuseMap = GetUniformLocation("uDiffuseMap");
 		}
 
-		void BindParameters(const System::Proxy<State>& pparams)
+		void BindParameters(const CoreState& pparams)
 		{	
 			//const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
 			//SetUniformMatrix4f(uProjView, &params.m_proj_view[0]);
@@ -395,17 +416,36 @@ namespace OpenGL
 			uTextureMatrix = GetUniformLocation("uTextureMatrix");
 		}
 
-		void BindParameters(const System::Proxy<State>& pparams)
+		void BindParameters(const CoreState& pparams)
 		{									
-			const State* state = pparams.Get();
-			Math::mat4 proj_view_world = state->m_projection * state->m_view * state->m_local;
+			Math::mat4 proj_view_world = pparams.m_projection * pparams.m_view * pparams.m_local;
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
-			SetUniformMatrix2f(uTextureMatrix, &state->m_texture_matrix[0]);
-			SetUniformVector4f(uDiffuseColor, &state->m_diffuse_color[0]);
-			SetUniformVector4f(uTextColor, &state->m_text_color[0]);
-			SetUniformVector4f(uNoDiffuseTexture, &state->m_no_diffuse_texture_color[0]);
-			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
-			SetUniformInt(uTextMap, state->m_text_slot);
+			SetUniformMatrix2f(uTextureMatrix, &pparams.m_texture_matrix[0]);
+			SetUniformVector4f(uDiffuseColor, &pparams.m_diffuse_color[0]);
+			SetUniformVector4f(uTextColor, &pparams.m_text_color[0]);
+			SetUniformVector4f(uNoDiffuseTexture, &pparams.m_no_diffuse_texture_color[0]);
+			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot);
+			SetUniformInt(uTextMap, pparams.m_text_slot);
+			if (pparams.m_wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				CHECK_GL_ERROR(L"Can't change polygon mode");
+			}			
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				CHECK_GL_ERROR(L"Can't change polygon mode");
+			}
+
+			if (pparams.m_blending)
+			{
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			}
+			else
+			{
+				glDisable(GL_BLEND);
+			}
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -507,7 +547,7 @@ namespace OpenGL
 			uLightDirection = GetUniformLocation("uLightDirection");
 		}
 
-		void BindParameters(const System::Proxy<State>& pparams)
+		void BindParameters(const CoreState& pparams)
 		{										
 /*			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
 			SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
@@ -634,42 +674,41 @@ namespace OpenGL
 			uNormalMap = GetUniformLocation("uNormalMap");
 		}
 
-		void BindParameters(const System::Proxy<State>& pparams)
-		{				
-			const State* state = pparams.Get();		
+		void BindParameters(const CoreState& pparams)
+		{							
 			Math::mat4 mesh_matrix = Math::mat4::CreateIdentity();
-			Math::mat4 view_world = state->m_camera->GetViewMatrix() * state->m_local;
-			Math::mat4 proj_view_world = state->m_camera->GetProjectionMatrix() * state->m_camera->GetViewMatrix() * state->m_local;
-			Math::mat3 normal_matrix = (state->m_camera->GetViewMatrix() * state->m_local).Inversed().Transposed().RotationPart();
-			SetUniformMatrix4f(uWorld, &state->m_local[0]);			
-			SetUniformMatrix4f(uView, &state->m_camera->GetViewMatrix()[0]);			
-			SetUniformMatrix4f(uProj, &state->m_camera->GetProjectionMatrix()[0]);			
-			SetUniformMatrix4f(uMeshMatrix, &mesh_matrix[0]);//state->m_mesh_matrix[0]);
-			SetUniformMatrix4f(uMeshMatrixInversed, &mesh_matrix[0]);//state->m_mesh_matrix.Inversed()[0]);
+			Math::mat4 view_world = pparams.m_camera->GetViewMatrix() * pparams.m_local;
+			Math::mat4 proj_view_world = pparams.m_camera->GetProjectionMatrix() * pparams.m_camera->GetViewMatrix() * pparams.m_local;
+			Math::mat3 normal_matrix = (pparams.m_camera->GetViewMatrix() * pparams.m_local).Inversed().Transposed().RotationPart();
+			SetUniformMatrix4f(uWorld, &pparams.m_armature_world[0]);			
+			SetUniformMatrix4f(uView, &pparams.m_camera->GetViewMatrix()[0]);			
+			SetUniformMatrix4f(uProj, &pparams.m_camera->GetProjectionMatrix()[0]);			
+			SetUniformMatrix4f(uMeshMatrix, &mesh_matrix[0]);//pparams.m_mesh_matrix[0]);
+			SetUniformMatrix4f(uMeshMatrixInversed, &mesh_matrix[0]);//pparams.m_mesh_matrix.Inversed()[0]);
 			SetUniformMatrix3f(uNormalMatrix, &normal_matrix[0]);
-			if (!state->m_current_light_set.empty())
-				SetUniformVector3f(uLightPosition, &state->m_current_light_set[0]->GetPosition()[0]);
+			if (!pparams.m_current_light_set.empty())
+				SetUniformVector3f(uLightPosition, &pparams.m_current_light_set[0]->GetPosition()[0]);
 			else
 			{
 				Math::vec3 v(0,0,0);
 				SetUniformVector3f(uLightPosition, &v[0]);
 			}
-			SetUniformVector4f(uAmbient, &(Math::vec4(state->m_current_material->GetAmbient()))[0]);
-			SetUniformVector4f(uSpecular, &state->m_current_material->GetSpecularColor()[0]);
-			SetUniformVector4f(uDiffuse, &state->m_current_material->GetDiffuseColor()[0]);
-			SetUniformFloat(uSpecularPower, state->m_current_material->GetSpecularFactor());
-			SetUniformInt(uDiffuseMap, state->m_diffuse_slot);
-			SetUniformInt(uNormalMap, state->m_normal_slot);				
+			SetUniformVector4f(uAmbient, &(Math::vec4(pparams.m_current_material->GetAmbient()))[0]);
+			SetUniformVector4f(uSpecular, &pparams.m_current_material->GetSpecularColor()[0]);
+			SetUniformVector4f(uDiffuse, &pparams.m_current_material->GetDiffuseColor()[0]);
+			SetUniformFloat(uSpecularPower, pparams.m_current_material->GetSpecularFactor());
+			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot);
+			SetUniformInt(uNormalMap, pparams.m_normal_slot);				
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
 			SetUniformMatrix4f(uViewWorld, &view_world[0]);
-			for (int i = 0; i < state->m_armature->GetBonesCount(); ++i)
+			for (int i = 0; i < pparams.m_armature->GetBonesCount(); ++i)
 			{
-				const Virtual::Bone* bone = state->m_armature->GetBoneByIndex(i);
+				const Virtual::Bone* bone = pparams.m_armature->GetBoneByIndex(i);
 				Math::mat4 m;
 				//out_message() << bone->GetName() << ": " << bone->GetAnimatedGlobalMatrix().ToString() << std::endl;
 				//SetUniformMatrix4f(uBones[i], &(m[0]));
 				//SetUniformMatrix4f(uBones[i], &(bone->GetAnimatedGlobalMatrix())[0]);
-				SetUniformMatrix4f(uBones[i], &(state->m_mesh_matrix_local.Inversed() * bone->GetAnimatedGlobalMatrix() * state->m_mesh_matrix_local)[0]);
+				SetUniformMatrix4f(uBones[i], &(/*pparams.m_mesh_matrix_local.Inversed() **/ bone->GetAnimatedGlobalMatrix() * pparams.m_mesh_matrix_local)[0]);
 			}
 		}
 		

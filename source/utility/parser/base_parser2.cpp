@@ -59,7 +59,8 @@ namespace Utility
 	extern bool ParseAnimation(System::Buffer& buffer, System::Proxy<Virtual::Animation> animation);
 	extern bool ParsePositionTrack(System::Buffer& buffer, Virtual::AnimationTrack<Math::vec3>& track);
 	extern bool ParseRotationTrack(System::Buffer& buffer, Virtual::AnimationTrack<Math::quat>& track);
-	
+	extern bool ParseBoneNode(System::Buffer& buffer, System::Proxy<Scene::BoneNode> node);
+
 	/// This function convert a string representation of the file into code
 	KeywordCode Parse(const System::string& word)
 	{
@@ -973,13 +974,13 @@ namespace Utility
 				return true;
 			case WORD_STATIC_MESH:
 				{	
-					System::Proxy<Virtual::StaticGeometry> action(new Virtual::StaticGeometry);
-					if (!ParseStaticMesh(buffer, action))
+					System::Proxy<Virtual::StaticGeometry> mesh(new Virtual::StaticGeometry);
+					if (!ParseStaticMesh(buffer, mesh))
 					{
-						out_error() << "Unable to parse action" << std::endl;
+						out_error() << "Unable to parse static mesh" << std::endl;
 						return false;
 					}
-					Virtual::ActionManager::Instance()->Manage(action->GetName(), action);
+					Virtual::StaticGeometryManager::Instance()->Manage(mesh->GetStorageName(), mesh);
 				}
 				break;
 			default:
@@ -1682,6 +1683,40 @@ namespace Utility
 		return false;
 	}
 
+	bool ParseBoneNode(System::Buffer& buffer, System::Proxy<Scene::BoneNode> bone)
+	{
+		CHECK_START(buffer);
+		while (!buffer.IsEnd())
+		{
+			System::string word = buffer.ReadWord();
+			switch (Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:
+				return true;
+			case WORD_NAME:
+				{
+					System::string value;
+					if (!ParseBlockedString(buffer, value))
+						return (out_error() << "Can't parse material node name" << std::endl, false);
+					bone->SetName(value);
+					bone->SetStorageName(value);
+				}
+				break;
+			case WORD_TRANSFORM_NODE:
+				{
+					System::Proxy<Scene::TransformNode> node(new Scene::TransformNode);
+					if (!ParseTransformNode(buffer, node))
+						return (out_error() << "Can't parse transform node" << std::endl, false);
+					bone->Add(node);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return false;
+	}
+
 	bool ParseSkinMeshNode(System::Buffer& buffer, System::Proxy<Scene::SkinMeshNode> mesh)
 	{
 			CHECK_START(buffer);
@@ -1751,6 +1786,14 @@ namespace Utility
 					material->Add(node);
 				}
 				break;
+			case WORD_MATERIAL_NODE:
+				{
+					System::Proxy<Scene::MaterialNode> node(new Scene::MaterialNode);
+					if (!ParseMaterialNode(buffer, node))
+						return (out_error() << "Can't parse material node" << std::endl, false);
+					material->Add(node);
+				}
+				break;
 			default:
 				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
@@ -1782,6 +1825,14 @@ namespace Utility
 					System::Proxy<Scene::MaterialNode> node(new Scene::MaterialNode);
 					if (!ParseMaterialNode(buffer, node))
 						return (out_error() << "Can't parse material node" << std::endl, false);
+					armature_node->Add(node);
+				}
+				break;				
+			case WORD_BONE_NODE:
+				{
+					System::Proxy<Scene::BoneNode> node(new Scene::BoneNode);
+					if (!ParseBoneNode(buffer, node))
+						return (out_error() << "Can't parse bone node" << std::endl, false);
 					armature_node->Add(node);
 				}
 				break;
@@ -1873,6 +1924,14 @@ namespace Utility
 					if (!ParseLocationIndoor(buffer, node))
 						return (out_error() << "Can't parse location indoor node" << std::endl, false);
 					transform->Add(node);
+				}
+				break;
+			case WORD_BOUNDING_BOX:
+				{
+					Math::BoundingBox bbox;
+					if (!ParseBoundingBox(buffer, bbox))
+						return (out_error() << "Can't parse bounding box" << std::endl, false);
+					transform->SetBoundingBox(bbox);
 				}
 				break;
 			default:
@@ -2016,6 +2075,14 @@ namespace Utility
 					System::Proxy<Scene::TransformNode> node(new Scene::TransformNode);
 					if (!ParseTransformNode(buffer, node))
 						return (out_error() << "Can't parse transform node" << std::endl, false);
+					root->Add(node);
+				}
+				break;
+			case WORD_MATERIAL_NODE:
+				{
+					System::Proxy<Scene::MaterialNode> node(new Scene::MaterialNode);
+					if (!ParseMaterialNode(buffer, node))
+						return (out_error() << "Can't parse material node" << std::endl, false);
 					root->Add(node);
 				}
 				break;

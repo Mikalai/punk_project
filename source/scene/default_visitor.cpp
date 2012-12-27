@@ -37,6 +37,16 @@ namespace Scene
 		return true;
 	}
 
+	bool DefaultVisitor::Visit(BoneNode* node)
+	{
+		std::cout << std::string(m_level, ' ') << "BoneNode" << std::endl;			
+		m_level++;
+		for each (System::Proxy<Node> child in *node)
+			child->Apply(this);
+		m_level--;
+		return true;
+	}
+
 	bool DefaultVisitor::Visit(ArmatureNode* node)
 	{		
 		std::cout << std::string(m_level, ' ') << "ArmatureNode" << std::endl;			

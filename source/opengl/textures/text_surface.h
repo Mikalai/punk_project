@@ -21,6 +21,7 @@ namespace OpenGL
 		bool SetText(const System::string& text);
 		const System::string& GetText() const { return m_text; }
 		System::Proxy<Texture2D> GetTexture() { return m_texture; }
+		const System::Proxy<Texture2D> GetTexture() const { return m_texture; }
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
@@ -30,6 +31,12 @@ namespace OpenGL
 
 		void SetTextSize(int size);
 		int GetTextSize() const { return m_font_size; }
+
+		void SetHorizontalAlignment(TextHorizontalAlignment value) { m_halignment = value; RenderTextToTexture(); }
+		TextHorizontalAlignment GetHorizontalAlignment() const { return m_halignment; }
+
+		void SetVerticalAlignment(TextVerticalAlignment value) { m_valignment = value; RenderTextToTexture(); }
+		TextVerticalAlignment GetVerticalAlignment() const { return m_valignment; }
 
 	private:
 		TextHorizontalAlignment m_halignment;

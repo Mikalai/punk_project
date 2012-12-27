@@ -5,7 +5,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE MouseLeaveEvent : public Event, Poolable<MouseLeaveEvent>
+	class PUNK_ENGINE MouseLeaveEvent : public Event, public Poolable<MouseLeaveEvent>
     {        
         MouseLeaveEvent(const MouseLeaveEvent&);
 		MouseLeaveEvent& operator = (const MouseLeaveEvent&);

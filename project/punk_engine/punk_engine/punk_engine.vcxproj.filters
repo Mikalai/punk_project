@@ -471,61 +471,7 @@
     <ClInclude Include="..\..\..\source\audio\resource.h">
       <Filter>audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\balloon.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\button.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\console.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\edit_box.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\gui.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\gui_default_render.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\gui_render.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\horizontal_slider.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\int_watcher.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\layout.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\list_box.h">
-      <Filter>gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\gui\manager.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\static_text_area.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\tab_widget.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\trackball_viewer_3d.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\user_interface_control.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\vertical_scrollbar.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\vertical_slider.h">
-      <Filter>gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\watcher.h">
       <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\gui\widget.h">
@@ -1466,6 +1412,30 @@
     <ClInclude Include="..\..\..\source\images\import_export\jpg_importer.h">
       <Filter>images\import_export</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\cube_mesh.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\bone_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\sphere_mesh.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\render\ogl_gui_render.h">
+      <Filter>opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui_render.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\bounding_volume_updater.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\state_manager.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui.h">
+      <Filter>gui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -1639,49 +1609,7 @@
     <ClCompile Include="..\..\..\source\audio\player.cpp">
       <Filter>audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\balloon.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\button.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\console.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\edit_box.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\gui_default_render.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\horizontal_slider.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\int_watcher.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\list_box.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\gui\manager.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\static_text_area.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\tab_widget.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\trackball_viewer_3d.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\user_interface_control.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\vertical_scrollbar.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gui\vertical_slider.cpp">
       <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\gui\widget.cpp">
@@ -2281,6 +2209,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\images\import_export\jpg_importer.cpp">
       <Filter>images\import_export</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\cube_mesh.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\bone_name.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\sphere_mesh.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\render\ogl_gui_render.cpp">
+      <Filter>opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\bounding_volume_updater.cpp">
+      <Filter>scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

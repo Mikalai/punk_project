@@ -152,6 +152,25 @@ namespace Virtual
 		}
 		return m_last_global_matrix_update;
 	}
+	
+	const Math::mat4& Bone::GetAnimatedGlobalMatrix2() const
+	{
+		if (m_need_update_global_matrix2)
+		{
+			if (m_parent)
+			{
+//				Math::mat4 m;
+				//m_last_global_matrix_update = m_local_matrix * m_bone_matrix * m_local_matrix.Inversed();
+				m_last_global_matrix_update2 = m_parent->GetAnimatedGlobalMatrix2() *  m_local_matrix * m_bone_matrix;
+			}
+			else
+			{
+				m_last_global_matrix_update2 = m_local_matrix * m_bone_matrix;
+			}
+			m_need_update_global_matrix2 = false;
+		}
+		return m_last_global_matrix_update2;
+	}
 	//const Math::mat4& Bone::GetAnimatedGlobalMatrix() const
 	//{
 	//	if (m_need_update_global_matrix)

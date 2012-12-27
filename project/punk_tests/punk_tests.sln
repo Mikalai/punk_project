@@ -45,6 +45,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_skin_test", "punk_skin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_image_test", "punk_image_test\punk_image_test.vcxproj", "{A07BFDE8-6F24-478D-9B5C-E3BA5CEBC68A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "punk_gui_test", "punk_gui_test\punk_gui_test.vcxproj", "{351CC8A1-4204-4808-88F2-1A3E4C7B3EA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -139,6 +141,10 @@ Global
 		{A07BFDE8-6F24-478D-9B5C-E3BA5CEBC68A}.Debug|Win32.Build.0 = Debug|Win32
 		{A07BFDE8-6F24-478D-9B5C-E3BA5CEBC68A}.Release|Win32.ActiveCfg = Release|Win32
 		{A07BFDE8-6F24-478D-9B5C-E3BA5CEBC68A}.Release|Win32.Build.0 = Release|Win32
+		{351CC8A1-4204-4808-88F2-1A3E4C7B3EA3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{351CC8A1-4204-4808-88F2-1A3E4C7B3EA3}.Debug|Win32.Build.0 = Debug|Win32
+		{351CC8A1-4204-4808-88F2-1A3E4C7B3EA3}.Release|Win32.ActiveCfg = Release|Win32
+		{351CC8A1-4204-4808-88F2-1A3E4C7B3EA3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

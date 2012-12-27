@@ -51,7 +51,8 @@ namespace OpenGL
 		int max_offset = Utility::FontBuilder::Instance()->GetMaxOffset(text);
 		int min_offset = Utility::FontBuilder::Instance()->GetMinOffset(text);
 		int max_height = max_offset - min_offset;
-		int lines = m_texture->GetHeight() / max_height;
+		int max_lines = m_texture->GetHeight() / max_height;
+		int req_lines = length / m_texture->GetWidth();
 		int start_y = 0;
 		if (TextVerticalAlignment::VERTICAL_BOTTOM == m_valignment)
 		{
@@ -59,7 +60,7 @@ namespace OpenGL
 		}
 		else if (TextVerticalAlignment::VERTICAL_CENTER == m_valignment)
 		{
-			start_y = m_texture->GetHeight() / 2 - lines*max_height / 2;
+			start_y = m_texture->GetHeight() / 2 + req_lines*max_height / 2;
 		}
 		else if (TextVerticalAlignment::VERTICAL_TOP == m_valignment)
 		{
@@ -73,8 +74,9 @@ namespace OpenGL
 		if (m_text.Length() == 0)
 			return (m_texture->Fill(0), true);
 
-		int x = CalculateTextXOffset(m_text);
-		int y = CalculateTextYOffset(m_text);
+		int start_x, start_y;
+		int x = start_x = CalculateTextXOffset(m_text);
+		int y = start_y = CalculateTextYOffset(m_text);
 		m_texture->Fill(0);
 		Utility::FontBuilder::Instance()->SetCurrentFace(m_font);
 		Utility::FontBuilder::Instance()->SetCharSize(m_font_size, m_font_size);
@@ -101,6 +103,18 @@ namespace OpenGL
 			x += x_advance;				
 		}/**/
 		return true;
+	}
+
+	void TextSurface::SetFont(const System::string& font)
+	{
+		m_font = font;
+		RenderTextToTexture();
+	}
+
+	void TextSurface::SetTextSize(int size)
+	{
+		m_font_size = size;
+		RenderTextToTexture();
 	}
 
 	bool TextSurface::SetText(const System::string& text)

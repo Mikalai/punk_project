@@ -169,6 +169,7 @@ namespace OpenGL
 	PFNGLPOINTPARAMETERFVPROC glPointParameterfv;
 	PFNGLPOINTPARAMETERFPROC glPointParameterf;
 	PFNGLCULLFACEPROC glCullFace;
+	PFNGLLINEWIDTHPROC glLineWidth;
 
 	bool IsSupported(const char* extension, Driver* driver)
 	{
@@ -360,5 +361,6 @@ namespace OpenGL
 		glPointParameterfv = (PFNGLPOINTPARAMETERFVPROC)driver->GetProcAddress("glPointParameterfv");
 		glPointParameterf = (PFNGLPOINTPARAMETERFPROC)driver->GetProcAddress("glPointParameterf");
 		glCullFace = (PFNGLCULLFACEPROC)driver->GetProcAddress("glCullFace");
+		glLineWidth = (PFNGLLINEWIDTHPROC)driver->GetProcAddress("glLineWidth");
 	}
 }

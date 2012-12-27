@@ -40,8 +40,8 @@ namespace System
 
 	protected:
 
-		virtual bool OnAdd(Proxy<Object> object) { return true; }
-		virtual bool OnRemove(Proxy<Object> object) { return true; }
+		virtual bool OnAdd(System::Proxy<System::Object> object) { return true; }
+		virtual bool OnRemove(System::Proxy<System::Object> object) { return true; }
 	private:
 
 		CollectionType m_children;

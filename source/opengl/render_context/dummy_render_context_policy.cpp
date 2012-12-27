@@ -15,7 +15,7 @@ namespace OpenGL
 		out_warning() << "InitUniforms() not implemented" << std::endl;		
 	}
 
-	void AbstractRenderPolicy::BindParameters(const System::Proxy<State>& params)
+	void AbstractRenderPolicy::BindParameters(const CoreState& params)
 	{	
 		out_warning() << "BindParameters() not implemented" << std::endl;
 	}

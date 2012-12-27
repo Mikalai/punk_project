@@ -14,7 +14,7 @@
 
 namespace Raytracer
 {
-	class Render::RenderImpl
+	struct Render::RenderImpl
 	{
 		int m_width;
 		int m_height;

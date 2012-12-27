@@ -10,7 +10,7 @@ namespace Math
 	class PUNK_ENGINE Sphere
 	{		
 	public:
-		Sphere() : m_center(), m_radius(1) {}
+		Sphere() : m_center(), m_radius(0) {}
 		Sphere(const vec3& center, float radius) : m_center(center), m_radius(radius) {}
 		void SetCenter(const vec3& center) { m_center = center; }
 		void SetRadius(float radius) { m_radius = radius; }
@@ -23,7 +23,7 @@ namespace Math
 
 		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
-
+		
 	private:
 		vec3 m_center;
 		float m_radius;
@@ -35,6 +35,21 @@ namespace Math
 		res.m_center = m * s.GetCenter();
 		//	consider that transform do not effect the radius
 		res.m_radius = s.GetRadius();
+		return res;
+	}
+
+	inline const Sphere operator + (const Sphere& a, const Sphere& b)
+	{
+		float d = (a.GetCenter() - b.GetCenter()).Length();
+		if (d + a.GetRadius() <= b.GetRadius())
+			return b;
+		if (d + b.GetRadius() <= a.GetRadius())
+			return a;
+
+		Sphere res;		
+		float r = 0.5f * (d + a.GetRadius() + b.GetRadius());
+		res.SetRadius(r);
+		res.SetCenter(a.GetCenter() + (r - a.GetRadius()) / d * (b.GetCenter() - a.GetCenter()));
 		return res;
 	}
 }
