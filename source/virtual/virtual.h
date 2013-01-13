@@ -7,4 +7,6 @@
 #include "motions\motion.h"
 #include "skinning\skinning.h"
 #include "manager\manager.h"
+#include "terrain\module.h"
+
 #endif
