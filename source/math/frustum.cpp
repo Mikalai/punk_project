@@ -11,7 +11,7 @@ namespace Math
 		m_bottom = - m_right*3.0f / 4.0f;
 		m_fov = PI/4.0f;
 		m_zfar = 100.0f;
-		m_znear = 0.1;
+		m_znear = 0.1f;
 		m_aspect = 3.0f / 4.0f;
 		UpdateMatrix();
 		CalculatePlanes();
