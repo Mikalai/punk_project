@@ -1,188 +1,233 @@
+#include <noise/noise.h>
+#include <time.h>
 #include "noise.h"
 #include "constants.h"
 #include "interpolation.h"
+#include "noiseutils.h"
 
 namespace Math
 {
-	Noise::Noise() : m_persistence(0.25), m_max_octaves(4)
+	struct NoiseImpl
+	{
+		noise::module::Perlin m_perlin;
+		Random m_rnd;
+
+		NoiseImpl()
+		{
+			time_t t;
+			time(&t);
+			m_rnd.SetSeed(t);
+			m_perlin.SetSeed(t);
+			m_perlin.SetOctaveCount(4);
+			m_perlin.SetPersistence(0.25);
+		}
+
+		NoiseImpl(int seed)
+		{
+			m_rnd.SetSeed(seed);
+			m_perlin.SetSeed(seed);
+			m_perlin.SetOctaveCount(4);
+			m_perlin.SetPersistence(0.25);
+		}
+	};
+
+	Noise::Noise() : impl(new NoiseImpl)
 	{
 	}
 
-	Noise::Noise(unsigned seed) : m_persistence(0.25), m_max_octaves(4), m_rnd(seed)
+	Noise::Noise(unsigned seed) : impl(new NoiseImpl(seed))
 	{
 	}
 
-	float Noise::Noise1D(int x)
+	double Noise::Noise1D(int x)
 	{		
-		return m_rnd.Uniform(x, 0.0f, 1.0f);
+		impl->m_rnd.SetSeed(impl->m_rnd.Noise(x)*100000.0);
+		return impl->m_rnd.Uniform(-1.0, 1.0);
 	}
 
-	float Noise::SmoothedNoise1D(int x)
+	double Noise::SmoothedNoise1D(int x)
 	{
 		return Noise1D(x) / 2.0f + Noise1D(x-1)/4.0f + Noise1D(x+1)/4.0f;
 	}
 
-	float Noise::InterpolatedNoise1D(float x)
+	double Noise::InterpolatedNoise1D(double x)
 	{		
 		int int_x = int(x);
 
-		float frac = x - int_x;
+		double frac = x - int_x;
 
-		float v1 = SmoothedNoise1D(int_x);
-		float v2 = SmoothedNoise1D(int_x + 1);
+		double v1 = SmoothedNoise1D(int_x);
+		double v2 = SmoothedNoise1D(int_x + 1);
 
 		return cosine_interpolation(v1, v2, frac);
 	}
 
-	float Noise::PerlinNoise1D(float x)
+	double Noise::PerlinNoise1D(double x)
 	{
-		float total = 0;
-		float p = m_persistence;
-		
-		for (int i = 0; i < m_max_octaves; i++)
-		{
-			float freq = powf(2, (float)i);
-			float amp = powf(p, (float)i);
+		return impl->m_perlin.GetValue(x, 0, 0);
+		//double total = 0;
+		//double p = m_persistence;
+		//
+		//for (int i = 0; i < m_max_octaves; i++)
+		//{
+		//	double freq = pow(2, (double)i);
+		//	double amp = pow(p, (double)i);
 
-			total += InterpolatedNoise1D(x * freq) * amp;
-		}		
-		return total;
+		//	total += InterpolatedNoise1D(x * freq) * amp;
+		//}		
+		//return total;
 	}
 
-	float Noise::Noise2D(int x, int y)
+	double Noise::Noise2D(int x, int y)
 	{
 		x += 57 * y;
-		Random rnd;
-		return rnd.UniformNormalized(x);
+		impl->m_rnd.SetSeed(impl->m_rnd.Noise(x)*100000.0);
+		return impl->m_rnd.Uniform(-1.0, 1.0);
 	}
 
-	float Noise::SmoothedNoise2D(int x, int y)
+	double Noise::SmoothedNoise2D(int x, int y)
 	{
-		float corner = (Noise2D(x-1, y-1) + Noise2D(x-1, y+1) + Noise2D(x+1, y+1) + Noise2D(x+1, y-1)) / 16.0f;
-		float sides = (Noise2D(x-1, y) + Noise2D(x+1, y) + Noise2D(x, y-1) + Noise2D(x, y+1)) / 8.0f;
-		float center = Noise2D(x,y) / 4.0f;
+		double corner = (Noise2D(x-1, y-1) + Noise2D(x+1, y-1) + Noise2D(x-1, y+1) + Noise2D(x+1, y+1)) / 16.0f;
+		double sides = (Noise2D(x-1, y) + Noise2D(x+1, y) + Noise2D(x, y-1) + Noise2D(x, y+1)) / 8.0f;
+		double center = Noise2D(x,y) / 4.0f;
 		return corner + sides + center;
 	}
 
-	float Noise::InterpolatedNoise2D(float x, float y)
+	double Noise::InterpolatedNoise2D(double x, double y)
 	{
 		int int_x = int(x);
-		float frac_x = x - int_x;
+		double frac_x = x - int_x;
 
 		int int_y = int(y);
-		float frac_y = y - int_y;
+		double frac_y = y - int_y;
 
-		float v1 = SmoothedNoise2D(int_x, int_y);
-		float v2 = SmoothedNoise2D(int_x+1, int_y);
-		float v3 = SmoothedNoise2D(int_x, int_y+1);
-		float v4 = SmoothedNoise2D(int_x+1, int_y+1);
+		double v1 = SmoothedNoise2D(int_x, int_y);
+		double v2 = SmoothedNoise2D(int_x+1, int_y);
+		double v3 = SmoothedNoise2D(int_x, int_y+1);
+		double v4 = SmoothedNoise2D(int_x+1, int_y+1);
 
-		float i1 = cosine_interpolation(v1, v2, frac_x);
-		float i2 = cosine_interpolation(v3, v4, frac_x);
+		double i1 = cosine_interpolation(v1, v2, frac_x);
+		double i2 = cosine_interpolation(v3, v4, frac_x);
 
 		return cosine_interpolation(i1, i2, frac_y);
 	}
 
-	float Noise::PerlinNoise2D(float x, float y)
+	double Noise::PerlinNoise2D(double x, double y)
 	{
-		float total = 0;
-		float p = m_persistence;
+		return impl->m_perlin.GetValue(x, y, 2);
+		/*double total = 0;
+		double p = m_persistence;
 		
 		for (int i = 0; i < m_max_octaves; i++)
 		{
-			float freq = powf(2, (float)i);
-			float amp = powf(p, (float)i);
+			double freq = pow(2, (double)i);
+			double amp = pow(p, (double)i);
 
 			total += InterpolatedNoise2D(x * freq, y * freq) * amp;
 		}		
-		return total;
+		return total;*/
 	}
 
-	float Noise::Noise3D(int x, int y, int z)
+	double Noise::Noise3D(int x, int y, int z)
 	{
-		x += 57 * y + 131 * z;
-		Random rnd;
-		return rnd.Uniform(x, 0.0f, 1.0f);
+		x += 57 * y + 131 * z;		
+		impl->m_rnd.SetSeed(impl->m_rnd.Noise(x)*100000.0);
+		return impl->m_rnd.Uniform(-1.0, 1.0);
 	}
 
-	float Noise::SmoothedNoise3D(int x, int y, int z)
+	double Noise::SmoothedNoise3D(int x, int y, int z)
 	{
-		float diag_corner = (Noise3D(x-1, y-1, z-1) + Noise3D(x-1, y+1, z-1) + Noise3D(x+1, y+1, z-1) + Noise3D(x+1, y-1, z-1)
+		double diag_corner = (Noise3D(x-1, y-1, z-1) + Noise3D(x-1, y+1, z-1) + Noise3D(x+1, y+1, z-1) + Noise3D(x+1, y-1, z-1)
 			+ Noise3D(x-1, y-1, z+1) + Noise3D(x-1, y+1, z+1) + Noise3D(x+1, y+1, z+1) + Noise3D(x+1, y-1, z+1)) / 32.0f;
 		
-		float corner = (Noise3D(x-1, y-1, z) + Noise3D(x+1, y-1, z) + Noise3D(x-1, y+1, z) + Noise3D(x+1, y+1, z) +
+		double corner = (Noise3D(x-1, y-1, z) + Noise3D(x+1, y-1, z) + Noise3D(x-1, y+1, z) + Noise3D(x+1, y+1, z) +
 			Noise3D(x, y-1, z-1) + Noise3D(x, y-1, z+1) + Noise3D(x, y+1, z-1) + Noise3D(x, y+1, z+1) +
 			Noise3D(x-1, y, z-1) + Noise3D(x+1, y, z-1) + Noise3D(x-1, y, z+1) + Noise3D(x+1, y, z+1)) / 16.0f;
 
-		float sides = (Noise3D(x-1, y, z) + Noise3D(x+1, y, z) + Noise3D(x, y-1, z) + Noise3D(x, y+1, z) + Noise3D(x, y, z-1) + Noise3D(x, y, z + 1)) / 8.0f;
-		float center = Noise3D(x,y,z) / 4.0f;
+		double sides = (Noise3D(x-1, y, z) + Noise3D(x+1, y, z) + Noise3D(x, y-1, z) + Noise3D(x, y+1, z) + Noise3D(x, y, z-1) + Noise3D(x, y, z + 1)) / 8.0f;
+		double center = Noise3D(x,y,z) / 4.0f;
 		return corner + sides + center + diag_corner;
 	}
 
-	float Noise::InterpolatedNoise3D(float x, float y, float z)
+	double Noise::InterpolatedNoise3D(double x, double y, double z)
 	{
 		int int_x = int(x);
-		float frac_x = x - int_x;
+		double frac_x = x - int_x;
 
 		int int_y = int(y);
-		float frac_y = y - int_y;
+		double frac_y = y - int_y;
 
 		int int_z = int(z);
-		float frac_z = z - int_z;
+		double frac_z = z - int_z;
 
-		float v1 = SmoothedNoise3D(int_x, int_y, int_z);
-		float v2 = SmoothedNoise3D(int_x+1, int_y, int_z);
-		float v3 = SmoothedNoise3D(int_x, int_y+1, int_z);
-		float v4 = SmoothedNoise3D(int_x+1, int_y+1, int_z);
+		double v1 = SmoothedNoise3D(int_x, int_y, int_z);
+		double v2 = SmoothedNoise3D(int_x+1, int_y, int_z);
+		double v3 = SmoothedNoise3D(int_x, int_y+1, int_z);
+		double v4 = SmoothedNoise3D(int_x+1, int_y+1, int_z);
 		
-		float v5 = SmoothedNoise3D(int_x, int_y, int_z+1);
-		float v6 = SmoothedNoise3D(int_x+1, int_y, int_z+1);
-		float v7 = SmoothedNoise3D(int_x, int_y+1, int_z+1);
-		float v8 = SmoothedNoise3D(int_x+1, int_y+1, int_z+1);
+		double v5 = SmoothedNoise3D(int_x, int_y, int_z+1);
+		double v6 = SmoothedNoise3D(int_x+1, int_y, int_z+1);
+		double v7 = SmoothedNoise3D(int_x, int_y+1, int_z+1);
+		double v8 = SmoothedNoise3D(int_x+1, int_y+1, int_z+1);
 
-		float i1 = cosine_interpolation(v1, v2, frac_x);
-		float i2 = cosine_interpolation(v3, v4, frac_x);
-		float i3 = cosine_interpolation(v5, v6, frac_x);
-		float i4 = cosine_interpolation(v7, v8, frac_x);
+		double i1 = cosine_interpolation(v1, v2, frac_x);
+		double i2 = cosine_interpolation(v3, v4, frac_x);
+		double i3 = cosine_interpolation(v5, v6, frac_x);
+		double i4 = cosine_interpolation(v7, v8, frac_x);
 
-		float ii1 = cosine_interpolation(i1, i2, frac_y);
-		float ii2 = cosine_interpolation(i3, i4, frac_y);
+		double ii1 = cosine_interpolation(i1, i2, frac_y);
+		double ii2 = cosine_interpolation(i3, i4, frac_y);
 
 		return cosine_interpolation(ii1, ii2, frac_z);
 	}
 
-	float Noise::PerlinNoise3D(float x, float y, float z)
+	double Noise::PerlinNoise3D(double x, double y, double z)
 	{
-		float total = 0;
-		float p = m_persistence;
-		
-		for (int i = 0; i < m_max_octaves; i++)
-		{
-			float freq = powf(2, (float)i);
-			float amp = powf(p, (float)i);
+		return impl->m_perlin.GetValue(x, y, z);
+		//double total = 0;
+		//double p = m_persistence;
+		//
+		//for (int i = 0; i < m_max_octaves; i++)
+		//{
+		//	double freq = pow(2, (double)i);
+		//	double amp = pow(p, (double)i);
 
-			total += InterpolatedNoise3D(x * freq, y * freq, z * freq) * amp;
-		}		
-		return total;
+		//	total += InterpolatedNoise3D(x * freq, y * freq, z * freq) * amp;
+		//}		
+		//return total;
 	}
 
 	void Noise::SetOctavesCount(int count)
 	{
-		m_max_octaves = count;
+		impl->m_perlin.SetOctaveCount(count);
 	}
 
-	void Noise::SetPersistance(float value)
+	void Noise::SetPersistance(double value)
 	{
-		m_persistence = value;
+		impl->m_perlin.SetPersistence(value);
 	}
 
 	int Noise::GetOctavesCount() const
 	{
-		return m_max_octaves;
+		return impl->m_perlin.GetOctaveCount();
 	}
 
-	float Noise::GetPersistance() const
+	double Noise::GetPersistance() const
 	{
-		return m_persistence;
+		return impl->m_perlin.GetPersistence();
+	}
+
+	void Noise::GenerateHeightMap(double offset_x, double offset_y, double dim_x, double dim_y, int width, int height, float* data)
+	{
+		utils::NoiseMap heightMap;
+		utils::NoiseMapBuilderPlane heightMapBuilder;
+		heightMapBuilder.SetSourceModule(impl->m_perlin);
+		heightMapBuilder.SetDestNoiseMap(heightMap);
+		heightMapBuilder.SetDestSize(width, height);
+		heightMapBuilder.SetBounds(offset_x, offset_x + dim_x, offset_y, offset_y + dim_y);
+		heightMapBuilder.Build();
+	
+		memcpy(data, heightMap.GetSlabPtr(), width*height*sizeof(float));
+
 	}
 }

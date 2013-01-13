@@ -1,45 +1,50 @@
 #ifndef _H_PUNK_PERLIN_NOISE
 #define _H_PUNK_PERLIN_NOISE
 
+#include <memory>
 #include "../config.h"
 #include "random.h"
 
 namespace Math
 {
+	struct NoiseImpl;
+
 	class PUNK_ENGINE Noise
 	{
-		int m_max_octaves;
-		float m_persistence;
-		Random m_rnd;
 	public:
 
 		Noise();
 		Noise(unsigned seed);
 
 		void SetOctavesCount(int value);
-		void SetPersistance(float value);
+		void SetPersistance(double value);
 		int GetOctavesCount() const;
-		float GetPersistance() const;
+		double GetPersistance() const;
 
-		float Noise1D(int x);
-		float SmoothedNoise1D(int x);
-		float InterpolatedNoise1D(float x);
-		float PerlinNoise1D(float x);
+		double Noise1D(int x);
+		double SmoothedNoise1D(int x);
+		double InterpolatedNoise1D(double x);
+		double PerlinNoise1D(double x);
 
-		float Noise2D(int x, int y);
-		float SmoothedNoise2D(int x, int y);
-		float InterpolatedNoise2D(float x, float y);
-		float PerlinNoise2D(float x, float y);
+		double Noise2D(int x, int y);
+		double SmoothedNoise2D(int x, int y);
+		double InterpolatedNoise2D(double x, double y);
+		double PerlinNoise2D(double x, double y);
 
-		float Noise3D(int x, int y, int z);
-		float SmoothedNoise3D(int x, int y, int z);
-		float InterpolatedNoise3D(float x, float y, float z);
-		float PerlinNoise3D(float x, float y, float z);
+		double Noise3D(int x, int y, int z);
+		double SmoothedNoise3D(int x, int y, int z);
+		double InterpolatedNoise3D(double x, double y, double z);
+		double PerlinNoise3D(double x, double y, double z);
 
-		float Noise4D(int x, int y, int z, int w);
-		float SmoothedNoise4D(int x, int y, int z, int w);
-		float InterpolatedNoise4D(float x, float y, float z, float w);
-		float PerlinNoise4D(float x, float y, float z, float w);
+		double Noise4D(int x, int y, int z, int w);
+		double SmoothedNoise4D(int x, int y, int z, int w);
+		double InterpolatedNoise4D(double x, double y, double z, double w);
+		double PerlinNoise4D(double x, double y, double z, double w);
+
+		void GenerateHeightMap(double offset_x, double offset_y, double dim_x, double dim_y, int width, int height, float* data);
+
+	private:		
+		std::auto_ptr<NoiseImpl> impl;
 	};
 }
 
