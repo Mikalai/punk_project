@@ -54,6 +54,18 @@ namespace System
 		void WriteReal64(double value);
 		void WriteBuffer(const void* buffer, int size);
 
+		template<typename T>
+		T* begin() { return reinterpret_cast<T*>(m_buffer); }
+		
+		template<typename T>
+		const T* begin() const { return reinterpret_cast<const T*>(m_buffer); }
+
+		template<typename T>
+		T* end() { return reinterpret_cast<T*>(m_buffer) + m_size / sizeof(T); }
+
+		template<typename T>
+		const T* end() const { return reinterpret_cast<const T*>(m_buffer) + m_size / sizeof(T); }
+
 	private:
 		void Resize(unsigned new_size);
 		void WriteData(const void* data, unsigned size);	
