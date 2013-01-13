@@ -16,7 +16,7 @@ namespace Math
 	T cosine_interpolation(const T& a, const T& b, const K& value)
 	{
 		K t = value * PI;
-		K tt = (K(1) - cosf(t)) * 0.5f;
+		K tt = (K(1) - cos(t)) * 0.5f;
 		return a*(K(1)-tt) + b*tt;
 	}
 
