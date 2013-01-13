@@ -1,7 +1,6 @@
 #include "noise.h"
 #include "constants.h"
 #include "interpolation.h"
-#include "random.h"
 
 namespace Math
 {
@@ -9,10 +8,13 @@ namespace Math
 	{
 	}
 
-	float Noise::Noise1D(int x)
+	Noise::Noise(unsigned seed) : m_persistence(0.25), m_max_octaves(4), m_rnd(seed)
 	{
-		Random rnd;
-		return rnd.Uniform(x, 0.0f, 1.0f);
+	}
+
+	float Noise::Noise1D(int x)
+	{		
+		return m_rnd.Uniform(x, 0.0f, 1.0f);
 	}
 
 	float Noise::SmoothedNoise1D(int x)

@@ -1,13 +1,20 @@
 #include "math_error.h"
 #include "random.h"
+#include <time.h>
 #include <stdlib.h>
 
 namespace Math
 {
-	Random::Random() : m_x(1)
+	Random::Random()
 	{
+		time_t t;
+		time(&t);
+		m_x = t;
 	};
 
+	Random::Random(unsigned seed) : m_x(seed)
+	{
+	}
 
 	float Random::UniformNormalized(int x)
 	{		

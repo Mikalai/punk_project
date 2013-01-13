@@ -2,6 +2,7 @@
 #define _H_PUNK_PERLIN_NOISE
 
 #include "../config.h"
+#include "random.h"
 
 namespace Math
 {
@@ -9,9 +10,11 @@ namespace Math
 	{
 		int m_max_octaves;
 		float m_persistence;
-
+		Random m_rnd;
 	public:
+
 		Noise();
+		Noise(unsigned seed);
 
 		void SetOctavesCount(int value);
 		void SetPersistance(float value);
