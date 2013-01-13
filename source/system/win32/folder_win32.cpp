@@ -1,4 +1,5 @@
 #ifdef _WIN32
+#include "../logger.h"
 #include "../../string/string.h"
 #include "folder_win32.h"
 
@@ -8,12 +9,31 @@ namespace System
 	{
 	}
 
+	Folder::~Folder()
+	{
+		Close();
+	}
+
 	bool Folder::Open(const System::string& name)
 	{
 		wchar_t buf[2048];
 		GetCurrentDirectory(2048, buf);
 		prevFolder = buf;
-		return SetCurrentDirectory(name.Data()) == TRUE;
+		if (SetCurrentDirectory(name.Data()) == TRUE)
+		{
+			return true;
+		}
+
+		//	try to create
+		if (CreateDirectory(name.Data(), 0) != 0)
+		{
+			if (SetCurrentDirectory(name.Data()) == TRUE)
+			{
+				return true;
+			}
+		}
+	
+		return (out_error() << "Can't open folder " << name << std::endl, false);
 	}
 
 	bool Folder::IsContain(const System::string& name) const

@@ -19,6 +19,7 @@ namespace System
 		System::string prevFolder;
 	public:
 		Folder();
+		~Folder();
 		bool IsContain(const System::string&) const;
 		std::list<System::string> ListAllItems();
 		bool Open(const System::string& name);    
