@@ -66,7 +66,7 @@ protected:
             column_count = columns;
             row_count = rows;
             m = new T[column_count*row_count];
-            memset(m, 0, column_count*row_count*sizeof(T));
+            //memset(m, 0, column_count*row_count*sizeof(T));
         }
 
         ~Rep()
