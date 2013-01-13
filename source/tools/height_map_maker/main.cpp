@@ -1,117 +1,138 @@
-#include <iostream>
-#include <fstream>
-#include <tchar.h>
-#include "../utility/model/punk_scene_loader.h"
-#include "../system/binary_file.h"
-#include "../system/error.h"
-#include "../images/images.h"
+#include "../../punk_engine.h"
+#include <algorithm>
 
-using namespace Math;
-
-unsigned char convert(float min_z, float max_z, float z)
+void GenerateHeightMap(int argc, char* argv[])
 {
-	return (unsigned char)((z - min_z) / (max_z - min_z) * 255.0f);
+	int dim = 1024;
+	int size = 256;
+	int blocks = 1;
+	int seed = 1;
+	float height_scale = 1000;
+	Math::vec2 origin(0,0);
+	System::string name(L"test_map");
+
+	for (int i = 2; i < argc; ++i)
+	{
+		if (!strcmp(argv[i], "/blocks"))
+		{
+			blocks = atoi(argv[++i]);
+		}
+		else if (!strcmp(argv[i], "/size"))
+		{
+			size = atoi(argv[++i]);
+		}
+		else if (strcmp(argv[i], "/seed"))
+		{
+			seed = atoi(argv[++i]);
+		}
+		else if (strcmp(argv[i], "/name"))
+		{
+			name = System::string(argv[++i]);
+		}
+	}
+
+	float scale = 2;
+
+	System::string path = System::Environment::Instance()->GetMapFolder() + name + L"\\";
+	System::Folder f;
+	if (!f.Open(path))
+	{
+		out_error() << "Can't open folder " << path << std::endl;
+		return;
+	}
+
+	Virtual::Terrain terrain;
+	terrain.SetNumBlocks(blocks);
+	terrain.SetBlockScale((float)size / (float)dim);
+	terrain.SetHeightScale(height_scale);
+	terrain.SetOrigin(origin);	
+	
+	System::Buffer data(size*size*sizeof(float));
+	data.SetPosition(size*size*sizeof(float));
+	// iterate through each block
+	for (int y_block = 0; y_block < blocks; ++y_block)
+	{
+		for (int x_block = 0; x_block < blocks; ++x_block)
+		{
+			Virtual::TerrainCell* cell = terrain.GetCell(x_block, y_block);
+			//	create raw file
+			System::string filename_raw = System::string::Format(L"%d_%d.raw", x_block, y_block);
+			System::string filename_png = System::string::Format(L"%d_%d.png", x_block, y_block);
+			System::string name = System::string::Format(L"cell_%d_%d", x_block, y_block);
+
+			ImageModule::GrayImage image;
+			image.SetSize(size, size);
+
+			Math::Noise noise(1);			
+			noise.GenerateHeightMap(x_block * scale, y_block * scale, scale, scale, size, size, (float*)data.StartPointer());
+
+			//noise.SetPersistance(1.0/16.0);
+			//noise.SetOctavesCount(8);
+			
+			auto minmax = std::minmax_element(data.begin<float>(), data.end<float>());
+			auto minv = *minmax.first;
+			auto maxv = *minmax.second;
+
+			System::BinaryFile::Save(filename_raw, data);
+	
+			////	normalize
+			
+			std::transform(data.begin<float>(), data.end<float>(), data.begin<float>(), [&maxv, &minv] (float v) -> float 
+			{ 				
+				return (v - minv) / (maxv - minv);
+			});
+
+			///*std::transform(data.begin(), data.end(), data.begin(), [&maxv, &minv] (float v) -> float 
+			//{ 
+			//	float t = v;
+			//	return std::min(1.0f, std::max(0.0f, t));
+			//});*/
+
+			//	copy to image
+			for (int y = 0; y < size; ++y)
+			{
+				for (int x = 0; x < size; ++x)
+				{
+					float v = *(data.begin<float>() + x + y*size);
+					if (v < 0 || v > 1)
+						std::cout << v << ' ';
+
+					image.SetPixelComponent(x, y, 0, 255.0 * v);
+				}
+			}
+
+			ImageModule::Exporter exporter;
+			exporter.Export(filename_png, image);
+
+			cell->SetLocation(Math::ivec2(x_block, y_block));
+			cell->SetBaseHeight(0);
+			cell->SetName(name);
+			cell->SetRawFile(filename_raw);
+		}
+	}
+		
+	std::wofstream stream("map.description", std::ios_base::binary);
+	stream << terrain.ToString().Data();
+	stream.close();
+
+	std::ofstream stream2("map2.description", std::ios_base::binary);
+	terrain.Save(stream2);
+	stream2.close();
+
+	f.Close();
 }
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-	if (argc != 4)
+	if (argc < 2)
 	{
-		std::cout << "Error: cmd = *.exe terrain.pmd size output.png" << std::endl << "Example: *.exe terrain.pmd 512 terrain.png" << std::endl;
-		return -1;
+		out_error() << "Should be *.exe [command], \n where command is -gen, -stitch" << std::endl;
+		return 0;
 	}
-
-	try
+	
+	if (!strcmp(argv[1], "-gen"))
 	{
-		Utility::Model mdl;
-		std::cout << "Loading model...";
-		mdl.LoadPunkModel(System::string(argv[1]));	
-		std::cout << "Ok" << std::endl << "Building OctTree...";
-		mdl.BuildOctTree();
-		std::cout << "Ok" << std::endl;
-
-		vec3 min = mdl.m_bbox.Min();
-		vec3 max = mdl.m_bbox.Max();
-		unsigned size = atoi(argv[2]);
-		if (size <= 0)
-		{
-			std::cout << "Bad size" << std::endl;
-		}
-		float min_z = min.Z() - 1;
-		float max_z = max.Z() + 1;
-
-		float dx = (max.X() - min.X()) / (float)(size);
-		float dy = (max.Y() - min.Y()) / (float)(size);
-		
-		float true_min = max_z;
-		float true_max = min_z;
-		float* points = new float[size*size];		
-		for (int iy = 0; iy < size; ++iy)
-		{
-			//if (iy != 63)
-			//	continue;
-			//std::cout << "Current line: " << iy << std::endl;
-			for (int ix = 0; ix < size; ++ix)
-			{				/*
-				if (ix == 65)
-					ix = ix;*/
-			//	std::cout << "Current row: " << ix;
-				float x = min.X() + dx * (float)(ix);
-				float y = min.Y() + dy * (float)(iy);
-				std::vector<vec3> res;
-				if (mdl.IntersectWithRay(vec3(x, y, min_z), vec3(x, y, max_z), res))
-				{
-					//std::cout <<" Points: " << res.size() << std::endl;
-					points[iy*size+ix] = res[0].Z();
-					if (true_min > res[0].Z())
-						true_min = res[0].Z();
-					if (true_max < res[0].Z())
-						true_max = res[0].Z();
-				}
-				else
-				{
-					std::cout << " NO POINTS " << ix << std::endl;
-					points[iy*size+ix] = true_min;
-				}
-				
-			}
-		}
-
-		ImageModule::GrayImage image;
-		image.SetSize(size, size);
-
-		for (int iy = 0; iy < size; ++iy)
-		{
-			for (int ix = 0; ix < size; ++ix)
-			{
-				*image.GetPixelComponent(ix, iy, 0) = convert(true_min, true_max, points[iy*size+ix]);
-			}
-		}
-
-		ImageModule::Exporter exporter;
-		exporter.Export(System::string(argv[3]), image);
-
-		std::ofstream stream("map.desc");
-		stream << "map " << argv[3] << std::endl;
-		stream << "size " << max.X() - min.X() << " " << max.Y() - min.Y() << std::endl;
-		stream << "height " << min.Z() << " " << max.Z() << std::endl;
-		stream.close();
-	}
-	catch(System::SystemError& error)
-	{
-		_tprintf(L"%s\n", error.Message().Data());
-	}
-	catch(wchar_t* l)
-	{
-		std::cout << "SDGHSDFGSDF" << l << std::endl;		
-	}
-	catch(char* l)
-	{
-		std::cout << "FFFFFFFFFFFFF" << l << std::endl;
-	}
-	catch(...)
-	{
-		std::cout << "Everything just died..." << std::endl;
+		GenerateHeightMap(argc, argv);
 	}
 
 	return 0;
