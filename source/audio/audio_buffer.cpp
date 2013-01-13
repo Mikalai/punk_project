@@ -2,7 +2,7 @@
 #include <vector>
 #include <ostream>
 #include <istream>
-#include <openal\Framework.h>
+#include <openal/al.h>
 
 #include "../system/environment.h"
 
@@ -12,20 +12,20 @@ namespace Audio
 {
 	void OnInit()
 	{
-		ALFWInit();
+		//ALFWInit();
 
-		if (!ALFWInitOpenAL())
-		{
-			out_error() << L"Failed to initialize OpenAL" << std::endl;
-			ALFWShutdown();
-			return;
-		}
+		//if (!ALFWInitOpenAL())
+		//{
+		//	out_error() << L"Failed to initialize OpenAL" << std::endl;
+		//	ALFWShutdown();
+		//	return;
+		//}
 	}
 
 	void OnDestroy()
 	{
-		ALFWShutdownOpenAL();
-		ALFWShutdown();
+		//ALFWShutdownOpenAL();
+		//ALFWShutdown();
 	}
 
 	AudioBuffer::AudioBuffer()
@@ -43,7 +43,7 @@ namespace Audio
 		if (m_buffer != 0)
 		{
 			alDeleteBuffers(1, &m_buffer);
-			CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
+//			CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
 			m_buffer = 0;
 		}
 	}
@@ -52,7 +52,7 @@ namespace Audio
 	{
 		Clear();
 		alGenBuffers(1, &m_buffer);
-		CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
+//		CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
 	}
 
 	bool AudioBuffer::Save(std::ostream& stream) const
@@ -83,13 +83,13 @@ namespace Audio
 	{			
 		alGenBuffers(1, &m_buffer);
 
-		if (!ALFWLoadWaveToBuffer(stream, m_buffer))
-		{
-			out_error() << L"Failed to load AudioBuffer file from stream" << std::endl;			
-			alDeleteBuffers(1, &m_buffer);
-			return false;
-		}
-		return true;
+		//if (!ALFWLoadWaveToBuffer(stream, m_buffer))
+		//{
+		//	out_error() << L"Failed to load AudioBuffer file from stream" << std::endl;			
+		//	alDeleteBuffers(1, &m_buffer);
+		//	return false;
+		//}
+		return false;
 	}
 
 	AudioBuffer* AudioBuffer::CreateFromFile(const System::string& path)

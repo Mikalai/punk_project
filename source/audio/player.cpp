@@ -1,7 +1,8 @@
+#include <openal/al.h>
 #include "player.h"
 #include "audio_buffer.h"
 
-#include <openal\Framework.h>
+//#include <openal\Framework.h>
 
 namespace Audio
 {
@@ -23,7 +24,7 @@ namespace Audio
 	{
 		Clear();
 		alGenSources(1, &m_source);
-		CHECK_ALERROR("alGenSources(1, &m_source); failed");
+		//CHECK_ALERROR("alGenSources(1, &m_source); failed");
 		//m_source = 0;
 	}	
 
@@ -33,9 +34,9 @@ namespace Audio
 		if (m_source != 0)
 		{
 			alSourceStop(m_source);
-			CHECK_ALERROR("alSourceStop(m_source); failed");
+			//CHECK_ALERROR("alSourceStop(m_source); failed");
 			alDeleteSources(1, &m_source);
-			CHECK_ALERROR("alDeleteSources(1, &m_source); failed");
+			//CHECK_ALERROR("alDeleteSources(1, &m_source); failed");
 		}
 	}
 
@@ -52,13 +53,13 @@ namespace Audio
 		
 		// Attach Source to Buffer
 		alSourcei(m_source, AL_BUFFER, m_sound->m_buffer);
-		CHECK_ALERROR("alSourcei(m_source, AL_BUFFER, m_sound->m_buffer); failed");
+		//CHECK_ALERROR("alSourcei(m_source, AL_BUFFER, m_sound->m_buffer); failed");
 	}
 
 	bool Player::IsPlaying()
 	{
 		alGetSourcei(m_source, AL_SOURCE_STATE, &m_state);
-		CHECK_ALERROR("alGetSourcei(m_source, AL_SOURCE_STATE, &m_state); failed");
+		//CHECK_ALERROR("alGetSourcei(m_source, AL_SOURCE_STATE, &m_state); failed");
 		return m_state == AL_PLAYING;
 	}
 
@@ -70,27 +71,27 @@ namespace Audio
 			if (m_loop)
 			{
 				alSourcei(m_source, AL_LOOPING, AL_TRUE);
-				CHECK_ALERROR("alSourcei(m_source, AL_LOOPING, AL_TRUE); failed");
+				//CHECK_ALERROR("alSourcei(m_source, AL_LOOPING, AL_TRUE); failed");
 			}
 			else
 			{
 				alSourcei(m_source, AL_LOOPING, AL_FALSE);
-				CHECK_ALERROR("alSourcei(m_source, AL_LOOPING, AL_FALSE); failed");
+				//CHECK_ALERROR("alSourcei(m_source, AL_LOOPING, AL_FALSE); failed");
 			}
 		}
 		alSourcePlay(m_source);
-		CHECK_ALERROR("alSourcePlay(m_source); failed");
+		//CHECK_ALERROR("alSourcePlay(m_source); failed");
 	}
 
 	void Player::Stop()
 	{
 		alSourceStop(m_source);
-		CHECK_ALERROR("alSourceStop(m_source); failed");
+		//CHECK_ALERROR("alSourceStop(m_source); failed");
 	}
 
 	void Player::Pause()
 	{
 		alSourcePause(m_source);
-		CHECK_ALERROR("alSourcePause(m_source); failed");
+		//CHECK_ALERROR("alSourcePause(m_source); failed");
 	}
 }

@@ -2,7 +2,7 @@
 #include "../internal_images/image.h"
 #include "../../string/string.h"
 #include "../../system/error.h"
-#include <png.h>
+#include <png/png.h>
 
 namespace ImageModule
 {

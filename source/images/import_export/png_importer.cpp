@@ -6,7 +6,7 @@
 
 #include "png_importer.h"
 #include "../internal_images/image_impl.h"
-#include <png.h>
+#include <png/png.h>
 #include <stdio.h>
 
 namespace ImageModule

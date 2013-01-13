@@ -6,8 +6,8 @@
 
 #include "jpg_importer.h"
 #include "../internal_images/image_impl.h"
-#include <jpeglib.h>
-#include <jerror.h>
+#include <jpeg/jpeglib.h>
+#include <jpeg/jerror.h>
 #include <stdio.h>
 
 namespace ImageModule

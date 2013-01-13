@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "png_file.h"
 #include "error.h"
-#include <png.h>
+#include <png/png.h>
 
 namespace ImageModule
 {
