@@ -115,9 +115,6 @@
     <Filter Include="virtual\skinning">
       <UniqueIdentifier>{0f5b00fc-beca-45f6-84d3-80cc1195e6e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="audio\openal">
-      <UniqueIdentifier>{76b43651-9659-4603-a02c-b779f26d5d03}</UniqueIdentifier>
-    </Filter>
     <Filter Include="utility\model">
       <UniqueIdentifier>{2fdfc604-0be1-4883-8ab9-63026cf387ec}</UniqueIdentifier>
     </Filter>
@@ -168,6 +165,9 @@
     </Filter>
     <Filter Include="scene">
       <UniqueIdentifier>{19fc9b71-bb19-47d2-bce4-48743a467d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\terrain">
+      <UniqueIdentifier>{68c2494d-42eb-4008-a3b2-919aae7219c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -997,36 +997,6 @@
     <ClInclude Include="..\..\..\source\virtual\animation\object_animation_mixer.h">
       <Filter>virtual\animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\al.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\alc.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\aldlist.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\CWaves.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\efx.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\efx-creative.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\EFX-Util.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\Framework.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\LoadOAL.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\openal\xram.h">
-      <Filter>audio\openal</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\animation\anim.h">
       <Filter>virtual\animation</Filter>
     </ClInclude>
@@ -1435,6 +1405,33 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\gui\gui.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\noiseutils.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_data.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_manager.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_view.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_streamer.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_observer.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_cell.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\module.h">
+      <Filter>virtual\terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1963,18 +1960,6 @@
     <ClCompile Include="..\..\..\source\system\storable.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\audio\openal\aldlist.cpp">
-      <Filter>audio\openal</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\audio\openal\CWaves.cpp">
-      <Filter>audio\openal</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\audio\openal\Framework.cpp">
-      <Filter>audio\openal</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\audio\openal\LoadOAL.cpp">
-      <Filter>audio\openal</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\utility\fonts\font_builder.cpp">
       <Filter>utility\fonts</Filter>
     </ClCompile>
@@ -2224,6 +2209,30 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\scene\bounding_volume_updater.cpp">
       <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\noiseutils.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_observer.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_streamer.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_view.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_data.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_manager.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_cell.cpp">
+      <Filter>virtual\terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
