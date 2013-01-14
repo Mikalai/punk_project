@@ -6,13 +6,14 @@
 
 namespace System
 {
-	class PUNK_ENGINE Semaphore : public OsSync
+	class PUNK_ENGINE Semaphore : public OsHandle
 	{
 	public:		
 		bool Create(long max_count);
 		bool Destroy();
 		bool Release(long count = 1);
 		bool Wait(long time = INFINITE);
+		~Semaphore();
 	};
 }
 

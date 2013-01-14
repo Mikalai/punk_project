@@ -4,6 +4,11 @@
 
 namespace System
 {
+	Semaphore::~Semaphore()
+	{
+		CloseHandle(Handle());
+	}
+
 	bool Semaphore::Create(long max_count)
 	{
 		if (Handle())
