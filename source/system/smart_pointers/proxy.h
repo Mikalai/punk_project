@@ -2,6 +2,8 @@
 #define _H_PUNK_SYSTEM_POINTER_PROXY
 
 #include <assert.h>
+#include "../types/base_types.h"
+#include "../concurrency/atomic.h"
 
 namespace System
 {
@@ -11,7 +13,7 @@ namespace System
 		struct Impl
 		{
 			T* m_data;
-			int m_count;
+			System::int32 m_count;
 
 			Impl(T* data) : m_data(data), m_count(1) {}
 			Impl() : m_data(new T), m_count(1) {}
@@ -42,7 +44,7 @@ namespace System
 		{		
 			m_impl = v.m_impl;
 			if (m_impl)
-				m_impl->m_count++;
+				System::AtomicIncrement32(&m_impl->m_count);
 		}
 
 		template<class U>
@@ -55,7 +57,7 @@ namespace System
 				{
 					m_impl = (Impl*)(v.m_impl);
 					if (m_impl)
-						m_impl->m_count++;
+						System::AtomicIncrement32(&m_impl->m_count);
 				}
 				else
 					m_impl = 0;
@@ -110,7 +112,7 @@ namespace System
 
 		void Release()
 		{		
-			if (m_impl && --m_impl->m_count == 0)
+			if (m_impl && System::AtomicDecrement32(&m_impl->m_count) == 0)
 			{	
 				delete m_impl; 				
 			}
