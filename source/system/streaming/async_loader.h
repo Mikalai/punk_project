@@ -11,6 +11,8 @@
 
 namespace System
 {
+	enum AsynResults { RESULT_FAILED, RESULT_TRY_AGAIN, RESULT_OK };
+
 	class PUNK_ENGINE AsyncLoader
 	{
 	public:
@@ -19,7 +21,8 @@ namespace System
 
 		int AddWorkItem(AbstractDataLoader* loader, AbstractDataProcessor* processor, unsigned* result);		
 		unsigned FileIOThreadProc();
-		unsigned ProcessingThreadProc();	
+		unsigned ProcessingThreadProc();
+		unsigned MainThreadProc(unsigned num_to_process);
 
 		static AsyncLoader* Instance();
 		static void Destroy();

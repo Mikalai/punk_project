@@ -51,7 +51,6 @@ namespace System
 		request.m_loader = loader;		
 		request.m_processor = processor;
 		request.m_result = result;
-		request.m_lock_flag = false;
 		request.m_valid_flag = true;
 		request.m_task = ResourceRequest::LOAD;
 
@@ -132,7 +131,7 @@ namespace System
 				//	unlock this resource, seems that it means that data
 				//	is in device memory or error was now, and we don't need request to exist any
 				//	more
-				request.m_lock_flag = false;
+				request.m_task = ResourceRequest::UNLOCK;
 
 				//	add request to the main thread queue
 				m_render_queue_mutex.Lock();
@@ -186,8 +185,8 @@ namespace System
 			}
 			
 			//	lock request, that means we are gonna copy data from 
-			//	host to device in the render thread
-			request.m_lock_flag = true;
+			//	host to device in the render thread (main thread)
+			request.m_task = ResourceRequest::LOCK;
 
 			//	add request to the render thread queue
 			m_render_queue_mutex.Lock();
@@ -198,6 +197,83 @@ namespace System
 		//	mark thread as finished
 		m_process_done_flag = true;
 		return m_process_done_flag;
+	}
+
+	/**
+	*	This is called from main thread.
+	*/
+	unsigned AsyncLoader::MainThreadProc(unsigned num_to_process)
+	{
+		ResourceRequest request;
+		m_render_queue_mutex.Lock();
+		unsigned max_count = m_render_queue.size();
+		m_render_queue_mutex.Unlock();
+
+		for (unsigned i = 0; i < num_to_process && i < max_count; ++i)
+		{
+			m_render_queue_mutex.Lock();
+			request = m_render_queue.front();
+			m_render_queue.pop_back();
+			m_render_queue_mutex.Unlock();
+
+			//	if command is to lock the object we will try to do that
+			if (ResourceRequest::LOCK == request.m_task)
+			{
+				if (request.m_valid_flag)
+				{
+					//	try to lock is request is still valid
+					unsigned code = request.m_processor->LockDeviceObject();
+					//	if there was not enough resource now, try again later
+					if (RESULT_TRY_AGAIN == code)
+					{
+						m_render_queue_mutex.Lock();
+						m_render_queue.push_back(request);
+						m_render_queue_mutex.Unlock();
+					}
+
+					//	if it was a complete fail, just mark this request is not valid
+					if (RESULT_FAILED == code)
+					{
+						request.m_valid_flag = false;
+					}
+				}
+
+				//	it doesn't mater what is the validity state of the resource
+				//	we have to push it through the datapah pipeling
+
+				//	operation for io thread to copy data to device
+				request.m_task = ResourceRequest::COPY_TO_DEVICE;
+				m_io_queue_mutex.Lock();
+				m_io_queue.push_back(request);
+				m_io_queue_mutex.Unlock();
+
+				//	allow io thread to do the job
+				m_io_thread_semaphore.Release();
+			}
+			//	if task is unlock, it means that we have finished loading
+			//	and cooking resource
+			else if (ResourceRequest::UNLOCK == request.m_task)
+			{				
+				if (request.m_valid_flag)
+				{
+					//	if object is valid, unloc resource
+					if (!request.m_processor->UnlockDeviceObject())
+					{
+						request.m_valid_flag = false;
+					}
+				}
+
+				//	if request is already unlocked and in the main thread, it means
+				//	its loading, copying and all the other staff complete
+
+				delete request.m_loader;
+				request.m_loader = nullptr;
+				delete request.m_processor;
+				request.m_processor = nullptr;
+				*request.m_result = request.m_valid_flag;	//	OK
+			}
+		}
+		return 0;
 	}
 
 	/**
