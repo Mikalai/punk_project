@@ -2,13 +2,19 @@
 #define _H_PUNK_THREAD_WIN32
 
 #include "../../../config.h"
+#include "os_handle.h"
 
 namespace System
 {
-	class PUNK_ENGINE Thread
+	class PUNK_ENGINE Thread : public OsHandle
 	{
 	public:
-	private:
+		bool Create(unsigned (__stdcall *thread_func)(void*), void* data = 0, unsigned stack = 4096); 
+		bool Join();
+		bool Resume();
+		bool Destroy();
+		//bool Terminate();
+		~Thread();
 	};
 }
 
