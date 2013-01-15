@@ -8,11 +8,11 @@ namespace System
 
 	struct ResourceRequest
 	{
-		enum Task { LOAD, COPY_TO_DEVICE };
+		enum Task { LOAD, COPY_TO_DEVICE, LOCK, UNLOCK };
 		AbstractDataLoader* m_loader;
 		AbstractDataProcessor* m_processor;
 		unsigned* m_result;
-		bool m_lock_flag;
+		//bool m_lock_flag;
 		bool m_valid_flag;
 		Task m_task;
 		void (*on_end_callback)(void*);
