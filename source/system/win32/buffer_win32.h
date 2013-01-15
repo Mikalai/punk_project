@@ -54,6 +54,8 @@ namespace System
 		void WriteReal64(double value);
 		void WriteBuffer(const void* buffer, int size);
 
+		void* Release();
+
 		template<typename T>
 		T* begin() { return reinterpret_cast<T*>(m_buffer); }
 		

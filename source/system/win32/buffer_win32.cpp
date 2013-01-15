@@ -244,6 +244,15 @@ namespace System
 		WriteData(buffer, size);
 	}
 
+	void* Buffer::Release()
+	{
+		void* result = m_buffer;
+		m_size = 0;
+		m_current = nullptr;
+		m_buffer = nullptr;
+		return result;
+	}
+
 	void Buffer::Resize(unsigned new_size)
 	{
 		unsigned char* tmp = new unsigned char[new_size];
