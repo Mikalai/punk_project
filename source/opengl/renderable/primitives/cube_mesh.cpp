@@ -31,35 +31,35 @@ namespace OpenGL
 		std::vector<unsigned> ib(36);
 
 		vb[0].m_position.Set(-1.0f, -1.0f, -1.0f, 1.0f);
-		vb[0].m_normal.Set( -0.577349, -0.577349, -0.577349, 0);
+		vb[0].m_normal.Set( -0.577349f, -0.577349f, -0.577349f, 0);
 		vb[0].m_texture0.Set(0, 0, 0, 0);
 		
 		vb[1].m_position.Set(-1.0f, 1.0f, -1.0f, 1);
-		vb[1].m_normal.Set(-0.577349,  0.577349, -0.577349, 0);
+		vb[1].m_normal.Set(-0.577349f,  0.577349f, -0.577349f, 0);
 		vb[1].m_texture0.Set(1, 0, 0, 0);
 		
 		vb[2].m_position.Set(1.0f,  1.0f, -1.0f, 1);
-		vb[2].m_normal.Set( 0.577349,  0.577349, -0.577349, 0);
+		vb[2].m_normal.Set( 0.577349f,  0.577349f, -0.577349f, 0);
 		vb[2].m_texture0.Set(1, 1, 0, 0);
 
 		vb[3].m_position.Set(1.0f, -1.0f, -1.0f, 1);
-		vb[3].m_normal.Set(0.577349, -0.577349, -0.577349, 0);
+		vb[3].m_normal.Set(0.577349f, -0.577349f, -0.577349f, 0);
 		vb[3].m_texture0.Set(0, 1, 0, 0);
 
 		vb[4].m_position.Set(-1.0f, -1.0f,  1.0f, 1.0f);
-		vb[4].m_normal.Set(-0.577349, -0.577349,  0.577349, 0);
+		vb[4].m_normal.Set(-0.577349f, -0.577349f,  0.577349f, 0);
 		vb[4].m_texture0.Set(0, 0, 0, 0);
 		
 		vb[5].m_position.Set(-1.0f,  1.0f,  1.0f, 1);
-		vb[5].m_normal.Set(-0.577349,  0.577349,  0.577349, 0);
+		vb[5].m_normal.Set(-0.577349f,  0.577349f,  0.577349f, 0);
 		vb[5].m_texture0.Set(1, 0, 0, 0);
 		
 		vb[6].m_position.Set(1.0f,  1.0f,  1.0f, 1);
-		vb[6].m_normal.Set( 0.577349,  0.577349,  0.577349, 0);
+		vb[6].m_normal.Set( 0.577349f,  0.577349f,  0.577349f, 0);
 		vb[6].m_texture0.Set(1, 1, 0, 0);
 
 		vb[7].m_position.Set(1.0f, -1.0f,  1.0f, 1);
-		vb[7].m_normal.Set(0.577349, -0.577349,  0.577349, 0);
+		vb[7].m_normal.Set(0.577349f, -0.577349f,  0.577349f, 0);
 		vb[7].m_texture0.Set(0, 1, 0, 0);
 
 		ib[0] = 4;

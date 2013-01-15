@@ -464,7 +464,7 @@ namespace OpenGL
 
 	bool SimpleRender::Render()
 	{
-		m_time += 0.01;
+		m_time += 0.01f;
 		m_rt->Activate();			
 		if (m_scene.IsValid())
 		{
@@ -501,7 +501,7 @@ namespace OpenGL
 		m_gui_rc.Reset(new RenderContextGUI);
 		m_skin_rc.Reset(new RenderContextSkinning);
 		m_text.Reset(new TextSurface);
-		m_text->SetSize(System::Window::Instance()->GetWidth() * 0.5, System::Window::Instance()->GetHeight()*0.5);
+		m_text->SetSize(int(System::Window::Instance()->GetWidth() * 0.5f), int(System::Window::Instance()->GetHeight()*0.5f));
 		m_gui_render.Reset(new GUIRender);
 	}
 
