@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_SYSTEM_STREAM_ABSTRACT_DATA_LOADER
 #define _H_PUNK_SYSTEM_STREAM_ABSTRACT_DATA_LOADER
 
-#include "../../../config.h"
+#include "../../config.h"
 
 namespace System
 {
