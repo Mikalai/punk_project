@@ -58,7 +58,7 @@ namespace Virtual
 		void* m_data;
 		unsigned size;
 		//	Destination for data. It can be either created or reused
-		System::Proxy<TerrainCell>& m_data;
+		System::Proxy<TerrainCell> m_terrain_cell;
 		//	This is used as cache manager
 		
 	};
