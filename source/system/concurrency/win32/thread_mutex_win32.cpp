@@ -6,10 +6,20 @@ namespace System
 {
 	ThreadMutex::ThreadMutex()
 	{
-		InitializeCriticalSectionAndSpinCount(&m_mutex, 4000);
-	}
+		Create();
+	}	
 
 	ThreadMutex::~ThreadMutex()
+	{
+		Destroy();
+	}
+
+	bool ThreadMutex::Create()
+	{
+		return InitializeCriticalSectionAndSpinCount(&m_mutex, 4000) != FALSE;
+	}
+
+	void ThreadMutex::Destroy()
 	{
 		DeleteCriticalSection(&m_mutex);
 	}

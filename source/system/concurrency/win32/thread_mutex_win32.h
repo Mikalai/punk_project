@@ -13,6 +13,8 @@ namespace System
 		ThreadMutex();
 		~ThreadMutex();
 
+		bool Create();
+		void Destroy();
 		void Lock();
 		bool TryLock();
 		void Unlock();		
