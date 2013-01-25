@@ -27,7 +27,7 @@ namespace System
 
 	bool Thread::Resume()
 	{
-		ResumeThread(Handle()) != (DWORD)-1;
+		return ResumeThread(Handle()) != (DWORD)-1;
 	}
 
 	bool Thread::Destroy()
