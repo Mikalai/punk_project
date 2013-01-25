@@ -200,6 +200,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\cube_mesh.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\grid_object.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\primitive_types.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\renderable.h" />
@@ -296,7 +297,8 @@
     <ClInclude Include="..\..\..\source\opengl\textures\internal_formats.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\texture2d.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\texture2d_impl.h" />
-    <ClInclude Include="..\..\..\source\opengl\textures\textures.h" />
+    <ClInclude Include="..\..\..\source\opengl\textures\module.h" />
+    <ClInclude Include="..\..\..\source\opengl\textures\texture2d_pbo_impl.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\texture_2d_manager.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\texture_context.h" />
     <ClInclude Include="..\..\..\source\opengl\textures\text_surface.h" />
@@ -353,6 +355,7 @@
     <ClInclude Include="..\..\..\source\scene\bone_node.h" />
     <ClInclude Include="..\..\..\source\scene\bounding_volume_updater.h" />
     <ClInclude Include="..\..\..\source\scene\camera_node.h" />
+    <ClInclude Include="..\..\..\source\scene\debug\texture_view_node.h" />
     <ClInclude Include="..\..\..\source\scene\default_visitor.h" />
     <ClInclude Include="..\..\..\source\scene\geometry_node.h" />
     <ClInclude Include="..\..\..\source\scene\light_node.h" />
@@ -364,6 +367,7 @@
     <ClInclude Include="..\..\..\source\scene\scene_graph.h" />
     <ClInclude Include="..\..\..\source\scene\skin_mesh_node.h" />
     <ClInclude Include="..\..\..\source\scene\static_mesh_node.h" />
+    <ClInclude Include="..\..\..\source\scene\terrain_node.h" />
     <ClInclude Include="..\..\..\source\scene\transform_node.h" />
     <ClInclude Include="..\..\..\source\scene\visitor.h" />
     <ClInclude Include="..\..\..\source\string\string.h" />
@@ -375,6 +379,21 @@
     <ClInclude Include="..\..\..\source\system\camera_capture.h" />
     <ClInclude Include="..\..\..\source\system\clock.h" />
     <ClInclude Include="..\..\..\source\system\compound_object.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\atomic.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\module.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\monitor.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\monitor_scope.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\semaphore.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\thread.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\thread_job.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\thread_mutex.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\thread_pool.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\atomic_win32.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\monitor_win32.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\os_handle.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\semaphore_win32.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\thread_mutex_win32.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\thread_win32.h" />
     <ClInclude Include="..\..\..\source\system\config_file.h" />
     <ClInclude Include="..\..\..\source\system\console.h" />
     <ClInclude Include="..\..\..\source\system\decl_property.h" />
@@ -446,17 +465,20 @@
     <ClInclude Include="..\..\..\source\system\stack_trace.h" />
     <ClInclude Include="..\..\..\source\system\state_manager.h" />
     <ClInclude Include="..\..\..\source\system\storable_data.h" />
+    <ClInclude Include="..\..\..\source\system\streaming\async_loader.h" />
+    <ClInclude Include="..\..\..\source\system\streaming\data_processor.h" />
+    <ClInclude Include="..\..\..\source\system\streaming\module.h" />
+    <ClInclude Include="..\..\..\source\system\streaming\resource_request.h" />
     <ClInclude Include="..\..\..\source\system\system.h" />
     <ClInclude Include="..\..\..\source\system\system_clock.h" />
     <ClInclude Include="..\..\..\source\system\template_singletone.h" />
-    <ClInclude Include="..\..\..\source\system\thread.h" />
-    <ClInclude Include="..\..\..\source\system\thread_job.h" />
-    <ClInclude Include="..\..\..\source\system\thread_pool.h" />
     <ClInclude Include="..\..\..\source\system\timer.h" />
     <ClInclude Include="..\..\..\source\system\type.h" />
     <ClInclude Include="..\..\..\source\system\types.h" />
+    <ClInclude Include="..\..\..\source\system\types\base_types.h" />
     <ClInclude Include="..\..\..\source\system\types\list.h" />
     <ClInclude Include="..\..\..\source\system\types\priority_list.h" />
+    <ClInclude Include="..\..\..\source\system\types\win32\base_types_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\assert_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\binary_file_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\buffer_win32.h" />
@@ -476,7 +498,6 @@
     <ClInclude Include="..\..\..\source\system\win32\stack_trace_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\static_array.h" />
     <ClInclude Include="..\..\..\source\system\win32\static_string.h" />
-    <ClInclude Include="..\..\..\source\system\win32\thread_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\timer_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\types_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\window_win32.h" />
@@ -558,10 +579,14 @@
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain.h" />
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain_cell.h" />
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain_data.h" />
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_loader.h" />
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain_manager.h" />
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain_observer.h" />
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_processor.h" />
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain_streamer.h" />
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain_view.h" />
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_view_loader.h" />
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_view_processor.h" />
     <ClInclude Include="..\..\..\source\virtual\texture_faces.h" />
     <ClInclude Include="..\..\..\source\virtual\track_pos.h" />
     <ClInclude Include="..\..\..\source\virtual\virtual.h" />
@@ -685,6 +710,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\cube_mesh.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\grid_object.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\renderable.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.cpp" />
@@ -805,7 +831,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\source\scene\armature_node.cpp" />
-    <ClCompile Include="..\..\..\source\scene\bone_name.cpp" />
+    <ClCompile Include="..\..\..\source\scene\bone_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\bounding_volume_updater.cpp" />
     <ClCompile Include="..\..\..\source\scene\camera_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\default_visitor.cpp" />
@@ -819,11 +845,17 @@
     <ClCompile Include="..\..\..\source\scene\scene_graph.cpp" />
     <ClCompile Include="..\..\..\source\scene\skin_mesh_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\static_mesh_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\terrain_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\transform_node.cpp" />
     <ClCompile Include="..\..\..\source\string\string.cpp" />
     <ClCompile Include="..\..\..\source\string\win32\string_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\clock.cpp" />
     <ClCompile Include="..\..\..\source\system\compound_object.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\thread_job.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\thread_pool.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\win32\semaphore_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\win32\thread_mutex_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\win32\thread_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\events\events.cpp" />
     <ClCompile Include="..\..\..\source\system\events\focused.cpp" />
     <ClCompile Include="..\..\..\source\system\events\idle_event.cpp" />
@@ -862,9 +894,9 @@
     <ClCompile Include="..\..\..\source\system\pool_manager.cpp" />
     <ClCompile Include="..\..\..\source\system\resource_manager_3.cpp" />
     <ClCompile Include="..\..\..\source\system\storable.cpp" />
+    <ClCompile Include="..\..\..\source\system\streaming\async_loader.cpp" />
+    <ClCompile Include="..\..\..\source\system\streaming\data_loader.h" />
     <ClCompile Include="..\..\..\source\system\system_clock.cpp" />
-    <ClCompile Include="..\..\..\source\system\thread_job.cpp" />
-    <ClCompile Include="..\..\..\source\system\thread_pool.cpp" />
     <ClCompile Include="..\..\..\source\system\types\list.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\assert_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\binary_file_win32.cpp" />
@@ -882,7 +914,6 @@
     <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\stack_trace_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\thread_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\window_win32.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\action_desc.cpp" />
@@ -934,10 +965,14 @@
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_cell.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_data.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_loader.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_manager.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_observer.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_processor.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_streamer.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_view.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_view_loader.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_view_processor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\data\opencl\yuy2_to_rgb.cl" />

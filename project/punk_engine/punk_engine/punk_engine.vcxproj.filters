@@ -169,6 +169,27 @@
     <Filter Include="virtual\terrain">
       <UniqueIdentifier>{68c2494d-42eb-4008-a3b2-919aae7219c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\streaming">
+      <UniqueIdentifier>{a76563ad-c294-4094-abcb-f1fbae75794e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\concurrency">
+      <UniqueIdentifier>{aefae30d-ce5d-4fc2-8699-1d2535ec9437}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\concurrency\win32">
+      <UniqueIdentifier>{61533de9-527f-46b0-b0cf-25a79568036e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\concurrency\linux">
+      <UniqueIdentifier>{064a33c7-76b0-43ad-9e13-d8b1a7a8a3d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\types\win32">
+      <UniqueIdentifier>{319ec42d-2843-41f6-8e6c-4b5509335200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\types\linux">
+      <UniqueIdentifier>{678483ba-5a3f-4584-94eb-bf27352152fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\debug">
+      <UniqueIdentifier>{b59ab0de-0a32-4776-ae12-d80c5185c4e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -321,9 +342,6 @@
     <ClInclude Include="..\..\..\source\system\win32\static_string.h">
       <Filter>system\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\thread_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\timer_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
@@ -436,15 +454,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\template_singletone.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\thread.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\thread_job.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\thread_pool.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\timer.h">
@@ -802,9 +811,6 @@
       <Filter>opengl\textures</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\textures\texture2d_impl.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\textures\textures.h">
       <Filter>opengl\textures</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\opengl\win32\driver_parameters_win32.h">
@@ -1433,6 +1439,96 @@
     <ClInclude Include="..\..\..\source\virtual\terrain\module.h">
       <Filter>virtual\terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\system\streaming\module.h">
+      <Filter>system\streaming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\streaming\async_loader.h">
+      <Filter>system\streaming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\streaming\data_processor.h">
+      <Filter>system\streaming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\streaming\resource_request.h">
+      <Filter>system\streaming</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\thread_win32.h">
+      <Filter>system\concurrency\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\monitor.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\monitor_scope.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\thread.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\thread_job.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\thread_pool.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\module.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\semaphore_win32.h">
+      <Filter>system\concurrency\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\thread_mutex_win32.h">
+      <Filter>system\concurrency\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\monitor_win32.h">
+      <Filter>system\concurrency\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\semaphore.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\thread_mutex.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\os_handle.h">
+      <Filter>system\concurrency\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_loader.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\atomic.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\win32\atomic_win32.h">
+      <Filter>system\concurrency\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\types\base_types.h">
+      <Filter>system\types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\types\win32\base_types_win32.h">
+      <Filter>system\types\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_processor.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_view_loader.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\terrain_view_processor.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\debug\texture_view_node.h">
+      <Filter>scene\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\module.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\textures\texture2d_pbo_impl.h">
+      <Filter>opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\terrain_node.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\grid_object.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -1561,9 +1657,6 @@
     <ClCompile Include="..\..\..\source\system\win32\stack_trace_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\thread_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
@@ -1589,12 +1682,6 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\system_clock.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\thread_job.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\thread_pool.cpp">
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\application\application.cpp">
@@ -2198,9 +2285,6 @@
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\cube_mesh.cpp">
       <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\scene\bone_name.cpp">
-      <Filter>scene</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\sphere_mesh.cpp">
       <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
@@ -2233,6 +2317,48 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_cell.cpp">
       <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\bone_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\concurrency\win32\thread_win32.cpp">
+      <Filter>system\concurrency\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\concurrency\thread_job.cpp">
+      <Filter>system\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\concurrency\thread_pool.cpp">
+      <Filter>system\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\concurrency\win32\semaphore_win32.cpp">
+      <Filter>system\concurrency\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\concurrency\win32\thread_mutex_win32.cpp">
+      <Filter>system\concurrency\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\streaming\async_loader.cpp">
+      <Filter>system\streaming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\streaming\data_loader.h">
+      <Filter>system\streaming</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_loader.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_processor.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_view_loader.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\terrain\terrain_view_processor.cpp">
+      <Filter>virtual\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\terrain_node.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\grid_object.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

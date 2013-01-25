@@ -1,6 +1,5 @@
 #include "../../punk_engine.h"
 
-std::auto_ptr<Virtual::Cameras::FirstPersonCamera> g_camera;
 OpenGL::RenderTarget* rt;
 OpenGL::Frame frame;
 std::auto_ptr<OpenGL::RenderContextSolidTexture3D> rc;
