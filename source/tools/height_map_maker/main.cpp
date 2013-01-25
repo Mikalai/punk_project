@@ -3,8 +3,8 @@
 
 void GenerateHeightMap(int argc, char* argv[])
 {
-	int dim = 1024;
-	int size = 256;
+	int dim = 512;
+	int size = 512;
 	int blocks = 1;
 	int seed = 1;
 	float height_scale = 1000;
@@ -107,7 +107,9 @@ void GenerateHeightMap(int argc, char* argv[])
 			cell->SetLocation(Math::ivec2(x_block, y_block));
 			cell->SetBaseHeight(0);
 			cell->SetName(name);
-			cell->SetRawFile(filename_raw);
+			Virtual::TerrainRawDataSource source;
+			source.SetRawFile(filename_raw);
+			cell->SetRawDataSource(source);
 		}
 	}
 		
