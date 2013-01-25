@@ -59,6 +59,7 @@ namespace OpenGL
 		int m_terrain_level;
 		int m_terrain_i;
 		int m_terrain_j;
+		int m_terrain_slices;
 
 		BlendOperation m_blend_operation;
 		bool m_depth_test;

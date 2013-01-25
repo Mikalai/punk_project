@@ -78,30 +78,31 @@ void Idle(System::Event*)
 	render.Render();
 	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
 	bool update = false;
+	float scale = 0.01;
 	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
 	{
-		c->SetPosition(c->GetPosition() + c->GetRightVector() * -0.5f);
+		c->SetPosition(c->GetPosition() + c->GetRightVector() * -scale);
 		update = true;
 	}
 	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_D))
 	{
-		c->SetPosition(c->GetPosition() + c->GetRightVector() * 0.5f);
+		c->SetPosition(c->GetPosition() + c->GetRightVector() * scale);
 		update = true;
 	}
 	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_W))
 	{
-		c->SetPosition(c->GetPosition() + c->GetDirection() * 0.5f);
+		c->SetPosition(c->GetPosition() + c->GetDirection() * scale);
 		update = true;
 	}
 	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_S))
 	{
-		c->SetPosition(c->GetPosition() + c->GetDirection() * -0.5f);
+		c->SetPosition(c->GetPosition() + c->GetDirection() * -scale);
 		update = true;
 	}
 
 	if (update)
 	{
-		System::string text = System::string::Format(L"X: %f; Z: %f, Height: %f", c->GetPosition().X(), c->GetPosition().Z(), c->GetPosition().Z());
+		System::string text = System::string::Format(L"X: %f; Z: %f, Height: %f", c->GetPosition().X(), c->GetPosition().Z(), c->GetPosition().Y());
 		widget->SetText(text);
 		observer->SetPosition(c->GetPosition());
 	}
@@ -119,7 +120,7 @@ void Idle(System::Event*)
 }
 
 int main()
-{
+{	
 	System::GetFactory()->Init();
 
 	System::Window::Instance()->SetTitle(L"OpenGL object test");
@@ -134,7 +135,7 @@ int main()
 
 	scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"plane.pmd");
 
-	Virtual::TerrainManager::Instance()->Manage(L"test_map");
+	Virtual::TerrainManager::Instance()->Manage(L"demo");
 	
 	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();	
 	c->SetPosition(Math::vec3(x, 0, y));

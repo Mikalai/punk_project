@@ -219,9 +219,34 @@ namespace Math
 
 	void Noise::GenerateHeightMap(double offset_x, double offset_y, double dim_x, double dim_y, int width, int height, float* data)
 	{
+		module::RidgedMulti mountainTerrain;
+		module::Billow baseFlatTerrain;
+		baseFlatTerrain.SetFrequency(2.0);
+
+		module::ScaleBias flatTerrain;	
+		flatTerrain.SetSourceModule(0, baseFlatTerrain);
+		flatTerrain.SetScale(0.125);
+		flatTerrain.SetBias(-0.75);
+
+		module::Perlin terrainType;				
+		terrainType.SetFrequency(0.5);
+		terrainType.SetPersistence(0.25);
+
+		module::Select terrainSelector;
+		terrainSelector.SetSourceModule(0, flatTerrain);
+		terrainSelector.SetSourceModule(1, mountainTerrain);
+		terrainSelector.SetControlModule(terrainType);
+		terrainSelector.SetBounds(0, 1000);
+		terrainSelector.SetEdgeFalloff(0.125);
+
+		module::Turbulence finalTerrain;
+		finalTerrain.SetSourceModule(0, terrainSelector);
+		finalTerrain.SetFrequency(4.0);
+		finalTerrain.SetPower(0.125);
+
 		utils::NoiseMap heightMap;
-		utils::NoiseMapBuilderPlane heightMapBuilder;
-		heightMapBuilder.SetSourceModule(impl->m_perlin);
+		utils::NoiseMapBuilderPlane heightMapBuilder;		
+		heightMapBuilder.SetSourceModule(finalTerrain);
 		heightMapBuilder.SetDestNoiseMap(heightMap);
 		heightMapBuilder.SetDestSize(width, height);
 		heightMapBuilder.SetBounds(offset_x, offset_x + dim_x, offset_y, offset_y + dim_y);

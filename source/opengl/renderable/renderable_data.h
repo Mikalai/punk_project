@@ -7,5 +7,6 @@
 #include "primitives/cube_mesh.h"
 #include "primitives/sphere_mesh.h"
 #include "primitives/grid_object.h"
+#include "primitives/scaled_grid.h"
 
 #endif	//	 _H_PUNK_OPENGL_DEAULT_RENDERABLE

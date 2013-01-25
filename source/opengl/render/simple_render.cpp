@@ -401,34 +401,12 @@ namespace OpenGL
 			m_terrain_rc->Begin();
 			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());
 			STATE.m_tc->Bind();		
+			STATE.m_wireframe = false;
+			STATE.m_line_width = 1;
+			STATE.m_terran_position = Math::vec2(floor(STATE.m_camera->GetPosition().X()), floor(STATE.m_camera->GetPosition().Z()));
+			m_terrain_rc->BindParameters(STATE);
+			m_grid.Render();
 
-			int start = -4;
-			int end = 4;
-
-			for (int level = 1; level < 10; level++)
-			{
-				for (int i = start; i < end; i++)
-				{
-					for (int j = start; j < end; j++)
-					{
-						//if (j == -1)
-						//continue;
-						if (level != 1)
-							if (!(j < start+2 || j >= end - 2 || i < start+2 || i >= end - 2))
-								continue;
-						//STATE.m_wireframe = true;
-						STATE.m_terrain_level = level;
-						STATE.m_terrain_i = i;
-						STATE.m_terrain_j = j;	
-						STATE.m_wireframe = false;
-						STATE.m_line_width = 1;
-						STATE.m_terran_position = STATE.m_camera->GetPosition().XZ();
-						m_terrain_rc->BindParameters(STATE);
-						m_grid.Render();
-
-					}
-				}
-			}
 			m_terrain_rc->End();
 			STATE.m_tc->Unbind();
 			m_grid.Unbind();
@@ -570,6 +548,7 @@ namespace OpenGL
 
 	void SimpleRender::SetScene(System::Proxy<Scene::SceneGraph> scene)
 	{
+		m_terrain_slices = 15;
 		m_time = 0;
 		RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
 		m_rt = Driver::Instance()->CreateRenderTarget(&p);
@@ -586,7 +565,7 @@ namespace OpenGL
 		m_text->SetSize(int(System::Window::Instance()->GetWidth() * 0.5f), int(System::Window::Instance()->GetHeight()*0.5f));
 		m_gui_render.Reset(new GUIRender);
 		m_terrain_rc.Reset(new RenderContextTerrain);
-		m_grid.Cook(1, 1, 16, 16);
+		m_grid.Cook(1, 1, m_terrain_slices, m_terrain_slices, 10);
 	}
 
 	//void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture)

@@ -61,6 +61,8 @@ namespace Virtual
 		//	back buffer thst is used for asynchronous uploading dat from cells
 		void* m_back_buffer;
 		//	last world positon of the view center
+		Math::vec2 m_position_back;
+		//	last world positon of the view center
 		Math::vec2 m_position;
 		//	Holds unprocessed last position;
 		Math::vec2 m_last_unprocessed;

@@ -11,7 +11,7 @@ namespace Virtual
 		: m_view_size(view_size)
 		, m_front_buffer((void*)new float[view_size*view_size])
 		, m_back_buffer((void*)new float[view_size*view_size])
-		, m_threshold(10)
+		, m_threshold(1)
 		, m_position(position)
 		, m_height_map_front(new OpenGL::Texture2D())
 		, m_height_map_back(new OpenGL::Texture2D())
@@ -23,7 +23,7 @@ namespace Virtual
 	{
 		memset(m_front_buffer, 0, sizeof(view_size*view_size*sizeof(float)));
 		m_last_unprocessed.Set(std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
-		m_position.Set(std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
+		m_position_back = m_position = position;
 		UpdatePosition(position);
 	}
 
@@ -38,9 +38,9 @@ namespace Virtual
 	void TerrainView::UpdatePosition(const Math::vec2& value)
 	{
 		//	save last update position
-		m_last_unprocessed = value;
+		m_last_unprocessed.Set(floor(value.X()), floor(value.Y()));
 		//	check thrshold for uploading
-		if (!m_init || !m_loading && (m_position - m_last_unprocessed).Length() > m_threshold)
+		if (!m_init || !m_loading && (m_position - m_last_unprocessed).Length() >= m_threshold)
 		{
 			m_init = true;
 			//	Start uploading if position is far from previos one
@@ -58,16 +58,17 @@ namespace Virtual
 		
 			std::swap(m_front_buffer, m_back_buffer);
 			std::swap(m_height_map_front, m_height_map_back);
+			m_position = m_position_back;
 
 			//	if not, than store position for future view
-			m_position = m_last_unprocessed;
+			m_position_back = m_last_unprocessed;
 
 			TerrainViewLoaderDesc loader_desc;
 			loader_desc.m_block_scale = m_block_scale;
 			loader_desc.m_block_size = m_block_size;
 			loader_desc.m_buffer = m_back_buffer;
 			loader_desc.m_buffer_size = m_view_size*m_view_size*sizeof(float);
-			loader_desc.m_view_point = m_position;
+			loader_desc.m_view_point = m_position_back;
 			loader_desc.m_view_size = m_view_size;
 			loader_desc.m_world_origin = TerrainManager::Instance()->GetTerrain()->GetOrigin();
 			loader_desc.m_map_name = TerrainManager::Instance()->GetCurrentMap();

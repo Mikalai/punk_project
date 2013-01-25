@@ -22,7 +22,10 @@ namespace OpenGL
 					1.0f/float(hor_slices)*float(j),
 					1.0f/float(vert_slices)*float(i), 0, 0);
 
-				v[i*(hor_slices+1) + j].m_flag.Set(float((i + j) % 2), 0, 0, 0);
+				if (i == 0 || j == 0 || i == vert_slices || j == hor_slices)
+					v[i*(hor_slices+1) + j].m_flag.Set(float((i + j) % 2), 0, 0, 0);
+				else
+					v[i*(hor_slices+1) + j].m_flag.Set(float((i + j) % 2), 0, 0, 0);
 			}
 		}
 

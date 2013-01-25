@@ -489,6 +489,7 @@ namespace OpenGL
 		unsigned uDiffuseColor;
 		unsigned uLightDirection;
 		unsigned uTerrainPosition;
+		unsigned uSlice;
 	public:
 
 		//struct PolicyParameters : public AbstractRenderPolicyParameters, public System::Poolable<PolicyParameters>
@@ -549,6 +550,7 @@ namespace OpenGL
 			uLightDirection = GetUniformLocation("uLightDirection");
 			uViewSize = GetUniformLocation("uViewSize");
 			uTerrainPosition = GetUniformLocation("uTerrainPosition");
+			uSlice = GetUniformLocation("uSlice");
 		}
 
 		void BindParameters(const CoreState& pparams)
@@ -561,6 +563,8 @@ namespace OpenGL
 			SetUniformMatrix4f(uView, &pparams.m_camera->GetViewMatrix()[0]);
 			SetUniformMatrix4f(uProjection, &pparams.m_camera->GetProjectionMatrix()[0]);
 			SetUniformMatrix3f(uNormalTransform, &normal_matrix[0]);
+			SetUniformInt(uSlice, pparams.m_terrain_slices);
+
 			if (!pparams.m_current_light_set.empty())
 				SetUniformVector3f(uLightDirection, &pparams.m_current_light_set[0]->GetPosition().Normalized()[0]);
 			else

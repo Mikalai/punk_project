@@ -204,6 +204,7 @@
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\primitive_types.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\renderable.h" />
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\scaled_grid.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\sphere_mesh.h" />
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\static_mesh.h" />
@@ -713,6 +714,7 @@
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\grid_object.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\renderable.cpp" />
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\scaled_grid.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\sphere_mesh.cpp" />
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\static_mesh.cpp" />

@@ -83,8 +83,9 @@ namespace OpenGL
 		System::StateManager<CoreState> m_states;
 		System::Proxy<GUI::Widget> m_root;
 		System::Proxy<GUIRender> m_gui_render;
-		OpenGL::GridObject m_grid;
+		OpenGL::ScaledGridObject m_grid;
 		float m_time;
+		int m_terrain_slices;
 	};
 }
 

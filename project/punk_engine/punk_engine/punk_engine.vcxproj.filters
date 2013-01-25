@@ -1529,6 +1529,9 @@
     <ClInclude Include="..\..\..\source\opengl\renderable\primitives\grid_object.h">
       <Filter>opengl\renderable\primitives</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\scaled_grid.h">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2358,6 +2361,9 @@
       <Filter>scene</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\opengl\renderable\primitives\grid_object.cpp">
+      <Filter>opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\scaled_grid.cpp">
       <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
   </ItemGroup>
