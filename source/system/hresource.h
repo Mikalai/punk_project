@@ -44,7 +44,9 @@ namespace System
 		GUI_TEXT_BOX,
 		AUDIO_WAV,
 		ACTION,
-		ANIMATION
+		ANIMATION,
+		TERRAIN,
+		TERRAIN_NODE
 	};
 
 	PUNK_ENGINE const System::string AsString(ObjectType type);
