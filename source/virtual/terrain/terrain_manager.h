@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_VIRTUAL_TERRAIN_MANAGER
 #define _H_PUNK_VIRTUAL_TERRAIN_MANAGER
 
+#include <memory>
 #include "../../config.h"
 #include "terrain.h"
 
@@ -31,12 +32,23 @@ namespace Virtual
 
 		static TerrainManager* Instance();
 		static void Destroy();
+
+		System::Proxy<Terrain> GetTerrain() { return m_terrain; }
+		System::Proxy<TerrainObserver> CreateTerrainObserver(const Math::vec3& start_position);
+
+		const System::string GetCurrentMap() { return m_current_map; }
+
 	private:
+		static std::unique_ptr<TerrainManager> m_instance;
 		bool Init(const Terrain& terrain);
 		bool Clear();
-		//std::vector<System::Proxy<TerrainData>> m_terrain_data;
+
+	private:
+		System::Proxy<Terrain> m_terrain;
 		std::vector<System::Proxy<TerrainObserver>> m_observers;
 		std::vector<System::Proxy<TerrainView>> m_views;
+		unsigned m_max_memory;
+		System::string m_current_map;
 	};
 }
 
