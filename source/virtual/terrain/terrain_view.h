@@ -23,23 +23,37 @@ namespace OpenGL { class Texture2D; }
 
 namespace Virtual
 {
+	class Terrain;
+
 	class PUNK_ENGINE TerrainView
 	{
 	public:
 		/**
 		*	Information about position should be recieved from observer
 		*/
-		TerrainView(const Math::vec2 position);
+		TerrainView(int view_size, int block_size, float block_scale, const Math::vec2 position, System::Proxy<Terrain> terrain);
 		~TerrainView();
+		
+		int GetViewSize() const { return m_view_size; }
 
-		void SetSize(int size);
 		void UpdatePosition(const Math::vec2& value);
 		void SetUpdateThreshold(float value);
 		
+		System::Proxy<OpenGL::Texture2D> GetHeightMap() { return m_height_map_front; }
+		void* GetViewData() { return m_front_buffer; }
+
+		System::Proxy<Terrain> GetTerrain() { return m_terrain; }
+
+		const Math::vec2& GetPosition() const { return m_position; }
+
 	private:
 		void InitiateAsynchronousUploading();
-		void OnEnd(void* data);
+		static void OnEnd(void* data);
 
+		// size of the cell
+		int m_block_size;
+		//	scale
+		float m_block_scale;
 		//	size of the view in meters of game world
 		int m_view_size;
 		//	front buffer that is used for physics and rendering
@@ -60,6 +74,9 @@ namespace Virtual
 		bool m_loading;
 		//	holds last update result
 		unsigned m_result;
+		System::Proxy<Terrain> m_terrain;
+		//	
+		bool m_init;
 	};
 }
 
