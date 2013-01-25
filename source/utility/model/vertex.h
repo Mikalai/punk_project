@@ -72,6 +72,18 @@ namespace Utility
 		Math::vec4 m_bones_id;
 		Math::vec4 m_bone_weights;
 	};
+
+	template<> struct Vertex<
+		Utility::COMPONENT_POSITION|
+		Utility::COMPONENT_NORMAL|
+		Utility::COMPONENT_TEXTURE|
+		Utility::COMPONENT_FLAG>
+	{
+		Math::vec4 m_position;
+		Math::vec4 m_normal;
+		Math::vec4 m_texture0;
+		Math::vec4 m_flag;
+	};
 }
 
 #endif
