@@ -1,5 +1,6 @@
 #include "../../system/logger.h"
 #include "../../system/binary_file.h"
+#include "../../system/environment.h"
 #include "terrain_loader.h"
 
 namespace Virtual
@@ -10,28 +11,28 @@ namespace Virtual
 		, m_data(nullptr)
 	{}
 
-	unsigned TerrainLoader::Load()
+	System::StreamingStepResult TerrainLoader::Load()
 	{
-		System::string filename = System::string::Format(L"%s_%s.raw", m_block.X(), m_block.Y());
+		System::string filename = System::Environment::Instance()->GetMapFolder() + m_map_name + L"\\" + System::string::Format(L"%d_%d.raw", m_block.X(), m_block.Y());
 		
 		System::Buffer buffer;
 		if (!System::BinaryFile::Load(filename, buffer))
-			return (out_error() << "Can't load " << filename << std::endl, 0);
+			return (out_error() << "Can't load " << filename << std::endl, System::STREAM_ERROR);
 		m_size = buffer.GetSize();
 		m_data = buffer.Release();
-		return ~0;
+		return System::STREAM_OK;
 	}
 
-	unsigned TerrainLoader::Decompress(void** data, unsigned* size)
+	System::StreamingStepResult TerrainLoader::Decompress(void** data, unsigned* size)
 	{
 		*data = m_data;
 		*size = m_size;
-		return ~0;
+		return System::STREAM_OK;
 	}
 
-	unsigned TerrainLoader::Destroy()
+	System::StreamingStepResult TerrainLoader::Destroy()
 	{
-		return ~0;
+		return System::STREAM_OK;
 	}
 
 	TerrainLoader::~TerrainLoader()

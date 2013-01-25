@@ -18,18 +18,18 @@ namespace Virtual
 		*	When load is called based on map name and current block
 		*	filename is deduced. File opens and data is read in internal buffer
 		*/
-		virtual unsigned Load();
+		virtual System::StreamingStepResult Load();
 		
 		/**
 		*	On decompress internal buffer data is returned.
 		*	User should free data himself
 		*/
-		virtual unsigned Decompress(void** data, unsigned* size);
+		virtual System::StreamingStepResult Decompress(void** data, unsigned* size);
 
 		/**
 		*	Destroy do nothing, because data is returned to the user owning
 		*/
-		virtual unsigned Destroy();
+		virtual System::StreamingStepResult Destroy();
 
 		virtual ~TerrainLoader();
 
