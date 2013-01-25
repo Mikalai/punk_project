@@ -24,27 +24,27 @@ namespace Virtual
 		*	images found, or there is no memory available than also try later is returned
 		*	If resource if found than it maps to the process memory
 		*/
-		virtual unsigned LockDeviceObject();
+		virtual System::StreamingStepResult LockDeviceObject();
 
 		/**
 		*	Unmap all device pointers
 		*/
-		virtual unsigned UnlockDeviceObject();
+		virtual System::StreamingStepResult UnlockDeviceObject();
 
 		/**
 		*	Recieves pointer for data
 		*/
-		virtual unsigned Process(void* data, unsigned size);
+		virtual System::StreamingStepResult Process(void* data, unsigned size);
 
 		/**
 		*	Actually performs data copy from host to device
 		*/
-		virtual unsigned CopyToResource();
+		virtual System::StreamingStepResult CopyToResource();
 
 		/**
 		*	Marks resource as error
 		*/
-		virtual unsigned SetResourceError();
+		virtual System::StreamingStepResult SetResourceError();
 
 		/**
 		*	actually do nothing, because data array of height is
@@ -56,7 +56,7 @@ namespace Virtual
 	private:
 		//	data and size from loader
 		void* m_data;
-		unsigned size;
+		unsigned m_size;
 		//	Destination for data. It can be either created or reused
 		System::Proxy<TerrainCell> m_terrain_cell;
 		//	This is used as cache manager
