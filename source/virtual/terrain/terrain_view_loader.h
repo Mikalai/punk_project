@@ -12,13 +12,26 @@
 
 namespace Virtual
 {
+	struct TerrainViewLoaderDesc
+	{
+		void* m_buffer;
+		unsigned m_buffer_size;
+		unsigned m_view_size;
+		unsigned m_block_size;
+		float m_block_scale;
+		Math::vec2 m_view_point;
+		Math::vec2 m_world_origin;
+		System::string m_map_name;
+	};
+
 	class PUNK_ENGINE TerrainViewLoader : public System::AbstractDataLoader
 	{
 	public:
 		/**
 		*	Init constructor with buffer where actual data will be stored
 		*/
-		TerrainViewLoader(void* buffer, unsigned buffer_size, unsigned view_size, const Math::vec2& map_position);
+		TerrainViewLoader(const TerrainViewLoaderDesc& desc);
+
 		/**
 		*	Do not destroy anything, because all storage buffers are external
 		*/
@@ -26,21 +39,18 @@ namespace Virtual
 		/**
 		*	This will collect data from different cells in the internal buffer
 		*/
-		virtual unsigned Load();
+		virtual System::StreamingStepResult Load();
 		/**
 		*	This will do nothing 
 		*/
-		virtual unsigned Decompress(void** data, unsigned* size);
+		virtual System::StreamingStepResult Decompress(void** data, unsigned* size);
 		/**
 		*	This will do nothing
 		*/
-		virtual unsigned Destroy();
+		virtual System::StreamingStepResult Destroy();
 	private:
-		void* m_buffer;		
-		unsigned m_buffer_size;
-		unsigned vm_iew_size;
-		Math::vec2 m_map_position;
+		TerrainViewLoaderDesc m_desc;		
 	};
 }
 
-#endif _H_PUNK_VIRTUAL_TERRAIN_VIEW_LOADER
+#endif // _H_PUNK_VIRTUAL_TERRAIN_VIEW_LOADER
