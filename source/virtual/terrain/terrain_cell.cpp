@@ -3,6 +3,20 @@
 
 namespace Virtual
 {
+	bool TerrainRawDataSource::Save(std::ostream& stream) const
+	{
+		if (!m_raw_file.Save(stream))
+			return (out_error() << "Can't save terrain raw data source" << std::endl, false);
+		return true;
+	}
+
+	bool TerrainRawDataSource::Load(std::istream& stream)
+	{
+		if (!m_raw_file.Load(stream))
+			return (out_error() << "Can't load terrain raw data source" << std::endl, false);
+		return true;
+	}
+
 	TerrainCell::Core::Core()
 		: m_location(0,0)
 		, m_base_height(0)
@@ -10,7 +24,8 @@ namespace Virtual
 	{}
 	
 	TerrainCell::TerrainCell()
-		: m_name(L"cell_0_0")
+		: m_name(L"cell_0_0")	
+		, m_loading(false)
 	{}
 
 	bool TerrainCell::Save(std::ostream& stream) const
@@ -19,7 +34,7 @@ namespace Virtual
 		if (!m_name.Save(stream))
 			return (out_error() << "Can't save cell name" << std::endl, false);
 
-		if (!m_filename.Save(stream))
+		if (!m_source.Save(stream))
 			return (out_error() << "Can't save cell raw file name" << std::endl, false);
 		return true;
 	}
@@ -30,8 +45,13 @@ namespace Virtual
 		if (!m_name.Load(stream))
 			return (out_error() << "Can't load cell name" << std::endl, false);
 
-		if (!m_filename.Load(stream))
+		if (!m_source.Load(stream))
 			return (out_error() << "Can't load cell raw file name" << std::endl, false);
 		return true;
 	}
+
+	TerrainCell::~TerrainCell()
+	{
+	}
+
 }

@@ -9,10 +9,24 @@
 
 namespace Virtual
 {
+	class PUNK_ENGINE TerrainRawDataSource
+	{
+	public:
+		void SetRawFile(const System::string& filename) { m_raw_file = filename; }
+		const System::string& GetRawFile() const { return m_raw_file; }
+
+		bool Save(std::ostream& stream) const;
+		bool Load(std::istream& stream);
+
+	private:
+		System::string m_raw_file;
+	};
+
 	class PUNK_ENGINE TerrainCell
 	{
 	public:
 		TerrainCell();
+		virtual ~TerrainCell();
 
 		void SetLocation(const Math::ivec2& value) { m_core.m_location = value; }
 		const Math::ivec2& GetLocation() const { return m_core.m_location; }
@@ -28,8 +42,8 @@ namespace Virtual
 		void SetName(const System::string& value) { m_name = value; }
 		const System::string& GetName() const { return m_name; }
 
-		void SetRawFile(const System::string& value) { m_filename = value; }
-		const System::string& GetRawFile() const { return m_filename; }
+		void SetRawDataSource(const TerrainRawDataSource& value) { m_source = value; }
+		const TerrainRawDataSource& GetRawDataSource() const { return m_source; }
 
 		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
@@ -89,7 +103,7 @@ namespace Virtual
 
 		Core m_core;
 		System::string m_name;
-		System::string m_filename;		
+		TerrainRawDataSource m_source;
 		
 		// This field is used expliciply for caching purposes
 		//	it is not saved or loaded ever
