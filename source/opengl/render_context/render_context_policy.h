@@ -12,6 +12,7 @@
 #include "../../system/poolable.h"
 #include "../../virtual/data/data.h"
 #include "../../virtual/skinning/skinning.h"
+#include "../../virtual/terrain/module.h"
 
 namespace OpenGL
 {
@@ -65,7 +66,7 @@ namespace OpenGL
 			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_local;
 			SetUniformMatrix4f(uProjViewWorld, &(proj_view_world[0]));
 			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
-			SetUniformInt(uDiffuseMap, params.m_diffuse_slot);
+			SetUniformInt(uDiffuseMap, params.m_diffuse_slot_0);
 			SetUniformMatrix2f(uTextureMatrix, &params.m_texture_matrix[0]);
 		}
 		
@@ -246,7 +247,7 @@ namespace OpenGL
 			SetUniformVector4f(uSpecular, &pparams.m_current_material->GetSpecularColor()[0]);
 			SetUniformVector4f(uDiffuse, &pparams.m_current_material->GetDiffuseColor()[0]);
 			SetUniformFloat(uSpecularPower, pparams.m_current_material->GetSpecularFactor());
-			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot);
+			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot_0);
 			SetUniformInt(uNormalMap, pparams.m_normal_slot);		
 			if (pparams.m_wireframe)
 			{
@@ -424,7 +425,7 @@ namespace OpenGL
 			SetUniformVector4f(uDiffuseColor, &pparams.m_diffuse_color[0]);
 			SetUniformVector4f(uTextColor, &pparams.m_text_color[0]);
 			SetUniformVector4f(uNoDiffuseTexture, &pparams.m_no_diffuse_texture_color[0]);
-			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot);
+			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot_0);
 			SetUniformInt(uTextMap, pparams.m_text_slot);
 			if (pparams.m_wireframe)
 			{
@@ -477,6 +478,7 @@ namespace OpenGL
 		unsigned uNormalTransform;
 		unsigned ui;
 		unsigned uj;
+		unsigned uViewSize;
 		unsigned uHeightMapUniform;
 		unsigned uScale;
 		unsigned uPosition;
@@ -486,7 +488,7 @@ namespace OpenGL
 		unsigned uDiffuseMapUniform2;
 		unsigned uDiffuseColor;
 		unsigned uLightDirection;
-
+		unsigned uTerrainPosition;
 	public:
 
 		//struct PolicyParameters : public AbstractRenderPolicyParameters, public System::Poolable<PolicyParameters>
@@ -513,8 +515,8 @@ namespace OpenGL
 
 		RenderContextPolicy()
 		{
-			m_vertex_shader.reset(new VertexShaderGUI);
-			m_fragment_shader.reset(new FragmentShaderGUI);
+			m_vertex_shader.reset(new VertexShaderTerrain);
+			m_fragment_shader.reset(new FragmentShaderTerrain);
 			Init();
 		}
 
@@ -545,26 +547,57 @@ namespace OpenGL
 			uDiffuseMapUniform2 = GetUniformLocation("uDiffuseMapUniform2");
 			uDiffuseColor = GetUniformLocation("uDiffuseColor");
 			uLightDirection = GetUniformLocation("uLightDirection");
+			uViewSize = GetUniformLocation("uViewSize");
+			uTerrainPosition = GetUniformLocation("uTerrainPosition");
 		}
 
 		void BindParameters(const CoreState& pparams)
 		{										
-/*			const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
-			SetUniformMatrix4f(uProjViewWorld, &params.m_proj_view_world[0]);
-			SetUniformMatrix4f(uWorld, &params.m_world[0]);
-			SetUniformMatrix4f(uView, &params.m_view[0]);
-			SetUniformMatrix4f(uProjection, &params.m_proj[0]);
-			SetUniformMatrix3f(uNormalTransform, &params.m_normal_tranform[0]);
-			SetUniformVector3f(uLightDirection, &params.m_light_direction[0]);
-			SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
-			SetUniformVector2f(uPosition, &params.m_position[0]);
-			SetUniformInt(uHeightMapUniform, params.m_height_map_texture);
-			SetUniformInt(uDiffuseMapUniform1, params.m_diffuse_map_1_texture);
-			SetUniformInt(uDiffuseMapUniform2, params.m_diffuse_map_2_texture);
-			SetUniformFloat(uLevel, float(params.m_level));
-			SetUniformInt(ui, params.m_i);
-			SetUniformInt(uj, params.m_j);
-			SetUniformFloat(uScale, params.m_vert_scale);*/			
+			Math::mat4 proj_view_world = pparams.m_camera->GetProjectionMatrix() * pparams.m_camera->GetViewMatrix() * pparams.m_local;
+			Math::mat3 normal_matrix = (pparams.m_camera->GetViewMatrix() * pparams.m_local).Inversed().Transposed().RotationPart();
+
+			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
+			SetUniformMatrix4f(uWorld, &pparams.m_local[0]);
+			SetUniformMatrix4f(uView, &pparams.m_camera->GetViewMatrix()[0]);
+			SetUniformMatrix4f(uProjection, &pparams.m_camera->GetProjectionMatrix()[0]);
+			SetUniformMatrix3f(uNormalTransform, &normal_matrix[0]);
+			if (!pparams.m_current_light_set.empty())
+				SetUniformVector3f(uLightDirection, &pparams.m_current_light_set[0]->GetPosition().Normalized()[0]);
+			else
+			{
+				Math::vec3 v(1,1,0);
+				SetUniformVector3f(uLightDirection, &v.Normalized()[0]);
+			}
+
+			if (pparams.m_current_material.IsValid())
+				SetUniformVector4f(uDiffuseColor, &pparams.m_current_material->GetDiffuseColor()[0]);
+			else
+			{
+				Math::vec4 v(1,1,1,1);
+				SetUniformVector4f(uDiffuseColor, &v[0]);
+			}
+			SetUniformVector2f(uPosition, &pparams.m_terran_position[0]);
+			SetUniformInt(uHeightMapUniform, pparams.m_height_map_slot);
+			SetUniformInt(uDiffuseMapUniform1, pparams.m_diffuse_slot_0);
+			SetUniformInt(uDiffuseMapUniform2, pparams.m_diffuse_slot_1);
+			SetUniformFloat(uLevel, float(pparams.m_terrain_level));
+			SetUniformInt(ui, pparams.m_terrain_i);
+			SetUniformInt(uj, pparams.m_terrain_j);
+			SetUniformInt(uViewSize, pparams.m_terrain_observer->GetTerrainView()->GetViewSize());
+			SetUniformFloat(uScale, pparams.m_current_terrain->GetHeightScale());			
+			SetUniformVector2f(uTerrainPosition, &pparams.m_terrain_observer->GetTerrainView()->GetPosition()[0]);
+
+			if (pparams.m_wireframe)
+			{
+				glLineWidth(pparams.m_line_width);
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				CHECK_GL_ERROR(L"Can't change polygon mode");
+			}			
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				CHECK_GL_ERROR(L"Can't change polygon mode");
+			}
 		}
 		
 		Utility::VertexAttributes GetRequiredAttributesSet() const 
@@ -697,7 +730,7 @@ namespace OpenGL
 			SetUniformVector4f(uSpecular, &pparams.m_current_material->GetSpecularColor()[0]);
 			SetUniformVector4f(uDiffuse, &pparams.m_current_material->GetDiffuseColor()[0]);
 			SetUniformFloat(uSpecularPower, pparams.m_current_material->GetSpecularFactor());
-			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot);
+			SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot_0);
 			SetUniformInt(uNormalMap, pparams.m_normal_slot);				
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
 			SetUniformMatrix4f(uViewWorld, &view_world[0]);

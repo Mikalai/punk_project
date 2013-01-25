@@ -5,6 +5,7 @@
 #include "../../scene/visitor.h"
 #include "render_state.h"
 #include "../render_context/render_contexts.h"
+#include "../renderable/renderable_data.h"
 #include "render_target.h"
 #include "../../gui/widget.h"
 #include "../../system/state_manager.h"
@@ -32,6 +33,8 @@ namespace OpenGL
 		virtual bool Visit(Scene::LocationIndoorNode* node);		
 		virtual bool Visit(Scene::PortalNode* node);
 		virtual bool Visit(Scene::BoneNode* node);
+		virtual bool Visit(Scene::TerrainNode* node);
+		virtual bool Visit(Scene::DebugTextureViewNode* node) { return true; };
 
 		std::vector<System::Proxy<Virtual::Light>> m_light_set;
 		System::Proxy<Virtual::Armature> m_current_armature;
@@ -56,6 +59,8 @@ namespace OpenGL
 		virtual bool Visit(Scene::LocationIndoorNode* node);		
 		virtual bool Visit(Scene::PortalNode* node);
 		virtual bool Visit(Scene::BoneNode* node);
+		virtual bool Visit(Scene::TerrainNode* node);
+		virtual bool Visit(Scene::DebugTextureViewNode* node);
 
 		void RenderQuad(float x, float y, float width, float height, const Math::vec4& color);
 		void RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture);
@@ -72,11 +77,13 @@ namespace OpenGL
 		System::Proxy<RenderContextSolid3D> m_solid_rc;
 		System::Proxy<RenderContextSolidTexture3D> m_textured_rc;
 		System::Proxy<RenderContextGUI> m_gui_rc;
+		System::Proxy<RenderContextTerrain> m_terrain_rc;
 		System::Proxy<TextureContext> m_tc;
 		System::Proxy<TextSurface> m_text;		
 		System::StateManager<CoreState> m_states;
 		System::Proxy<GUI::Widget> m_root;
 		System::Proxy<GUIRender> m_gui_render;
+		OpenGL::GridObject m_grid;
 		float m_time;
 	};
 }

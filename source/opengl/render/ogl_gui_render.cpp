@@ -41,7 +41,7 @@ namespace OpenGL
 		m_states.CurrentState()->Get().m_use_diffuse_texture = widget->GetBackgroundTexture().IsValid();
 		m_tc->SetTexture(1, widget->GetBackgroundTexture());		
 		m_tc->SetTexture(0, widget->GetTextTexture());	
-		m_states.CurrentState()->Get().m_diffuse_slot = 1;
+		m_states.CurrentState()->Get().m_diffuse_slot_0 = 1;
 		m_states.CurrentState()->Get().m_text_slot = 0;
 		m_states.CurrentState()->Get().m_no_diffuse_texture_color.Set(1,1,1,0.5);
 		m_states.CurrentState()->Get().m_texture_matrix = Math::mat2::CreateMirrorX();
