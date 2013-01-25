@@ -2,6 +2,7 @@
 #define _H_PUNK_SYSTEM_POINTER_PROXY
 
 #include <assert.h>
+#include <algorithm>
 #include "../types/base_types.h"
 #include "../concurrency/atomic.h"
 
