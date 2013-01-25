@@ -116,7 +116,7 @@ namespace ImageModule
 		size_t nbytes;
 
 		src->stream->read((char*)src->buffer, INPUT_BUF_SIZE);
-		nbytes = src->stream->gcount();
+		nbytes = (size_t)src->stream->gcount();
 
 		if (nbytes <= 0) {
 			if (src->start_of_file)	/* Treat empty input file as fatal error */
