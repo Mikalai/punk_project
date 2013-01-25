@@ -2,6 +2,7 @@
 #define _H_PUNK_SYSTEM_STREAM_ABSTRACT_DATA_PROCESSOR
 
 #include "../../../config.h"
+#include "resource_request.h"
 
 namespace System
 {
@@ -9,11 +10,11 @@ namespace System
 	{
 	public:
 		virtual ~AbstractDataProcessor() {};
-		virtual unsigned LockDeviceObject() = 0;
-		virtual unsigned UnlockDeviceObject() = 0;
-		virtual unsigned Process(void* data, unsigned size) = 0;
-		virtual unsigned CopyToResource() = 0;
-		virtual unsigned SetResourceError() = 0;
+		virtual StreamingStepResult LockDeviceObject() = 0;
+		virtual StreamingStepResult UnlockDeviceObject() = 0;
+		virtual StreamingStepResult Process(void* data, unsigned size) = 0;
+		virtual StreamingStepResult CopyToResource() = 0;
+		virtual StreamingStepResult SetResourceError() = 0;
 	};
 }
 

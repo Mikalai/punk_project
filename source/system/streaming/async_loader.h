@@ -11,8 +11,6 @@
 
 namespace System
 {
-	enum AsynResults { RESULT_FAILED, RESULT_TRY_AGAIN, RESULT_OK };
-
 	class PUNK_ENGINE AsyncLoader
 	{
 	public:

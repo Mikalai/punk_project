@@ -6,6 +6,8 @@ namespace System
 	class AbstractDataLoader;
 	class AbstractDataProcessor;
 
+	enum StreamingStepResult { STREAM_ERROR, STREAM_TRY_AGAIN, STREAM_OK };
+
 	struct ResourceRequest
 	{
 		enum Task { LOAD, COPY_TO_DEVICE, LOCK, UNLOCK };

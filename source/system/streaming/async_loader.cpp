@@ -4,6 +4,23 @@
 
 namespace System
 {
+	std::auto_ptr<AsyncLoader> AsyncLoader::m_instance;
+
+	AsyncLoader* AsyncLoader::Instance()
+	{
+		if (!m_instance.get())
+		{
+			m_instance.reset(new AsyncLoader);
+			m_instance->InitAsyncLoading(1);
+		}
+		return m_instance.get();
+	}
+
+	void AsyncLoader::Destroy()
+	{
+		m_instance.reset(0);
+	}
+
 	unsigned __stdcall IOThread(void* data)
 	{
 		if (data == nullptr)
@@ -20,6 +37,7 @@ namespace System
 
 	bool AsyncLoader::InitAsyncLoading(int num_process_threads)
 	{
+		m_global_done_flag = false;		
 		m_io_thread_semaphore.Create(LONG_MAX);
 		m_process_thread_semaphore.Create(LONG_MAX);
 		
@@ -31,6 +49,7 @@ namespace System
 		}
 
 		m_io_thread.Create(IOThread, (void*)this);
+		m_io_thread.Resume();
 		return true;
 	}
 
@@ -53,6 +72,8 @@ namespace System
 		request.m_result = result;
 		request.m_valid_flag = true;
 		request.m_task = ResourceRequest::LOAD;
+		request.on_end_callback = nullptr;
+		request.m_on_end_data = nullptr;
 
 		//	add request to input queue
 		m_io_queue_mutex.Lock();		
@@ -98,10 +119,21 @@ namespace System
 				//	check if the request is valid
 				if (request.m_valid_flag)
 				{
-					if (!request.m_loader->Load())
+					auto res = request.m_loader->Load();
+					//	if error, mark request as invalid
+					if (STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
-					}					
+					}
+					//	if try again, mark add request to the io queue again, and continue
+					else if (STREAM_TRY_AGAIN == res)
+					{
+						m_io_queue_mutex.Lock();
+						m_io_queue.push_back(request);
+						m_io_queue_mutex.Unlock();
+						m_io_thread_semaphore.Release();
+						continue;
+					}
 				}
 
 				//	if request is not valid we simply bypass it to the next stag, because only
@@ -121,10 +153,20 @@ namespace System
 				if (request.m_valid_flag)
 				{
 					//	try to copy data to device memory
-					if (!request.m_processor->CopyToResource())
+					auto res = request.m_processor->CopyToResource();
+					//	mark invalid is error
+					if (STREAM_ERROR == res)
 					{
 						//	if troubles invalidate request
 						request.m_valid_flag = false;
+					}
+					else if (STREAM_TRY_AGAIN == res)
+					{						
+						m_io_queue_mutex.Lock();
+						m_io_queue.push_back(request);
+						m_io_queue_mutex.Unlock();
+						m_io_thread_semaphore.Release();
+						continue;
 					}
 				}
 
@@ -167,21 +209,42 @@ namespace System
 			//	check if request is still valid
 			if (request.m_valid_flag)
 			{
-				void* data;
-				unsigned size;
+				void* data = nullptr;
+				unsigned size = 0;
 				//	decompress data using loader
-				if (request.m_loader->Decompress(&data, &size))
+				auto res = request.m_loader->Decompress(&data, &size);				
+				//	if all ok continue decompression
+				if (STREAM_OK == res)
 				{
 					// process data using processor
-					if (!request.m_processor->Process(data, size))
-					{
-						//	if failed set request is invalid
+					res = request.m_processor->Process(data, size); 					
+					//	if failed set request is invalid
+					if (STREAM_ERROR == res)
+					{						
 						request.m_valid_flag = false;
 					}
+					//	try again if required
+					else if (STREAM_TRY_AGAIN == res)
+					{
+						m_process_queue_mutex.Lock();
+						m_process_queue.push_back(request);
+						m_process_queue_mutex.Unlock();
+						m_process_thread_semaphore.Release();
+					}
 				}
-				else
-					//	if decompress failed set request as invalid
+				//	try again if required
+				else if (res == STREAM_TRY_AGAIN)
+				{
+					m_process_queue_mutex.Lock();
+					m_process_queue.push_back(request);
+					m_process_queue_mutex.Unlock();
+					m_process_thread_semaphore.Release();				
+				}
+				//	if decompress failed set request as invalid
+				else if (res == STREAM_ERROR)
+				{
 					request.m_valid_flag = false;
+				}
 			}
 			
 			//	lock request, that means we are gonna copy data from 
@@ -213,7 +276,7 @@ namespace System
 		{
 			m_render_queue_mutex.Lock();
 			request = m_render_queue.front();
-			m_render_queue.pop_back();
+			m_render_queue.pop_front();
 			m_render_queue_mutex.Unlock();
 
 			//	if command is to lock the object we will try to do that
@@ -222,17 +285,17 @@ namespace System
 				if (request.m_valid_flag)
 				{
 					//	try to lock is request is still valid
-					unsigned code = request.m_processor->LockDeviceObject();
+					auto res = request.m_processor->LockDeviceObject();
 					//	if there was not enough resource now, try again later
-					if (RESULT_TRY_AGAIN == code)
+					if (STREAM_TRY_AGAIN == res)
 					{
 						m_render_queue_mutex.Lock();
 						m_render_queue.push_back(request);
 						m_render_queue_mutex.Unlock();
-					}
-
+						continue;
+					} 
 					//	if it was a complete fail, just mark this request is not valid
-					if (RESULT_FAILED == code)
+					else if (STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
 					}
@@ -257,9 +320,17 @@ namespace System
 				if (request.m_valid_flag)
 				{
 					//	if object is valid, unloc resource
-					if (!request.m_processor->UnlockDeviceObject())
+					auto res = request.m_processor->UnlockDeviceObject();					
+					if (STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
+					}
+					else if (STREAM_TRY_AGAIN == res)
+					{
+						m_render_queue_mutex.Lock();
+						m_render_queue.push_back(request);
+						m_render_queue_mutex.Unlock();
+						continue;
 					}
 				}
 
@@ -270,7 +341,9 @@ namespace System
 				request.m_loader = nullptr;
 				delete request.m_processor;
 				request.m_processor = nullptr;
-				*request.m_result = request.m_valid_flag;	//	OK
+				//	wite flag back if requred
+				if (request.m_result)
+					*request.m_result = request.m_valid_flag;	//	OK
 			}
 		}
 		return 0;
