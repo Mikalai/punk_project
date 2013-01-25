@@ -109,7 +109,16 @@ namespace Utility
 		WORD_TRANSFORM_NODE,					// 6
 		WORD_PORTAL,					// 6
 		WORD_PORTAL_NODE,					// 6
-		WORD_FACE_NORMALS
+		WORD_FACE_NORMALS,
+		WORD_MAPDESCTEXT,
+		WORD_REF,
+		WORD_RAW_DATA_SOURCE,
+		WORD_NUM_BLOCKS,
+		WORD_BLOCK_SCALE,
+		WORD_BLOCK_SIZE,
+		WORD_HEIGHT_SCALE,
+		WORD_WORLD_ORIGIN,
+		WORD_CELL,
 	};
 
 	struct Record
@@ -223,7 +232,16 @@ namespace Utility
 		{ WORD_PORTAL_NODE,				L"*portal_node" },
 		{ WORD_STATIC_MESH,				L"*static_mesh" },		
 		{ WORD_FACE_NORMALS,			L"*face_normals" },
-		{ WORD_BONE_NODE,			    L"*bone_node" }
+		{ WORD_BONE_NODE,			    L"*bone_node" },
+		{ WORD_MAPDESCTEXT,				L"MAPDESCTEXT"},
+		{ WORD_REF,						L"*ref"},
+		{ WORD_RAW_DATA_SOURCE,			L"*raw_data_source"},
+		{ WORD_NUM_BLOCKS,				L"*num_blocks"},
+		{ WORD_BLOCK_SCALE,				L"*block_scale"},
+		{ WORD_BLOCK_SIZE,				L"*block_size"},
+		{ WORD_HEIGHT_SCALE,			L"*height_scale"},
+		{ WORD_WORLD_ORIGIN,			L"*world_origin"},
+		{ WORD_CELL,					L"*cell"}
 	};
 }
 #endif	//	_H_PUNK_VIRTUAL_KEY_WORDS
