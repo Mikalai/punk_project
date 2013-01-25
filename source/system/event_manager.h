@@ -10,7 +10,7 @@
 #include <queue>
 #include <map>
 #include "events/events.h"
-#include "monitor.h"
+//#include "monitor.h"
 #include "types.h"
 #include "singletone.h"
 
@@ -39,7 +39,7 @@ namespace System
         std::queue<Event*> events;
 		std::vector<std::vector<Handler> > eventHandlers;
 
-        Monitor monitor;
+        //Monitor monitor;
     };
 };
 

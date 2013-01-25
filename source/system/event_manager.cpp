@@ -1,5 +1,4 @@
 #include <algorithm>
-#include "monitor_scope.h"
 #include "event_manager.h"
 #include "error.h"
 #include "logger.h"
@@ -42,13 +41,13 @@ namespace System
 
 	void EventManager::SubscribeHandler(long event, Handler handler)
 	{
-		MonitorScope lock(monitor);
+//		MonitorScope lock(monitor);
 		eventHandlers[event].push_back(handler);
 	}
 
 	void EventManager::UnsubscribeHandler(long event, Handler handler)
 	{
-		MonitorScope lock(monitor);
+//		MonitorScope lock(monitor);
 		std::vector<Handler>::const_iterator i = std::find(eventHandlers[event].begin(), eventHandlers[event].end(), handler);
 		if ( i == eventHandlers[event].end())
 		{
@@ -71,16 +70,16 @@ namespace System
 			prev_event_code = event->eventCode;
 		}
 
-		MonitorScope lock(monitor);
+//		MonitorScope lock(monitor);
 		events.push(event);
-		monitor.Pulse();
+//		monitor.Pulse();
 	}
 
 	void EventManager::Process()
 	{
-		MonitorScope lock(monitor);
-		while (events.empty())
-			monitor.Wait();
+//		MonitorScope lock(monitor);
+//		while (events.empty())
+//			monitor.Wait();
 
 		try
 		{
