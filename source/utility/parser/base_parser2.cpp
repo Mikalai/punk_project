@@ -14,6 +14,7 @@
 #include "../../virtual/data/data.h"
 #include "../../virtual/skinning/skinning.h"
 #include "../../virtual/animation/anim.h"
+#include "../../virtual/terrain/module.h"
 
 #include "../../scene/scene_graph.h"
 
@@ -34,6 +35,7 @@
 namespace Utility
 {
 	extern System::Proxy<System::Object> LoadWorld(const System::string& path);
+	extern System::Proxy<System::Object> ParseAnything(System::Buffer& buffer);
 	extern bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::vec2>>>& value);		
 	extern bool ParseBonesWeights(System::Buffer& buffer, std::map<int, std::map<System::string, float>>& value);
 	extern bool ParseWorld(System::Buffer& buffer, System::Proxy<Scene::SceneGraph> scene);
@@ -60,6 +62,7 @@ namespace Utility
 	extern bool ParsePositionTrack(System::Buffer& buffer, Virtual::AnimationTrack<Math::vec3>& track);
 	extern bool ParseRotationTrack(System::Buffer& buffer, Virtual::AnimationTrack<Math::quat>& track);
 	extern bool ParseBoneNode(System::Buffer& buffer, System::Proxy<Scene::BoneNode> node);
+	extern bool ParseMapDescription(System::Buffer& buffer, System::Proxy<Virtual::Terrain> terrain);
 
 	/// This function convert a string representation of the file into code
 	KeywordCode Parse(const System::string& word)
@@ -198,10 +201,37 @@ namespace Utility
 		return true;
 	}
 
+	bool ParseBlockedInteger(System::Buffer& buffer, int& value)
+	{
+		CHECK_START(buffer);
+		if (!ParseInteger(buffer, value))
+			return (out_error() << "Unable to parse blocked float number" << std::endl, false);
+		CHECK_END(buffer);
+		return true;
+	}
+
 	bool ParseBlockedVector3f(System::Buffer& buffer, Math::vec3& value)
 	{
 		CHECK_START(buffer);
 		if (!ParseVector3f(buffer, value))
+			return (out_error() << "Unable to parse blocked vec3f" << std::endl, false);
+		CHECK_END(buffer);
+		return true;
+	}
+
+	bool ParseBlockedVector2i(System::Buffer& buffer, Math::ivec2& value)
+	{
+		CHECK_START(buffer);
+		if (!ParseVector2i(buffer, value))
+			return (out_error() << "Unable to parse blocked vec3f" << std::endl, false);
+		CHECK_END(buffer);
+		return true;
+	}
+
+	bool ParseBlockedVector2f(System::Buffer& buffer, Math::vec2& value)
+	{
+		CHECK_START(buffer);
+		if (!ParseVector2f(buffer, value))
 			return (out_error() << "Unable to parse blocked vec3f" << std::endl, false);
 		CHECK_END(buffer);
 		return true;
@@ -2136,5 +2166,167 @@ namespace Utility
 		scene->SetActiveCamera(System::Proxy<Virtual::Camera>(new Virtual::FirstPersonCamera()));
 
 		return scene;
+	}
+
+	bool ParseTerrainRawDataSource(System::Buffer& buffer, Virtual::TerrainRawDataSource& source)
+	{
+		CHECK_START(buffer);
+		while (!buffer.IsEnd())
+		{
+			System::string word = buffer.ReadWord();
+			switch(Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:							
+				return true;
+			case WORD_REF:
+				{
+					System::string value;
+					if (!ParseBlockedString(buffer, value))
+						return (out_error() << "Can't parse terrain cell name" << std::endl, false);
+					source.SetRawFile(value);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return false;
+	}
+
+	bool ParseTerrainCell(System::Buffer& buffer, Virtual::TerrainCell& cell)
+	{
+		CHECK_START(buffer);
+		while (!buffer.IsEnd())
+		{
+			System::string word = buffer.ReadWord();
+			switch(Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:							
+				return true;
+			case WORD_NAME:
+				{
+					System::string value;
+					if (!ParseBlockedString(buffer, value))
+						return (out_error() << "Can't parse terrain cell name" << std::endl, false);
+					cell.SetName(value);
+				}
+				break;
+			case WORD_LOCATION:
+				{
+					Math::ivec2 value;
+					if (!ParseBlockedVector2i(buffer, value))
+						return (out_error() << "Can't parse terrain cell location" << std::endl, false);
+					cell.SetLocation(value);
+				}
+				break;
+			case WORD_RAW_DATA_SOURCE:
+				{
+					Virtual::TerrainRawDataSource value;
+					if (!ParseTerrainRawDataSource(buffer, value))
+						return (out_error() << "Can't parse terrain raw data source" << std::endl, false);
+					cell.SetRawDataSource(value);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return false;
+	}
+
+	bool ParseMapDescription(System::Buffer& buffer, System::Proxy<Virtual::Terrain> terrain)
+	{
+		while (!buffer.IsEnd())
+		{
+			System::string word = buffer.ReadWord();
+			switch(Parse(word))
+			{
+			case WORD_CLOSE_BRACKET:							
+				return true;
+			case WORD_NUM_BLOCKS:
+				{
+					int value;
+					if (!ParseBlockedInteger(buffer, value))
+						return (out_error() << "Can't parse terrain num blocks" << std::endl, false);
+					terrain->SetNumBlocks(value);
+				}
+				break;
+			case WORD_BLOCK_SCALE:
+				{
+					float value;
+					if (!ParseBlockedFloat(buffer, value))
+						return (out_error() << "Can't parse terrain block scale" << std::endl, false);
+					terrain->SetBlockScale(value);
+				}
+				break;
+			case WORD_BLOCK_SIZE:
+				{
+					int value;
+					if (!ParseBlockedInteger(buffer, value))
+						return (out_error() << "Can't parse terrain block size" << std::endl, false);
+					terrain->SetBlocksSize(value);
+				}
+				break;
+			case WORD_HEIGHT_SCALE:
+				{
+					float value;
+					if (!ParseBlockedFloat(buffer, value))
+						return (out_error() << "Can't parse terrain height scale" << std::endl, false);
+					terrain->SetHeightScale(value);
+				}
+				break;
+			case WORD_WORLD_ORIGIN:
+				{
+					Math::vec2 value;
+					if (!ParseBlockedVector2f(buffer, value))
+						return (out_error() << "Can't parse terrain origin position" << std::endl, false);
+					terrain->SetOrigin(value);
+				}
+				break;
+			case WORD_CELL:
+				{
+					Virtual::TerrainCell value;
+					if (!ParseTerrainCell(buffer, value))
+						return (out_error() << "Can't parse terrain cell" << std::endl, false);
+					value.Validate();
+					terrain->AddOrUpdateCell(value);
+				}
+				break;
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
+			}
+		}
+		return true;
+	}
+
+	System::Proxy<System::Object> ParseAnything(System::Buffer& buffer)
+	{
+		while (!buffer.IsEnd())
+		{
+			System::string word = buffer.ReadWord();
+			KeywordCode code = Parse(word);
+			switch(code)
+			{
+			case WORD_MAPDESCTEXT:
+				{
+					System::Proxy<Virtual::Terrain> terrain(new Virtual::Terrain);
+					if (!ParseMapDescription(buffer, terrain))
+						return (out_error() << "Can't parse terrain" << std::endl, System::Proxy<System::Object>(nullptr));
+					return terrain;
+				}
+			default:
+				return (out_error() << L"Unexpected keyword " << word << std::endl, System::Proxy<System::Object>(nullptr));
+			}
+		}
+		return System::Proxy<System::Object>(nullptr);
+	}
+
+	System::Proxy<System::Object> ParsePunkFile(const System::string& path)
+	{
+		System::Buffer buffer;
+		if (!System::BinaryFile::Load(path, buffer))
+			return (out_error() << (L"Unable to load file " + path).Data() << std::endl, System::Proxy<Scene::SceneGraph>(nullptr));
+		
+		return ParseAnything(buffer);
 	}
 }

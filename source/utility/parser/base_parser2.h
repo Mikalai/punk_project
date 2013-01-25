@@ -10,6 +10,7 @@
 
 namespace Utility
 {
+	PUNK_ENGINE System::Proxy<System::Object> ParsePunkFile(const System::string& path);
 	PUNK_ENGINE System::Proxy<System::Object>  LoadWorld(const System::string& path);
 }
 
