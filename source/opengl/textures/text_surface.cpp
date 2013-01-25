@@ -99,7 +99,7 @@ namespace OpenGL
 				if (y < 0)
 					return true;
 			}							
-			m_texture->CopyFromCPU(x + x_offset, y - y_offset, width, height, ImageModule::IMAGE_FORMAT_RED, buffer);			
+			m_texture->CopyFromCPU(x + x_offset, y - y_offset, width, height, buffer);			
 			x += x_advance;				
 		}/**/
 		return true;

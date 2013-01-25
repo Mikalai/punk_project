@@ -7,7 +7,7 @@ Description: Texture2D implementation
 #include <istream>
 #include <ostream>
 #include "texture2d.h"
-#include "texture2d_impl.h"
+#include "texture2d_pbo_impl.h"
 #include "internal_formats.h"
 
 IMPLEMENT_MANAGER(L"resource.textures", L"*.texture", System::Environment::Instance()->GetTextureFolder(), System::ObjectType::TEXTURE_2D, OpenGL, Texture2D);
@@ -35,7 +35,7 @@ namespace OpenGL
 
 	void Texture2D::Bind() const 
 	{
-		glBindTexture(GL_TEXTURE_2D, impl_texture_2d->m_id);
+		glBindTexture(GL_TEXTURE_2D, impl_texture_2d->m_texture_id);
 		CHECK_GL_ERROR(L"Unable to bind texture");
 	}
 
@@ -50,9 +50,9 @@ namespace OpenGL
 		impl_texture_2d.reset(0);
 	}
 
-	void Texture2D::CopyFromCPU(int x, int y, int width, int height, ImageModule::ImageFormat format, const unsigned char* data)
+	bool Texture2D::CopyFromCPU(int x, int y, int width, int height, const void* data)
 	{
-		impl_texture_2d->CopyFromCPU(x, y, width, height, ImageFormatToOpenGL(format), data);
+		return impl_texture_2d->CopyFromCPU(x, y, width, height, data);
 	}
 
 	void Texture2D::Resize(int width, int height)
@@ -60,10 +60,10 @@ namespace OpenGL
 		impl_texture_2d->Resize(width, height);
 	}
 
-	void Texture2D::Create(int width, int height, ImageModule::ImageFormat format, const unsigned char* data)
+	bool Texture2D::Create(int width, int height, ImageModule::ImageFormat format, const void* data)
 	{
 		impl_texture_2d.reset(new Texture2DImpl);		
-		impl_texture_2d->Create(width, height, ImageFormatToOpenGL(format), data);
+		return impl_texture_2d->Create(width, height, ImageFormatToOpenGL(format), data);
 	}
 
 	void Texture2D::Create(const ImageModule::Image& image)
@@ -89,7 +89,17 @@ namespace OpenGL
 
 	unsigned Texture2D::GetCode() const
 	{
-		return impl_texture_2d->m_id;
+		return impl_texture_2d->m_texture_id;
+	}
+
+	void* Texture2D::Map()
+	{
+		return impl_texture_2d->Map();
+	}
+	
+	void Texture2D::Unmap(void* data)
+	{
+		impl_texture_2d->Unmap(data);
 	}
 
 	void Texture2D::SetSourceFile(const System::string& filename)

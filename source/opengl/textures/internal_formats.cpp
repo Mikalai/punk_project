@@ -312,7 +312,7 @@ namespace OpenGL
 		case ImageModule::IMAGE_FORMAT_RG32F:
 			break;
 		case ImageModule::IMAGE_FORMAT_R32F:
-			break;
+			return GL_R32F;
 		case ImageModule::IMAGE_FORMAT_BGRA:
 			return GL_BGRA;
 		case ImageModule::IMAGE_FORMAT_BGR:

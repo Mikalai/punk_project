@@ -35,14 +35,16 @@ namespace OpenGL
 		~Texture2D();
 		void Bind() const;
 		void Unbind() const;	
-		void Create(int width, int height, ImageModule::ImageFormat format, const unsigned char* data);
-		void CopyFromCPU(int x, int y, int width, int height, ImageModule::ImageFormat format, const unsigned char* data);
+		bool Create(int width, int height, ImageModule::ImageFormat format, const void* data);
+		bool CopyFromCPU(int x, int y, int width, int height, const void* data);
 		void Resize(int width, int height);
 		void Fill(unsigned char data);
 		int GetHeight() const;
 		int GetWidth() const;
 		unsigned GetCode() const;
 		void Create(const ImageModule::Image& image);
+		void* Map();
+		void Unmap(void* data);
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);		
