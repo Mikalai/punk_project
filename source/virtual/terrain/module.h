@@ -8,5 +8,10 @@
 #include "terrain_observer.h"
 #include "terrain_streamer.h"
 #include "terrain_view.h"
+#include "terrain_streamer.h"
+#include "terrain_loader.h"
+#include "terrain_processor.h"
+#include "terrain_view_loader.h"
+#include "terrain_view_processor.h"
 
 #endif	//	_H_PUNK_VIRTUAL_TERRAIN_MODULE
