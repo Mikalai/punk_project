@@ -169,6 +169,84 @@ namespace OpenGL
 		}
 	};
 
+	template<> class AttributeConfiger<Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TEXTURE|Utility::COMPONENT_FLAG>
+	{
+		typedef Utility::Vertex<Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TEXTURE|Utility::COMPONENT_FLAG> CurrentVertex;
+		enum Code { SUPPORTED = Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TEXTURE|Utility::COMPONENT_FLAG };
+	public:
+
+		AttributeConfiger(Utility::VertexAttributes available)
+		{
+			Utility::VertexAttributes components = SUPPORTED & available;
+			int size = sizeof(CurrentVertex);
+			if (components == Utility::COMPONENT_POSITION)
+			{
+				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, size, (void*)0);	//	position
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glEnableVertexAttribArray(0);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+			}
+			else if (components == (Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL))
+			{	
+				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)0);	//	position
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)(4*sizeof(float)));	//	normal
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glEnableVertexAttribArray(0);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(1);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+			}
+			else if (components == (Utility::COMPONENT_POSITION|Utility::COMPONENT_TEXTURE))
+			{	
+				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)0);	//	position
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)(2*4*sizeof(float)));	//	texture
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glEnableVertexAttribArray(0);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(4);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+			}
+			else if (components == (Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TEXTURE))
+			{	
+				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)0);	//	position
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)(4*sizeof(float)));	//	normal
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)(2*4*sizeof(float)));	//	texture
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glEnableVertexAttribArray(0);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(1);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(4);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+			}
+			else if (components == (Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TEXTURE|Utility::COMPONENT_FLAG))
+			{	
+				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)0);	//	position
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)(1*4*sizeof(float)));	//	normal
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)(2*4*sizeof(float)));	//	texture
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(CurrentVertex), (void*)(3*4*sizeof(float)));	//	bone_weight
+				CHECK_GL_ERROR(L"Unable to set vertex attrib pointer vao");
+				glEnableVertexAttribArray(0);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(1);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+				glEnableVertexAttribArray(4);
+				CHECK_GL_ERROR(L"Unable to enable vertex attrib pointer vao");
+			}
+			else
+			{
+				out_error() << "Vertex do not support such render context" << std::endl;
+			}
+		}
+	};
+
 	template<> class AttributeConfiger<Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TANGENT|Utility::COMPONENT_BITANGENT|Utility::COMPONENT_TEXTURE>
 	{
 		typedef Utility::Vertex<Utility::COMPONENT_POSITION|Utility::COMPONENT_NORMAL|Utility::COMPONENT_TANGENT|Utility::COMPONENT_BITANGENT|Utility::COMPONENT_TEXTURE> CurrentVertex;
