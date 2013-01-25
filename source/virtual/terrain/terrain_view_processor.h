@@ -8,14 +8,20 @@ namespace OpenGL { class Texture2D; }
 
 namespace Virtual
 {
+	struct TerrainViewProcessorDesc
+	{
+		int m_view_size;
+		OpenGL::Texture2D* m_height_map;
+		//	DMA pointer to the data
+		void* m_device_ptr;
+
+		void(*OnEnd)(void*);
+		void* m_on_end_data;
+	};
+
 	class PUNK_ENGINE TerrainViewProcessor : public System::AbstractDataProcessor
 	{
 	public:
-		/**
-		*	Constructor receives a pointer to the texture to process data in
-		*	Texture should be created and valid
-		*/
-		TerrainViewProcessor(OpenGL::Texture2D* height_map);
 		/**
 		*	Nothing to destroy
 		*/
@@ -23,26 +29,33 @@ namespace Virtual
 		/**
 		*	This do nothing, because we have a texture to copy data in
 		*/
-		virtual unsigned LockDeviceObject();
+		virtual System::StreamingStepResult LockDeviceObject();
 		/**
 		*	This do nothing 
 		*/
-		virtual unsigned UnlockDeviceObject();
+		virtual System::StreamingStepResult UnlockDeviceObject();
 		/**
 		*	This can perform data convertion, if float textures
 		*	are not supported
 		*/
-		virtual unsigned Process(void* data, unsigned size);
+		virtual System::StreamingStepResult Process(void* data, unsigned size);
 		/**
 		*	Data is copied to the texture here
 		*/
-		virtual unsigned CopyToResource();
+		virtual System::StreamingStepResult CopyToResource();
 
-		virtual unsigned SetResourceError();
+		virtual System::StreamingStepResult SetResourceError();
+
+		/**
+		*	Constructor receives a pointer to the texture to process data in
+		*	Texture should be created and valid
+		*/
+		TerrainViewProcessor(const TerrainViewProcessorDesc& desc);
+
 	private:
+		TerrainViewProcessorDesc m_desc;
 		void* m_data;
 		unsigned m_size;
-		OpenGL::Texture2D* m_height_map;
 	};
 }
 #endif	//	_H_PUNK_VIRTUAL_TERRAIN_VIEW_PROCESSOR

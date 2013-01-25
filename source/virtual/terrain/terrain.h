@@ -2,6 +2,7 @@
 #define _H_PUNK_VIRTUAL_TERRAIN
 
 #include "../../config.h"
+#include "../../system/object.h"
 #include "../../math/vec2.h"
 #include "../../math/smart_matrix.h"
 
@@ -9,7 +10,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE Terrain
+	class PUNK_ENGINE Terrain : public System::Object
 	{
 	public:
 		Terrain();
@@ -29,13 +30,15 @@ namespace Virtual
 		void SetOrigin(const Math::vec2& value) { m_core.m_origin = value; }
 		const Math::vec2& GetOrigin() const { return m_core.m_origin; }
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+		virtual bool Save(std::ostream& stream) const;
+		virtual bool Load(std::istream& stream);
 
 		const System::string ToString() const;
 
-		const TerrainCell* GetCell(int x, int y) const { return &m_cells.At(y, x); }
-		TerrainCell* GetCell(int x, int y) { return &m_cells.At(y, x); }
+		bool AddOrUpdateCell(const TerrainCell& value);
+
+		System::Proxy<TerrainCell> GetCell(int x, int y) { return m_cells.At(y, x); }
+		const System::Proxy<TerrainCell> GetCell(int x, int y) const { return m_cells.At(y, x); }
 
 	private:
 
@@ -52,7 +55,7 @@ namespace Virtual
 		};
 
 		Core m_core;
-		Math::Matrix<TerrainCell> m_cells;
+		Math::Matrix<System::Proxy<TerrainCell>> m_cells;
 	};
 }
 
