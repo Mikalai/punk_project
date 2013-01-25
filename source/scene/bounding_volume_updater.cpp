@@ -230,6 +230,33 @@ namespace Scene
 		return true;
 	}
 
+	bool BoundingVolumeUpdater::Visit(Scene::TerrainNode* node)
+	{
+		m_states.Push();
+		m_states.CurrentState()->Get().m_local.Identity();			
+		bool was = false;
+		for each (System::Proxy<Scene::Node> child in *node)
+		{
+			if (child.IsValid())
+			{
+				if (!child->Apply(this))
+					return false;
+				if (!was)
+				{
+					node->SetBoundingSphere(child->GetBoundingSphere());
+					was = true;
+				}
+				else
+				{
+					node->SetBoundingSphere(node->GetBoundingSphere() + child->GetBoundingSphere());
+				}
+			}
+
+		}
+		m_states.Pop();
+		return true;
+	}
+
 	bool BoundingVolumeUpdater::Visit(Scene::PortalNode* node)
 	{
 		return true;

@@ -14,6 +14,8 @@ namespace Scene
 	class PortalNode;
 	class ArmatureNode;
 	class BoneNode;
+	class DebugTextureViewNode;
+	class TerrainNode;
 
 	class AbstractVisitor
 	{
@@ -29,6 +31,8 @@ namespace Scene
 		virtual bool Visit(LocationIndoorNode* node) = 0;		
 		virtual bool Visit(PortalNode* node) = 0;
 		virtual bool Visit(BoneNode* node) = 0;
+		virtual bool Visit(TerrainNode* node) = 0;
+		virtual bool Visit(DebugTextureViewNode* node) { return true; }		
 	};
 }
 

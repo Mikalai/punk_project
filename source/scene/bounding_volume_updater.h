@@ -27,7 +27,7 @@ namespace Scene
 		virtual bool Visit(LocationIndoorNode* node);		
 		virtual bool Visit(PortalNode* node);
 		virtual bool Visit(BoneNode* node);
-
+		virtual bool Visit(TerrainNode* node);
 		void SetScene(System::Proxy<SceneGraph> value);
 		void Update();
 

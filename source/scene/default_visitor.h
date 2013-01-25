@@ -4,6 +4,7 @@
 #include "../config.h"
 #include "visitor.h"
 #include "../opengl/render/render_state.h"
+
 namespace Scene
 {
 	class PUNK_ENGINE DefaultVisitor : public AbstractVisitor
@@ -22,7 +23,7 @@ namespace Scene
 		virtual bool Visit(LocationIndoorNode* node);		
 		virtual bool Visit(PortalNode* node);
 		virtual bool Visit(BoneNode* node) = 0;
-
+		virtual bool Visit(TerrainNode* node) = 0;
 	private:
 		int m_level;		
 	};

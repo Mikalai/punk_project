@@ -18,6 +18,8 @@
 #include "skin_mesh_node.h"
 #include "bone_node.h"
 #include "bounding_volume_updater.h"
+#include "debug/texture_view_node.h"
+#include "terrain_node.h"
 
 namespace GUI
 {
