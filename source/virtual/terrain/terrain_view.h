@@ -19,7 +19,7 @@
 #include "../../system/types.h"
 #include "../../math/vec2.h"
 
-namespace OpenGL { class Texture2D; }
+namespace GPU { namespace OpenGL { class Texture2D; } }
 
 namespace Virtual
 {
@@ -39,7 +39,7 @@ namespace Virtual
 		void UpdatePosition(const Math::vec2& value);
 		void SetUpdateThreshold(float value);
 		
-		System::Proxy<OpenGL::Texture2D> GetHeightMap() { return m_height_map_front; }
+		System::Proxy<GPU::OpenGL::Texture2D> GetHeightMap() { return m_height_map_front; }
 		void* GetViewData() { return m_front_buffer; }
 
 		System::Proxy<Terrain> GetTerrain() { return m_terrain; }
@@ -69,9 +69,9 @@ namespace Virtual
 		//	threshold for initating data streaming into the view
 		float m_threshold;
 		//	Height map for rendering is stored here
-		System::Proxy<OpenGL::Texture2D> m_height_map_front;
+		System::Proxy<GPU::OpenGL::Texture2D> m_height_map_front;
 		//	Height map for asyncloading is stored here
-		System::Proxy<OpenGL::Texture2D> m_height_map_back;
+		System::Proxy<GPU::OpenGL::Texture2D> m_height_map_back;
 		//	flag that indicates that uploading is in process
 		bool m_loading;
 		//	holds last update result

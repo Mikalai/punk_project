@@ -38,7 +38,9 @@ namespace Virtual
 			return (out_error() << "Cell X position " << value.GetLocation().X() << " is incorrect. Should be in the range [0; " << m_cells.ColumnCount() << "]" << std::endl, false);
 		if (value.GetLocation().Y() < 0 || value.GetLocation().Y() >= m_cells.RowCount())
 			return (out_error() << "Cell Y position " << value.GetLocation().Y() << " is incorrect. Should be in the range [0; " << m_cells.RowCount() << "]" << std::endl, false);
-		*m_cells.At(value.GetLocation().Y(), value.GetLocation().X()) = value;
+		auto v = m_cells.At(value.GetLocation().Y(), value.GetLocation().X());
+		TerrainCell& t = *v;
+		t = value;
 		return true;
 	}
 

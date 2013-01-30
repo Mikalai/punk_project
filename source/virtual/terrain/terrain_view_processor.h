@@ -11,7 +11,7 @@ namespace Virtual
 	struct TerrainViewProcessorDesc
 	{
 		int m_view_size;
-		OpenGL::Texture2D* m_height_map;
+		GPU::OpenGL::Texture2D* m_height_map;
 		//	DMA pointer to the data
 		void* m_device_ptr;
 
