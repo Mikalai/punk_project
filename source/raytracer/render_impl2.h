@@ -6,7 +6,7 @@
 #include "../math/vec3.h"
 #include "../math/helper.h"
 
-#include "../images/images.h"
+#include "../images/module.h"
 
 #include "render.h"
 #include "scene.h"

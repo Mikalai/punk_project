@@ -2,7 +2,7 @@
 #include "image_impl.h"
 
 #include <fstream>
-#include "../error.h"
+#include "../error/module.h"
 #include <vector>
 #include <algorithm>
 

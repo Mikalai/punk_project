@@ -1,9 +1,9 @@
 #include <algorithm>
 #include <string>
 #include "../../system/environment.h"
+#include "../error/module.h"
 #include "importer.h"
 #include "importer_impl.h"
-#include "../error.h"
 #include "../internal_images/rgba_image.h"
 #include "../internal_images/rgb_image.h"
 #include "../internal_images/gray_image.h"
@@ -34,7 +34,7 @@ namespace ImageModule
 	{
 		Load(filename);
 		if (impl_image->m_components != 4)
-			throw ImageError((filename + L" is not an RGBA image").Data());
+			throw ImageException((filename + L" is not an RGBA image").Data());
 		RGBAImage* rgba_image = new RGBAImage;
 		std::swap(rgba_image->impl_image, impl_image);
 		return rgba_image;
@@ -44,7 +44,7 @@ namespace ImageModule
 	{
 		Load(filename);
 		if (impl_image->m_components != 3)
-			throw ImageError((filename + L" is not an RGB image").Data());
+			throw ImageException((filename + L" is not an RGB image").Data());
 		RGBImage* rgb_image = new RGBImage;
 		std::swap(rgb_image->impl_image, impl_image);
 		return rgb_image;
@@ -54,7 +54,7 @@ namespace ImageModule
 	{
 		Load(filename);
 		if (impl_image->m_components != 1)
-			throw ImageError((filename + L" is not an RGB image").Data());
+			throw ImageException((filename + L" is not an RGB image").Data());
 		GrayImage* gray_image = new GrayImage;
 		std::swap(gray_image->impl_image, impl_image);
 		return gray_image;
@@ -89,8 +89,7 @@ namespace ImageModule
 			}
 			else
 			{
-				out_error() << L"Unsupported file format" << std::endl;
-				return false;
+				throw ImageException(L"Unsupported file format");
 			}
 		}		
 	}

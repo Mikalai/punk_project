@@ -40,42 +40,6 @@
     <Filter Include="math">
       <UniqueIdentifier>{cd2bc3a4-1441-4a26-9089-35cc53421528}</UniqueIdentifier>
     </Filter>
-    <Filter Include="opengl">
-      <UniqueIdentifier>{0d3e155a-f472-4140-878b-f8542486884e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\architecture">
-      <UniqueIdentifier>{0e4959ac-310a-4900-b3d3-e598286e2f18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\linux">
-      <UniqueIdentifier>{1a620a7e-74e1-4a97-b41f-adac14bb08eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\nvtristrip">
-      <UniqueIdentifier>{8f8365ad-f73f-4e3c-8d38-8e774aa9bc29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\render">
-      <UniqueIdentifier>{c176e7e2-c05d-4db4-84a4-328ae426f6a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\render_context">
-      <UniqueIdentifier>{d576fab8-1eed-4920-84ed-39a2bc041676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\render_context\shaders">
-      <UniqueIdentifier>{cd853bb3-4498-47e1-8e2b-3e291f0fb36b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\render_context\shaders\fragment">
-      <UniqueIdentifier>{96a312fb-c60c-4488-834e-85a5cff7404c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\render_context\shaders\vertex">
-      <UniqueIdentifier>{b7477cb8-4dab-45f3-afc2-62c090c581ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\renderable">
-      <UniqueIdentifier>{6d6bb92b-0e9b-48ce-9616-2de1983e4352}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\textures">
-      <UniqueIdentifier>{31403a0b-dccd-4456-a978-9e2562f9077c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\win32">
-      <UniqueIdentifier>{fcb65e64-5e77-40f4-8014-9e610c7b4ae5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="render">
       <UniqueIdentifier>{cd97ed0c-dc77-438f-9c54-8651ae8f5cc6}</UniqueIdentifier>
     </Filter>
@@ -133,17 +97,8 @@
     <Filter Include="system\win32\web_camera">
       <UniqueIdentifier>{87cc7e40-8a8a-41f0-8656-322f1fe664b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="opengl\render_context\shaders\glsl">
-      <UniqueIdentifier>{bedd6e38-cb26-49fa-b794-768170af5cea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="images\converter">
       <UniqueIdentifier>{a6e4e543-6e90-4616-bf91-4555a0fb956f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opencl">
-      <UniqueIdentifier>{10f1efa3-d754-47a5-832a-344bcced71f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opencl\programs">
-      <UniqueIdentifier>{eee6d7a4-afc7-46bc-9854-3994681f1bc7}</UniqueIdentifier>
     </Filter>
     <Filter Include="system\smart_pointers">
       <UniqueIdentifier>{6eceea16-93bc-47b0-8987-3f2911997456}</UniqueIdentifier>
@@ -156,9 +111,6 @@
     </Filter>
     <Filter Include="ai">
       <UniqueIdentifier>{dbff1295-f1d0-4716-ab9c-985de90ea4fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="opengl\renderable\primitives">
-      <UniqueIdentifier>{9b851406-16d1-4a94-9551-ac72277b4ffa}</UniqueIdentifier>
     </Filter>
     <Filter Include="raytracer">
       <UniqueIdentifier>{ab3c2290-1b65-43ca-9fef-777b4db8f726}</UniqueIdentifier>
@@ -189,6 +141,90 @@
     </Filter>
     <Filter Include="scene\debug">
       <UniqueIdentifier>{b59ab0de-0a32-4776-ae12-d80c5185c4e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics">
+      <UniqueIdentifier>{f7d3158e-cba5-4417-95fa-89a186ac3a8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu">
+      <UniqueIdentifier>{69a018d3-63dc-4255-a003-74c848026cdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl">
+      <UniqueIdentifier>{f9dc8fef-8586-4800-a941-f363f0e1f32c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opencl">
+      <UniqueIdentifier>{e0921f85-7cae-4625-a241-20ea7227b0dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\driver">
+      <UniqueIdentifier>{ad5a5d9f-7c09-4b82-a9c5-38052267a537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\driver\linux">
+      <UniqueIdentifier>{29f07767-2b0e-4242-b2b9-f0da392bccb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\driver\win32">
+      <UniqueIdentifier>{77cb06ca-92fe-49c4-87d2-f78d542d369b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\textures">
+      <UniqueIdentifier>{180c5dc1-e2c0-4fca-9761-a64d1572d9a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\renderable">
+      <UniqueIdentifier>{77f8a9e3-dcf4-433f-bf02-e7885f5741e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\renderable\primitives">
+      <UniqueIdentifier>{8abe7cab-2058-43ea-aea4-203b6f1a8c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\buffers">
+      <UniqueIdentifier>{5cc0dbbb-53a9-47c0-a9fd-2d882ca3a38f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\gl">
+      <UniqueIdentifier>{16b8416c-5ec9-4850-a8cf-747769655eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\gl\win32">
+      <UniqueIdentifier>{90743af6-a606-44af-bb69-fdbcee26deff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\gl\linux">
+      <UniqueIdentifier>{fc223597-7a01-4184-adaf-6e85f50b4db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\errors">
+      <UniqueIdentifier>{30c85d4e-b9b2-450d-8377-6e9dcc642e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\error">
+      <UniqueIdentifier>{28cf4e12-2aa7-4088-b8b3-aa4a062a7d19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\error">
+      <UniqueIdentifier>{4ba35e30-8b20-4b13-a530-461406367f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\errors\win32">
+      <UniqueIdentifier>{84c787ac-2495-437f-8f62-40c9b7ad1e26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\common">
+      <UniqueIdentifier>{89e94b89-1e56-4843-85aa-18c4a5ccef85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opencl\errors">
+      <UniqueIdentifier>{87479b0b-926d-4f4d-ab92-c8f061f474a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="images\error">
+      <UniqueIdentifier>{d3dbb5a8-a7ee-4543-8ca3-75cb21ffd14e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\v1">
+      <UniqueIdentifier>{23b77624-a03a-429f-963a-d6915932381b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\render_context">
+      <UniqueIdentifier>{e7969b48-7ece-457b-b48d-d0966ba89a61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\render_context\shaders">
+      <UniqueIdentifier>{b78198a7-7152-4e01-b0b0-14ba552af8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\render_context\shaders\fragment">
+      <UniqueIdentifier>{a3be714f-96d0-497d-ac09-be6d6e022adf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\render_context\shaders\vertex">
+      <UniqueIdentifier>{76b13b3d-93de-42d4-8468-2f8b15a31fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\render_context\shaders\glsl">
+      <UniqueIdentifier>{c1a50f34-d94c-4428-835f-03be3d23f39e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\aop">
+      <UniqueIdentifier>{29131f8b-7b2f-4fa6-bbba-d60ab8e58ba0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -288,9 +324,6 @@
     <ClInclude Include="..\..\..\source\system\types\priority_list.h">
       <Filter>system\types</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\assert_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\binary_file_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
@@ -307,9 +340,6 @@
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\environment_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\error_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\folder_win32.h">
@@ -331,9 +361,6 @@
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\stack_trace_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\static_array.h">
@@ -379,9 +406,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\environment.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\error.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\event_manager.h">
@@ -445,9 +469,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\storable_data.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\system.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\system_clock.h">
@@ -519,16 +540,10 @@
     <ClInclude Include="..\..\..\source\images\internal_images\rgba_image.h">
       <Filter>images\internal_images</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\images\error.h">
-      <Filter>images</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\images\formats.h">
       <Filter>images</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\images\image_file.h">
-      <Filter>images</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\images\images.h">
       <Filter>images</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\images\png_file.h">
@@ -627,286 +642,10 @@
     <ClInclude Include="..\..\..\source\math\vec4.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\batch.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\batch_collection.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\batch_config.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\driver.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\frame.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\render_context.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\render_context_params.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\render_pass.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\render_pass_collection.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\render_target.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\architecture\vertex_array_object.h">
-      <Filter>opengl\architecture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\linux\driver_parameters_linux.h">
-      <Filter>opengl\linux</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip.h">
-      <Filter>opengl\nvtristrip</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip_objects.h">
-      <Filter>opengl\nvtristrip</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\nvtristrip\vertex_cache.h">
-      <Filter>opengl\nvtristrip</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\batch.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\frame.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\render.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\render_pass.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\render_target.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\render_target_back_buffer.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\render_target_texture.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_bump.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_grass.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_gui.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_light.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_particle.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_skinning.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_color.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_textured.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_terrain.h">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_bump.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_grass.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_gui.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_light.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle_system.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_skinning.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_solid_color.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_terrain.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transform_3d.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.h">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\shader.h">
-      <Filter>opengl\render_context\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\shader_impl.h">
-      <Filter>opengl\render_context\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shaders\shaders.h">
-      <Filter>opengl\render_context\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\dummy_render_context_policy.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\rc_bump_mapping.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\rc_grass.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\rc_gui.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\rc_light.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\rc_particle_system.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\rc_skinning.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\rc_solid_color_3d.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\render_context_policy.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\render_contexts.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shader_vertex.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render_context\shader2.h">
-      <Filter>opengl\render_context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\renderable_data.h">
-      <Filter>opengl\renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\textures\texture_2d_manager.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\textures\texture_context.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\textures\texture2d.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\textures\texture2d_impl.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\win32\driver_parameters_win32.h">
-      <Filter>opengl\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\win32\driver_win32.h">
-      <Filter>opengl\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\win32\extensions_win32.h">
-      <Filter>opengl\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\attribute_configer.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\driver.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\driver_parameters.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\error.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\extensions.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\frame_buffer.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\frame_buffer_with_depth.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\glsl_program.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\grid_object.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\grid_object_impl.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\light.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\light_manager.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\material.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\module.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\os.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\point_object.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\point_object_impl.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\quad_object.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\quad_object_impl.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\shader_program.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\standard_shaders.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\terrain_render.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\text_texture_2d.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\texture_bind_target.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\vao_manager.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\vbo.h">
-      <Filter>opengl</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\render\bbox_render.h">
       <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\render\character_render.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\render\render.h">
       <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\render\solid_object_render.h">
@@ -937,9 +676,6 @@
       <Filter>virtual</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\track_pos.h">
-      <Filter>virtual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\virtual\virtual.h">
       <Filter>virtual</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\animation\action.h">
@@ -1003,28 +739,13 @@
     <ClInclude Include="..\..\..\source\virtual\animation\object_animation_mixer.h">
       <Filter>virtual\animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\virtual\animation\anim.h">
-      <Filter>virtual\animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\controllers\controllers.h">
       <Filter>virtual\controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\virtual\data\data.h">
-      <Filter>virtual\data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\motions\motion.h">
       <Filter>virtual\motion</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\virtual\skinning\skinning.h">
-      <Filter>virtual\skinning</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\model\vertex.h">
-      <Filter>utility\model</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\utility\model\vertex_bone_weight.h">
-      <Filter>utility\model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\model\vertex_component.h">
       <Filter>utility\model</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\utility\model\vertex_index.h">
@@ -1111,54 +832,6 @@
     <ClInclude Include="..\..\..\source\images\converter\yuy2_to_rgb.h">
       <Filter>images\converter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\platform.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\platform_impl.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\device.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\device_impl.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\context.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\context_impl.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\buffer.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\buffer_impl.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\command_queue.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\command_queue_impl.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\program.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\program_impl.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\kernel.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\kernel_impl.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opencl\driver.h">
-      <Filter>opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\render\simple_render.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\object.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -1191,21 +864,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\ai\navi_triangle.h">
       <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.h">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\renderable.h">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\static_mesh.h">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.h">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\vertex_attributes.h">
-      <Filter>opengl\renderable\primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\math\nrm.h">
       <Filter>math</Filter>
@@ -1279,9 +937,6 @@
     <ClInclude Include="..\..\..\source\virtual\data\door.h">
       <Filter>virtual\data</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\render_state.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\scene\geometry_node.h">
       <Filter>scene</Filter>
     </ClInclude>
@@ -1302,9 +957,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\manager\manager.h">
       <Filter>virtual\manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\primitive_types.h">
-      <Filter>opengl\renderable\primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\type.h">
       <Filter>system</Filter>
@@ -1351,16 +1003,7 @@
     <ClInclude Include="..\..\..\source\scene\default_visitor.h">
       <Filter>scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\simple_render.h">
-      <Filter>opengl\render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\punk_engine.h" />
-    <ClInclude Include="..\..\..\source\opengl\textures\text_surface.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\textures\internal_formats.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\resource_manager_3.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -1369,9 +1012,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\resource_manager.h">
       <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.h">
-      <Filter>opengl\renderable\primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\scene\armature_node.h">
       <Filter>scene</Filter>
@@ -1388,17 +1028,8 @@
     <ClInclude Include="..\..\..\source\images\import_export\jpg_importer.h">
       <Filter>images\import_export</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\cube_mesh.h">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\scene\bone_node.h">
       <Filter>scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\sphere_mesh.h">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\render\ogl_gui_render.h">
-      <Filter>opengl\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\gui\gui_render.h">
       <Filter>gui</Filter>
@@ -1408,9 +1039,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\state_manager.h">
       <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gui\gui.h">
-      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\math\noiseutils.h">
       <Filter>math</Filter>
@@ -1517,20 +1145,404 @@
     <ClInclude Include="..\..\..\source\scene\debug\texture_view_node.h">
       <Filter>scene\debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\textures\module.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\textures\texture2d_pbo_impl.h">
-      <Filter>opengl\textures</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\scene\terrain_node.h">
       <Filter>scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\grid_object.h">
-      <Filter>opengl\renderable\primitives</Filter>
+    <ClInclude Include="..\..\..\source\gpu\opencl\buffer.h">
+      <Filter>gpu\opencl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\opengl\renderable\primitives\scaled_grid.h">
-      <Filter>opengl\renderable\primitives</Filter>
+    <ClInclude Include="..\..\..\source\gpu\opencl\buffer_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\command_queue.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\command_queue_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\context.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\context_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\device.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\device_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\kernel.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\kernel_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\platform.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\platform_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\program.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\program_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.h">
+      <Filter>gpu\opengl\driver\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\win32\driver_win32.h">
+      <Filter>gpu\opengl\driver\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\internal_formats.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\module.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\text_surface.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_context.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_impl.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_pbo_impl.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\cube_mesh.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\grid_object.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\primitive_types.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\quad_mesh.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\scaled_grid.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\skin_mesh.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\sphere_mesh.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\static_mesh.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\module.h">
+      <Filter>gpu\opengl\renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\module.h">
+      <Filter>images</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target_back_buffer.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target_texture.h">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\module.h">
+      <Filter>gpu\opengl\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\driver.h">
+      <Filter>gpu\opengl\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\video_memory.h">
+      <Filter>gpu\opengl\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\buffers\module.h">
+      <Filter>gpu\opengl\buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\buffers\template_buffer.h">
+      <Filter>gpu\opengl\buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\gl\extensions.h">
+      <Filter>gpu\opengl\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\gl\module.h">
+      <Filter>gpu\opengl\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\gl\win32\extensions_win32.h">
+      <Filter>gpu\opengl\gl\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\module.h">
+      <Filter>system\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\exceptions.h">
+      <Filter>system\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\smart_pointers\module.h">
+      <Filter>system\smart_pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\error\module.h">
+      <Filter>gpu\error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\error\gpu_exceptions.h">
+      <Filter>gpu\error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\error\module.h">
+      <Filter>gpu\opengl\error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\assert2.h">
+      <Filter>system\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\win32\assert2_win32.h">
+      <Filter>system\errors\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\win32\stack_trace_win32.h">
+      <Filter>system\errors\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\stack_trace.h">
+      <Filter>system\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\common\vertex.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\common\vertex_component.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\error\gl_error_check.h">
+      <Filter>gpu\opengl\error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\module.h">
+      <Filter>gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\module.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\errors\module.h">
+      <Filter>gpu\opencl\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\errors\cl_exceptions.h">
+      <Filter>gpu\opencl\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\error\gl_exceptions.h">
+      <Filter>gpu\opengl\error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\errors\cl_error_check.h">
+      <Filter>gpu\opencl\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\win32\error_win32.h">
+      <Filter>system\errors\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\error\module.h">
+      <Filter>images\error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\images\error\image_exceptions.h">
+      <Filter>images\error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\sys_check_error.h">
+      <Filter>system\errors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\module.h">
+      <Filter>gpu\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\v1\module.h">
+      <Filter>render\v1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\v1\simple_render.h">
+      <Filter>render\v1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\v1\mesh_cooker.h">
+      <Filter>render\v1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\interface.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\interface.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\module.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\module.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\interface.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\data\module.h">
+      <Filter>virtual\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\interface.h">
+      <Filter>virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\module.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\interface.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\v1\ogl_gui_render.h">
+      <Filter>render\v1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_grass.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_gui.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_particle_system.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_skinning.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_solid_color_3d.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\render_contexts.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\shader.h">
+      <Filter>gpu\opengl\render_context\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\shader_impl.h">
+      <Filter>gpu\opengl\render_context\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\shaders.h">
+      <Filter>gpu\opengl\render_context\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_bump.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_grass.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_gui.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_light.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_particle.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_skinning.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_solid_color.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_solid_textured.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_terrain.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_bump.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_grass.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_gui.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_light.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_particle.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_particle_system.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_skinning.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_solid_color.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_terrain.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_transform_3d.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\module.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\common\renderable.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\terrain\interface.h">
+      <Filter>virtual\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\common\abstract_render_context_policy.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\common\gpu_state.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_terrain.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_solid_textured_3d.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\aop\aop.h">
+      <Filter>system\aop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\module.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\gl\nvx_gpu_memory_info.h">
+      <Filter>gpu\opengl\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\gl\ati_meminfo.h">
+      <Filter>gpu\opengl\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\module.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\module.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\interface.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\module.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\buffers\vbo.h">
+      <Filter>gpu\opengl\buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\buffers\ibo.h">
+      <Filter>gpu\opengl\buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\buffers\pbo.h">
+      <Filter>gpu\opengl\buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1615,9 +1627,6 @@
     <ClCompile Include="..\..\..\source\system\types\list.cpp">
       <Filter>system\types</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\assert_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\binary_file_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
@@ -1636,9 +1645,6 @@
     <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\error_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\folder_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
@@ -1655,9 +1661,6 @@
       <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\stack_trace_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp">
@@ -1726,9 +1729,6 @@
     <ClCompile Include="..\..\..\source\images\internal_images\rgba_image.cpp">
       <Filter>images\internal_images</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\images\error.cpp">
-      <Filter>images</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\images\image_file.cpp">
       <Filter>images</Filter>
     </ClCompile>
@@ -1776,207 +1776,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\math\triangle3d.cpp">
       <Filter>math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\architecture\vertex_array_object.cpp">
-      <Filter>opengl\architecture</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\linux\driver_parameters_linux.cpp">
-      <Filter>opengl\linux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\linux\video_driver_linux.cpp">
-      <Filter>opengl\linux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip.cpp">
-      <Filter>opengl\nvtristrip</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\nvtristrip\nv_tri_strip_objects.cpp">
-      <Filter>opengl\nvtristrip</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\nvtristrip\vertex_cache.cpp">
-      <Filter>opengl\nvtristrip</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\batch.cpp">
-      <Filter>opengl\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\frame.cpp">
-      <Filter>opengl\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\render_pass.cpp">
-      <Filter>opengl\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\render_target.cpp">
-      <Filter>opengl\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\render_target_back_buffer.cpp">
-      <Filter>opengl\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\render_target_texture.cpp">
-      <Filter>opengl\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_bump.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_grass.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_gui.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_light.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_particle.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_skinning.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_color.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_solid_textured.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\fragment\fs_terrain.cpp">
-      <Filter>opengl\render_context\shaders\fragment</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_bump.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_grass.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_gui.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_light.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_particle_system.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_skinning.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_solid_color.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_terrain.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transform_3d.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.cpp">
-      <Filter>opengl\render_context\shaders\vertex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\shaders\shader.cpp">
-      <Filter>opengl\render_context\shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\dummy_render_context_policy.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_bump_mapping.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_grass.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_gui.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_light.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_particle_system.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_skinning.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_solid_color_3d.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\rc_solid_textured_3d.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render_context\render_contexts.cpp">
-      <Filter>opengl\render_context</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\textures\texture_2d_manager.cpp">
-      <Filter>opengl\textures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\textures\texture_context.cpp">
-      <Filter>opengl\textures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\textures\texture2d.cpp">
-      <Filter>opengl\textures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\win32\driver_parameters_win32.cpp">
-      <Filter>opengl\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\win32\driver_win32.cpp">
-      <Filter>opengl\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\win32\extensions_win32.cpp">
-      <Filter>opengl\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\win32\video_driver_win32.cpp">
-      <Filter>opengl\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\attribute_configer.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\driver.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\error.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\frame_buffer.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\frame_buffer_with_depth.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\glsl_program.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\grid_object.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\light.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\light_manager.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\material.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\module.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\point_object.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\quad_object.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\terrain_render.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\text_texture_2d.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\vao_manager.cpp">
-      <Filter>opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\vbo.cpp">
-      <Filter>opengl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\render\bbox_render.cpp">
       <Filter>render</Filter>
@@ -2113,30 +1912,6 @@
     <ClCompile Include="..\..\..\source\images\converter\yuy2_to_rgb.cpp">
       <Filter>images\converter</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opencl\platform.cpp">
-      <Filter>opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opencl\device.cpp">
-      <Filter>opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opencl\context.cpp">
-      <Filter>opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opencl\buffer.cpp">
-      <Filter>opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opencl\program.cpp">
-      <Filter>opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opencl\kernel.cpp">
-      <Filter>opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opencl\command_queue.cpp">
-      <Filter>opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\render\simple_render.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\object.cpp">
       <Filter>system</Filter>
     </ClCompile>
@@ -2151,15 +1926,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\data\light.cpp">
       <Filter>virtual\data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\quad_mesh.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\static_mesh.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\vertex_array_object.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\math\relations.cpp">
       <Filter>math</Filter>
@@ -2200,17 +1966,11 @@
     <ClCompile Include="..\..\..\source\virtual\data\light_set.cpp">
       <Filter>virtual\data</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\render_state.cpp">
-      <Filter>opengl\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\manager\material_manager.cpp">
       <Filter>virtual\manager</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\scene\geometry_node.cpp">
       <Filter>scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\renderable.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\scene\transform_node.cpp">
       <Filter>scene</Filter>
@@ -2254,21 +2014,9 @@
     <ClCompile Include="..\..\..\source\scene\default_visitor.cpp">
       <Filter>scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\simple_render.cpp">
-      <Filter>opengl\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\main.cpp" />
-    <ClCompile Include="..\..\..\source\opengl\textures\text_surface.cpp">
-      <Filter>opengl\textures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\textures\internal_formats.cpp">
-      <Filter>opengl\textures</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\resource_manager_3.cpp">
       <Filter>system</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\skin_mesh.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\scene\armature_node.cpp">
       <Filter>scene</Filter>
@@ -2284,15 +2032,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\images\import_export\jpg_importer.cpp">
       <Filter>images\import_export</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\cube_mesh.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\sphere_mesh.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\render\ogl_gui_render.cpp">
-      <Filter>opengl\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\scene\bounding_volume_updater.cpp">
       <Filter>scene</Filter>
@@ -2360,11 +2099,239 @@
     <ClCompile Include="..\..\..\source\scene\terrain_node.cpp">
       <Filter>scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\grid_object.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
+    <ClCompile Include="..\..\..\source\gpu\opencl\buffer.cpp">
+      <Filter>gpu\opencl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\opengl\renderable\primitives\scaled_grid.cpp">
-      <Filter>opengl\renderable\primitives</Filter>
+    <ClCompile Include="..\..\..\source\gpu\opencl\command_queue.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\context.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\device.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\kernel.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\platform.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\program.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.cpp">
+      <Filter>gpu\opengl\driver\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\driver\linux\video_driver_linux.cpp">
+      <Filter>gpu\opengl\driver\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\driver\win32\driver_win32.cpp">
+      <Filter>gpu\opengl\driver\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\textures\internal_formats.cpp">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\textures\text_surface.cpp">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.cpp">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_context.cpp">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture2d.cpp">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\cube_mesh.cpp">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\grid_object.cpp">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\quad_mesh.cpp">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\scaled_grid.cpp">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\skin_mesh.cpp">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\sphere_mesh.cpp">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\static_mesh.cpp">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.cpp">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target.cpp">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target_back_buffer.cpp">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target_texture.cpp">
+      <Filter>gpu\opengl\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\gl\win32\extensions_win32.cpp">
+      <Filter>gpu\opengl\gl\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\errors\exceptions.cpp">
+      <Filter>system\errors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\error\gpu_excpetions.cpp">
+      <Filter>gpu\error</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\errors\win32\assert2_win32.cpp">
+      <Filter>system\errors\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\errors\win32\stack_trace_win32.cpp">
+      <Filter>system\errors\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\error\gl_exceptions.cpp">
+      <Filter>gpu\opengl\error</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\errors\cl_exceptions.cpp">
+      <Filter>gpu\opencl\errors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\errors\win32\error_win32.cpp">
+      <Filter>system\errors\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\v1\simple_render.cpp">
+      <Filter>render\v1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\v1\mesh_cooker.cpp">
+      <Filter>render\v1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\v1\ogl_gui_render.cpp">
+      <Filter>render\v1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_grass.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_gui.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_particle_system.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_skinning.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_solid_color_3d.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_solid_textured_3d.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\render_contexts.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\shader.cpp">
+      <Filter>gpu\opengl\render_context\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_bump.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_grass.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_gui.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_light.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_particle.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_skinning.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_solid_color.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_solid_textured.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_terrain.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_bump.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_grass.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_gui.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_light.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_particle.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_particle_system.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_skinning.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_solid_color.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_terrain.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_transform_3d.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\common\renderable.cpp">
+      <Filter>gpu\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\common\abstract_render_context_policy.cpp">
+      <Filter>gpu\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\common\gpu_state.cpp">
+      <Filter>gpu\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_terrain.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\common\gpu_common_module.cpp">
+      <Filter>gpu\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\gpu_module.cpp">
+      <Filter>gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\gpu_opengl_module.cpp">
+      <Filter>gpu\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\driver\video_memory.cpp">
+      <Filter>gpu\opengl\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\buffers\vbo.cpp">
+      <Filter>gpu\opengl\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\buffers\ibo.cpp">
+      <Filter>gpu\opengl\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\buffers\pbo.cpp">
+      <Filter>gpu\opengl\buffers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2374,130 +2341,121 @@
     <None Include="..\..\..\source\system\poolable.inl">
       <Filter>system</Filter>
     </None>
-    <None Include="..\..\..\data\shaders\bump_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\bump_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\draw_normals.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\draw_normals.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\grass_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\grass_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\gui_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\gui_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\line_2d_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\line_2d_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\line_3d_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\line_3d_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\line_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\line_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\normals_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\normals_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\particle_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\particle_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\per_vertex_lighting_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\per_vertex_lighting_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\quad_330.geom">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\shaders.ini">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\skinning_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\skinning_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\solid_color_2d_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\solid_color_2d_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\solid_color_3d_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\solid_color_3d_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\static_mesh_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\static_mesh_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\terrain_330 - Copy.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\terrain_330 - Copy.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\terrain_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\terrain_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\textured_2d_330.frag">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
-    <None Include="..\..\..\data\shaders\textured_2d_330.vert">
-      <Filter>opengl\render_context\shaders\glsl</Filter>
-    </None>
     <None Include="..\..\..\source\images\converter\yuy2_to_rgb.cl">
       <Filter>images\converter</Filter>
     </None>
-    <None Include="..\..\..\data\opencl\yuy2_to_rgb.cl">
-      <Filter>opencl\programs</Filter>
+    <None Include="..\..\..\data\shaders\bump_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\bump_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\draw_normals.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\draw_normals.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\grass_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\grass_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\gui_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\gui_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_2d_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_2d_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_3d_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_3d_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\line_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\normals_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\normals_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\particle_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\particle_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\per_vertex_lighting_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\per_vertex_lighting_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\quad_330.geom">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\shaders.ini">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\skinning_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\skinning_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\solid_color_2d_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\solid_color_2d_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\solid_color_3d_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\solid_color_3d_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\static_mesh_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\static_mesh_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\terrain_330 - Copy.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\terrain_330 - Copy.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\terrain_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\terrain_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\textured_2d_330.frag">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\textured_2d_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\source\opengl\nvtristrip\README.txt">
-      <Filter>opengl\nvtristrip</Filter>
-    </Text>
-    <Text Include="..\..\..\source\opengl\material.txt">
-      <Filter>opengl</Filter>
-    </Text>
-    <Text Include="..\..\..\source\opengl\model.txt">
-      <Filter>opengl</Filter>
+    <Text Include="..\..\..\source\gpu\common\module.h">
+      <Filter>gpu\common</Filter>
     </Text>
   </ItemGroup>
 </Project>

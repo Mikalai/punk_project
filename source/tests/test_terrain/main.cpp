@@ -7,7 +7,7 @@ System::Proxy<Scene::DebugTextureViewNode> node;
 System::Proxy<Scene::TerrainNode> terrain_node;
 
 Scene::BoundingVolumeUpdater updater;
-OpenGL::SimpleRender render;
+Render::SimpleRender render;
 System::Proxy<GUI::Widget> widget;
 
 float x = 0, y = 0;
@@ -24,14 +24,14 @@ void OnMouseLeftButtonUp(System::Event* ee)
 void OnMouseMove(System::Event* ee)
 {
 	System::MouseMoveEvent* e = static_cast<System::MouseMoveEvent*>(ee);
-	
+
 	//if (m_left_down)
 	//{
 	//	x += (float)(e->x - e->x_prev);
 	//	y += (float)(e->y - e->y_prev);		
 	//	observer->SetPosition(Math::vec3(x, 0, y));
 	//}
-	
+
 	//if (m_left_down)
 	{
 		x += 0.001 * (float)(e->x - e->x_prev);
@@ -70,10 +70,12 @@ void OnKeyDown(System::Event* ee)
 
 void Idle(System::Event*)
 {	
+//	GPU::GPU_INIT(0);
+
 	System::AsyncLoader::Instance()->MainThreadProc(1);
 	//node->SetWatchTexture(OpenGL::Texture2DManager::Instance()->Load(L"checker2.png"));
 	node->SetWatchTexture(observer->GetTerrainView()->GetHeightMap());
-	
+
 	updater.Update();
 	render.Render();
 	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
@@ -121,45 +123,56 @@ void Idle(System::Event*)
 
 int main()
 {	
-	System::GetFactory()->Init();
+	try
+	{
+		System::GetFactory()->Init();
 
-	System::Window::Instance()->SetTitle(L"OpenGL object test");
-	System::Mouse::Instance()->LockInWindow(true);
-	OpenGL::Driver::Instance()->Start();
+		System::Window::Instance()->SetTitle(L"OpenGL object test");
+		System::Mouse::Instance()->LockInWindow(true);
+		GPU::OpenGL::Driver::Instance()->Start();
+		
+		GPU::GPU_INIT(0);
 
-	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(Idle));
-	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(OnMouseLeftButtonDown));
-	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_UP, System::EventHandler(OnMouseLeftButtonUp));
-	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(OnMouseMove));
-	System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(OnKeyDown));
+		auto v = GPU::OpenGL::VideoMemory::Instance()->GetMaxAvailableMemory();
 
-	scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"plane.pmd");
+		System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(Idle));
+		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(OnMouseLeftButtonDown));
+		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_UP, System::EventHandler(OnMouseLeftButtonUp));
+		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(OnMouseMove));
+		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(OnKeyDown));
 
-	Virtual::TerrainManager::Instance()->Manage(L"demo");
-	
-	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();	
-	c->SetPosition(Math::vec3(x, 0, y));
+		scene.Reset(new Scene::SceneGraph);// = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"plane.pmd");
 
-	observer = Virtual::TerrainManager::Instance()->CreateTerrainObserver(Math::vec3(c->GetPosition()));
-	node.Reset(new Scene::DebugTextureViewNode);	
-	System::Proxy<Scene::Node> root = scene->GetRootNode();
+		Virtual::TerrainManager::Instance()->Manage(L"demo");
 
-	widget.Reset(new GUI::Widget(0, 0, 0.5, 0.2, L"DF"));
+		System::Proxy<Virtual::FirstPersonCamera> c(new Virtual::FirstPersonCamera);
+		c->SetPosition(Math::vec3(x, 0, y));
+		scene->SetActiveCamera(c);
 
-	GUI::Manager::Instance()->AddRootWidget(widget);
-	
-	render.SetGUIHud(widget);
+		observer = Virtual::TerrainManager::Instance()->CreateTerrainObserver(Math::vec3(c->GetPosition()));
+		node.Reset(new Scene::DebugTextureViewNode);	
+		System::Proxy<Scene::Node> root = scene->GetRootNode();
 
-	terrain_node.Reset(new Scene::TerrainNode());
-	terrain_node->SetTerrainObserver(observer);
-	root->Add(terrain_node);
-	root->Add(node);
-	render.SetScene(scene);
-	updater.SetScene(scene);	
+		widget.Reset(new GUI::Widget(0, 0, 0.5, 0.2, L"DF"));
 
-	System::Window::Instance()->Loop();
+		GUI::Manager::Instance()->AddRootWidget(widget);
 
-	System::AsyncLoader::Destroy();
+		render.SetGUIHud(widget);
 
+		terrain_node.Reset(new Scene::TerrainNode());
+		terrain_node->SetTerrainObserver(observer);
+		root->Add(terrain_node);
+		root->Add(node);
+		render.SetScene(scene);
+		updater.SetScene(scene);	
+
+		System::Window::Instance()->Loop();
+
+		System::AsyncLoader::Destroy();
+	}
+	catch(System::PunkException& e)
+	{
+		out_error() << e.ToString() << std::endl;
+	}
 	return 0;
 }

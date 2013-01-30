@@ -3,7 +3,7 @@
 
 #include <deque>
 #include <vector>
-#include "../../../config.h"
+#include "../../config.h"
 #include "../concurrency/thread_mutex.h"
 #include "../concurrency/semaphore.h"
 #include "../concurrency/thread.h"

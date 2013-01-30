@@ -1,6 +1,6 @@
 #include "scene_graph.h"
-#include "../opengl/renderable/renderable_data.h"
-#include "../virtual/virtual.h"
+#include "../gpu/opengl/renderable/module.h"
+#include "../virtual/module.h"
 
 IMPLEMENT_MANAGER(L"resource.scenes", L"*.scene_graph", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SCENE_GRAPH, Scene, SceneGraph);
 
@@ -10,6 +10,7 @@ namespace Scene
 	{
 		SetType(System::ObjectType::SCENE_GRAPH);
 		m_camera_node.Reset(new CameraNode);
+		m_root.Reset(new Node);
 	}
 
 	void SceneGraph::SetActiveCamera(System::Proxy<Virtual::Camera> value)

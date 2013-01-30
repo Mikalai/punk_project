@@ -104,7 +104,7 @@ namespace ImageModule
 		if ( channels == 0 )
 		{
 			png_destroy_read_struct ( &png_ptr, &info_ptr, (png_infopp) NULL );
-			throw ImageError(L"Can't load file: ");
+			throw ImageException(L"Can't load file: ");
 		}
 
 		image->Create(width, height, channels);

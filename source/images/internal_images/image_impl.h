@@ -4,7 +4,7 @@
 #include <ostream>
 #include <istream>
 
-#include "../error.h"
+#include "../error/module.h"
 #include "../formats.h"
 #include "component.h"
 #include "../../system/buffer.h"
@@ -80,11 +80,11 @@ namespace ImageModule
 		void PutLine(int y, int width_in_pixel, int components_per_pixel, Component* data)
 		{
 			if (!m_data.empty())
-				throw ImageError(L"Data is not allocated");
+				throw ImageException(L"Data is not allocated");
 			if (width_in_pixel != m_width)
-				throw ImageError(L"Impossible to copy line due to different width");
+				throw ImageException(L"Impossible to copy line due to different width");
 			if (components_per_pixel != m_components)
-				throw ImageError(L"Line3D components per pixel count differs from image");
+				throw ImageException(L"Line3D components per pixel count differs from image");
 
 			std::copy(data, data + width_in_pixel*components_per_pixel, m_data.begin() + y*m_width*m_components);
 		}
@@ -140,7 +140,7 @@ namespace ImageModule
 		void SetSubImage(unsigned x, unsigned y, const ImageImpl& impl)
 		{
 			if (m_components != impl.m_components)
-				throw ImageError(L"Can't set sub image due to different components number");
+				throw ImageException(L"Can't set sub image due to different components number");
 
 			for (unsigned y_dst = y, y_org = 0; y_dst < m_height && y_org < impl.m_height; ++y_dst, ++y_org)
 			{

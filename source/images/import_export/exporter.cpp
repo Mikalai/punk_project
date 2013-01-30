@@ -1,8 +1,8 @@
 #include "exporter.h"
 #include "png_exporter.h"
+#include "../error/module.h"
 #include "../internal_images/image.h"
 #include "../../string/string.h"
-#include "../../system/error.h"
 
 namespace ImageModule
 {
@@ -15,6 +15,6 @@ namespace ImageModule
 			importer.Export(filename, image);			
 		}
 		else
-			throw System::SystemError(L"Unsupported file format");
+			throw ImageException(L"Unsupported file format");
 	}
 }

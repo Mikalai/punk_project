@@ -8,7 +8,7 @@
 #include <sstream>
 
 #include "../config.h"
-#include "stack_trace.h"
+//#include "stack_trace.h"
 #include "console.h"
 #include "system_clock.h"
 #include "../string/string.h"
@@ -265,17 +265,8 @@ namespace System
 		template<>
 		void Header<LOG_ERROR>()
 		{
-#ifdef _DEBUG
-			std::wstringstream stream;					
-			Stack walker;	
-			walker.Print(stream);
-			Console::Instance()->SetTextColor(Console::COLOR_LIGHTRED);
-			Streamer::Instance() << SystemClock::Instance()->NowAsLocal().Data() << ": Error occured in the program. " << stream.str().c_str() << L"User message: ";			
-#endif
-#ifndef _DEBUG
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTRED);
 			Streamer::Instance()<< SystemClock::Instance()->NowAsLocal() << ": Error: ";			
-#endif			
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 	};

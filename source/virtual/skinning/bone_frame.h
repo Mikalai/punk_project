@@ -3,8 +3,9 @@
 
 namespace Utility
 {
-	struct BoneFrame
+	class BoneFrame
 	{
+	public:
 		Math::quat m_rotation;
 		Math::vec3 m_position;		
 	};

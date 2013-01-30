@@ -1,7 +1,7 @@
 #include "png_exporter.h"
 #include "../internal_images/image.h"
 #include "../../string/string.h"
-#include "../../system/error.h"
+#include "../error/module.h"
 #include <png/png.h>
 
 namespace ImageModule
@@ -15,7 +15,7 @@ namespace ImageModule
 		/* open the file */
 		_wfopen_s(&fp, filename.Data(), L"wb");
 		if (fp == NULL)
-			throw System::SystemError(L"Can't open file");
+			throw ImageException(L"Can't open file");
 
 		/* Create and initialize the png_struct with the desired error handler
 		* functions.  If you want to use the default stderr and longjump method,
@@ -28,7 +28,7 @@ namespace ImageModule
 		if (png_ptr == NULL)
 		{
 			fclose(fp);
-			throw System::SystemError(L"Can't create png structure");
+			throw ImageException(L"Can't create png structure");
 		}
 
 		/* Allocate/initialize the image information data.  REQUIRED */
@@ -37,7 +37,7 @@ namespace ImageModule
 		{
 			fclose(fp);
 			png_destroy_write_struct(&png_ptr,  NULL);
-			throw System::SystemError(L"Can't create png info structure");
+			throw ImageException(L"Can't create png info structure");
 		}
 
 		/* Set error handling.  REQUIRED if you aren't supplying your own
@@ -48,7 +48,7 @@ namespace ImageModule
 			/* If we get here, we had a problem reading the file */
 			fclose(fp);
 			png_destroy_write_struct(&png_ptr, &info_ptr);
-			throw System::SystemError(L"Error reading file");
+			throw ImageException(L"Error reading file");
 		}
 
 		/* set up the output control if you are using standard C streams */

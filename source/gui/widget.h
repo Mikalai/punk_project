@@ -9,7 +9,7 @@
 #include "../config.h"
 //#include "../opengl/driver.h"
 #include "../math/math.h"
-#include "../opengl/textures/text_surface.h"
+#include "../gpu/opengl/textures/text_surface.h"
 
 namespace GUI
 {
@@ -85,9 +85,9 @@ namespace GUI
 		void Store(System::Buffer& buffer) {}
 		void Restore(System::Buffer& buffer) {}
 
-		System::Proxy<OpenGL::Texture2D> GetTextTexture() const;
-		void SetBackgroundTexture(System::Proxy<OpenGL::Texture2D> texture);
-		System::Proxy<OpenGL::Texture2D> GetBackgroundTexture() const;
+		System::Proxy<GPU::OpenGL::Texture2D> GetTextTexture() const;
+		void SetBackgroundTexture(System::Proxy<GPU::OpenGL::Texture2D> texture);
+		System::Proxy<GPU::OpenGL::Texture2D> GetBackgroundTexture() const;
 
 		const Manager* GetManager() const;
 		Manager* GetManager();
@@ -165,8 +165,8 @@ namespace GUI
 		Widget* m_next_widget;	
 		Widget* m_prev_widget;
 
-		System::Proxy<OpenGL::TextSurface> m_text_texture;
-		System::Proxy<OpenGL::Texture2D> m_background_texture;
+		System::Proxy<GPU::OpenGL::TextSurface> m_text_texture;
+		System::Proxy<GPU::OpenGL::Texture2D> m_background_texture;
 
 		void* m_any_data;
 

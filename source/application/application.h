@@ -1,21 +1,12 @@
 #ifndef _H_PUNK_APPLICATION
 #define _H_PUNK_APPLICATION
 
-#include "config.h"
-#include "../event_manager.h"
-#include "../window.h"
-#include "../singletone.h"
-#include "../driver/video/driver.h"
-#include "../../scene/scene.h"
-#include "../timer.h"
-#include "../../gui/gui.h"
-#include "../../render/render.h"
+#include "../config.h"
 
 namespace System
 {
-	SingletoneInterface(Application, MODULE_SYSTEM);
 
-	class LIB_APPLICATION Application : public Singletone(Application)
+	class PUNK_ENGINE Application : public Singletone(Application)
 	{
 	protected:
 		//Render::SceneRender m_render;

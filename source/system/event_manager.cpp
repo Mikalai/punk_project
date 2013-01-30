@@ -1,6 +1,6 @@
 #include <algorithm>
+#include "errors/module.h"
 #include "event_manager.h"
-#include "error.h"
 #include "logger.h"
 #include "singletone.h"
 
@@ -96,9 +96,9 @@ namespace System
 				delete event;
 			}
 		}
-		catch (System::SystemError& err)
+		catch (System::PunkException& err)
 		{
-			out_error() << err.Message() << std::endl;
+			out_error() << err.ToString() << std::endl;
 			throw;
 		}
 		catch (...)

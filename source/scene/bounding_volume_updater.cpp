@@ -1,10 +1,7 @@
-﻿#include "bounding_volume_updater.h"
-#include "../virtual/data/data.h"
-#include "../virtual/skinning/skinning.h"
-#include "../virtual/animation/anim.h"
-
-#include "scene_graph.h"
-#include "../opengl/renderable/renderable_data.h"
+﻿#include "../virtual/module.h"
+#include "../gpu/module.h"
+#include "module.h"
+#include "bounding_volume_updater.h"
 
 namespace Scene
 {
@@ -23,14 +20,14 @@ namespace Scene
 
 	bool BoundingVolumeUpdater::Visit(Scene::StaticMeshNode* node)
 	{		
-		System::Proxy<OpenGL::StaticMesh> mesh = OpenGL::StaticMeshManager::Instance()->Load(node->GetStorageName());	
+		System::Proxy<GPU::OpenGL::StaticMesh> mesh;// = OpenGL::StaticMeshManager::Instance()->Load(node->GetStorageName());	
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		return true;
 	}
 
 	bool BoundingVolumeUpdater::Visit(Scene::SkinMeshNode* node)
 	{				
-		System::Proxy<OpenGL::SkinMesh> mesh = OpenGL::SkinMeshManager::Instance()->Load(node->GetStorageName());	
+		System::Proxy<GPU::OpenGL::SkinMesh> mesh;// = OpenGL::SkinMeshManager::Instance()->Load(node->GetStorageName());	
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		return true;
 		return true;
@@ -39,7 +36,7 @@ namespace Scene
 	bool BoundingVolumeUpdater::Visit(Scene::ArmatureNode* node)
 	{				
 		m_states.Push();	
-		System::Proxy<Virtual::Armature> armature = Virtual::ArmatureManager::Instance()->Load(node->GetStorageName());
+		System::Proxy<Virtual::Armature> armature = Virtual::Armature::find(node->GetStorageName());
 
 		m_states.CurrentState()->Get().m_armature = armature;
 		m_states.CurrentState()->Get().m_armature_world = m_states.CurrentState()->Get().m_local;

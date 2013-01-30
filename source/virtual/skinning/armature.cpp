@@ -7,8 +7,6 @@
 
 #include "../../system/logger.h"
 
-IMPLEMENT_MANAGER(L"resource.armatures", L"*.armature", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE, Virtual, Armature);
-
 namespace Virtual
 {
 	Armature::Armature()

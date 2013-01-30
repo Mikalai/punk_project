@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include "scene_graph.h"
-#include "../virtual/skinning/skinning.h"
+#include "../virtual/module.h"
 
 namespace Scene
 {
@@ -50,7 +50,7 @@ namespace Scene
 	bool DefaultVisitor::Visit(ArmatureNode* node)
 	{		
 		std::cout << std::string(m_level, ' ') << "ArmatureNode" << std::endl;			
-		System::Proxy<Virtual::Armature> armature = Virtual::ArmatureManager::Instance()->Load(node->GetStorageName());
+		System::Proxy<Virtual::Armature> armature = Virtual::Armature::find(node->GetStorageName());
 		for (int i = 0; i < armature->GetBonesCount(); ++i)
 		{
 			Virtual::Bone* bone = armature->GetBoneByIndex(i);

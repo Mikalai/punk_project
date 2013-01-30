@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "png_file.h"
-#include "error.h"
+#include "error/module.h"
 #include <png/png.h>
 
 namespace ImageModule
@@ -22,12 +22,12 @@ namespace ImageModule
 		_wfopen_s(&f, file, L"rb");
 #endif
 		if (!f)
-			throw ImageError(L"Can't open png file");
+			throw ImageException(L"Can't open png file");
 
 		char sig[bytesToCheck];
 		fread(sig, 1, bytesToCheck, f);
 		if ( png_sig_cmp((png_bytep)sig, (png_size_t)0, bytesToCheck) )
-			throw ImageError(L"It is not a png file: ");
+			throw ImageException(L"It is not a png file: ");
 
 		png_structp png_ptr;
 		png_infop info_ptr;
@@ -35,21 +35,21 @@ namespace ImageModule
 		png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
 		if (png_ptr == NULL)
-			throw ImageError(L"Can't load file: ");
+			throw ImageException(L"Can't load file: ");
 
 		info_ptr = png_create_info_struct(png_ptr);
 
 		if (info_ptr == NULL)
 		{
 			png_destroy_read_struct ( &png_ptr, (png_infopp) NULL, (png_infopp)NULL );
-			throw ImageError(L"Can't load file: ");
+			throw ImageException(L"Can't load file: ");
 		}
 
 		png_infop end_info = png_create_info_struct(png_ptr);
 		if (!end_info)
 		{
 			png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-			throw ImageError(L"Can't load file: ");
+			throw ImageException(L"Can't load file: ");
 		}
 
 		png_init_io(png_ptr, f);
@@ -94,7 +94,7 @@ namespace ImageModule
 		if ( channels == 0 )
 		{
 			png_destroy_read_struct ( &png_ptr, &info_ptr, (png_infopp) NULL );
-			throw ImageError(L"Can't load file: ");
+			throw ImageException(L"Can't load file: ");
 		}
 
 		m_rep->m_format = format;
@@ -209,7 +209,7 @@ namespace ImageModule
 		/* open the file */
 		_wfopen_s(&fp, file, L"wb");
 		if (fp == NULL)
-			throw ImageError(L"Can't open file");
+			throw ImageException(L"Can't open file");
 
 		/* Create and initialize the png_struct with the desired error handler
 		* functions.  If you want to use the default stderr and longjump method,
@@ -222,7 +222,7 @@ namespace ImageModule
 		if (png_ptr == NULL)
 		{
 			fclose(fp);
-			throw ImageError(L"Can't create png structure");
+			throw ImageException(L"Can't create png structure");
 		}
 
 		/* Allocate/initialize the image information data.  REQUIRED */
@@ -231,7 +231,7 @@ namespace ImageModule
 		{
 			fclose(fp);
 			png_destroy_write_struct(&png_ptr,  NULL);
-			throw ImageError(L"Can't create png info structure");
+			throw ImageException(L"Can't create png info structure");
 		}
 
 		/* Set error handling.  REQUIRED if you aren't supplying your own
@@ -242,7 +242,7 @@ namespace ImageModule
 			/* If we get here, we had a problem reading the file */
 			fclose(fp);
 			png_destroy_write_struct(&png_ptr, &info_ptr);
-			throw ImageError(L"Error reading file");
+			throw ImageException(L"Error reading file");
 		}
 
 		/* set up the output control if you are using standard C streams */

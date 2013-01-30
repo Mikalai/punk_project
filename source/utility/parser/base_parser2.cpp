@@ -11,10 +11,7 @@
 #include "../../system/buffer.h"
 #include "../../system/logger.h"
 #include "../../system/binary_file.h"
-#include "../../virtual/data/data.h"
-#include "../../virtual/skinning/skinning.h"
-#include "../../virtual/animation/anim.h"
-#include "../../virtual/terrain/module.h"
+#include "../../virtual/module.h"
 
 #include "../../scene/scene_graph.h"
 
@@ -1142,7 +1139,7 @@ namespace Utility
 					System::Proxy<Virtual::Armature> armature(new Virtual::Armature);					
 					if (!ParseArmature(buffer, armature))
 						return (out_error() << "Unable to parse armature" << std::endl, false);
-					Virtual::ArmatureManager::Instance()->Manage(armature->GetStorageName(), armature);
+					Virtual::Armature::add(armature->GetStorageName(), armature);
 				}
 				break;
 			default:
@@ -1608,7 +1605,7 @@ namespace Utility
 					System::Proxy<Virtual::Material> m(new Virtual::Material);					
 					if (!ParseMaterial(buffer, m))
 						return (out_error() << "Unable to parse material" << std::endl, false);
-					Virtual::MaterialManager::Instance()->Manage(m->GetStorageName(), m);
+					Virtual::Material::add(m->GetStorageName(), m);
 					scene->AddMaterial(m);
 				}
 				break;
@@ -1629,7 +1626,7 @@ namespace Utility
 			switch(Parse(word))
 			{
 			case WORD_CLOSE_BRACKET:
-				value->SetPointLight(light);
+				value->SetPointLight(light.As<Virtual::Light>());
 				return true;
 			case WORD_NAME:
 				{

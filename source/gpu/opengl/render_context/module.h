@@ -1,0 +1,6 @@
+#ifndef _H_PUNK_OPENGL_RENDER_CONTEXT_MODULE
+#define _H_PUNK_OPENGL_RENDER_CONTEXT_MODULE
+
+#include "render_contexts.h"
+
+#endif	//	_H_PUNK_OPENGL_RENDER_CONTEXT_MODULE

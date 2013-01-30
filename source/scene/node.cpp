@@ -1,15 +1,13 @@
 #include <iostream>
 #include "../system/logger.h"
 #include "../string/string.h"
-#include "../virtual/data/data.h"
-#include "../virtual/skinning/skinning.h"
+#include "../virtual/module.h"
 #include "../system/object.h"
 #include "../audio/punk_audio.h"
-#include "../opengl/driver.h"
 
 #include "node.h"
 
-IMPLEMENT_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node);
+//IMPLEMENT_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node);
 
 namespace Scene
 {

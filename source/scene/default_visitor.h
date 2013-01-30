@@ -3,7 +3,6 @@
 
 #include "../config.h"
 #include "visitor.h"
-#include "../opengl/render/render_state.h"
 
 namespace Scene
 {

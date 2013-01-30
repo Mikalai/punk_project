@@ -10,6 +10,7 @@
 #include "types.h"
 
 #include "../../system/object.h"
+#include "../../system/aop/aop.h"
 #include "../../system/resource_manager.h"
 #include "../../string/string.h"
 
@@ -17,7 +18,7 @@ namespace Virtual
 {
 	class Entity;
 	
-	class  PUNK_ENGINE Armature : public System::Object
+	class  PUNK_ENGINE Armature : public System::Object, public System::Aspect<System::Proxy<Armature>, System::string>
 	{
 	public:
 		Armature();
@@ -54,6 +55,6 @@ namespace Virtual
 	};
 }
 
-REGISTER_MANAGER(L"resource.armatures", L"*.armature", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE, Virtual, Armature, return, return);
+//REGISTER_MANAGER(L"resource.armatures", L"*.armature", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE, Virtual, Armature, return, return);
 
 #endif	//	_H_PUNK_VIRTUAL_ARMATURE

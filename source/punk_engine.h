@@ -1,20 +1,20 @@
 #ifndef _H_PUNK_ENGINE
 #define _H_PUNK_ENGINE
 
-#include "math\math.h"
-#include "opengl\driver.h"
-#include "images\images.h"
-#include "system\system.h"
+#include "math\module.h"
+#include "gpu\module.h"
+#include "images\module.h"
+#include "system\module.h"
+#include "gui\module.h"
+#include "virtual\module.h"
+
 #include "string\string.h"
 #include "utility\utility.h"
-#include "virtual\virtual.h"
 #include "scene\scene_graph.h"
-#include "opencl\driver.h"
+#include "gpu\module.h"
 #include "raytracer\raytracer.h"
 
-#include "gui/gui.h"
-#include "render\render.h"
-//#include "system\application\application.h"
+#include "render\module.h"
 #include "audio\punk_audio.h"
 
 #endif

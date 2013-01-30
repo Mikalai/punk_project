@@ -5,7 +5,7 @@ System::Proxy<Scene::SceneGraph> scene;
 bool m_left_down = false;
 
 Scene::BoundingVolumeUpdater updater;
-OpenGL::SimpleRender render;
+Render::SimpleRender render;
 
 float x = 0;
 float y = 0;
@@ -89,7 +89,7 @@ int main()
 
 	System::Window::Instance()->SetTitle(L"OpenGL object test");
 	System::Mouse::Instance()->LockInWindow(true);
-	OpenGL::Driver::Instance()->Start();
+	GPU::OpenGL::Driver::Instance()->Start();
 
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(Idle));
 	System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(OnMouseLeftButtonDown));

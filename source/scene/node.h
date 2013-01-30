@@ -49,6 +49,6 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node, return, return);
+//REGISTER_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node, return, return);
 
 #endif	//	H_PUNK_SCENE_NODE

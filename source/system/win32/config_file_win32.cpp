@@ -7,7 +7,7 @@
 #include "config_file_win32.h"
 #include "../logger.h"
 #include "../singletone.h"
-#include "../error.h"
+#include "../errors/module.h"
 
 namespace System
 {
@@ -23,19 +23,15 @@ namespace System
 	bool ConfigFile::Open(const System::string &filename)
 	{
 		DWORD result;
+		LONG error;
 		HKEY software;
 		m_filename = filename;
-		if (ERROR_SUCCESS != RegCreateKeyEx(HKEY_CURRENT_USER, L"Software", 0, 0, REG_OPTION_NON_VOLATILE, KEY_READ|KEY_WRITE, 0, &software, &result))
-		{
-			out_error() << L"Can't open 'Software' in registry" << std::endl;			
-			return false;
-		}
+		error = RegCreateKeyEx(HKEY_CURRENT_USER, L"Software", 0, 0, REG_OPTION_NON_VOLATILE, KEY_READ|KEY_WRITE, 0, &software, &result);
+		CHECK_SYS_ERROR_CODE(error, L"Can't open 'Software' in registry");
 
-		if (ERROR_SUCCESS != RegCreateKeyEx(software, m_filename.Data(), 0, 0, REG_OPTION_NON_VOLATILE, KEY_READ|KEY_WRITE, 0, &m_key, &result))
-		{
-			out_error() << string::Format(L"Can't create/open %s in registry", m_filename.Data()) << std::endl;
-			return false;
-		}
+		error = RegCreateKeyEx(software, m_filename.Data(), 0, 0, REG_OPTION_NON_VOLATILE, KEY_READ|KEY_WRITE, 0, &m_key, &result);
+		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't create/open %s in registry", m_filename.Data()));
+
 		out_message() << string::Format(L"Config file %s has been opened", m_filename.Data()) << std::endl;
 		return true;
 	}
@@ -48,29 +44,20 @@ namespace System
 
 	bool ConfigFile::ReadOptionString(const string& option, string& res)
 	{		
+		LONG error;
 		DWORD type;
 		DWORD size;
-		if (ERROR_SUCCESS != RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, 0, &size))
-		{
-			out_error() << string::Format(L"Can't get value %s from registry", option.Data()) << std::endl;
-			return false;
-		}
+		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, 0, &size);
+		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't get value %s from registry", option.Data()));
 
 		if (type != REG_SZ)
-		{
-			out_error() << string::Format(L"Bad type of %s. Expected string", option.Data()) << std::endl;
-			return false;
-		}
+			throw PunkInvalidArgumentException(string::Format(L"Bad type of %s. Expected string", option.Data()));
 
-		wchar_t* buf = new wchar_t[size];
-		if (ERROR_SUCCESS != RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, buf, &size))
-		{
-			out_error() << string::Format(L"Can't get value %s from registry", option.Data()) << std::endl;
-			delete[] buf;
-			return false;
-		}
-		res = string(buf);
-		delete buf;
+		std::vector<wchar_t> buf(size);
+		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, &buf[0], &size);
+		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't get value %s from registry", option.Data()));		
+		res = string(&buf[0]);
+
 		return true;
 	}
 
@@ -78,29 +65,16 @@ namespace System
 	{
 		DWORD type;
 		DWORD size;
-		LONG err;
-		if (ERROR_SUCCESS != (err = RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, 0, &size)))
-		{
-			if (err == ERROR_FILE_NOT_FOUND)
-			{
-				out_error() << "File not found" << std::endl;
-				return false;
-			}
-			out_error() << string::Format(L"Can't get value %s from registry", option.Data());
-			throw SystemError(L"Fatal error");
-		}
+		LONG error;
+		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, 0, &size);
+		CHECK_SYS_ERROR_CODE(error, L"Can't read key " + option);
 
 		if (type != REG_DWORD)
-		{
-			out_error() << string::Format(L"Bad type of %s. Expected int", option.Data()) << std::endl;
-			return false;
-		}
+			throw PunkInvalidArgumentException(string::Format(L"Bad type of %s. Expected dword", option.Data()));
 
-		if (ERROR_SUCCESS != RegGetValue(m_key, 0, option.Data(), RRF_RT_DWORD, &type, (void*)&res, &size))
-		{
-			out_error() << string::Format(L"Can't get value %s from registry", option.Data()) << std::endl;
-			return false;
-		}
+		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_DWORD, &type, (void*)&res, &size);
+		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't get value %s from registry", option.Data()));
+		
 		return true;
 	}
 

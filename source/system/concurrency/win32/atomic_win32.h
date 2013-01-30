@@ -6,6 +6,10 @@
 
 namespace System
 {
+	inline long AtomicCompareExchange(volatile int32* value, int32 exchange, int32 compare)
+	{
+		return _InterlockedCompareExchange((volatile long*)value, (long)exchange, (long)compare);
+	}
 
 	inline long AtomicIncrement32(volatile int32* value)
 	{

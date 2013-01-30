@@ -39,10 +39,10 @@ namespace GUI
 		, m_horizontal_align(HORIZONTAL_ALIGN_CENTER)
 		, m_parent(parent)
 	{
-		m_text_texture.Reset(new OpenGL::TextSurface);
+		m_text_texture.Reset(new GPU::OpenGL::TextSurface);
 		m_text_texture->SetSize(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()));
-		m_text_texture->SetVerticalAlignment(OpenGL::TextSurface::VERTICAL_CENTER);
-		m_text_texture->SetHorizontalAlignment(OpenGL::TextSurface::HORIZONTAL_CENTER);
+		m_text_texture->SetVerticalAlignment(GPU::OpenGL::TextSurface::VERTICAL_CENTER);
+		m_text_texture->SetHorizontalAlignment(GPU::OpenGL::TextSurface::HORIZONTAL_CENTER);
 		m_text_texture->SetText(m_text);
 		SetManager(GUI::Manager::Instance());	
 	}
@@ -410,17 +410,17 @@ namespace GUI
 		return GetY() * (float)System::Window::Instance()->GetHeight();
 	}
 
-	System::Proxy<OpenGL::Texture2D> Widget::GetBackgroundTexture() const
+	System::Proxy<GPU::OpenGL::Texture2D> Widget::GetBackgroundTexture() const
 	{
 		return m_background_texture;
 	}
 
-	System::Proxy<OpenGL::Texture2D> Widget::GetTextTexture() const
+	System::Proxy<GPU::OpenGL::Texture2D> Widget::GetTextTexture() const
 	{
 		return m_text_texture->GetTexture();
 	}
 
-	void Widget::SetBackgroundTexture(System::Proxy<OpenGL::Texture2D> texture)
+	void Widget::SetBackgroundTexture(System::Proxy<GPU::OpenGL::Texture2D> texture)
 	{
 		m_background_texture = texture;
 	}

@@ -2,7 +2,7 @@
 #include <freetype/ft2build.h>
 #include FT_FREETYPE_H
 
-#include "../../system/system.h"
+#include "../../system/module.h"
 #include "font_builder.h"
 
 namespace Utility

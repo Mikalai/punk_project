@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_SYSTEM_STREAM_ABSTRACT_DATA_PROCESSOR
 #define _H_PUNK_SYSTEM_STREAM_ABSTRACT_DATA_PROCESSOR
 
-#include "../../../config.h"
+#include "../../config.h"
 #include "resource_request.h"
 
 namespace System
