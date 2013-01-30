@@ -19,7 +19,7 @@ namespace GPU
 			{}
 		}
 
-		void VertexBufferObject::Create(void* data, size_t size)
+		void VertexBufferObject::Create(const void* data, size_t size)
 		{
 			if (IsValid())
 				Destroy();
@@ -94,7 +94,7 @@ namespace GPU
 			Unbind();
 		}
 
-		void VertexBufferObject::CopyData(void* data, size_t size)
+		void VertexBufferObject::CopyData(const void* data, size_t size)
 		{
 			if (m_size < size)
 				throw OpenGLOutOfMemoryException(L"Vertex buffer is to small " + System::string::Convert(m_size) + L" to hold " + System::string::Convert(size));

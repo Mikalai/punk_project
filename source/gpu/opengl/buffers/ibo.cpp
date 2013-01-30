@@ -19,7 +19,7 @@ namespace GPU
 			{}
 		}
 
-		void IndexBufferObject::Create(void* data, size_t size)
+		void IndexBufferObject::Create(const void* data, size_t size)
 		{
 			if (IsValid())
 				Destroy();
@@ -94,7 +94,7 @@ namespace GPU
 			Unbind();
 		}
 
-		void IndexBufferObject::CopyData(void* data, size_t size)
+		void IndexBufferObject::CopyData(const void* data, size_t size)
 		{
 			if (m_size < size)
 				throw OpenGLOutOfMemoryException(L"Index buffer is to small " + System::string::Convert(m_size) + L" to hold " + System::string::Convert(size));

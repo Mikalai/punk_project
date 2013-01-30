@@ -13,7 +13,7 @@ namespace GPU
 		{
 		public:
 			
-			void Create(void* data, size_t m_size);
+			void Create(const void* data, size_t m_size);
 			void Destroy();
 			~PixelBufferObject();
 
@@ -24,7 +24,7 @@ namespace GPU
 			const void* Map() const;
 			void Unmap() const;
 
-			void CopyData(void* data, size_t size);
+			void CopyData(const void* data, size_t size);
 
 			bool IsValid() const;
 

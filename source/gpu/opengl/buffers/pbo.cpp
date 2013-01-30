@@ -19,7 +19,7 @@ namespace GPU
 			{}
 		}
 
-		void PixelBufferObject::Create(void* data, size_t size)
+		void PixelBufferObject::Create(const void* data, size_t size)
 		{
 			if (IsValid())
 				Destroy();
@@ -94,7 +94,7 @@ namespace GPU
 			Unbind();
 		}
 
-		void PixelBufferObject::CopyData(void* data, size_t size)
+		void PixelBufferObject::CopyData(const void* data, size_t size)
 		{
 			if (m_size < size)
 				throw OpenGLOutOfMemoryException(L"pixel buffer is to small " + System::string::Convert(m_size) + L" to hold " + System::string::Convert(size));
