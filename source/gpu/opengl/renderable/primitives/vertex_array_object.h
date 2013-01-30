@@ -6,6 +6,8 @@
 #include "../../attribute_configer.h"
 #include "../../../../math/bounding_box.h"
 #include "../../../../math/bounding_shere.h"
+#include "../../buffers/module.h"
+#include "../../driver/module.h"
 
 namespace GPU
 {
@@ -17,8 +19,8 @@ namespace GPU
 		protected:
 
 			typedef Vertex<VertexType> CurrentVertex;
-			GLuint m_vertex_buffer;		
-			GLuint m_index_buffer;
+			System::Proxy<VertexBufferObject> m_vertex_buffer;	
+			System::Proxy<IndexBufferObject> m_index_buffer;
 			GLuint m_vao;
 			GLuint m_index_count;
 			unsigned m_vertex_size;				
@@ -31,9 +33,7 @@ namespace GPU
 
 		public:
 			VertexArrayObject2()
-				: m_vertex_buffer(0)
-				, m_index_buffer(0)
-				, m_index_count(0)
+				: m_index_count(0)
 				, m_vao(0)
 				, m_vertex_size(0)
 				, m_was_modified(true)
@@ -65,10 +65,8 @@ namespace GPU
 				CHECK_GL_ERROR(L"Already with error");
 				glBindVertexArray(m_vao);
 				CHECK_GL_ERROR(L"Unable to bind vertex array");
-				glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
-				CHECK_GL_ERROR(L"Unable to bind vertex buffer");
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
-				CHECK_GL_ERROR(L"Unable to bind index buffer");
+				m_vertex_buffer->Bind();
+				m_index_buffer->Bind();
 
 				AttributeConfiger<VertexType> p(supported_by_context);			
 			}
@@ -99,23 +97,11 @@ namespace GPU
 			{
 				m_vb_size = size_in_bytes;
 
-				if (m_vertex_buffer)
-				{
-					glDeleteBuffers(1, &m_vertex_buffer);
-					CHECK_GL_ERROR(L"Unable to delete vertex buffer");
-				}
-				glBindVertexArray(0);
-				CHECK_GL_ERROR(L"Unable to generate vertex buffer");
-				glGenBuffers(1, &m_vertex_buffer);
-				CHECK_GL_ERROR(L"Unable to generate vertex buffer");
-				glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
-				CHECK_GL_ERROR(L"Unable to bind vertex buffer");
-				glBufferData(GL_ARRAY_BUFFER, m_vb_size, vbuffer, GL_STATIC_DRAW);
-				CHECK_GL_ERROR(L"Unable to fill vertex buffer with data");
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				CHECK_GL_ERROR(L"Unable to unbind vertex buffer");		
-				glBindVertexArray(0);
-				CHECK_GL_ERROR(L"Unable to generate vertex buffer");		
+				m_vertex_buffer = VideoMemory::Instance()->AllocateVertexBuffer(size_in_bytes);
+				m_vertex_buffer->Bind();
+				m_vertex_buffer->CopyData(vbuffer, m_vb_size);
+				m_vertex_buffer->Unbind();
+
 				m_bbox.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
 				m_sphere.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
 				m_was_modified = true;
@@ -127,60 +113,42 @@ namespace GPU
 			}
 
 			void SetIndexBuffer(const void* ibuffer, unsigned size)
-			{
-				if (m_index_buffer)
-				{
-					glDeleteBuffers(1, &m_index_buffer);
-					CHECK_GL_ERROR(L"Unable to delete index buffer");
-				}
-				glBindVertexArray(0);
-				CHECK_GL_ERROR(L"Unable to generate vertex buffer");
-				glGenBuffers(1, &m_index_buffer);
-				CHECK_GL_ERROR(L"Unable to generate index buffer");
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
-				CHECK_GL_ERROR(L"Unable to bind index buffer");
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, ibuffer, GL_STATIC_DRAW);
-				CHECK_GL_ERROR(L"Unable to fill index buffer with data");
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-				CHECK_GL_ERROR(L"Unable to unbind index buffer");
+			{	
 				m_index_count = size / sizeof(unsigned);	// This code depends on Render when GL_UNSIGNED_INT used in glDrawElements*
+
+				m_index_buffer = VideoMemory::Instance()->AllocateIndexBuffer(size);
+				m_index_buffer->Bind();
+				m_index_buffer->CopyData(ibuffer, size);
+				m_index_buffer->Unbind();
+
 				m_was_modified = true;
-				glBindVertexArray(0);
-				CHECK_GL_ERROR(L"Unable to generate vertex buffer");
 				m_ib_size = size;
 			}
 
 			bool Cook()
 			{	
 				if (glGetError() != GL_NO_ERROR)
-				{
-					out_error() << L"Error came from upper subroutine to me... Will not work" << std::endl;
-					return false;
-				}
-				if (!m_vertex_buffer)
-				{
-					out_error() << L"Can't create VAO due to bad vertex buffer" << std::endl;
-					return false;
-				}
+					throw OpenGLException(L"Error came from upper subroutine to me... Will not work");
+
+				if (!m_vertex_buffer.IsValid())
+					throw OpenGLException(L"Can't create VAO due to bad vertex buffer");
+
 				if (!m_index_buffer)
-				{
-					out_error() << L"Can't create VAO due to bad index buffer" << std::endl;
-					return false;
-				}
+					throw OpenGLException(L"Can't create VAO due to bad index buffer");
 
 				if (m_vao)
 				{
 					glDeleteVertexArrays(1, &m_vao);
 					CHECK_GL_ERROR(L"Unable to delete vao");
 				}
+
 				glGenVertexArrays(1, &m_vao);
 				CHECK_GL_ERROR(L"Unable to generate vao");
 				glBindVertexArray(m_vao);
 				CHECK_GL_ERROR(L"Unable to bind vao");
-				glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer);
-				CHECK_GL_ERROR(L"Unable to bind vertex buffer to vao");
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index_buffer);
-				CHECK_GL_ERROR(L"Unable to bind index buffer to vao");			
+
+				m_vertex_buffer->Bind();
+				m_index_buffer->Bind();
 
 				glBindVertexArray(0);
 				CHECK_GL_ERROR(L"Unable to unbind vao");
@@ -190,48 +158,24 @@ namespace GPU
 
 			void* MapVertexBuffer()
 			{
-				glBindVertexArray(m_vao);
-				CHECK_GL_ERROR(L"Unable to bind vao");
-				GLvoid* buffer = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
-				CHECK_GL_ERROR(L"Unable to map buffer");
-				glBindVertexArray(0);
-				CHECK_GL_ERROR(L"Unable to unbind vao");
-				return buffer;
+				return m_vertex_buffer->Map();
 			}
 
 			const void* MapVertexBuffer() const
 			{
-				glBindVertexArray(m_vao);
-				CHECK_GL_ERROR(L"Unable to bind vao");
-				GLvoid* buffer = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
-				CHECK_GL_ERROR(L"Unable to map buffer");
-				glBindVertexArray(0);
-				CHECK_GL_ERROR(L"Unable to unbind vao");
-				return buffer;			
+				return m_vertex_buffer->Map();
 			}
 
 			void UnmapVertexBuffer()
 			{
-				glBindVertexArray(m_vao);
-				CHECK_GL_ERROR(L"Unable to bind vao");
-				glUnmapBuffer(GL_ARRAY_BUFFER);
-				CHECK_GL_ERROR(L"Unable to map buffer");
-				glBindVertexArray(0);
-				CHECK_GL_ERROR(L"Unable to unbind vao");
+				m_vertex_buffer->Unmap();
 			}
 
 			void Clear()
 			{
-				if (m_vertex_buffer)
-				{
-					glDeleteBuffers(1, &m_vertex_buffer);
-					CHECK_GL_ERROR(L"Unable to delete vertext buffer");
-				}
-				if (m_index_buffer)
-				{
-					glDeleteBuffers(1, &m_index_buffer);
-					CHECK_GL_ERROR(L"Unable to delete index buffer");
-				}
+				m_vertex_buffer.Reset(0);
+				m_index_buffer.Reset(0);
+
 				if (m_vao)
 				{
 					glDeleteVertexArrays(1, &m_vao);
