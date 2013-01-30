@@ -22,12 +22,18 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::SkinMeshNode* node)
 	{
-		System::Proxy<Virtual::SkinGeometry> geom = Virtual::SkinGeometryManager::Instance()->Load(node->GetStorageName());
+		System::Proxy<Virtual::SkinGeometry> geom = Virtual::SkinGeometry::find(node->GetStorageName());
 
-		System::Proxy<GPU::OpenGL::SkinMesh> mesh = System::GetFactory()->Create(geom->GetStorageName(), System::ObjectType::SKIN_MESH);
-
-		if (!mesh->Cook(geom, m_current_armature))
-			return (out_error() << "Can't cook static mesh from static geometry" << std::endl, false);
+		System::Proxy<GPU::OpenGL::SkinMesh> mesh;
+		if (geom->IsCacheValid())
+			mesh = geom->GetGPUBufferCache();
+		else
+		{
+			mesh.Reset(new GPU::OpenGL::SkinMesh);
+			if (!mesh->Cook(geom, m_current_armature))
+				throw System::PunkException(L"Can't cook static mesh from static geometry");
+			geom->SetGPUBufferCache(mesh);
+		}
 		return true;
 	}
 
@@ -46,12 +52,18 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::StaticMeshNode* node)
 	{				
-		System::Proxy<Virtual::StaticGeometry> geom = Virtual::StaticGeometryManager::Instance()->Load(node->GetStorageName());	
+		System::Proxy<Virtual::StaticGeometry> geom = Virtual::StaticGeometry::find(node->GetStorageName());	
 
-		System::Proxy<GPU::OpenGL::StaticMesh> mesh = System::GetFactory()->Create(geom->GetStorageName(), System::ObjectType::STATIC_MESH);
-
-		if (!mesh->Cook(geom))
-			return (out_error() << "Can't cook static mesh from static geometry" << std::endl, false);
+		System::Proxy<GPU::OpenGL::StaticMesh> mesh;
+		if (geom->IsCacheValid())
+			mesh = geom->GetGPUBufferCache();
+		else
+		{
+			mesh.Reset(new GPU::OpenGL::StaticMesh);
+			if (!mesh->Cook(geom))
+				throw System::PunkException(L"Can't cook static mesh for " + geom->GetName());
+			geom->SetGPUBufferCache(mesh);
+		}
 		return true;
 	}
 

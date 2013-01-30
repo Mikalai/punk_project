@@ -1007,7 +1007,7 @@ namespace Utility
 						out_error() << "Unable to parse static mesh" << std::endl;
 						return false;
 					}
-					Virtual::StaticGeometryManager::Instance()->Manage(mesh->GetStorageName(), mesh);
+					Virtual::StaticGeometry::add(mesh->GetStorageName(), mesh);
 				}
 				break;
 			default:
@@ -1400,7 +1400,7 @@ namespace Utility
 					System::Proxy<Virtual::SkinGeometry> mesh(new Virtual::SkinGeometry);
 					if (!ParseSkinMesh(buffer, mesh))
 						return (out_error() << "Unable to parse static mesh" << std::endl, false);
-					Virtual::SkinGeometryManager::Instance()->Manage(mesh->GetStorageName(), mesh);
+					Virtual::SkinGeometry::add(mesh->GetStorageName(), mesh);
 				}
 				break;
 			default:
