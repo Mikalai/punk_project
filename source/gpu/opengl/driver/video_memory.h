@@ -51,9 +51,14 @@ namespace GPU
 
 			static std::auto_ptr<VideoMemory> m_instance;		
 
-			size_t m_max_mem_usage;
-			size_t m_mem_usage;
-			size_t m_max_mem_available;
+			struct Core
+			{
+				size_t m_max_mem_usage;
+				size_t m_mem_usage;
+				size_t m_max_mem_available;
+			};
+
+			Core m_core;
 
 			std::vector<System::Proxy<PixelBufferObject>> m_pbo_list;
 			std::vector<System::Proxy<VertexBufferObject>> m_vbo_list;
