@@ -24,7 +24,7 @@ namespace GPU
 
 		public:
 			RenderTargetTexture();
-			void Init(int width, int height);
+		//	void Init(int width, int height);
 			virtual bool Init(Properties* props);
 			virtual void Activate();
 			virtual void Deactivate();
