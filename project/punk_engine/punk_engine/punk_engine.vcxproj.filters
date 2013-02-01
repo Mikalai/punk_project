@@ -226,6 +226,9 @@
     <Filter Include="system\aop">
       <UniqueIdentifier>{29131f8b-7b2f-4fa6-bbba-d60ab8e58ba0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gpu\opengl\render_target">
+      <UniqueIdentifier>{c235a7d5-41e7-4bca-8660-abea5694d77e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -1253,15 +1256,6 @@
     <ClInclude Include="..\..\..\source\images\module.h">
       <Filter>images</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target.h">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target_back_buffer.h">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target_texture.h">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\module.h">
       <Filter>gpu\opengl\driver</Filter>
     </ClInclude>
@@ -1543,6 +1537,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\pbo.h">
       <Filter>gpu\opengl\buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\common\render_target.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\module.h">
+      <Filter>gpu\opengl\render_target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\render_target_back_buffer.h">
+      <Filter>gpu\opengl\render_target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\render_target_texture.h">
+      <Filter>gpu\opengl\render_target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\gl_render_target.h">
+      <Filter>gpu\opengl\render_target</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2168,15 +2177,6 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.cpp">
       <Filter>gpu\opengl\renderable\primitives</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target.cpp">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target_back_buffer.cpp">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target_texture.cpp">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\gl\win32\extensions_win32.cpp">
       <Filter>gpu\opengl\gl\win32</Filter>
     </ClCompile>
@@ -2332,6 +2332,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\buffers\pbo.cpp">
       <Filter>gpu\opengl\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\common\render_target.cpp">
+      <Filter>gpu\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\render_target_back_buffer.cpp">
+      <Filter>gpu\opengl\render_target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\render_target_texture.cpp">
+      <Filter>gpu\opengl\render_target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\gl_render_target.cpp">
+      <Filter>gpu\opengl\render_target</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

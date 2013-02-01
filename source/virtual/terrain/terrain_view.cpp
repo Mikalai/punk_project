@@ -57,7 +57,7 @@ namespace Virtual
 			//	swap front and back buffers
 		
 			std::swap(m_front_buffer, m_back_buffer);
-			std::swap(m_height_map_front, m_height_map_back);
+			m_height_map_front.Swap(m_height_map_back);
 			m_position = m_position_back;
 
 			//	if not, than store position for future view

@@ -25,6 +25,7 @@
     <ClInclude Include="..\..\..\source\gpu\common\abstract_render_context_policy.h" />
     <ClInclude Include="..\..\..\source\gpu\common\renderable.h" />
     <ClInclude Include="..\..\..\source\gpu\common\gpu_state.h" />
+    <ClInclude Include="..\..\..\source\gpu\common\render_target.h" />
     <ClInclude Include="..\..\..\source\gpu\common\vertex.h" />
     <ClInclude Include="..\..\..\source\gpu\common\vertex_component.h" />
     <ClInclude Include="..\..\..\source\gpu\error\gpu_exceptions.h" />
@@ -111,11 +112,12 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_terrain.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_transform_3d.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\gl_render_target.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\module.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\render_target_back_buffer.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\render_target_texture.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\internal_formats.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\module.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target_back_buffer.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\render_target_texture.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_impl.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_pbo_impl.h" />
@@ -487,6 +489,7 @@
     <ClCompile Include="..\..\..\source\gpu\common\gpu_common_module.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\renderable.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\gpu_state.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\common\render_target.cpp" />
     <ClCompile Include="..\..\..\source\gpu\error\gpu_excpetions.cpp" />
     <ClCompile Include="..\..\..\source\gpu\gpu_module.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opencl\buffer.cpp" />
@@ -546,10 +549,10 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_terrain.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_transformed_textured_3d.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_transform_3d.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\gl_render_target.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\render_target_back_buffer.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\render_target_texture.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\internal_formats.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target_back_buffer.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\render_target_texture.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture2d.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_context.cpp" />

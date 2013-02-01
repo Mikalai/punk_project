@@ -123,6 +123,15 @@ namespace GPU
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 					CHECK_GL_ERROR(L"Can't change polygon mode");
 				}
+
+				if (pparams.m_depth_test)
+				{
+					glEnable(GL_DEPTH_TEST);
+				}
+				else
+				{
+					glDisable(GL_DEPTH_TEST);
+				}
 			}
 
 			VertexAttributes GetRequiredAttributesSet() const 

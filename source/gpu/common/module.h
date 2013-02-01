@@ -6,6 +6,7 @@
 #include "abstract_render_context_policy.h"
 #include "renderable.h"
 #include "gpu_state.h"
+#include "render_target.h"
 
 namespace GPU
 {

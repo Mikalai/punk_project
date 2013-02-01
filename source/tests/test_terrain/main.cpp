@@ -1,5 +1,6 @@
 #include "../../punk_engine.h"
 
+System::Proxy<GPU::OpenGL::Texture2D> t;
 System::Proxy<Scene::SceneGraph> scene;
 System::Proxy<Virtual::TerrainObserver> observer;
 bool m_left_down = false;
@@ -70,10 +71,9 @@ void OnKeyDown(System::Event* ee)
 
 void Idle(System::Event*)
 {	
-//	GPU::GPU_INIT(0);
-
 	System::AsyncLoader::Instance()->MainThreadProc(1);
-	//node->SetWatchTexture(OpenGL::Texture2DManager::Instance()->Load(L"checker2.png"));
+	//	GPU::GPU_INIT(0);
+	//node->SetWatchTexture(t);
 	node->SetWatchTexture(observer->GetTerrainView()->GetHeightMap());
 
 	updater.Update();
@@ -123,6 +123,10 @@ void Idle(System::Event*)
 
 int main()
 {	
+	System::Proxy<System::Object> a(new System::Object);
+	System::Proxy<System::Object> b(new System::Object);
+
+	std::swap(a,b);
 	try
 	{
 		System::GetFactory()->Init();
@@ -130,7 +134,7 @@ int main()
 		System::Window::Instance()->SetTitle(L"OpenGL object test");
 		System::Mouse::Instance()->LockInWindow(true);
 		GPU::OpenGL::Driver::Instance()->Start();
-		
+
 		GPU::GPU_INIT(0);
 
 		auto v = GPU::OpenGL::VideoMemory::Instance()->GetMaxAvailableMemory();
@@ -143,7 +147,7 @@ int main()
 
 		scene.Reset(new Scene::SceneGraph);// = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"plane.pmd");
 
-		Virtual::TerrainManager::Instance()->Manage(L"demo");
+		Virtual::TerrainManager::Instance()->Manage(L"test_map");
 
 		System::Proxy<Virtual::FirstPersonCamera> c(new Virtual::FirstPersonCamera);
 		c->SetPosition(Math::vec3(x, 0, y));
@@ -163,10 +167,17 @@ int main()
 		terrain_node->SetTerrainObserver(observer);
 		root->Add(terrain_node);
 		root->Add(node);
+		Render::MeshCooker cooker;
+		//		cooker.Visit(scene->GetRootNode());
 		render.SetScene(scene);
 		updater.SetScene(scene);	
 
+
+		System::AsyncLoader::Instance()->MainThreadProc(1);
+		t = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png");
+
 		System::Window::Instance()->Loop();
+
 
 		System::AsyncLoader::Destroy();
 	}

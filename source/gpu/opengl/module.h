@@ -8,6 +8,7 @@
 #include "renderable/module.h"
 #include "textures/module.h"
 #include "render_context/module.h"
+#include "render_targets/module.h"
 
 namespace GPU
 {

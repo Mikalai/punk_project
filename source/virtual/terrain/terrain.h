@@ -5,7 +5,7 @@
 #include "../../system/object.h"
 #include "../../math/vec2.h"
 #include "../../math/smart_matrix.h"
-
+#include "../data/material.h"
 #include "terrain_cell.h"
 
 namespace Virtual
@@ -40,6 +40,9 @@ namespace Virtual
 		System::Proxy<TerrainCell> GetCell(int x, int y) { return m_cells.At(y, x); }
 		const System::Proxy<TerrainCell> GetCell(int x, int y) const { return m_cells.At(y, x); }
 
+		System::Proxy<Material> GetMaterial() { return m_material; }
+		void SetMaterial(System::Proxy<Material> value) { m_material = value; }
+
 	private:
 
 		struct Core
@@ -56,7 +59,8 @@ namespace Virtual
 
 		Core m_core;
 		Math::Matrix<System::Proxy<TerrainCell>> m_cells;
+		System::Proxy<Material> m_material;
 	};
 }
 
-#endif
+#endif	//	_H_PUNK_VIRTUAL_TERRAIN
