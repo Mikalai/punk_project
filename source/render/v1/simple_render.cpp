@@ -28,7 +28,7 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::DebugTextureViewNode* node)
 	{
-		RenderTexturedQuad(0, 0, 0.2, 0.2, node->GetWatchTexture());
+		RenderTexturedQuad(0, 0.8, 0.2, 0.2, node->GetWatchTexture());
 		return true;
 	}
 
@@ -282,6 +282,7 @@ namespace Render
 			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());
 			m_tc->Bind();		
 			STATE.m_wireframe = false;
+			STATE.m_depth_test = true;
 			STATE.m_line_width = 1;
 			STATE.m_terran_position = Math::vec2(floor(STATE.m_camera->GetPosition().X()), floor(STATE.m_camera->GetPosition().Z()));
 			m_terrain_rc->BindParameters(STATE);
