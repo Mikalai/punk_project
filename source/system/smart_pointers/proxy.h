@@ -148,6 +148,7 @@ namespace System
 
 		Proxy<T>& operator = (const Proxy<T>& v)
 		{		
+			Release();
 			v.IncRef();
 			m_ptr = v.m_ptr;
 			m_count = v.m_count;
@@ -280,6 +281,13 @@ namespace System
 		{
 			assert(m_ptr);
 			return m_ptr;
+		}
+
+		template<class U> 
+		Proxy<T>& Swap(const Proxy<U>& value)
+		{
+			std::swap(m_ptr, value.m_ptr);
+			return *this;
 		}
 
 	private:
