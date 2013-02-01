@@ -5,13 +5,12 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		RenderTargetBackBuffer::RenderTargetBackBufferProperties::RenderTargetBackBufferProperties()
-			: Properties()
+		RenderTargetBackBuffer::RenderTargetBackBufferProperties::RenderTargetBackBufferProperties()			
 		{
 			m_type = RENDER_TARGET_BACK_BUFFER;
 		}
 
-		bool RenderTargetBackBuffer::Init(RenderTargetBackBuffer::Properties* props)
+		bool RenderTargetBackBuffer::Init(RenderTarget::Properties* props)
 		{
 			if (props->m_type != RENDER_TARGET_BACK_BUFFER)
 				throw OpenGLInvalidValueException();

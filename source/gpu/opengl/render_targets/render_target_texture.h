@@ -2,7 +2,8 @@
 #define _H_PUNK_OPENGL_RENDER_TARGET_TEXTURE
 
 #include <memory>
-#include "render_target.h"
+#include "../../../system/smart_pointers/module.h"
+#include "gl_render_target.h"
 
 namespace GPU
 {
@@ -10,7 +11,7 @@ namespace GPU
 	{
 		class Texture2D;
 
-		class PUNK_ENGINE RenderTargetTexture : public RenderTarget
+		class PUNK_ENGINE RenderTargetTexture : public OpenGLRenderTarget
 		{
 		public:
 
@@ -28,14 +29,15 @@ namespace GPU
 			virtual void Activate();
 			virtual void Deactivate();
 			virtual ~RenderTargetTexture();
-			Texture2D* GetColorBuffer();
-			Texture2D* GetDepthBuffer();
+			System::Proxy<Texture2D> GetColorBuffer();
+			System::Proxy<Texture2D> GetDepthBuffer();
+
 		private:
 			void Clear();
 			void Check();
-			std::auto_ptr<Texture2D> m_color_texture;
+			System::Proxy<Texture2D> m_color_texture;
 			///	
-			std::auto_ptr<Texture2D> m_depth_texture;
+			System::Proxy<Texture2D> m_depth_texture;
 			///	multisample resolve target
 			unsigned m_resolve_fb;
 			///	render frame buffer

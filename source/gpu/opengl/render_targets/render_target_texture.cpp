@@ -21,7 +21,6 @@ namespace GPU
 			, m_depth_rb(0)
 		{}
 
-
 		bool RenderTargetTexture::Init(RenderTarget::Properties* props)
 		{
 			RenderTargetTextureProperties* p = static_cast<RenderTargetTextureProperties*>(props);
@@ -30,7 +29,7 @@ namespace GPU
 			//	generate frame buffer
 			glGenFramebuffers(1, &m_fb);
 			//	create color texture
-			m_color_texture.reset(new Texture2D);
+			m_color_texture.Reset(new Texture2D);
 			m_color_texture->Create(p->m_texture_width, p->m_texture_height, ImageModule::IMAGE_FORMAT_RGBA8, 0);
 
 			//	if multisample
@@ -92,8 +91,8 @@ namespace GPU
 			CHECK_GL_ERROR(L"Can't delete color render buffer object");
 			glDeleteRenderbuffers(1, &m_depth_rb);
 			CHECK_GL_ERROR(L"Can't delete depth render buffer object");
-			m_color_texture.reset(0);
-			m_depth_texture.reset(0);
+			m_color_texture.Release();
+			m_depth_texture.Release();
 		}
 
 		RenderTargetTexture::~RenderTargetTexture()
@@ -131,14 +130,14 @@ namespace GPU
 			CHECK_GL_ERROR(L"Can't set depth func to GL_LESS");
 		}
 
-		Texture2D* RenderTargetTexture::GetColorBuffer()
+		System::Proxy<Texture2D> RenderTargetTexture::GetColorBuffer()
 		{
-			return m_color_texture.get();
+			return m_color_texture;
 		}
 
-		Texture2D* RenderTargetTexture::GetDepthBuffer()
+		System::Proxy<Texture2D> RenderTargetTexture::GetDepthBuffer()
 		{
-			return m_depth_texture.get();
+			return m_depth_texture;
 		}
 
 		void RenderTargetTexture::Check()
