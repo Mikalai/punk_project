@@ -246,9 +246,10 @@ namespace GPU
 
 		void Driver::OnResize(System::Event* e)
 		{
-			System::WindowResizeEvent* event = dynamic_cast<System::WindowResizeEvent*>(e);
+			System::WindowResizeEvent* event = dynamic_cast<System::WindowResizeEvent*>(e);			
 			if (!event)
 				throw OpenGLInvalidValueException(L"Can't understand event");
+			glViewport(0, 0, event->width, event->height);
 		}
 
 		void Driver::SetFullScreen(bool flag)
