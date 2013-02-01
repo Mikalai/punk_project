@@ -17,6 +17,11 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::TerrainNode* node)
 	{
+		System::Proxy<Virtual::Material> material(new Virtual::Material);
+		material->SetDiffuseTextureCache(GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg"));
+		material->SetDiffuseTexture2Cache(GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"ground.png"));
+		material->SetNormalTextureCache(GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"bump.png"));
+		node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->SetMaterial(material);
 		return true;
 	}
 

@@ -28,7 +28,7 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::DebugTextureViewNode* node)
 	{
-		RenderTexturedQuad(0, 0.5, 0.2, 0.2, node->GetWatchTexture());
+		RenderTexturedQuad(0, 0, 0.2, 0.2, node->GetWatchTexture());
 		return true;
 	}
 
@@ -270,13 +270,13 @@ namespace Render
 		STATE.m_normal_slot = 3;
 
 		System::Proxy<Virtual::TerrainView> view = node->GetTerrainObserver()->GetTerrainView();
-		if (view.IsValid())
+		if (view.IsValid() && view->GetHeightMap()->IsValid())
 		{
-			m_tc = m_tc;
+			//m_tc = m_tc;
 			m_tc->SetTexture(0, view->GetHeightMap());
-			/*m_tc->SetTexture(1, GPU::OpenGL::Texture2DManager::Instance()->Load(L"snow.jpg"));
-			m_tc->SetTexture(2, GPU::OpenGL::Texture2DManager::Instance()->Load(L"ground.png"));
-			m_tc->SetTexture(3, GPU::OpenGL::Texture2DManager::Instance()->Load(L"bump.png"));*/
+			m_tc->SetTexture(1, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetDiffuseTextureCache());
+			m_tc->SetTexture(2, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetDiffuseTexture2Cache());
+			m_tc->SetTexture(3, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetNormalTextureCache());
 
 			m_terrain_rc->Begin();
 			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());
@@ -431,7 +431,8 @@ namespace Render
 		m_terrain_slices = 31;
 		m_time = 0;
 		GPU::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
-		m_rt;// = GPU::OpenGL::Driver::Instance()->CreateRenderTarget(&p);
+		m_rt.Reset(new GPU::OpenGL::RenderTargetBackBuffer);
+		m_rt->Init(&p);
 		m_scene = scene;
 		if (m_scene.IsValid())
 			m_scene->GetRootNode()->Apply(&m_cooker);		

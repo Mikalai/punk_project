@@ -42,7 +42,7 @@ namespace Render
 		void RenderSphere(const Math::vec3& position, float radius, const Math::vec4& color = Math::vec4(1,1,1,1));
 
 	private:
-		GPU::OpenGL::RenderTarget* m_rt;
+		System::Proxy<GPU::RenderTarget> m_rt;
 		System::Proxy<Scene::SceneGraph> m_scene;
 		MeshCooker m_cooker;
 		System::Proxy<GPU::AbstractRenderPolicy> m_skin_rc;
