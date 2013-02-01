@@ -11,6 +11,7 @@ Description: Contains a Texture2D class
 #include "../../../config.h"
 #include "../../../system/resource_manager.h"
 #include "../../../system/object.h"
+#include "../../../system/smart_pointers/module.h"
 #include "../../../system/buffer.h"
 #include "../../../images/formats.h"
 
@@ -59,8 +60,10 @@ namespace GPU
 			void Init();
 			void Clear();
 
-			static Texture2D* CreateFromFile(const System::string& path);
-			static Texture2D* CreateFromStream(std::istream& stream);
+			bool IsValid() const;
+
+			static System::Proxy<Texture2D> CreateFromFile(const System::string& path);
+			static System::Proxy<Texture2D> CreateFromStream(std::istream& stream);
 		};
 
 		typedef Texture2D* Texture2DRef;

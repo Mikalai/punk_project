@@ -57,6 +57,11 @@ namespace GPU
 			return impl_texture_2d->CopyFromCPU(x, y, width, height, data);
 		}
 
+		bool Texture2D::IsValid() const
+		{
+			return impl_texture_2d->m_texture_id != 0;
+		}
+
 		void Texture2D::Resize(int width, int height)
 		{
 			impl_texture_2d->Resize(width, height);
@@ -147,29 +152,26 @@ namespace GPU
 			return false;
 		}
 
-		Texture2D* Texture2D::CreateFromFile(const System::string& path)
+		System::Proxy<Texture2D> Texture2D::CreateFromFile(const System::string& path)
 		{		
 			ImageModule::Importer importer;
 			std::auto_ptr<ImageModule::Image> image(importer.LoadAnyImage(path));
 
 			if (image.get())
 			{
-				std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
+				System::Proxy<Texture2D> result(new Texture2D);//(*image));		
 				result->Create(*image);
-				return result.release();
+				return result;
 			}
 			else
-			{
-				out_error() << "Can't create texture from" << path << std::endl;
-				return nullptr;
-			}
+				throw OpenGLException(L"Can't create texture from " + path);
 		}
 
-		Texture2D* Texture2D::CreateFromStream(std::istream& stream)
+		System::Proxy<Texture2D> Texture2D::CreateFromStream(std::istream& stream)
 		{		
-			std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
+			System::Proxy<Texture2D> result(new Texture2D);//(*image));		
 			result->Load(stream);
-			return result.release();
+			return result;
 		}
 	}
 }

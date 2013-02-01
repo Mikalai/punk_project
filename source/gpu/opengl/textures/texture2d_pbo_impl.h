@@ -110,10 +110,10 @@ namespace GPU
 				m_width = image.GetWidth();
 				m_height = image.GetHeight();
 				m_format = ToInternalFormat(image.GetImageFormat());
-				int m_pixel_size = 1;
+				m_pixel_size = 1;
 				m_internal_format = GL_RED;
 				m_internal_type = GL_UNSIGNED_BYTE;
-				
+
 				if (GL_RED ==  m_format)
 				{
 					m_pixel_size = 1;
@@ -141,15 +141,20 @@ namespace GPU
 					m_internal_type = GL_UNSIGNED_BYTE;
 				}
 
-				m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);
-				m_pbo->Bind();
-
 				glGenTextures(1, &m_texture_id);
 				glBindTexture(GL_TEXTURE_2D, m_texture_id);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+
+				glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
+				CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
+				glBindTexture(GL_TEXTURE_2D, 0);				
+
+				m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);					
+				//m_pbo->Bind();
+
 
 				void* data = Map();
 				CHECK_GL_ERROR(L"Can't map buffer");
@@ -160,17 +165,21 @@ namespace GPU
 					CHECK_GL_ERROR(L"Can't unmap buffer");
 				}
 
-				//glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
-				//CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
+				glBindTexture(GL_TEXTURE_2D, m_texture_id);
+				CHECK_GL_ERROR(L"Can't bind texture");
+				m_pbo->Bind();
+				glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, m_format, m_internal_type, 0);
+				CHECK_GL_ERROR(L"Can't copy data from PBO to texture object");
+				m_pbo->Unbind();
 
 				if (generate_mip_maps)
 				{
 					glGenerateMipmap(GL_TEXTURE_2D);
 					CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
 				}			
-
 				glBindTexture(GL_TEXTURE_2D, 0);
-				m_pbo->Unbind();
+				//m_pbo->Unbind();
+
 			}
 
 			bool CopyFromCPU(int x, int y, int width, int height, const void* data)
@@ -184,7 +193,6 @@ namespace GPU
 				if (y + height > m_height)
 					return false;
 
-				CHECK_GL_ERROR(L"Pre copy check1");
 				CHECK_GL_ERROR(L"Pre copy check2");
 				glBindTexture(GL_TEXTURE_2D, m_texture_id);
 				CHECK_GL_ERROR(L"Can't bind texture");
@@ -234,11 +242,11 @@ namespace GPU
 					CHECK_GL_ERROR(L"Can't delete texture");
 				}
 
-				
+
 				m_width = width;
 				m_height = height;
 				m_format = format;
-				int m_pixel_size = 1;
+				m_pixel_size = 1;
 				m_internal_format = GL_RED;
 				m_internal_type = GL_UNSIGNED_BYTE;
 
@@ -270,45 +278,45 @@ namespace GPU
 					m_internal_type = GL_UNSIGNED_BYTE;
 				}
 
-				m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);
-				
-				m_pbo->Bind();
 				glGenTextures(1, &m_texture_id);
 				glBindTexture(GL_TEXTURE_2D, m_texture_id);
+
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
 
-
 				glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
 				CHECK_GL_ERROR(L"Can't copy data from PBO to texture")
 
-					//	if data available than copy them
-					if (source)
-					{
-						void* data = Map();
-						CHECK_GL_ERROR(L"Can't map buffer");
-						if (data)
-						{
-							memcpy(data, source, m_width * m_height * m_pixel_size);
-							Unmap(0);
-							CHECK_GL_ERROR(L"Can't unmap buffer");
-						}
-					}
-
-					//glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
-					//CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
-					/*
-					if (false)
-					{
-					glGenerateMipmap(GL_TEXTURE_2D);
-					CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
-					}	*/		
-
 					glBindTexture(GL_TEXTURE_2D, 0);
-					m_pbo->Unbind();
-					return true;
+				CHECK_GL_ERROR(L"Can't unbind texture")
+
+					m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);				
+				m_pbo->Bind();
+				//	if data available than copy them
+				if (source)
+				{
+					void* data = Map();
+					CHECK_GL_ERROR(L"Can't map buffer");
+					if (data)
+					{
+						memcpy(data, source, m_width * m_height * m_pixel_size);
+						Unmap(0);
+						CHECK_GL_ERROR(L"Can't unmap buffer");
+					}
+				}
+				m_pbo->Unbind();
+				//glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
+				//CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
+				/*
+				if (false)
+				{
+				glGenerateMipmap(GL_TEXTURE_2D);
+				CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
+				}	*/		
+
+				return true;
 			}
 
 			void* Map()
@@ -318,7 +326,15 @@ namespace GPU
 
 			void Unmap(void*)
 			{
-				m_pbo->Unmap();
+				m_pbo->Unmap();				
+				glBindTexture(GL_TEXTURE_2D, m_texture_id);					
+				CHECK_GL_ERROR(L"Can't bind texture");
+				m_pbo->Bind();
+				glTexSubImage2D(GL_TEXTURE_2D, 0,0, 0, m_width, m_height, m_format, m_internal_type, 0);
+				CHECK_GL_ERROR(L"Can't transfer data from PBO to texture");
+				m_pbo->Unbind();
+				glBindTexture(GL_TEXTURE_2D, 0);					
+				CHECK_GL_ERROR(L"Can't unbind texture");
 			}
 
 			void Fill(unsigned char byte)
