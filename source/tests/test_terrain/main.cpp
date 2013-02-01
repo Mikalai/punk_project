@@ -157,7 +157,7 @@ int main()
 		node.Reset(new Scene::DebugTextureViewNode);	
 		System::Proxy<Scene::Node> root = scene->GetRootNode();
 
-		widget.Reset(new GUI::Widget(0, 0, 0.5, 0.2, L"DF"));
+		widget.Reset(new GUI::Widget(0, 0, 0.1, 0.2, L"DF"));
 
 		GUI::Manager::Instance()->AddRootWidget(widget);
 
