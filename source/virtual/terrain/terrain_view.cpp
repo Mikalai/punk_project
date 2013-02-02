@@ -11,7 +11,7 @@ namespace Virtual
 		: m_view_size(view_size)
 		, m_front_buffer((void*)new float[view_size*view_size])
 		, m_back_buffer((void*)new float[view_size*view_size])
-		, m_threshold(1)
+		, m_threshold(64)
 		, m_position(position)
 		, m_height_map_front(new GPU::OpenGL::Texture2D())
 		, m_height_map_back(new GPU::OpenGL::Texture2D())

@@ -56,7 +56,7 @@ namespace Virtual
 
 	System::Proxy<TerrainObserver> TerrainManager::CreateTerrainObserver(const Math::vec3& start_position)
 	{
-		System::Proxy<TerrainView> view(new TerrainView(512, m_terrain->GetBlockSize(), m_terrain->GetBlockScale(), start_position.XZ(), m_terrain));
+		System::Proxy<TerrainView> view(new TerrainView(1024, m_terrain->GetBlockSize(), m_terrain->GetBlockScale(), start_position.XZ(), m_terrain));
 		System::Proxy<TerrainObserver> observer(new TerrainObserver(view));
 		observer->SetPosition(start_position);
 		m_views.push_back(view);

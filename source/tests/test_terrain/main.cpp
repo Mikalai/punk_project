@@ -80,7 +80,7 @@ void Idle(System::Event*)
 	render.Render();
 	System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
 	bool update = false;
-	float scale = 0.01;
+	float scale = 0.07;
 	if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
 	{
 		c->SetPosition(c->GetPosition() + c->GetRightVector() * -scale);
@@ -147,7 +147,7 @@ int main()
 
 		scene.Reset(new Scene::SceneGraph);// = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"plane.pmd");
 
-		Virtual::TerrainManager::Instance()->Manage(L"test_map");
+		Virtual::TerrainManager::Instance()->Manage(L"demo");
 
 		System::Proxy<Virtual::FirstPersonCamera> c(new Virtual::FirstPersonCamera);
 		c->SetPosition(Math::vec3(x, 0, y));

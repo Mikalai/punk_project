@@ -34,8 +34,8 @@ namespace GPU
 					for (int iy = -2; iy != 2; ++iy)
 					{
 						//	find cell offset
-						float x = float(ix);
-						float y = float(iy);
+						float x = float(ix) * width;
+						float y = float(iy) * height;
 
 						//	we skip very center at any leve, except zero one
 						if (lev != 0 && (ix >= -1 && ix <= 0 && iy >= -1 && iy <= 0))
@@ -56,6 +56,9 @@ namespace GPU
 								float w = 0;
 								bool left_vertical = (ix == -2 && j == 0 && (i % 2) != 0);
 								bool right_vertical = (ix == 1 && j == hor_slices && (i % 2) != 0);
+
+								//bool left_vertical = (ix == -2 && j == 0);
+								//bool right_vertical = (ix == 1 && j == hor_slices);
 								if (left_vertical || right_vertical)
 								{
 									w = -1.0f;	//	y neighbours needed
@@ -63,6 +66,8 @@ namespace GPU
 
 								bool top_horizontal = (iy == 1 && i == vert_slices && (j % 2) != 0);
 								bool bottom_horizontal = (iy == -2 && i == 0 && (j % 2) != 0);
+								//bool top_horizontal = (iy == 1 && i == vert_slices);
+								//bool bottom_horizontal = (iy == -2 && i == 0);
 								if (top_horizontal || bottom_horizontal)
 								{
 									w = 1.0f;	// x neighbours needed
@@ -80,7 +85,7 @@ namespace GPU
 								//	store in the z w components number of hor and ver slices
 								cur.m_texture0.Set(
 									1.0f/float(hor_slices)*float(j),
-									1.0f/float(vert_slices)*float(i), (float)hor_slices, (float)vert_slices);			
+									1.0f/float(vert_slices)*float(i), (float)hor_slices, (float)width);			
 								++cur_v;
 							}
 						}			

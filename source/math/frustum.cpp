@@ -5,13 +5,13 @@ namespace Math
 {
 	Frustum::Frustum()
 	{
-		m_left = -0.1f;
-		m_right = 0.1f;
+		m_left = -1.0f;
+		m_right = 1.0f;
 		m_top = m_right*3.0f / 4.0f;
 		m_bottom = - m_right*3.0f / 4.0f;
 		m_fov = PI/4.0f;
-		m_zfar = 100.0f;
-		m_znear = 0.1f;
+		m_zfar = 1000.0f;
+		m_znear = 1.0f;
 		m_aspect = 3.0f / 4.0f;
 		UpdateMatrix();
 		CalculatePlanes();

@@ -17,7 +17,7 @@ namespace GPU
 
 		void TextSurface::SetSize(int width, int height)
 		{
-			m_texture->Create(width, height, ImageModule::IMAGE_FORMAT_RED, 0);
+			m_texture->Create(width, height, ImageModule::IMAGE_FORMAT_RED, 0, false);
 		}
 
 		int TextSurface::CalculateTextXOffset(const System::string& text)

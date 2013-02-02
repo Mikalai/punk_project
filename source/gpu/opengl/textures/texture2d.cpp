@@ -67,13 +67,13 @@ namespace GPU
 			impl_texture_2d->Resize(width, height);
 		}
 
-		bool Texture2D::Create(int width, int height, ImageModule::ImageFormat format, const void* data)
+		bool Texture2D::Create(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps)
 		{
 			impl_texture_2d.reset(new Texture2DImpl);		
-			return impl_texture_2d->Create(width, height, ImageFormatToOpenGL(format), data);
+			return impl_texture_2d->Create(width, height, ImageFormatToOpenGL(format), data, use_mipmaps);
 		}
 
-		void Texture2D::Create(const ImageModule::Image& image)
+		void Texture2D::Create(const ImageModule::Image& image, bool use_mipmaps)
 		{
 			impl_texture_2d.reset(new Texture2DImpl);
 			impl_texture_2d->CreateFromImage(image, false);
@@ -143,7 +143,7 @@ namespace GPU
 		{
 			ImageModule::Image image;
 			image.Load(stream);
-			Create(image);
+			Create(image, false);
 			return true;
 		}
 
@@ -160,7 +160,7 @@ namespace GPU
 			if (image.get())
 			{
 				System::Proxy<Texture2D> result(new Texture2D);//(*image));		
-				result->Create(*image);
+				result->Create(*image, false);
 				return result;
 			}
 			else

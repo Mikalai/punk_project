@@ -15,6 +15,7 @@ namespace GPU
 			int m_index;
 			System::string m_location;
 
+			bool m_use_mip_maps;
 			int m_width;
 			int m_height;
 			int m_pixel_size;
@@ -26,6 +27,7 @@ namespace GPU
 
 			Texture2DImpl()
 				: m_texture_id(0)
+				, m_use_mip_maps(false)
 				, m_width(0)
 				, m_height(0)
 				, m_format(0)
@@ -38,7 +40,7 @@ namespace GPU
 			explicit Texture2DImpl(const ImageModule::Image& image)
 				: m_texture_id(0)
 			{
-				CreateFromImage(image);
+				CreateFromImage(image, false);
 			}
 
 			Texture2DImpl(const Texture2DImpl& impl)
@@ -92,8 +94,10 @@ namespace GPU
 				}
 			}
 
-			void CreateFromImage(const ImageModule::Image& image, bool generate_mip_maps = true)
+			void CreateFromImage(const ImageModule::Image& image, bool use_mipmaps)
 			{
+				m_use_mip_maps = use_mipmaps;
+
 				if (!image.GetData())
 				{
 					out_error() << L"Not data in the image" << std::endl;
@@ -172,14 +176,15 @@ namespace GPU
 				CHECK_GL_ERROR(L"Can't copy data from PBO to texture object");
 				m_pbo->Unbind();
 
-				if (generate_mip_maps)
+				if (m_use_mip_maps)
 				{
+					glBindTexture(GL_TEXTURE_2D, m_texture_id);
+					CHECK_GL_ERROR(L"Can't bind texture");
 					glGenerateMipmap(GL_TEXTURE_2D);
 					CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
+					glBindTexture(GL_TEXTURE_2D, 0);
+					CHECK_GL_ERROR(L"Can't ubind texture");
 				}			
-				glBindTexture(GL_TEXTURE_2D, 0);
-				//m_pbo->Unbind();
-
 			}
 
 			bool CopyFromCPU(int x, int y, int width, int height, const void* data)
@@ -205,6 +210,16 @@ namespace GPU
 				CHECK_GL_ERROR(L"Can't tex sub image");
 				glBindTexture(GL_TEXTURE_2D, 0);
 				CHECK_GL_ERROR(L"Can't unbind texture");			
+
+				if (m_use_mip_maps)
+				{
+					glBindTexture(GL_TEXTURE_2D, m_texture_id);
+					CHECK_GL_ERROR(L"Can't bind texture");
+					glGenerateMipmap(GL_TEXTURE_2D);
+					CHECK_GL_ERROR(L"Can't generate mipmaps");
+					glBindTexture(GL_TEXTURE_2D, 0);
+					CHECK_GL_ERROR(L"Can't unbind texture");			
+				}
 
 				return true;
 			}
@@ -234,8 +249,9 @@ namespace GPU
 				Fill(0);			
 			}
 
-			bool Create(int width, int height, GLenum format, const void* source)
+			bool Create(int width, int height, GLenum format, const void* source, bool use_mipmaps)
 			{
+				m_use_mip_maps = use_mipmaps;
 				if (m_texture_id != 0)
 				{
 					glDeleteTextures(1, &m_texture_id);
@@ -281,7 +297,7 @@ namespace GPU
 				glGenTextures(1, &m_texture_id);
 				glBindTexture(GL_TEXTURE_2D, m_texture_id);
 
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
@@ -309,14 +325,20 @@ namespace GPU
 				m_pbo->Unbind();
 				//glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
 				//CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
-				/*
-				if (false)
-				{
-				glGenerateMipmap(GL_TEXTURE_2D);
-				CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
-				}	*/		
+				if (m_use_mip_maps)
+					UpdateMipMaps();
 
 				return true;
+			}
+
+			void UpdateMipMaps()
+			{
+				glBindTexture(GL_TEXTURE_2D, m_texture_id);
+				CHECK_GL_ERROR(L"Can't bind texture");
+				glGenerateMipmap(GL_TEXTURE_2D);
+				CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
+				glBindTexture(GL_TEXTURE_2D, 0);
+				CHECK_GL_ERROR(L"Can't unbind texture");
 			}
 
 			void* Map()
@@ -335,6 +357,8 @@ namespace GPU
 				m_pbo->Unbind();
 				glBindTexture(GL_TEXTURE_2D, 0);					
 				CHECK_GL_ERROR(L"Can't unbind texture");
+				if (m_use_mip_maps)
+					UpdateMipMaps();
 			}
 
 			void Fill(unsigned char byte)
@@ -368,6 +392,9 @@ namespace GPU
 
 					}
 				}
+
+				if (m_use_mip_maps)
+					UpdateMipMaps();
 			}
 
 

@@ -38,14 +38,14 @@ namespace GPU
 			~Texture2D();
 			void Bind() const;
 			void Unbind() const;	
-			bool Create(int width, int height, ImageModule::ImageFormat format, const void* data);
+			bool Create(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);
 			bool CopyFromCPU(int x, int y, int width, int height, const void* data);
 			void Resize(int width, int height);
 			void Fill(unsigned char data);
 			int GetHeight() const;
 			int GetWidth() const;
 			unsigned GetCode() const;
-			void Create(const ImageModule::Image& image);
+			void Create(const ImageModule::Image& image, bool use_mipmaps);
 			void* Map();
 			void Unmap(void* data);
 

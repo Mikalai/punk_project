@@ -284,7 +284,8 @@ namespace Render
 			STATE.m_wireframe = false;
 			STATE.m_depth_test = true;
 			STATE.m_line_width = 1;
-			STATE.m_terran_position = Math::vec2(floor(STATE.m_camera->GetPosition().X()), floor(STATE.m_camera->GetPosition().Z()));
+			//STATE.m_terran_position = Math::vec2(floor(STATE.m_camera->GetPosition().X()), floor(STATE.m_camera->GetPosition().Z()));
+			STATE.m_terran_position = Math::vec2(node->GetTerrainObserver()->GetTerrainView()->GetPosition());
 			m_terrain_rc->BindParameters(STATE);
 			m_grid.Render();
 
@@ -429,7 +430,7 @@ namespace Render
 
 	void SimpleRender::SetScene(System::Proxy<Scene::SceneGraph> scene)
 	{
-		m_terrain_slices = 31;
+		m_terrain_slices = 63;
 		m_time = 0;
 		GPU::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
 		m_rt.Reset(new GPU::OpenGL::RenderTargetBackBuffer);
@@ -447,7 +448,7 @@ namespace Render
 		m_text.Reset(new GPU::OpenGL::TextSurface);
 		m_text->SetSize(int(System::Window::Instance()->GetWidth() * 0.5f), int(System::Window::Instance()->GetHeight()*0.5f));
 		m_gui_render.Reset(new GUIRender);		
-		m_grid.Cook(1, 1, m_terrain_slices, m_terrain_slices, 10);
+		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 5);
 	}
 
 	//void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture)
