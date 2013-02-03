@@ -83,6 +83,7 @@ class OBJECT_PT_punk_engine_tools(Panel):
             layout.prop(ob, "name")               
         elif ob.punk_entity_type == 'ARMATURE':
             layout.prop(ob, "name")
+            layout.prop(ob, "armature_type")
         elif ob.punk_entity_type == 'LIGHT':
             light = ob.data
             layout.prop(ob, "name")
@@ -104,7 +105,12 @@ class OBJECT_PT_punk_engine_tools(Panel):
 def register():  
     bpy.types.Object.punk_mass = bpy.props.FloatProperty \
         (name = "Mass", description = "Mass of the rigid body")
-        
+
+    bpy.types.Object.armature_type = bpy.props.EnumProperty \
+        (name = "Armature type", description = "Armature type", \
+        items = [ ("HUMAN_MALE", "Human Male", "Human male", 1), \
+                  ("HUMAN_FEMALE", "Human Female", "Humane female", 2)])
+            
     bpy.types.Object.punk_entity_type = bpy.props.EnumProperty \
         (name = "Property", description = "Engine entity type", \
         items = [("STATIC", "Static",   "Static object. Has geometry", 1), \
@@ -124,6 +130,7 @@ def register():
                          
 def unregister():
     del bpy.types.Object.punk_entity_type
+    del bpy.types.Object.armature_type
     del bpy.types.Object.punk_mass
     
 if __name__ == "__main__":  # only for live edit.

@@ -875,7 +875,10 @@ class ExportPunkModel(bpy.types.Operator, ExportHelper):
     # List of operator properties, the attributes will be assigned
     # to the class instance from the operator settings before calling.
     export_animation = BoolProperty(name="Export animation", description="Export animation in separate .pan animation file", default=True)
-
+    export_type = EnumProperty \
+        (name = "Export type", description = "Define what output format is prefered", \
+        items = [ ("INDOOR_LOCATION", "Indoor location", "Indoor location", 1), \
+                  ("ARMATURE", "Armature", "Armature", 2)])
 
     @classmethod
     def poll(cls, context):
