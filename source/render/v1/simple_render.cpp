@@ -35,7 +35,7 @@ namespace Render
 	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
 	{				
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
-		System::Proxy<GPU::OpenGL::StaticMesh> mesh;// = GPU::OpenGL::StaticMeshManager::Instance()->Load(node->GetStorageName());		
+		System::Proxy<GPU::OpenGL::StaticMesh> mesh = node->GetStaticGeometry()->GetGPUBufferCache();// = GPU::OpenGL::StaticMeshManager::Instance()->Load(node->GetStorageName());		
 		const Math::BoundingBox& bbox = mesh->GetBoundingBox();		
 		m_tc->Bind();
 		if (!STATE.m_rc.IsValid())
@@ -148,9 +148,9 @@ namespace Render
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0, 0, 1, 1));
 		m_states.Push();
 		STATE.m_material = Virtual::Material::find(node->GetStorageName());
-		m_tc = m_tc;
-		//m_tc->SetTexture(0, Texture2DManager::Instance()->Load(STATE.m_current_material->GetDiffuseMap()));
-		//m_tc->SetTexture(1, Texture2DManager::Instance()->Load(STATE.m_current_material->GetNormalMap()));
+		//m_tc = m_tc;
+		m_tc->SetTexture(0, node->GetMaterial()->GetCache().m_diffuse_texture_cache);
+		m_tc->SetTexture(1, node->GetMaterial()->GetCache().m_normal_texture_cache);
 		STATE.m_diffuse_slot_0 = 0;
 		STATE.m_normal_slot = 1;
 		//STATE.m_rc = m_context;
@@ -274,9 +274,9 @@ namespace Render
 		{
 			//m_tc = m_tc;
 			m_tc->SetTexture(0, view->GetHeightMap());
-			m_tc->SetTexture(1, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetDiffuseTextureCache());
-			m_tc->SetTexture(2, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetDiffuseTexture2Cache());
-			m_tc->SetTexture(3, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetNormalTextureCache());
+			m_tc->SetTexture(1, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache);
+			m_tc->SetTexture(2, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2);
+			m_tc->SetTexture(3, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache);
 
 			m_terrain_rc->Begin();
 			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());

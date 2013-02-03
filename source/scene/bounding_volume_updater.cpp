@@ -20,14 +20,14 @@ namespace Scene
 
 	bool BoundingVolumeUpdater::Visit(Scene::StaticMeshNode* node)
 	{		
-		System::Proxy<GPU::OpenGL::StaticMesh> mesh;// = OpenGL::StaticMeshManager::Instance()->Load(node->GetStorageName());	
+		System::Proxy<GPU::OpenGL::StaticMesh> mesh = node->GetStaticGeometry()->GetGPUBufferCache();// = OpenGL::StaticMeshManager::Instance()->Load(node->GetStorageName());	
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		return true;
 	}
 
 	bool BoundingVolumeUpdater::Visit(Scene::SkinMeshNode* node)
 	{				
-		System::Proxy<GPU::OpenGL::SkinMesh> mesh;// = OpenGL::SkinMeshManager::Instance()->Load(node->GetStorageName());	
+		System::Proxy<GPU::OpenGL::SkinMesh> mesh = node->GetSkinGeometry()->GetGPUBufferCache();// = OpenGL::SkinMeshManager::Instance()->Load(node->GetStorageName());	
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		return true;
 		return true;

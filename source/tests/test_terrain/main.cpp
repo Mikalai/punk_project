@@ -145,9 +145,9 @@ int main()
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(OnMouseMove));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(OnKeyDown));
 
-		scene.Reset(new Scene::SceneGraph);// = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"plane.pmd");
+		scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"house.pmd");
 
-		Virtual::TerrainManager::Instance()->Manage(L"demo");
+		Virtual::TerrainManager::Instance()->Manage(L"test_map");
 
 		System::Proxy<Virtual::FirstPersonCamera> c(new Virtual::FirstPersonCamera);
 		c->SetPosition(Math::vec3(x, 0, y));

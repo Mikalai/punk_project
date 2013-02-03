@@ -18,9 +18,9 @@ namespace Render
 	bool MeshCooker::Visit(Scene::TerrainNode* node)
 	{
 		System::Proxy<Virtual::Material> material(new Virtual::Material);
-		material->SetDiffuseTextureCache(GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg"));
-		material->SetDiffuseTexture2Cache(GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"ground.png"));
-		material->SetNormalTextureCache(GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"bump.png"));
+		material->GetCache().m_diffuse_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg");
+		material->GetCache().m_diffuse_texture_cache_2 = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"ground.png");
+		material->GetCache().m_normal_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"bump.png");
 		node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->SetMaterial(material);
 		return true;
 	}
@@ -39,6 +39,7 @@ namespace Render
 				throw System::PunkException(L"Can't cook static mesh from static geometry");
 			geom->SetGPUBufferCache(mesh);
 		}
+		node->SetGeometry(geom);
 		return true;
 	}
 
@@ -57,6 +58,7 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::StaticMeshNode* node)
 	{				
+		Virtual::StaticGeometry::validate();
 		System::Proxy<Virtual::StaticGeometry> geom = Virtual::StaticGeometry::find(node->GetStorageName());	
 
 		System::Proxy<GPU::OpenGL::StaticMesh> mesh;
@@ -69,6 +71,7 @@ namespace Render
 				throw System::PunkException(L"Can't cook static mesh for " + geom->GetName());
 			geom->SetGPUBufferCache(mesh);
 		}
+		node->SetGeometry(geom);
 		return true;
 	}
 
@@ -85,6 +88,11 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::MaterialNode* node)
 	{
+		Virtual::Material::validate();
+		System::Proxy<Virtual::Material> mat = Virtual::Material::find(node->GetName());
+		node->SetMaterial(mat);
+		mat->GetCache().m_diffuse_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetDiffuseMap());
+		mat->GetCache().m_normal_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetNormalMap());
 		for each (System::Proxy<Scene::Node> child in *node)
 		{
 			if (!child->Apply(this))

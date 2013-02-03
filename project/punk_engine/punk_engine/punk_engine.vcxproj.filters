@@ -229,6 +229,9 @@
     <Filter Include="gpu\opengl\render_target">
       <UniqueIdentifier>{c235a7d5-41e7-4bca-8660-abea5694d77e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="physics\bullet">
+      <UniqueIdentifier>{2aa45a30-431f-40be-9378-ca9352b2e211}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -1553,6 +1556,30 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\gl_render_target.h">
       <Filter>gpu\opengl\render_target</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\module.h">
+      <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\physical_simulator.h">
+      <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\rigid_body.h">
+      <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\shape_body.h">
+      <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_physical_simulator.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_rigid_body.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_shape_body.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_terrain.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2344,6 +2371,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\gl_render_target.cpp">
       <Filter>gpu\opengl\render_target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\physical_simulator.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\bullet\bullet_physical_simulator.cpp">
+      <Filter>physics\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\bullet\bullet_rigid_body.cpp">
+      <Filter>physics\bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
