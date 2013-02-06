@@ -145,7 +145,7 @@ int main()
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(OnMouseMove));
 		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(OnKeyDown));
 
-		scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"house.pmd");
+		scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"engineer4.pmd");
 
 		Virtual::TerrainManager::Instance()->Manage(L"test_map");
 
