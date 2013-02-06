@@ -3,8 +3,6 @@
 #include "../../utility/descriptors/action_desc.h"
 #include "animation.h"
 
-IMPLEMENT_MANAGER(L"resource.actions", L"*.action", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ACTION, Virtual, Action);
-
 namespace Virtual
 {
 	Action::Action()

@@ -2,7 +2,8 @@
 #define _H_PUNK_UTILITY_ACTION
 
 #include "../../system/compound_object.h"
-#include "../../system/resource_manager.h"
+#include "../../system/aop/aop.h"
+#include "../../system/smart_pointers/module.h"
 #include "../../string/string.h"
 
 namespace Virtual
@@ -13,7 +14,7 @@ namespace Virtual
 namespace Virtual
 {
 	//	Animation is a child of Action
-	class Action : public System::CompoundObject
+	class Action : public System::CompoundObject, public System::Aspect<System::Proxy<Action>, System::string>
 	{			
 	public:		
 		Action();
@@ -40,8 +41,5 @@ namespace Virtual
 		int m_end_frame;			
 	};
 }
-
-REGISTER_MANAGER(L"resource.actions", L"*.action", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ACTION, Virtual, Action, return, return);
-
 
 #endif
