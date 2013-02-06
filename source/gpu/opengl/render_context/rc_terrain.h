@@ -109,8 +109,12 @@ namespace GPU
 				SetUniformInt(ui, pparams.m_terrain_i);
 				SetUniformInt(uj, pparams.m_terrain_j);
 				SetUniformInt(uViewSize, pparams.m_terrain_observer->GetTerrainView()->GetViewSize());
-				SetUniformFloat(uScale, pparams.m_terrain->GetHeightScale());			
-				SetUniformVector2f(uTerrainPosition, &pparams.m_terrain_observer->GetTerrainView()->GetPosition()[0]);
+				SetUniformFloat(uScale, pparams.m_terrain->GetHeightScale());		
+				auto v = pparams.m_terrain_observer->GetTerrainView()->GetPosition();
+				v.Set(floor(v.X()), floor(v.Y()));
+				SetUniformVector2f(uTerrainPosition, &v[0]);
+				//SetUniformVector2f(uPosition, &pparams.m_terran_position[0]);
+				SetUniformVector2f(uPosition, &v[0]);
 
 				if (pparams.m_wireframe)
 				{
