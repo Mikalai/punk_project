@@ -71,6 +71,8 @@ namespace GPU
 		void* PixelBufferObject::Map()
 		{
 			Bind();
+			glBufferData(GL_PIXEL_UNPACK_BUFFER, m_size, 0, GL_STREAM_DRAW);
+			CHECK_GL_ERROR(L"Unable drop buffer");
 			GLvoid* buffer = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_READ_WRITE);
 			CHECK_GL_ERROR(L"Unable to map buffer");
 			Unbind();
