@@ -120,13 +120,17 @@ def register():
                  ("RIGID",  "Rigid Body", "Sound",                     5), \
                  ("PORTAL", "Portal", "Scene portal",                  6), \
                  ("LIGHT", "Light", "Scene light",                     7), \
-                 ("LOCATION_INDOOR", "Indoor location", "Interior location",         8), \
+                 ("LOCATION_INDOOR", "Indoor location", "Interior location", 8), \
                  ("CHARACTER", "Character", "Character armature and skin", 9), \
                  ("CAMERA", "Camera", "A camera that can be used in game", 10),\
                  ("TRANSFORM", "Transform", "A simple transorm",           11),\
                  ("ARMATURE", "Armature", "Animated armature",             12),\
                  ("SKIN", "Skin",   "Skin object. Has geometry",           13),\
-                 ("COLLISION_MESH", "Collision mesh", "Collision mesh",    14)])
+                 ("COLLISION_MESH", "Collision mesh", "Collision mesh",    14),\
+                 ("SMALL_SLOT", "Small slot", "Small slot",                15),\
+                 ("MIDDLE_SLOT", "Middle slot", "Middles slot",            16),\
+                 ("LARGE_SLOT", "Large slot", "Large slot",                17),\
+                 ("COLD_WEAPON", "Cold weapon", "Cold weapon",             18)])
                          
 def unregister():
     del bpy.types.Object.punk_entity_type
