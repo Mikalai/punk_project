@@ -971,7 +971,7 @@ namespace Utility
 						out_error() << "Unable to parse action" << std::endl;
 						return false;
 					}
-					Virtual::ActionManager::Instance()->Manage(action->GetName(), action);
+					Virtual::Action::add(action->GetName(), action);
 				}
 				break;
 			default:
