@@ -27,6 +27,7 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::SkinMeshNode* node)
 	{
+		Virtual::SkinGeometry::validate();		
 		System::Proxy<Virtual::SkinGeometry> geom = Virtual::SkinGeometry::find(node->GetStorageName());
 
 		System::Proxy<GPU::OpenGL::SkinMesh> mesh;
@@ -45,6 +46,7 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::ArmatureNode* node)
 	{		
+		Virtual::Armature::validate();
 		m_current_armature = Virtual::Armature::find(node->GetStorageName());
 		m_current_armature->UpdateHierarchy();
 		for each (System::Proxy<Scene::Node> child in *node)

@@ -60,9 +60,9 @@ namespace Render
 		//	Virtual::Bone* bone = armature->GetBoneByIndex(i);
 		//	out_message() << bone->GetName() << ": " << std::endl << (STATE.m_armature_world * bone->GetAnimatedGlobalMatrix()).ToString() << std::endl;
 		//}
-
-		System::Proxy<GPU::OpenGL::SkinMesh> mesh;// = SkinMeshManager::Instance()->Load(node->GetStorageName());				
-		m_tc->Bind();
+		STATE.m_rc = m_skin_rc;
+		System::Proxy<GPU::OpenGL::SkinMesh> mesh = node->GetSkinGeometry()->GetGPUBufferCache();
+		m_tc->Bind();		
 		STATE.m_rc->Begin();
 		STATE.m_rc->BindParameters(STATE);		
 		mesh->Bind(STATE.m_rc->GetRequiredAttributesSet());
@@ -75,10 +75,11 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::ArmatureNode* node)
 	{		
+		Virtual::Action::validate();
 		m_states.Push();	
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(1, 0, 0, 1));
 		System::Proxy<Virtual::Armature> armature = Virtual::Armature::find(node->GetStorageName());
-		System::Proxy<Virtual::Action> action = Virtual::ActionManager::Instance()->Load(L"walk");
+		System::Proxy<Virtual::Action> action = Virtual::Action::find(L"male_walk");
 		for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
 		{
 			Virtual::Bone* bone = armature->GetBoneByIndex(i);
@@ -285,7 +286,8 @@ namespace Render
 			STATE.m_depth_test = true;
 			STATE.m_line_width = 1;
 			//STATE.m_terran_position = Math::vec2(floor(STATE.m_camera->GetPosition().X()), floor(STATE.m_camera->GetPosition().Z()));
-			STATE.m_terran_position = Math::vec2(node->GetTerrainObserver()->GetTerrainView()->GetPosition());
+			auto v = node->GetTerrainObserver()->GetTerrainView()->GetPosition();
+			STATE.m_terran_position.Set(floor(v.X()), floor(v.Y()));
 			m_terrain_rc->BindParameters(STATE);
 			m_grid.Render();
 
@@ -406,7 +408,7 @@ namespace Render
 
 	bool SimpleRender::Render()
 	{
-		m_time += 0.01f;
+		m_time += 0.1f;
 		m_rt->Activate();			
 		if (m_scene.IsValid())
 		{
@@ -448,8 +450,7 @@ namespace Render
 		m_text.Reset(new GPU::OpenGL::TextSurface);
 		m_text->SetSize(int(System::Window::Instance()->GetWidth() * 0.5f), int(System::Window::Instance()->GetHeight()*0.5f));
 		m_gui_render.Reset(new GUIRender);		
-		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 5);
-	}
+		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 5);	}
 
 	//void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture)
 	//{
