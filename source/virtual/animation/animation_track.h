@@ -89,8 +89,10 @@ namespace Virtual
 		if (m_keys.size() == 1)
 			return (*m_keys.begin()).second;
 
-		while (frame > m_keys.back().first)
-			frame -= m_keys.back().first;
+		float delta = m_keys.back().first - m_keys.front().first;
+		float v = frame / delta;
+		v = modff(v, &v);
+		frame = m_keys.front().first + delta * v;
 
 		auto it1 = m_keys.begin();
 		auto it2 = m_keys.begin();
@@ -121,8 +123,10 @@ namespace Virtual
 		if (m_keys.size() == 1)
 			return (*m_keys.begin()).second;
 
-		while (frame > m_keys.back().first)
-			frame -= m_keys.back().first;
+		float delta = m_keys.back().first - m_keys.front().first;
+		float v = frame / delta;
+		v = modff(v, &v);
+		frame = m_keys.front().first + delta * v;
 
 		auto it1 = m_keys.begin();
 		auto it2 = m_keys.begin();
