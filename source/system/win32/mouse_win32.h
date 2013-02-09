@@ -2,11 +2,12 @@
 #define _H_PUNK_MOUSE_WIN32
 
 #include "../../config.h"
-#include "../singletone.h"
-#include "window_win32.h"
+#include "../smart_pointers/module.h"
 
 namespace System
 {
+	class Window;
+
 	class PUNK_ENGINE Mouse
 	{
 	public:
@@ -18,7 +19,7 @@ namespace System
 		bool m_buttons[MAX_MOUSE_BUTTONS];
 		bool m_locked;
 		bool m_visible;
-		const Window* m_region;
+		System::Proxy<Window> m_region;
 
 	public:
 
@@ -27,7 +28,7 @@ namespace System
 		void LockInWindow(bool value);
 		void SetButtonState(MouseButtons button, bool state);
 		bool GetButtonState(MouseButtons button) const;
-		void BindCursorToWindow(const Window* window);
+		void BindCursorToWindow(System::Proxy<Window> window);
 
 		int GetGlobalX() const;
 		int GetGlobalY() const;
@@ -36,7 +37,7 @@ namespace System
 		
 		bool IsLocked() const;
 		bool IsVisible() const;
-		const Window* GetBoundedWindow() const;
+		System::Proxy<Window> GetBoundedWindow() const;
 
 		static Mouse* Instance();
 		static void Destroy();

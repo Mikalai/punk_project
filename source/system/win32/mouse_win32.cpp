@@ -1,4 +1,5 @@
 #include "mouse_win32.h"
+#include "../window/module.h"
 
 namespace System
 {
@@ -33,7 +34,7 @@ namespace System
 		return m_buttons[button];
 	}
 
-	void Mouse::BindCursorToWindow(const Window* window)
+	void Mouse::BindCursorToWindow(System::Proxy<Window> window)
 	{
 		m_region = window;
 	}
@@ -58,7 +59,7 @@ namespace System
 		return m_visible;
 	}
 
-	const Window* Mouse::GetBoundedWindow() const
+	System::Proxy<Window> Mouse::GetBoundedWindow() const
 	{
 		return m_region;
 	}

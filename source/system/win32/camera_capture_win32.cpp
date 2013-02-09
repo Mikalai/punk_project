@@ -1,5 +1,5 @@
 #include "camera_capture_win32.h"
-#include "window_win32.h"
+#include "../window/module.h"
 #include "../logger.h"
 #include <Vfw.h>
 

@@ -2,13 +2,16 @@
 #include "../../gpu/module.h"
 #include "../../virtual/module.h"
 #include "../../scene/module.h"
-#include "../../system/window.h"
+#include "../../system/window/module.h"
 #include "../../utility/fonts/font_builder.h"
 
 #define STATE m_states.CurrentState()->Get()
 
 namespace Render
 {
+	SimpleRender::SimpleRender(System::Proxy<GPU::OpenGL::Driver> driver)
+		: m_driver(driver)
+	{}
 
 	bool SimpleRender::Visit(Scene::CameraNode* node)
 	{
@@ -254,7 +257,7 @@ namespace Render
 	bool SimpleRender::Visit(Scene::TerrainNode* node)
 	{
 		m_states.Push();
-		
+
 		Math::vec2 relative_pos = (node->GetTerrainObserver()->GetTerrainView()->GetPosition() - STATE.m_camera->GetPosition().XZ());
 
 		STATE.m_local = Math::mat4::CreateTranslate(STATE.m_camera->GetPosition().X(), 0, 
@@ -282,7 +285,7 @@ namespace Render
 			m_terrain_rc->Begin();
 			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());
 			m_tc->Bind();		
-			STATE.m_wireframe = false;
+			STATE.m_wireframe = true;
 			STATE.m_depth_test = true;
 			STATE.m_line_width = 1;
 			//STATE.m_terran_position = Math::vec2(floor(STATE.m_camera->GetPosition().X()), floor(STATE.m_camera->GetPosition().Z()));
@@ -380,8 +383,8 @@ namespace Render
 		s.SetSize(len, h);
 		s.SetText(text);
 		m_states.Push();
-		float width = 2.0f * len / (float)System::Window::Instance()->GetWidth();
-		float height = 2.0f * h / (float)System::Window::Instance()->GetHeight();
+		float width = 2.0f * len / (float)m_driver->GetWindow()->GetWidth();
+		float height = 2.0f * h / (float)m_driver->GetWindow()->GetHeight();
 		//	shift quad
 		STATE.m_local = Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(width, height, 1);
 		STATE.m_projection = Math::mat4::CreateIdentity();
@@ -421,11 +424,11 @@ namespace Render
 		}
 		if (m_root.IsValid())
 		{
-			m_gui_render->Begin(0,0,System::Window::Instance()->GetWidth(), System::Window::Instance()->GetHeight());		
+			m_gui_render->Begin(0, 0, m_driver->GetWindow()->GetWidth(), m_driver->GetWindow()->GetHeight());
 			m_gui_render->RenderWidget(m_root.Get());
 			m_gui_render->End();
 		}
-		GPU::OpenGL::Driver::Instance()->SwapBuffers();
+		m_driver->SwapBuffers();
 		m_rt->Deactivate();
 		return true;
 	}
@@ -448,7 +451,7 @@ namespace Render
 		m_skin_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SKINNING);
 		m_terrain_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TERRAIN);
 		m_text.Reset(new GPU::OpenGL::TextSurface);
-		m_text->SetSize(int(System::Window::Instance()->GetWidth() * 0.5f), int(System::Window::Instance()->GetHeight()*0.5f));
+		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
 		m_gui_render.Reset(new GUIRender);		
 		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 5);	}
 

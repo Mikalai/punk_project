@@ -1,6 +1,6 @@
 #include "logger.h"
 #include "factory.h"
-#include "../utility/utility.h"
+#include "../utility/module.h"
 #include "../math/vec2.h"
 #include "../math/vec3.h"
 #include "../math/vec4.h"

@@ -5,7 +5,7 @@
 #include <windows.h>
 #include "environment_win32.h"
 #include "config_file_win32.h"
-#include "window_win32.h"
+#include "../window/module.h"
 #include "../mega_destroyer.h"
 
 namespace System
@@ -27,12 +27,12 @@ namespace System
 	
 	Environment::Environment()
 	{
-		System::ConfigFile file;
-		file.Open(System::Window::Instance()->GetTitle());
-			file.WriteOptionString(L"data", L"d:\\project\\data\\");	
-		if (!file.IsExistOption(L"data"))
-			
-		file.Close();
+		//System::ConfigFile file;
+		//file.Open(System::Window::Instance()->GetTitle());
+		//	file.WriteOptionString(L"data", L"d:\\project\\data\\");	
+		//if (!file.IsExistOption(L"data"))
+		//	
+		//file.Close();
 	}
 
 	const string Environment::GetCurrentFolder()
