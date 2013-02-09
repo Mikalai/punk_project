@@ -7,10 +7,11 @@
 #include "renderable.h"
 #include "gpu_state.h"
 #include "render_target.h"
+#include "../gpu_config.h"
 
 namespace GPU
 {
-	extern bool PUNK_ENGINE GPU_COMMON_INIT(void*);
+	extern bool PUNK_ENGINE GPU_COMMON_INIT(const Config& data);
 }
 
 #endif	//	_H_PUNK_GPU_COMMON_MODULE

@@ -9,12 +9,13 @@
 #include "textures/module.h"
 #include "render_context/module.h"
 #include "render_targets/module.h"
+#include "../gpu_config.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
-		extern bool PUNK_ENGINE GPU_OPENGL_INIT(void* data);
+		extern bool PUNK_ENGINE GPU_OPENGL_INIT(const Config& data);
 	}
 }
 

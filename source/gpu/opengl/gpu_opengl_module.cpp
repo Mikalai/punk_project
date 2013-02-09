@@ -4,7 +4,7 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		bool PUNK_ENGINE GPU_OPENGL_INIT(void* data)
+		bool PUNK_ENGINE GPU_OPENGL_INIT(const Config& data)
 		{
 			AbstractRenderPolicy::add(RenderPolicySet::RC_BUMP_MAPING, System::Proxy<AbstractRenderPolicy>(new RenderContextBumpMapping()));
 			AbstractRenderPolicy::add(RenderPolicySet::RC_GUI, System::Proxy<AbstractRenderPolicy>(new RenderContextGUI()));

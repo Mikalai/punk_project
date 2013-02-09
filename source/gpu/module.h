@@ -4,10 +4,11 @@
 #include "common/module.h"
 #include "opengl/module.h"
 #include "opencl/module.h"
+#include "gpu_config.h"
 
 namespace GPU
 {
-	extern bool PUNK_ENGINE GPU_INIT(void* data);	
+	extern bool PUNK_ENGINE GPU_INIT(const Config& data);	
 }
 
 #endif	//	_H_GPU_H

@@ -2,7 +2,7 @@
 
 namespace GPU
 {
-	bool GPU_INIT(void* data)
+	bool GPU_INIT(const Config& data)
 	{
 		bool flag = true;
 		flag &= GPU_COMMON_INIT(data);
