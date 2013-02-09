@@ -31,14 +31,9 @@ namespace System
 		void ExcludeFromMonitoring(long message);
 		void IncludeInMinutoring(long message);
 
-		static EventManager* Instance();
-		static void Destroy();
     private:
-		static EventManager* m_instance;
-
         std::queue<Event*> events;
 		std::vector<std::vector<Handler> > eventHandlers;
-
         //Monitor monitor;
     };
 };

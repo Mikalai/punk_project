@@ -6,21 +6,6 @@
 
 namespace System
 {
-	EventManager* EventManager::m_instance;
-
-	EventManager* EventManager::Instance()
-	{
-		if (!m_instance)
-			m_instance = new EventManager;
-		return m_instance;
-	}
-
-	void EventManager::Destroy()
-	{
-		delete m_instance;
-		m_instance = 0;
-	}
-
 	EventManager::EventManager()
 	{
 		m_events_mask[0] = false;
