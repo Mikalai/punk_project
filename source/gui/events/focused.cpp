@@ -1,12 +1,12 @@
 #include "focused.h"
 
-namespace System
+namespace GUI
 {
  //   std::queue<SetFocusedEvent*> SetFocusedEvent::eventPool;
 
     SetFocusedEvent::SetFocusedEvent()
     {
-		eventCode = EVENT_SET_FOCUSED;
+		eventCode = System::EVENT_SET_FOCUSED;
     }
 
   /*  void SetFocusedEvent::Release()
@@ -29,8 +29,8 @@ namespace System
         }
     }
 */
-	string SetFocusedEvent::ToString()
+	System::string SetFocusedEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: FOCUSED", eventCode);
+		return System::string::Format(L"Code: %d; Type: FOCUSED", eventCode);
 	}
 }

@@ -1,17 +1,18 @@
 #ifndef SET_UNFOCUSED_EVENT_H
 #define SET_UNFOCUSED_EVENT_H
 
-#include "event.h"
+#include "../../system/events/event.h"
+#include "../../system/poolable.h"
 
-namespace System
+namespace GUI
 {
-	class PUNK_ENGINE SetUnFocusedEvent : public Event, public Poolable<SetUnFocusedEvent>
+	class PUNK_ENGINE SetUnFocusedEvent : public System::Event, public System::Poolable<SetUnFocusedEvent>
     {        
         SetUnFocusedEvent(const SetUnFocusedEvent&);
 		SetUnFocusedEvent& operator = (const SetUnFocusedEvent&);
     public:
 		SetUnFocusedEvent();
-		virtual string ToString();
+		virtual System::string ToString();
     };
 }
 

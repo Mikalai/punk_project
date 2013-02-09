@@ -1,17 +1,18 @@
 #ifndef KEY_MOUSE_LEAVE_EVENT_H
 #define KEY_MOUSE_LEAVE_EVENT_H
 
-#include "event.h"
+#include "../../system/events/event.h"
+#include "../../system/poolable.h"
 
-namespace System
+namespace GUI
 {
-	class PUNK_ENGINE MouseLeaveEvent : public Event, public Poolable<MouseLeaveEvent>
+	class PUNK_ENGINE MouseLeaveEvent : public System::Event, public System::Poolable<MouseLeaveEvent>
     {        
         MouseLeaveEvent(const MouseLeaveEvent&);
 		MouseLeaveEvent& operator = (const MouseLeaveEvent&);
     public:
 		MouseLeaveEvent();
-		virtual string ToString();
+		virtual System::string ToString();
     };
 }
 
