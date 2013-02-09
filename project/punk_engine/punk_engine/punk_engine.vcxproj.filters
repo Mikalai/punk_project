@@ -145,14 +145,41 @@
     <Filter Include="physics">
       <UniqueIdentifier>{f7d3158e-cba5-4417-95fa-89a186ac3a8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\errors">
+      <UniqueIdentifier>{30c85d4e-b9b2-450d-8377-6e9dcc642e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\errors\win32">
+      <UniqueIdentifier>{84c787ac-2495-437f-8f62-40c9b7ad1e26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="images\error">
+      <UniqueIdentifier>{d3dbb5a8-a7ee-4543-8ca3-75cb21ffd14e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\v1">
+      <UniqueIdentifier>{23b77624-a03a-429f-963a-d6915932381b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\aop">
+      <UniqueIdentifier>{29131f8b-7b2f-4fa6-bbba-d60ab8e58ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics\bullet">
+      <UniqueIdentifier>{2aa45a30-431f-40be-9378-ca9352b2e211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\window">
+      <UniqueIdentifier>{dae30aa1-d462-4712-8832-e1907c77ba31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\window\linux">
+      <UniqueIdentifier>{57c1bbd2-79a7-4e76-a759-65590047d4d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\window\win32">
+      <UniqueIdentifier>{ab215b43-0896-43fd-808a-b3842e88f674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui\events">
+      <UniqueIdentifier>{4457ff91-dab3-4083-9936-58b9b20d7e47}</UniqueIdentifier>
+    </Filter>
     <Filter Include="gpu">
       <UniqueIdentifier>{69a018d3-63dc-4255-a003-74c848026cdd}</UniqueIdentifier>
     </Filter>
     <Filter Include="gpu\opengl">
       <UniqueIdentifier>{f9dc8fef-8586-4800-a941-f363f0e1f32c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gpu\opencl">
-      <UniqueIdentifier>{e0921f85-7cae-4625-a241-20ea7227b0dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="gpu\opengl\driver">
       <UniqueIdentifier>{ad5a5d9f-7c09-4b82-a9c5-38052267a537}</UniqueIdentifier>
@@ -184,29 +211,8 @@
     <Filter Include="gpu\opengl\gl\linux">
       <UniqueIdentifier>{fc223597-7a01-4184-adaf-6e85f50b4db2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\errors">
-      <UniqueIdentifier>{30c85d4e-b9b2-450d-8377-6e9dcc642e64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gpu\error">
-      <UniqueIdentifier>{28cf4e12-2aa7-4088-b8b3-aa4a062a7d19}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gpu\opengl\error">
       <UniqueIdentifier>{4ba35e30-8b20-4b13-a530-461406367f90}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\errors\win32">
-      <UniqueIdentifier>{84c787ac-2495-437f-8f62-40c9b7ad1e26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gpu\common">
-      <UniqueIdentifier>{89e94b89-1e56-4843-85aa-18c4a5ccef85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gpu\opencl\errors">
-      <UniqueIdentifier>{87479b0b-926d-4f4d-ab92-c8f061f474a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="images\error">
-      <UniqueIdentifier>{d3dbb5a8-a7ee-4543-8ca3-75cb21ffd14e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="render\v1">
-      <UniqueIdentifier>{23b77624-a03a-429f-963a-d6915932381b}</UniqueIdentifier>
     </Filter>
     <Filter Include="gpu\opengl\render_context">
       <UniqueIdentifier>{e7969b48-7ece-457b-b48d-d0966ba89a61}</UniqueIdentifier>
@@ -223,26 +229,20 @@
     <Filter Include="gpu\opengl\render_context\shaders\glsl">
       <UniqueIdentifier>{c1a50f34-d94c-4428-835f-03be3d23f39e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\aop">
-      <UniqueIdentifier>{29131f8b-7b2f-4fa6-bbba-d60ab8e58ba0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gpu\opengl\render_target">
       <UniqueIdentifier>{c235a7d5-41e7-4bca-8660-abea5694d77e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="physics\bullet">
-      <UniqueIdentifier>{2aa45a30-431f-40be-9378-ca9352b2e211}</UniqueIdentifier>
+    <Filter Include="gpu\opencl">
+      <UniqueIdentifier>{e0921f85-7cae-4625-a241-20ea7227b0dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\window">
-      <UniqueIdentifier>{dae30aa1-d462-4712-8832-e1907c77ba31}</UniqueIdentifier>
+    <Filter Include="gpu\opencl\errors">
+      <UniqueIdentifier>{87479b0b-926d-4f4d-ab92-c8f061f474a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\window\linux">
-      <UniqueIdentifier>{57c1bbd2-79a7-4e76-a759-65590047d4d6}</UniqueIdentifier>
+    <Filter Include="gpu\error">
+      <UniqueIdentifier>{28cf4e12-2aa7-4088-b8b3-aa4a062a7d19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\window\win32">
-      <UniqueIdentifier>{ab215b43-0896-43fd-808a-b3842e88f674}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="gui\events">
-      <UniqueIdentifier>{4457ff91-dab3-4083-9936-58b9b20d7e47}</UniqueIdentifier>
+    <Filter Include="gpu\common">
+      <UniqueIdentifier>{89e94b89-1e56-4843-85aa-18c4a5ccef85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

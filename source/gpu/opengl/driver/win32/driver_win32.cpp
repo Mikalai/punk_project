@@ -224,7 +224,7 @@ namespace GPU
 				SetWindowLong(*m_desc.window, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
 
 				out_message() << L"Window mode..." << std::endl;
-				m_desc.window->SetPosition(m_desc.config.view_left, m_desc.config.view_height);
+				m_desc.window->SetPosition(m_desc.config.view_left, m_desc.config.view_top);
 				m_desc.window->SetSize(m_desc.config.view_width, m_desc.config.view_height);
 			}
 

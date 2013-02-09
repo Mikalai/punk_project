@@ -10,7 +10,7 @@ namespace GPU
 		int view_width;
 		int view_height;
 		int view_left;
-		int view_right;
+		int view_top;
 		bool fullscreen;
 		int refresh_rate;
 		int bits_per_pixel;
