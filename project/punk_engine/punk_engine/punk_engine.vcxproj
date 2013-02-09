@@ -14,10 +14,13 @@
     <ClInclude Include="..\..\..\source\ai\navi_mesh.h" />
     <ClInclude Include="..\..\..\source\ai\navi_triangle.h" />
     <ClInclude Include="..\..\..\source\application\application.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\application\application_config.h" />
+    <ClInclude Include="..\..\..\source\application\module.h" />
     <ClInclude Include="..\..\..\source\audio\audio_buffer.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_config.h" />
     <ClInclude Include="..\..\..\source\audio\player.h" />
     <ClInclude Include="..\..\..\source\audio\punk_audio.h" />
     <ClInclude Include="..\..\..\source\audio\resource.h" />
@@ -30,6 +33,7 @@
     <ClInclude Include="..\..\..\source\gpu\common\vertex_component.h" />
     <ClInclude Include="..\..\..\source\gpu\error\gpu_exceptions.h" />
     <ClInclude Include="..\..\..\source\gpu\error\module.h" />
+    <ClInclude Include="..\..\..\source\gpu\gpu_config.h" />
     <ClInclude Include="..\..\..\source\gpu\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opencl\buffer.h" />
     <ClInclude Include="..\..\..\source\gpu\opencl\buffer_impl.h" />
@@ -124,6 +128,13 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_context.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\text_surface.h" />
+    <ClInclude Include="..\..\..\source\gui\events\focused.h" />
+    <ClInclude Include="..\..\..\source\gui\events\interface.h" />
+    <ClInclude Include="..\..\..\source\gui\events\module.h" />
+    <ClInclude Include="..\..\..\source\gui\events\mouse_enter.h" />
+    <ClInclude Include="..\..\..\source\gui\events\mouse_leave.h" />
+    <ClInclude Include="..\..\..\source\gui\events\unfocused.h" />
+    <ClInclude Include="..\..\..\source\gui\gui_adapter.h" />
     <ClInclude Include="..\..\..\source\gui\gui_render.h" />
     <ClInclude Include="..\..\..\source\gui\interface.h" />
     <ClInclude Include="..\..\..\source\gui\manager.h">
@@ -201,35 +212,36 @@
     <ClInclude Include="..\..\..\source\math\vec3.h" />
     <ClInclude Include="..\..\..\source\math\vec4.h" />
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_physical_simulator.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_rigid_body.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_shape_body.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_terrain.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\physics\module.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\physics\physical_simulator.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\physics_config.h" />
     <ClInclude Include="..\..\..\source\physics\rigid_body.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\physics\shape_body.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\..\source\punk_engine.h" />
@@ -252,6 +264,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\render\render_config.h" />
     <ClInclude Include="..\..\..\source\render\solid_object_render.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -323,16 +336,13 @@
     <ClInclude Include="..\..\..\source\system\events\event.h" />
     <ClInclude Include="..\..\..\source\system\events\events.h" />
     <ClInclude Include="..\..\..\source\system\events\event_type.h" />
-    <ClInclude Include="..\..\..\source\system\events\focused.h" />
     <ClInclude Include="..\..\..\source\system\events\idle_event.h" />
     <ClInclude Include="..\..\..\source\system\events\key_char_event.h" />
     <ClInclude Include="..\..\..\source\system\events\key_down_event.h" />
     <ClInclude Include="..\..\..\source\system\events\key_up_event.h" />
     <ClInclude Include="..\..\..\source\system\events\key_wchar_event.h" />
     <ClInclude Include="..\..\..\source\system\events\model_time_step_event.h" />
-    <ClInclude Include="..\..\..\source\system\events\mouse_enter.h" />
     <ClInclude Include="..\..\..\source\system\events\mouse_hoover_event.h" />
-    <ClInclude Include="..\..\..\source\system\events\mouse_leave.h" />
     <ClInclude Include="..\..\..\source\system\events\mouse_left_button_down.h" />
     <ClInclude Include="..\..\..\source\system\events\mouse_left_button_up.h" />
     <ClInclude Include="..\..\..\source\system\events\mouse_middle_button_down.h" />
@@ -341,7 +351,6 @@
     <ClInclude Include="..\..\..\source\system\events\mouse_right_button_down.h" />
     <ClInclude Include="..\..\..\source\system\events\mouse_right_button_up.h" />
     <ClInclude Include="..\..\..\source\system\events\mouse_wheel_event.h" />
-    <ClInclude Include="..\..\..\source\system\events\unfocused.h" />
     <ClInclude Include="..\..\..\source\system\events\window_resize_event.h" />
     <ClInclude Include="..\..\..\source\system\event_manager.h" />
     <ClInclude Include="..\..\..\source\system\factory.h" />
@@ -355,7 +364,6 @@
     <ClInclude Include="..\..\..\source\system\linux\text_file_linux.h" />
     <ClInclude Include="..\..\..\source\system\linux\timer_linux.h" />
     <ClInclude Include="..\..\..\source\system\linux\types_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\window_linux.h" />
     <ClInclude Include="..\..\..\source\system\logger.h" />
     <ClInclude Include="..\..\..\source\system\mega_destroyer.h" />
     <ClInclude Include="..\..\..\source\system\module.h" />
@@ -416,8 +424,12 @@
     <ClInclude Include="..\..\..\source\system\win32\static_string.h" />
     <ClInclude Include="..\..\..\source\system\win32\timer_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\types_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\window_win32.h" />
     <ClInclude Include="..\..\..\source\system\window.h" />
+    <ClInclude Include="..\..\..\source\system\window\linux\window_linux.h" />
+    <ClInclude Include="..\..\..\source\system\window\module.h" />
+    <ClInclude Include="..\..\..\source\system\window\win32\window_win32.h" />
+    <ClInclude Include="..\..\..\source\system\window\window.h" />
+    <ClInclude Include="..\..\..\source\system\window\window_adapter.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\action_desc.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\animation_desc.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\anim_track_desc.h" />
@@ -443,7 +455,7 @@
     <ClInclude Include="..\..\..\source\utility\parser\game_parser.h" />
     <ClInclude Include="..\..\..\source\utility\parser\keywords.h" />
     <ClInclude Include="..\..\..\source\utility\parser\parser.h" />
-    <ClInclude Include="..\..\..\source\utility\utility.h" />
+    <ClInclude Include="..\..\..\source\utility\module.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\action.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\module.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\animation.h" />
@@ -512,10 +524,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\application\application.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp" />
+    <ClCompile Include="..\..\..\source\audio\audio_config.cpp" />
     <ClCompile Include="..\..\..\source\audio\player.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\abstract_render_context_policy.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\gpu_common_module.cpp" />
@@ -523,6 +536,7 @@
     <ClCompile Include="..\..\..\source\gpu\common\gpu_state.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\render_target.cpp" />
     <ClCompile Include="..\..\..\source\gpu\error\gpu_excpetions.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\gpu_config.cpp" />
     <ClCompile Include="..\..\..\source\gpu\gpu_module.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opencl\buffer.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opencl\command_queue.cpp" />
@@ -589,6 +603,10 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_context.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\text_surface.cpp" />
+    <ClCompile Include="..\..\..\source\gui\events\focused.cpp" />
+    <ClCompile Include="..\..\..\source\gui\events\mouse_enter.cpp" />
+    <ClCompile Include="..\..\..\source\gui\events\mouse_leave.cpp" />
+    <ClCompile Include="..\..\..\source\gui\events\unfocused.cpp" />
     <ClCompile Include="..\..\..\source\gui\manager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -635,17 +653,18 @@
     <ClCompile Include="..\..\..\source\math\triangle2d.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle3d.cpp" />
     <ClCompile Include="..\..\..\source\physics\bullet\bullet_physical_simulator.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\source\physics\bullet\bullet_rigid_body.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\source\physics\physical_simulator.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\physics_config.cpp" />
     <ClCompile Include="..\..\..\source\raytracer\render.cpp" />
     <ClCompile Include="..\..\..\source\raytracer\scene.cpp" />
     <ClCompile Include="..\..\..\source\raytracer\scene_impl2.h" />
@@ -657,6 +676,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\render\render_config.cpp" />
     <ClCompile Include="..\..\..\source\render\solid_object_render.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -695,16 +715,13 @@
     <ClCompile Include="..\..\..\source\system\errors\win32\error_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\errors\win32\stack_trace_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\events\events.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\focused.cpp" />
     <ClCompile Include="..\..\..\source\system\events\idle_event.cpp" />
     <ClCompile Include="..\..\..\source\system\events\key_char_event.cpp" />
     <ClCompile Include="..\..\..\source\system\events\key_down_event.cpp" />
     <ClCompile Include="..\..\..\source\system\events\key_up_event.cpp" />
     <ClCompile Include="..\..\..\source\system\events\key_wchar_event.cpp" />
     <ClCompile Include="..\..\..\source\system\events\model_time_step_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_enter.cpp" />
     <ClCompile Include="..\..\..\source\system\events\mouse_hoover_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\mouse_leave.cpp" />
     <ClCompile Include="..\..\..\source\system\events\mouse_left_button_down.cpp" />
     <ClCompile Include="..\..\..\source\system\events\mouse_left_button_up.cpp" />
     <ClCompile Include="..\..\..\source\system\events\mouse_middle_button_down.cpp" />
@@ -713,7 +730,6 @@
     <ClCompile Include="..\..\..\source\system\events\mouse_right_button_down.cpp" />
     <ClCompile Include="..\..\..\source\system\events\mouse_right_button_up.cpp" />
     <ClCompile Include="..\..\..\source\system\events\mouse_wheel_event.cpp" />
-    <ClCompile Include="..\..\..\source\system\events\unfocused.cpp" />
     <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp" />
     <ClCompile Include="..\..\..\source\system\event_manager.cpp" />
     <ClCompile Include="..\..\..\source\system\factory.cpp" />
@@ -723,7 +739,6 @@
     <ClCompile Include="..\..\..\source\system\linux\folder_linux.cpp" />
     <ClCompile Include="..\..\..\source\system\linux\text_file_linux.cpp" />
     <ClCompile Include="..\..\..\source\system\linux\timer_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\window_linux.cpp" />
     <ClCompile Include="..\..\..\source\system\logger.cpp" />
     <ClCompile Include="..\..\..\source\system\mega_destroyer.cpp" />
     <ClCompile Include="..\..\..\source\system\node.cpp" />
@@ -750,7 +765,8 @@
     <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\window_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\window\linux\window_linux.cpp" />
+    <ClCompile Include="..\..\..\source\system\window\win32\window_win32.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\action_desc.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\animation_desc.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\armature_desc.cpp" />
@@ -924,6 +940,7 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
       <OpenMPSupport>true</OpenMPSupport>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -931,7 +948,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\lib\VS2012\$(ConfigurationName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libnoise.lib;jpeg.lib;OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;EFX-Util.lib;freetype246.lib;libpng.lib;OpenAL32.lib;zlib.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;ConvexDecomposition.lib;HACD.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libnoise.lib;jpeg.lib;OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;EFX-Util.lib;freetype246.lib;libpng.lib;zlib.lib;BulletCollision_vs2010.lib;BulletDynamics_vs2010.lib;BulletSoftBody_vs2010.lib;HACD_vs2010.lib;LinearMath_vs2010.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/NODEFAULTLIB:libcmt.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

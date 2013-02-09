@@ -158,6 +158,7 @@ namespace Phyiscs
 
 			//return body;
 		}
+		return 0;
 	}
 
 	void BulletPhysicalSimulator::Init()

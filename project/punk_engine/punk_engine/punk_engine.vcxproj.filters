@@ -232,6 +232,18 @@
     <Filter Include="physics\bullet">
       <UniqueIdentifier>{2aa45a30-431f-40be-9378-ca9352b2e211}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\window">
+      <UniqueIdentifier>{dae30aa1-d462-4712-8832-e1907c77ba31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\window\linux">
+      <UniqueIdentifier>{57c1bbd2-79a7-4e76-a759-65590047d4d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system\window\win32">
+      <UniqueIdentifier>{ab215b43-0896-43fd-808a-b3842e88f674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui\events">
+      <UniqueIdentifier>{4457ff91-dab3-4083-9936-58b9b20d7e47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -241,9 +253,6 @@
       <Filter>system\events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\events\events.h">
-      <Filter>system\events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\events\focused.h">
       <Filter>system\events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\events\idle_event.h">
@@ -264,13 +273,7 @@
     <ClInclude Include="..\..\..\source\system\events\model_time_step_event.h">
       <Filter>system\events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\events\mouse_enter.h">
-      <Filter>system\events</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\events\mouse_hoover_event.h">
-      <Filter>system\events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\events\mouse_leave.h">
       <Filter>system\events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\events\mouse_left_button_down.h">
@@ -297,9 +300,6 @@
     <ClInclude Include="..\..\..\source\system\events\mouse_wheel_event.h">
       <Filter>system\events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\events\unfocused.h">
-      <Filter>system\events</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\events\window_resize_event.h">
       <Filter>system\events</Filter>
     </ClInclude>
@@ -319,9 +319,6 @@
       <Filter>system\linux</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\linux\types_linux.h">
-      <Filter>system\linux</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\linux\window_linux.h">
       <Filter>system\linux</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\types\list.h">
@@ -379,9 +376,6 @@
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\types_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\window_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\abstract_manager.h">
@@ -756,9 +750,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\utility\model\vertex_index.h">
       <Filter>utility\model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\utility.h">
-      <Filter>utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\utility\fonts\font_builder.h">
       <Filter>utility\fonts</Filter>
@@ -1580,12 +1571,66 @@
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_terrain.h">
       <Filter>physics\bullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\system\window\module.h">
+      <Filter>system\window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\window\window.h">
+      <Filter>system\window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\window\window_adapter.h">
+      <Filter>system\window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\window\win32\window_win32.h">
+      <Filter>system\window\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\window\linux\window_linux.h">
+      <Filter>system\window\linux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\application\module.h">
+      <Filter>application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\application\application_config.h">
+      <Filter>application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\gpu_config.h">
+      <Filter>gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\render\render_config.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_config.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\physics_config.h">
+      <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\utility\module.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\gui_adapter.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\events\focused.h">
+      <Filter>gui\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\events\unfocused.h">
+      <Filter>gui\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\events\module.h">
+      <Filter>gui\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\events\interface.h">
+      <Filter>gui\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\events\mouse_leave.h">
+      <Filter>gui\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gui\events\mouse_enter.h">
+      <Filter>gui\events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
-      <Filter>system\events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\events\focused.cpp">
       <Filter>system\events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\events\idle_event.cpp">
@@ -1606,13 +1651,7 @@
     <ClCompile Include="..\..\..\source\system\events\model_time_step_event.cpp">
       <Filter>system\events</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\events\mouse_enter.cpp">
-      <Filter>system\events</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\events\mouse_hoover_event.cpp">
-      <Filter>system\events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\events\mouse_leave.cpp">
       <Filter>system\events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\events\mouse_left_button_down.cpp">
@@ -1639,9 +1678,6 @@
     <ClCompile Include="..\..\..\source\system\events\mouse_wheel_event.cpp">
       <Filter>system\events</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\events\unfocused.cpp">
-      <Filter>system\events</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp">
       <Filter>system\events</Filter>
     </ClCompile>
@@ -1655,9 +1691,6 @@
       <Filter>system\linux</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\linux\timer_linux.cpp">
-      <Filter>system\linux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\linux\window_linux.cpp">
       <Filter>system\linux</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\types\list.cpp">
@@ -1700,9 +1733,6 @@
       <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\window_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\clock.cpp">
@@ -2380,6 +2410,36 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\physics\bullet\bullet_rigid_body.cpp">
       <Filter>physics\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\window\win32\window_win32.cpp">
+      <Filter>system\window\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\window\linux\window_linux.cpp">
+      <Filter>system\window\linux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\gpu_config.cpp">
+      <Filter>gpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\render\render_config.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_config.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\physics_config.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\events\focused.cpp">
+      <Filter>gui\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\events\unfocused.cpp">
+      <Filter>gui\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\events\mouse_leave.cpp">
+      <Filter>gui\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gui\events\mouse_enter.cpp">
+      <Filter>gui\events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
