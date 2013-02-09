@@ -1,94 +1,156 @@
 #include "application.h"
-#include "../window.h"
-#include "../singletone.h"
-#include "../keyboard.h"
-#include "../mouse.h"
-#include "../event_manager.h"
-#include "../logger.h"
-#include "../console.h"
-#include "../clock.h"
-#include "../../utility/utility.h"
+#include "../system/module.h"
+#include "../gpu/module.h"
+#include "../utility/module.h"
+#include "../gui/events/module.h"
 
-namespace System
+namespace Punk
 {
-	SingletoneImplementation(Application);
 
-	Application::Application() : m_video_driver(0), m_time_scale_nominator(1), m_time_scale_denomiator(1)
+	Application::Application() : m_time_scale_nominator(1), m_time_scale_denomiator(1)
 	{
+	}
+
+	void Application::Init(const Config& data)
+	{	
+		m_event_manager.Reset(new System::EventManager());
+		m_window.Reset(new System::Window(this));
+		m_video_driver.Reset(new GPU::OpenGL::Driver);
+		GPU::OpenGL::DriverDesc desc;
+		desc.config = data.gpu_config;
+		desc.event_manager = m_event_manager;
+		desc.window = m_window;
+		m_video_driver->Start(desc);
+
+		GPU::GPU_INIT(data.gpu_config);
+		Utility::FontBuilder::Instance()->Init();		
+	}
+
+	void Application::OnIdleEvent(System::IdleEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+		m_event_manager->Process();	
+	}
+
+	void Application::OnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnMouseHooverEvent(System::MouseHooverEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnMouseMoveEvent(System::MouseMoveEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnMouseWheelEvent(System::MouseWheelEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnCharEvent(System::KeyCharEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnWideCharEvent(System::KeyWCharEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+	
+	void Application::OnKeyDownEvent(System::KeyDownEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+
+	void Application::OnKeyUpEvent(System::KeyUpEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+
+	void Application::OnResizeEvent(System::WindowResizeEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+
+	void Application::OnCreateEvent()
+	{
+	}
+
+	void Application::OnDestroyEvent()
+	{
+	}
+
+	void Application::OnSetFocusedEvent(GUI::SetFocusedEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+
+	void Application::OnSetUnFocusedEvent(GUI::SetUnFocusedEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+
+	void Application::OnMouseEnterEvent(GUI::MouseEnterEvent* event)
+	{
+		m_event_manager->FixEvent(event);
+	}
+
+	void Application::OnMouseLeaveEvent(GUI::MouseLeaveEvent* event)
+	{
+		m_event_manager->FixEvent(event);
 	}
 
 	int Application::Run()
 	{
-		return Window::Instance()->Loop();
+		return m_window->Loop();
 	}
 
-	Window* Application::GetWindow()
+	System::Proxy<System::Window> Application::GetWindow()
 	{
-		return Window::Instance();
+		return m_window;
 	}
 
-	EventManager* Application::GetEventManager()
+	System::Proxy<System::EventManager> Application::GetEventManager()
 	{
-		return EventManager::Instance();
+		return m_event_manager;
 	}
 
-	OpenGL::Driver* Application::GetDriver()
+	System::Proxy<GPU::OpenGL::Driver> Application::GetDriver()
 	{
-		if (m_video_driver)
-			return m_video_driver;
-		return m_video_driver = new OpenGL::Driver();
+		return m_video_driver;
 	}
 
 	Application::~Application()
-	{
-		Keyboard::Release();
-		Mouse::Release();
-		EventManager::Release();
-		Clock::Release();		
-		Window::Release();
-		Logger::Release();
-		Console::Release();
-	}
-
-	void Application::Init()
-	{				
-//		m_user_interface.SetSceneGraph(&m_scene_graph);
-//		m_render.SetVideoDriver(GetDriver());
-		Utility::FontBuilder::Instance()->Init();
-		GetEventManager()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(this, &Application::Step));
-		OnInit();
-	}
-	
-	void Application::Render()
-	{
-		m_video_driver->ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);		
-//		Render::SceneRenderVisitor visitor(m_render);
-//		m_scene_graph.Visit<Render::SceneRenderVisitor, Render::SceneRenderVisitor::Data>(visitor);
-		m_video_driver->SwapBuffers();
-	}
-
-	//GUI::UserInterface* Application::GetUserInterface()
-	//{
-	//	return &m_user_interface;
-	//}
-
-	void Application::Step(System::Event* event)
-	{		
-		IdleEvent* e = static_cast<IdleEvent*>(event);
-		ModelTimeStepEvent* model_time = ModelTimeStepEvent::Raise();
-		model_time->elapsed_time_ms = e->elapsed_time_s*1000.0*m_time_scale_nominator/m_time_scale_denomiator;
-		GetEventManager()->FixEvent(model_time);
-		Render();
-		OnStep(e->elapsed_time_s);
-	}
-
-	void Application::OnStep(__int64 dt)
-	{
-		System::Clock::Instance()->Advance(dt);
-	//	System::Console::Instance()->Print(System::Clock::Instance()->ToString());
-	}
-
-	void Application::OnInit()
 	{
 	}
 
