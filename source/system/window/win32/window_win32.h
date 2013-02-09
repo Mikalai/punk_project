@@ -12,23 +12,17 @@ File: Window.h
 #endif
 #include <windows.h>
 #include <map>
-#include "types_win32.h"
-#include "../../config.h"
-#include "../../string/string.h"
-#include "../singletone.h"
+#include "../window_adapter.h"
+#include "../../../config.h"
+#include "../../../string/string.h"
 
 namespace System
 {
-	LRESULT CALLBACK WindowCallBack(HWND, UINT, WPARAM, LPARAM);
-
 	class PUNK_ENGINE Window
 	{	
 	public:
-		Window();
+		Window(WindowAdapter* adapter, const WindowDesc& desc = WindowDesc());
 		~Window();
-//		void SubscribeHandler(unsigned message, Handler handler);
-//		void UnsubscribeHandler(unsigned message, Handler handler);
-//		void SetAsGlobalDesktop();
 		int GetDesktopWidth() const;
 		int GetDesktopHeight() const;
 		int GetDesktopBitsPerPixel() const;
@@ -52,13 +46,8 @@ namespace System
 		void DrawLine(int x1, int y1, int x2, int y2);
 		void SwapBuffer();
 
-		static Window* Instance();
-		static void Destroy();
 	private:
-		static Window* m_instance;
-		//std::multimap<unsigned, Handler> m_handlers;
 		HWND m_windowHandle;
-		friend LRESULT CALLBACK WindowCallBack(HWND, UINT, WPARAM, LPARAM);	
 	};
 }
 
