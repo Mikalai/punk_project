@@ -43,7 +43,10 @@ namespace System
 	{ 
 		if (!m_init)
 			throw PunkNotInitializedException(L"Aspects were not initialized");
-		return m_items.find(key)->second; 
+		typename Collection::iterator it = m_items.find(key);
+		if (it != m_items.end())
+			return it->second; 
+		throw PunkInvalidArgumentException(L"Can't find object with key" + key);
 	}		
 	
 	template<class T, typename Key>	
