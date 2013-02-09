@@ -1,4 +1,6 @@
 #include "../system/event_manager.h"
+#include "../system/window/module.h"
+#include "events/module.h"
 #include "manager.h"
 #include "gui_render.h"
 //#include "console.h"
@@ -11,7 +13,7 @@ namespace GUI
 	Manager* Manager::Instance()
 	{
 		if (!m_instance.get())
-			m_instance.reset(new Manager);
+			throw std::exception("GUI manager was not created");
 		return m_instance.get();
 	}
 
@@ -20,22 +22,31 @@ namespace GUI
 		m_instance.reset(nullptr);
 	}
 
-	Manager::Manager()
+	void Manager::Create(const ManagerDesc& desc)
 	{
+		m_instance.reset(new Manager(desc));
+	}
+
+	Manager::Manager(const ManagerDesc& desc)
+	{
+		m_window = desc.window;
+		m_event_manager = desc.event_manager;
+		m_adapter = desc.adapter;
+
 		m_focusWidget = 0;
 		//m_render = new DefaultGUIRender();
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Manager::OnMouseMove));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(this, &Manager::OnMouseLeftDown));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_UP, System::EventHandler(this, &Manager::OnMouseLeftUp));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(this, &Manager::OnIdle));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_WHEEL, System::EventHandler(this, &Manager::OnMouseWheel));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_HOOVER, System::EventHandler(this, &Manager::OnMouseHoover));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_CHAR, System::EventHandler(this, &Manager::OnKeyChar));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_WINDOW_RESIZE, System::EventHandler(this, &Manager::OnResize));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Manager::OnKeyDownHandler));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_KEY_UP, System::EventHandler(this, &Manager::OnKeyUpHandler));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_ENTER, System::EventHandler(this, &Manager::OnMouseEnter));
-		System::EventManager::Instance()->SubscribeHandler(System::EVENT_MOUSE_LEAVE, System::EventHandler(this, &Manager::OnMouseLeave));
+		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Manager::OnMouseMove));
+		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(this, &Manager::OnMouseLeftDown));
+		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_UP, System::EventHandler(this, &Manager::OnMouseLeftUp));
+		m_event_manager->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(this, &Manager::OnIdle));
+		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_WHEEL, System::EventHandler(this, &Manager::OnMouseWheel));
+		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_HOOVER, System::EventHandler(this, &Manager::OnMouseHoover));
+		m_event_manager->SubscribeHandler(System::EVENT_KEY_CHAR, System::EventHandler(this, &Manager::OnKeyChar));
+		m_event_manager->SubscribeHandler(System::EVENT_WINDOW_RESIZE, System::EventHandler(this, &Manager::OnResize));
+		m_event_manager->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Manager::OnKeyDownHandler));
+		m_event_manager->SubscribeHandler(System::EVENT_KEY_UP, System::EventHandler(this, &Manager::OnKeyUpHandler));
+		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_ENTER, System::EventHandler(this, &Manager::OnMouseEnter));
+		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_LEAVE, System::EventHandler(this, &Manager::OnMouseLeave));
 	}
 
 	Manager::~Manager()
@@ -45,7 +56,7 @@ namespace GUI
 
 	void Manager::Render()
 	{
-		m_render->Begin(0, 0, System::Window::Instance()->GetWidth(), System::Window::Instance()->GetHeight());
+		m_render->Begin(0, 0, m_window->GetWidth(), m_window->GetHeight());
 		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); ++it)
 		{
 			(*it)->Render(m_render);
@@ -84,14 +95,14 @@ namespace GUI
 
 	void Manager::OnMouseEnter(System::Event* event)
 	{
-		System::MouseEnterEvent* e = static_cast<System::MouseEnterEvent*>(event);		
+		MouseEnterEvent* e = static_cast<MouseEnterEvent*>(event);		
 		if (e->anyData)
 			static_cast<Widget*>(event->anyData)->OnMouseEnter(e);
 	}
 
 	void Manager::OnMouseLeave(System::Event* event)
 	{
-		System::MouseLeaveEvent* e = static_cast<System::MouseLeaveEvent*>(event);		
+		MouseLeaveEvent* e = static_cast<MouseLeaveEvent*>(event);		
 		if (e->anyData)
 			static_cast<Widget*>(event->anyData)->OnMouseLeave(e);
 	}
@@ -103,15 +114,15 @@ namespace GUI
 			out_message() << newFocuseWidget->GetText() << std::endl;
 			if (m_focusWidget)
 			{
-				System::SetUnFocusedEvent* unfocuseEvent = new System::SetUnFocusedEvent;
+				GUI::SetUnFocusedEvent* unfocuseEvent = new GUI::SetUnFocusedEvent;
 				unfocuseEvent->anyData = m_focusWidget;
-				System::EventManager::Instance()->FixEvent(unfocuseEvent);
-				m_focusWidget->SetFocuse(false);					
+				m_adapter->OnSetUnFocusedEvent(unfocuseEvent);
+				m_focusWidget->SetFocuse(false);			
 			}
 
-			System::SetFocusedEvent* focuseEvent = new System::SetFocusedEvent;
+			GUI::SetFocusedEvent* focuseEvent = new GUI::SetFocusedEvent;
 			focuseEvent->anyData = newFocuseWidget;
-			System::EventManager::Instance()->FixEvent(focuseEvent);
+			m_adapter->OnSetFocusedEvent(focuseEvent);
 
 			newFocuseWidget->SetFocuse(true);
 			m_focusWidget = newFocuseWidget;
@@ -139,15 +150,15 @@ namespace GUI
 			out_message() << newFocuseWidget->GetText() << std::endl;
 			if (m_focusWidget)
 			{
-				System::SetUnFocusedEvent* unfocuseEvent = new System::SetUnFocusedEvent;
+				GUI::SetUnFocusedEvent* unfocuseEvent = new GUI::SetUnFocusedEvent;
 				unfocuseEvent->anyData = m_focusWidget;
-				System::EventManager::Instance()->FixEvent(unfocuseEvent);
+				m_adapter->OnSetUnFocusedEvent(unfocuseEvent);
 				m_focusWidget->SetFocuse(false);					
 			}
 
-			System::SetFocusedEvent* focuseEvent = new System::SetFocusedEvent;
+			SetFocusedEvent* focuseEvent = new SetFocusedEvent;
 			focuseEvent->anyData = newFocuseWidget;
-			System::EventManager::Instance()->FixEvent(focuseEvent);
+			m_adapter->OnSetFocusedEvent(focuseEvent);
 
 			newFocuseWidget->SetFocuse(true);
 			m_focusWidget = newFocuseWidget;
@@ -184,16 +195,16 @@ namespace GUI
 
 			if (!wasIn && isIn)
 			{
-				System::MouseEnterEvent* new_event = new System::MouseEnterEvent;
+				MouseEnterEvent* new_event = new MouseEnterEvent;
 				new_event->anyData = root.Get();
-				System::EventManager::Instance()->FixEvent(new_event);
+				m_adapter->OnMouseEnterEvent(new_event);
 			}
 
 			if (wasIn && !isIn)
 			{
-				System::MouseLeaveEvent* new_event = new System::MouseLeaveEvent;
+				MouseLeaveEvent* new_event = new MouseLeaveEvent;
 				new_event->anyData = root.Get();
-				System::EventManager::Instance()->FixEvent(new_event);
+				m_adapter->OnMouseLeaveEvent(new_event);
 			}
 
 			if (isIn)

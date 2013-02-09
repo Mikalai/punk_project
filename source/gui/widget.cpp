@@ -4,8 +4,10 @@
 #include "../math/math.h"
 #include "../utility/fonts/font_builder.h"
 #include "../system/keyboard.h"
+#include "../system/window/module.h"
 #include "../system/event_manager.h"
 #include "gui_render.h"
+#include "events/module.h"
 
 namespace GUI
 {
@@ -40,7 +42,7 @@ namespace GUI
 		, m_parent(parent)
 	{
 		m_text_texture.Reset(new GPU::OpenGL::TextSurface);
-		m_text_texture->SetSize(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()));
+		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
 		m_text_texture->SetVerticalAlignment(GPU::OpenGL::TextSurface::VERTICAL_CENTER);
 		m_text_texture->SetHorizontalAlignment(GPU::OpenGL::TextSurface::HORIZONTAL_CENTER);
 		m_text_texture->SetText(m_text);
@@ -54,7 +56,7 @@ namespace GUI
 	bool Widget::OnResize(System::WindowResizeEvent* e)
 	{
 		bool result = false;
-		m_text_texture->SetSize(int(GetWidth()*System::Window::Instance()->GetWidth()), int(GetHeight()*System::Window::Instance()->GetHeight()));
+		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
 		m_text_texture->SetText(m_text);
 		for each (System::Proxy<Widget> child in *this)
 			if (child.IsValid())
@@ -81,24 +83,24 @@ namespace GUI
 			bool isIn = IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y)));
 			if (!wasIn && isIn)
 			{
-				System::MouseEnterEvent* new_event = new System::MouseEnterEvent;
+				MouseEnterEvent* new_event = new MouseEnterEvent;
 				new_event->anyData = this;
-				System::EventManager::Instance()->FixEvent(new_event);
+				Manager::Instance()->GetAdapter()->OnMouseEnterEvent(new_event);
 				result = true;
 			}
 
 			if (wasIn && !isIn)
 			{
-				System::MouseLeaveEvent* new_event = new System::MouseLeaveEvent;
+				MouseLeaveEvent* new_event = new MouseLeaveEvent;
 				new_event->anyData = this;
-				System::EventManager::Instance()->FixEvent(new_event);
+				Manager::Instance()->GetAdapter()->OnMouseLeaveEvent(new_event);
 				result = true;
 			}			
 
 			if (!child_processed && m_leftButtonDown && m_moveable)
 			{
-				m_x += (e->x - e->x_prev) / (float)System::Window::Instance()->GetWidth();
-				m_y += (e->y - e->y_prev) / (float)System::Window::Instance()->GetHeight();
+				m_x += (e->x - e->x_prev) / (float)Manager::Instance()->GetWindow()->GetWidth();
+				m_y += (e->y - e->y_prev) / (float)Manager::Instance()->GetWindow()->GetHeight();
 				result = true;
 			}			
 
@@ -111,7 +113,7 @@ namespace GUI
 		return result;
 	}
 
-	bool Widget::OnMouseEnter(System::MouseEnterEvent* e)
+	bool Widget::OnMouseEnter(MouseEnterEvent* e)
 	{
 		bool result = false;
 		if (IsVisible() && IsEnabled())
@@ -123,7 +125,7 @@ namespace GUI
 		return result;
 	}
 
-	bool Widget::OnMouseLeave(System::MouseLeaveEvent* e)
+	bool Widget::OnMouseLeave(MouseLeaveEvent* e)
 	{
 		bool result = false;
 		if (IsVisible() && IsEnabled())
@@ -378,12 +380,12 @@ namespace GUI
 
 	float Widget::GetScreenWidth() const
 	{
-		return GetWidth() * (float)System::Window::Instance()->GetWidth();
+		return GetWidth() * (float)Manager::Instance()->GetWindow()->GetWidth();
 	}
 
 	float Widget::GetScreenHeight() const
 	{
-		return GetHeight() * (float)System::Window::Instance()->GetHeight();
+		return GetHeight() * (float)Manager::Instance()->GetWindow()->GetHeight();
 	}
 
 	float Widget::GetX() const
@@ -402,12 +404,12 @@ namespace GUI
 
 	float Widget::GetScreenX() const
 	{
-		return GetX() * (float)System::Window::Instance()->GetWidth();
+		return GetX() * (float)Manager::Instance()->GetWindow()->GetWidth();
 	}
 
 	float Widget::GetScreenY() const
 	{
-		return GetY() * (float)System::Window::Instance()->GetHeight();
+		return GetY() * (float)Manager::Instance()->GetWindow()->GetHeight();
 	}
 
 	System::Proxy<GPU::OpenGL::Texture2D> Widget::GetBackgroundTexture() const
@@ -616,8 +618,8 @@ namespace GUI
 	const Math::Vector2<float> Widget::WindowToViewport(float x, float y)
 	{
 		Math::Vector2<float> res;
-		res[0] = x / (float)System::Window::Instance()->GetWidth();
-		res[1] = y / (float)System::Window::Instance()->GetHeight();
+		res[0] = x / (float)Manager::Instance()->GetWindow()->GetWidth();
+		res[1] = y / (float)Manager::Instance()->GetWindow()->GetHeight();
 		return res;
 	}
 

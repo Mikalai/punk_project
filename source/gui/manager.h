@@ -7,16 +7,29 @@
 #ifndef _H_PUNK_GUI_MANAGER
 #define _H_PUNK_GUI_MANAGER
 
+#include <vector>
 #include "../config.h"
 #include "widget.h"
-#include "../system/events/events.h"
-#include "../system/window.h"
+#include "../system/smart_pointers/module.h"
+#include "gui_adapter.h"
 
-#include <vector>
+namespace System
+{
+	class Window;
+	class EventManager;
+	class Event;
+}
 
 namespace GUI
 {
 	class IGUIRender;
+
+	struct ManagerDesc
+	{
+		System::Proxy<System::Window> window;
+		System::Proxy<System::EventManager> event_manager;
+		Adapter* adapter;
+	};
 
 	class PUNK_ENGINE Manager
 	{
@@ -42,17 +55,24 @@ namespace GUI
 		void OnMouseEnter(System::Event* event);
 		void OnMouseLeave(System::Event* event);
 
+		static void Create(const ManagerDesc& desc);
 		static Manager* Instance();
 		static void Destroy();
 		~Manager();
 
+		Adapter* GetAdapter() { return m_adapter; }
+		System::Proxy<System::Window> GetWindow() { return m_window; }
+	
 	private:
 		static std::auto_ptr<Manager> m_instance;
 		std::vector<System::Proxy<Widget>> rootWidgets;
 		Widget* m_focusWidget;
 		IGUIRender* m_render;
+		System::Proxy<System::Window> m_window;
+		System::Proxy<System::EventManager> m_event_manager;
+		Adapter* m_adapter;
 
-		Manager();		
+		Manager(const ManagerDesc& desc);		
 	};
 }
 

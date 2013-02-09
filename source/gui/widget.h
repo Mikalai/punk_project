@@ -10,6 +10,7 @@
 //#include "../opengl/driver.h"
 #include "../math/math.h"
 #include "../gpu/opengl/textures/text_surface.h"
+#include "events/interface.h"
 
 namespace GUI
 {
@@ -195,8 +196,8 @@ namespace GUI
 		virtual bool OnResize(System::WindowResizeEvent* event);
 		virtual bool OnMouseMove(System::MouseMoveEvent* event);
 		virtual bool OnIdle(System::IdleEvent* event);
-		virtual bool OnMouseEnter(System::MouseEnterEvent* event);
-		virtual bool OnMouseLeave(System::MouseLeaveEvent* event);
+		virtual bool OnMouseEnter(MouseEnterEvent* event);
+		virtual bool OnMouseLeave(MouseLeaveEvent* event);
 		virtual bool OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
 		virtual bool OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* event);
 		virtual bool OnMouseWheel(System::MouseWheelEvent* event);
