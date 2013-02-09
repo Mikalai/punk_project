@@ -6,6 +6,7 @@
 #include "../gpu/module.h"
 #include "application_config.h"
 #include "../gui/gui_adapter.h"
+#include "../gui/interface.h"
 
 namespace Punk
 {
@@ -17,6 +18,7 @@ namespace Punk
 		System::Proxy<System::Window> GetWindow();
 		System::Proxy<System::EventManager> GetEventManager();
 		System::Proxy<GPU::OpenGL::Driver> GetDriver();
+		GUI::Manager* GetGUIManager();
 
 		int Run();		
 		void SetTimeScale(__int64 nominator, __int64 denominator);

@@ -2,7 +2,7 @@
 #include "../system/module.h"
 #include "../gpu/module.h"
 #include "../utility/module.h"
-#include "../gui/events/module.h"
+#include "../gui/module.h"
 
 namespace Punk
 {
@@ -23,7 +23,13 @@ namespace Punk
 		m_video_driver->Start(desc);
 
 		GPU::GPU_INIT(data.gpu_config);
-		Utility::FontBuilder::Instance()->Init();		
+		Utility::FontBuilder::Instance()->Init();	
+
+		GUI::ManagerDesc man_desc;
+		man_desc.adapter = this;
+		man_desc.event_manager = m_event_manager;
+		man_desc.window = m_window;
+		GUI::Manager::Create(man_desc);
 	}
 
 	void Application::OnIdleEvent(System::IdleEvent* event)
@@ -148,6 +154,11 @@ namespace Punk
 	System::Proxy<GPU::OpenGL::Driver> Application::GetDriver()
 	{
 		return m_video_driver;
+	}
+
+	GUI::Manager* Application::GetGUIManager()
+	{
+		return GUI::Manager::Instance();
 	}
 
 	Application::~Application()
