@@ -13,11 +13,6 @@ public:
 	virtual void Init(const Punk::Config& value) override
 	{
 		Punk::Application::Init(value);
-		GUI::ManagerDesc man_desc;
-		man_desc.adapter = this;
-		man_desc.event_manager = GetEventManager();
-		man_desc.window = GetWindow();
-		GUI::Manager::Create(man_desc);
 
 		scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"house.pmd");
 		Virtual::TerrainManager::Instance()->Manage(L"test_map");
@@ -31,7 +26,7 @@ public:
 
 		widget.Reset(new GUI::Widget(0, 0, 0.1, 0.2, L"šæģļł"));
 
-		GUI::Manager::Instance()->AddRootWidget(widget);
+		GetGUIManager()->AddRootWidget(widget);
 
 		render.Reset(new Render::SimpleRender(GetDriver()));
 		render->SetGUIHud(widget);
