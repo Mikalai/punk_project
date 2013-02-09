@@ -9,11 +9,13 @@
 #define NOMINMAX
 #endif
 #include <Windows.h>
-
+#include "../../../gpu_config.h"
 #include "../../../../config.h"
+#include "../../../../system/smart_pointers/module.h"
 
 namespace System
 {
+	class EventManager;
 	class Window;
 	class Event;
 }
@@ -26,18 +28,38 @@ namespace GPU
 	{
 		class Frame;
 
+		struct DriverDesc
+		{
+			Config config;
+			System::Proxy<System::Window> window;
+			System::Proxy<System::EventManager> event_manager;
+		};
+
 		class PUNK_ENGINE Driver
 		{
-		private:
+		public:
 
-			int m_width;
-			int m_height;
-			int m_bits_per_pixel;
-			bool m_fullscreen;
-			int m_refresh_rate;
+			Driver();
+			~Driver();
+
+			void SetFullScreen(bool flag);
+			bool Start(const DriverDesc& desc);
+			void Restart();
+			void Shutdown();
+			void SwapBuffers();
+			void* GetProcAddress(const char* name);
+
+			void OnResize(System::Event* e);
+			void OnKeyDown(System::Event* e);
+
+			System::Proxy<System::Window> GetWindow() { return m_desc.window; }
+
+		private:
+			
 			int m_shader_version;
 			int m_opengl_version;
 			HGLRC m_opengl_context;
+			DriverDesc m_desc;
 
 		private:
 			void Init();
@@ -45,27 +67,7 @@ namespace GPU
 			void ReadConfig();
 			void InitShaderPrograms();
 			void SubscribeForSystemMessages();
-			void OnResize(System::Event* e);
-			void OnKeyPress(System::Event* e);
 			void InitInternalVertexBuffers();
-
-		public:
-
-			Driver();
-			~Driver();
-
-			void SetFullScreen(bool flag);
-			bool Start();
-			void Restart();
-			void Shutdown();
-			void SwapBuffers();
-			void* GetProcAddress(const char* name);
-
-			static Driver* Instance();
-			static void Destroy();
-
-		private:
-			static Driver* m_instance;
 		};
 	}
 }

@@ -8,20 +8,6 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		Driver* Driver::m_instance;
-
-		Driver* Driver::Instance()
-		{
-			if (!m_instance)
-				m_instance = new Driver;
-			return m_instance;
-		}
-
-		void Driver::Destroy()
-		{
-			delete m_instance;
-			m_instance = 0;
-		}
 
 		Driver::~Driver()
 		{
@@ -32,55 +18,15 @@ namespace GPU
 		{
 		}
 
-		void Driver::ReadConfig()
+		bool Driver::Start(const DriverDesc& desc)
 		{
-			System::ConfigFile conf;
-			conf.Open(System::Window::Instance()->GetTitle());
-
-			if (!conf.ReadOptionInt(L"screen_width", m_width))
-			{
-				m_width = System::Window::Instance()->GetDesktopWidth();
-				conf.WriteOptionInt(L"screen_width", m_width);
-			}
-
-			if (!conf.ReadOptionInt(L"screen_height", m_height))
-			{
-				m_height = System::Window::Instance()->GetDesktopHeight();
-				conf.WriteOptionInt(L"screen_height", m_height);
-			}
-
-			if (!conf.ReadOptionInt(L"bpp", m_bits_per_pixel))
-			{
-				m_bits_per_pixel = System::Window::Instance()->GetDesktopBitsPerPixel();
-				conf.WriteOptionInt(L"bpp", m_bits_per_pixel);
-			}
-
-			if (!conf.ReadOptionInt(L"fullscreen", (int&)m_fullscreen))
-			{
-				m_fullscreen = false;
-				conf.WriteOptionInt(L"fullscreen", (int)m_fullscreen);
-			}
-
-			if (!conf.ReadOptionInt(L"refresh_rate", m_refresh_rate))
-			{
-				m_refresh_rate = System::Window::Instance()->GetDesktopRefreshRate();
-				conf.WriteOptionInt(L"refresh_rate", m_refresh_rate);
-			}
-
-			conf.Close();
-		}
-
-		bool Driver::Start()
-		{
-			using namespace System;
-
-			ReadConfig();
+			m_desc = desc;
 
 			out_message() << L"Initializing OpenGL..." << std::endl;
 
-			HDC deviceContext = ::GetDC(*System::Window::Instance());
+			HDC deviceContext = ::GetDC((*m_desc.window));
 
-			SetFullScreen(m_fullscreen);
+			SetFullScreen(m_desc.config.fullscreen);
 
 			int pixelFormat;
 			static PIXELFORMATDESCRIPTOR pfd =
@@ -89,7 +35,7 @@ namespace GPU
 				1,
 				PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
 				PFD_TYPE_RGBA,
-				m_bits_per_pixel,
+				m_desc.config.bits_per_pixel,
 				0, 0, 0, 0, 0, 0,
 				0,
 				0,
@@ -206,7 +152,8 @@ namespace GPU
 			if (profile & WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB)
 				out_message() << L"\tCompatible profile selected" << std::endl;
 
-			SubscribeForSystemMessages();
+			m_desc.event_manager->SubscribeHandler(System::EVENT_WINDOW_RESIZE, System::EventHandler(this, &Driver::OnResize));
+			m_desc.event_manager->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Driver::OnKeyDown));
 
 			return true;
 		}
@@ -215,14 +162,14 @@ namespace GPU
 		{
 			out_message() << L"Destroying video driver..." << std::endl;
 			ChangeDisplaySettings(NULL, 0);
-			wglMakeCurrent(::GetDC(*System::Window::Instance()), NULL);
+			wglMakeCurrent(::GetDC(*m_desc.window), NULL);
 			wglDeleteContext(m_opengl_context);
 			out_message() << L"Video driver destroyed..." << std::endl;
 		}
 
 		void Driver::SwapBuffers()
 		{
-			if (!::SwapBuffers(::GetDC(*System::Window::Instance())))
+			if (!::SwapBuffers(::GetDC(*m_desc.window)))
 				out_error() << "Swap buffer failed" << std::endl;
 		}
 
@@ -241,36 +188,28 @@ namespace GPU
 		void Driver::Restart()
 		{
 			Shutdown();
-			Start();
-		}
-
-		void Driver::OnResize(System::Event* e)
-		{
-			System::WindowResizeEvent* event = dynamic_cast<System::WindowResizeEvent*>(e);			
-			if (!event)
-				throw OpenGLInvalidValueException(L"Can't understand event");
-			glViewport(0, 0, event->width, event->height);
+			Start(m_desc);
 		}
 
 		void Driver::SetFullScreen(bool flag)
 		{
-			m_fullscreen = flag;
-			if (m_fullscreen)
+			m_desc.config.fullscreen = flag;
+			if (flag)
 			{
-				SetWindowLong(*System::Window::Instance(), GWL_STYLE, WS_POPUP);
-				SetWindowLong(*System::Window::Instance(), GWL_EXSTYLE, WS_EX_APPWINDOW);
+				SetWindowLong(*m_desc.window, GWL_STYLE, WS_POPUP);
+				SetWindowLong(*m_desc.window, GWL_EXSTYLE, WS_EX_APPWINDOW);
 
 				out_message() << L"Fullscreen mode..." << std::endl;
 				DEVMODE mode;
 				ZeroMemory(&mode, sizeof(mode));
 				mode.dmSize = sizeof(mode);
-				mode.dmPelsWidth = m_width;
-				mode.dmPelsHeight = m_height;
-				mode.dmBitsPerPel = m_bits_per_pixel;
-				mode.dmDisplayFrequency = m_refresh_rate;
+				mode.dmPelsWidth = m_desc.config.view_width;
+				mode.dmPelsHeight = m_desc.config.view_height;
+				mode.dmBitsPerPel = m_desc.config.bits_per_pixel;
+				mode.dmDisplayFrequency = m_desc.config.refresh_rate;
 				mode.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT | DM_DISPLAYFREQUENCY;
 
-				SetWindowPos(*System::Window::Instance(), 0, 0, 0, m_width, m_height, SWP_SHOWWINDOW);
+				SetWindowPos(*m_desc.window, 0, 0, 0, m_desc.config.view_width, m_desc.config.view_height, SWP_SHOWWINDOW);
 
 				LONG code;
 				if (code = ChangeDisplaySettings(&mode, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL)
@@ -281,19 +220,19 @@ namespace GPU
 			}
 			else
 			{
-				SetWindowLong(*System::Window::Instance(), GWL_STYLE, WS_OVERLAPPEDWINDOW);
-				SetWindowLong(*System::Window::Instance(), GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
+				SetWindowLong(*m_desc.window, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+				SetWindowLong(*m_desc.window, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
 
 				out_message() << L"Window mode..." << std::endl;
-				System::Window::Instance()->SetPosition(30, 30);
-				System::Window::Instance()->SetSize(2*m_width/3, 2*m_height/3);
+				m_desc.window->SetPosition(m_desc.config.view_left, m_desc.config.view_height);
+				m_desc.window->SetSize(m_desc.config.view_width, m_desc.config.view_height);
 			}
 
-			ShowWindow(*System::Window::Instance(), SW_SHOW);
-			SetFocus(*System::Window::Instance());
+			ShowWindow(*m_desc.window, SW_SHOW);
+			SetFocus(*m_desc.window);
 		}
 
-		void Driver::OnKeyPress(System::Event* e)
+		void Driver::OnKeyDown(System::Event* e)
 		{
 			System::KeyDownEvent* event = dynamic_cast<System::KeyDownEvent*>(e);
 			if (!event)
@@ -305,55 +244,16 @@ namespace GPU
 			if (event->key == System::PUNK_KEY_ENTER)
 			{
 				if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_ALT))
-					SetFullScreen(!m_fullscreen);
+					SetFullScreen(!m_desc.config.fullscreen);
 			}
 		}
 
-		void Driver::SubscribeForSystemMessages()
+		void Driver::OnResize(System::Event* e)
 		{
-			System::EventManager* mgr = System::EventManager::Instance();
-			if (!mgr)
-			{
-				out_error() << L"Unable to get event manager" << std::endl;
-				return;
-			}
-
-			mgr->SubscribeHandler(System::EVENT_WINDOW_RESIZE, System::EventHandler(this, &Driver::OnResize));
-			mgr->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Driver::OnKeyPress));
+			System::WindowResizeEvent* event = dynamic_cast<System::WindowResizeEvent*>(e);			
+			if (!event)
+				throw OpenGLInvalidValueException(L"Can't understand event");
+			glViewport(0, 0, event->width, event->height);
 		}
-
-		/*RenderTarget* Driver::CreateRenderTarget(RenderTarget::Properties* p)
-		{
-			switch(p->m_type)
-			{
-			case RENDER_TARGET_BACK_BUFFER:
-				{
-					RenderTarget* target = new RenderTargetBackBuffer;
-					if (!target->Init(p))
-					{
-						out_error() << "Can't initialize render target back buffer" << std::endl;
-						delete target;
-						return 0;
-					}
-					m_targets.push_back(target);
-					return target;
-				}
-			case RENDER_TARGET_TEXTURE_2D:
-				{
-					RenderTargetTexture* target = new RenderTargetTexture;				
-					if (!target->Init(p))
-					{
-						out_error() << "Can't initialize render target texture 2d" << std::endl;
-						delete target;
-						return 0;
-					}
-					m_targets.push_back(target);
-					return target;
-				}
-			default:
-				out_error() << "Can't create render target: " << p->m_type << std::endl;
-			}
-			return 0;
-		}*/
 	}
 }
