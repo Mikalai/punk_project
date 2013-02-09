@@ -16,7 +16,7 @@ namespace Render
 	class PUNK_ENGINE SimpleRender : public Scene::AbstractVisitor
 	{
 	public:
-		
+		SimpleRender(System::Proxy<GPU::OpenGL::Driver> driver);
 		bool Render();
 		void SetGUIHud(System::Proxy<GUI::Widget> root) { m_root = root; }
 		void SetScene(System::Proxy<Scene::SceneGraph> scene);
@@ -45,6 +45,7 @@ namespace Render
 		System::Proxy<GPU::RenderTarget> m_rt;
 		System::Proxy<Scene::SceneGraph> m_scene;
 		MeshCooker m_cooker;
+		System::Proxy<GPU::OpenGL::Driver> m_driver;
 		System::Proxy<GPU::AbstractRenderPolicy> m_skin_rc;
 		System::Proxy<GPU::AbstractRenderPolicy> m_context;
 		System::Proxy<GPU::AbstractRenderPolicy> m_solid_rc;

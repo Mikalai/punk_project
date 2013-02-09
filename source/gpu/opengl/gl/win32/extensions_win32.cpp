@@ -175,7 +175,7 @@ namespace GPU
 
 		bool IsSupported(const char* extension, Driver* driver)
 		{
-			const char* allWgl = wglGetExtensionsStringARB(::GetDC(*System::Window::Instance()));
+			const char* allWgl = wglGetExtensionsStringARB(::GetDC(*driver->GetWindow()));
 			int num;
 			glGetIntegerv(GL_NUM_EXTENSIONS, &num);
 			const char* ptr;

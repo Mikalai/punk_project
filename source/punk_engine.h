@@ -9,12 +9,12 @@
 #include "virtual\module.h"
 
 #include "string\string.h"
-#include "utility\utility.h"
+#include "utility\module.h"
 #include "scene\scene_graph.h"
 #include "gpu\module.h"
 #include "raytracer\raytracer.h"
+#include "application/module.h"
 
 #include "render\module.h"
 #include "audio\punk_audio.h"
-
 #endif
