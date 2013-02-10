@@ -130,6 +130,13 @@ namespace GUI
 
 		static const Math::Vector2<float> WindowToViewport(float x, float y);
 
+		const Math::vec4& GetBackColor0() const { return m_back_color_0; }
+		const Math::vec4& GetBackColor1() const { return m_back_color_1; }
+		const Math::vec4& GetTextColor0() const { return m_text_color_0; }
+		const Math::vec4& GetTextColor1() const { return m_text_color_1; }
+		const Math::vec4& GetBackColor() const { return m_back_color; }
+		const Math::vec4& GetTextColor() const { return m_text_color; }
+
 	protected:
 
 		VerticalAlign m_vertical_align;
@@ -141,12 +148,12 @@ namespace GUI
 
 		int m_fontSize;
 
-		Math::Vector4<float> m_back_color_0;
-		Math::Vector4<float> m_back_color_1;
-		Math::Vector4<float> m_text_color_0;
-		Math::Vector4<float> m_text_color_1;
-		Math::Vector4<float> m_back_color;
-		Math::Vector4<float> m_text_color;
+		Math::vec4 m_back_color_0;
+		Math::vec4 m_back_color_1;
+		Math::vec4 m_text_color_0;
+		Math::vec4 m_text_color_1;
+		Math::vec4 m_back_color;
+		Math::vec4 m_text_color;
 		float m_animation;
 		float m_animation_duration;
 		float m_animation_speed;
