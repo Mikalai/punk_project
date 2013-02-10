@@ -62,8 +62,8 @@ namespace GPU
 
 			bool IsValid() const;
 
-			static System::Proxy<Texture2D> CreateFromFile(const System::string& path);
-			static System::Proxy<Texture2D> CreateFromStream(std::istream& stream);
+			static System::Proxy<Texture2D> CreateFromFile(const System::string& path, bool use_mip_maps = true);
+			static System::Proxy<Texture2D> CreateFromStream(std::istream& stream, bool use_mip_maps = true);
 		};
 
 		typedef Texture2D* Texture2DRef;

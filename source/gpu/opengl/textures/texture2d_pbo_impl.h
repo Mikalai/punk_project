@@ -96,95 +96,111 @@ namespace GPU
 
 			void CreateFromImage(const ImageModule::Image& image, bool use_mipmaps)
 			{
-				m_use_mip_maps = use_mipmaps;
+				Create(image.GetWidth(), image.GetHeight(), ToInternalFormat(image.GetImageFormat()), image.GetData(), use_mipmaps);
+				//m_use_mip_maps = use_mipmaps;
 
-				if (!image.GetData())
-				{
-					out_error() << L"Not data in the image" << std::endl;
-					return;
-				}
-
-
-				if (m_texture_id != 0)
-				{
-					glDeleteTextures(1, &m_texture_id);
-					CHECK_GL_ERROR(L"Can't delete texture");
-				}
-
-				m_width = image.GetWidth();
-				m_height = image.GetHeight();
-				m_format = ToInternalFormat(image.GetImageFormat());
-				m_pixel_size = 1;
-				m_internal_format = GL_RED;
-				m_internal_type = GL_UNSIGNED_BYTE;
-
-				if (GL_RED ==  m_format)
-				{
-					m_pixel_size = 1;
-					m_internal_format = GL_RED;
-					m_internal_type = GL_UNSIGNED_BYTE;
-				}
-				else if (GL_R32F == m_format || GL_RGBA == m_format)
-				{
-					m_pixel_size = 4;
-					if (GL_R32F == m_format)
-					{
-						m_internal_format = GL_RED;
-						m_internal_type = GL_FLOAT;
-					}
-					else if (GL_RGBA == m_format)
-					{
-						m_internal_format = GL_RGBA;
-						m_internal_type = GL_UNSIGNED_BYTE;
-					}
-				}
-				else if (GL_RGB == m_format)
-				{
-					m_pixel_size = 3;
-					m_internal_format = GL_RGB;
-					m_internal_type = GL_UNSIGNED_BYTE;
-				}
-
-				glGenTextures(1, &m_texture_id);
-				glBindTexture(GL_TEXTURE_2D, m_texture_id);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-
-				glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
-				CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
-				glBindTexture(GL_TEXTURE_2D, 0);				
-
-				m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);					
-				//m_pbo->Bind();
+				//if (!image.GetData())
+				//{
+				//	out_error() << L"Not data in the image" << std::endl;
+				//	return;
+				//}
 
 
-				void* data = Map();
-				CHECK_GL_ERROR(L"Can't map buffer");
-				if (data)
-				{
-					memcpy(data, image.GetData(), image.GetSizeInBytes());
-					Unmap(0);
-					CHECK_GL_ERROR(L"Can't unmap buffer");
-				}
+				//if (m_texture_id != 0)
+				//{
+				//	glDeleteTextures(1, &m_texture_id);
+				//	CHECK_GL_ERROR(L"Can't delete texture");
+				//}
 
-				glBindTexture(GL_TEXTURE_2D, m_texture_id);
-				CHECK_GL_ERROR(L"Can't bind texture");
-				m_pbo->Bind();
-				glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, m_format, m_internal_type, 0);
-				CHECK_GL_ERROR(L"Can't copy data from PBO to texture object");
-				m_pbo->Unbind();
+				//m_width = image.GetWidth();
+				//m_height = image.GetHeight();
+				//m_format = ToInternalFormat(image.GetImageFormat());
+				//m_pixel_size = 1;
+				//m_internal_format = GL_RED;
+				//m_internal_type = GL_UNSIGNED_BYTE;
 
-				if (m_use_mip_maps)
-				{
-					glBindTexture(GL_TEXTURE_2D, m_texture_id);
-					CHECK_GL_ERROR(L"Can't bind texture");
-					glGenerateMipmap(GL_TEXTURE_2D);
-					CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
-					glBindTexture(GL_TEXTURE_2D, 0);
-					CHECK_GL_ERROR(L"Can't ubind texture");
-				}			
+				//if (GL_RED ==  m_format)
+				//{
+				//	m_pixel_size = 1;
+				//	m_internal_format = GL_RED;
+				//	m_internal_type = GL_UNSIGNED_BYTE;
+				//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+				//	CHECK_GL_ERROR(L"Can't pixel store i");
+				//}
+				//else if (GL_R32F == m_format || GL_RGBA == m_format)
+				//{
+				//	m_pixel_size = 4;
+				//	if (GL_R32F == m_format)
+				//	{
+				//		m_internal_format = GL_RED;
+				//		m_internal_type = GL_FLOAT;
+				//	}
+				//	else if (GL_RGBA == m_format)
+				//	{
+				//		m_internal_format = GL_RGBA;
+				//		m_internal_type = GL_UNSIGNED_BYTE;
+				//	}
+				//	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+				//	CHECK_GL_ERROR(L"Can't pixel store i");
+				//}
+				//else if (GL_RGB == m_format)
+				//{
+				//	m_pixel_size = 3;
+				//	m_internal_format = GL_RGB;
+				//	m_internal_type = GL_UNSIGNED_BYTE;
+				//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+				//	CHECK_GL_ERROR(L"Can't pixel store i");
+				//}
+
+				//glGenTextures(1, &m_texture_id);
+				//CHECK_GL_ERROR(L"Can't generate texture");
+				//glBindTexture(GL_TEXTURE_2D, m_texture_id);
+				//CHECK_GL_ERROR(L"Can't bind texture");
+
+				//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				//CHECK_GL_ERROR(L"Can't set up texture min filter");
+				//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				//CHECK_GL_ERROR(L"Can't set up mag filter");
+				//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				//CHECK_GL_ERROR(L"Can't set up wrap s");
+				//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+				//CHECK_GL_ERROR(L"Can't set up wrap r");
+
+				//glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
+				//CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
+
+				//glBindTexture(GL_TEXTURE_2D, 0);				
+				//CHECK_GL_ERROR(L"Can't unbind texture");
+
+				//m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);					
+				////m_pbo->Bind();
+
+
+				//void* data = Map();
+				//CHECK_GL_ERROR(L"Can't map buffer");
+				//if (data)
+				//{
+				//	memcpy(data, image.GetData(), image.GetSizeInBytes());
+				//	Unmap(0);
+				//	CHECK_GL_ERROR(L"Can't unmap buffer");
+				//}
+
+				////glBindTexture(GL_TEXTURE_2D, m_texture_id);
+				////CHECK_GL_ERROR(L"Can't bind texture");
+				////m_pbo->Bind();
+				////glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, m_format, m_internal_type, 0);
+				////CHECK_GL_ERROR(L"Can't copy data from PBO to texture object");
+				////m_pbo->Unbind();
+
+				//if (m_use_mip_maps)
+				//{
+				//	glBindTexture(GL_TEXTURE_2D, m_texture_id);
+				//	CHECK_GL_ERROR(L"Can't bind texture");
+				//	glGenerateMipmap(GL_TEXTURE_2D);
+				//	CHECK_GL_ERROR(L"Can't generate mip map levels for texture");
+				//	glBindTexture(GL_TEXTURE_2D, 0);
+				//	CHECK_GL_ERROR(L"Can't ubind texture");
+				//}			
 			}
 
 			bool CopyFromCPU(int x, int y, int width, int height, const void* data)
@@ -198,21 +214,49 @@ namespace GPU
 				if (y + height > m_height)
 					return false;
 
-				CHECK_GL_ERROR(L"Pre copy check2");
+
 				glBindTexture(GL_TEXTURE_2D, m_texture_id);
 				CHECK_GL_ERROR(L"Can't bind texture");
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);			
-				CHECK_GL_ERROR(L"Can't set pixel store");
-				if (m_internal_format == GL_R32F)
-					glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, m_internal_format, GL_FLOAT, data);
-				else
-					glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, m_internal_format, GL_UNSIGNED_BYTE, data);
-				CHECK_GL_ERROR(L"Can't tex sub image");
+				glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, m_format, m_internal_type, data);
+				CHECK_GL_ERROR(L"Can't copy data to texture");
 				glBindTexture(GL_TEXTURE_2D, 0);
-				CHECK_GL_ERROR(L"Can't unbind texture");			
+				CHECK_GL_ERROR(L"Can't unbind texture");
+
+				//void* dst = Map();
+
+
+				//for (int c_y = 0; c_y < height; ++c_y)
+				//{
+				//	for (int c_x = 0; c_x < width; ++c_x)
+				//	{
+				//		int dst_x = c_x + x;
+				//		int dst_y = c_y + y;
+
+				//	}
+				//}
+
+				//for (int c_y = 0; c_y < height; ++c_y)
+				//{
+				//	int dst_x = x;
+				//	int dst_y = c_y + y;
+				//	if (m_internal_format == GL_R32F)
+				//	{
+				//		float* dst_ptr = (float*)dst + dst_x + c_y * m_width;
+				//		float* src_ptr = (float*)data + width * c_y;
+				//		memcpy_s(dst_ptr, (m_width - dst_x)*sizeof(float), src_ptr, width*sizeof(float));
+				//	}
+				//	else
+				//	{
+				//		unsigned char* dst_ptr = (unsigned char*)dst + dst_x + c_y * m_width;
+				//		unsigned char* src_ptr = (unsigned char*)data + width * c_y;
+				//		memcpy_s(dst_ptr, (m_width - dst_x)*sizeof(unsigned char), src_ptr, width*sizeof(unsigned char));
+				//	}
+				//}
+
+				//Unmap(dst);
 
 				if (m_use_mip_maps)
-				{
+				{					
 					glBindTexture(GL_TEXTURE_2D, m_texture_id);
 					CHECK_GL_ERROR(L"Can't bind texture");
 					glGenerateMipmap(GL_TEXTURE_2D);
@@ -271,6 +315,8 @@ namespace GPU
 					m_pixel_size = 1;
 					m_internal_format = GL_RED;
 					m_internal_type = GL_UNSIGNED_BYTE;
+					glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+					CHECK_GL_ERROR(L"Can't pixel store i");
 				}
 				else if (GL_R32F == m_format || GL_RGBA == m_format)
 				{
@@ -286,30 +332,50 @@ namespace GPU
 						m_internal_format = GL_RGBA;
 						m_internal_type = GL_UNSIGNED_BYTE;
 					}
+					glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+					CHECK_GL_ERROR(L"Can't pixel store i");
 				}
 				else if (GL_RGB == m_format)
 				{
 					m_pixel_size = 3;
 					m_internal_format = GL_RGB;
 					m_internal_type = GL_UNSIGNED_BYTE;
+					glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+					CHECK_GL_ERROR(L"Can't pixel store i");
 				}
 
 				glGenTextures(1, &m_texture_id);
+				CHECK_GL_ERROR(L"Can't generate texture");
 				glBindTexture(GL_TEXTURE_2D, m_texture_id);
+				CHECK_GL_ERROR(L"Can't bind texture");
 
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+				if (use_mipmaps)
+				{
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+					CHECK_GL_ERROR(L"Can't set up texture min filter");
+				}
+				else
+				{
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+					CHECK_GL_ERROR(L"Can't set up texture min filter");
+				}
+
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				CHECK_GL_ERROR(L"Can't set up mag filter");
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				CHECK_GL_ERROR(L"Can't set up wrap s");
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-
+				CHECK_GL_ERROR(L"Can't set up wrap r");
+				
 				glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
-				CHECK_GL_ERROR(L"Can't copy data from PBO to texture")
+				CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
 
-					glBindTexture(GL_TEXTURE_2D, 0);
-				CHECK_GL_ERROR(L"Can't unbind texture")
+				glBindTexture(GL_TEXTURE_2D, 0);
+				CHECK_GL_ERROR(L"Can't unbind texture");
 
-					m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);				
-				m_pbo->Bind();
+				m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);				
+				//m_pbo->Bind();
+				
 				//	if data available than copy them
 				if (source)
 				{
@@ -322,7 +388,7 @@ namespace GPU
 						CHECK_GL_ERROR(L"Can't unmap buffer");
 					}
 				}
-				m_pbo->Unbind();
+				//m_pbo->Unbind();
 				//glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
 				//CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
 				if (m_use_mip_maps)
@@ -363,35 +429,9 @@ namespace GPU
 
 			void Fill(unsigned char byte)
 			{
-				const int size = 64;
-				unsigned char data[size*size*16];
-				memset(data, byte, size*size);
-				glBindTexture(GL_TEXTURE_2D, m_texture_id);
-				CHECK_GL_ERROR(L"Can't bind texture");
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-				CHECK_GL_ERROR(L"Can't pixel store i");
-				for (int i = 0; i < m_height/size+1; i ++)
-				{
-					for (int j = 0; j < m_width/size+1; j ++ )
-					{
-						int width;
-						int height;
-
-						if ((j + 1) * size < m_width)
-							width = size;
-						else
-							width = size - ((j+1) * size - m_width );
-
-						if ((i+1) * size < m_height)
-							height = size;
-						else
-							height = size - ((i+1) * size - m_height);
-
-						glTexSubImage2D(GL_TEXTURE_2D, 0, j*size, i*size, width, height, m_internal_format, GL_UNSIGNED_BYTE, (void*)data);
-						CHECK_GL_ERROR(L"Can't tex sub image 2d");
-
-					}
-				}
+				void* dst = Map();
+				memset(dst, byte, m_width*m_height*m_pixel_size);
+				Unmap(dst);
 
 				if (m_use_mip_maps)
 					UpdateMipMaps();

@@ -152,7 +152,7 @@ namespace GPU
 			return false;
 		}
 
-		System::Proxy<Texture2D> Texture2D::CreateFromFile(const System::string& path)
+		System::Proxy<Texture2D> Texture2D::CreateFromFile(const System::string& path, bool use_mip_maps)
 		{		
 			ImageModule::Importer importer;
 			std::auto_ptr<ImageModule::Image> image(importer.LoadAnyImage(path));
@@ -160,14 +160,14 @@ namespace GPU
 			if (image.get())
 			{
 				System::Proxy<Texture2D> result(new Texture2D);//(*image));		
-				result->Create(*image, false);
+				result->Create(*image, use_mip_maps);
 				return result;
 			}
 			else
 				throw OpenGLException(L"Can't create texture from " + path);
 		}
 
-		System::Proxy<Texture2D> Texture2D::CreateFromStream(std::istream& stream)
+		System::Proxy<Texture2D> Texture2D::CreateFromStream(std::istream& stream, bool use_mip_maps)
 		{		
 			System::Proxy<Texture2D> result(new Texture2D);//(*image));		
 			result->Load(stream);
