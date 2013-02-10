@@ -9,4 +9,11 @@ namespace GPU
 		flag &= OpenGL::GPU_OPENGL_INIT(data);
 		return flag;
 	}
+
+	bool GPU_DESTROY()
+	{
+		OpenGL::GPU_OPENGL_DESTROY();
+		return true;
+	}
+
 }

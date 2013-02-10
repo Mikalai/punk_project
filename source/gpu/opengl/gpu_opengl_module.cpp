@@ -15,5 +15,14 @@ namespace GPU
 			AbstractRenderPolicy::validate();
 			return true;
 		}
+
+		bool PUNK_ENGINE GPU_OPENGL_DESTROY()
+		{
+			AbstractRenderPolicy::clear();
+			CubeObject::Destroy();
+			QuadObject::Destroy();
+			SphereObject::Destroy();			
+			return true;
+		}
 	}
 }
