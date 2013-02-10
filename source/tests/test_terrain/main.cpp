@@ -24,7 +24,7 @@ public:
 		node.Reset(new Scene::DebugTextureViewNode);	
 		System::Proxy<Scene::Node> root = scene->GetRootNode();
 
-		widget.Reset(new GUI::Widget(0, 0, 0.1, 0.2, L"šæģļł"));
+		widget.Reset(new GUI::Widget(0, 0, 0.5, 0.5, L"Hello World!!!"));
 
 		GetGUIManager()->AddRootWidget(widget);
 
@@ -41,8 +41,21 @@ public:
 		updater.SetScene(scene);	
 
 
-		System::AsyncLoader::Instance()->MainThreadProc(1);
-		t = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png");
+		System::AsyncLoader::Instance()->MainThreadProc(1);		
+		t.Reset(new GPU::OpenGL::Texture2D);
+		unsigned char data[256*256];
+		memset(data, 0xFF, 256*256);
+		t->Create(64, 64, ImageModule::IMAGE_FORMAT_RGBA, data, false);
+		t = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png", true);
+	}
+
+	virtual ~TerrainTest()
+	{
+		t.Release();
+		render.Release();
+		observer.Release();
+		Virtual::TerrainManager::Destroy();
+		scene.Release();
 	}
 
 	virtual void OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* e) override
@@ -68,7 +81,10 @@ public:
 	}
 
 	virtual void OnKeyDownEvent(System::KeyDownEvent* e) override
-	{
+	{		
+		char buffer [64*64*4];
+		memset(buffer, 0xEF, 4*64*64);
+		widget->GetTextTexture()->CopyFromCPU(0, 0, 64, 64, buffer);
 		Punk::Application::OnKeyDownEvent(e);
 		switch (e->key)
 		{
@@ -97,8 +113,10 @@ public:
 	{	
 		Punk::Application::OnIdleEvent(e);
 		System::AsyncLoader::Instance()->MainThreadProc(1);
+		//node->SetWatchTexture(widget->GetTextTexture());
+		node->SetWatchTexture(t);
+		//node->SetWatchTexture(observer->GetTerrainView()->GetHeightMap());
 		//node->SetWatchTexture(t);
-		node->SetWatchTexture(observer->GetTerrainView()->GetHeightMap());
 
 		updater.Update();
 		render->Render();
@@ -128,8 +146,8 @@ public:
 
 		if (update)
 		{
-			System::string text = System::string::Format(L"X: %f; Z: %f, Height: %f", c->GetPosition().X(), c->GetPosition().Z(), c->GetPosition().Y());
-			widget->SetText(text);
+		//	System::string text = System::string::Format(L"X: %f; Z: %f, Height: %f", c->GetPosition().X(), c->GetPosition().Z(), c->GetPosition().Y());
+		//	widget->SetText(text);
 			observer->SetPosition(c->GetPosition());
 		}
 
