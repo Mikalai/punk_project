@@ -31,6 +31,7 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::DebugTextureViewNode* node)
 	{
+		//RenderQuad(0, 0.8, 0.2, 0.2, Math::vec4(1,0,0,1));
 		RenderTexturedQuad(0, 0.8, 0.2, 0.2, node->GetWatchTexture());
 		return true;
 	}
@@ -285,7 +286,7 @@ namespace Render
 			m_terrain_rc->Begin();
 			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());
 			m_tc->Bind();		
-			STATE.m_wireframe = true;
+			STATE.m_wireframe = false;
 			STATE.m_depth_test = true;
 			STATE.m_line_width = 1;
 			//STATE.m_terran_position = Math::vec2(floor(STATE.m_camera->GetPosition().X()), floor(STATE.m_camera->GetPosition().Z()));
@@ -339,7 +340,7 @@ namespace Render
 	{
 		m_states.Push();
 		//	shift quadSTATE
-		STATE.m_local = Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(width, height, 1);
+		STATE.m_local = Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1);
 		STATE.m_projection = Math::mat4::CreateIdentity();
 		STATE.m_view = Math::mat4::CreateIdentity();
 		STATE.m_diffuse_color = color;
@@ -362,6 +363,8 @@ namespace Render
 		STATE.m_diffuse_slot_0 = 0;
 		STATE.m_diffuse_color.Set(1,1,1,1);
 		STATE.m_texture_matrix = Math::mat2::CreateMirrorX();
+		STATE.m_wireframe = false;
+		m_tc->Clear();
 		m_tc->SetTexture(0, texture);
 		m_tc->Bind();
 		m_textured_rc->Begin();
