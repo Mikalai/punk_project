@@ -34,7 +34,7 @@ namespace Virtual
 		static void Destroy();
 
 		System::Proxy<Terrain> GetTerrain() { return m_terrain; }
-		System::Proxy<TerrainObserver> CreateTerrainObserver(const Math::vec3& start_position);
+		System::WeakRef<TerrainObserver> CreateTerrainObserver(const Math::vec3& start_position);
 
 		const System::string GetCurrentMap() { return m_current_map; }
 

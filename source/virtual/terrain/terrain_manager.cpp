@@ -28,7 +28,9 @@ namespace Virtual
 	{}
 
 	TerrainManager::~TerrainManager()
-	{}
+	{
+
+	}
 
 	bool TerrainManager::Manage(const System::string& map_name)
 	{
@@ -54,13 +56,13 @@ namespace Virtual
 		return true;
 	}
 
-	System::Proxy<TerrainObserver> TerrainManager::CreateTerrainObserver(const Math::vec3& start_position)
+	System::WeakRef<TerrainObserver> TerrainManager::CreateTerrainObserver(const Math::vec3& start_position)
 	{
 		System::Proxy<TerrainView> view(new TerrainView(1024, m_terrain->GetBlockSize(), m_terrain->GetBlockScale(), start_position.XZ(), m_terrain));
 		System::Proxy<TerrainObserver> observer(new TerrainObserver(view));
 		observer->SetPosition(start_position);
 		m_views.push_back(view);
 		m_observers.push_back(observer);
-		return observer;
+		return m_observers.back();
 	}
 }

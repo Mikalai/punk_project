@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include "../../system/streaming/data_processor.h"
 
-namespace OpenGL { class Texture2D; }
+namespace GPU { namespace OpenGL { class Texture2D; } }
 
 namespace Virtual
 {
