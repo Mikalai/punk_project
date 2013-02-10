@@ -14,7 +14,8 @@ namespace Punk
 	class PUNK_ENGINE Application : public System::WindowAdapter, public GUI::Adapter
 	{
 	public:
-		Application();		
+		Application();	
+		virtual ~Application();
 		System::Proxy<System::Window> GetWindow();
 		System::Proxy<System::EventManager> GetEventManager();
 		System::Proxy<GPU::OpenGL::Driver> GetDriver();
@@ -46,7 +47,6 @@ namespace Punk
 		virtual void OnMouseLeaveEvent(GUI::MouseLeaveEvent* event);
 
 		virtual void Init(const Config& value);
-		virtual ~Application();
 
 	private:
 		System::Proxy<System::Window> m_window;

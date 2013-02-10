@@ -11,10 +11,24 @@ namespace Punk
 	{
 	}
 
+	Application::~Application()
+	{
+		Virtual::StaticGeometry::clear();
+		Virtual::SkinGeometry::clear();
+		Virtual::Armature::clear();
+		Virtual::Material::clear();
+		GUI::Manager::Destroy();
+		Utility::FontBuilder::Destroy();
+		GPU::GPU_DESTROY();
+		m_video_driver.Release();
+		m_window.Release();		
+		m_event_manager.Release();
+	}
 	void Application::Init(const Config& data)
 	{	
 		m_event_manager.Reset(new System::EventManager());
 		m_window.Reset(new System::Window(this));
+		System::Mouse::Instance()->LockInWindow(true);
 		m_video_driver.Reset(new GPU::OpenGL::Driver);
 		GPU::OpenGL::DriverDesc desc;
 		desc.config = data.gpu_config;
@@ -159,10 +173,6 @@ namespace Punk
 	GUI::Manager* Application::GetGUIManager()
 	{
 		return GUI::Manager::Instance();
-	}
-
-	Application::~Application()
-	{
 	}
 
 	void Application::SetTimeScale(__int64 nominator, __int64 denominator)
