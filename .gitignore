@@ -29,5 +29,6 @@ _UpgradeReport_Files
 project-build-*
 3rd
 data
+!data\shaders\
 old
 log*
