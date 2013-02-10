@@ -8,23 +8,19 @@ namespace GPU
 	{
 		TextureContext::TextureContext() 
 		{
-			memset(m_textures, 0, sizeof(m_textures));
-		}
-
-		TextureContext::TextureContext(const TextureContext& tc)
-		{
-			memcpy(m_textures, tc.m_textures, sizeof(m_textures));
-		}
-
-		TextureContext& TextureContext::operator= (const TextureContext& tc)
-		{
-			memcpy(m_textures, tc.m_textures, sizeof(m_textures));
-			return *this;
 		}
 
 		TextureContext::~TextureContext()
 		{
 
+		}
+
+		void TextureContext::Clear()
+		{
+			for (int i = 0; i < MAX_TEXTURES; ++i)
+			{
+				m_textures[i].Release();
+			}
 		}
 
 		void TextureContext::Bind()

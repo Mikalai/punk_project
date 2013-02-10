@@ -3,7 +3,7 @@
 
 #include "../../../config.h"
 #include "../../../system/poolable.h"
-#include "../../../system/smart_pointers/handle.h"
+#include "../../../system/smart_pointers/module.h"
 
 #include <memory>
 
@@ -17,17 +17,19 @@ namespace GPU
 		class PUNK_ENGINE TextureContext : public System::Poolable<TextureContext>
 		{
 			static const int MAX_TEXTURES = 32;
-			System::Handle<Texture2D> m_textures[MAX_TEXTURES];
+			System::Proxy<Texture2D> m_textures[MAX_TEXTURES];
 		public:
 			TextureContext();
-			TextureContext(const TextureContext& tc);
-			TextureContext& operator = (const TextureContext& tc);
 			~TextureContext();
 
 			void SetTexture(int slot, System::Proxy<Texture2D> map);
+			void Clear();
 
 			void Bind();	
 			void Unbind();
+		private:
+			TextureContext(const TextureContext& tc);
+			TextureContext& operator = (const TextureContext& tc);
 		};
 	}
 }
