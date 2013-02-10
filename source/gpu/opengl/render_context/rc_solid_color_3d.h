@@ -48,10 +48,10 @@ namespace GPU
 				SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
 				SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
 
-				glLineWidth(params.m_line_width);
-
 				if (params.m_wireframe)
 				{
+					glLineWidth(params.m_line_width);
+					CHECK_GL_ERROR(L"Can't line width");
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 					CHECK_GL_ERROR(L"Can't change polygon mode");
 				}			

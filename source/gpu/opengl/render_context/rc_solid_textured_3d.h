@@ -54,6 +54,26 @@ namespace GPU
 				SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
 				SetUniformInt(uDiffuseMap, params.m_diffuse_slot_0);
 				SetUniformMatrix2f(uTextureMatrix, &params.m_texture_matrix[0]);
+
+				if (params.m_wireframe)
+				{
+					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+					CHECK_GL_ERROR(L"Can't change polygon mode");
+				}			
+				else
+				{
+					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+					CHECK_GL_ERROR(L"Can't change polygon mode");
+				}
+
+				if (params.m_depth_test)
+				{
+					glEnable(GL_DEPTH_TEST);
+				}
+				else
+				{
+					glDisable(GL_DEPTH_TEST);
+				}
 			}
 
 			virtual VertexAttributes GetRequiredAttributesSet() const 
