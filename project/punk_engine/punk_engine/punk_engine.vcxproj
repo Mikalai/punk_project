@@ -386,7 +386,7 @@
     <ClInclude Include="..\..\..\source\system\serializable.h" />
     <ClInclude Include="..\..\..\source\system\signal_slot\signal_slot.h" />
     <ClInclude Include="..\..\..\source\system\singletone.h" />
-    <ClInclude Include="..\..\..\source\system\smart_pointers\handle.h" />
+    <ClInclude Include="..\..\..\source\system\smart_pointers\weak_ref.h" />
     <ClInclude Include="..\..\..\source\system\smart_pointers\module.h" />
     <ClInclude Include="..\..\..\source\system\smart_pointers\proxy.h" />
     <ClInclude Include="..\..\..\source\system\smart_pointers\ref_count.h" />
