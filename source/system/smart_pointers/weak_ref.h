@@ -6,21 +6,14 @@
 namespace System
 {
 	template<class T>
-	class Handle
+	class WeakRef
 	{
-		Proxy<T> m_handle;
+		Proxy<T>& m_handle;
 	public:
-		Handle() {}
-		Handle(Proxy<T> value) : m_handle(value) {}	
-		Handle(const Handle<T>& value) : m_handle(value.m_handle) {}	
-		Handle& operator = (const Handle<T>& value)
-		{
-			if (this != &value)
-				m_handle = value.m_handle;
-			return *this;
-		}
+		WeakRef(Proxy<T>& handle) : m_handle(handle) {}
+		WeakRef(const WeakRef<T>& value) : m_handle(value.m_handle) {}			
 
-		operator Proxy<T> () { return m_handle; }
+		operator Proxy<T>& () { return m_handle; }
 		Proxy<T>& operator -> () { return m_handle; }
 
 		bool IsValid() const { return m_handle.IsValid(); }
