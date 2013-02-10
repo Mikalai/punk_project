@@ -21,6 +21,7 @@ namespace System
 		static void add(Key key, T value);
 		static void invalidate();
 		static void validate();
+		static void clear();
 	private:
 		static bool m_init;
 		static Collection m_items;
@@ -30,6 +31,12 @@ namespace System
 	void Aspect<T, Key>::add(Key key, T value) 
 	{ 
 		m_items[key]  = value; 
+	}
+
+	template<class T, typename Key>	
+	void Aspect<T, Key>::clear()
+	{ 
+		m_items.clear();
 	}
 
 	template<class T, typename Key>	
