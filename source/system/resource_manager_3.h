@@ -9,7 +9,6 @@
 #include <iterator>
 #include <string>
 #include <map>
-#include "smart_pointers/handle.h"
 #include "string.h"
 #include "folder.h"
 #include "../math/helper.h"
