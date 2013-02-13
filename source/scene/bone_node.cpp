@@ -2,8 +2,6 @@
 #include "../system/factory.h"
 #include "../virtual/skinning/armature.h"
 
-IMPLEMENT_MANAGER(L"resource.bone_nodes", L"*.bone_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE_NODE, Scene, BoneNode);
-
 
 namespace Scene
 {
@@ -18,32 +16,29 @@ namespace Scene
 
 	bool BoneNode::Save(std::ostream& stream) const
 	{
-		if (!Node::Save(stream))
-			return (out_error() << "Can't save geometry " << std::endl, false);				
+		Node::Save(stream);
 		return true;
 	}
 
 	bool BoneNode::Load(std::istream& stream)
 	{
-		if (!Node::Load(stream))
-			return (out_error() << "Can't save geometry " << std::endl, false);
+		Node::Load(stream);
 		return true;
 	}
 
-	System::Proxy<BoneNode> BoneNode::CreateFromFile(const System::string& path)
+	BoneNode* BoneNode::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<BoneNode>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<BoneNode> BoneNode::CreateFromStream(std::istream& stream)
+	BoneNode* BoneNode::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<BoneNode> node(new BoneNode);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<BoneNode>(nullptr));
-		return node;
+		std::unique_ptr<BoneNode> node(new BoneNode);
+		node->Load(stream);
+		return node.release();
 	}
 
 	bool BoneNode::Apply(AbstractVisitor* visitor)

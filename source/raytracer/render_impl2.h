@@ -25,7 +25,7 @@ namespace Raytracer
 		RenderImpl(int width = 320, int height = 200)
 			: m_width(width)
 			, m_height(height)
-			, m_fov(3.14/2)
+			, m_fov(3.14f/2.0f)
 		{}
 
 		bool Run(const Scene& scene, ImageModule::Image& image)
@@ -48,9 +48,9 @@ namespace Raytracer
 
 					const Point p = scene.Intersect(ray);
 
-					image.SetPixelComponent(x, m_height-y-1, 0, Math::Min(255.0*p.r, 255.0));
-					image.SetPixelComponent(x, m_height-y-1, 1, Math::Min(255.0*p.g, 255.0));
-					image.SetPixelComponent(x, m_height-y-1, 2, Math::Min(255.0*p.b, 255.0));
+					image.SetPixelComponent(x, m_height-y-1, 0, ImageModule::Component(Math::Min(255.0*p.r, 255.0)));
+					image.SetPixelComponent(x, m_height-y-1, 1, ImageModule::Component(Math::Min(255.0*p.g, 255.0)));
+					image.SetPixelComponent(x, m_height-y-1, 2, ImageModule::Component(Math::Min(255.0*p.b, 255.0)));
 				/*	image.SetPixelComponent(x, m_height-y-1, 0, 255.0*p.r);
 					image.SetPixelComponent(x, m_height-y-1, 1, 255.0*p.g);
 					image.SetPixelComponent(x, m_height-y-1, 2, 255.0*p.b);*/

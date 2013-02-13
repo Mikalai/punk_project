@@ -23,7 +23,7 @@ namespace GPU
 			GLenum m_internal_format;
 			GLenum m_internal_type;
 			GLuint m_texture_id;
-			System::Proxy<PixelBufferObject> m_pbo;
+			PixelBufferObject* m_pbo;
 
 			Texture2DImpl()
 				: m_texture_id(0)
@@ -33,6 +33,7 @@ namespace GPU
 				, m_format(0)
 				, m_index(-1)
 				, m_location(L"/")
+				, m_pbo(nullptr)
 			{
 				//Create(64, 64, GL_RED, 0);
 			}
@@ -84,7 +85,7 @@ namespace GPU
 
 			void Clear()
 			{
-				m_pbo.Reset(0);
+				VideoMemory::Instance()->FreePixelBuffer(m_pbo);
 
 				if (m_texture_id)
 				{

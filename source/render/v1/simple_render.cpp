@@ -9,9 +9,44 @@
 
 namespace Render
 {
-	SimpleRender::SimpleRender(System::Proxy<GPU::OpenGL::Driver> driver)
+	SimpleRender::SimpleRender(GPU::OpenGL::Driver* driver)
 		: m_driver(driver)
-	{}
+	{
+		m_rt = nullptr;
+		m_scene = nullptr;				
+		m_text = nullptr;
+		m_tc = nullptr;
+		m_gui_render = nullptr;
+
+		// next pointers should not be delete in destructor
+		m_root = nullptr;
+		m_skin_rc = nullptr;
+		m_context = nullptr;
+		m_solid_rc = nullptr;
+		m_textured_rc = nullptr;
+		m_gui_rc = nullptr;
+		m_terrain_rc = nullptr;
+
+	}
+
+	SimpleRender::~SimpleRender()
+	{
+		try
+		{
+			Clear();
+		}
+		catch(...)
+		{}
+	}
+
+	void SimpleRender::Clear()
+	{
+		safe_delete(m_rt);
+		safe_delete(m_scene);				
+		safe_delete(m_text);		
+		safe_delete(m_gui_render);
+		safe_delete(m_tc);
+	}
 
 	bool SimpleRender::Visit(Scene::CameraNode* node)
 	{
@@ -21,9 +56,10 @@ namespace Render
 		STATE.m_camera_position = node->GetCamera()->GetPosition();
 		STATE.m_camera = node->GetCamera();
 
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 				child->Apply(this);
 		}
 		return true;
@@ -32,17 +68,18 @@ namespace Render
 	bool SimpleRender::Visit(Scene::DebugTextureViewNode* node)
 	{
 		//RenderQuad(0, 0.8, 0.2, 0.2, Math::vec4(1,0,0,1));
-		RenderTexturedQuad(0, 0.8, 0.2, 0.2, node->GetWatchTexture());
+		RenderTexturedQuad(0, 0.8f, 0.2f, 0.2f, node->GetWatchTexture());
 		return true;
 	}
 
 	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
 	{				
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
-		System::Proxy<GPU::OpenGL::StaticMesh> mesh = node->GetStaticGeometry()->GetGPUBufferCache();// = GPU::OpenGL::StaticMeshManager::Instance()->Load(node->GetStorageName());		
+		GPU::OpenGL::StaticMesh* mesh = Cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
+
 		const Math::BoundingBox& bbox = mesh->GetBoundingBox();		
 		m_tc->Bind();
-		if (!STATE.m_rc.IsValid())
+		if (!STATE.m_rc)
 			STATE.m_rc = m_context;
 		STATE.m_rc->Begin();
 		STATE.m_rc->BindParameters(STATE);	
@@ -57,7 +94,7 @@ namespace Render
 	bool SimpleRender::Visit(Scene::SkinMeshNode* node)
 	{			
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
-		System::Proxy<Virtual::Armature> armature = STATE.m_armature;
+		Virtual::Armature* armature = STATE.m_armature;
 		//out_message() << "Mesh matrix: " << STATE.m_mesh_matrix_local.ToString() << std::endl;
 		//for (int i = 0; i < armature->GetBonesCount(); ++i)
 		//{
@@ -65,7 +102,7 @@ namespace Render
 		//	out_message() << bone->GetName() << ": " << std::endl << (STATE.m_armature_world * bone->GetAnimatedGlobalMatrix()).ToString() << std::endl;
 		//}
 		STATE.m_rc = m_skin_rc;
-		System::Proxy<GPU::OpenGL::SkinMesh> mesh = node->GetSkinGeometry()->GetGPUBufferCache();
+		GPU::OpenGL::SkinMesh* mesh = Cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
 		m_tc->Bind();		
 		STATE.m_rc->Begin();
 		STATE.m_rc->BindParameters(STATE);		
@@ -82,14 +119,12 @@ namespace Render
 		Virtual::Action::validate();
 		m_states.Push();	
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(1, 0, 0, 1));
-		System::Proxy<Virtual::Armature> armature = Virtual::Armature::find(node->GetStorageName());
-		System::Proxy<Virtual::Action> action = Virtual::Action::find(L"male_walk");
+		Virtual::Armature* armature = Virtual::Armature::find(node->GetStorageName());
+		Virtual::Action* action = Virtual::Action::find(L"male_walk");
 		for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
 		{
 			Virtual::Bone* bone = armature->GetBoneByIndex(i);
-			System::Proxy<Virtual::Animation> anim = action->Find(bone->GetName());
-			if (!anim.IsValid())
-				return (out_error() << "Can't get animation for " << bone->GetName() << std::endl, false);
+			Virtual::Animation* anim = Cast<Virtual::Animation*>(action->Find(bone->GetName()));
 			auto pos = anim->GetPosition(m_time);
 			auto rot = anim->GetRotation(m_time);			
 			Math::mat4 m = Math::mat4::CreateTranslate(pos) * Math::QuaternionToMatrix4x4(rot);
@@ -100,9 +135,10 @@ namespace Render
 		STATE.m_armature_world = STATE.m_local;
 		STATE.m_rc = m_skin_rc;
 
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 				if (!child->Apply(this))
 					return false;
 		}
@@ -115,8 +151,8 @@ namespace Render
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(1, 1, 0, 1));
 		m_states.Push();
 		STATE.m_rc = m_context;
-		System::Proxy<Virtual::Armature> armature = STATE.m_armature;
-		if (!armature.IsValid())
+		Virtual::Armature* armature = STATE.m_armature;
+		if (!armature)
 			return (out_error() << "It is impossible to process bone node without valid armature" << std::endl, false);
 
 		Virtual::Bone* bone = armature->GetBoneByName(node->GetName());
@@ -125,9 +161,10 @@ namespace Render
 
 		STATE.m_local *= bone->GetAnimatedGlobalMatrix();
 
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -139,9 +176,10 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::LightNode* node)
 	{
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 				if (!child->Apply(this))
 					return false;
 		}
@@ -154,15 +192,16 @@ namespace Render
 		m_states.Push();
 		STATE.m_material = Virtual::Material::find(node->GetStorageName());
 		//m_tc = m_tc;
-		m_tc->SetTexture(0, node->GetMaterial()->GetCache().m_diffuse_texture_cache);
-		m_tc->SetTexture(1, node->GetMaterial()->GetCache().m_normal_texture_cache);
+		m_tc->SetTexture(0, Cast<GPU::OpenGL::Texture2D*>(node->GetMaterial()->GetCache().m_diffuse_texture_cache));
+		m_tc->SetTexture(1, Cast<GPU::OpenGL::Texture2D*>(node->GetMaterial()->GetCache().m_normal_texture_cache));
 		STATE.m_diffuse_slot_0 = 0;
 		STATE.m_normal_slot = 1;
 		//STATE.m_rc = m_context;
 		//STATE.m_rc->Init();
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 				if (!child->Apply(this))
 					break;
 		}
@@ -172,9 +211,10 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::Node* node)
 	{
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 				if (!child->Apply(this))
 					break;
 		}
@@ -188,9 +228,10 @@ namespace Render
 		m_states.Push();
 		STATE.m_mesh_matrix_local = node->GetLocalMatrix();
 		STATE.m_local *= node->GetLocalMatrix();
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 				if (!child->Apply(this))
 					break;
 		}
@@ -207,9 +248,10 @@ namespace Render
 		if (Math::ClassifyPoint(STATE.m_local.Inversed() * pos, node->GetConvexShape()) != Math::Relation::INSIDE)
 		{
 			out_message() << "OUTSIDE" << std::endl;
-			for each (System::Proxy<Scene::PortalNode> portals in *node)
+			for each (auto o in *node)
 			{
-				if (portals.IsValid())
+				Scene::PortalNode* portals = As<Scene::PortalNode*>(o);
+				if (portals)
 				{
 					Math::mat4 matrix = STATE.m_view * STATE.m_local * node->GetLocalMatrix() * portals->GetLocalMatrix();
 					Math::Portal portal = matrix * portals->GetPortal();
@@ -220,9 +262,11 @@ namespace Render
 					if (relation != Math::Relation::NOT_VISIBLE)
 					{
 						STATE.m_clip_space = clip_space;
-						for each (System::Proxy<Scene::Node> child in *node)
+						for each (auto o in *node)
 						{
-							if (child.IsValid())
+							Scene::Node* child = As<Scene::Node*>(o);
+							if (child)
+
 							{
 								if (!child->Apply(this))
 									break;
@@ -235,9 +279,10 @@ namespace Render
 		else
 		{
 			out_message() << "INSIDE" << std::endl;
-			for each (System::Proxy<Scene::Node> child in *node)
+			for each (auto o in *node)
 			{
-				if (child.IsValid())
+				Scene::Node* child = As<Scene::Node*>(o);
+				if (child)
 					if (!child->Apply(this))
 						break;
 			}
@@ -274,14 +319,14 @@ namespace Render
 		STATE.m_diffuse_slot_1 = 2;
 		STATE.m_normal_slot = 3;
 
-		System::Proxy<Virtual::TerrainView> view = node->GetTerrainObserver()->GetTerrainView();
-		if (view.IsValid() && view->GetHeightMap()->IsValid())
+		Virtual::TerrainView* view = node->GetTerrainObserver()->GetTerrainView();
+		if (view && view->GetHeightMap()->IsValid())
 		{
 			//m_tc = m_tc;
 			m_tc->SetTexture(0, view->GetHeightMap());
-			m_tc->SetTexture(1, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache);
-			m_tc->SetTexture(2, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2);
-			m_tc->SetTexture(3, node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache);
+			m_tc->SetTexture(1, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
+			m_tc->SetTexture(2, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
+			m_tc->SetTexture(3, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
 
 			m_terrain_rc->Begin();
 			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());
@@ -353,7 +398,7 @@ namespace Render
 		m_states.Pop();
 	}
 
-	void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, const System::Proxy<GPU::OpenGL::Texture2D> texture)
+	void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, GPU::OpenGL::Texture2D* texture)
 	{
 		m_states.Push();
 		//	shift quad
@@ -399,7 +444,7 @@ namespace Render
 		STATE.m_text_slot = 0;
 
 		m_tc->SetTexture(0, s.GetTexture());
-		m_tc->SetTexture(1, System::Proxy<GPU::OpenGL::Texture2D>(0));
+		m_tc->SetTexture(1, nullptr);
 		m_tc->Bind();
 		m_gui_rc->Begin();
 		m_gui_rc->BindParameters(STATE);
@@ -416,7 +461,7 @@ namespace Render
 	{
 		m_time += 0.1f;
 		m_rt->Activate();			
-		if (m_scene.IsValid())
+		if (m_scene)
 		{
 			STATE.m_camera_position = m_scene->GetCameraNode()->GetCamera()->GetPosition();
 			STATE.m_projection = m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix();
@@ -425,10 +470,10 @@ namespace Render
 			STATE.m_lights = m_cooker.m_light_set;
 			m_scene->GetRootNode()->Apply(this);			
 		}
-		if (m_root.IsValid())
+		if (m_root)
 		{
 			m_gui_render->Begin(0, 0, m_driver->GetWindow()->GetWidth(), m_driver->GetWindow()->GetHeight());
-			m_gui_render->RenderWidget(m_root.Get());
+			m_gui_render->RenderWidget(m_root);
 			m_gui_render->End();
 		}
 		m_driver->SwapBuffers();
@@ -436,26 +481,26 @@ namespace Render
 		return true;
 	}
 
-	void SimpleRender::SetScene(System::Proxy<Scene::SceneGraph> scene)
+	void SimpleRender::SetScene(Scene::SceneGraph* scene)
 	{
 		m_terrain_slices = 63;
 		m_time = 0;
 		GPU::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
-		m_rt.Reset(new GPU::OpenGL::RenderTargetBackBuffer);
+		m_tc = new GPU::OpenGL::TextureContext;
+		m_rt = new GPU::OpenGL::RenderTargetBackBuffer;
 		m_rt->Init(&p);
 		m_scene = scene;
-		if (m_scene.IsValid())
+		if (m_scene)
 			m_scene->GetRootNode()->Apply(&m_cooker);		
 		m_context = GPU::AbstractRenderPolicy::find(GPU::RC_BUMP_MAPING);
-		m_tc.Reset(new GPU::OpenGL::TextureContext());
 		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLD_3D);
 		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TEXTURED_3D);
 		m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
 		m_skin_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SKINNING);
 		m_terrain_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TERRAIN);
-		m_text.Reset(new GPU::OpenGL::TextSurface);
+		m_text = new GPU::OpenGL::TextSurface;
 		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
-		m_gui_render.Reset(new GUIRender);		
+		m_gui_render = new GUIRender;		
 		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 5);	}
 
 	//void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture)

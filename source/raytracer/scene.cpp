@@ -49,15 +49,15 @@ namespace Raytracer
 		for (int i = 0; i < count; ++i)
 		{
 			SceneImpl::Object o;
-			o.m_sphere = Math::Sphere(Math::vec3(rnd.Uniform(-5.0f, 5.0f), rnd.Uniform(-5.0f, 5.0f), rnd.Uniform(-10.0f, -5.0f)), rnd.Uniform(1.0f, 3.0f));
-			o.m_diffuse.Set(rnd.Uniform(), rnd.Uniform(), rnd.Uniform(), 1);
+			o.m_sphere = Math::Sphere(Math::vec3(float(rnd.Uniform(-5.0f, 5.0f)), float(rnd.Uniform(-5.0f, 5.0f)), float(rnd.Uniform(-10.0f, -5.0f))), float(rnd.Uniform(1.0f, 3.0f)));
+			o.m_diffuse.Set(float(rnd.Uniform()), float(rnd.Uniform()), float(rnd.Uniform()), 1);
 			if (o.m_diffuse.Length() < 0.5f)
 			{
 				o.m_diffuse = Math::vec4(1,1,1,1) - o.m_diffuse;
 				o.m_diffuse[3] = 1.0f;
 			}
-			o.m_diffuse_factor = rnd.Uniform(0.5f, 0.8f);
-			o.m_fresnel_factor = rnd.Uniform(0.01f, 0.15f);
+			o.m_diffuse_factor = float(rnd.Uniform(0.5f, 0.8f));
+			o.m_fresnel_factor = float(rnd.Uniform(0.01f, 0.15f));
 			res.impl->Add(o);
 		}
 

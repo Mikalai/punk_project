@@ -2,7 +2,7 @@
 #define _H_PUNK_UTILITY_ANIMATION
 
 #include "../../system/object.h"
-#include "../../system/resource_manager.h"
+#include "../../system/aop/aop.h"
 #include "../../config.h"
 #include "animation_track.h"
 #include "../../math/vec3.h"
@@ -17,7 +17,7 @@ namespace Virtual
 {
 	enum AnimationType { ANIMATION_NONE, ANIMATION_OBJECT, ANIMATION_BONE };
 
-	class PUNK_ENGINE Animation : public System::Object
+	class PUNK_ENGINE Animation : public System::Object, public System::Aspect<Animation*, System::string>
 	{
 		AnimationTrack<Math::vec3> m_pos_track;
 		AnimationTrack<Math::quat> m_rot_track;
@@ -43,11 +43,9 @@ namespace Virtual
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
-		static System::Proxy<Animation> CreateFromFile(const System::string& path);
-		static System::Proxy<Animation> CreateFromStream(std::istream& stream);
+		static Animation* CreateFromFile(const System::string& path);
+		static Animation* CreateFromStream(std::istream& stream);
 	};
 }
-
-REGISTER_MANAGER(L"resource.animations", L"*.animation", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ANIMATION, Virtual, Animation, return, return);
 
 #endif

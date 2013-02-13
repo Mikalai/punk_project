@@ -4,7 +4,7 @@
 namespace Virtual
 {
 
-	TerrainProcessor::TerrainProcessor(System::Proxy<TerrainCell> cell)
+	TerrainProcessor::TerrainProcessor(TerrainCell* cell)
 	{
 		m_terrain_cell = cell;
 		m_data = 0;
@@ -30,7 +30,7 @@ namespace Virtual
 
 	System::StreamingStepResult TerrainProcessor::CopyToResource()
 	{
-		System::Proxy<TerrainData> terrain_data(new TerrainData);
+		TerrainData* terrain_data(new TerrainData);
 		terrain_data->SetData(m_data);
 		m_terrain_cell->SetDataCached(terrain_data);
 		return System::STREAM_OK;

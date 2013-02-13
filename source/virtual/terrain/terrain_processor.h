@@ -15,7 +15,7 @@ namespace Virtual
 
 		enum Result { RESULT_ERROR = 0, RESULT_TRY_AGAIN = 1, RESULT_OK = 2 };
 
-		TerrainProcessor(System::Proxy<TerrainCell> cell);
+		TerrainProcessor(TerrainCell* cell);
 
 		/**
 		*	When lock is called for terrain it looks for the suitable image cache
@@ -57,8 +57,8 @@ namespace Virtual
 		//	data and size from loader
 		void* m_data;
 		unsigned m_size;
-		//	Destination for data. It can be either created or reused
-		System::Proxy<TerrainCell> m_terrain_cell;
+		//	Destination for data. It can be either created or reused. Should not be deleted
+		TerrainCell* m_terrain_cell;
 		//	This is used as cache manager
 		
 	};

@@ -14,6 +14,7 @@ namespace Virtual
 	{
 	public:
 		Terrain();
+		virtual ~Terrain();
 
 		void SetNumBlocks(int value);
 		int GetNumBlocks() const { return m_core.m_num_blocks; }
@@ -37,11 +38,11 @@ namespace Virtual
 
 		bool AddOrUpdateCell(const TerrainCell& value);
 
-		System::Proxy<TerrainCell> GetCell(int x, int y) { return m_cells.At(y, x); }
-		const System::Proxy<TerrainCell> GetCell(int x, int y) const { return m_cells.At(y, x); }
+		TerrainCell* GetCell(int x, int y) { return m_cells.At(y, x); }
+		const TerrainCell* GetCell(int x, int y) const { return m_cells.At(y, x); }
 
-		System::Proxy<Material> GetMaterial() { return m_material; }
-		void SetMaterial(System::Proxy<Material> value) { m_material = value; }
+		Material* GetMaterial() { return m_material; }
+		void SetMaterial(Material* value) { m_material = value; }
 
 	private:
 
@@ -58,9 +59,13 @@ namespace Virtual
 		};
 
 		Core m_core;
-		Math::Matrix<System::Proxy<TerrainCell>> m_cells;
-		System::Proxy<Material> m_material;
+
+		//	should be destroyed
+		Math::Matrix<TerrainCell*> m_cells;
+		Material* m_material;
 	};
+
+	typedef Terrain* TerrainRef;
 }
 
 #endif	//	_H_PUNK_VIRTUAL_TERRAIN

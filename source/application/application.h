@@ -7,6 +7,7 @@
 #include "application_config.h"
 #include "../gui/gui_adapter.h"
 #include "../gui/interface.h"
+#include "../physics/interface.h"
 
 namespace Punk
 {
@@ -16,9 +17,10 @@ namespace Punk
 	public:
 		Application();	
 		virtual ~Application();
-		System::Proxy<System::Window> GetWindow();
-		System::Proxy<System::EventManager> GetEventManager();
-		System::Proxy<GPU::OpenGL::Driver> GetDriver();
+		System::Window* GetWindow();
+		System::EventManager* GetEventManager();
+		GPU::OpenGL::Driver* GetDriver();
+		Virtual::TerrainManager* GetTerrainManager();
 		GUI::Manager* GetGUIManager();
 
 		int Run();		
@@ -49,9 +51,11 @@ namespace Punk
 		virtual void Init(const Config& value);
 
 	private:
-		System::Proxy<System::Window> m_window;
-		System::Proxy<System::EventManager> m_event_manager;
-		System::Proxy<GPU::OpenGL::Driver> m_video_driver;
+		System::Window* m_window;
+		System::EventManager* m_event_manager;
+		GPU::OpenGL::Driver* m_video_driver;
+		Physics::BulletSimulator* m_simulator;
+		Virtual::TerrainManager* m_terrain_manager;
 
 		System::Timer m_timer;	
 

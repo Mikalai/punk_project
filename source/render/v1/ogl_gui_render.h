@@ -10,6 +10,7 @@ namespace Render
 	{
 	public:
 		GUIRender();
+		virtual ~GUIRender();
 		virtual void Begin(int x, int y, int width, int height);
 		virtual void End();
 		virtual void RenderWidget(const GUI::Widget* widget);	
@@ -19,10 +20,17 @@ namespace Render
 		//virtual void RenderTabWidget(const GUI::TabWidget* lb);
 		//virtual void RenderBalloon(const GUI::Balloon* lb);
 	private:
+		void Clear();
+
+	private:
 		Math::vec4 m_selection_color_delta;
-		System::Proxy<GPU::AbstractRenderPolicy> m_rc;
-		System::Proxy<GPU::OpenGL::TextureContext> m_tc;
 		System::StateManager<GPU::CoreState> m_states;
+
+		//	next pointers should be destroyed in destructor		
+		GPU::OpenGL::TextureContext* m_tc;		
+
+		//	next pointers should not be destroyed in destructor
+		GPU::AbstractRenderPolicy* m_rc;		
 	};
 }
 

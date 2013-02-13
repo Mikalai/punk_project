@@ -17,28 +17,22 @@ namespace Scene
 		virtual bool Load(std::istream& stream);
 		virtual ~ArmatureNode();		
 
-		static System::Proxy<ArmatureNode> CreateFromFile(const System::string& path);
-		static System::Proxy<ArmatureNode> CreateFromStream(std::istream& stream);
+		static ArmatureNode* CreateFromFile(const System::string& path);
+		static ArmatureNode* CreateFromStream(std::istream& stream);
 			
 		virtual bool Apply(AbstractVisitor* visitor);
 
-		void SetArmature(System::Proxy<Virtual::Armature> value);
-		System::Proxy<Virtual::Armature> GetArmature();
-
-		void SetArmatureName(const System::string& value) { m_armature_name = value; }
-		const System::string& GetArmatureName() const { return m_armature_name ; }
+		void SetArmature(Virtual::Armature* value);
+		Virtual::Armature* GetArmature();
 
 	private:
 
-		System::string m_armature_name;
-		System::Proxy<Virtual::Armature> m_armature;
+		Virtual::Armature* m_armature;
 
 	private:
 		ArmatureNode(const ArmatureNode&);
 		ArmatureNode& operator = (const ArmatureNode&);
 	};
 }
-
-REGISTER_MANAGER(L"resource.armature_nodes", L"*.armature_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE_NODE, Scene, ArmatureNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_ARMATURE_NODE

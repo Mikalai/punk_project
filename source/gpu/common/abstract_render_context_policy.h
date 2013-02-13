@@ -16,7 +16,7 @@ namespace GPU
 	RC_SKINNING,
 	RC_BUMP_MAPING};
 
-	class PUNK_ENGINE AbstractRenderPolicy : public System::Aspect<System::Proxy<AbstractRenderPolicy>, RenderPolicySet>
+	class PUNK_ENGINE AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
 	{
 	public:
 		AbstractRenderPolicy();

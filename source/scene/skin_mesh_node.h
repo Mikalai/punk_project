@@ -19,15 +19,13 @@ namespace Scene
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
-		static System::Proxy<SkinMeshNode> CreateFromFile(const System::string& path);
-		static System::Proxy<SkinMeshNode> CreateFromStream(std::istream& stream);
+		SkinMeshNode* CreateFromFile(const System::string& path);
+		SkinMeshNode* CreateFromStream(std::istream& stream);
 
 		virtual bool Apply(AbstractVisitor* visitor);
 
-		System::Proxy<Virtual::SkinGeometry> GetSkinGeometry();
+		Virtual::SkinGeometry* GetSkinGeometry();
 	};
 }
-
-REGISTER_MANAGER(L"resource.skin_mesh_nodes", L"*.skin_mesh_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SKIN_MESH_NODE, Scene, SkinMeshNode, return, return);
 
 #endif	//_H_PUNK_SCENE_SKINE_MESH_NODE

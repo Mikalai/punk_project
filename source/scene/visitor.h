@@ -17,7 +17,7 @@ namespace Scene
 	class DebugTextureViewNode;
 	class TerrainNode;
 
-	class AbstractVisitor
+	class PUNK_ENGINE AbstractVisitor
 	{
 	public:
 		virtual bool Visit(CameraNode* node) = 0;

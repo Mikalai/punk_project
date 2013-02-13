@@ -24,6 +24,25 @@ namespace GPU { namespace OpenGL { class Texture2D; } }
 namespace Virtual
 {
 	class Terrain;
+	class TerrainManager;
+
+	struct TerrainViewDesc
+	{
+		//	size of the view in meters of game world
+		int view_size;
+		// size of the cell
+		int block_size;
+		//	scale
+		float block_scale;
+		//	last world positon of the view center
+		Math::vec2 position;
+		//	terrain scheme can be taken from here
+		Terrain* terrain;
+		//	accessor to the curre manager
+		TerrainManager* manager;
+		//	threshold for initating data streaming into the view
+		float threshold;
+	};
 
 	class PUNK_ENGINE TerrainView
 	{
@@ -31,55 +50,49 @@ namespace Virtual
 		/**
 		*	Information about position should be recieved from observer
 		*/
-		TerrainView(int view_size, int block_size, float block_scale, const Math::vec2 position, System::Proxy<Terrain> terrain);
+		TerrainView(const TerrainViewDesc& desc);
 		~TerrainView();
 		
-		int GetViewSize() const { return m_view_size; }
+		int GetViewSize() const { return m_desc.view_size; }
 
 		void UpdatePosition(const Math::vec2& value);
 		void SetUpdateThreshold(float value);
 		
-		System::Proxy<GPU::OpenGL::Texture2D> GetHeightMap() { return m_height_map_front; }
+		GPU::OpenGL::Texture2D* GetHeightMap() { return m_height_map_front; }
 		void* GetViewData() { return m_front_buffer; }
 
-		System::Proxy<Terrain> GetTerrain() { return m_terrain; }
+		Terrain* GetTerrain() { return m_desc.terrain; }
 
-		const Math::vec2& GetPosition() const { return m_position; }
+		const Math::vec2& GetPosition() const { return m_desc.position; }
 
 	private:
 		void InitiateAsynchronousUploading();
 		static void OnEnd(void* data);
 
-		// size of the cell
-		int m_block_size;
-		//	scale
-		float m_block_scale;
-		//	size of the view in meters of game world
-		int m_view_size;
+		//	some data is stored here
+		TerrainViewDesc m_desc;		
 		//	front buffer that is used for physics and rendering
 		void* m_front_buffer;
 		//	back buffer thst is used for asynchronous uploading dat from cells
 		void* m_back_buffer;
 		//	last world positon of the view center
 		Math::vec2 m_position_back;
-		//	last world positon of the view center
-		Math::vec2 m_position;
 		//	Holds unprocessed last position;
 		Math::vec2 m_last_unprocessed;
-		//	threshold for initating data streaming into the view
-		float m_threshold;
 		//	Height map for rendering is stored here
-		System::Proxy<GPU::OpenGL::Texture2D> m_height_map_front;
+		GPU::OpenGL::Texture2D* m_height_map_front;
 		//	Height map for asyncloading is stored here
-		System::Proxy<GPU::OpenGL::Texture2D> m_height_map_back;
+		GPU::OpenGL::Texture2D* m_height_map_back;
 		//	flag that indicates that uploading is in process
 		bool m_loading;
 		//	holds last update result
 		unsigned m_result;
-		System::Proxy<Terrain> m_terrain;
 		//	
 		bool m_init;
 	};
+
+	typedef TerrainView* TerrainViewRef;
+
 }
 
 #endif

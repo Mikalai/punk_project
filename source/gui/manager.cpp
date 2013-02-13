@@ -8,7 +8,7 @@
 
 namespace GUI
 {
-	std::auto_ptr<Manager> Manager::m_instance;
+	std::unique_ptr<Manager> Manager::m_instance;
 	
 	Manager* Manager::Instance()
 	{
@@ -51,6 +51,9 @@ namespace GUI
 
 	Manager::~Manager()
 	{
+		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); ++it)
+			safe_delete(*it);
+
 		rootWidgets.clear();
 	}
 
@@ -69,7 +72,7 @@ namespace GUI
 		m_render = render;
 	}
 
-	void Manager::AddRootWidget(System::Proxy<Widget> widget)
+	void Manager::AddRootWidget(Widget* widget)
 	{
 		widget->SetManager(this);
 		rootWidgets.push_back(widget);
@@ -183,9 +186,9 @@ namespace GUI
 	void Manager::OnMouseMove(System::Event* event)
 	{
 		System::MouseMoveEvent* e = static_cast<System::MouseMoveEvent*>(event);
-		for each(System::Proxy<Widget> root in rootWidgets)
+		for each(auto root in rootWidgets)
 		{
-			if (!root.IsValid())
+			if (!root)
 				continue;
 
 			if (!root->IsVisible() || !root->IsEnabled())
@@ -196,14 +199,14 @@ namespace GUI
 			if (!wasIn && isIn)
 			{
 				MouseEnterEvent* new_event = new MouseEnterEvent;
-				new_event->anyData = root.Get();
+				new_event->anyData = root;
 				m_adapter->OnMouseEnterEvent(new_event);
 			}
 
 			if (wasIn && !isIn)
 			{
 				MouseLeaveEvent* new_event = new MouseLeaveEvent;
-				new_event->anyData = root.Get();
+				new_event->anyData = root;
 				m_adapter->OnMouseLeaveEvent(new_event);
 			}
 
@@ -217,9 +220,9 @@ namespace GUI
 	void Manager::OnIdle(System::Event* event)
 	{		
 		System::IdleEvent* e = static_cast<System::IdleEvent*>(event);
-		for each(System::Proxy<Widget> root in rootWidgets)
+		for each(auto root in rootWidgets)
 		{
-			if (!root.IsValid())
+			if (!root)
 				continue;
 			root->OnIdle(e);			
 		}
@@ -234,9 +237,9 @@ namespace GUI
 	void Manager::OnResize(System::Event* event)
 	{
 		System::WindowResizeEvent* e = static_cast<System::WindowResizeEvent*>(event);
-		for each(System::Proxy<Widget> root in rootWidgets)
+		for each(auto root in rootWidgets)
 		{
-			if (!root.IsValid())
+			if (!root)
 				continue;
 			root->OnResize(e);			
 			//for each(System::Proxy<Widget> child in *root)

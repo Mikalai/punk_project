@@ -2,11 +2,11 @@
 
 namespace Math
 {
-	MathError::MathError() : std::exception(), m_w_what(0)
+	MathError::MathError() : m_w_what(0)
 	{
 	}
 
-	MathError::MathError(const wchar_t* message) : std::exception(), m_w_what(message) {}
+	MathError::MathError(const wchar_t* message) : m_w_what(message) {}
 
 	MathError::~MathError()
 	{

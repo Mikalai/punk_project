@@ -7,7 +7,7 @@
 namespace Virtual { class SkinGeometry; }
 namespace Virtual { class Armature; }
 
-namespace Math { template<class T> class Vector4; }
+namespace Math { class vec4; }
 
 namespace GPU
 {
@@ -37,13 +37,13 @@ namespace GPU
 			virtual bool Save(std::ostream& stream) const;
 			virtual bool Load(std::istream& stream);
 
-			bool Cook(const System::Proxy<Virtual::SkinGeometry> mesh, const System::Proxy<Virtual::Armature> armature);	
+			bool Cook(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature);	
 
-			static System::Proxy<SkinMesh> CreateFromFile(const System::string& path);
-			static System::Proxy<SkinMesh> CreateFromStream(std::istream& stream);
+			static SkinMesh* CreateFromFile(const System::string& path);
+			static SkinMesh* CreateFromStream(std::istream& stream);
 
 		protected:				
-			bool CookOneVertexWithBone(const System::Proxy<Virtual::SkinGeometry> mesh, const System::Proxy<Virtual::Armature> armature, int index, Math::Vector4<float>& bone, Math::Vector4<float>& weight) const;
+			bool CookOneVertexWithBone(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature, int index, Math::vec4& bone, Math::vec4& weight) const;
 		};
 
 		typedef SkinMesh* SkinnedEntityRef;

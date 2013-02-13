@@ -94,7 +94,7 @@ namespace GPU
 					SetUniformVector3f(uLightDirection, &v.Normalized()[0]);
 				}
 
-				if (pparams.m_material.IsValid())
+				if (pparams.m_material)
 					SetUniformVector4f(uDiffuseColor, &pparams.m_material->GetDiffuseColor()[0]);
 				else
 				{

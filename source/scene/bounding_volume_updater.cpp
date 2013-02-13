@@ -6,13 +6,18 @@
 namespace Scene
 {
 
+	BoundingVolumeUpdater::BoundingVolumeUpdater()
+		: m_scene(nullptr)
+	{}
+
 	bool BoundingVolumeUpdater::Visit(Scene::CameraNode* node)
 	{
 		m_states.Push();
 
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Node* child = As<Node*>(o);
+			if (child)
 				child->Apply(this);
 		}
 		return true;
@@ -20,14 +25,15 @@ namespace Scene
 
 	bool BoundingVolumeUpdater::Visit(Scene::StaticMeshNode* node)
 	{		
-		System::Proxy<GPU::OpenGL::StaticMesh> mesh = node->GetStaticGeometry()->GetGPUBufferCache();// = OpenGL::StaticMeshManager::Instance()->Load(node->GetStorageName());	
+		GPU::OpenGL::StaticMesh* mesh = dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
+
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		return true;
 	}
 
 	bool BoundingVolumeUpdater::Visit(Scene::SkinMeshNode* node)
 	{				
-		System::Proxy<GPU::OpenGL::SkinMesh> mesh = node->GetSkinGeometry()->GetGPUBufferCache();// = OpenGL::SkinMeshManager::Instance()->Load(node->GetStorageName());	
+		GPU::OpenGL::SkinMesh* mesh = dynamic_cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		return true;
 		return true;
@@ -36,15 +42,16 @@ namespace Scene
 	bool BoundingVolumeUpdater::Visit(Scene::ArmatureNode* node)
 	{				
 		m_states.Push();	
-		System::Proxy<Virtual::Armature> armature = Virtual::Armature::find(node->GetStorageName());
+		Virtual::Armature* armature = Virtual::Armature::find(node->GetStorageName());
 
 		m_states.CurrentState()->Get().m_armature = armature;
 		m_states.CurrentState()->Get().m_armature_world = m_states.CurrentState()->Get().m_local;
 
 		bool was = false;
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -67,9 +74,9 @@ namespace Scene
 	bool BoundingVolumeUpdater::Visit(Scene::BoneNode* node)
 	{
 		m_states.Push();
-		System::Proxy<Virtual::Armature> armature = m_states.CurrentState()->Get().m_armature;
-		if (!armature.IsValid())
-			return (out_error() << "It is impossible to process bone node without valid armature" << std::endl, false);
+		Virtual::Armature* armature = m_states.CurrentState()->Get().m_armature;
+		if (!armature)
+			throw System::PunkInvalidArgumentException(L"It is impossible to process bone node without valid armature");
 
 		Virtual::Bone* bone = armature->GetBoneByName(node->GetName());
 		if (!bone)
@@ -78,9 +85,10 @@ namespace Scene
 		m_states.CurrentState()->Get().m_local *= bone->GetAnimatedGlobalMatrix();
 
 		bool was = false;
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -103,9 +111,10 @@ namespace Scene
 	bool BoundingVolumeUpdater::Visit(Scene::LightNode* node)
 	{
 		bool was = false;
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -128,9 +137,10 @@ namespace Scene
 	{
 		m_states.Push();		
 		bool was = false;
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -153,9 +163,10 @@ namespace Scene
 	bool BoundingVolumeUpdater::Visit(Scene::Node* node)
 	{
 		bool was = false;
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -178,9 +189,10 @@ namespace Scene
 		m_states.Push();
 		m_states.CurrentState()->Get().m_local *= node->GetLocalMatrix();
 		bool was = false;
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -205,9 +217,10 @@ namespace Scene
 		m_states.Push();
 		m_states.CurrentState()->Get().m_local *= node->GetLocalMatrix();
 		bool was = false;
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -232,9 +245,10 @@ namespace Scene
 		m_states.Push();
 		m_states.CurrentState()->Get().m_local.Identity();			
 		bool was = false;
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (child.IsValid())
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
 			{
 				if (!child->Apply(this))
 					return false;
@@ -261,11 +275,11 @@ namespace Scene
 
 	void BoundingVolumeUpdater::Update()
 	{
-		if (m_scene.IsValid())
+		if (m_scene)
 			m_scene->GetRootNode()->Apply(this);
 	}
 
-	void BoundingVolumeUpdater::SetScene(System::Proxy<Scene::SceneGraph> scene)
+	void BoundingVolumeUpdater::SetScene(Scene::SceneGraph* scene)
 	{
 		m_scene = scene;
 	}

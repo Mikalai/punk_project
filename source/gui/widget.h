@@ -86,27 +86,27 @@ namespace GUI
 		void Store(System::Buffer& buffer) {}
 		void Restore(System::Buffer& buffer) {}
 
-		System::Proxy<GPU::OpenGL::Texture2D> GetTextTexture() const;
-		void SetBackgroundTexture(System::Proxy<GPU::OpenGL::Texture2D> texture);
-		System::Proxy<GPU::OpenGL::Texture2D> GetBackgroundTexture() const;
+		const GPU::OpenGL::Texture2D* GetTextTexture() const;
+		void SetBackgroundTexture(GPU::OpenGL::Texture2D* texture);
+		const GPU::OpenGL::Texture2D* GetBackgroundTexture() const;
 
 		const Manager* GetManager() const;
 		Manager* GetManager();
 		void SetManager(Manager* manager);
 
 		/// Work with color goes here
-		Math::Vector4<float>& BackColor0();
-		Math::Vector4<float>& BackColor1();
-		Math::Vector4<float>& TextColor0();
-		Math::Vector4<float>& TextColor1();
+		Math::vec4& BackColor0();
+		Math::vec4& BackColor1();
+		Math::vec4& TextColor0();
+		Math::vec4& TextColor1();
 
-		const Math::Vector4<float>& BackColor0() const;
-		const Math::Vector4<float>& BackColor1() const;
-		const Math::Vector4<float>& TextColor0() const;
-		const Math::Vector4<float>& TextColor1() const;
+		const Math::vec4& BackColor0() const;
+		const Math::vec4& BackColor1() const;
+		const Math::vec4& TextColor0() const;
+		const Math::vec4& TextColor1() const;
 
-		const Math::Vector4<float>& TextColor() const;
-		const Math::Vector4<float>& BackColor() const;
+		const Math::vec4& TextColor() const;
+		const Math::vec4& BackColor() const;
 
 		/*********************************************************************/
 		/*	Handlers
@@ -170,16 +170,17 @@ namespace GUI
 		System::string m_text;
 		System::string m_font;
 
-		Widget* m_next_widget;	
-		Widget* m_prev_widget;
 
-		System::Proxy<GPU::OpenGL::TextSurface> m_text_texture;
-		System::Proxy<GPU::OpenGL::Texture2D> m_background_texture;
+		//	should be deleted in destructor
+		GPU::OpenGL::TextSurface* m_text_texture;
 
+		//	should be deleted outside widget
+		GPU::OpenGL::Texture2D* m_background_texture;
 		void* m_any_data;
-
 		Widget* m_parent;
 		Manager* m_manager;
+		Widget* m_next_widget;	
+		Widget* m_prev_widget;
 
 		/******************************************************************/
 		/*			LIST OF HANDLERS
@@ -210,7 +211,7 @@ namespace GUI
 		virtual bool OnMouseWheel(System::MouseWheelEvent* event);
 		virtual bool OnKeyChar(System::KeyCharEvent* event);	
 		virtual bool OnKeyDown(System::KeyDownEvent* event);	
-		virtual bool OnAdd(System::Proxy<System::Object> object);
+		virtual bool OnAdd(System::Object* object);
 		//virtual bool OnRemove(System::Proxy<System::Object> object);
 	};
 }

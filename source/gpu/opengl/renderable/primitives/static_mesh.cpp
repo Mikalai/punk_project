@@ -1,7 +1,6 @@
 #include <vector>
 #include <fstream>
 
-#include "../../../../system/logger.h"
 #include "../../../../math/helper.h"
 #include "../../../../virtual/data/static_geometry.h"
 
@@ -17,49 +16,49 @@ namespace GPU
 			SetType(System::ObjectType::STATIC_MESH);
 		}
 
-		System::Proxy<StaticMesh> StaticMesh::CreateFromFile(const System::string& path)
+		StaticMesh* StaticMesh::CreateFromFile(const System::string& path)
 		{
 			std::ifstream stream(path.Data(), std::ios_base::binary);
 			if (!stream.is_open())
-				return (out_error() << "Can't load static mesh from " << path << std::endl, System::Proxy<StaticMesh>(nullptr));
-			System::Proxy<StaticMesh> mesh(new StaticMesh);
+				throw System::PunkInvalidArgumentException(L"Can't load static mesh from " + path);
+			std::unique_ptr<StaticMesh> mesh(new StaticMesh);
 			mesh->Load(stream);
-			return mesh;
+			return mesh.release();
 		}
 
-		System::Proxy<StaticMesh> StaticMesh::CreateFromStream(std::istream& stream)
+		StaticMesh* StaticMesh::CreateFromStream(std::istream& stream)
 		{
-			System::Proxy<StaticMesh> mesh(new StaticMesh);
+			std::unique_ptr<StaticMesh> mesh(new StaticMesh);
 			mesh->Load(stream);
-			return mesh;
+			return mesh.release();
 		}
 
 		bool StaticMesh::Save(std::ostream& stream) const
 		{
 			if (!VertexArrayObject2<PrimitiveType, VertexType>::Save(stream))
-				return (out_error() << "Can't save static mesh" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't save static mesh");
 			if (!Object::Save(stream))
-				return (out_error() << "Can't save static mesh" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't save static mesh");
 			return true;
 		}
 
 		bool StaticMesh::Load(std::istream& stream)
 		{
 			if (!VertexArrayObject2<PrimitiveType, VertexType>::Load(stream))
-				return (out_error() << "Can't load static mesh" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't load static mesh");
 			if (!Object::Load(stream))
-				return (out_error() << "Can't load static mesh" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't load static mesh");
 			return true;	
 		}
 
-		bool StaticMesh::Cook(System::Proxy<Virtual::StaticGeometry> mesh)
+		bool StaticMesh::Cook(Virtual::StaticGeometry* mesh)
 		{						
 			if (mesh->GetVertices().empty())
-				return (out_error() << "Can't create static mesh from empty vertex list in mesh descriptor" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't create static mesh from empty vertex list in mesh descriptor");
 			if (mesh->GetTextureMeshes().empty())
-				return (out_error() << "Can't create static mesh from mesh descriptor with empty texture coordinates list" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't create static mesh from mesh descriptor with empty texture coordinates list");
 			if (mesh->GetNormals().empty())
-				return (out_error() << "Can't create static mesh from mesh descriptor with empty normals list" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't create static mesh from mesh descriptor with empty normals list");
 
 			std::vector<unsigned> ib(mesh->GetFaces().size()*3);
 

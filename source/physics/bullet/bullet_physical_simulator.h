@@ -1,8 +1,8 @@
 #ifndef _H_BULLET_PHYSICAL_SIMULATOR
 #define _H_BULLET_PHYSICAL_SIMULATOR
 
-#define _STATIC_CPPLIB
 #include <vector>
+#include <memory>
 #include <bullet/LinearMath/btAlignedObjectArray.h>
 #include "../physical_simulator.h"
 #include "../../system/smart_pointers/module.h"
@@ -22,35 +22,29 @@ class btCompoundShape;
 class btRigidBody;
 class btGhostObject;
 
-namespace Phyiscs
+namespace Physics
 {
 	class BulletRigidBody;
 
-	class BulletPhysicalSimulator : public PhysicalSimulator
+	class PUNK_ENGINE BulletSimulator
 	{
-		std::auto_ptr<btCollisionConfiguration> m_collision_configuration;
-		std::auto_ptr<btCollisionDispatcher> m_dispatcher;
-		std::auto_ptr<btBroadphaseInterface> m_broad_phase_interface;
-		std::auto_ptr<btSequentialImpulseConstraintSolver> m_solver;
-		std::auto_ptr<btDiscreteDynamicsWorld> m_dynamics_world;
-		btAlignedObjectArray<btCollisionShape*> m_collision_shapes;
-
 	public:
-		virtual void Update(float delta);
 		virtual void Init();
 		virtual void Clear();
-		virtual RigidBody* CreateRigidBody(RigidBodyDesc& desc);
-		virtual void CreateDynamicShapeBody(Object& object);
-		virtual void SetGravity(const Math::Vector3<float>& g);
-		virtual void SetTerrain(Terrain& terrain);
-		virtual void SetRender(void* drawer);
-		virtual void Draw();
-		virtual ~BulletPhysicalSimulator();		
-		void DestroyRigidBody(btRigidBody* body_ptr);
-		void DestroyGhostBody(btGhostObject* ghost);
+		virtual void Update(float delta);
+		virtual void SetGravity(const Math::vec3& g);
+		virtual ~BulletSimulator();		
+
+		btDiscreteDynamicsWorld* GetWorld() { return m_dynamics_world; }
+
 	private:
-		void CreateConvexHulls(Object& object);
-		void CombineConvexHulls(btCompoundShape* result, Object& object, const Math::Matrix4x4<float>& parent);
+		btCollisionConfiguration* m_collision_configuration;
+		btCollisionDispatcher* m_dispatcher;
+		btBroadphaseInterface* m_broad_phase_interface;
+		btSequentialImpulseConstraintSolver* m_solver;
+		btDiscreteDynamicsWorld* m_dynamics_world;
+
+		btAlignedObjectArray<btCollisionShape*> m_collision_shapes;
 	};
 }
 

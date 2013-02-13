@@ -1,6 +1,6 @@
+#include <memory>
+#include <fstream>
 #include "transform_node.h"
-
-IMPLEMENT_MANAGER(L"resource.transform_nodes", L"*.transform_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::TRANSFORM_NODE, Scene, TransformNode);
 
 namespace Scene
 {
@@ -11,46 +11,33 @@ namespace Scene
 
 	bool TransformNode::Save(std::ostream& stream) const
 	{
-		if (!Node::Save(stream))
-			return (out_error() << "Can't save TransformNode" << std::endl, false);
-		
-		if (!m_local.Save(stream))
-			return (out_error() << "Can't save TransformNode" << std::endl, false);
-
-		if (!m_global.Save(stream))
-			return (out_error() << "Can't save TransformNode" << std::endl, false);
-
+		Node::Save(stream);
+		m_local.Save(stream);
+		m_global.Save(stream);
 		return true;
 	}
 
 	bool TransformNode::Load(std::istream& stream)
 	{
-		if (!Node::Load(stream))
-			return (out_error() << "Can't save TransformNode" << std::endl, false);
-		
-		if (!m_local.Load(stream))
-			return (out_error() << "Can't save TransformNode" << std::endl, false);
-
-		if (!m_global.Load(stream))
-			return (out_error() << "Can't save TransformNode" << std::endl, false);
-
+		Node::Load(stream);
+		m_local.Load(stream);
+		m_global.Load(stream);
 		return true;
 	}
 
-	System::Proxy<TransformNode> TransformNode::CreateFromFile(const System::string& path)
+	TransformNode* TransformNode::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<TransformNode>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<TransformNode> TransformNode::CreateFromStream(std::istream& stream)
+	TransformNode* TransformNode::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<TransformNode> node(new TransformNode);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<TransformNode>(nullptr));
-		return node;
+		std::unique_ptr<TransformNode> node(new TransformNode);
+		node->Load(stream);
+		return node.release();
 	}
 
 	bool TransformNode::Apply(AbstractVisitor* visitor)

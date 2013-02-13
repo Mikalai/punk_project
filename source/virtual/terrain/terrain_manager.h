@@ -11,13 +11,20 @@ namespace Virtual
 	class TerrainObserver;
 	class TerrainView;
 
+	struct TerrainManagerDesc
+	{
+		unsigned memory_usage;
+		float view_size;
+		float threshold;
+	};
+
 	class PUNK_ENGINE TerrainManager 
 	{
 	public:
 		/**
 		*	When created it is possible to define maximal allowed memory consumption
 		*/
-		TerrainManager(unsigned max_memory = std::numeric_limits<unsigned>::max());
+		TerrainManager(const TerrainManagerDesc& desc);
 		~TerrainManager();
 		
 		/**
@@ -30,24 +37,19 @@ namespace Virtual
 		//System::Proxy<TerrainData> RetreiveTerrainData();
 		//System::Proxy<TerrainData> RetreiveTerrainData();
 
-		static TerrainManager* Instance();
-		static void Destroy();
-
-		System::Proxy<Terrain> GetTerrain() { return m_terrain; }
-		System::WeakRef<TerrainObserver> CreateTerrainObserver(const Math::vec3& start_position);
+		Terrain* GetTerrain() { return m_terrain; }
+		TerrainObserver* CreateTerrainObserver(const Math::vec3& start_position);
 
 		const System::string GetCurrentMap() { return m_current_map; }
 
 	private:
-		static std::unique_ptr<TerrainManager> m_instance;
 		bool Init(const Terrain& terrain);
 		bool Clear();
 
 	private:
-		System::Proxy<Terrain> m_terrain;
-		std::vector<System::Proxy<TerrainObserver>> m_observers;
-		std::vector<System::Proxy<TerrainView>> m_views;
-		unsigned m_max_memory;
+		TerrainRef m_terrain;
+		std::vector<TerrainObserver*> m_observers;
+		TerrainManagerDesc m_desc;
 		System::string m_current_map;
 	};
 }

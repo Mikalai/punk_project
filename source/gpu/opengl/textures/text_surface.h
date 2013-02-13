@@ -3,12 +3,13 @@
 
 #include "../../../config.h"
 #include "../../../system/object.h"
-#include "texture2d.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
+		class Texture2D;
+
 		class PUNK_ENGINE TextSurface : public System::Object
 		{
 		public:
@@ -17,13 +18,15 @@ namespace GPU
 			enum TextDirection { DIRECTION_HORIZONTAL, DIRECTION_VERTICAL };
 
 			TextSurface();
+			virtual ~TextSurface();
+
 			void SetSize(int width, int height);
 			void SetAutoWrapFlag(bool value) { m_auto_wrap = value; }
 			bool GetAutoWrapFlag(bool value) { return m_auto_wrap; }
 			bool SetText(const System::string& text);
 			const System::string& GetText() const { return m_text; }
-			System::Proxy<Texture2D> GetTexture() { return m_texture; }
-			const System::Proxy<Texture2D> GetTexture() const { return m_texture; }
+			Texture2D* GetTexture() { return m_texture; }
+			const Texture2D* GetTexture() const { return m_texture; }
 
 			virtual bool Save(std::ostream& stream) const;
 			virtual bool Load(std::istream& stream);
@@ -46,8 +49,10 @@ namespace GPU
 			bool m_auto_wrap;
 			int m_font_size;
 			System::string m_text;		
-			System::string m_font;
-			System::Proxy<Texture2D> m_texture;
+			System::string m_font;			
+
+			//	should be destroyed in destructor
+			Texture2D* m_texture;
 
 			int CalculateTextXOffset(const System::string& text);
 			int CalculateTextYOffset(const System::string& text);

@@ -1,13 +1,10 @@
 #include <iostream>
-#include "../system/logger.h"
 #include "../string/string.h"
 #include "../virtual/module.h"
 #include "../system/object.h"
 #include "../audio/punk_audio.h"
 
 #include "node.h"
-
-//IMPLEMENT_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node);
 
 namespace Scene
 {
@@ -22,8 +19,7 @@ namespace Scene
 
 	bool Node::Save(std::ostream& stream) const
 	{		
-		if (!System::CompoundObject::Save(stream))
-			return (out_error() << "Can't save node " << GetName() << std::endl, false);
+		System::CompoundObject::Save(stream);
 
 		m_bbox.Save(stream);
 
@@ -32,8 +28,7 @@ namespace Scene
 
 	bool Node::Load(std::istream& stream)
 	{
-		if (!System::CompoundObject::Load(stream))
-			return (out_error() << "Can't load node " << std::endl, false);
+		System::CompoundObject::Load(stream);
 
 		m_bbox.Load(stream);
 
@@ -42,29 +37,29 @@ namespace Scene
 
 	bool Node::Update(int time_ms)
 	{
-		for each (System::Proxy<Node> child in (*this))
+		for each (auto o in *this)
 		{
-			if (child.IsValid())
+			Node* child = dynamic_cast<Node*>(o);
+			if (child)
 				if (!child->Update(time_ms))
 					return false;
 		}
 		return true;
 	}
 
-	System::Proxy<Node> Node::CreateFromFile(const System::string& path)
+	Node* Node::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<Node>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<Node> Node::CreateFromStream(std::istream& stream)
+	Node* Node::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<Node> node(new Node);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<Node>(nullptr));
-		return node;
+		std::unique_ptr<Node> node(new Node);
+		node->Load(stream);
+		return node.release();
 	}
 
 	bool Node::Apply(AbstractVisitor* visitor)

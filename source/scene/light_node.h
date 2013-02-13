@@ -23,7 +23,7 @@ namespace Scene
 
 		virtual bool Apply(AbstractVisitor* visitor);
 
-		virtual System::Proxy<Virtual::Light> GetLight() = 0;
+		virtual Virtual::Light* GetLight() = 0;
 
 	private:
 		//System::Proxy<Virtual::LightSet> m_light_set;

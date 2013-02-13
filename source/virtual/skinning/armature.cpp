@@ -1,11 +1,10 @@
 #include <algorithm>
+#include <memory>
 #include <iostream>
 #include <fstream>
 #include "armature.h"
 #include "../../utility/descriptors/armature_desc.h"
 #include "../../utility/descriptors/bone_desc.h"
-
-#include "../../system/logger.h"
 
 namespace Virtual
 {
@@ -114,8 +113,7 @@ namespace Virtual
 
 	bool Armature::Save(std::ostream& stream) const
 	{
-		if (System::Object::Save(stream))
-			return (out_error() << "Can't save armature" << std::endl, false);
+		System::Object::Save(stream);
 
 		int count = (int)m_root_bones.size();
 		stream.write((char*)&count, sizeof(count));
@@ -130,8 +128,7 @@ namespace Virtual
 	{
 		Clear();
 
-		if (System::Object::Load(stream))
-			return (out_error() << "Can't load armature" << std::endl, false);
+		System::Object::Load(stream);
 
 		int count = 0;
 		stream.read((char*)&count, sizeof(count));
@@ -159,20 +156,19 @@ namespace Virtual
 		Clear();
 	}
 
-	System::Proxy<Armature> Armature::CreateFromFile(const System::string& path)
+	Armature* Armature::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<Armature>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<Armature> Armature::CreateFromStream(std::istream& stream)
+	Armature* Armature::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<Armature> node(new Armature);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<Armature>(nullptr));
-		return node;
+		std::unique_ptr<Armature> node(new Armature);
+		node->Load(stream);
+		return node.release();
 	}
 }
 

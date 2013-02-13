@@ -9,27 +9,15 @@
 
 namespace Virtual
 {
-	std::unique_ptr<TerrainManager> TerrainManager::m_instance;
-
-	TerrainManager* TerrainManager::Instance()
-	{
-		if (!m_instance.get())
-			m_instance.reset(new TerrainManager);
-		return m_instance.get();
-	}
-
-	void TerrainManager::Destroy()
-	{
-		m_instance.reset(0);
-	}
-
-	TerrainManager::TerrainManager(unsigned max_memory)
-		: m_max_memory(max_memory)
+	TerrainManager::TerrainManager(const TerrainManagerDesc& desc)
+		: m_desc(desc)
 	{}
 
 	TerrainManager::~TerrainManager()
 	{
-
+		safe_delete(m_terrain);
+		for (auto it = m_observers.begin(); it != m_observers.end(); ++it)
+			safe_delete(*it);
 	}
 
 	bool TerrainManager::Manage(const System::string& map_name)
@@ -42,26 +30,40 @@ namespace Virtual
 		if (!memcmp(buf, "MAPDESCTEXT", strlen("MAPDESCTEXT")))
 		{
 			stream.close();
-			m_terrain = Utility::ParsePunkFile(map_file);
-			if (!m_terrain.IsValid())
-				return (out_error() << "Unable to manage " << map_name << std::endl, false);
+			m_terrain = Cast<Terrain*>(Utility::ParsePunkFile(map_file));
+			if (!m_terrain)
+				throw System::PunkInvalidArgumentException(L"Unable to manage " + map_name);
 		}
 		else if (!memcmp(buf, "MAPDESCBIN", strlen("MAPDESCBIN")))
 		{
 			stream.seekg(std::ios_base::beg, 0);
-			m_terrain.Reset(new Terrain);
-			if (!m_terrain->Load(stream))
-				return (out_error() << "Unable to manage " << map_name << std::endl, false);
+			m_terrain = new Terrain;
+			try
+			{
+				m_terrain->Load(stream);
+			}
+			catch(...)
+			{
+				safe_delete(m_terrain);
+				throw;
+			}
 		}
 		return true;
 	}
 
-	System::WeakRef<TerrainObserver> TerrainManager::CreateTerrainObserver(const Math::vec3& start_position)
+	TerrainObserver* TerrainManager::CreateTerrainObserver(const Math::vec3& start_position)
 	{
-		System::Proxy<TerrainView> view(new TerrainView(1024, m_terrain->GetBlockSize(), m_terrain->GetBlockScale(), start_position.XZ(), m_terrain));
-		System::Proxy<TerrainObserver> observer(new TerrainObserver(view));
+		TerrainViewDesc desc;
+		desc.block_scale = m_terrain->GetBlockScale();
+		desc.block_size = m_terrain->GetBlockSize();
+		desc.manager = this;
+		desc.position = start_position.XZ();
+		desc.terrain = m_terrain;
+		desc.threshold = m_desc.threshold;
+		desc.view_size = int(m_desc.view_size);
+		TerrainView* view(new TerrainView(desc));
+		TerrainObserver* observer(new TerrainObserver(view));
 		observer->SetPosition(start_position);
-		m_views.push_back(view);
 		m_observers.push_back(observer);
 		return m_observers.back();
 	}

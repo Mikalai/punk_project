@@ -1,7 +1,5 @@
 #include "static_mesh_node.h"
 
-IMPLEMENT_MANAGER(L"resource.static_mesh_nodes", L"*.static_mesh_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::STATIC_MESH_NODE, Scene, StaticMeshNode);
-
 namespace Scene
 {
 	StaticMeshNode::StaticMeshNode()
@@ -11,38 +9,34 @@ namespace Scene
 
 	bool StaticMeshNode::Save(std::ostream& stream) const
 	{
-		if (!GeometryNode::Save(stream))
-			return (out_error() << "Can't save portal node" << std::endl, false);		
+		GeometryNode::Save(stream);
 		return true;
 	}
 
 	bool StaticMeshNode::Load(std::istream& stream)
 	{
-		if (!GeometryNode::Load(stream))
-			return (out_error() << "Can't load portal node" << std::endl, false);
-		
+		GeometryNode::Load(stream);		
 		return true;
 	}
 
-	System::Proxy<StaticMeshNode> StaticMeshNode::CreateFromFile(const System::string& path)
+	StaticMeshNode* StaticMeshNode::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<StaticMeshNode>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<StaticMeshNode> StaticMeshNode::CreateFromStream(std::istream& stream)
+	StaticMeshNode* StaticMeshNode::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<StaticMeshNode> node(new StaticMeshNode);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<StaticMeshNode>(nullptr));
-		return node;
+		std::unique_ptr<StaticMeshNode> node(new StaticMeshNode);
+		node->Load(stream);
+		return node.release();
 	}
 
-	System::Proxy<Virtual::StaticGeometry> StaticMeshNode::GetStaticGeometry()
+	Virtual::StaticGeometry* StaticMeshNode::GetStaticGeometry()
 	{
-		return GetGeometry();
+		return Cast<Virtual::StaticGeometry*>(GetGeometry());
 	}
 
 	bool StaticMeshNode::Apply(AbstractVisitor* visitor)

@@ -13,24 +13,20 @@ namespace Scene
 
 		PointLightNode();
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);				
+		virtual bool Save(std::ostream& stream) const override;
+		virtual bool Load(std::istream& stream) override;
+		virtual bool Apply(AbstractVisitor* visitor) override;
+		virtual Virtual::Light* GetLight() override { return m_point_light; }
 
-		static System::Proxy<PointLightNode> CreateFromFile(const System::string& path);
-		static System::Proxy<PointLightNode> CreateFromStream(std::istream& stream);
+		static PointLightNode* CreateFromFile(const System::string& path);
+		static PointLightNode* CreateFromStream(std::istream& stream);
 
-		virtual bool Apply(AbstractVisitor* visitor);
-
-		virtual System::Proxy<Virtual::Light> GetLight() { return m_point_light; }
-
-		void SetPointLight(System::Proxy<Virtual::Light> value) { m_point_light = value; }
-		System::Proxy<Virtual::PointLight> GetPointLight() { return m_point_light; }
+		void SetPointLight(Virtual::PointLight* value) { m_point_light = value; }
+		Virtual::PointLight* GetPointLight() { return m_point_light; }
 
 	private:
-		System::Proxy<Virtual::PointLight> m_point_light;
+		Virtual::PointLight* m_point_light;
 	};
 }
-
-REGISTER_MANAGER(L"resource.point_light_nodes", L"*.point_light_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::POINT_LIGHT_NODE, Scene, PointLightNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_POINT_LIGHT_NODE

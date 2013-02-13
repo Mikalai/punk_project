@@ -24,10 +24,10 @@ namespace GPU
 			virtual bool Save(std::ostream& stream) const;
 			virtual bool Load(std::istream& stream);
 
-			bool Cook(System::Proxy<Virtual::StaticGeometry> desc);		
+			bool Cook(Virtual::StaticGeometry* desc);		
 
-			static System::Proxy<StaticMesh> CreateFromFile(const System::string& path);
-			static System::Proxy<StaticMesh> CreateFromStream(std::istream& stream);
+			static StaticMesh* CreateFromFile(const System::string& path);
+			static StaticMesh* CreateFromStream(std::istream& stream);
 
 		protected:				
 		};

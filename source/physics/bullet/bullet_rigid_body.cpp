@@ -1,80 +1,131 @@
-#define _STATIC_CPPLIB
-#include "bullet_rigid_body.h"
-#include "bullet_physical_simulator.h"
-#include "bullet_shape_body.h"
 #include <bullet/btBulletDynamicsCommon.h>
 #include <bullet/BulletCollision/CollisionDispatch/btGhostObject.h>
+#include "../error/module.h"
+#include "bullet_shape_body.h"
+#include "bullet_physical_simulator.h"
+#include "bullet_rigid_body.h"
 
-namespace Phyiscs
+namespace Physics
 {
-	void BulletRigidBody::Clear()
+	void BulletRigidBody::Init(RigidBodyDesc& desc)
 	{
-		BulletPhysicalSimulator* sim = (BulletPhysicalSimulator*)BulletPhysicalSimulator::Instance();
-		{
-			btRigidBody* body = btRigidBody::upcast(m_rigid_body);
-			if (body)
-				sim->DestroyRigidBody(body);		
-		}
+		btTransform trans;
+		trans.setFromOpenGLMatrix(&desc.m_initial_position[0]);
 
-		{
-			btGhostObject* body = btPairCachingGhostObject::upcast(m_rigid_body);
-			if (body)
-				sim->DestroyGhostBody(body);
-		}
+		bool dynamic = desc.m_mask != 0.0f;
+		btVector3 inertia(0,0,0);
+		if (dynamic)
+			desc.m_shape->GetCollisionShape()->calculateLocalInertia(desc.m_mass, inertia);
 
-		m_rigid_body = 0;
+		btDefaultMotionState* state = new btDefaultMotionState(trans);
+		btRigidBody::btRigidBodyConstructionInfo info(desc.m_mass, state, desc.m_shape->GetCollisionShape(), inertia);
+		m_rigid_body = new btRigidBody(info);
 	}
 
-	void BulletRigidBody::Init()
+	BulletRigidBody::~BulletRigidBody()
 	{
-		if (m_rigid_body)
-			Clear();
-
-		BulletPhysicalSimulator* sim = (BulletPhysicalSimulator*)BulletPhysicalSimulator::Instance();
-		BulletShapeBody* shape_body;// = static_cast<BulletShapeBody*>(m_object->GetShapeBody());
-		m_rigid_body = new btRigidBody(0, 0, shape_body->GetCollisionShape());		
-	}
-
-	void BulletRigidBody::SetObject(Object* object)
-	{
-		Clear();
-		m_object = object;
-		Init();
-	}
-
-	const Math::mat4 BulletRigidBody::GetLocation() const
-	{
-		Math::mat4 m;
-		btRigidBody* body = btRigidBody::upcast(m_rigid_body);
-		if (body)
+		try
 		{
-			btTransform t;
-			body->getMotionState()->getWorldTransform(t);
-			t.getOpenGLMatrix(&m[0]);
+			LeaveWorld();
+			if (m_rigid_body && m_rigid_body->getMotionState())
+			{
+				delete m_rigid_body->getMotionState();
+			}
 		}
-		else
+		catch(...)
 		{
-			m_rigid_body->getWorldTransform().getOpenGLMatrix(&m[0]);;
-		}
-		return m;
-	}
-
-	void BulletRigidBody::SetLocation(const Math::Matrix4x4<float>& m)
-	{
-		btRigidBody* body = btRigidBody::upcast(m_rigid_body);
-		if (body)
-		{
-			btTransform transform;
-			transform.setFromOpenGLMatrix(&m[0]);
-			body->setWorldTransform(transform);
-		}
-		else 
-		{
-			btTransform transform;
-			transform.setFromOpenGLMatrix(&m[0]);
-			m_rigid_body->setWorldTransform(transform);		
 		}
 	}
+
+	void BulletRigidBody::EnterWorld(btDiscreteDynamicsWorld* world)
+	{
+		if (!m_rigid_body)
+			throw PunkPhysicsException(L"No rigid body to enter the world");
+
+		if (m_world)
+			m_world->removeRigidBody(m_rigid_body);
+
+		m_world = world;
+		m_world->addRigidBody(m_rigid_body);
+	}
+
+	void BulletRigidBody::LeaveWorld()
+	{
+		if (!m_world)
+			throw PunkPhysicsException(L"Can't leave any world, because no world entered");
+
+		m_world->removeRigidBody(m_rigid_body);
+		m_world = nullptr;
+	}
+
+	//void BulletRigidBody::Clear()
+	//{
+	//	BulletSimulator* sim = (BulletSimulator*)BulletSimulator::Instance();
+	//	{
+	//		btRigidBody* body = btRigidBody::upcast(m_rigid_body);
+	//		if (body)
+	//			sim->DestroyRigidBody(body);		
+	//	}
+
+	//	{
+	//		btGhostObject* body = btPairCachingGhostObject::upcast(m_rigid_body);
+	//		if (body)
+	//			sim->DestroyGhostBody(body);
+	//	}
+
+	//	m_rigid_body = 0;
+	//}
+
+	//void BulletRigidBody::Init()
+	//{
+	//	if (m_rigid_body)
+	//		Clear();
+
+	//	BulletSimulator* sim = (BulletSimulator*)BulletSimulator::Instance();
+	//	BulletShapeBody* shape_body;// = static_cast<BulletShapeBody*>(m_object->GetShapeBody());
+	//	m_rigid_body = new btRigidBody(0, 0, shape_body->GetCollisionShape());		
+	//}
+
+	//void BulletRigidBody::SetObject(Object* object)
+	//{
+	//	Clear();
+	//	m_object = object;
+	//	Init();
+	//}
+
+	//const Math::mat4 BulletRigidBody::GetLocation() const
+	//{
+	//	Math::mat4 m;
+	//	btRigidBody* body = btRigidBody::upcast(m_rigid_body);
+	//	if (body)
+	//	{
+	//		btTransform t;
+	//		body->getMotionState()->getWorldTransform(t);
+	//		t.getOpenGLMatrix(&m[0]);
+	//	}
+	//	else
+	//	{
+	//		m_rigid_body->getWorldTransform().getOpenGLMatrix(&m[0]);;
+	//	}
+	//	return m;
+	//}
+
+	//void BulletRigidBody::SetLocation(const Math::Matrix4x4<float>& m)
+	//{
+	//	btRigidBody* body = btRigidBody::upcast(m_rigid_body);
+	//	if (body)
+	//	{
+	//		btTransform transform;
+	//		transform.setFromOpenGLMatrix(&m[0]);
+	//		body->setWorldTransform(transform);
+	//	}
+	//	else 
+	//	{
+	//		btTransform transform;
+	//		transform.setFromOpenGLMatrix(&m[0]);
+	//		m_rigid_body->setWorldTransform(transform);		
+	//	}
+	//}
 
 
 }

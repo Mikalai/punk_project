@@ -89,6 +89,7 @@ Result SolveCubic(double c[4], double out[3])
 		out[2] = out[2] - A/3.0;
 		return RESULT_THREE_SOLUTIONS;
 	}
+	return RESULT_NO_SOLUTION;
 }
 
 Result SolveQuartic(double c[5], double out[4])

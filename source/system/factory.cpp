@@ -27,7 +27,6 @@ namespace System
 
 	Factory::~Factory()
 	{
-		out_message() << "Factory destroyed" << std::endl;
 	}
 
 	bool Factory::Init()
@@ -43,40 +42,39 @@ namespace System
 	{
 		auto it = m_creator.find(type);
 		if (it != m_creator.end())
-			return (out_warning() << "Can't register second creator for the same type " << System::AsString(type).Data() << ". Unregister first" << std::endl, false);
+			throw System::PunkInvalidArgumentException(L"Can't register second creator for the same type " + AsString(type) + L". Unregister first");
 		m_creator[type] = creator;
 
-		return (out_message() << L"Creator for " << System::AsString(type).Data() << L" was registered" << std::endl, true);
+		return true;
 	}
 
 	bool Factory::UnregisterCreator(ObjectType type)
 	{
 		auto it = m_creator.find(type);
 		if (it == m_creator.end())
-			return (out_error() << "Can't unregister creator for type " << type << std::endl, false);
+			throw System::PunkInvalidArgumentException(L"Can't unregister creator for type " + AsString(type));
 		m_creator.erase(it);
 		return true;
 	}
 
-	Proxy<Object> Factory::Create(ObjectType type)
+	Object* Factory::Create(ObjectType type)
 	{
 		auto it = m_creator.find(type);
 		if (it == m_creator.end())
-			return (out_error() << "Can't create object because creator for " << AsString(type) << " was not registered" << std::endl, Proxy<Object>(nullptr));
-
+			throw System::PunkInvalidArgumentException(L"Can't create object because creator for " + AsString(type) + L" was not registered");
 		return it->second->Create();
 	}
 
-	Proxy<Object> Factory::Create(const string& name, ObjectType type)
+	Object* Factory::Create(const string& name, ObjectType type)
 	{
 		auto it = m_creator.find(type);
 		if (it == m_creator.end())
-			return (out_error() << "Can't create object because creator for " << AsString(type) << " was not registered" << std::endl, Proxy<Object>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't create object because creator for " + AsString(type) + L" was not registered");
 
 		return it->second->Create(name);
 	}
 
-	bool Factory::SaveToStream(std::ostream& stream, Proxy<Object> o)
+	bool Factory::SaveToStream(std::ostream& stream, Object* o)
 	{
 		bool flag = o->IsModified();
 		stream.write((char*)&flag, sizeof(flag));
@@ -84,18 +82,16 @@ namespace System
 		stream.write((char*)&type, sizeof(type));
 		if (flag)
 		{
-			if (!o->Save(stream))
-				return (out_error() << "Can't save object by the factory" << std::endl, false);
+			o->Save(stream);				
 		}
 		else
 		{
-			if (!o->GetStorageName().Save(stream))
-				return (out_error() << "Can't save reference to the object" << std::endl, false);
+			o->GetStorageName().Save(stream);				
 		}
 		return true;
 	}
 
-	Proxy<Object> Factory::LoadFromStream(std::istream& stream)
+	Object* Factory::LoadFromStream(std::istream& stream)
 	{
 		bool flag = false;
 		ObjectType type = ObjectType::RESOURCE_NONE;
@@ -103,33 +99,20 @@ namespace System
 		stream.read((char*)&type, sizeof(type));
 		if (flag)
 		{
-			System::Proxy<Object> o = GetFactory()->Create(type);
-			if (!o->Load(stream))
-				return (out_error() << "Can't load compound object" << std::endl, System::Proxy<Object>(nullptr));
-			return o;
+			std::unique_ptr<Object> o(GetFactory()->Create(type));
+			o->Load(stream);
+			return o.release();
 		}
 		else
 		{
 			System::string storage;
 			storage.Load(stream);
-			System::Proxy<Object> o = GetFactory()->Create(storage, type);
+			Object* o = GetFactory()->Create(storage, type);
 			return o;
 		}		
 	}
 
-	//Factory* GetFactory()
-	//{
-	//	if (!m_instance.get())
-	//		m_instance.reset(new Factory);
-	//	return m_instance.get();
-	//}
-
-	//void Factory::Destroy()
-	//{
-	//	m_instance.reset(nullptr);
-	//}
-	
-	Proxy<Object> Factory::CreateFromTextFile(const string& path)
+	Object* Factory::CreateFromTextFile(const string& path)
 	{		
 		return Utility::LoadWorld(path);
 	}

@@ -14,8 +14,7 @@ namespace GPU
 		public:
 			
 			void Create(const void* data, size_t m_size);
-			void Destroy();
-			~PixelBufferObject();
+			void Destroy();			
 
 			void Bind() const;
 			void Unbind() const;
@@ -34,6 +33,7 @@ namespace GPU
 
 			//	Only VideoMemory can create it
 			PixelBufferObject();
+			~PixelBufferObject();
 
 			PixelBufferObject(const PixelBufferObject&);
 			PixelBufferObject& operator = (const PixelBufferObject&);

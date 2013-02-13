@@ -5,6 +5,7 @@
 #include "hresource.h"
 #include "../string/string.h"
 #include "smart_pointers/proxy.h"
+#include "errors/module.h"
 
 namespace System
 {
@@ -20,9 +21,9 @@ namespace System
 		void SetText(const string& value) { m_text = value; }
 		const string& GetText() const { return m_text; }
 
-		void SetOwner(Proxy<Object> owner) { m_owner = owner; }
-		const Proxy<Object> GetOwner() const { return m_owner; }
-		Proxy<Object> GetOwner() { return m_owner; }
+		void SetOwner(Object* owner) { m_owner = owner; }
+		const Object* GetOwner() const { return m_owner; }
+		Object* GetOwner() { return m_owner; }
 
 		const System::string& GetStorageName() const { return m_storage_name; }
 		void SetStorageName(const System::string& name) { m_storage_name = name; }
@@ -48,8 +49,38 @@ namespace System
 		string m_storage_name;
 		string m_name;
 		string m_text;
-		Proxy<Object> m_owner;		
+		Object* m_owner;		
 	};
 }
+
+template<class T> 
+inline T As(System::Object* o)
+{
+	return dynamic_cast<T>(o);
+}
+
+template<class T> 
+inline T As(const System::Object* o)
+{
+	return dynamic_cast<T>(o);
+}
+
+template<class T>
+inline bool Is(System::Object* o)
+{
+	return dynamic_cast<T>(o) != nullptr;
+}
+
+template<class T>
+inline T Cast(System::Object* o)
+{
+	T ptr = As<T>(o);
+	if (ptr == nullptr && o != nullptr)
+		throw System::PunkInvalidCastException(L"Can't cast from " + System::string(typeid(o).name()) + L" to " + System::string(typeid(T).name()));
+	return ptr;
+}
+
+#define safe_delete(V) {delete (V); (V) = 0;}
+#define safe_delete_array(V) {delete[] (V); (V) = 0;}
 
 #endif	//	_H_PUNK_SYSTEM_OBJECT

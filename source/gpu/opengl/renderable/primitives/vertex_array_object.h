@@ -19,8 +19,8 @@ namespace GPU
 		protected:
 
 			typedef Vertex<VertexType> CurrentVertex;
-			System::Proxy<VertexBufferObject> m_vertex_buffer;	
-			System::Proxy<IndexBufferObject> m_index_buffer;
+			VertexBufferObject* m_vertex_buffer;	
+			IndexBufferObject* m_index_buffer;
 			GLuint m_vao;
 			GLuint m_index_count;
 			unsigned m_vertex_size;				
@@ -38,6 +38,8 @@ namespace GPU
 				, m_vertex_size(0)
 				, m_was_modified(true)
 				, m_primitive_count(0)
+				, m_index_buffer(nullptr)
+				, m_vertex_buffer(nullptr)
 			{}
 
 			VertexArrayObject2(const VertexArrayObject2& impl)
@@ -130,7 +132,7 @@ namespace GPU
 				if (glGetError() != GL_NO_ERROR)
 					throw OpenGLException(L"Error came from upper subroutine to me... Will not work");
 
-				if (!m_vertex_buffer.IsValid())
+				if (!m_vertex_buffer)
 					throw OpenGLException(L"Can't create VAO due to bad vertex buffer");
 
 				if (!m_index_buffer)
@@ -173,8 +175,8 @@ namespace GPU
 
 			void Clear()
 			{
-				m_vertex_buffer.Reset(0);
-				m_index_buffer.Reset(0);
+				VideoMemory::Instance()->FreeVertexBuffer(m_vertex_buffer);
+				VideoMemory::Instance()->FreeIndexBuffer(m_index_buffer);
 
 				if (m_vao)
 				{

@@ -9,8 +9,8 @@ namespace System
 	class PUNK_ENGINE ResourceCreator
 	{
 	public:
-		virtual Proxy<Object> Create() = 0;
-		virtual Proxy<Object> Create(const string& name) = 0;
+		virtual Object* Create() = 0;
+		virtual Object* Create(const string& name) = 0;
 		virtual bool Init() = 0;
 	};
 }

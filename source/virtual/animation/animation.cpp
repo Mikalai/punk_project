@@ -2,8 +2,6 @@
 #include <istream>
 #include "animation.h"
 
-IMPLEMENT_MANAGER(L"resource.animations", L"*.animation", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ANIMATION, Virtual, Animation);
-
 namespace Virtual
 {
 	Animation::Animation()
@@ -50,8 +48,7 @@ namespace Virtual
 
 	bool Animation::Save(std::ostream& stream) const
 	{
-		if (!System::Object::Save(stream))
-			return (out_error() << "Can't save animation" << std::endl, false);
+		System::Object::Save(stream);
 
 		stream.write((char*)&m_animation_type, sizeof(m_animation_type));
 		m_pos_track.Save(stream);
@@ -61,8 +58,7 @@ namespace Virtual
 
 	bool Animation::Load(std::istream& stream)
 	{
-		if (!System::Object::Load(stream))
-			return (out_error() << "Can't save animation" << std::endl, false);
+		System::Object::Load(stream);
 
 		stream.read((char*)&m_animation_type, sizeof(m_animation_type));
 		m_pos_track.Load(stream);
@@ -70,19 +66,17 @@ namespace Virtual
 		return true;
 	}
 
-	System::Proxy<Animation> Animation::CreateFromFile(const System::string& path)
+	Animation* Animation::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
-		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<Animation>(nullptr));
+		stream.is_open();
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<Animation> Animation::CreateFromStream(std::istream& stream)
+	Animation* Animation::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<Animation> node(new Animation);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<Animation>(nullptr));
-		return node;
+		std::unique_ptr<Animation> node(new Animation);
+		node->Load(stream);
+		return node.release();
 	}
 }

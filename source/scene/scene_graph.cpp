@@ -2,18 +2,22 @@
 #include "../gpu/opengl/renderable/module.h"
 #include "../virtual/module.h"
 
-IMPLEMENT_MANAGER(L"resource.scenes", L"*.scene_graph", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SCENE_GRAPH, Scene, SceneGraph);
-
 namespace Scene
 {
 	SceneGraph::SceneGraph()
 	{
 		SetType(System::ObjectType::SCENE_GRAPH);
-		m_camera_node.Reset(new CameraNode);
-		m_root.Reset(new Node);
+		m_camera_node = new CameraNode;
+		m_root = new Node;
 	}
 
-	void SceneGraph::SetActiveCamera(System::Proxy<Virtual::Camera> value)
+	SceneGraph::~SceneGraph()
+	{
+		safe_delete(m_camera_node);
+		safe_delete(m_root);
+	}
+
+	void SceneGraph::SetActiveCamera(Virtual::Camera* value)
 	{
 		m_camera_node->SetCamera(value);
 	}
@@ -21,47 +25,32 @@ namespace Scene
 
 	bool SceneGraph::Save(std::ostream& stream) const
 	{
-		if (!Object::Save(stream))
-			return (out_error() << "Can't save scene graph" << std::endl, false);
-
-		if (!System::GetFactory()->SaveToStream(stream, m_root))		
-			return (out_error() << "Can't save root node" << std::endl, false);
-
-		if (!System::GetFactory()->SaveToStream(stream, m_camera_node))		
-			return (out_error() << "Can't save root node" << std::endl, false);
-
+		Object::Save(stream);
+		//System::GetFactory()->SaveToStream(stream, m_root);
+		//System::GetFactory()->SaveToStream(stream, m_camera_node);
 		return true;
 	}
 
 	bool SceneGraph::Load(std::istream& stream)
 	{
-		if (!Object::Load(stream))
-			return (out_error() << "Can't load scene graph" << std::endl, false);
-
-		m_root = System::GetFactory()->LoadFromStream(stream);
-		if (!m_root.IsValid())
-			return (out_error() << "Can't load root node" << std::endl, false);
-
-		m_camera_node = System::GetFactory()->LoadFromStream(stream);
-		if (!m_camera_node.IsValid())
-			return (out_error() << "Can't load root node" << std::endl, false);
-
+		Object::Load(stream);
+		//m_root = Cast<Node*>(System::GetFactory()->LoadFromStream(stream));
+		//m_camera_node = Cast<CameraNode*>(System::GetFactory()->LoadFromStream(stream));
 		return true;
 	}
 
-	System::Proxy<SceneGraph> SceneGraph::CreateFromFile(const System::string& path)
+	SceneGraph* SceneGraph::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<SceneGraph>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<SceneGraph> SceneGraph::CreateFromStream(std::istream& stream)
+	SceneGraph* SceneGraph::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<SceneGraph> node(new SceneGraph);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<SceneGraph>(nullptr));
-		return node;
+		std::unique_ptr<SceneGraph> node(new SceneGraph);
+		node->Load(stream);
+		return node.release();
 	}
 }

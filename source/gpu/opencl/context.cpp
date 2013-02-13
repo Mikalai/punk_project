@@ -5,8 +5,8 @@ namespace GPU
 {
 	namespace OpenCL
 	{
-		Context::Context() : m_impl(new Context::ContextImpl) {}
-		Context::Context(const Context& value) : m_impl(new Context::ContextImpl(*value.m_impl)) {}
+		Context::Context() : m_impl(new ContextImpl) {}
+		Context::Context(const Context& value) : m_impl(new ContextImpl(*value.m_impl)) {}
 
 		Context& Context::operator = (const Context& value)
 		{

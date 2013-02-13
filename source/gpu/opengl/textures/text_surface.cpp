@@ -1,4 +1,5 @@
 #include "text_surface.h"
+#include "texture2d.h"
 #include "../../../utility/fonts/font_builder.h"
 
 namespace GPU
@@ -7,12 +8,17 @@ namespace GPU
 	{
 		TextSurface::TextSurface()
 		{
-			m_texture.Reset(new Texture2D);		
+			m_texture = new Texture2D;		
 			m_halignment = TextHorizontalAlignment::HORIZONTAL_LEFT;
 			m_valignment = TextVerticalAlignment::VERTICAL_TOP;
 			m_font = L"times.ttf";
 			m_font_size = 14;
 			m_auto_wrap = false;
+		}
+
+		TextSurface::~TextSurface()
+		{
+			safe_delete(m_texture);
 		}
 
 		void TextSurface::SetSize(int width, int height)

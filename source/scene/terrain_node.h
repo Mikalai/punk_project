@@ -15,19 +15,19 @@ namespace Scene
 		TerrainNode();
 		~TerrainNode();
 
-		void SetTerrainObserver(System::Proxy<Virtual::TerrainObserver> value) { m_observer = value; }
-		System::Proxy<Virtual::TerrainObserver> GetTerrainObserver() { return m_observer; }
+		void SetTerrainObserver(Virtual::TerrainObserver* value) { m_observer = value; }
+		Virtual::TerrainObserver* GetTerrainObserver() { return m_observer; }
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
-		static System::Proxy<TerrainNode> CreateFromFile(const System::string& path);
-		static System::Proxy<TerrainNode> CreateFromStream(std::istream& stream);
+		static TerrainNode* CreateFromFile(const System::string& path);
+		static TerrainNode* CreateFromStream(std::istream& stream);
 
 		virtual bool Apply(AbstractVisitor* visitor);							
 
 	private:		
-		System::Proxy<Virtual::TerrainObserver> m_observer;		
+		Virtual::TerrainObserver* m_observer;		
 	};
 }
 

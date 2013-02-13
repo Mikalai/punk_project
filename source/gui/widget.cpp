@@ -27,9 +27,9 @@ namespace GUI
 		, m_text(text)
 		, m_fontSize(14)
 		, m_back_color_0(0.0f, 0.0f, 1.0f, 1.0f)
-		, m_back_color_1(1, 1, 0.1, 0.8f)
-		, m_text_color_0(0, 0, 0, 1)
-		, m_text_color_1(1, 0, 0, 1)
+		, m_back_color_1(1.0f, 1.0f, 0.1f, 0.8f)
+		, m_text_color_0(0.0f, 0.0f, 0.0f, 1.0f)
+		, m_text_color_1(1.0f, 0.0f, 0.0f, 1.0f)
 		, m_back_color(m_back_color_0)
 		, m_text_color(m_text_color_0)
 		, m_animation(0)
@@ -40,8 +40,10 @@ namespace GUI
 		, m_vertical_align(VERTICAL_ALIGN_CENTER)
 		, m_horizontal_align(HORIZONTAL_ALIGN_CENTER)
 		, m_parent(parent)
+		, m_background_texture(nullptr)
+		, m_any_data(nullptr)
 	{
-		m_text_texture.Reset(new GPU::OpenGL::TextSurface);
+		m_text_texture = new GPU::OpenGL::TextSurface;
 		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
 		m_text_texture->SetVerticalAlignment(GPU::OpenGL::TextSurface::VERTICAL_CENTER);
 		m_text_texture->SetHorizontalAlignment(GPU::OpenGL::TextSurface::HORIZONTAL_CENTER);
@@ -51,6 +53,7 @@ namespace GUI
 
 	Widget::~Widget()
 	{
+		safe_delete(m_text_texture);
 	}
 
 	bool Widget::OnResize(System::WindowResizeEvent* e)
@@ -58,9 +61,12 @@ namespace GUI
 		bool result = false;
 		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
 		m_text_texture->SetText(m_text);
-		for each (System::Proxy<Widget> child in *this)
-			if (child.IsValid())
+		for each (Object* o in *this)
+		{
+			Widget* child = As<Widget*>(o);
+			if (child)
 				child->OnResize(e);
+		}
 		m_OnResized(e);
 		return result;
 	}
@@ -69,12 +75,12 @@ namespace GUI
 	{
 		bool result = false;
 		bool child_processed = false;
-		for each (System::Proxy<Widget> w in *this)
+		for each (Object* o in *this)
 		{
-			if (w.IsValid())
+			Widget* w = As<Widget*>(o);
+			if (w)
 				if (w->OnMouseMove(e))
 					child_processed = true;
-
 		}
 
 		if (!child_processed && IsVisible() && IsEnabled())
@@ -135,9 +141,11 @@ namespace GUI
 			m_rightButtonDown = false;
 			m_middleButtonDown = false;
 			m_OnMouseLeave(e);
-			for each(System::Proxy<Widget> w in *this)
+			for each(Object* o in *this)
 			{
-				w->OnMouseLeave(e);
+				Widget* w = As<Widget*>(o);
+				if (w)
+					w->OnMouseLeave(e);
 			}
 		}
 		return false;
@@ -156,15 +164,16 @@ namespace GUI
 					m_OnLeftClick(e);
 				}
 			}
-			for each (System::Proxy<Widget> w in *this)
+			for each (Object* o in *this)
 			{
-				if (w.IsValid())
+				Widget* w = As<Widget*>(o);
+				if (w)
 					w->OnMouseLeftButtonUp(e);
 			}
 		}
 		return false;
 	}
-	
+
 	bool Widget::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* e)
 	{
 		if (!IsVisible() || !IsEnabled())
@@ -173,12 +182,13 @@ namespace GUI
 		bool result = false;
 		bool child_processed = false;
 
-		for each (System::Proxy<Widget> w in *this)
+		for each (Object* o in *this)
 		{
-			if (w.IsValid())
+			Widget* w = As<Widget*>(o);
+			if (w)
 				child_processed = w->OnMouseLeftButtonDown(e);
 		}
-		
+
 		if (!child_processed)
 		{
 			if (m_isCursorIn)
@@ -200,9 +210,10 @@ namespace GUI
 		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
-			for each (System::Proxy<Widget> w in *this)
+			for each (Object* o in *this)
 			{
-				if (w.IsValid())
+				Widget* w = As<Widget*>(o);
+				if (w)
 					w->OnMouseWheel(e);
 			}
 		}
@@ -214,9 +225,10 @@ namespace GUI
 		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
-			for each (System::Proxy<Widget> w in *this)
+			for each (Object* o in *this)
 			{
-				if (w.IsValid())
+				Widget* w = As<Widget*>(o);
+				if (w)
 					w->OnKeyChar(e);
 			}
 		}
@@ -286,9 +298,10 @@ namespace GUI
 					m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 				}
 			}			
-			for each (System::Proxy<Widget> w in *this)
+			for each (Object* o in *this)
 			{
-				if (w.IsValid())
+				Widget* w = As<Widget*>(o);
+				if (w)
 					w->OnIdle(e);
 			}
 		}
@@ -412,17 +425,17 @@ namespace GUI
 		return GetY() * (float)Manager::Instance()->GetWindow()->GetHeight();
 	}
 
-	System::Proxy<GPU::OpenGL::Texture2D> Widget::GetBackgroundTexture() const
+	const GPU::OpenGL::Texture2D* Widget::GetBackgroundTexture() const
 	{
 		return m_background_texture;
 	}
 
-	System::Proxy<GPU::OpenGL::Texture2D> Widget::GetTextTexture() const
+	const GPU::OpenGL::Texture2D* Widget::GetTextTexture() const
 	{
 		return m_text_texture->GetTexture();
 	}
 
-	void Widget::SetBackgroundTexture(System::Proxy<GPU::OpenGL::Texture2D> texture)
+	void Widget::SetBackgroundTexture(GPU::OpenGL::Texture2D* texture)
 	{
 		m_background_texture = texture;
 	}
@@ -446,11 +459,12 @@ namespace GUI
 
 	Widget* Widget::GetFocused(float x, float y)
 	{		
-		for each(System::Proxy<Widget> child in *this)
+		for each (Object* o in *this)
 		{
-			if (child.IsValid())
-			if (child->IsVisible() && child->IsEnabled() && child->IsPointIn(WindowToViewport(x, y)))
-				return child->GetFocused(x, y);
+			Widget* child = As<Widget*>(o);
+			if (child)
+				if (child->IsVisible() && child->IsEnabled() && child->IsPointIn(WindowToViewport(x, y)))
+					return child->GetFocused(x, y);
 		}
 		return this;/**/
 	}
@@ -505,52 +519,52 @@ namespace GUI
 		m_isEnabled = isEnabled;
 	}
 
-	const Math::Vector4<float>& Widget::BackColor() const
+	const Math::vec4& Widget::BackColor() const
 	{
 		return m_back_color;
 	}
 
-	const Math::Vector4<float>& Widget::TextColor() const
+	const Math::vec4& Widget::TextColor() const
 	{
 		return m_text_color;
 	}
 
-	Math::Vector4<float>& Widget::BackColor0()
+	Math::vec4& Widget::BackColor0()
 	{
 		return m_back_color_0;
 	}
 
-	Math::Vector4<float>& Widget::BackColor1()
+	Math::vec4& Widget::BackColor1()
 	{
 		return m_back_color_1;
 	}
 
-	Math::Vector4<float>& Widget::TextColor0()
+	Math::vec4& Widget::TextColor0()
 	{
 		return m_text_color_0;
 	}
 
-	Math::Vector4<float>& Widget::TextColor1()
+	Math::vec4& Widget::TextColor1()
 	{
 		return m_text_color_1;
 	}
 
-	const Math::Vector4<float>& Widget::BackColor0() const
+	const Math::vec4& Widget::BackColor0() const
 	{
 		return m_back_color_0;
 	}
 
-	const Math::Vector4<float>& Widget::BackColor1() const
+	const Math::vec4& Widget::BackColor1() const
 	{
 		return m_back_color_1;
 	}
 
-	const Math::Vector4<float>& Widget::TextColor0() const
+	const Math::vec4& Widget::TextColor0() const
 	{
 		return m_text_color_0;
 	}
 
-	const Math::Vector4<float>& Widget::TextColor1() const
+	const Math::vec4& Widget::TextColor1() const
 	{
 		return m_text_color_1;
 	}
@@ -664,20 +678,19 @@ namespace GUI
 	{
 		m_manager = manager;
 	}
-	
-	bool Widget::OnAdd(System::Proxy<System::Object> object)
+
+	bool Widget::OnAdd(System::Object* object)
 	{
-		System::Proxy<Widget> w = object;
-		if (w.IsValid())
-			w->SetParent(this);
+		Widget* w = Cast<Widget*>(object);
+		w->SetParent(this);
 		return true;
 	}
 
-	/*bool OnRemove(System::Proxy<System::Object> object)
+	/*bool OnRemove(Object* object)
 	{
-		System::Proxy<Widget> w = object;
-		if (w.IsValid())
-			w->SetParent(nullptr);
-		return true;
+	System::Proxy<Widget> w = object;
+	if (w.IsValid())
+	w->SetParent(nullptr);
+	return true;
 	}*/
 }

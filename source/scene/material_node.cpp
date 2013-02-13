@@ -1,7 +1,5 @@
 #include "material_node.h"
 
-IMPLEMENT_MANAGER(L"resource.material_nodes", L"*.material_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::MATERIAL_NODE, Scene, MaterialNode);
-
 namespace Scene
 {
 	MaterialNode::MaterialNode()
@@ -11,49 +9,45 @@ namespace Scene
 
 	bool MaterialNode::Save(std::ostream& stream) const
 	{
-		if (!Node::Save(stream))
-			return (out_error() << "Can't save light node" << std::endl, false);
+		Node::Save(stream);
 		
-		bool flag = m_material.IsValid();
+		bool flag = m_material != 0;
 		stream.write((char*)&flag, sizeof(flag));
 		if (flag)
-			if (!System::GetFactory()->SaveToStream(stream, m_material))
-				return (out_error() << "Can't save material in the material node" << std::endl, false);
+			m_material->GetName().Save(stream);
 
 		return true;
 	}
 
 	bool MaterialNode::Load(std::istream& stream) 
 	{
-		if (!Node::Load(stream))
-			return (out_error() << "Can't load light node" << std::endl, false);
+		Node::Load(stream);
 
 		bool flag;
 		stream.read((char*)&flag, sizeof(flag));
 		if (flag)
 		{
-			m_material = System::GetFactory()->LoadFromStream(stream);
-			if (!m_material.IsValid())
-				return (out_error() << "Can't load material in the material node" << std::endl, false);
+			System::string name;
+			name.Load(stream);
+			m_material = Virtual::Material::find(name);
 		}
 
 		return true;
 	}
 
-	System::Proxy<MaterialNode> MaterialNode::CreateFromFile(const System::string& path)
+	MaterialNode* MaterialNode::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<MaterialNode>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<MaterialNode> MaterialNode::CreateFromStream(std::istream& stream)
+	MaterialNode* MaterialNode::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<MaterialNode> node(new MaterialNode);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<MaterialNode>(nullptr));
-		return node;
+		std::unique_ptr<MaterialNode> node(new MaterialNode);
+		node->Load(stream);
+		return node.release();
 	}
 
 	bool MaterialNode::Apply(AbstractVisitor* visitor)

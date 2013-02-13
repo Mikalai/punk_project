@@ -2,15 +2,11 @@
 #define _H_PUNK_PHYSICAL_SIMULATOR
 
 #include "../config.h"
+#include "../system/smart_pointers/module.h"
 
 namespace Math
 {
-	template<class T> class Vector3;
-}
-
-namespace Render
-{
-
+	class vec3;
 }
 
 namespace Phyiscs
@@ -21,22 +17,16 @@ namespace Phyiscs
 	class Object;
 	class Terrain;
 
-	class PUNK_ENGINE PhysicalSimulator	
+	class PUNK_ENGINE Simulator	
 	{
 	public:
-		virtual void Update(float delta) = 0;
-		virtual RigidBody* CreateRigidBody(RigidBodyDesc& desc) = 0;
-		virtual void CreateDynamicShapeBody(Object& object) = 0;
-		virtual void SetGravity(const Math::Vector3<float>& g) = 0;
-		virtual void SetTerrain(Terrain& terrain) = 0;
-		virtual void SetRender(void* drawer) = 0;
-		virtual void Draw() = 0;
-		virtual ~PhysicalSimulator() {}
-		static PhysicalSimulator* Instance();
-		static void Destroy();
-	protected:
 		virtual void Init() = 0;
 		virtual void Clear() = 0;
+		virtual void Update(float delta) = 0;
+		virtual RigidBody* CreateRigidBody() = 0;
+		virtual void RemoveRigidBody(RigidBody* value) = 0;
+		virtual void SetGravity(const Math::vec3& g) = 0;
+		virtual ~Simulator() {}
 	};
 }
 

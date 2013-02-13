@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE PunkException : public std::exception
+	class PUNK_ENGINE PunkException
 	{		
 	public:
 		PunkException();
@@ -24,6 +24,13 @@ namespace System
 	public:
 		PunkInvalidArgumentException() : PunkException(L"PunkInvalidArgumentException") {}
 		PunkInvalidArgumentException(const string& msg) : PunkException(L"PunkInvalidArgumentException: " + msg) {}
+	};
+
+	class PUNK_ENGINE PunkInvalidCastException : public PunkException
+	{
+	public:
+		PunkInvalidCastException() : PunkException(L"PunkInvalidCastException") {}
+		PunkInvalidCastException(const string& msg) : PunkException(L"PunkInvalidCastException: " + msg) {}
 	};
 
 	class PUNK_ENGINE PunkNotInitializedException : public PunkException

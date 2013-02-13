@@ -1,6 +1,6 @@
+#include <memory>
+#include <fstream>
 #include "portal_node.h"
-
-IMPLEMENT_MANAGER(L"resource.portal_nodes", L"*.portal_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::PORTAL_NODE, Scene, PortalNode);
 
 namespace Scene
 {
@@ -11,40 +11,31 @@ namespace Scene
 
 	bool PortalNode::Save(std::ostream& stream) const
 	{
-		if (!TransformNode::Save(stream))
-			return (out_error() << "Can't save portal node" << std::endl, false);
-		
-		if (!m_portal.Save(stream))
-			return (out_error() << "Can't save portal node" << std::endl, false);
-		
+		TransformNode::Save(stream);
+		m_portal.Save(stream);		
 		return true;
 	}
 
 	bool PortalNode::Load(std::istream& stream)
 	{
-		if (!TransformNode::Load(stream))
-			return (out_error() << "Can't load portal node" << std::endl, false);
-		
-		if (!m_portal.Load(stream))
-			return (out_error() << "Can't load portal node" << std::endl, false);
-		
+		TransformNode::Load(stream);
+		m_portal.Load(stream);		
 		return true;
 	}
 
-	System::Proxy<PortalNode> PortalNode::CreateFromFile(const System::string& path)
+	PortalNode* PortalNode::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<PortalNode>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<PortalNode> PortalNode::CreateFromStream(std::istream& stream)
+	PortalNode* PortalNode::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<PortalNode> node(new PortalNode);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<PortalNode>(nullptr));
-		return node;
+		std::unique_ptr<PortalNode> node(new PortalNode);
+		node->Load(stream);
+		return node.release();
 	}
 
 	bool PortalNode::Apply(AbstractVisitor* visitor)

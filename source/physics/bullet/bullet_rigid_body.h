@@ -1,31 +1,48 @@
 #ifndef _H_BULLET_RIGID_BODY
 #define _H_BULLET_RIGID_BODY
 
-#include "../rigid_body.h"
+#include "../../math/mat4.h"
 
 class btCollisionObject;
+class btRigidBody;
 
-namespace Phyiscs
+namespace Physics
 {
-	class Object;
+	class BulletShapeBody;
 
-	class BulletRigidBody : public RigidBody
+	struct RigidBodyDesc
 	{
-		btCollisionObject* m_rigid_body;	
+		Math::mat4 m_initial_position;
+		float m_mass;
+		BulletShapeBody* m_shape;
+		short m_group;
+		short m_mask;
+		bool m_is_character;
 
-		Object* m_object;
-	public:		
+		RigidBodyDesc() : m_is_character(false) {}
+			
+	};
 
-		void SetCollisionObject(btCollisionObject* body) { m_rigid_body = body; }
-		btCollisionObject* GetCollisionObject() { return m_rigid_body; }
-		const btCollisionObject* GetCollisionObject() const { return m_rigid_body; }		
+	class PUNK_ENGINE BulletRigidBody 
+	{
+		btRigidBody* m_rigid_body;
+		btDiscreteDynamicsWorld* m_world;
 
-	public:
-		virtual void SetObject(Object* object);
-		virtual Object* GetObject(Object* object) { return m_object; }
-		virtual const Object* GetObject(Object* object) const { return m_object; }
-		virtual const Math::mat4 GetLocation() const;
-		virtual void SetLocation(const Math::Matrix4x4<float>& m);
+	public:				
+		virtual void Init(RigidBodyDesc& desc);
+		virtual ~BulletRigidBody();
+
+		btRigidBody* GetRigidBody() { return m_rigid_body; }
+		const btRigidBody* GetRigidBody() const { return m_rigid_body; }
+
+		void EnterWorld(btDiscreteDynamicsWorld* world);
+		void LeaveWorld();
+
+		//virtual void SetObject(Object* object);
+		//virtual Object* GetObject(Object* object) { return m_object; }
+		//virtual const Object* GetObject(Object* object) const { return m_object; }
+		//virtual const Math::mat4 GetLocation() const;
+		//virtual void SetLocation(const Math::Matrix4x4<float>& m);
 	private:
 		void Update();
 		void Clear();

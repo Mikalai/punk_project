@@ -23,8 +23,8 @@ namespace Scene
 		virtual bool Load(std::istream& stream);
 		virtual ~Node();		
 
-		static System::Proxy<Node> CreateFromFile(const System::string& path);
-		static System::Proxy<Node> CreateFromStream(std::istream& stream);
+		static Node* CreateFromFile(const System::string& path);
+		static Node* CreateFromStream(std::istream& stream);
 			
 		virtual bool Apply(AbstractVisitor* visitor);
 

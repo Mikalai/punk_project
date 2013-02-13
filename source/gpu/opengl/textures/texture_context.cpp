@@ -8,6 +8,7 @@ namespace GPU
 	{
 		TextureContext::TextureContext() 
 		{
+			memset(m_textures, 0, sizeof(m_textures));
 		}
 
 		TextureContext::~TextureContext()
@@ -17,17 +18,14 @@ namespace GPU
 
 		void TextureContext::Clear()
 		{
-			for (int i = 0; i < MAX_TEXTURES; ++i)
-			{
-				m_textures[i].Release();
-			}
+			memset(m_textures, 0, sizeof(m_textures));
 		}
 
 		void TextureContext::Bind()
 		{
 			for (int i = 0; i < MAX_TEXTURES; ++i)
 			{
-				if (m_textures[i].IsValid())
+				if (m_textures[i])
 				{
 					glActiveTexture(GL_TEXTURE0 + i);
 					CHECK_GL_ERROR(L"Unable to activate GL_TEXTURE0+i");
@@ -40,17 +38,18 @@ namespace GPU
 		{
 			for (int i = 0; i < MAX_TEXTURES; ++i)
 			{
-				if (m_textures[i].IsValid())
+				if (m_textures[i])
 				{
 					glActiveTexture(GL_TEXTURE0 + i);// place some usefull code here
 					CHECK_GL_ERROR(L"Unable to activate GL_TEXTUREi");
 					glBindTexture(GL_TEXTURE_2D, 0);
 					CHECK_GL_ERROR(L"Unable to unbind");
+					m_textures[i] = nullptr;
 				}
 			}
 		}
 
-		void TextureContext::SetTexture(int slot, System::Proxy<Texture2D> map)
+		void TextureContext::SetTexture(int slot, const Texture2D* map)
 		{
 			m_textures[slot] = map;
 		}

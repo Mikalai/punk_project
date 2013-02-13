@@ -1,17 +1,18 @@
-#ifndef _H_PUNK_VIRTUAL_BASE_LOADER
-#define _H_PUNK_VIRTUAL_BASE_LOADER
+#ifndef _H_PUNK_VIRTUAL_BASE_LOADER_2
+#define _H_PUNK_VIRTUAL_BASE_LOADER_2
 
-#include <vector>
-#include "../../utility/model/vertex_bone_weight.h"
-#include "../../virtual/animation/animation_track.h"
-#include "keywords.h"
-#include "../../system/object.h"
+#include "../../config.h"
 
+namespace System 
+{ 
+	class string; 
+	class Object;
+}
 
 namespace Utility
 {
-	PUNK_ENGINE System::Proxy<System::Object> ParsePunkFile(const System::string& path);
-	PUNK_ENGINE System::Proxy<System::Object>  LoadWorld(const System::string& path);
+	extern PUNK_ENGINE System::Object* ParsePunkFile(const System::string& path);
+	extern PUNK_ENGINE System::Object* LoadWorld(const System::string& path);
 }
 
-#endif
+#endif	//	_H_PUNK_VIRTUAL_BASE_LOADER_2

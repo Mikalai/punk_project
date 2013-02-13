@@ -10,24 +10,25 @@ namespace System
 	class PUNK_ENGINE CompoundObject : public Object
 	{
 	public:
+		virtual ~CompoundObject();
 
-		bool Add(Proxy<Object> object);
+		bool Add(Object* object);
 		
-		bool Remove(Proxy<Object> object);
+		bool Remove(Object* object);
 		bool Remove(const string& name);
 		bool Remove(int index);
 
-		Proxy<Object> Find(const string& name);
-		Proxy<Object> Find(int index);
-		const Proxy<Object> Find(const string& name) const;
-		const Proxy<Object> Find(int index) const;
+		Object* Find(const string& name);
+		Object* Find(int index);
+		const Object* Find(const string& name) const;
+		const Object* Find(int index) const;
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
 	public:
 		typedef std::map<string, int> CollectionCacheType;
-		typedef std::vector<Proxy<Object>> CollectionType;
+		typedef std::vector<Object*> CollectionType;
 		typedef CollectionType::iterator iterator;
 		typedef CollectionType::const_iterator const_iterator;
 
@@ -40,8 +41,8 @@ namespace System
 
 	protected:
 
-		virtual bool OnAdd(System::Proxy<System::Object> object) { return true; }
-		virtual bool OnRemove(System::Proxy<System::Object> object) { return true; }
+		virtual bool OnAdd(System::Object* object) { return true; }
+		virtual bool OnRemove(System::Object* object) { return true; }
 	private:
 
 		CollectionType m_children;

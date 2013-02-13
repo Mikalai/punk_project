@@ -19,8 +19,8 @@ namespace Scene
 		virtual bool Load(std::istream& stream);
 		virtual ~BoneNode();		
 
-		static System::Proxy<BoneNode> CreateFromFile(const System::string& path);
-		static System::Proxy<BoneNode> CreateFromStream(std::istream& stream);
+		static BoneNode* CreateFromFile(const System::string& path);
+		static BoneNode* CreateFromStream(std::istream& stream);
 			
 		virtual bool Apply(AbstractVisitor* visitor);
 
@@ -29,7 +29,5 @@ namespace Scene
 		BoneNode& operator = (const BoneNode&);
 	};
 }
-
-REGISTER_MANAGER(L"resource.bone_nodes", L"*.bone_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE_NODE, Scene, BoneNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_BONE_NODE

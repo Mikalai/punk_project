@@ -119,7 +119,7 @@ namespace Raytracer
 
 			Math::vec3 spec(1,1,1);
 			auto h = (light_dir + Math::vec3(0,0,1)).Normalized();			
-			auto spec_s = CookTorrenceFunction(view_dir, light_dir, normal, 1.333, m);
+			auto spec_s = CookTorrenceFunction(view_dir, light_dir, normal, 1.333f, m);
 
 			if (s > 0)
 				return k*s*diffuse.ComponentMult(light.m_color) + (1.0f - k)*spec_s*spec;				

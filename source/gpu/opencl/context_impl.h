@@ -9,7 +9,7 @@ namespace GPU
 {
 	namespace OpenCL
 	{
-		struct Context::ContextImpl
+		struct ContextImpl
 		{
 			cl_context m_context;
 

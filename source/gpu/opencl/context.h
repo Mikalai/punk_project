@@ -10,6 +10,8 @@ namespace GPU
 	{
 		class Device;
 
+		struct ContextImpl;
+
 		class PUNK_ENGINE Context
 		{
 		public:
@@ -19,9 +21,8 @@ namespace GPU
 			~Context();
 
 			bool Init(Device& device);
-
-			struct ContextImpl;
-			struct std::unique_ptr<ContextImpl> m_impl;
+			
+			std::unique_ptr<ContextImpl> m_impl;
 		};
 	}
 }

@@ -603,7 +603,7 @@ namespace System
 		RECT rect;;
 		if (!GetClientRect(m_windowHandle, &rect))
 			throw PunkInvalidArgumentException(L"Can't get window height");
-		GetWindowRect(m_windowHandle, &rect);
+		//GetWindowRect(m_windowHandle, &rect);
 		return rect.bottom - rect.top;
 	}
 }

@@ -15,6 +15,7 @@ namespace Math
 
 		Noise();
 		Noise(unsigned seed);
+		~Noise();
 
 		void SetOctavesCount(int value);
 		void SetPersistance(double value);
@@ -44,7 +45,7 @@ namespace Math
 		void GenerateHeightMap(double offset_x, double offset_y, double dim_x, double dim_y, int width, int height, float* data);
 
 	private:		
-		std::auto_ptr<NoiseImpl> impl;
+		std::unique_ptr<NoiseImpl> impl;
 	};
 }
 

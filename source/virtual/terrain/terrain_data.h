@@ -9,6 +9,7 @@ namespace Virtual
 	class PUNK_ENGINE TerrainData
 	{
 	public:
+		TerrainData() : m_data(nullptr) {}
 				
 		float Value(int x, int y, int block_size)
 		{

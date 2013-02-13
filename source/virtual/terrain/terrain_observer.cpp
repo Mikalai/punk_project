@@ -3,7 +3,7 @@
 
 namespace Virtual
 {
-	TerrainObserver::TerrainObserver(System::Proxy<TerrainView> view)
+	TerrainObserver::TerrainObserver(TerrainView* view)
 		: m_view(view)
 	{
 	}
@@ -15,5 +15,6 @@ namespace Virtual
 
 	TerrainObserver::~TerrainObserver()
 	{
+		safe_delete(m_view);
 	}
 }

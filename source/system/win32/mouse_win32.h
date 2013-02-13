@@ -19,7 +19,7 @@ namespace System
 		bool m_buttons[MAX_MOUSE_BUTTONS];
 		bool m_locked;
 		bool m_visible;
-		System::Proxy<Window> m_region;
+		Window* m_region;
 
 	public:
 
@@ -28,7 +28,7 @@ namespace System
 		void LockInWindow(bool value);
 		void SetButtonState(MouseButtons button, bool state);
 		bool GetButtonState(MouseButtons button) const;
-		void BindCursorToWindow(System::Proxy<Window> window);
+		void BindCursorToWindow(Window* window);
 
 		int GetGlobalX() const;
 		int GetGlobalY() const;
@@ -37,7 +37,7 @@ namespace System
 		
 		bool IsLocked() const;
 		bool IsVisible() const;
-		System::Proxy<Window> GetBoundedWindow() const;
+		Window* GetBoundedWindow() const;
 
 		static Mouse* Instance();
 		static void Destroy();

@@ -17,13 +17,13 @@ namespace System
 		bool Init();
 		bool RegisterCreator(ObjectType type, ResourceCreator* creator);
 		bool UnregisterCreator(ObjectType type);
-		Proxy<Object> Create(ObjectType type);
-		Proxy<Object> Create(const string& name, ObjectType type);
+		Object* Create(ObjectType type);
+		Object* Create(const string& name, ObjectType type);
 
-		Proxy<Object> CreateFromTextFile(const string& path);
+		Object* CreateFromTextFile(const string& path);
 
-		bool SaveToStream(std::ostream& stream, Proxy<Object> object);
-		Proxy<Object> LoadFromStream(std::istream& stream);
+		bool SaveToStream(std::ostream& stream, Object* object);
+		Object* LoadFromStream(std::istream& stream);
 
 	///	static Factory* Instance();
 	///	static void Destroy();

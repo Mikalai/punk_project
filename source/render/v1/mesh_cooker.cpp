@@ -17,7 +17,7 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::TerrainNode* node)
 	{
-		System::Proxy<Virtual::Material> material(new Virtual::Material);
+		Virtual::Material* material(new Virtual::Material);
 		material->GetCache().m_diffuse_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg");
 		material->GetCache().m_diffuse_texture_cache_2 = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"ground.png");
 		material->GetCache().m_normal_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"bump.png");
@@ -28,17 +28,24 @@ namespace Render
 	bool MeshCooker::Visit(Scene::SkinMeshNode* node)
 	{
 		Virtual::SkinGeometry::validate();		
-		System::Proxy<Virtual::SkinGeometry> geom = Virtual::SkinGeometry::find(node->GetStorageName());
+		Virtual::SkinGeometry* geom = Virtual::SkinGeometry::find(node->GetStorageName());
 
-		System::Proxy<GPU::OpenGL::SkinMesh> mesh;
+		GPU::OpenGL::SkinMesh* mesh = nullptr;
 		if (geom->IsCacheValid())
-			mesh = geom->GetGPUBufferCache();
+			mesh = Cast<GPU::OpenGL::SkinMesh*>(geom->GetGPUBufferCache());
 		else
 		{
-			mesh.Reset(new GPU::OpenGL::SkinMesh);
-			if (!mesh->Cook(geom, m_current_armature))
-				throw System::PunkException(L"Can't cook static mesh from static geometry");
-			geom->SetGPUBufferCache(mesh);
+			mesh = new GPU::OpenGL::SkinMesh;
+			try
+			{
+				mesh->Cook(geom, m_current_armature);
+				geom->SetGPUBufferCache(mesh);
+			}			
+			catch(...)
+			{
+				delete mesh;
+				throw;
+			}
 		}
 		node->SetGeometry(geom);
 		return true;
@@ -49,29 +56,37 @@ namespace Render
 		Virtual::Armature::validate();
 		m_current_armature = Virtual::Armature::find(node->GetStorageName());
 		m_current_armature->UpdateHierarchy();
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
-			if (!child->Apply(this))
-				return false;
-		}
-		m_current_armature.Release();
+			Scene::Node* child = As<Scene::Node*>(o);
+			if (child)
+				if (!child->Apply(this))
+					return false;
+		}		
 		return true;
 	}
 
 	bool MeshCooker::Visit(Scene::StaticMeshNode* node)
 	{				
 		Virtual::StaticGeometry::validate();
-		System::Proxy<Virtual::StaticGeometry> geom = Virtual::StaticGeometry::find(node->GetStorageName());	
+		Virtual::StaticGeometry* geom = Virtual::StaticGeometry::find(node->GetStorageName());	
 
-		System::Proxy<GPU::OpenGL::StaticMesh> mesh;
-		if (geom->IsCacheValid())
-			mesh = geom->GetGPUBufferCache();
+		GPU::OpenGL::StaticMesh* mesh = 0;
+		if (geom->IsGPUCacheValid())
+			mesh = Cast<GPU::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
 		else
 		{
-			mesh.Reset(new GPU::OpenGL::StaticMesh);
-			if (!mesh->Cook(geom))
-				throw System::PunkException(L"Can't cook static mesh for " + geom->GetName());
-			geom->SetGPUBufferCache(mesh);
+			mesh = new GPU::OpenGL::StaticMesh;
+			try
+			{
+				mesh->Cook(geom);
+				geom->SetGPUBufferCache(mesh);				
+			}
+			catch (...)
+			{
+				delete mesh;
+				throw;
+			}			
 		}
 		node->SetGeometry(geom);
 		return true;
@@ -80,8 +95,9 @@ namespace Render
 	bool MeshCooker::Visit(Scene::LightNode* node)
 	{
 		m_light_set.push_back(node->GetLight());
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
+			Scene::Node* child = As<Scene::Node*>(o);
 			if (!child->Apply(this))
 				return false;
 		}
@@ -91,12 +107,13 @@ namespace Render
 	bool MeshCooker::Visit(Scene::MaterialNode* node)
 	{
 		Virtual::Material::validate();
-		System::Proxy<Virtual::Material> mat = Virtual::Material::find(node->GetName());
+		Virtual::Material* mat = Virtual::Material::find(node->GetName());
 		node->SetMaterial(mat);
 		mat->GetCache().m_diffuse_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetDiffuseMap());
 		mat->GetCache().m_normal_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetNormalMap());
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
+			Scene::Node* child = As<Scene::Node*>(o);
 			if (!child->Apply(this))
 				return false;
 		}
@@ -105,8 +122,9 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::Node* node)
 	{
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
+			Scene::Node* child = As<Scene::Node*>(o);
 			if (!child->Apply(this))
 				return false;
 		}
@@ -115,8 +133,9 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::TransformNode* node)
 	{
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
+			Scene::Node* child = As<Scene::Node*>(o);
 			if (!child->Apply(this))
 				return false;
 		}
@@ -125,8 +144,9 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::LocationIndoorNode* node)
 	{
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
+			Scene::Node* child = As<Scene::Node*>(o);
 			if (!child->Apply(this))
 				return false;
 		}
@@ -135,8 +155,9 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::BoneNode* node)
 	{		
-		for each (System::Proxy<Scene::Node> child in *node)
+		for each (auto o in *node)
 		{
+			Scene::Node* child = As<Scene::Node*>(o);
 			if (!child->Apply(this))
 				return false;
 		}

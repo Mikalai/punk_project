@@ -15,8 +15,8 @@ namespace Scene
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
-		static System::Proxy<LocationIndoorNode> CreateFromFile(const System::string& path);
-		static System::Proxy<LocationIndoorNode> CreateFromStream(std::istream& stream);
+		static LocationIndoorNode* CreateFromFile(const System::string& path);
+		static LocationIndoorNode* CreateFromStream(std::istream& stream);
 
 		virtual bool Apply(AbstractVisitor* visitor);
 
@@ -27,7 +27,5 @@ namespace Scene
 		Math::ConvexShapeMesh m_convex_mesh;
 	};
 }
-
-REGISTER_MANAGER(L"resource.indoor_locations", L"*.indoor", System::Environment::Instance()->GetModelFolder(), System::ObjectType::LOCATION_INDOOR, Scene, LocationIndoorNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_LOCATION_INDOOR

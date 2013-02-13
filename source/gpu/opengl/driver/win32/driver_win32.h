@@ -31,8 +31,8 @@ namespace GPU
 		struct DriverDesc
 		{
 			Config config;
-			System::Proxy<System::Window> window;
-			System::Proxy<System::EventManager> event_manager;
+			System::Window* window;
+			System::EventManager* event_manager;
 		};
 
 		class PUNK_ENGINE Driver
@@ -52,7 +52,7 @@ namespace GPU
 			void OnResize(System::Event* e);
 			void OnKeyDown(System::Event* e);
 
-			System::Proxy<System::Window> GetWindow() { return m_desc.window; }
+			System::Window* GetWindow() { return m_desc.window; }
 
 		private:
 			

@@ -53,12 +53,12 @@ namespace Virtual
 		*	It tries to get cached data. If no cached data in cell main thread
 		*	initiates data loading process. 
 		*/
-		System::Proxy<TerrainData> GetDataCached() { return m_data_cache; }
+		TerrainData* GetDataCached() { return m_data_cache; }
 		
 		/**
 		*	This is used to place new data to the cell
 		*/
-		void SetDataCached(System::Proxy<TerrainData> value) 
+		void SetDataCached(TerrainData* value) 
 		{ 
 			m_data_cache = value; 
 			m_loading = false;
@@ -69,7 +69,8 @@ namespace Virtual
 		*/
 		void DropCache() 
 		{ 
-			m_data_cache.Release(); 
+			delete m_data_cache;
+			m_data_cache = nullptr;
 			//	mark cell as cell without data
 			//	m_loaded = false;
 		}
@@ -106,8 +107,9 @@ namespace Virtual
 		TerrainRawDataSource m_source;
 		
 		// This field is used expliciply for caching purposes
-		//	it is not saved or loaded ever
-		System::Proxy<TerrainData> m_data_cache;
+		//	it is not saved or loaded ever.
+		// should be deleted in destructor
+		TerrainData* m_data_cache;
 		// Used to indicate state of the cell. if true it means that
 		//	request was created for loading this part of terriotory
 		bool m_loading;

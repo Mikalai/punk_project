@@ -16,6 +16,7 @@ namespace Scene
 	class PUNK_ENGINE BoundingVolumeUpdater : public AbstractVisitor
 	{
 	public:
+		BoundingVolumeUpdater();
 		virtual bool Visit(CameraNode* node);
 		virtual bool Visit(StaticMeshNode* node);
 		virtual bool Visit(SkinMeshNode* node);
@@ -28,7 +29,7 @@ namespace Scene
 		virtual bool Visit(PortalNode* node);
 		virtual bool Visit(BoneNode* node);
 		virtual bool Visit(TerrainNode* node);
-		void SetScene(System::Proxy<SceneGraph> value);
+		void SetScene(SceneGraph* value);
 		void Update();
 
 	private:
@@ -38,11 +39,12 @@ namespace Scene
 			Math::mat4 m_local;
 			Math::mat4 m_armature_world;
 			Math::BoundingSphere m_sphere;
-			System::Proxy<Virtual::Armature> m_armature;			
+			Virtual::Armature* m_armature;			
 		};
 
 		System::StateManager<BoundingVolumeState> m_states;
-		System::Proxy<SceneGraph> m_scene;
+		//	should not be deleted
+		SceneGraph* m_scene;
 	};
 }
 

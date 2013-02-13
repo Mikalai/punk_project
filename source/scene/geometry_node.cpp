@@ -1,6 +1,5 @@
 #include "geometry_node.h"
-
-IMPLEMENT_MANAGER(L"resource.geom_nodes", L"*.geometry_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::GEOMETRY_NODE, Scene, GeometryNode);
+#include "../system/errors/module.h"
 
 namespace Scene
 {
@@ -11,41 +10,33 @@ namespace Scene
 
 	bool GeometryNode::Save(std::ostream& stream) const
 	{
-		if (!Node::Save(stream))
-			return (out_error() << "Can't save geometry " << std::endl, false);
+		Node::Save(stream);
 				
-		if (!System::GetFactory()->SaveToStream(stream, m_geometry))
-			return (out_error() << "Can't save geometry " << std::endl, false);
+//		if (!System::GetFactory()->SaveToStream(stream, m_geometry))
 
 		return true;
 	}
 
 	bool GeometryNode::Load(std::istream& stream)
 	{
-		if (!Node::Load(stream))
-			return (out_error() << "Can't save geometry " << std::endl, false);
-
-		m_geometry = System::GetFactory()->LoadFromStream(stream);
-		if (!m_geometry.IsValid())
-			return false;
-
+		Node::Load(stream);
+		//m_geometry = Cast<Virtual::Geometry*>(System::GetFactory()->LoadFromStream(stream));
 		return true;
 	}
 
-	System::Proxy<GeometryNode> GeometryNode::CreateFromFile(const System::string& path)
+	GeometryNode* GeometryNode::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<GeometryNode>(nullptr));
+			throw  System::PunkException(L"Can't open file");
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<GeometryNode> GeometryNode::CreateFromStream(std::istream& stream)
+	GeometryNode* GeometryNode::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<GeometryNode> node(new GeometryNode);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<GeometryNode>(nullptr));
-		return node;
+		std::unique_ptr<GeometryNode> node(new GeometryNode);
+		node->Load(stream);			
+		return node.release();
 	}
 
 	bool GeometryNode::Apply(AbstractVisitor* visitor)

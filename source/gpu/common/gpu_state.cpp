@@ -1,10 +1,15 @@
 #include "gpu_state.h"
-#include "../../virtual/module.h"
 
 namespace GPU
 {
 	CoreState::CoreState()
 	{
+		m_rc = nullptr;
+		m_material = nullptr;
+		m_camera = nullptr;
+		m_armature = nullptr;
+		m_terrain = nullptr;
+		m_terrain_observer = nullptr;
 		m_depth_test = true;
 		m_blending = false;
 		m_line_smooth = true;
@@ -13,5 +18,10 @@ namespace GPU
 		m_wireframe = false;
 		m_enable_shadows = false;
 		m_enable_lighting = true;
+	}
+
+	CoreState::~CoreState()
+	{
+		//	do not delete pointers, because they are owned by someone else
 	}
 }

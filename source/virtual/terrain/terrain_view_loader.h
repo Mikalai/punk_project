@@ -12,6 +12,8 @@
 
 namespace Virtual
 {
+	class TerrainManager;
+
 	struct TerrainViewLoaderDesc
 	{
 		void* m_buffer;
@@ -22,6 +24,7 @@ namespace Virtual
 		Math::vec2 m_view_point;
 		Math::vec2 m_world_origin;
 		System::string m_map_name;
+		TerrainManager* m_manager;
 	};
 
 	class PUNK_ENGINE TerrainViewLoader : public System::AbstractDataLoader

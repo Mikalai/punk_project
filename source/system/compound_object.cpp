@@ -4,6 +4,14 @@
 
 namespace System
 {
+	CompoundObject::~CompoundObject()
+	{
+		for (auto it = m_children.begin(); it != m_children.end(); ++it)
+			safe_delete(*it);
+		m_children.clear();
+		m_cache.clear();
+	}
+
 	bool CompoundObject::Save(std::ostream& stream) const
 	{
 		if (!Object::Save(stream))
@@ -22,17 +30,17 @@ namespace System
 
 	bool CompoundObject::Load(std::istream& stream)
 	{
-		if (!Object::Load(stream))
-			return (out_error() << "Can't load compound object" << std::endl, false);
+		Object::Load(stream);
+			
 
 		unsigned total_count = 0;
 		stream.read((char*)&total_count, sizeof(total_count));
 
 		for (int i = 0; i < (int)total_count; ++i)
 		{
-			Proxy<Object> o = GetFactory()->LoadFromStream(stream);
-			if (!o.IsValid())
-				return (out_error() << "Can't load compound object" << std::endl, false);
+			Object* o = GetFactory()->LoadFromStream(stream);
+			if (!o)
+				throw PunkInvalidArgumentException(L"Can't load compound object");
 			if (!Add(o))
 				return (out_error() << "Can't add loaded object to the object list" << std::endl, false);
 		}
@@ -40,7 +48,7 @@ namespace System
 		return true;
 	}
 
-	bool CompoundObject::Add(Proxy<Object> value)
+	bool CompoundObject::Add(Object* value)
 	{
 		if (value == nullptr)
 			return (out_error() << "Can't add null object" << std::endl, false);
@@ -59,14 +67,14 @@ namespace System
 		return true;
 	}
 
-	bool CompoundObject::Remove(Proxy<Object> value)
+	bool CompoundObject::Remove(Object* value)
 	{
 		if (value == nullptr)
 			return (out_error() << "Can't remove null object" << std::endl, false);
 
 		for (auto it = m_children.begin(); it != m_children.end(); ++it)
 		{
-			if (it->Get() == value.Get())
+			if (*it == value)
 			{
 				m_children.erase(it);
 				m_cache.erase(m_cache.find(value->GetStorageName()));
@@ -113,26 +121,26 @@ namespace System
 		return true;
 	}
 
-	const Proxy<Object> CompoundObject::Find(const string& name) const
+	const Object* CompoundObject::Find(const string& name) const
 	{
 		auto it = m_cache.find(name);
 		if (it == m_cache.end())
-			return Proxy<Object>(nullptr);
+			return nullptr;
 		return m_children[it->second];
 	}
 
-	const Proxy<Object> CompoundObject::Find(int index) const
+	const Object* CompoundObject::Find(int index) const
 	{
 		return m_children[index];
 	}
 
-	Proxy<Object> CompoundObject::Find(const string& name)
+	Object* CompoundObject::Find(const string& name)
 	{
-		return static_cast<const CompoundObject*>(this)->Find(name);
+		return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(name));
 	}
 
-	Proxy<Object> CompoundObject::Find(int index)
+	Object* CompoundObject::Find(int index)
 	{
-		return static_cast<const CompoundObject*>(this)->Find(index);
+		return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(index));
 	}
 }

@@ -8,8 +8,19 @@ namespace Render
 	GUIRender::GUIRender()
 		: m_selection_color_delta(0.1f, 0.1f, 0.1f, 0.1f)
 	{
-		m_rc.Reset(new GPU::OpenGL::RenderContextGUI());
-		m_tc.Reset(new GPU::OpenGL::TextureContext());
+		m_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
+		m_tc = new GPU::OpenGL::TextureContext();
+	}
+
+	GUIRender::~GUIRender()
+	{
+		try { Clear(); } catch(...) {}
+	}
+
+	void GUIRender::Clear()
+	{
+		m_rc = nullptr;
+		safe_delete(m_tc);
 	}
 
 	void GUIRender::RenderWidget(const GUI::Widget* widget)
@@ -30,7 +41,7 @@ namespace Render
 			m_states.CurrentState()->Get().m_diffuse_color = widget->BackColor();
 
 		m_states.CurrentState()->Get().m_text_color = widget->TextColor();		
-		m_states.CurrentState()->Get().m_use_diffuse_texture = widget->GetBackgroundTexture().IsValid();
+		m_states.CurrentState()->Get().m_use_diffuse_texture = widget->GetBackgroundTexture() != nullptr;
 		m_tc->SetTexture(1, widget->GetBackgroundTexture());		
 		m_tc->SetTexture(0, widget->GetTextTexture());	
 		m_states.CurrentState()->Get().m_diffuse_slot_0 = 1;
@@ -49,9 +60,10 @@ namespace Render
 		m_tc->Unbind();
 		m_rc->End();
 
-		for each (System::Proxy<GUI::Widget> child in *widget)
+		for each (auto o in *widget)
 		{
-			if (child.IsValid())
+			GUI::Widget* child = As<GUI::Widget*>(o);
+			if (child)
 				if (child->IsVisible())
 					child->Render(this);
 		}

@@ -1,4 +1,5 @@
 #include "../../gpu/opengl/textures/texture2d.h"
+#include "../../system/logger.h"
 #include "terrain_view_processor.h"
 
 namespace Virtual

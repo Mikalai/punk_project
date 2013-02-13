@@ -1,4 +1,6 @@
 #include "../../gpu/opengl/textures/texture2d.h"
+#include "../../system/logger.h"
+#include <iostream>
 #include "terrain_manager.h"
 #include "terrain_view_loader.h"
 #include "terrain_loader.h"
@@ -16,9 +18,9 @@ namespace Virtual
 
 	System::StreamingStepResult TerrainViewLoader::Load()
 	{
-		System::Proxy<Terrain> terrain = TerrainManager::Instance()->GetTerrain();
-		if (!terrain.IsValid())
-			return (out_error() << "Manager do not manage any terrain" << std::endl, System::STREAM_ERROR);
+		Terrain* terrain = m_desc.m_manager->GetTerrain();
+		if (!terrain)
+			return (out_error() << L"Manager do not manage any terrain" << std::endl, System::STREAM_ERROR);
 
 		//	find coordinates of the observer position in the map coordinate system
 		auto mark = (m_desc.m_view_point - m_desc.m_world_origin) / m_desc.m_block_scale;
@@ -29,15 +31,15 @@ namespace Virtual
 		cell.Set((int)floor(temp.X()), (int)floor(temp.Y()));
 
 		//	find observer coordinates in the cell coordinate system
-		Math::vec2 mark_rel = mark - Math::vec2(cell.X(), cell.Y()) * (float)m_desc.m_block_size;
+		Math::vec2 mark_rel = mark - Math::vec2(float(cell.X()), float(cell.Y())) * (float)m_desc.m_block_size;
 
 		//	find size of the view in the map coordinate system
 		int mark_size = (int)(m_desc.m_view_size / (float)m_desc.m_block_scale);
 
-		int east_count = ceil(abs((mark_size / 2.0f - (float)m_desc.m_block_size + mark_rel.X())/(float)m_desc.m_block_size));
-		int west_count = ceil(abs((mark_size / 2.0f - mark_rel.X())/(float)m_desc.m_block_size));
-		int north_count = ceil(abs(((mark_size / 2.0f - mark_rel.Y())/(float)m_desc.m_block_size)));
-		int south_count = ceil(abs(((mark_size / 2.0f - (float)m_desc.m_block_size + mark_rel.Y())/(float)m_desc.m_block_size)));
+		int east_count = int(ceil(abs((float(mark_size) / 2.0f - (float)m_desc.m_block_size + float(mark_rel.X()))/(float)m_desc.m_block_size)));
+		int west_count = int(ceil(abs((float(mark_size) / 2.0f - float(mark_rel.X()))/(float)m_desc.m_block_size)));
+		int north_count = int(ceil(abs(((float(mark_size) / 2.0f - float(mark_rel.Y()))/(float)m_desc.m_block_size))));
+		int south_count = int(ceil(abs(((float(mark_size) / 2.0f - (float)m_desc.m_block_size + float(mark_rel.Y()))/(float)m_desc.m_block_size))));
 
 		//	initiate async loading of not cached data
 		bool is_valid = true;
@@ -50,7 +52,7 @@ namespace Virtual
 				{
 					auto cell = terrain->GetCell(x, y);
 					//	check is cell data is value
-					if (!cell->GetDataCached().IsValid())
+					if (!cell->GetDataCached())
 					{
 						//	if not valid, than we can't create view
 						is_valid = false;
@@ -79,7 +81,7 @@ namespace Virtual
 		{
 			for (int iy = std::max(0, cell.Y() - north_count); iy <= std::min(terrain->GetNumBlocks(), cell.Y() + south_count); ++iy)
 			{
-				System::Proxy<TerrainData> cell_ref;
+				TerrainData* cell_ref = 0;
 				if (ix >= 0 && ix < terrain->GetNumBlocks() 
 					&& iy >= 0 && iy < terrain->GetNumBlocks() )
 				{
@@ -106,7 +108,7 @@ namespace Virtual
 
 						if (dst_x >= 0 && dst_x < mark_size && dst_y >= 0 && dst_y < mark_size)
 						{								
-							if (cell_ref.IsValid())
+							if (cell_ref)
 							{
 								dst_buffer[dst_x + m_desc.m_view_size * dst_y] = 20.f * cell_ref->Value(src_x, src_y, m_desc.m_block_size);
 							}

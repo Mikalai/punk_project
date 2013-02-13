@@ -1,9 +1,5 @@
 #include "armature_node.h"
-#include "../system/factory.h"
 #include "../virtual/skinning/armature.h"
-
-IMPLEMENT_MANAGER(L"resource.armature_nodes", L"*.armature_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE_NODE, Scene, ArmatureNode);
-
 
 namespace Scene
 {
@@ -18,49 +14,55 @@ namespace Scene
 
 	bool ArmatureNode::Save(std::ostream& stream) const
 	{
-		if (!Node::Save(stream))
-			return (out_error() << "Can't save geometry " << std::endl, false);
-				
-		if (!System::GetFactory()->SaveToStream(stream, m_armature))
-			return (out_error() << "Can't save geometry " << std::endl, false);
-
+		Node::Save(stream);
+		
+		bool flag = m_armature != 0;
+		stream.write((char*)&flag, sizeof(flag));
+		if (flag)
+		{
+			m_armature->GetName().Save(stream);
+		}
+		
 		return true;
 	}
 
 	bool ArmatureNode::Load(std::istream& stream)
 	{
-		if (!Node::Load(stream))
-			return (out_error() << "Can't save geometry " << std::endl, false);
+		Node::Load(stream);
 
-		m_armature = System::GetFactory()->LoadFromStream(stream);
-		if (!m_armature.IsValid())
-			return false;
+		bool flag = false;
+		stream.read((char*)&flag, sizeof(flag));
+		if (flag)
+		{
+			System::string name;
+			name.Load(stream);
+			m_armature = Virtual::Armature::find(name);
+		}
 
 		return true;
 	}
 
-	System::Proxy<ArmatureNode> ArmatureNode::CreateFromFile(const System::string& path)
+	ArmatureNode* ArmatureNode::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<ArmatureNode>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<ArmatureNode> ArmatureNode::CreateFromStream(std::istream& stream)
+	ArmatureNode* ArmatureNode::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<ArmatureNode> node(new ArmatureNode);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<ArmatureNode>(nullptr));
-		return node;
+		std::unique_ptr<ArmatureNode> node(new ArmatureNode);
+		node->Load(stream);
+		return node.release();
 	}
 
-	void ArmatureNode::SetArmature(System::Proxy<Virtual::Armature> value)
+	void ArmatureNode::SetArmature(Virtual::Armature* value)
 	{
 		m_armature = value;
 	}
 
-	System::Proxy<Virtual::Armature> ArmatureNode::GetArmature() 
+	Virtual::Armature* ArmatureNode::GetArmature() 
 	{
 		return m_armature;
 	}

@@ -1,6 +1,7 @@
 #include "video_memory.h"
 #include "../gl/module.h"
 #include "../buffers/module.h"
+#include "../error/module.h"
 
 namespace GPU
 {
@@ -51,89 +52,121 @@ namespace GPU
 			return m_core.m_max_mem_available;
 		}
 
-		System::Proxy<PixelBufferObject> VideoMemory::AllocatePixelBuffer(size_t size)
-		{
-			System::Proxy<PixelBufferObject> value;
-			if (VerifyMemory(size))
+		PixelBufferObject* VideoMemory::AllocatePixelBuffer(size_t size)
+		{			
+			VerifyMemory(size);
+			PixelBufferObject* value(new PixelBufferObject);
+			try
 			{
-				value.Reset(new PixelBufferObject);
-				value->Create(0, size);
-				m_pbo_list.push_back(value);
+				value->Create(0, size);				
 				m_core.m_mem_usage += size;
 				return value;
 			}
-			throw OpenGLOutOfMemoryException(L"Can't allocate pixel buffer");
+			catch(...)
+			{
+				delete value;
+				throw;
+			}
 		}
 
-		System::Proxy<VertexBufferObject> VideoMemory::AllocateVertexBuffer(size_t size)
+		void VideoMemory::FreePixelBuffer(PixelBufferObject* value)
 		{
-			System::Proxy<VertexBufferObject> value;
-			if (VerifyMemory(size))
-			{
-				value.Reset(new VertexBufferObject);
-				value->Create(0, size);
-				m_vbo_list.push_back(value);
-				m_core.m_mem_usage += size;
-				return value;
-			}
-			throw OpenGLOutOfMemoryException(L"Can't allocate vertex buffer");
+			if (!value)
+				return;
+			size_t size = value->GetSize();
+			delete value;
+			m_core.m_mem_usage -= size;
 		}
 
-		System::Proxy<IndexBufferObject> VideoMemory::AllocateIndexBuffer(size_t size)
-		{
-			System::Proxy<IndexBufferObject> value;
-			if (VerifyMemory(size))
+		VertexBufferObject* VideoMemory::AllocateVertexBuffer(size_t size)
+		{			
+			VerifyMemory(size);
+			VertexBufferObject* value(new VertexBufferObject);
+			try
 			{
-				value.Reset(new IndexBufferObject);				
 				value->Create(0, size);
-				m_ibo_list.push_back(value);
 				m_core.m_mem_usage += size;
 				return value;
 			}
-			throw OpenGLOutOfMemoryException(L"Can't allocate indexbuffer");
+			catch(...)
+			{
+				delete value;
+				throw;
+			}
+		}
+
+		void VideoMemory::FreeVertexBuffer(VertexBufferObject* value)
+		{
+			if (!value)
+				return;
+			size_t size = value->GetSize();
+			delete value;
+			m_core.m_mem_usage -= size;
+		}
+
+		IndexBufferObject* VideoMemory::AllocateIndexBuffer(size_t size)
+		{
+			VerifyMemory(size);
+			IndexBufferObject* value(new IndexBufferObject);		
+			try
+			{
+				value->Create(0, size);
+				m_core.m_mem_usage += size;
+				return value;
+			}
+			catch(...)
+			{
+				delete value;
+				throw;
+			}
+		}
+
+		void VideoMemory::FreeIndexBuffer(IndexBufferObject* value)
+		{
+			if (!value)
+				return;
+			size_t size = value->GetSize();
+			delete value;
+			m_core.m_mem_usage -= size;
 		}
 
 		bool VideoMemory::VerifyMemory(size_t size)
 		{
 			if (m_core.m_mem_usage + size >= m_core.m_max_mem_usage)
-			{
-				OptimizeMemoryUsage(size);
-				if (m_core.m_mem_usage + size >= m_core.m_max_mem_usage)
-					return false;
-			}
+				throw OpenGLOutOfMemoryException(L"Not enough video memory to allocate buffer");
 			return true;
 		}
 
-		void VideoMemory::OptimizeMemoryUsage(size_t size)
-		{		
-			size_t to_free = 0;
-			//	remove useless textures
-			for (size_t i = 0; i < m_pbo_list.size(); ++i)
-			{
-				if (m_pbo_list[i].GetCount() == 1)
-					to_free += m_pbo_list[i]->GetSize();
-				if (m_core.m_mem_usage - to_free + size < m_core.m_max_mem_usage)
-					return;
-			}
+		//void VideoMemory::OptimizeMemoryUsage(size_t size)
+		//{		
+		//	size_t to_free = 0;
+		//	//	remove useless textures
+		//	for (size_t i = 0; i < m_pbo_list.size(); ++i)
+		//	{
+		//		if (m_pbo_list[i].GetCount() == 1)
+		//			to_free += m_pbo_list[i]->GetSize();
+		//		if (m_core.m_mem_usage - to_free + size < m_core.m_max_mem_usage)
+		//			return;
+		//	}
 
-			//	remove useless vbo
-			for (size_t i = 0; i < m_vbo_list.size(); ++i)
-			{
-				if (m_vbo_list[i].GetCount() == 1)
-					to_free += m_vbo_list[i]->GetSize();
-				if (m_core.m_mem_usage - to_free + size < m_core.m_max_mem_usage)
-					return;
-			}
+		//	//	remove useless vbo
+		//	for (size_t i = 0; i < m_vbo_list.size(); ++i)
+		//	{
+		//		if (m_vbo_list[i].GetCount() == 1)
+		//			to_free += m_vbo_list[i]->GetSize();
+		//		if (m_core.m_mem_usage - to_free + size < m_core.m_max_mem_usage)
+		//			return;
+		//	}
 
-			//	remove useless ibo
-			for (size_t i = 0; i < m_ibo_list.size(); ++i)
-			{
-				if (m_ibo_list[i].GetCount() == 1)
-					to_free += m_ibo_list[i]->GetSize();
-				if (m_core.m_mem_usage - to_free + size < m_core.m_max_mem_usage)
-					return;
-			}
-		}
+		//	//	remove useless ibo
+		//	for (size_t i = 0; i < m_ibo_list.size(); ++i)
+		//	{
+		//		if (m_ibo_list[i].GetCount() == 1)
+		//			to_free += m_ibo_list[i]->GetSize();
+		//		if (m_core.m_mem_usage - to_free + size < m_core.m_max_mem_usage)
+		//			return;
+		//	}
+		//}
 
 	}
 }

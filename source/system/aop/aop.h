@@ -76,4 +76,4 @@ namespace System
 	template<class T, typename Key> bool Aspect<T, Key>::m_init = false;
 }
 
-#endif
+#endif	//	_H_PUNK_SYSTEM_ASPECT_ORIENTED_CLASS

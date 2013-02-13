@@ -19,6 +19,8 @@ namespace GPU
 			, m_resolve_fb(0)
 			, m_color_rb(0)
 			, m_depth_rb(0)
+			, m_color_texture(nullptr)
+			, m_depth_texture(nullptr)
 		{}
 
 		bool RenderTargetTexture::Init(RenderTarget::Properties* props)
@@ -29,7 +31,9 @@ namespace GPU
 			//	generate frame buffer
 			glGenFramebuffers(1, &m_fb);
 			//	create color texture
-			m_color_texture.Reset(new Texture2D);
+			if (m_color_texture)
+				safe_delete(m_color_texture);
+			m_color_texture = new Texture2D;
 			m_color_texture->Create(p->m_texture_width, p->m_texture_height, ImageModule::IMAGE_FORMAT_RGBA8, 0, false);
 
 			//	if multisample
@@ -91,8 +95,8 @@ namespace GPU
 			CHECK_GL_ERROR(L"Can't delete color render buffer object");
 			glDeleteRenderbuffers(1, &m_depth_rb);
 			CHECK_GL_ERROR(L"Can't delete depth render buffer object");
-			m_color_texture.Release();
-			m_depth_texture.Release();
+			safe_delete(m_color_texture);
+			safe_delete(m_depth_texture);
 		}
 
 		RenderTargetTexture::~RenderTargetTexture()
@@ -130,12 +134,12 @@ namespace GPU
 			CHECK_GL_ERROR(L"Can't set depth func to GL_LESS");
 		}
 
-		System::Proxy<Texture2D> RenderTargetTexture::GetColorBuffer()
+		Texture2D* RenderTargetTexture::GetColorBuffer()
 		{
 			return m_color_texture;
 		}
 
-		System::Proxy<Texture2D> RenderTargetTexture::GetDepthBuffer()
+		Texture2D* RenderTargetTexture::GetDepthBuffer()
 		{
 			return m_depth_texture;
 		}
@@ -144,27 +148,27 @@ namespace GPU
 		{
 			GLenum result = glCheckFramebufferStatus( GL_DRAW_FRAMEBUFFER);
 			if (result == GL_FRAMEBUFFER_COMPLETE)
-				out_message() << L"Frame buffer complete" << std::endl;
+				;/*out_message() << L"Frame buffer complete" << std::endl;*/
 			else if (result == GL_FRAMEBUFFER_UNDEFINED)
-				out_error() << L"GL_FRAMEBUFFER_UNDEFINED is returned if target is the default framebuffer, but the default framebuffer does not exist" << std::endl;
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_UNDEFINED is returned if target is the default framebuffer, but the default framebuffer does not exist");
 			else if (result == GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT)
-				out_error() << L"GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT is returned if any of the framebuffer attachment points are framebuffer incomplete" << std::endl;
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT is returned if any of the framebuffer attachment points are framebuffer incomplete");
 			else if (result == GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT)
-				out_error() << L"GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT is returned if the framebuffer does not have at least one image attached to it" << std::endl;
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT is returned if the framebuffer does not have at least one image attached to it");
 			else if (result == GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER)
-				out_error() << L"GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER is returned if the value of GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE is GL_NONE for any color attachment point(s) named by GL_DRAWBUFFERi" << std::endl;		
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER is returned if the value of GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE is GL_NONE for any color attachment point(s) named by GL_DRAWBUFFERi");
 			else if (result == GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER)
-				out_error() << L"GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER is returned if GL_READ_BUFFER is not GL_NONE and the value of GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE is GL_NONE for the color attachment point named by GL_READ_BUFFER." << std::endl;		
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER is returned if GL_READ_BUFFER is not GL_NONE and the value of GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE is GL_NONE for the color attachment point named by GL_READ_BUFFER.");
 			else if (result == GL_FRAMEBUFFER_UNSUPPORTED)
-				out_error() << L"GL_FRAMEBUFFER_UNSUPPORTED is returned if the combination of internal formats of the attached images violates an implementation-dependent set of restrictions." << std::endl;		
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_UNSUPPORTED is returned if the combination of internal formats of the attached images violates an implementation-dependent set of restrictions.");		
 			else if (result == GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE)
-				out_error() << L"GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE is returned if the value of GL_RENDERBUFFER_SAMPLES is not the same for all attached renderbuffers; if the value of GL_TEXTURE_SAMPLES is the not same for all attached textures; or, if the attached images are a Mix of renderbuffers and textures, the value of GL_RENDERBUFFER_SAMPLES does not match the value of GL_TEXTURE_SAMPLES." << std::endl;		
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE is returned if the value of GL_RENDERBUFFER_SAMPLES is not the same for all attached renderbuffers; if the value of GL_TEXTURE_SAMPLES is the not same for all attached textures; or, if the attached images are a Mix of renderbuffers and textures, the value of GL_RENDERBUFFER_SAMPLES does not match the value of GL_TEXTURE_SAMPLES.");
 			else if (result == GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE)
-				out_error() << L"GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE is also returned if the value of GL_TEXTURE_FIXED_SAMPLE_LOCATIONS is not the same for all attached textures; or, if the attached images are a Mix of renderbuffers and textures, the value of GL_TEXTURE_FIXED_SAMPLE_LOCATIONS is not GL_TRUE for all attached textures." << std::endl;		
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE is also returned if the value of GL_TEXTURE_FIXED_SAMPLE_LOCATIONS is not the same for all attached textures; or, if the attached images are a Mix of renderbuffers and textures, the value of GL_TEXTURE_FIXED_SAMPLE_LOCATIONS is not GL_TRUE for all attached textures.");	
 			else if (result == GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS)
-				out_error() << L"GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS is returned if any framebuffer attachment is layered, and any populated attachment is not layered, or if all populated color attachments are not from textures of the same target." << std::endl;		
+				throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS is returned if any framebuffer attachment is layered, and any populated attachment is not layered, or if all populated color attachments are not from textures of the same target.");
 			else 
-				out_error() << L"Fuck" << std::endl;
+				throw System::PunkInvalidArgumentException(L"Fuck");
 		}
 	}
 }

@@ -15,18 +15,21 @@ namespace Virtual
 	public:
 		~TerrainObserver();
 
-		System::Proxy<TerrainView> GetTerrainView() { return m_view; }
-		const System::Proxy<TerrainView> GetTerrainView() const { return m_view; }
+		TerrainView* GetTerrainView() { return m_view; }
+		const TerrainView* GetTerrainView() const { return m_view; }
 
 		void SetPosition(const Math::vec3& value);
 
 	private:
-		TerrainObserver(System::Proxy<TerrainView> view);
+		TerrainObserver(TerrainView* view);
 
 	private:
-		System::Proxy<TerrainView> m_view;
+		//	should be destroyed in destructor
+		TerrainView* m_view;
 		friend class TerrainManager;
 	};
+
+	typedef TerrainObserver* TerrainObserverRef;
 }
 
 #endif	//	_H_PUNK_VIRTUAL_TERRAIN_OBSERVER

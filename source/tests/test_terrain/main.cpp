@@ -14,35 +14,35 @@ public:
 	{
 		Punk::Application::Init(value);
 
-		scene = System::GetFactory()->CreateFromTextFile(System::Environment::Instance()->GetModelFolder() + L"house.pmd");
-		Virtual::TerrainManager::Instance()->Manage(L"test_map");
-		System::Proxy<Virtual::FirstPersonCamera> c(new Virtual::FirstPersonCamera);
+		scene = Cast<Scene::SceneGraph*>(Utility::LoadWorld(System::Environment::Instance()->GetModelFolder() + L"cube.pmd"));
+		GetTerrainManager()->Manage(L"test_map");
+		Virtual::FirstPersonCamera* c(new Virtual::FirstPersonCamera);
 		c->SetPosition(Math::vec3(x, 0, y));
 		scene->SetActiveCamera(c);
 
-		observer = Virtual::TerrainManager::Instance()->CreateTerrainObserver(Math::vec3(c->GetPosition()));
-		node.Reset(new Scene::DebugTextureViewNode);	
-		System::Proxy<Scene::Node> root = scene->GetRootNode();
+		observer = GetTerrainManager()->CreateTerrainObserver(Math::vec3(c->GetPosition()));
+		node = new Scene::DebugTextureViewNode;	
+		Scene::Node* root = scene->GetRootNode();
 
-		widget.Reset(new GUI::Widget(0, 0, 0.5, 0.5, L"Hello World!!!"));
+		widget = new GUI::Widget(0, 0, 0.5, 0.5, L"Hello World!!!");
 
 		GetGUIManager()->AddRootWidget(widget);
 
-		render.Reset(new Render::SimpleRender(GetDriver()));
+		render = new Render::SimpleRender(GetDriver());
 		render->SetGUIHud(widget);
 
-		terrain_node.Reset(new Scene::TerrainNode());
+		terrain_node = new Scene::TerrainNode();
 		terrain_node->SetTerrainObserver(observer);
 		root->Add(terrain_node);
 		root->Add(node);
 		Render::MeshCooker cooker;
-		//		cooker.Visit(scene->GetRootNode());
+ 		cooker.Visit(scene->GetRootNode());
 		render->SetScene(scene);
 		updater.SetScene(scene);	
 
 
 		System::AsyncLoader::Instance()->MainThreadProc(1);		
-		t.Reset(new GPU::OpenGL::Texture2D);
+		t = new GPU::OpenGL::Texture2D;
 		unsigned char data[256*256];
 		memset(data, 0xFF, 256*256);
 		t->Create(64, 64, ImageModule::IMAGE_FORMAT_RGBA, data, false);
@@ -51,11 +51,10 @@ public:
 
 	virtual ~TerrainTest()
 	{
-		t.Release();
-		render.Release();
-		observer.Release();
-		Virtual::TerrainManager::Destroy();
-		scene.Release();
+		safe_delete(t);
+		safe_delete(render);
+		safe_delete(observer);
+		safe_delete(scene);
 	}
 
 	virtual void OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* e) override
@@ -76,15 +75,12 @@ public:
 		x += 0.001 * (float)(e->x - e->x_prev);
 		y += 0.001 * (float)(e->y - e->y_prev);		
 
-		System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
+		Virtual::FirstPersonCamera* c = Cast<Virtual::FirstPersonCamera*>(scene->GetCameraNode()->GetCamera());
 		c->SetYawRollPitch(x, y, 0);
 	}
 
 	virtual void OnKeyDownEvent(System::KeyDownEvent* e) override
 	{		
-		char buffer [64*64*4];
-		memset(buffer, 0xEF, 4*64*64);
-		widget->GetTextTexture()->CopyFromCPU(0, 0, 64, 64, buffer);
 		Punk::Application::OnKeyDownEvent(e);
 		switch (e->key)
 		{
@@ -96,7 +92,8 @@ public:
 			break;
 		case System::PUNK_KEY_F9:
 			{			
-				scene.Reset(new Scene::SceneGraph);
+				safe_delete(scene);
+				scene = new Scene::SceneGraph;
 				std::ifstream stream("scene.save", std::ios_base::binary);
 				scene->Load(stream);
 				render->SetScene(scene);
@@ -120,7 +117,7 @@ public:
 
 		updater.Update();
 		render->Render();
-		System::Proxy<Virtual::FirstPersonCamera> c = scene->GetCameraNode()->GetCamera();
+		Virtual::FirstPersonCamera* c = Cast<Virtual::FirstPersonCamera*>(scene->GetCameraNode()->GetCamera());
 		bool update = false;
 		float scale = 0.07;
 		if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
@@ -164,15 +161,15 @@ public:
 	}
 
 private:
-	System::Proxy<GPU::OpenGL::Texture2D> t;
-	System::Proxy<Scene::SceneGraph> scene;
-	System::Proxy<Virtual::TerrainObserver> observer;
+	GPU::OpenGL::Texture2D* t;
+	Scene::SceneGraph* scene;
+	Virtual::TerrainObserver* observer;
 	bool m_left_down;
-	System::Proxy<Scene::DebugTextureViewNode> node;
-	System::Proxy<Scene::TerrainNode> terrain_node;
+	Scene::DebugTextureViewNode* node;
+	Scene::TerrainNode* terrain_node;
 	Scene::BoundingVolumeUpdater updater;
-	System::Proxy<Render::SimpleRender> render;
-	System::Proxy<GUI::Widget> widget;
+	Render::SimpleRender* render;
+	GUI::Widget* widget;
 	float x;
 	float y;
 };
@@ -181,7 +178,7 @@ int main()
 {	
 	try
 	{
-		System::GetFactory()->Init();
+		//System::GetFactory()->Init();
 		TerrainTest app;
 		app.Init(Punk::Config());		
 		app.Run();

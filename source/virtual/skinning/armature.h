@@ -11,14 +11,13 @@
 
 #include "../../system/object.h"
 #include "../../system/aop/aop.h"
-#include "../../system/resource_manager.h"
 #include "../../string/string.h"
 
 namespace Virtual
 {
 	class Entity;
 	
-	class  PUNK_ENGINE Armature : public System::Object, public System::Aspect<System::Proxy<Armature>, System::string>
+	class  PUNK_ENGINE Armature : public System::Object, public System::Aspect<Armature*, System::string>
 	{
 	public:
 		Armature();
@@ -40,8 +39,8 @@ namespace Virtual
 		virtual bool Load(std::istream& stream);
 		virtual ~Armature();
 
-		static System::Proxy<Armature> CreateFromFile(const System::string& path);
-		static System::Proxy<Armature> CreateFromStream(std::istream& stream);
+		static Armature* CreateFromFile(const System::string& path);
+		static Armature* CreateFromStream(std::istream& stream);
 
 		void UpdateHierarchy();
 	private:

@@ -31,24 +31,20 @@ namespace Scene
 	class PUNK_ENGINE SceneGraph : public System::Object
 	{
 	public:
-		typedef std::vector<System::Proxy<Virtual::Material>> MaterialsCollection;
-
-	public:
 		SceneGraph();
+		virtual ~SceneGraph();
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 				
-		static System::Proxy<SceneGraph> CreateFromFile(const System::string& path);
-		static System::Proxy<SceneGraph> CreateFromStream(std::istream& stream);
+		static SceneGraph* CreateFromFile(const System::string& path);
+		static SceneGraph* CreateFromStream(std::istream& stream);
 
-		void SetRootNode(System::Proxy<Node> value) { m_root = value; }
-		System::Proxy<Node> GetRootNode() { return m_root; }
+		void SetRootNode(Node* value) { m_root = value; }
+		Node* GetRootNode() { return m_root; }
 
-		void AddMaterial(System::Proxy<Virtual::Material> value) { m_used_materials.push_back(value); }
-
-		void SetActiveCamera(System::Proxy<Virtual::Camera> value);
-		System::Proxy<CameraNode> GetCameraNode() { return m_camera_node; }
+		void SetActiveCamera(Virtual::Camera* value);
+		CameraNode* GetCameraNode() { return m_camera_node; }
 
 	private:	
 		SceneGraph(const SceneGraph&);
@@ -56,13 +52,10 @@ namespace Scene
 
 	private:
 
-		System::Proxy<CameraNode> m_camera_node;
-		System::Proxy<Node> m_root;
-		MaterialsCollection m_used_materials;
-
+		//	this node should be deleted
+		CameraNode* m_camera_node;
+		Node* m_root;
 	};
 }
-
-REGISTER_MANAGER(L"resource.scenes", L"*.scene_graph", System::Environment::Instance()->GetModelFolder(), System::ObjectType::SCENE_GRAPH, Scene, SceneGraph, return, return);
 
 #endif	//	_H_PUNK_SCENE_MAIN_HEADER

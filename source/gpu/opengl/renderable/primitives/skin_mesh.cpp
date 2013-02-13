@@ -1,4 +1,3 @@
-#include "../../../../system/logger.h"
 #include "../../../../math/helper.h"
 #include "../../../../virtual/skinning/module.h"
 #include "../../../../virtual/data/module.h"
@@ -13,36 +12,36 @@ namespace GPU
 		SkinMesh::SkinMesh()
 		{}
 
-		System::Proxy<SkinMesh> SkinMesh::CreateFromFile(const System::string& path)
+		SkinMesh* SkinMesh::CreateFromFile(const System::string& path)
 		{
 			std::ifstream stream(path.Data(), std::ios_base::binary);
 			if (!stream.is_open())
-				return (out_error() << "Can't load skinned mesh from " << path << std::endl, System::Proxy<SkinMesh>(nullptr));
-			System::Proxy<SkinMesh> mesh(new SkinMesh);
+				throw System::PunkInvalidArgumentException(L"Can't load skinned mesh from " + path);
+			std::unique_ptr<SkinMesh> mesh(new SkinMesh);
 			mesh->Load(stream);
-			return mesh;
+			return mesh.release();
 		}
 
-		System::Proxy<SkinMesh> SkinMesh::CreateFromStream(std::istream& stream)
+		SkinMesh* SkinMesh::CreateFromStream(std::istream& stream)
 		{
-			System::Proxy<SkinMesh> mesh(new SkinMesh);
+			std::unique_ptr<SkinMesh> mesh(new SkinMesh);
 			mesh->Load(stream);
-			return mesh;
+			return mesh.release();
 		}
 
-		bool SkinMesh::Cook(const System::Proxy<Virtual::SkinGeometry> mesh, const System::Proxy<Virtual::Armature> armature)
+		bool SkinMesh::Cook(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature)
 		{				
 			SetType(System::ObjectType::SKIN_MESH);
-			if (!mesh.IsValid())
-				return (out_error() << "Can't created skinned mesh from NULL mesh descriptor" << std::endl, false);
+			if (!mesh)
+				throw System::PunkInvalidArgumentException(L"Can't created skinned mesh from NULL mesh descriptor");
 			if (mesh->GetVertices().empty())
-				return (out_error() << "Can't create skinned mesh from empty vertex list in mesh descriptor" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from empty vertex list in mesh descriptor");
 			if (mesh->GetTextureMeshes().empty())
-				return (out_error() << "Can't create skinned mesh from mesh descriptor with empty texture coordinates list" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty texture coordinates list");
 			if (mesh->GetNormals().empty())
-				return (out_error() << "Can't create skinned mesh from mesh descriptor with empty normals list" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty normals list");
 			if (mesh->GetBoneWeights().empty())
-				return (out_error() << "Can't create skinned mesh from mesh descriptor with empty bones weights list" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty bones weights list");
 
 			std::vector<unsigned> ib(mesh->GetFaces().size()*3);
 
@@ -137,52 +136,44 @@ namespace GPU
 			return VertexArrayObject2<PrimitiveType, VertexType>::Cook();
 		}
 
-		bool SkinMesh::CookOneVertexWithBone(const System::Proxy<Virtual::SkinGeometry> mesh, const System::Proxy<Virtual::Armature> armature, int index, Math::Vector4<float>& bone, Math::Vector4<float>& weight) const
+		bool SkinMesh::CookOneVertexWithBone(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature, int index, Math::vec4& bone, Math::vec4& weight) const
 		{
-			try
+			const Virtual::BoneWeights& weights = mesh->GetBoneWeights().at(index);
+
+			int b_id[4] = {0, 0, 0, 0};
+			float w[4] = {0, 0, 0, 0};
+
+			int used = 0;
+			for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
 			{
-				const Virtual::BoneWeights& weights = mesh->GetBoneWeights().at(index);
-
-				int b_id[4] = {0, 0, 0, 0};
-				float w[4] = {0, 0, 0, 0};
-
-				int used = 0;
-				for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
-				{
-					const Virtual::Bone* cur_bone = armature->GetBoneByIndex(i);
-					if (weights.find(cur_bone->GetName()) != weights.end())
-					{	
-						// replace the least significant bone
-						int Min = 0;
-						for (int j = 0; j < 4; j++)
-						{
-							if (w[j] < w[Min])
-								Min = j;
-						}
-						b_id[Min] = i;
-						w[Min] = weights.at(cur_bone->GetName());
-						used++;
+				const Virtual::Bone* cur_bone = armature->GetBoneByIndex(i);
+				if (weights.find(cur_bone->GetName()) != weights.end())
+				{	
+					// replace the least significant bone
+					int Min = 0;
+					for (int j = 0; j < 4; j++)
+					{
+						if (w[j] < w[Min])
+							Min = j;
 					}
+					b_id[Min] = i;
+					w[Min] = weights.at(cur_bone->GetName());
+					used++;
 				}
-
-				//	normalize
-				float l = w[0] + w[1] + w[2] + w[3];
-
-				if (l == 0)
-					return (out_error() << "Can't cook skinned vertex because it has no bones assigned. Modify source model" << std::endl, false);
-
-				if (w[0] < 0 || w[1] < 0 || w[2] < 0 || w[3] < 0)
-					return (out_error() << "One of the bone weights is less than 0. It is incorrect" << std::endl, false);
-
-				w[0] /= l; w[1] /= l; w[2] /= l; w[3] /= l;
-				weight.Set(w[0], w[1], w[2], 1.0f - w[0] - w[1] - w[2]);
-				bone.Set((float)b_id[0], (float)b_id[1], (float)b_id[2], (float)b_id[3]);
 			}
-			catch(std::out_of_range&)
-			{
-				out_error() << "Can't cook skinned vertex " << index << std::endl;
-				return false;
-			}
+
+			//	normalize
+			float l = w[0] + w[1] + w[2] + w[3];
+
+			if (l == 0)
+				throw System::PunkInvalidArgumentException(L"Can't cook skinned vertex because it has no bones assigned. Modify source model");
+
+			if (w[0] < 0 || w[1] < 0 || w[2] < 0 || w[3] < 0)
+				throw System::PunkInvalidArgumentException(L"One of the bone weights is less than 0. It is incorrect");
+
+			w[0] /= l; w[1] /= l; w[2] /= l; w[3] /= l;
+			weight.Set(w[0], w[1], w[2], 1.0f - w[0] - w[1] - w[2]);
+			bone.Set((float)b_id[0], (float)b_id[1], (float)b_id[2], (float)b_id[3]);
 			return true;
 		}
 

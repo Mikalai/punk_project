@@ -16,8 +16,8 @@ namespace Scene
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
-		static System::Proxy<PortalNode> CreateFromFile(const System::string& path);
-		static System::Proxy<PortalNode> CreateFromStream(std::istream& stream);
+		static PortalNode* CreateFromFile(const System::string& path);
+		static PortalNode* CreateFromStream(std::istream& stream);
 
 		virtual bool Apply(AbstractVisitor* visitor);
 
@@ -28,7 +28,5 @@ namespace Scene
 		Math::Portal m_portal;
 	};
 }
-
-REGISTER_MANAGER(L"resource.portal_nodes", L"*.portal_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::PORTAL_NODE, Scene, PortalNode, return, return);
 
 #endif

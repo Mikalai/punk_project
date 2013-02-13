@@ -18,6 +18,7 @@ namespace GPU
 		enum BlendOperation { BLEND_SRC_ONE_MINUS_ALPHA };
 
 		CoreState();
+		~CoreState();
 
 		Math::mat4 m_local;		
 		Math::mat4 m_projection;
@@ -59,13 +60,15 @@ namespace GPU
 		int m_text_slot;
 		int m_height_map_slot;
 
-		std::vector<System::Proxy<Virtual::Light>> m_lights;
-		System::Proxy<AbstractRenderPolicy> m_rc;
-		System::Proxy<Virtual::Material> m_material;
-		System::Proxy<Virtual::Camera> m_camera;
-		System::Proxy<Virtual::Armature> m_armature;
-		System::Proxy<Virtual::Terrain> m_terrain;
-		System::Proxy<Virtual::TerrainObserver> m_terrain_observer;
+		//	this pointers should not be deleted in destructor
+		std::vector<Virtual::Light*> m_lights;
+		AbstractRenderPolicy* m_rc;
+		Virtual::Material* m_material;
+		Virtual::Camera* m_camera;
+		Virtual::Armature* m_armature;
+		Virtual::Terrain* m_terrain;
+		Virtual::TerrainObserver* m_terrain_observer;
+		//	this pointers should not be deleted in destructor
 	};	
 }
 

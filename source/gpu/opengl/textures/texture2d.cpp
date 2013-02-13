@@ -9,6 +9,7 @@ Description: Texture2D implementation
 #include "texture2d.h"
 #include "texture2d_pbo_impl.h"
 #include "internal_formats.h"
+#include "../../../system/buffer.h"
 
 //IMPLEMENT_MANAGER(L"resource.textures", L"*.texture", System::Environment::Instance()->GetTextureFolder(), System::ObjectType::TEXTURE_2D, OpenGL, Texture2D);
 
@@ -152,26 +153,26 @@ namespace GPU
 			return false;
 		}
 
-		System::Proxy<Texture2D> Texture2D::CreateFromFile(const System::string& path, bool use_mip_maps)
+		Texture2D* Texture2D::CreateFromFile(const System::string& path, bool use_mip_maps)
 		{		
 			ImageModule::Importer importer;
 			std::auto_ptr<ImageModule::Image> image(importer.LoadAnyImage(path));
 
 			if (image.get())
 			{
-				System::Proxy<Texture2D> result(new Texture2D);//(*image));		
+				std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
 				result->Create(*image, use_mip_maps);
-				return result;
+				return result.release();
 			}
 			else
 				throw OpenGLException(L"Can't create texture from " + path);
 		}
 
-		System::Proxy<Texture2D> Texture2D::CreateFromStream(std::istream& stream, bool use_mip_maps)
+		Texture2D* Texture2D::CreateFromStream(std::istream& stream, bool use_mip_maps)
 		{		
-			System::Proxy<Texture2D> result(new Texture2D);//(*image));		
+			std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
 			result->Load(stream);
-			return result;
+			return result.release();
 		}
 	}
 }

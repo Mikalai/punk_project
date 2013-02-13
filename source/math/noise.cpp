@@ -17,7 +17,7 @@ namespace Math
 			time_t t;
 			time(&t);
 			m_rnd.SetSeed(t);
-			m_perlin.SetSeed(t);
+			m_perlin.SetSeed(int(t));
 			m_perlin.SetOctaveCount(4);
 			m_perlin.SetPersistence(0.25);
 		}
@@ -39,9 +39,14 @@ namespace Math
 	{
 	}
 
+	Noise::~Noise()
+	{
+		impl.reset(nullptr);
+	}
+
 	double Noise::Noise1D(int x)
 	{		
-		impl->m_rnd.SetSeed(impl->m_rnd.Noise(x)*100000.0);
+		impl->m_rnd.SetSeed(int(impl->m_rnd.Noise(x)*100000.0));
 		return impl->m_rnd.Uniform(-1.0, 1.0);
 	}
 
@@ -81,7 +86,7 @@ namespace Math
 	double Noise::Noise2D(int x, int y)
 	{
 		x += 57 * y;
-		impl->m_rnd.SetSeed(impl->m_rnd.Noise(x)*100000.0);
+		impl->m_rnd.SetSeed(int(impl->m_rnd.Noise(x)*100000.0));
 		return impl->m_rnd.Uniform(-1.0, 1.0);
 	}
 
@@ -131,7 +136,7 @@ namespace Math
 	double Noise::Noise3D(int x, int y, int z)
 	{
 		x += 57 * y + 131 * z;		
-		impl->m_rnd.SetSeed(impl->m_rnd.Noise(x)*100000.0);
+		impl->m_rnd.SetSeed(int(impl->m_rnd.Noise(x)*100000.0));
 		return impl->m_rnd.Uniform(-1.0, 1.0);
 	}
 

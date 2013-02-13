@@ -10,7 +10,6 @@
 #include <vector>
 #include "../config.h"
 #include "widget.h"
-#include "../system/smart_pointers/module.h"
 #include "gui_adapter.h"
 
 namespace System
@@ -26,8 +25,8 @@ namespace GUI
 
 	struct ManagerDesc
 	{
-		System::Proxy<System::Window> window;
-		System::Proxy<System::EventManager> event_manager;
+		System::Window* window;
+		System::EventManager* event_manager;
 		Adapter* adapter;
 	};
 
@@ -40,8 +39,8 @@ namespace GUI
 		Widget* GetFocusedWidget() { return m_focusWidget; }
 		const Widget* GetFocusedWidget() const { return m_focusWidget; }
 		void SetGUIRender(IGUIRender* render);
-		void AddRootWidget(System::Proxy<Widget> widget);
-		void RemoveRootWidget(System::Proxy<Widget> widget);
+		void AddRootWidget(Widget* widget);
+		void RemoveRootWidget(Widget* widget);
 		void OnMouseMove(System::Event* event);
 		void OnMouseLeftDown(System::Event* event);
 		void OnMouseLeftUp(System::Event* event);
@@ -61,17 +60,22 @@ namespace GUI
 		~Manager();
 
 		Adapter* GetAdapter() { return m_adapter; }
-		System::Proxy<System::Window> GetWindow() { return m_window; }
+		System::Window* GetWindow() { return m_window; }
 	
 	private:
-		static std::auto_ptr<Manager> m_instance;
-		std::vector<System::Proxy<Widget>> rootWidgets;
+		static std::unique_ptr<Manager> m_instance;
+		
+		//	next pointers should be destroyed in destructor
+		std::vector<Widget*> rootWidgets;
+
+		//	next pointers should not be destroyed
 		Widget* m_focusWidget;
 		IGUIRender* m_render;
-		System::Proxy<System::Window> m_window;
-		System::Proxy<System::EventManager> m_event_manager;
+		System::Window* m_window;
+		System::EventManager* m_event_manager;
 		Adapter* m_adapter;
 
+	private:
 		Manager(const ManagerDesc& desc);		
 	};
 }

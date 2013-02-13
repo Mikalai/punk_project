@@ -16,8 +16,8 @@ namespace Scene
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
-		static System::Proxy<TransformNode> CreateFromFile(const System::string& path);
-		static System::Proxy<TransformNode> CreateFromStream(std::istream& stream);
+		static TransformNode* CreateFromFile(const System::string& path);
+		static TransformNode* CreateFromStream(std::istream& stream);
 
 		virtual bool Apply(AbstractVisitor* visitor);
 
@@ -32,6 +32,5 @@ namespace Scene
 	};
 }
 
-REGISTER_MANAGER(L"resource.transform_nodes", L"*.transform_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::TRANSFORM_NODE, Scene, TransformNode, return, return);
 
 #endif

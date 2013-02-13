@@ -2,11 +2,10 @@
 #include <vector>
 #include <ostream>
 #include <istream>
+#include <fstream>
 #include <openal/al.h>
 
 #include "../system/environment.h"
-
-IMPLEMENT_MANAGER(L"resource.wav_sounds", L"*.wav_sound", System::Environment::Instance()->GetSoundFolder(), System::ObjectType::AUDIO_WAV, Audio, AudioBuffer);
 
 namespace Audio
 {
@@ -98,7 +97,7 @@ namespace Audio
 
 		std::ifstream stream(path.Data(), std::ios_base::binary);
 		if (!buffer->LoadFromWAV(stream))
-			return (out_error() << "Can't create audio buffer from file" << std::endl, nullptr);		
+			throw System::PunkInvalidArgumentException(L"Can't create audio buffer from file");
 		return buffer.release();
 	}
 

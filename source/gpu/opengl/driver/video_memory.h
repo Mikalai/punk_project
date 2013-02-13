@@ -34,9 +34,12 @@ namespace GPU
 			static VideoMemory* Instance();
 			static void Destroy();
 
-			System::Proxy<PixelBufferObject> AllocatePixelBuffer(size_t size);
-			System::Proxy<VertexBufferObject> AllocateVertexBuffer(size_t size);
-			System::Proxy<IndexBufferObject> AllocateIndexBuffer(size_t size);
+			PixelBufferObject* AllocatePixelBuffer(size_t size);
+			void FreePixelBuffer(PixelBufferObject* value);
+			VertexBufferObject* AllocateVertexBuffer(size_t size);
+			void FreeVertexBuffer(VertexBufferObject* value);
+			IndexBufferObject* AllocateIndexBuffer(size_t size);
+			void FreeIndexBuffer(IndexBufferObject* value);
 
 		private:
 
@@ -60,9 +63,9 @@ namespace GPU
 
 			Core m_core;
 
-			std::vector<System::Proxy<PixelBufferObject>> m_pbo_list;
-			std::vector<System::Proxy<VertexBufferObject>> m_vbo_list;
-			std::vector<System::Proxy<IndexBufferObject>> m_ibo_list;
+			std::vector<PixelBufferObject*> m_pbo_list;
+			std::vector<VertexBufferObject*> m_vbo_list;
+			std::vector<IndexBufferObject*> m_ibo_list;
 		};
 	}
 }

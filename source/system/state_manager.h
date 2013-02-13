@@ -22,28 +22,44 @@ namespace System
 	class StateManager
 	{
 	public:		
-		StateManager() { m_current_state.Reset(new State<T>); }
-		System::Proxy<State<T>> CurrentState() { return m_current_state; }
+		StateManager() 
+		{ 
+			m_current_state = new State<T>; 
+		}
+
+		~StateManager()
+		{
+			delete m_current_state;
+			m_current_state = 0;
+			while (!m_states.empty())
+			{
+				delete m_states.top();
+				m_states.pop();
+			}
+		}
+
+		State<T>* CurrentState() { return m_current_state; }
 
 		void Push()
 		{
 			m_states.push(m_current_state);
-			m_current_state.Reset(new State<T>(*m_current_state));
+			m_current_state = new State<T>(*m_current_state);
 		}
 
 		bool Pop()
 		{
 			if (m_states.empty())
-				return (out_error() << "Error in render state stack" << std::endl, false);
+				throw System::PunkInvalidArgumentException(L"Error in render state stack");
 
+			delete m_current_state;
 			m_current_state = m_states.top();
 			m_states.pop();
 			return true;
 		}
 
 	private:
-		System::Proxy<State<T>> m_current_state;
-		std::stack<System::Proxy<State<T>>> m_states;
+		State<T>* m_current_state;
+		std::stack<State<T>*> m_states;
 	};	
 }
 

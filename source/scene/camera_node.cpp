@@ -2,8 +2,6 @@
 #include "../system/factory.h"
 #include "../virtual/manager/manager.h"
 
-IMPLEMENT_MANAGER(L"resource.camera_nodes", L"*.camera_node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::CAMERA_NODE, Scene, CameraNode);
-
 namespace Scene
 {
 	CameraNode::CameraNode()
@@ -13,41 +11,35 @@ namespace Scene
 
 	bool CameraNode::Save(std::ostream& stream) const
 	{
-		if (!Node::Save(stream))
-			return (out_error() << "Can't save camera node" << std::endl, false);
+		Node::Save(stream);
 
-		if (!System::GetFactory()->SaveToStream(stream, m_camera))
-			return (out_error() << "Can't save camera object to stream" << std::endl, false);
+		System::GetFactory()->SaveToStream(stream, m_camera);
 
 		return true;		
 	}
 
 	bool CameraNode::Load(std::istream& stream) 
 	{
-		if (!Node::Load(stream))
-			return (out_error() << "Can't load camera node" << std::endl, false);
+		Node::Load(stream);
 		
-		m_camera = System::GetFactory()->LoadFromStream(stream);
-		if (!m_camera.IsValid())
-			return (out_error() << "Can't load camera object from stream" << std::endl, false);
+		m_camera = Cast<Virtual::Camera*>(System::GetFactory()->LoadFromStream(stream));
 
 		return true;
 	}
 
-	System::Proxy<CameraNode> CameraNode::CreateFromFile(const System::string& path)
+	CameraNode* CameraNode::CreateFromFile(const System::string& path)
 	{
 		std::ifstream stream(path.Data(), std::ios::binary);
 		if (!stream.is_open())
-			return (out_error() << "Can't open file " << path << std::endl, System::Proxy<CameraNode>(nullptr));
+			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
 	}
 
-	System::Proxy<CameraNode> CameraNode::CreateFromStream(std::istream& stream)
+	CameraNode* CameraNode::CreateFromStream(std::istream& stream)
 	{
-		System::Proxy<CameraNode> node(new CameraNode);
-		if (!node->Load(stream))
-			return (out_error() << "Can't load node from file" << std::endl, System::Proxy<CameraNode>(nullptr));
-		return node;
+		std::unique_ptr<CameraNode> node(new CameraNode);
+		node->Load(stream);
+		return node.release();
 	}
 
 	bool CameraNode::Apply(AbstractVisitor* visitor)

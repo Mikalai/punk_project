@@ -16,10 +16,11 @@ namespace Render
 	class PUNK_ENGINE SimpleRender : public Scene::AbstractVisitor
 	{
 	public:
-		SimpleRender(System::Proxy<GPU::OpenGL::Driver> driver);
+		SimpleRender(GPU::OpenGL::Driver* driver);
+		~SimpleRender();
 		bool Render();
-		void SetGUIHud(System::Proxy<GUI::Widget> root) { m_root = root; }
-		void SetScene(System::Proxy<Scene::SceneGraph> scene);
+		void SetGUIHud(GUI::Widget* root) { m_root = root; }
+		void SetScene(Scene::SceneGraph* scene);
 
 		virtual bool Visit(Scene::CameraNode* node);
 		virtual bool Visit(Scene::StaticMeshNode* node);
@@ -36,30 +37,37 @@ namespace Render
 		virtual bool Visit(Scene::DebugTextureViewNode* node);
 
 		void RenderQuad(float x, float y, float width, float height, const Math::vec4& color);
-		void RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<GPU::OpenGL::Texture2D> texture);
+		void RenderTexturedQuad(float x, float y, float width, float height, GPU::OpenGL::Texture2D* texture);
 		void RenderText(float x, float y, const System::string& text, const Math::vec4& color);
 		void RenderCube(float width, float height, float depth);
 		void RenderSphere(const Math::vec3& position, float radius, const Math::vec4& color = Math::vec4(1,1,1,1));
 
 	private:
-		System::Proxy<GPU::RenderTarget> m_rt;
-		System::Proxy<Scene::SceneGraph> m_scene;
+		void Clear();
+
+	private:
 		MeshCooker m_cooker;
-		System::Proxy<GPU::OpenGL::Driver> m_driver;
-		System::Proxy<GPU::AbstractRenderPolicy> m_skin_rc;
-		System::Proxy<GPU::AbstractRenderPolicy> m_context;
-		System::Proxy<GPU::AbstractRenderPolicy> m_solid_rc;
-		System::Proxy<GPU::AbstractRenderPolicy> m_textured_rc;
-		System::Proxy<GPU::AbstractRenderPolicy> m_gui_rc;
-		System::Proxy<GPU::AbstractRenderPolicy> m_terrain_rc;
-		System::Proxy<GPU::OpenGL::TextureContext> m_tc;
-		System::Proxy<GPU::OpenGL::TextSurface> m_text;		
-		System::StateManager<GPU::CoreState> m_states;
-		System::Proxy<GUI::Widget> m_root;
-		System::Proxy<GUIRender> m_gui_render;
 		GPU::OpenGL::ScaledGridObject m_grid;
 		float m_time;
 		int m_terrain_slices;
+		System::StateManager<GPU::CoreState> m_states;		
+
+		//	next pointers should be destroyed in destructor
+		GPU::RenderTarget* m_rt;
+		Scene::SceneGraph* m_scene;				
+		GPU::OpenGL::TextSurface* m_text;
+		GPU::OpenGL::TextureContext* m_tc;
+		GUIRender* m_gui_render;
+
+		// next pointers should not be delete in destructor
+		GPU::OpenGL::Driver* m_driver;
+		GUI::Widget* m_root;
+		GPU::AbstractRenderPolicy* m_skin_rc;
+		GPU::AbstractRenderPolicy* m_context;
+		GPU::AbstractRenderPolicy* m_solid_rc;
+		GPU::AbstractRenderPolicy* m_textured_rc;
+		GPU::AbstractRenderPolicy* m_gui_rc;
+		GPU::AbstractRenderPolicy* m_terrain_rc;
 	};
 }
 

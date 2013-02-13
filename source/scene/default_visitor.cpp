@@ -11,8 +11,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "CameraNode " << std::endl;			
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -21,8 +25,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "StaticMeshNode" << std::endl;			
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -31,8 +39,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "SkinMeshNode" << std::endl;			
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -41,8 +53,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "BoneNode" << std::endl;			
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -50,7 +66,7 @@ namespace Scene
 	bool DefaultVisitor::Visit(ArmatureNode* node)
 	{		
 		std::cout << std::string(m_level, ' ') << "ArmatureNode" << std::endl;			
-		System::Proxy<Virtual::Armature> armature = Virtual::Armature::find(node->GetStorageName());
+		Virtual::Armature* armature = Virtual::Armature::find(node->GetStorageName());
 		for (int i = 0; i < armature->GetBonesCount(); ++i)
 		{
 			Virtual::Bone* bone = armature->GetBoneByIndex(i);
@@ -58,8 +74,12 @@ namespace Scene
 		}
 
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -68,8 +88,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "LightNode" << std::endl;			
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -78,8 +102,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "MaterialNode" << std::endl;	
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -88,8 +116,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "Node" << std::endl;		
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -98,8 +130,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "TransformNode" << std::endl;			
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -108,8 +144,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "LocationIndoorNode" << std::endl;			
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}
@@ -118,8 +158,12 @@ namespace Scene
 	{
 		std::cout << std::string(m_level, ' ') << "PortalNode" << std::endl;			
 		m_level++;
-		for each (System::Proxy<Node> child in *node)
-			child->Apply(this);
+		for each (auto o in *node)
+		{
+			Node* child = As<Node*>(o);
+			if (child)
+				child->Apply(this);
+		}
 		m_level--;
 		return true;
 	}

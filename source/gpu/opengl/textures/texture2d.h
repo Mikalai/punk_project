@@ -8,11 +8,9 @@ Description: Contains a Texture2D class
 #define _H_PUNK_TEXTURE_2D
 
 #include <iosfwd>
+#include <memory>
 #include "../../../config.h"
-#include "../../../system/resource_manager.h"
 #include "../../../system/object.h"
-#include "../../../system/smart_pointers/module.h"
-#include "../../../system/buffer.h"
 #include "../../../images/formats.h"
 
 namespace ImageModule
@@ -28,14 +26,12 @@ namespace GPU
 
 		class PUNK_ENGINE Texture2D : public System::Object
 		{
-		protected:
-			std::auto_ptr<Texture2DImpl> impl_texture_2d;
 		public:
 			Texture2D();
+			virtual ~Texture2D();
 			explicit Texture2D(const ImageModule::Image& image);
 			Texture2D(const Texture2D& texture);
-			Texture2D& operator = (const Texture2D& texture);
-			~Texture2D();
+			Texture2D& operator = (const Texture2D& texture);			
 			void Bind() const;
 			void Unbind() const;	
 			bool Create(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);
@@ -62,8 +58,11 @@ namespace GPU
 
 			bool IsValid() const;
 
-			static System::Proxy<Texture2D> CreateFromFile(const System::string& path, bool use_mip_maps = true);
-			static System::Proxy<Texture2D> CreateFromStream(std::istream& stream, bool use_mip_maps = true);
+			static Texture2D* CreateFromFile(const System::string& path, bool use_mip_maps = true);
+			static Texture2D* CreateFromStream(std::istream& stream, bool use_mip_maps = true);
+
+		protected:
+			std::unique_ptr<Texture2DImpl> impl_texture_2d;
 		};
 
 		typedef Texture2D* Texture2DRef;

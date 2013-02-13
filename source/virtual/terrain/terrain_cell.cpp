@@ -26,6 +26,7 @@ namespace Virtual
 	TerrainCell::TerrainCell()
 		: m_name(L"cell_0_0")	
 		, m_loading(false)
+		, m_data_cache(nullptr)
 	{}
 
 	bool TerrainCell::Save(std::ostream& stream) const
@@ -52,6 +53,8 @@ namespace Virtual
 
 	TerrainCell::~TerrainCell()
 	{
+		delete m_data_cache;
+		m_data_cache = nullptr;
 	}
 
 }

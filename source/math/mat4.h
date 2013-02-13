@@ -818,8 +818,8 @@ namespace Math
 	template<class T>
 	std::wostream& operator << (std::wostream& stream, const Matrix4x4<T>& m)
 	{
-		int old = stream.width(8);
-		int old_prec = stream.precision(5);
+		std::streamsize old = stream.width(8);
+		std::streamsize old_prec = stream.precision(5);
 		for (int row = 0; row < 4; ++row)
 		{
 			stream << Tab();

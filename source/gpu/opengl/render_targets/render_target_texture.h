@@ -24,20 +24,17 @@ namespace GPU
 
 		public:
 			RenderTargetTexture();
+			virtual ~RenderTargetTexture();
 		//	void Init(int width, int height);
 			virtual bool Init(Properties* props);
 			virtual void Activate();
 			virtual void Deactivate();
-			virtual ~RenderTargetTexture();
-			System::Proxy<Texture2D> GetColorBuffer();
-			System::Proxy<Texture2D> GetDepthBuffer();
+			Texture2D* GetColorBuffer();
+			Texture2D* GetDepthBuffer();
 
 		private:
 			void Clear();
 			void Check();
-			System::Proxy<Texture2D> m_color_texture;
-			///	
-			System::Proxy<Texture2D> m_depth_texture;
 			///	multisample resolve target
 			unsigned m_resolve_fb;
 			///	render frame buffer
@@ -46,6 +43,12 @@ namespace GPU
 			unsigned m_color_rb;
 			///	contains depth information
 			unsigned m_depth_rb;
+
+			///	Should be destroyed in destructor
+			Texture2D* m_color_texture;
+			///	Should be destroyed in destructor
+			Texture2D* m_depth_texture;
+
 		};
 	}
 }

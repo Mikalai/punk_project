@@ -34,7 +34,7 @@ namespace System
 		return m_buttons[button];
 	}
 
-	void Mouse::BindCursorToWindow(System::Proxy<Window> window)
+	void Mouse::BindCursorToWindow(Window* window)
 	{
 		m_region = window;
 	}
@@ -59,7 +59,7 @@ namespace System
 		return m_visible;
 	}
 
-	System::Proxy<Window> Mouse::GetBoundedWindow() const
+	Window* Mouse::GetBoundedWindow() const
 	{
 		return m_region;
 	}

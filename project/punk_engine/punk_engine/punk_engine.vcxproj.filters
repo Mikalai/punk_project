@@ -244,6 +244,9 @@
     <Filter Include="gpu\common">
       <UniqueIdentifier>{89e94b89-1e56-4843-85aa-18c4a5ccef85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="physics\error">
+      <UniqueIdentifier>{1a869567-f735-4d18-af24-37f0be78fef2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -788,9 +791,6 @@
       <Filter>utility\descriptors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\utility\parser\keywords.h">
-      <Filter>utility\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\utility\parser\base_parser.h">
       <Filter>utility\parser</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\utility\parser\game_parser.h">
@@ -1562,9 +1562,6 @@
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_rigid_body.h">
       <Filter>physics\bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\physics\bullet\bullet_shape_body.h">
-      <Filter>physics\bullet</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_terrain.h">
       <Filter>physics\bullet</Filter>
     </ClInclude>
@@ -1627,6 +1624,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\smart_pointers\weak_ref.h">
       <Filter>system\smart_pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\interface.h">
+      <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\module.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_shape_body.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_plain.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\error\module.h">
+      <Filter>physics\error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\error\physics_exception.h">
+      <Filter>physics\error</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1935,9 +1950,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\utility\descriptors\world_desc.cpp">
       <Filter>utility\descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\utility\parser\base_parser.cpp">
-      <Filter>utility\parser</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\utility\parser\game_parser.cpp">
       <Filter>utility\parser</Filter>
@@ -2440,6 +2452,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\gui\events\mouse_enter.cpp">
       <Filter>gui\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\bullet\bullet_shape_body.cpp">
+      <Filter>physics\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\data\geometry.cpp">
+      <Filter>virtual\data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,14 @@ namespace Virtual
 		m_cells.SetSize(1,1);
 	}
 
+	Terrain::~Terrain()
+	{
+		safe_delete(m_material);
+		for (int row = 0; row < m_cells.RowCount(); ++row)
+			for (int col = 0; col < m_cells.ColumnCount(); ++col)
+				safe_delete(m_cells.At(row, col));
+	}
+
 	void Terrain::SetNumBlocks(int value)
 	{
 		m_core.m_num_blocks = value;
@@ -27,7 +35,7 @@ namespace Virtual
 		{
 			for (int col = 0; col < m_cells.ColumnCount(); ++col)
 			{
-				m_cells.At(row, col).Reset(new TerrainCell);
+				m_cells.At(row, col) = new TerrainCell;
 			}
 		}
 	}
@@ -35,9 +43,9 @@ namespace Virtual
 	bool Terrain::AddOrUpdateCell(const TerrainCell& value)
 	{
 		if (value.GetLocation().X() < 0 || value.GetLocation().X() >= m_cells.ColumnCount())
-			return (out_error() << "Cell X position " << value.GetLocation().X() << " is incorrect. Should be in the range [0; " << m_cells.ColumnCount() << "]" << std::endl, false);
+			throw System::PunkInvalidArgumentException(L"Cell X position " + System::string::Convert(value.GetLocation().X()) + L" is incorrect. Should be in the range [0; " + System::string::Convert(m_cells.ColumnCount()) + L"]");
 		if (value.GetLocation().Y() < 0 || value.GetLocation().Y() >= m_cells.RowCount())
-			return (out_error() << "Cell Y position " << value.GetLocation().Y() << " is incorrect. Should be in the range [0; " << m_cells.RowCount() << "]" << std::endl, false);
+			throw System::PunkInvalidArgumentException(L"Cell Y position " + System::string::Convert(value.GetLocation().Y()) + L" is incorrect. Should be in the range [0; " + System::string::Convert(m_cells.RowCount()) + L"]");
 		auto v = m_cells.At(value.GetLocation().Y(), value.GetLocation().X());
 		TerrainCell& t = *v;
 		t = value;
@@ -58,7 +66,7 @@ namespace Virtual
 		{
 			for (int x = 0; x < m_core.m_num_blocks; ++x)
 			{
-				const System::Proxy<TerrainCell> cell = GetCell(x, y);
+				const TerrainCell* cell = GetCell(x, y);
 				stream << L"*cell " << std::endl << L"{ " << std::endl;
 				stream << L"\t*name { " << cell->GetName().Data() << L" }" << std::endl;
 				stream << L"\t*location { " << cell->GetLocation().X() << " " << cell->GetLocation().Y() << L" }" << std::endl;
@@ -73,17 +81,15 @@ namespace Virtual
 
 	bool Terrain::Save(std::ostream& stream) const
 	{		
-		if (!Object::Save(stream))
-			return (out_error() << "Can't save terrain" << std::endl, false);
+		Object::Save(stream);
 
 		stream.write((char*)&m_core, sizeof(m_core));
 		for (int y = 0; y < GetNumBlocks(); ++y)
 		{
 			for (int x = 0; x < GetNumBlocks(); ++x)
 			{
-				System::Proxy<TerrainCell> cell = GetCell(x, y);
-				if (!cell->Save(stream))
-					return (out_error() << "Can't save terrain cell" << std::endl, false);
+				const TerrainCell* cell = GetCell(x, y);
+				cell->Save(stream);
 			}
 		}
 		return true;
@@ -91,18 +97,15 @@ namespace Virtual
 
 	bool Terrain::Load(std::istream& stream)
 	{
-		if (!Object::Load(stream))
-			return (out_error() << "Can't load terrain" << std::endl, false);
-
+		Object::Load(stream);
 		stream.read((char*)&m_core, sizeof(m_core));
 		SetNumBlocks(GetNumBlocks());
 		for (int y = 0; y < GetNumBlocks(); ++y)
 		{
 			for (int x = 0; x < GetNumBlocks(); ++x)
 			{
-				System::Proxy<TerrainCell> cell = GetCell(x, y);
-				if (!cell->Load(stream))
-					return (out_error() << "Can't load terrain cell" << std::endl, false);
+				TerrainCell* cell = GetCell(x, y);
+				cell->Load(stream);
 			}
 		}
 		return true;

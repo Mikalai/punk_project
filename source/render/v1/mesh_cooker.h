@@ -27,8 +27,9 @@ namespace Render
 		virtual bool Visit(Scene::TerrainNode* node);
 		virtual bool Visit(Scene::DebugTextureViewNode* node) { return true; };
 
-		std::vector<System::Proxy<Virtual::Light>> m_light_set;
-		System::Proxy<Virtual::Armature> m_current_armature;
+		//	this data should not be deleted
+		std::vector<Virtual::Light*> m_light_set;
+		Virtual::Armature* m_current_armature;
 	};
 }
 
