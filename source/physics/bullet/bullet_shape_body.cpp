@@ -5,6 +5,10 @@
 
 namespace Physics
 {
+	BulletShapeBody::BulletShapeBody()
+		: m_shape(nullptr)
+	{}
+
 	void BulletShapeBody::InitConvexHull(Virtual::Geometry* value, bool auto_cache) 
 	{
 		if (m_shape)

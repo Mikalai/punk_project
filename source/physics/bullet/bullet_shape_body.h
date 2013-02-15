@@ -13,6 +13,7 @@ namespace Physics
 	{
 		btCollisionShape* m_shape;
 	public: 
+		BulletShapeBody();
 		virtual ~BulletShapeBody();
 		virtual void InitConvexHull(Virtual::Geometry* geom, bool auto_cache = true);
 		virtual void InitBox(float dim_x, float dim_y, float dim_z);
