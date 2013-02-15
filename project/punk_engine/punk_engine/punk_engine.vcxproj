@@ -211,6 +211,8 @@
     <ClInclude Include="..\..\..\source\math\vec2.h" />
     <ClInclude Include="..\..\..\source\math\vec3.h" />
     <ClInclude Include="..\..\..\source\math\vec4.h" />
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_adapter.h" />
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_motion_state.h" />
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_physical_simulator.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -301,6 +303,7 @@
     <ClInclude Include="..\..\..\source\scene\point_light_node.h" />
     <ClInclude Include="..\..\..\source\scene\portal_node.h" />
     <ClInclude Include="..\..\..\source\scene\scene_graph.h" />
+    <ClInclude Include="..\..\..\source\scene\scene_graph_adapter.h" />
     <ClInclude Include="..\..\..\source\scene\skin_mesh_node.h" />
     <ClInclude Include="..\..\..\source\scene\static_mesh_node.h" />
     <ClInclude Include="..\..\..\source\scene\terrain_node.h" />
@@ -504,6 +507,9 @@
     <ClInclude Include="..\..\..\source\virtual\motions\motion.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\motion_strategy.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\static_motion_strategy.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\module.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\simple\module.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\simple\solid_cube.h" />
     <ClInclude Include="..\..\..\source\virtual\scheme.h" />
     <ClInclude Include="..\..\..\source\virtual\skeleton_animation.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\armature.h" />
@@ -660,6 +666,7 @@
     <ClCompile Include="..\..\..\source\math\sphere.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle2d.cpp" />
     <ClCompile Include="..\..\..\source\math\triangle3d.cpp" />
+    <ClCompile Include="..\..\..\source\physics\bullet\bullet_motion_state.cpp" />
     <ClCompile Include="..\..\..\source\physics\bullet\bullet_physical_simulator.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -672,6 +679,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\bullet\bullet_terrain.cpp" />
     <ClCompile Include="..\..\..\source\physics\physical_simulator.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -820,6 +828,7 @@
     <ClCompile Include="..\..\..\source\virtual\manager\material_manager.cpp" />
     <ClCompile Include="..\..\..\source\virtual\motions\motion_strategy.cpp" />
     <ClCompile Include="..\..\..\source\virtual\motions\static_motion_strategy.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\objects\simple\solid_cube.cpp" />
     <ClCompile Include="..\..\..\source\virtual\scheme.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\armature.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\bone.cpp" />

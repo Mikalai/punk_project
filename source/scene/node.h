@@ -8,6 +8,7 @@
 #include "visitor.h"
 #include "../math/bounding_box.h"
 #include "../math/bounding_shere.h"
+#include "scene_graph_adapter.h"
 
 namespace Virtual { class Entity; }
 
@@ -34,6 +35,9 @@ namespace Scene
 		void SetBoundingSphere(const Math::BoundingSphere& value) { m_bsphere = value; }
 		const Math::BoundingSphere& GetBoundingSphere() const { return m_bsphere; }
 
+		virtual void SetUserData(SceneGraphAdapter* adapter);
+		SceneGraphAdapter* GetUserData();
+
 	protected:
 		virtual bool Update(int time_ms);
 	private:
@@ -41,6 +45,8 @@ namespace Scene
 		Math::BoundingBox m_bbox;
 		Math::BoundingSphere m_bsphere;
 
+		//	should not be deleted 
+		SceneGraphAdapter* m_entity;
 	private:
 		Node(const Node&);
 		Node& operator = (const Node&);

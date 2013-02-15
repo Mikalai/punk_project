@@ -12,13 +12,13 @@ namespace Render
 	SimpleRender::SimpleRender(GPU::OpenGL::Driver* driver)
 		: m_driver(driver)
 	{
-		m_rt = nullptr;
-		m_scene = nullptr;				
+		m_rt = nullptr;				
 		m_text = nullptr;
 		m_tc = nullptr;
 		m_gui_render = nullptr;
 
 		// next pointers should not be delete in destructor
+		m_scene = nullptr;		
 		m_root = nullptr;
 		m_skin_rc = nullptr;
 		m_context = nullptr;
@@ -42,7 +42,7 @@ namespace Render
 	void SimpleRender::Clear()
 	{
 		safe_delete(m_rt);
-		safe_delete(m_scene);				
+		//safe_delete(m_scene);				
 		safe_delete(m_text);		
 		safe_delete(m_gui_render);
 		safe_delete(m_tc);
@@ -75,19 +75,42 @@ namespace Render
 	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
 	{				
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
-		GPU::OpenGL::StaticMesh* mesh = Cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
+		{
+			GPU::OpenGL::StaticMesh* mesh = As<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());		
+			if (mesh)
+			{
+				const Math::BoundingBox& bbox = mesh->GetBoundingBox();		
+				m_tc->Bind();
+				if (!STATE.m_rc)
+					STATE.m_rc = m_context;
+				STATE.m_rc->Begin();
+				STATE.m_rc->BindParameters(STATE);	
+				mesh->Bind(STATE.m_rc->GetRequiredAttributesSet());
+				mesh->Render();
+				mesh->Unbind();		
+				STATE.m_rc->End();		
+				m_tc->Unbind();
+				return true;
+			}
+		}
+		{
+			GPU::OpenGL::CubeObject* mesh = As<GPU::OpenGL::CubeObject*>(node->GetStaticGeometry()->GetGPUBufferCache());		
+			if (mesh)
+			{
+				m_tc->Bind();
+				if (!STATE.m_rc)
+					STATE.m_rc = m_context;
+				STATE.m_rc->Begin();
+				STATE.m_rc->BindParameters(STATE);	
+				mesh->Bind(STATE.m_rc->GetRequiredAttributesSet());
+				mesh->Render();
+				mesh->Unbind();		
+				STATE.m_rc->End();		
+				m_tc->Unbind();
+				return true;
+			}
+		}
 
-		const Math::BoundingBox& bbox = mesh->GetBoundingBox();		
-		m_tc->Bind();
-		if (!STATE.m_rc)
-			STATE.m_rc = m_context;
-		STATE.m_rc->Begin();
-		STATE.m_rc->BindParameters(STATE);	
-		mesh->Bind(STATE.m_rc->GetRequiredAttributesSet());
-		mesh->Render();
-		mesh->Unbind();		
-		STATE.m_rc->End();		
-		m_tc->Unbind();
 		return true;
 	}
 

@@ -10,6 +10,28 @@ public:
 		, m_left_down(false)
 	{}
 
+	void AddNewCube()
+	{
+		auto c = scene->GetCameraNode()->GetCamera()->GetPosition();
+		Scene::TransformNode* trans_node = new Scene::TransformNode;
+		{		
+			m_cube = new Virtual::Cube();
+			m_cube->EnterPhysicalSimulator(GetSimulator());
+			Scene::StaticMeshNode* mesh_node = new Scene::StaticMeshNode();
+			Virtual::StaticGeometry* geom = new Virtual::StaticGeometry;
+			auto gpu_cube = new GPU::OpenGL::CubeObject;
+			gpu_cube->Cook(1,1,1);
+			geom->SetGPUBufferCache(gpu_cube); 
+			mesh_node->SetGeometry(geom);
+			m_cube->SetTransform(Math::mat4::CreateTranslate(c.X(), c.Y(), c.Z()));
+
+			trans_node->Add(mesh_node);
+			trans_node->SetUserData(m_cube);
+		}		
+		auto root = scene->GetRootNode();
+		root->Add(trans_node);
+	}
+
 	virtual void Init(const Punk::Config& value) override
 	{
 		Punk::Application::Init(value);
@@ -28,33 +50,43 @@ public:
 
 		GetGUIManager()->AddRootWidget(widget);
 
+	
 		render = new Render::SimpleRender(GetDriver());
 		render->SetGUIHud(widget);
 
 		terrain_node = new Scene::TerrainNode();
 		terrain_node->SetTerrainObserver(observer);
 		root->Add(terrain_node);
-		root->Add(node);
+		root->Add(node);		
 		Render::MeshCooker cooker;
  		cooker.Visit(scene->GetRootNode());
 		render->SetScene(scene);
 		updater.SetScene(scene);	
 
+		AddNewCube();
 
 		System::AsyncLoader::Instance()->MainThreadProc(1);		
 		t = new GPU::OpenGL::Texture2D;
 		unsigned char data[256*256];
 		memset(data, 0xFF, 256*256);
 		t->Create(64, 64, ImageModule::IMAGE_FORMAT_RGBA, data, false);
-		t = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png", true);
+		t = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png", true);		
 	}
 
 	virtual ~TerrainTest()
 	{
+		try
+		{
+		safe_delete(m_cube);
 		safe_delete(t);
-		safe_delete(render);
 		safe_delete(observer);
+		safe_delete(render);		
 		safe_delete(scene);
+		}
+		catch(...)
+		{
+			out_error() << L"Complete fail" << std::endl;
+		}
 	}
 
 	virtual void OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* e) override
@@ -81,7 +113,7 @@ public:
 
 	virtual void OnKeyDownEvent(System::KeyDownEvent* e) override
 	{		
-		Punk::Application::OnKeyDownEvent(e);
+		Punk::Application::OnKeyDownEvent(e);		
 		switch (e->key)
 		{
 		case System::PUNK_KEY_F5:
@@ -101,6 +133,12 @@ public:
 		case System::PUNK_KEY_A:
 			{
 			}
+			break;
+		case System::PUNK_KEY_SPACE:
+			{
+				AddNewCube();
+			}
+			break;
 		default:
 			break;
 		}
@@ -119,7 +157,7 @@ public:
 		render->Render();
 		Virtual::FirstPersonCamera* c = Cast<Virtual::FirstPersonCamera*>(scene->GetCameraNode()->GetCamera());
 		bool update = false;
-		float scale = 0.07;
+		float scale = 1;
 		if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
 		{
 			c->SetPosition(c->GetPosition() + c->GetRightVector() * -scale);
@@ -143,8 +181,8 @@ public:
 
 		if (update)
 		{
-		//	System::string text = System::string::Format(L"X: %f; Z: %f, Height: %f", c->GetPosition().X(), c->GetPosition().Z(), c->GetPosition().Y());
-		//	widget->SetText(text);
+			System::string text = System::string::Format(L"X: %f; Z: %f, Height: %f", c->GetPosition().X(), c->GetPosition().Z(), c->GetPosition().Y());
+			widget->SetText(text);
 			observer->SetPosition(c->GetPosition());
 		}
 
@@ -172,10 +210,12 @@ private:
 	GUI::Widget* widget;
 	float x;
 	float y;
+	Virtual::Cube* m_cube;
 };
 
 int main()
 {	
+	_CrtSetBreakAlloc(93984);
 	try
 	{
 		//System::GetFactory()->Init();

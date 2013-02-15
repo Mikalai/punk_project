@@ -53,8 +53,7 @@ namespace Render
 		System::StateManager<GPU::CoreState> m_states;		
 
 		//	next pointers should be destroyed in destructor
-		GPU::RenderTarget* m_rt;
-		Scene::SceneGraph* m_scene;				
+		GPU::RenderTarget* m_rt;				
 		GPU::OpenGL::TextSurface* m_text;
 		GPU::OpenGL::TextureContext* m_tc;
 		GUIRender* m_gui_render;
@@ -62,6 +61,7 @@ namespace Render
 		// next pointers should not be delete in destructor
 		GPU::OpenGL::Driver* m_driver;
 		GUI::Widget* m_root;
+		Scene::SceneGraph* m_scene;		
 		GPU::AbstractRenderPolicy* m_skin_rc;
 		GPU::AbstractRenderPolicy* m_context;
 		GPU::AbstractRenderPolicy* m_solid_rc;

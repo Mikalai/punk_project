@@ -27,6 +27,7 @@ namespace Punk
 		safe_delete(m_window);
 		safe_delete(m_event_manager);
 	}
+
 	void Application::Init(const Config& data)
 	{	
 		m_event_manager = new System::EventManager();
@@ -68,6 +69,7 @@ namespace Punk
 			desc.memory_usage = 1024*1024*1024;
 			desc.threshold = 32.0f;
 			desc.view_size = 1024;
+			desc.simulator = m_simulator;
 			m_terrain_manager = new Virtual::TerrainManager(desc);
 		}
 	}
@@ -213,4 +215,8 @@ namespace Punk
 		m_time_scale_denomiator = denominator;
 	}
 
+	Physics::BulletSimulator* Application::GetSimulator()
+	{
+		return m_simulator;
+	}
 }

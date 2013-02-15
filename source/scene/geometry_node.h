@@ -23,7 +23,8 @@ namespace Scene
 
 		virtual bool Apply(AbstractVisitor* visitor);			
 		
-	protected:
+		bool HasGeometry() const { return nullptr != m_geometry; }
+
 		Virtual::Geometry* GetGeometry() { return m_geometry; }
 
 	private:		

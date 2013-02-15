@@ -27,27 +27,30 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::SkinMeshNode* node)
 	{
-		Virtual::SkinGeometry::validate();		
-		Virtual::SkinGeometry* geom = Virtual::SkinGeometry::find(node->GetStorageName());
-
-		GPU::OpenGL::SkinMesh* mesh = nullptr;
-		if (geom->IsCacheValid())
-			mesh = Cast<GPU::OpenGL::SkinMesh*>(geom->GetGPUBufferCache());
-		else
+		if (!node->HasGeometry())
 		{
-			mesh = new GPU::OpenGL::SkinMesh;
-			try
+			Virtual::SkinGeometry::validate();		
+			Virtual::SkinGeometry* geom = Virtual::SkinGeometry::find(node->GetStorageName());
+
+			GPU::OpenGL::SkinMesh* mesh = nullptr;
+			if (geom->IsCacheValid())
+				mesh = Cast<GPU::OpenGL::SkinMesh*>(geom->GetGPUBufferCache());
+			else
 			{
-				mesh->Cook(geom, m_current_armature);
-				geom->SetGPUBufferCache(mesh);
-			}			
-			catch(...)
-			{
-				delete mesh;
-				throw;
+				mesh = new GPU::OpenGL::SkinMesh;
+				try
+				{
+					mesh->Cook(geom, m_current_armature);
+					geom->SetGPUBufferCache(mesh);
+				}			
+				catch(...)
+				{
+					delete mesh;
+					throw;
+				}
 			}
+			node->SetGeometry(geom);
 		}
-		node->SetGeometry(geom);
 		return true;
 	}
 
@@ -68,27 +71,30 @@ namespace Render
 
 	bool MeshCooker::Visit(Scene::StaticMeshNode* node)
 	{				
-		Virtual::StaticGeometry::validate();
-		Virtual::StaticGeometry* geom = Virtual::StaticGeometry::find(node->GetStorageName());	
-
-		GPU::OpenGL::StaticMesh* mesh = 0;
-		if (geom->IsGPUCacheValid())
-			mesh = Cast<GPU::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
-		else
+		if (!node->HasGeometry())
 		{
-			mesh = new GPU::OpenGL::StaticMesh;
-			try
+			Virtual::StaticGeometry::validate();
+			Virtual::StaticGeometry* geom = Virtual::StaticGeometry::find(node->GetStorageName());	
+
+			GPU::OpenGL::StaticMesh* mesh = 0;
+			if (geom->IsGPUCacheValid())
+				mesh = Cast<GPU::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
+			else
 			{
-				mesh->Cook(geom);
-				geom->SetGPUBufferCache(mesh);				
+				mesh = new GPU::OpenGL::StaticMesh;
+				try
+				{
+					mesh->Cook(geom);
+					geom->SetGPUBufferCache(mesh);				
+				}
+				catch (...)
+				{
+					delete mesh;
+					throw;
+				}			
 			}
-			catch (...)
-			{
-				delete mesh;
-				throw;
-			}			
+			node->SetGeometry(geom);
 		}
-		node->SetGeometry(geom);
 		return true;
 	}
 

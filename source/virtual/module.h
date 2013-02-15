@@ -8,5 +8,6 @@
 #include "motions/motion.h"
 #include "manager/manager.h"
 #include "terrain/module.h"
+#include "objects/module.h"
 
 #endif

@@ -24,10 +24,17 @@ namespace Scene
 	}
 
 	bool BoundingVolumeUpdater::Visit(Scene::StaticMeshNode* node)
-	{		
-		GPU::OpenGL::StaticMesh* mesh = dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
-
-		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
+	{	
+		{
+			GPU::OpenGL::StaticMesh* mesh = dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
+			if (mesh)
+			{
+				node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
+				return true;
+			}
+			Math::Sphere s(Math::vec3(0,0,0), 1);
+			node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * Math::BoundingSphere(s));
+		}
 		return true;
 	}
 

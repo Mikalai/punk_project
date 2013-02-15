@@ -5,6 +5,7 @@ namespace Scene
 {
 	GeometryNode::GeometryNode()
 	{
+		m_geometry = nullptr;
 		SetType(System::ObjectType::GEOMETRY_NODE);
 	}
 

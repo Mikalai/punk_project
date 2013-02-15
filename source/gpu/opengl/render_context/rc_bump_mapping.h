@@ -81,12 +81,16 @@ namespace GPU
 					SetUniformVector3f(uLightPosition, &v[0]);
 				}
 
-				SetUniformVector4f(uAmbient, &(Math::vec4(pparams.m_material->GetAmbient()))[0]);
-				SetUniformVector4f(uSpecular, &pparams.m_material->GetSpecularColor()[0]);
-				SetUniformVector4f(uDiffuse, &pparams.m_material->GetDiffuseColor()[0]);
-				SetUniformFloat(uSpecularPower, pparams.m_material->GetSpecularFactor());
-				SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot_0);
-				SetUniformInt(uNormalMap, pparams.m_normal_slot);		
+				if (pparams.m_material)
+				{
+					SetUniformVector4f(uAmbient, &(Math::vec4(pparams.m_material->GetAmbient()))[0]);
+					SetUniformVector4f(uSpecular, &pparams.m_material->GetSpecularColor()[0]);
+					SetUniformVector4f(uDiffuse, &pparams.m_material->GetDiffuseColor()[0]);
+					SetUniformFloat(uSpecularPower, pparams.m_material->GetSpecularFactor());
+					SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot_0);
+					SetUniformInt(uNormalMap, pparams.m_normal_slot);		
+				}
+
 				if (pparams.m_wireframe)
 				{
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

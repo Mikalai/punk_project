@@ -247,6 +247,12 @@
     <Filter Include="physics\error">
       <UniqueIdentifier>{1a869567-f735-4d18-af24-37f0be78fef2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="virtual\objects">
+      <UniqueIdentifier>{dbd8a1d5-af6b-45b1-88b3-4ef5a2abf2ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="virtual\objects\simple">
+      <UniqueIdentifier>{89d5b253-6713-46d9-ac20-d2c2c5dba026}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -1643,6 +1649,24 @@
     <ClInclude Include="..\..\..\source\physics\error\physics_exception.h">
       <Filter>physics\error</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_motion_state.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\objects\simple\module.h">
+      <Filter>virtual\objects\simple</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\objects\module.h">
+      <Filter>virtual\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\objects\simple\solid_cube.h">
+      <Filter>virtual\objects\simple</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\scene_graph_adapter.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\physics\bullet\bullet_adapter.h">
+      <Filter>physics\bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2458,6 +2482,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\data\geometry.cpp">
       <Filter>virtual\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\bullet\bullet_terrain.cpp">
+      <Filter>physics\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\physics\bullet\bullet_motion_state.cpp">
+      <Filter>physics\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\objects\simple\solid_cube.cpp">
+      <Filter>virtual\objects\simple</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

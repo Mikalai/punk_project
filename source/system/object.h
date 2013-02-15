@@ -65,6 +65,12 @@ inline T As(const System::Object* o)
 	return dynamic_cast<T>(o);
 }
 
+template<class T, class U> 
+inline T As(U o)
+{
+	return dynamic_cast<T>(o);
+}
+
 template<class T>
 inline bool Is(System::Object* o)
 {
@@ -73,6 +79,15 @@ inline bool Is(System::Object* o)
 
 template<class T>
 inline T Cast(System::Object* o)
+{
+	T ptr = As<T>(o);
+	if (ptr == nullptr && o != nullptr)
+		throw System::PunkInvalidCastException(L"Can't cast from " + System::string(typeid(o).name()) + L" to " + System::string(typeid(T).name()));
+	return ptr;
+}
+
+template<class T, class U>
+inline T Cast(U* o)
 {
 	T ptr = As<T>(o);
 	if (ptr == nullptr && o != nullptr)

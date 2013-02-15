@@ -9,6 +9,7 @@
 namespace Scene
 {
 	Node::Node()
+		: m_entity(nullptr)
 	{
 		SetType(System::ObjectType::NODE);
 	}
@@ -65,6 +66,22 @@ namespace Scene
 	bool Node::Apply(AbstractVisitor* visitor)
 	{
 		return visitor->Visit(this);
+	}
+
+	void Node::SetUserData(SceneGraphAdapter* value)
+	{
+		if (m_entity)
+			m_entity->OnLeaveSceneGraph(nullptr);
+
+		m_entity = value;
+
+		if (m_entity)
+			m_entity->OnEnterSceneGraph(nullptr, this);
+	}	
+	
+	SceneGraphAdapter* Node::GetUserData()
+	{
+		return m_entity;
 	}
 }
 
