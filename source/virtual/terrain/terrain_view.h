@@ -20,6 +20,7 @@
 #include "../../math/vec2.h"
 
 namespace GPU { namespace OpenGL { class Texture2D; } }
+namespace Physics { class BulletTerrain; }
 
 namespace Virtual
 {
@@ -60,11 +61,19 @@ namespace Virtual
 		
 		GPU::OpenGL::Texture2D* GetHeightMap() { return m_height_map_front; }
 		void* GetViewData() { return m_front_buffer; }
+		const void* GetViewData() const { return m_front_buffer; }
+		void* GetBackViewData() { return m_back_buffer; }
+		const void* GetBackViewData() const { return m_back_buffer; }
+		const Math::vec2& GetBackPosition() const { return m_position_back; }
 
 		Terrain* GetTerrain() { return m_desc.terrain; }
 
 		const Math::vec2& GetPosition() const { return m_desc.position; }
 
+		/**
+		*	this will copy date to the physics terrain
+		*/
+		void UpdatePhysics();
 	private:
 		void InitiateAsynchronousUploading();
 		static void OnEnd(void* data);
@@ -89,6 +98,8 @@ namespace Virtual
 		unsigned m_result;
 		//	
 		bool m_init;
+		//	should be deleted in destructor
+		Physics::BulletTerrain* m_bullet_terrain;
 	};
 
 	typedef TerrainView* TerrainViewRef;

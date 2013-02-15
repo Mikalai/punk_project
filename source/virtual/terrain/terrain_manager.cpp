@@ -16,8 +16,8 @@ namespace Virtual
 	TerrainManager::~TerrainManager()
 	{
 		safe_delete(m_terrain);
-		for (auto it = m_observers.begin(); it != m_observers.end(); ++it)
-			safe_delete(*it);
+		//for (auto it = m_observers.begin(); it != m_observers.end(); ++it)
+		//	safe_delete(*it);
 	}
 
 	bool TerrainManager::Manage(const System::string& map_name)
@@ -64,7 +64,7 @@ namespace Virtual
 		TerrainView* view(new TerrainView(desc));
 		TerrainObserver* observer(new TerrainObserver(view));
 		observer->SetPosition(start_position);
-		m_observers.push_back(observer);
-		return m_observers.back();
+//		m_observers.push_back(observer);
+		return observer;//m_observers.back();
 	}
 }

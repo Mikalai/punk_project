@@ -13,7 +13,7 @@ namespace Virtual
 	class PUNK_ENGINE TerrainObserver : public System::Object
 	{
 	public:
-		~TerrainObserver();
+		virtual ~TerrainObserver();
 
 		TerrainView* GetTerrainView() { return m_view; }
 		const TerrainView* GetTerrainView() const { return m_view; }

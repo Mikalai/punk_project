@@ -1,5 +1,7 @@
 #include "../../system/streaming/module.h"
 #include "../../gpu/opengl/textures/texture2d.h"
+#include "../../physics/module.h"
+
 #include "terrain_view_loader.h"
 #include "terrain_view_processor.h"
 #include "terrain_manager.h"
@@ -15,11 +17,13 @@ namespace Virtual
 		, m_height_map_back(new GPU::OpenGL::Texture2D())
 		, m_loading(false)
 		, m_init(false)
+		, m_bullet_terrain(false)
 	{
 		memset(m_front_buffer, 0, sizeof(m_desc.view_size*m_desc.view_size*sizeof(float)));
 		m_last_unprocessed.Set(std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
 		m_position_back = m_desc.position;
-		UpdatePosition(m_desc.position);
+		m_bullet_terrain = new Physics::BulletTerrain();
+		UpdatePosition(m_desc.position);		
 	}
 
 	TerrainView::~TerrainView()
@@ -30,7 +34,11 @@ namespace Virtual
 		m_back_buffer =  nullptr;
 
 		delete m_height_map_back;
+		m_height_map_back = nullptr;
 		delete m_height_map_front;
+		m_height_map_front = nullptr;
+		delete m_bullet_terrain;
+		m_bullet_terrain = nullptr;
 	}
 
 	void TerrainView::UpdatePosition(const Math::vec2& value)
@@ -102,4 +110,10 @@ namespace Virtual
 		//	view->InitiateAsynchronousUploading();
 		//}
 	}	
+
+	void TerrainView::UpdatePhysics()
+	{		
+		m_bullet_terrain->UpdateData(this);
+		m_bullet_terrain->EnterWorld(m_desc.manager->GetPhysicsSimulator()->GetWorld());
+	}
 }

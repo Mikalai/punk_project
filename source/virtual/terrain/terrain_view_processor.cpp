@@ -1,6 +1,7 @@
 #include "../../gpu/opengl/textures/texture2d.h"
 #include "../../system/logger.h"
 #include "terrain_view_processor.h"
+#include "terrain_view.h"
 
 namespace Virtual
 {
@@ -45,6 +46,7 @@ namespace Virtual
 	System::StreamingStepResult TerrainViewProcessor::CopyToResource()
 	{
 		memcpy(m_desc.m_device_ptr, m_data, m_size);
+		reinterpret_cast<Virtual::TerrainView*>(m_desc.m_on_end_data)->UpdatePhysics();
 		return System::STREAM_OK;
 	}
 

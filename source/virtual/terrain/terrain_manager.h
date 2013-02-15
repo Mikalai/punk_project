@@ -5,6 +5,8 @@
 #include "../../config.h"
 #include "terrain.h"
 
+namespace Physics { class BulletSimulator; }
+
 namespace Virtual
 {
 	class TerrainData;
@@ -16,6 +18,14 @@ namespace Virtual
 		unsigned memory_usage;
 		float view_size;
 		float threshold;
+		Physics::BulletSimulator* simulator;
+
+		TerrainManagerDesc()
+			: memory_usage(0)
+			, view_size(0)
+			, threshold(0)
+			, simulator(nullptr)
+		{}
 	};
 
 	class PUNK_ENGINE TerrainManager 
@@ -42,13 +52,15 @@ namespace Virtual
 
 		const System::string GetCurrentMap() { return m_current_map; }
 
+		Physics::BulletSimulator* GetPhysicsSimulator() { return m_desc.simulator; }
+
 	private:
 		bool Init(const Terrain& terrain);
 		bool Clear();
 
 	private:
 		TerrainRef m_terrain;
-		std::vector<TerrainObserver*> m_observers;
+		//std::vector<TerrainObserver*> m_observers;
 		TerrainManagerDesc m_desc;
 		System::string m_current_map;
 	};
