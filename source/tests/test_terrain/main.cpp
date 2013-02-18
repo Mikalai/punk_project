@@ -53,6 +53,9 @@ public:
 	
 		render = new Render::SimpleRender(GetDriver());
 		render->SetGUIHud(widget);
+		render->SetPainter(GetPainter());
+
+		GetPainter()->DrawLine(Math::vec2(-1, -1), Math::vec2(1, 1));
 
 		terrain_node = new Scene::TerrainNode();
 		terrain_node->SetTerrainObserver(observer);
@@ -215,7 +218,6 @@ private:
 
 int main()
 {	
-	_CrtSetBreakAlloc(93984);
 	try
 	{
 		//System::GetFactory()->Init();

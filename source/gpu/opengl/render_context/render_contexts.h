@@ -11,6 +11,7 @@
 #include "rc_solid_color_3d.h"
 #include "rc_solid_textured_3d.h"
 #include "rc_terrain.h"
+#include "rc_painter.h"
 
 namespace GPU
 {
@@ -22,6 +23,7 @@ namespace GPU
 		class PUNK_ENGINE RenderContextGUI : public RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> {};
 		class PUNK_ENGINE RenderContextSolid3D : public RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader> {};
 		class PUNK_ENGINE RenderContextSkinning : public RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> {};
+		class PUNK_ENGINE RenderContextPainter: public RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> {};
 	}
 }
 

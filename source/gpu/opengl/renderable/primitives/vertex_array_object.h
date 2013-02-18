@@ -57,6 +57,11 @@ namespace GPU
 				Clear();
 			}
 
+			bool HasData()
+			{
+				return m_index_buffer != nullptr && m_vertex_buffer != nullptr;
+			}
+
 			void Bind(VertexAttributes supported_by_context) 
 			{
 				if (m_was_modified)

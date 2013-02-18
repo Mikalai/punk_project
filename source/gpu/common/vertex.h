@@ -84,6 +84,18 @@ namespace GPU
 		Math::vec4 m_texture0;
 		Math::vec4 m_flag;
 	};
+
+	template<> struct Vertex<
+		COMPONENT_POSITION|
+		COMPONENT_COLOR|
+		COMPONENT_TEXTURE|
+		COMPONENT_FLAG>
+	{
+		Math::vec4 m_position;		
+		Math::vec4 m_texture0;
+		Math::vec4 m_flag;
+		Math::vec4 m_color;
+	};
 }
 
 #endif	//	_H_PUNK_GPU_VERTEX

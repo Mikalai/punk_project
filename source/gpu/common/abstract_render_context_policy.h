@@ -14,7 +14,8 @@ namespace GPU
 	RC_GUI,
 	RC_TERRAIN,
 	RC_SKINNING,
-	RC_BUMP_MAPING};
+	RC_BUMP_MAPING,
+	RC_PAINTER};
 
 	class PUNK_ENGINE AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
 	{

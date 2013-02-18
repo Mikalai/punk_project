@@ -21,6 +21,7 @@ namespace Render
 		bool Render();
 		void SetGUIHud(GUI::Widget* root) { m_root = root; }
 		void SetScene(Scene::SceneGraph* scene);
+		void SetPainter(GPU::Painter* value) { m_painter = value; }
 
 		virtual bool Visit(Scene::CameraNode* node);
 		virtual bool Visit(Scene::StaticMeshNode* node);
@@ -57,6 +58,7 @@ namespace Render
 		GPU::OpenGL::TextSurface* m_text;
 		GPU::OpenGL::TextureContext* m_tc;
 		GUIRender* m_gui_render;
+		GPU::Painter* m_painter;
 
 		// next pointers should not be delete in destructor
 		GPU::OpenGL::Driver* m_driver;

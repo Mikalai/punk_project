@@ -50,6 +50,7 @@ namespace GPU
 		bool m_polygon_smooth;
 		bool m_wireframe;
 		bool m_use_diffuse_texture;
+		bool m_use_text_texture;
 		bool m_enable_shadows;
 		bool m_enable_lighting;
 

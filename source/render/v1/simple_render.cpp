@@ -26,6 +26,7 @@ namespace Render
 		m_textured_rc = nullptr;
 		m_gui_rc = nullptr;
 		m_terrain_rc = nullptr;
+		m_painter = nullptr;
 
 	}
 
@@ -498,6 +499,11 @@ namespace Render
 			m_gui_render->Begin(0, 0, m_driver->GetWindow()->GetWidth(), m_driver->GetWindow()->GetHeight());
 			m_gui_render->RenderWidget(m_root);
 			m_gui_render->End();
+		}
+		if (m_painter)
+		{
+			m_painter->Begin();
+			m_painter->End();
 		}
 		m_driver->SwapBuffers();
 		m_rt->Deactivate();

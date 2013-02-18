@@ -23,6 +23,7 @@ namespace Punk
 		Virtual::TerrainManager* GetTerrainManager();
 		GUI::Manager* GetGUIManager();
 		Physics::BulletSimulator* GetSimulator();
+		GPU::Painter* GetPainter();
 
 		int Run();		
 		void SetTimeScale(__int64 nominator, __int64 denominator);
@@ -57,7 +58,7 @@ namespace Punk
 		GPU::OpenGL::Driver* m_video_driver;
 		Physics::BulletSimulator* m_simulator;
 		Virtual::TerrainManager* m_terrain_manager;
-
+		GPU::Painter* m_painter;
 		System::Timer m_timer;	
 
 		void Step(System::Event* event);

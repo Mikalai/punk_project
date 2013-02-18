@@ -253,6 +253,12 @@
     <Filter Include="virtual\objects\simple">
       <UniqueIdentifier>{89d5b253-6713-46d9-ac20-d2c2c5dba026}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gpu\painter">
+      <UniqueIdentifier>{b03b1d03-3214-496d-a8c0-2ac56c3cd004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\painter">
+      <UniqueIdentifier>{83bc82c5-69aa-4a80-bfe8-49ed8609b082}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -1667,6 +1673,30 @@
     <ClInclude Include="..\..\..\source\physics\bullet\bullet_adapter.h">
       <Filter>physics\bullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\painter\brush.h">
+      <Filter>gpu\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\painter\module.h">
+      <Filter>gpu\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\painter\painter.h">
+      <Filter>gpu\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\points.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\lines.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_painter.h">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_painter.h">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_painter.h">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2492,6 +2522,21 @@
     <ClCompile Include="..\..\..\source\virtual\objects\simple\solid_cube.cpp">
       <Filter>virtual\objects\simple</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_painter.cpp">
+      <Filter>gpu\opengl\render_context\shaders\vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_painter.cpp">
+      <Filter>gpu\opengl\render_context\shaders\fragment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_painter.cpp">
+      <Filter>gpu\opengl\render_context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\painter\painter.cpp">
+      <Filter>gpu\painter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\painter\gl_painter.h">
+      <Filter>gpu\opengl\painter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\source\blender\punk_exporter_2_60.py">
@@ -2609,6 +2654,12 @@
       <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
     </None>
     <None Include="..\..\..\data\shaders\textured_2d_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\painter_330.vert">
+      <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\data\shaders\painter_330.frag">
       <Filter>gpu\opengl\render_context\shaders\glsl</Filter>
     </None>
   </ItemGroup>

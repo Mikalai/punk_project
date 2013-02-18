@@ -18,6 +18,7 @@ namespace Punk
 		Virtual::SkinGeometry::clear();
 		Virtual::Armature::clear();
 		Virtual::Material::clear();
+		safe_delete(m_painter);
 		GUI::Manager::Destroy();
 		Utility::FontBuilder::Destroy();
 		safe_delete(m_terrain_manager);
@@ -71,6 +72,10 @@ namespace Punk
 			desc.view_size = 1024;
 			desc.simulator = m_simulator;
 			m_terrain_manager = new Virtual::TerrainManager(desc);
+		}
+
+		{
+			m_painter = new GPU::Painter;
 		}
 	}
 
@@ -218,5 +223,10 @@ namespace Punk
 	Physics::BulletSimulator* Application::GetSimulator()
 	{
 		return m_simulator;
+	}
+
+	GPU::Painter* Application::GetPainter()
+	{
+		return m_painter;
 	}
 }

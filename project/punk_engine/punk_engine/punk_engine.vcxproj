@@ -74,6 +74,8 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\cube_mesh.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\grid_object.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\lines.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\points.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\primitive_types.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\quad_mesh.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\scaled_grid.h" />
@@ -87,6 +89,7 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_grass.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_gui.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_painter.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_particle_system.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_skinning.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_solid_color_3d.h" />
@@ -97,6 +100,7 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_grass.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_gui.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_light.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_painter.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_particle.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_skinning.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_solid_color.h" />
@@ -109,6 +113,7 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_grass.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_gui.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_light.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_painter.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_particle.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_particle_system.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_skinning.h" />
@@ -128,6 +133,9 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_context.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\text_surface.h" />
+    <ClInclude Include="..\..\..\source\gpu\painter\brush.h" />
+    <ClInclude Include="..\..\..\source\gpu\painter\module.h" />
+    <ClInclude Include="..\..\..\source\gpu\painter\painter.h" />
     <ClInclude Include="..\..\..\source\gui\events\focused.h" />
     <ClInclude Include="..\..\..\source\gui\events\interface.h" />
     <ClInclude Include="..\..\..\source\gui\events\module.h" />
@@ -570,6 +578,7 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\error\gl_exceptions.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\gl\win32\extensions_win32.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\gpu_opengl_module.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\painter\gl_painter.h" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\cube_mesh.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\grid_object.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\quad_mesh.cpp" />
@@ -582,6 +591,7 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_grass.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_gui.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_painter.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_particle_system.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_skinning.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_solid_color_3d.cpp" />
@@ -592,6 +602,7 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_grass.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_gui.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_light.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_painter.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_particle.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_skinning.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\fragment\fs_solid_color.cpp" />
@@ -602,6 +613,7 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_grass.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_gui.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_light.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_painter.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_particle.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_particle_system.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\shaders\vertex\vs_skinning.cpp" />
@@ -617,6 +629,7 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_context.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\text_surface.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\painter\painter.cpp" />
     <ClCompile Include="..\..\..\source\gui\events\focused.cpp" />
     <ClCompile Include="..\..\..\source\gui\events\mouse_enter.cpp" />
     <ClCompile Include="..\..\..\source\gui\events\mouse_leave.cpp" />
@@ -862,6 +875,8 @@
     <None Include="..\..\..\data\shaders\line_3d_330.vert" />
     <None Include="..\..\..\data\shaders\normals_330.frag" />
     <None Include="..\..\..\data\shaders\normals_330.vert" />
+    <None Include="..\..\..\data\shaders\painter_330.frag" />
+    <None Include="..\..\..\data\shaders\painter_330.vert" />
     <None Include="..\..\..\data\shaders\particle_330.frag" />
     <None Include="..\..\..\data\shaders\particle_330.vert" />
     <None Include="..\..\..\data\shaders\per_vertex_lighting_330.frag" />

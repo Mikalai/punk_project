@@ -4,6 +4,7 @@
 #include "common/module.h"
 #include "opengl/module.h"
 #include "opencl/module.h"
+#include "painter/module.h"
 #include "gpu_config.h"
 
 namespace GPU
