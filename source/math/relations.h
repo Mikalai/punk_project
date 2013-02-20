@@ -6,6 +6,7 @@
 namespace Math
 {
 	class vec3;
+	class vec2;
 	class Plane;
 	class Line3D;
 	class Triangle3D;
@@ -17,6 +18,8 @@ namespace Math
 	class BoundingBox;
 	class BoundingSphere;
 	class ConvexShapeMesh;
+	class Rect;
+	class Line2D;
 
 	enum Relation { INTERSECT, INTERSECT_1 = INTERSECT, INTERSECT_2, INTERSECT_3, INTERSECT_4, NOT_INTERSECT, PARALLEL, SKEW, PERPENDICULAR, INSIDE, OUTSIDE, ON, FRONT, BACK, TOP, BOTTOM, LEFT, RIGHT, START, END, A, B, C, AB, BC, CA, NO_SPLIT_FRONT, NO_SPLIT_BACK, NO_SPLIT_ON, SPLIT_1_FRONT_1_BACK, SPLIT_2_FRONT_1_BACK, SPLIT_1_FRONT_2_BACK, VISIBLE, NOT_VISIBLE, PARTIALLY_VISIBLE };
 		
@@ -26,6 +29,8 @@ namespace Math
 	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const ConvexShapeMesh& mesh);
 	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const BoundingBox& mesh);
 	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const BoundingSphere& mesh);
+	PUNK_ENGINE Relation ClassifyPoint(const vec2& point, const Rect& rect);
+	
 	PUNK_ENGINE Relation ClassifyLine(const Line3D& line, const Plane& plane);
 	PUNK_ENGINE Relation ClassifyLine(const Line3D& line, const Triangle3D& triangle);		
 	PUNK_ENGINE Relation ClassifyBoudingBox(const BoundingBox& bbox, const ClipSpace& plane);
@@ -55,6 +60,11 @@ namespace Math
 	PUNK_ENGINE Relation ClipPortal(const ClipSpace& clipper, const Portal& portal, Portal& clipped_portal, ClipSpace& reduced_frustum);
 
 	PUNK_ENGINE Relation Distance(const Line3D& line1, const Line3D& line2, float& dst, float& t1, float& t2);
+
+	//	returns internal part of the line
+	PUNK_ENGINE Relation ClipExteriorLine(const Line2D& line, const Rect& rect, Line2D& result);
+	//	returns external part of the line
+	PUNK_ENGINE Relation ClipInteriorLine(const Line2D& line, const Rect& rect, Line2D& first, Line2D& second);
 }
 
 #endif
