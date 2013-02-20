@@ -3,6 +3,8 @@
 
 #include "../config.h"
 
+#define PUNK_GPU_USE_OPENGL
+
 namespace GPU
 {
 	struct PUNK_ENGINE Config
