@@ -29,6 +29,7 @@
     <ClInclude Include="..\..\..\source\gpu\common\renderable.h" />
     <ClInclude Include="..\..\..\source\gpu\common\gpu_state.h" />
     <ClInclude Include="..\..\..\source\gpu\common\render_target.h" />
+    <ClInclude Include="..\..\..\source\gpu\common\texture2d.h" />
     <ClInclude Include="..\..\..\source\gpu\common\vertex.h" />
     <ClInclude Include="..\..\..\source\gpu\common\vertex_component.h" />
     <ClInclude Include="..\..\..\source\gpu\error\gpu_exceptions.h" />
@@ -136,6 +137,9 @@
     <ClInclude Include="..\..\..\source\gpu\painter\brush.h" />
     <ClInclude Include="..\..\..\source\gpu\painter\module.h" />
     <ClInclude Include="..\..\..\source\gpu\painter\painter.h" />
+    <ClInclude Include="..\..\..\source\gpu\painter\paint_device.h" />
+    <ClInclude Include="..\..\..\source\gpu\painter\paint_engine.h" />
+    <ClInclude Include="..\..\..\source\gpu\painter\pen.h" />
     <ClInclude Include="..\..\..\source\gui\events\focused.h" />
     <ClInclude Include="..\..\..\source\gui\events\interface.h" />
     <ClInclude Include="..\..\..\source\gui\events\module.h" />
@@ -198,6 +202,7 @@
     <ClInclude Include="..\..\..\source\math\noiseutils.h" />
     <ClInclude Include="..\..\..\source\math\polygon3d.h" />
     <ClInclude Include="..\..\..\source\math\portal.h" />
+    <ClInclude Include="..\..\..\source\math\rect.h" />
     <ClInclude Include="..\..\..\source\math\relations.h" />
     <ClInclude Include="..\..\..\source\math\matrix.h" />
     <ClInclude Include="..\..\..\source\math\noise.h" />
@@ -543,6 +548,7 @@
     <ClInclude Include="..\..\..\source\virtual\texture_faces.h" />
     <ClInclude Include="..\..\..\source\virtual\track_pos.h" />
     <ClInclude Include="..\..\..\source\virtual\module.h" />
+    <ClInclude Include="Header.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\application\application.cpp">
@@ -629,7 +635,9 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_context.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\text_surface.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\painter\brush.cpp" />
     <ClCompile Include="..\..\..\source\gpu\painter\painter.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\painter\pen.cpp" />
     <ClCompile Include="..\..\..\source\gui\events\focused.cpp" />
     <ClCompile Include="..\..\..\source\gui\events\mouse_enter.cpp" />
     <ClCompile Include="..\..\..\source\gui\events\mouse_leave.cpp" />

@@ -1697,6 +1697,24 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_painter.h">
       <Filter>gpu\opengl\render_context</Filter>
     </ClInclude>
+    <ClInclude Include="Header.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\math\rect.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\painter\paint_device.h">
+      <Filter>gpu\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\painter\paint_engine.h">
+      <Filter>gpu\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\common\texture2d.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\painter\pen.h">
+      <Filter>gpu\painter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2536,6 +2554,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\painter\gl_painter.h">
       <Filter>gpu\opengl\painter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\painter\pen.cpp">
+      <Filter>gpu\painter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\painter\brush.cpp">
+      <Filter>gpu\painter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
