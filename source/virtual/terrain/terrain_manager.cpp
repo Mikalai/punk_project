@@ -11,6 +11,7 @@ namespace Virtual
 {
 	TerrainManager::TerrainManager(const TerrainManagerDesc& desc)
 		: m_desc(desc)
+		, m_terrain(nullptr)
 	{}
 
 	TerrainManager::~TerrainManager()
