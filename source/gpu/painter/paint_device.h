@@ -1,6 +1,8 @@
 #ifndef _H_PUNK_PAINT_DEVICE
 #define _H_PUNK_PAINT_DEVICE
 
+#include "../../config.h"
+
 namespace GPU
 {
 	class PaintEngine;
@@ -12,11 +14,60 @@ namespace GPU
 	*
 	*	
 	*/
-	class PaintDevice
+	class PUNK_ENGINE PaintDevice abstract
 	{
 	public:
-		virtual PaintEngine* GetPaintEngine() = 0;
+		PaintDevice();
+		virtual ~PaintDevice();
+
+		PaintEngine* GetPaintEngine();
+		int GetWidth() const;
+		int GetHeight() const;
+
+	protected:
+		void SetWidth(int width);
+		void SetHeight(int height);
+		void SetPaintEngine(PaintEngine* value);
+
+	private:
+		int m_width;
+		int m_height;
+		PaintEngine* m_engine;
+
+		//	no copy
+		PaintDevice(const PaintDevice&);
+		PaintDevice& operator = (const PaintDevice&);
 	};
+
+	inline int PaintDevice::GetWidth() const
+	{
+		return m_width;
+	}
+
+	inline int PaintDevice::GetHeight() const
+	{
+		return m_height;
+	}	
+	
+	inline void PaintDevice::SetWidth(int width)
+	{
+		m_width = width;
+	}
+
+	inline void PaintDevice::SetHeight(int height)
+	{
+		m_height = height;
+	}
+
+	inline PaintEngine* PaintDevice::GetPaintEngine() 
+	{
+		return m_engine;
+	}
+
+	inline void PaintDevice::SetPaintEngine(PaintEngine* value)
+	{
+		m_engine = value;
+	}
 }
 
 #endif	//	_H_PUNK_PAINT_DEVICE
