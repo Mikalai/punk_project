@@ -2,6 +2,17 @@
 #define _H_PUNK_GPU_PAINTER
 
 #include "../../config.h"
+#include <vector>
+
+namespace System
+{
+	class string;
+}
+
+namespace ImageModule
+{
+	class Image;
+}
 
 namespace Math
 {
@@ -10,20 +21,22 @@ namespace Math
 	class vec2;
 	class ivec2;	
 	class Rect;
+	class mat3;
 }
 
 namespace GPU
 {
+	class PaintEngine;
 	class PaintDevice;
 	class Brush;
 	class Pen;
 
-	class PUNK_ENGINE Painter
+	class PUNK_ENGINE Painter sealed
 	{
 	public:
-		Painter();
+		Painter();		
 		~Painter();
-		void Begin(PaintDevice* device = nullptr);
+		void Begin(PaintDevice* device);
 		void End();
 		void DrawArc(float xc, float yc, float width, float height, float start_angle, float span_angle);
 		void DrawChord(float xc, float yc, float width, float height, float start_angle, float span_angle);
@@ -64,6 +77,11 @@ namespace GPU
 
 		struct PainterImpl;
 		PainterImpl* impl;
+
+	private:
+		//	no copy
+		Painter(const Painter&);
+		Painter& operator = (const Painter&);
 	};
 }
 
