@@ -10,6 +10,7 @@ namespace Punk
 
 	Application::Application() : m_time_scale_nominator(1), m_time_scale_denomiator(1)
 	{
+		m_paint_engine = nullptr;
 	}
 
 	Application::~Application()
@@ -18,7 +19,7 @@ namespace Punk
 		Virtual::SkinGeometry::clear();
 		Virtual::Armature::clear();
 		Virtual::Material::clear();
-		safe_delete(m_painter);
+		safe_delete(m_paint_engine);
 		GUI::Manager::Destroy();
 		Utility::FontBuilder::Destroy();
 		safe_delete(m_terrain_manager);
@@ -75,7 +76,8 @@ namespace Punk
 		}
 
 		{
-			m_painter = new GPU::Painter;
+			m_paint_engine = new GPU::OpenGL::OpenGLPaintEngine;
+			m_paint_engine->SetSurfaceSize(GetWindow()->GetWidth(), GetWindow()->GetHeight());
 		}
 	}
 
@@ -154,6 +156,10 @@ namespace Punk
 	void Application::OnResizeEvent(System::WindowResizeEvent* event)
 	{
 		m_event_manager->FixEvent(event);
+
+		auto p = GetPaintEngine();
+		if (p)
+			p->SetSurfaceSize(event->width, event->height);
 	}
 
 	void Application::OnCreateEvent()
@@ -225,8 +231,8 @@ namespace Punk
 		return m_simulator;
 	}
 
-	GPU::Painter* Application::GetPainter()
+	GPU::PaintEngine* Application::GetPaintEngine()
 	{
-		return m_painter;
+		return m_paint_engine;
 	}
 }

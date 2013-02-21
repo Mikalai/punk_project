@@ -23,42 +23,42 @@ namespace Punk
 		Virtual::TerrainManager* GetTerrainManager();
 		GUI::Manager* GetGUIManager();
 		Physics::BulletSimulator* GetSimulator();
-		GPU::Painter* GetPainter();
+		GPU::PaintEngine* GetPaintEngine();
 
 		int Run();		
 		void SetTimeScale(__int64 nominator, __int64 denominator);
 
-		virtual void OnIdleEvent(System::IdleEvent* event);
-		virtual void OnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event);
-		virtual void OnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event);
-		virtual void OnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event);
-		virtual void OnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event);
-		virtual void OnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event);
-		virtual void OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event);
-		virtual void OnMouseHooverEvent(System::MouseHooverEvent* event);
-		virtual void OnMouseMoveEvent(System::MouseMoveEvent* event);
-		virtual void OnMouseWheelEvent(System::MouseWheelEvent* event);
-		virtual void OnCharEvent(System::KeyCharEvent* value);
-		virtual void OnWideCharEvent(System::KeyWCharEvent* event);
-		virtual void OnKeyDownEvent(System::KeyDownEvent* event);
-		virtual void OnKeyUpEvent(System::KeyUpEvent* event);
-		virtual void OnResizeEvent(System::WindowResizeEvent* event);
-		virtual void OnCreateEvent();
-		virtual void OnDestroyEvent();
-		virtual void OnSetFocusedEvent(GUI::SetFocusedEvent* event);
-		virtual void OnSetUnFocusedEvent(GUI::SetUnFocusedEvent* event);
-		virtual void OnMouseEnterEvent(GUI::MouseEnterEvent* event);
-		virtual void OnMouseLeaveEvent(GUI::MouseLeaveEvent* event);
+		virtual void OnIdleEvent(System::IdleEvent* event) override;
+		virtual void OnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event) override;
+		virtual void OnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event) override;
+		virtual void OnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event) override;
+		virtual void OnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event) override;
+		virtual void OnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event) override;
+		virtual void OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event) override;
+		virtual void OnMouseHooverEvent(System::MouseHooverEvent* event) override;
+		virtual void OnMouseMoveEvent(System::MouseMoveEvent* event) override;
+		virtual void OnMouseWheelEvent(System::MouseWheelEvent* event) override;
+		virtual void OnCharEvent(System::KeyCharEvent* value) override;
+		virtual void OnWideCharEvent(System::KeyWCharEvent* event) override;
+		virtual void OnKeyDownEvent(System::KeyDownEvent* event) override;
+		virtual void OnKeyUpEvent(System::KeyUpEvent* event) override;
+		virtual void OnResizeEvent(System::WindowResizeEvent* event) override;
+		virtual void OnCreateEvent() override;
+		virtual void OnDestroyEvent() override;
+		virtual void OnSetFocusedEvent(GUI::SetFocusedEvent* event) override;
+		virtual void OnSetUnFocusedEvent(GUI::SetUnFocusedEvent* event) override;
+		virtual void OnMouseEnterEvent(GUI::MouseEnterEvent* event) override;
+		virtual void OnMouseLeaveEvent(GUI::MouseLeaveEvent* event) override;
 
 		virtual void Init(const Config& value);
 
 	private:
+		GPU::PaintEngine* m_paint_engine;		
 		System::Window* m_window;
 		System::EventManager* m_event_manager;
 		GPU::OpenGL::Driver* m_video_driver;
 		Physics::BulletSimulator* m_simulator;
 		Virtual::TerrainManager* m_terrain_manager;
-		GPU::Painter* m_painter;
 		System::Timer m_timer;	
 
 		void Step(System::Event* event);
