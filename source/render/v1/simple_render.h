@@ -21,7 +21,7 @@ namespace Render
 		bool Render();
 		void SetGUIHud(GUI::Widget* root) { m_root = root; }
 		void SetScene(Scene::SceneGraph* scene);
-		void SetPainter(GPU::Painter* value) { m_painter = value; }
+		void SetPaintEngine(GPU::PaintEngine* value) { m_paint_engine = value; }
 
 		virtual bool Visit(Scene::CameraNode* node);
 		virtual bool Visit(Scene::StaticMeshNode* node);
@@ -35,7 +35,7 @@ namespace Render
 		virtual bool Visit(Scene::PortalNode* node);
 		virtual bool Visit(Scene::BoneNode* node);
 		virtual bool Visit(Scene::TerrainNode* node);
-		virtual bool Visit(Scene::DebugTextureViewNode* node);
+		virtual bool Visit(Scene::TextureViewNode* node);
 
 		void RenderQuad(float x, float y, float width, float height, const Math::vec4& color);
 		void RenderTexturedQuad(float x, float y, float width, float height, GPU::OpenGL::Texture2D* texture);
@@ -58,7 +58,7 @@ namespace Render
 		GPU::OpenGL::TextSurface* m_text;
 		GPU::OpenGL::TextureContext* m_tc;
 		GUIRender* m_gui_render;
-		GPU::Painter* m_painter;
+		GPU::PaintEngine* m_paint_engine;
 
 		// next pointers should not be delete in destructor
 		GPU::OpenGL::Driver* m_driver;

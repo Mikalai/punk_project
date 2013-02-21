@@ -25,7 +25,7 @@ namespace Render
 		virtual bool Visit(Scene::PortalNode* node);
 		virtual bool Visit(Scene::BoneNode* node);
 		virtual bool Visit(Scene::TerrainNode* node);
-		virtual bool Visit(Scene::DebugTextureViewNode* node) { return true; };
+		virtual bool Visit(Scene::TextureViewNode* node) { return true; };
 
 		//	this data should not be deleted
 		std::vector<Virtual::Light*> m_light_set;

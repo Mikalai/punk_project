@@ -26,7 +26,7 @@ namespace Render
 		m_textured_rc = nullptr;
 		m_gui_rc = nullptr;
 		m_terrain_rc = nullptr;
-		m_painter = nullptr;
+		m_paint_engine = nullptr;
 
 	}
 
@@ -66,10 +66,10 @@ namespace Render
 		return true;
 	}
 
-	bool SimpleRender::Visit(Scene::DebugTextureViewNode* node)
+	bool SimpleRender::Visit(Scene::TextureViewNode* node)
 	{
 		//RenderQuad(0, 0.8, 0.2, 0.2, Math::vec4(1,0,0,1));
-		RenderTexturedQuad(0, 0.8f, 0.2f, 0.2f, node->GetWatchTexture());
+		RenderTexturedQuad(node->GetX(), node->GetY(), node->GetWidth(), node->GetHeight(), node->GetWatchTexture());
 		return true;
 	}
 
@@ -500,10 +500,10 @@ namespace Render
 			m_gui_render->RenderWidget(m_root);
 			m_gui_render->End();
 		}
-		if (m_painter)
+		if (m_paint_engine)
 		{
-			m_painter->Begin();
-			m_painter->End();
+			GPU::OpenGL::OpenGLPaintEngine* device = Cast<GPU::OpenGL::OpenGLPaintEngine*>(m_paint_engine);
+			RenderTexturedQuad(0, 0, 1, 1, device->GetRenderTarget()->GetColorBuffer());
 		}
 		m_driver->SwapBuffers();
 		m_rt->Deactivate();
