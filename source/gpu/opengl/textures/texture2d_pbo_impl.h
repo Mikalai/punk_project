@@ -306,40 +306,47 @@ namespace GPU
 
 				m_width = width;
 				m_height = height;
-				m_format = format;
+				m_internal_format = format;
 				m_pixel_size = 1;
-				m_internal_format = GL_RED;
+				m_format = GL_RED;
 				m_internal_type = GL_UNSIGNED_BYTE;
 
-				if (GL_RED ==  m_format)
+				if (GL_RED ==  m_internal_format)
 				{
 					m_pixel_size = 1;
-					m_internal_format = GL_RED;
+					m_format = GL_RED;
 					m_internal_type = GL_UNSIGNED_BYTE;
 					glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 					CHECK_GL_ERROR(L"Can't pixel store i");
 				}
-				else if (GL_R32F == m_format || GL_RGBA == m_format)
+				else if (GL_R32F == m_internal_format || GL_RGBA == m_internal_format)
 				{
 					m_pixel_size = 4;
-					if (GL_R32F == m_format)
+					if (GL_R32F == m_internal_format)
 					{
-						m_internal_format = GL_R32F;
 						m_internal_type = GL_FLOAT;
 						m_format = GL_RED;
 					}
-					else if (GL_RGBA == m_format)
+					else if (GL_RGBA == m_internal_format)
 					{
-						m_internal_format = GL_RGBA;
+						m_format = GL_RGBA;
 						m_internal_type = GL_UNSIGNED_BYTE;
 					}
 					glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 					CHECK_GL_ERROR(L"Can't pixel store i");
 				}
-				else if (GL_RGB == m_format)
+				else if (GL_RGB == m_internal_format)
 				{
 					m_pixel_size = 3;
-					m_internal_format = GL_RGB;
+					m_format = GL_RGB;
+					m_internal_type = GL_UNSIGNED_BYTE;
+					glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+					CHECK_GL_ERROR(L"Can't pixel store i");
+				}
+				else if (GL_RGBA8 == m_internal_format)
+				{
+					m_pixel_size = 4;
+					m_format = GL_RGBA;
 					m_internal_type = GL_UNSIGNED_BYTE;
 					glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 					CHECK_GL_ERROR(L"Can't pixel store i");
@@ -367,7 +374,7 @@ namespace GPU
 				CHECK_GL_ERROR(L"Can't set up wrap s");
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
 				CHECK_GL_ERROR(L"Can't set up wrap r");
-				
+								
 				glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
 				CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
 
