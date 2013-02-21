@@ -29,5 +29,8 @@
     <ClCompile Include="math_plane_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="painter_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
