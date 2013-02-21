@@ -17,13 +17,13 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class PUNK_ENGINE RenderContextSolidTexture3D : public RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader> {};
-		class PUNK_ENGINE RenderContextBumpMapping : public RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader> {};
-		class PUNK_ENGINE RenderContextTerrain : public RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader> {};
-		class PUNK_ENGINE RenderContextGUI : public RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> {};
-		class PUNK_ENGINE RenderContextSolid3D : public RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader> {};
-		class PUNK_ENGINE RenderContextSkinning : public RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> {};
-		class PUNK_ENGINE RenderContextPainter: public RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> {};
+		class PUNK_ENGINE RenderContextSolidTexture3D sealed : public RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader> {};
+		class PUNK_ENGINE RenderContextBumpMapping sealed : public RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader> {};
+		class PUNK_ENGINE RenderContextTerrain sealed : public RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader> {};
+		class PUNK_ENGINE RenderContextGUI sealed : public RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> {};
+		class PUNK_ENGINE RenderContextSolid3D sealed : public RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader> {};
+		class PUNK_ENGINE RenderContextSkinning sealed : public RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> {};
+		class PUNK_ENGINE RenderContextPainter sealed : public RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> {};
 	}
 }
 
