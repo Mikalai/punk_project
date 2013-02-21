@@ -23,9 +23,17 @@ namespace GPU
 			, m_depth_texture(nullptr)
 		{}
 
+		void RenderTargetTexture::SetViewport(float x, float y, float width, float height)
+		{
+			OpenGLRenderTarget::SetViewport(x, y, width, height);
+			m_properties.m_texture_width = (int)width;
+			m_properties.m_texture_height = (int)height;
+			Init(&m_properties);
+		}
+
 		bool RenderTargetTexture::Init(RenderTarget::Properties* props)
 		{
-			RenderTargetTextureProperties* p = static_cast<RenderTargetTextureProperties*>(props);
+			m_properties = *static_cast<RenderTargetTextureProperties*>(props);
 			Clear();
 
 			//	generate frame buffer
@@ -34,7 +42,7 @@ namespace GPU
 			if (m_color_texture)
 				safe_delete(m_color_texture);
 			m_color_texture = new Texture2D;
-			m_color_texture->Create(p->m_texture_width, p->m_texture_height, ImageModule::IMAGE_FORMAT_RGBA8, 0, false);
+			m_color_texture->Create(m_properties.m_texture_width, m_properties.m_texture_height, ImageModule::IMAGE_FORMAT_RGBA8, 0, false);
 
 			//	if multisample
 			//	generate render buffers

@@ -26,9 +26,12 @@ namespace GPU
 			RenderTargetTexture();
 			virtual ~RenderTargetTexture();
 		//	void Init(int width, int height);
-			virtual bool Init(Properties* props);
-			virtual void Activate();
-			virtual void Deactivate();
+			
+			void SetViewport(float x, float y, float width, float height) override;
+			bool Init(Properties* props) override;
+			void Activate() override;
+			void Deactivate() override;
+
 			Texture2D* GetColorBuffer();
 			Texture2D* GetDepthBuffer();
 
@@ -48,7 +51,8 @@ namespace GPU
 			Texture2D* m_color_texture;
 			///	Should be destroyed in destructor
 			Texture2D* m_depth_texture;
-
+			///	Contains information about internal texture size
+			RenderTargetTextureProperties m_properties;
 		};
 	}
 }
