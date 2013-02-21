@@ -24,5 +24,6 @@
 #include "constants.h"
 #include "oct_tree.h"
 #include "helper.h"
+#include "rect.h"
 
 #endif
