@@ -202,6 +202,9 @@ namespace GPU
 		extern PFNGLCULLFACEPROC glCullFace;
 		extern PFNGLLINEWIDTHPROC glLineWidth;
 
+		extern PFNGLTEXTURESTORAGE1DEXTPROC glTextureStorage1DEXT;
+		extern PFNGLTEXTURESTORAGE2DEXTPROC glTextureStorage2DEXT;
+
 		extern void InitExtensions(Driver* driver);
 		extern bool IsSupported(const char* name);
 	}
