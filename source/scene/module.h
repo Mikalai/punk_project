@@ -1,7 +1,6 @@
 #ifndef _H_PUNK_SCENE_MODULE
 #define _H_PUNK_SCENE_MODULE
 
-#include "debug/texture_view_node.h"
 #include "armature_node.h"
 #include "bone_node.h"
 #include "bounding_volume_updater.h"
@@ -20,5 +19,6 @@
 #include "terrain_node.h"
 #include "transform_node.h"
 #include "visitor.h"
+#include "texture_view_node.h"
 
 #endif	//	_H_PUNK_SCENE_MODULE

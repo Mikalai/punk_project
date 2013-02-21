@@ -73,6 +73,9 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\gl\nvx_gpu_memory_info.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\gl\win32\extensions_win32.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\module.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\painter\gl_paint_device.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\painter\gl_paint_engine.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\painter\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\cube_mesh.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\grid_object.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\lines.h" />
@@ -304,7 +307,6 @@
     <ClInclude Include="..\..\..\source\scene\bone_node.h" />
     <ClInclude Include="..\..\..\source\scene\bounding_volume_updater.h" />
     <ClInclude Include="..\..\..\source\scene\camera_node.h" />
-    <ClInclude Include="..\..\..\source\scene\debug\texture_view_node.h" />
     <ClInclude Include="..\..\..\source\scene\default_visitor.h" />
     <ClInclude Include="..\..\..\source\scene\geometry_node.h" />
     <ClInclude Include="..\..\..\source\scene\interface.h" />
@@ -320,6 +322,7 @@
     <ClInclude Include="..\..\..\source\scene\skin_mesh_node.h" />
     <ClInclude Include="..\..\..\source\scene\static_mesh_node.h" />
     <ClInclude Include="..\..\..\source\scene\terrain_node.h" />
+    <ClInclude Include="..\..\..\source\scene\texture_view_node.h" />
     <ClInclude Include="..\..\..\source\scene\transform_node.h" />
     <ClInclude Include="..\..\..\source\scene\visitor.h" />
     <ClInclude Include="..\..\..\source\string\string.h" />
@@ -585,6 +588,7 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\gl\win32\extensions_win32.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\gpu_opengl_module.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\painter\gl_painter.h" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\painter\gl_paint_engine.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\cube_mesh.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\grid_object.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\quad_mesh.cpp" />
@@ -637,6 +641,8 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\text_surface.cpp" />
     <ClCompile Include="..\..\..\source\gpu\painter\brush.cpp" />
     <ClCompile Include="..\..\..\source\gpu\painter\painter.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\painter\paint_device.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\painter\paint_engine.cpp" />
     <ClCompile Include="..\..\..\source\gpu\painter\pen.cpp" />
     <ClCompile Include="..\..\..\source\gui\events\focused.cpp" />
     <ClCompile Include="..\..\..\source\gui\events\mouse_enter.cpp" />
@@ -681,6 +687,7 @@
     <ClCompile Include="..\..\..\source\math\plane.cpp" />
     <ClCompile Include="..\..\..\source\math\portal.cpp" />
     <ClCompile Include="..\..\..\source\math\random.cpp" />
+    <ClCompile Include="..\..\..\source\math\rect.cpp" />
     <ClCompile Include="..\..\..\source\math\relations.cpp" />
     <ClCompile Include="..\..\..\source\math\root_find.cpp" />
     <ClCompile Include="..\..\..\source\math\convex_shape_mesh.cpp" />

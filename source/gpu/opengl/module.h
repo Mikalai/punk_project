@@ -10,6 +10,7 @@
 #include "render_context/module.h"
 #include "render_targets/module.h"
 #include "../gpu_config.h"
+#include "painter/module.h"
 
 namespace GPU
 {

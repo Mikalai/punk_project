@@ -139,9 +139,6 @@
     <Filter Include="system\types\linux">
       <UniqueIdentifier>{678483ba-5a3f-4584-94eb-bf27352152fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="scene\debug">
-      <UniqueIdentifier>{b59ab0de-0a32-4776-ae12-d80c5185c4e5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="physics">
       <UniqueIdentifier>{f7d3158e-cba5-4417-95fa-89a186ac3a8b}</UniqueIdentifier>
     </Filter>
@@ -1148,9 +1145,6 @@
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain_view_processor.h">
       <Filter>virtual\terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\scene\debug\texture_view_node.h">
-      <Filter>scene\debug</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\scene\terrain_node.h">
       <Filter>scene</Filter>
     </ClInclude>
@@ -1714,6 +1708,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\painter\pen.h">
       <Filter>gpu\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\painter\gl_paint_device.h">
+      <Filter>gpu\opengl\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\painter\gl_paint_engine.h">
+      <Filter>gpu\opengl\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\painter\module.h">
+      <Filter>gpu\opengl\painter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\texture_view_node.h">
+      <Filter>scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2560,6 +2566,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\painter\brush.cpp">
       <Filter>gpu\painter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\painter\paint_device.cpp">
+      <Filter>gpu\painter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\painter\paint_engine.cpp">
+      <Filter>gpu\painter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\painter\gl_paint_engine.cpp">
+      <Filter>gpu\opengl\painter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\math\rect.cpp">
+      <Filter>math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
