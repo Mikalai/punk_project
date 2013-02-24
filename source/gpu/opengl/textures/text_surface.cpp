@@ -80,7 +80,8 @@ namespace GPU
 		bool TextSurface::RenderTextToTexture()
 		{
 			if (m_text.Length() == 0)
-				return (m_texture->Fill(0), true);
+				if (m_texture)
+					return (m_texture->Fill(0), true);
 
 			int start_x, start_y;
 			int x = start_x = CalculateTextXOffset(m_text);
