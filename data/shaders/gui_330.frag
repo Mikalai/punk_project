@@ -19,5 +19,5 @@ void main(void)
 
 	vec4 mask = texture(uTextMap, texCoord);
 	vec4 text_color = uTextColor * vec4(mask.r, mask.r, mask.r, 1);
-	color = mix(diffuse_color, uTextColor, mask.r);
+	color = uDiffuseColor * mix(uTextColor, diffuse_color, mask.r);
 }
