@@ -374,7 +374,7 @@ namespace GPU
 				CHECK_GL_ERROR(L"Can't set up wrap s");
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
 				CHECK_GL_ERROR(L"Can't set up wrap r");
-								
+
 				glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
 				CHECK_GL_ERROR(L"Can't copy data from PBO to texture");
 
@@ -383,7 +383,7 @@ namespace GPU
 
 				m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);				
 				//m_pbo->Bind();
-				
+
 				//	if data available than copy them
 				if (source)
 				{
@@ -417,7 +417,9 @@ namespace GPU
 
 			void* Map()
 			{
-				return m_pbo->Map();
+				if (m_pbo)
+					return m_pbo->Map();
+				return nullptr;
 			}
 
 			void Unmap(void*)
@@ -438,11 +440,14 @@ namespace GPU
 			void Fill(unsigned char byte)
 			{
 				void* dst = Map();
-				memset(dst, byte, m_width*m_height*m_pixel_size);
-				Unmap(dst);
+				if (dst)
+				{
+					memset(dst, byte, m_width*m_height*m_pixel_size);
+					Unmap(dst);
 
-				if (m_use_mip_maps)
-					UpdateMipMaps();
+					if (m_use_mip_maps)
+						UpdateMipMaps();
+				}
 			}
 
 
