@@ -55,6 +55,7 @@ namespace GPU
 		bool m_enable_lighting;
 
 		float m_line_width;
+		float m_point_size;
 		int m_diffuse_slot_0;
 		int m_diffuse_slot_1;
 		int m_normal_slot;

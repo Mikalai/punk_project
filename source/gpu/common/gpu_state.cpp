@@ -18,6 +18,8 @@ namespace GPU
 		m_wireframe = false;
 		m_enable_shadows = false;
 		m_enable_lighting = true;
+		m_line_width = 1;
+		m_point_size = 1;
 	}
 
 	CoreState::~CoreState()
