@@ -20,6 +20,8 @@ namespace Math
 		T m_v[Size_c];
 	public:
 
+		static const Vector3<T> Null() { return Vector3<T>(0,0,0); }
+
 		Vector3<T>(const Vector3<T>& vec)
 		{
 			m_v[0] = vec.m_v[0];
@@ -88,6 +90,14 @@ namespace Math
 			m_v[1] = -m_v[1];
 			m_v[2] = -m_v[2];
 
+			return *this;
+		}
+
+		Vector3<T>& Chop(T eps = T(0.00001))
+		{
+			for (int i = 0; i != 3; ++i)
+				if (fabs(float(m_v[i])) < eps)
+					m_v[i] = T(0);
 			return *this;
 		}
 
