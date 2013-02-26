@@ -27,6 +27,9 @@ namespace Math
 	PUNK_ENGINE bool DiagonalizeMatrix(const mat3& m, mat3& res);
 	PUNK_ENGINE bool EigenValues(const mat3& m, vec3& res);
 	PUNK_ENGINE bool EigenVectors(const mat3& m, const vec3& value, vec3 res[3]);
+
+	PUNK_ENGINE bool SymmetricEigenSystem(const mat3& m, vec3& value, mat3& r);
+
 	//	used to find native axis of the point set
 	PUNK_ENGINE bool CalculateNativeAxis(const float* points, int count, unsigned offset, vec3& r, vec3& s, vec3& t);
 	PUNK_ENGINE bool YawPitchRollToUpDirection(float yaw, float pitch, float roll, vec3& up, vec3& dir);
