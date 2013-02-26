@@ -10,5 +10,8 @@
 #include "primitives/scaled_grid.h"
 #include "primitives/points.h"
 #include "primitives/lines.h"
+#include "primitives/triangles.h"
+#include "primitives/triangle_fans.h"
+#include "primitives/triangle_strip.h"
 
 #endif	//	 _H_PUNK_OPENGL_DEAULT_RENDERABLE
