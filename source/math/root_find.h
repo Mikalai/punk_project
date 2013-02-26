@@ -50,44 +50,33 @@ namespace Math
 		T p = B / T(3.0) - A*A / T(9.0);
 		T q = A*A*A/T(27) - A*B/T(6) + C/T(2.0);
 
-		T D = q*q + p*p*p;
+		T D = -(q*q + p*p*p);
 
 		if (Abs(D) < 1e-6)
 		{
-			T cos_phy = - q / sqrt(-(p*p*p));
-			if (cos_phy < -1)
-				cos_phy = -1;
-			else if (cos_phy > 1)
-				cos_phy = 1;
-			T phy = acos(cos_phy);
-			out[0] = T(2) * sqrt(-p)*cos(phy/T(3));
-			out[1] = -T(2) *sqrt(-p)*cos((phy+T(3.141519265358979323846))/T(3.0));
-
-			out[0] = out[0] - A / T(3);
-			out[1] = out[1] - A / T(3);
-			out[2] = out[1];
+			T r = pow(-q, T(1.0)/T(3.0));			
+			out[0] = T(2) * r;
+			out[1] = out[2] = -r;
+		
+			out[0] -= A/T(3.0);
+			out[1] -= A/T(3.0);
+			out[2] -= A/T(3.0);
 			return RootFindResult::RESULT_TWO_SOLUTIONS;		
 		}
 
-		if (D > 0.0)
+		if (D < 0.0)
 		{
-			T qq, s;
-			qq = -q+sqrt(D);
-			s = (qq >= 0) ? T(1) : -T(1);
-			T u = s*pow(fabs(qq), T(1.0/3.0));
-			qq = -q-sqrt(D);
-			s = (qq >= 0) ? T(1) : -T(1);
-			T v = s*pow(fabs(qq), T(1.0/3.0));
-			out[0] = u + v;
-			out[0] = out[0] - A/T(3.0);
+			T r = pow(-q + sqrt(-D), T(1.0)/T(3.0));			
+			T s = pow(-q - sqrt(-D), T(1.0)/T(3.0));			
+			out[0] = r + s;			
+
+			out[0] -= A/T(3.0);
 			return RootFindResult::RESULT_ONE_SOLUTION;
 			//	y2 = -(u+v)/2 + sqrt(3)/2*(u-v)i
 			//	y3 = -(u+v)/2 - sqrt(3)/2*(u-v)i
 		}
 
-
-
-		if (D < 0.0)
+		if (D > 0.0)
 		{
 			T cos_phy = - q / sqrt(-(p*p*p));
 			if (cos_phy < -1)
