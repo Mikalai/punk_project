@@ -1721,6 +1721,15 @@
     <ClInclude Include="..\..\..\source\scene\texture_view_node.h">
       <Filter>scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangles.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangle_fans.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangle_strip.h">
+      <Filter>gpu\opengl\renderable\primitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">

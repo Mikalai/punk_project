@@ -86,6 +86,9 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\skin_mesh.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\sphere_mesh.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\static_mesh.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangles.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangle_fans.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangle_strip.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.h" />
