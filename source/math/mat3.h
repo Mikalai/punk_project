@@ -22,6 +22,19 @@ namespace Math
 
 	public:
 
+		Matrix3x3<T>(T m0, T m1, T m2, T m3, T m4, T m5, T m6, T m7, T m8)
+		{
+			m[0] = m0;
+			m[1] = m1;
+			m[2] = m2;
+			m[3] = m3;
+			m[4] = m4;
+			m[5] = m5;
+			m[6] = m6;
+			m[7] = m7;
+			m[8] = m8;
+		}
+
 		Matrix3x3<T>(const Vector3<T>& column0, const Vector3<T>& column1, const Vector3<T>& column2)
 		{
 			m[0] = column0[0];
@@ -148,6 +161,14 @@ namespace Math
 			for (int col = 0; col < size; ++col)
 				std::swap(At(row1, col), At(row2, col));
 			return *this;
+		}
+
+		Matrix3x3<T>& Chop(T eps = T(0.00001))
+		{
+			for (int i = 0; i != 9; ++i)
+				if (fabs(m[i]) < eps)
+					m[i] = T(0);
+			return *this;				
 		}
 
 		//
@@ -305,6 +326,13 @@ namespace Math
 			tm[8] = m[8];
 
 			return *this;
+		}
+
+		static const Matrix3x3<T> Null()
+		{
+			Matrix3x3<T> res;
+			memset(&res, 0, sizeof(res));
+			return res;
 		}
 
 		static const Matrix3x3<T> Create2DTranslate(T dx, T dy)
@@ -552,12 +580,27 @@ namespace Math
 		return res;
 	}
 
-	class PUNK_ENGINE mat3 : public Matrix3x3<float>
+	//
+	//	mult vector on matrix
+	//
+	template<class T>
+	static bool operator == (const Matrix3x3<T>& l, const Matrix3x3<T>& r)
 	{
+		for (int i = 0; i < 9; ++i)
+			if (l[i] != r[i])
+				return false;
+		return true;;
+	}
+
+	class PUNK_ENGINE mat3 : public Matrix3x3<float>
+	{		
 	public:
+		typedef float T;
+
 		mat3() : Matrix3x3<float> () {}
 		mat3(const mat3& m) : Matrix3x3<float>(m) {}
 		mat3(const Matrix3x3<float>& m) : Matrix3x3<float>(m) {}
+		mat3(T m0, T m1, T m2, T m3, T m4, T m5, T m6, T m7, T m8) : Matrix3x3<float>(m0, m1, m2, m3, m4, m5, m6, m7, m8) {}
 	};
 
 }
