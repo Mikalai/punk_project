@@ -1719,15 +1719,21 @@ namespace Utility
 					ParseMapDescription(buffer, terrain.get());
 					return terrain.release();
 				}
-			case WORD_HUMMALARMATEXT:
+			case WORD_ARMATURETEXT:
 				{
 					System::string word = buffer.ReadWord();
-					KeywordCode code = Parse(word);		
-					if (WORD_ARMATURE != code)
-						throw System::PunkInvalidArgumentException(L"This is not a human male armature");
-					std::unique_ptr<Virtual::HumanMaleArmature> armature(new Virtual::HumanMaleArmature);
+					std::unique_ptr<Virtual::Armature> armature;
+					if (word == L"male_armature")
+					{
+						armature.reset(new Virtual::HumanMaleArmature);
+					}
+					else
+					{
+						armature.reset(new Virtual::Armature);
+					}
+						
 					ParseArmature(buffer, armature.get());
-					Virtual::Armature::add(L"HumanMaleArmature", armature.get());
+					Virtual::Armature::add(word, armature.get());
 					return armature.release();
 				}
 			default:

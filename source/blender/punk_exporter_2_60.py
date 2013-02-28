@@ -333,13 +333,9 @@ def export_armature(object):
     file = path + "\\" + object.data.name + ".armature"
     print(file)
     f = open(file, "w")
-    if object.armature_type == "HUMAN_MALE":
-        f.write("HUMMALARMATEXT\n")
-    elif object.armature_type == "HUMAN_FEMALE":
-        f.write("HUMFEMARMATEXT\n")
+    f.write("ARMATURETEXT\n")    
     armature = object.data
-    start_block(f, "*armature")
-    export_string(f, "*name", armature.name)    
+    start_block(f, armature.name)
     for bone in armature.bones:
         #   export bone
         start_block(f, "*bone")
@@ -392,11 +388,19 @@ def export_actions(f):
 #   export one action
 #
 def export_action(f, action):
-    start_block(f, "*action")
-    start_block(f, "*name")
-    make_offset(f)
-    f.write("%s\n" % action.name)
-    end_block(f)
+    global text_offset
+    old = text_offset 
+    text_offset = 0
+    
+    file = path + "\\" + action.name + ".action"
+    
+    print(file)
+    f = open(file, "w")
+
+    f.write("ACTIONTEXT\n")
+            
+    start_block(f, action.name)
+    
     try:
         start = int(action.frame_range[0])
         end = int(action.frame_range[1])
@@ -486,7 +490,11 @@ def export_action(f, action):
                 end_block(f) #  *rotation_track
         
         end_block(f)    # *bone_animation or *object_animation
-    end_block(f)    # *action    
+    end_block(f)    # *action   
+    
+    text_offset = old
+    return
+ 
 
 #   export all materials
 def export_materials(f, materials):

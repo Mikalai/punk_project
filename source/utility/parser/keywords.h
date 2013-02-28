@@ -119,8 +119,7 @@ namespace Utility
 		WORD_HEIGHT_SCALE,
 		WORD_WORLD_ORIGIN,
 		WORD_CELL,		
-		WORD_HUMMALARMATEXT,
-		WORD_HUMFEMARMATEXT
+		WORD_ARMATURETEXT,
 	};
 
 	struct Record
@@ -244,8 +243,7 @@ namespace Utility
 		{ WORD_HEIGHT_SCALE,			L"*height_scale"},
 		{ WORD_WORLD_ORIGIN,			L"*world_origin"},
 		{ WORD_CELL,					L"*cell"},
-		{ WORD_HUMMALARMATEXT,			L"HUMMALARMATEXT"},
-		{ WORD_HUMFEMARMATEXT,			L"HUMFEMARMATEXT"}
+		{ WORD_ARMATURETEXT,			L"ARMATURETEXT"}
 	};
 }
 #endif	//	_H_PUNK_VIRTUAL_KEY_WORDS
