@@ -15,13 +15,10 @@ namespace Utility
 
 namespace Virtual
 {
-	enum AnimationType { ANIMATION_NONE, ANIMATION_OBJECT, ANIMATION_BONE };
-
 	class PUNK_ENGINE Animation : public System::Object, public System::Aspect<Animation*, System::string>
 	{
 		AnimationTrack<Math::vec3> m_pos_track;
 		AnimationTrack<Math::quat> m_rot_track;
-		AnimationType m_animation_type;
 	public:
 		Animation();
 		Animation(Utility::AnimationDesc& desc);
@@ -33,9 +30,6 @@ namespace Virtual
 
 		const Math::vec3 GetPosition(float frame) const;
 		const Math::quat GetRotation(float frame) const;
-
-		void SetAnimationType(AnimationType type) { m_animation_type = type; }
-		AnimationType GetAnimationType() const { return m_animation_type; }
 
 		void SetPositionTrack(const AnimationTrack<Math::vec3>& track) { m_pos_track = track; }
 		void SetRotationTrack(const AnimationTrack<Math::quat>& track) { m_rot_track = track; }

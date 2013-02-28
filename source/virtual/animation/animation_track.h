@@ -76,21 +76,21 @@ namespace Virtual
 
 	template<class T>
 	inline const T AnimationTrack<T>::GetKey(float frame) const
-	{
-		// parameter check
-		if (frame < (float)(*m_keys.begin()).first)
-		{			
-			frame = (float)(*m_keys.begin()).first;
-		}
-
+	{		
 		if (m_keys.empty())
 			return T();
 
 		if (m_keys.size() == 1)
 			return (*m_keys.begin()).second;
 
+		// parameter check
+		if (frame < (float)(*m_keys.begin()).first)
+		{			
+			frame = (float)(*m_keys.begin()).first;
+		}
+
 		float delta = float(m_keys.back().first - m_keys.front().first);
-		float v = frame / delta;
+		float v = (frame - m_keys.front().first) / delta;
 		v = modff(v, &v);
 		frame = m_keys.front().first + delta * v;
 
@@ -112,19 +112,20 @@ namespace Virtual
 	template<>
 	inline const Math::Quaternion<float> AnimationTrack<Math::Quaternion<float>>::GetKey(float frame) const
 	{
-				// parameter check
-		if (frame < (*m_keys.begin()).first)
-		{			
-			frame = (float)(*m_keys.begin()).first;
-		}
 		if (m_keys.empty())
 			return Math::Quaternion<float>();
 
 		if (m_keys.size() == 1)
 			return (*m_keys.begin()).second;
 
+		// parameter check
+		if (frame < (float)(*m_keys.begin()).first)
+		{			
+			frame = (float)(*m_keys.begin()).first;
+		}
+
 		float delta = float(m_keys.back().first - m_keys.front().first);
-		float v = frame / delta;
+		float v = (frame - m_keys.front().first) / delta;
 		v = modff(v, &v);
 		frame = m_keys.front().first + delta * v;
 

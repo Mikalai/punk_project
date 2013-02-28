@@ -5,9 +5,7 @@
 namespace Virtual
 {
 	Animation::Animation()
-		: m_animation_type(AnimationType::ANIMATION_NONE)
 	{
-		SetType(System::ObjectType::ANIMATION);
 	}
 
 	void Animation::AddPositionKey(int frame, Math::vec3& position)
@@ -50,7 +48,6 @@ namespace Virtual
 	{
 		System::Object::Save(stream);
 
-		stream.write((char*)&m_animation_type, sizeof(m_animation_type));
 		m_pos_track.Save(stream);
 		m_rot_track.Save(stream);
 		return true;
@@ -60,7 +57,6 @@ namespace Virtual
 	{
 		System::Object::Load(stream);
 
-		stream.read((char*)&m_animation_type, sizeof(m_animation_type));
 		m_pos_track.Load(stream);
 		m_rot_track.Load(stream);
 		return true;
