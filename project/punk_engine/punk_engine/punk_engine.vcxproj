@@ -534,6 +534,9 @@
     <ClInclude Include="..\..\..\source\virtual\skinning\armature.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\bone.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\bone_frame.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_female_armature.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_male_armature.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_armature.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\interface.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\module.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\types.h" />
@@ -863,6 +866,9 @@
     <ClCompile Include="..\..\..\source\virtual\scheme.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\armature.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\bone.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_armature.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_female_armature.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_male_armature.cpp" />
     <ClCompile Include="..\..\..\source\virtual\sound.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_cell.cpp" />

@@ -1730,6 +1730,15 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangle_strip.h">
       <Filter>gpu\opengl\renderable\primitives</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_armature.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_male_armature.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_female_armature.h">
+      <Filter>virtual\skinning</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2587,6 +2596,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\math\rect.cpp">
       <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_armature.cpp">
+      <Filter>virtual\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_male_armature.cpp">
+      <Filter>virtual\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_female_armature.cpp">
+      <Filter>virtual\skinning</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
