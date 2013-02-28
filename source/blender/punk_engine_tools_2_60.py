@@ -81,7 +81,7 @@ class OBJECT_PT_punk_engine_tools(Panel):
             layout.prop(ob, "name")     
         elif ob.punk_entity_type == 'LOCATION_INDOOR':
             layout.prop(ob, "name")               
-        elif ob.punk_entity_type == 'ARMATURE':
+        elif ob.punk_entity_type == 'HUMAN_ARMATURE':
             layout.prop(ob, "name")
             layout.prop(ob, "armature_type")
         elif ob.punk_entity_type == 'LIGHT':
@@ -124,7 +124,7 @@ def register():
                  ("CHARACTER", "Character", "Character armature and skin", 9), \
                  ("CAMERA", "Camera", "A camera that can be used in game", 10),\
                  ("TRANSFORM", "Transform", "A simple transorm",           11),\
-                 ("ARMATURE", "Armature", "Animated armature",             12),\
+                 ("HUMAN_ARMATURE", "Human armature", "Human armature",             12),\
                  ("SKIN", "Skin",   "Skin object. Has geometry",           13),\
                  ("COLLISION_MESH", "Collision mesh", "Collision mesh",    14),\
                  ("SMALL_SLOT", "Small slot", "Small slot",                15),\

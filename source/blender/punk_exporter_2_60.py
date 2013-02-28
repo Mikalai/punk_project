@@ -25,6 +25,7 @@ used_armatures = set()
 used_skin_meshes = set()
 used_static_meshes = set()
 vertex_groups = {}
+path = ""
 
 #   export single float
 def export_float(f, name, value):
@@ -324,27 +325,38 @@ def export_bones(f):
 #
 #   export armature skeleton
 #
-def export_armatures(f, armatures):    
-    start_block(f, "*armatures")
-    for armature_name in used_armatures:        
-        armature = armatures[armature_name]
-        start_block(f, "*armature")
-        export_string(f, "*name", armature.name)    
-        for bone in armature.bones:
-            #   export bone
-            start_block(f, "*bone")
-            #   write bone name
-            export_string(f, "*name", bone.name)
-            #   write bone length
-            export_float(f, "*length", bone.length)
-            #   write bone parent
-            if bone.parent != None:
-                export_string(f, "*parent", bone.parent.name)
-            #   write bone matrix
-            export_mat4(f, "*local_matrix", bone.matrix_local)
-            end_block(f)    #*bone
-        end_block(f)    #*armature        
-    end_block(f)    #*armatures
+def export_armature(object):
+    global text_offset
+    old = text_offset 
+    text_offset = 0
+    
+    file = path + "\\" + object.data.name + ".armature"
+    print(file)
+    f = open(file, "w")
+    if object.armature_type == "HUMAN_MALE":
+        f.write("HUMMALARMATEXT\n")
+    elif object.armature_type == "HUMAN_FEMALE":
+        f.write("HUMFEMARMATEXT\n")
+    armature = object.data
+    start_block(f, "*armature")
+    export_string(f, "*name", armature.name)    
+    for bone in armature.bones:
+        #   export bone
+        start_block(f, "*bone")
+        #   write bone name
+        export_string(f, "*name", bone.name)
+        #   write bone length
+        export_float(f, "*length", bone.length)
+        #   write bone parent
+        if bone.parent != None:
+            export_string(f, "*parent", bone.parent.name)
+        #   write bone matrix
+        export_mat4(f, "*local_matrix", bone.matrix_local)
+        end_block(f)    #*bone
+    end_block(f)    #*armature
+    f.close()        
+    
+    text_offset = old
     return
     
 #
@@ -740,6 +752,7 @@ def export_armature_node(f, object):
     start_block(f, "*armature_node")    
     export_string(f, "*name", armature.name)  
     used_armatures.add(armature.name)  
+    export_armature(object)
     #   export animation
     export_action_ref(f, object)
     #   export all children
@@ -851,12 +864,13 @@ def export_object(f, object):
 
 
 def export_model(context, filepath, anim_in_separate_file):
+    global path 
+    path = filepath.replace(filepath[filepath.rfind("\\"):], "")
     f = open(filepath, 'w')
     for obj in bpy.context.selected_objects:
         export_object(f, obj)
     export_static_meshes(f, bpy.data.meshes)
     export_skin_meshes(f, bpy.data.meshes)
-    export_armatures(f, bpy.data.armatures)
     export_materials(f, bpy.data.materials)
     export_actions(f)
     f.close()
