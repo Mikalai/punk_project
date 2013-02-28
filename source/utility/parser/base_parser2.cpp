@@ -519,7 +519,6 @@ namespace Utility
 			case WORD_BONE_ANIMATION:
 				{
 					std::unique_ptr<Virtual::Animation> animation(new Virtual::Animation);
-					animation->SetAnimationType(Virtual::ANIMATION_BONE);
 					ParseAnimation(buffer, animation.get());						
 					action->Add(animation.release());
 				}
@@ -527,7 +526,6 @@ namespace Utility
 			case WORD_OBJECT_ANIMATION:
 				{
 					std::unique_ptr<Virtual::Animation> animation(new Virtual::Animation);
-					animation->SetAnimationType(Virtual::ANIMATION_OBJECT);
 					ParseAnimation(buffer, animation.get());
 					action->Add(animation.release());
 				}
@@ -1735,6 +1733,15 @@ namespace Utility
 					ParseArmature(buffer, armature.get());
 					Virtual::Armature::add(word, armature.get());
 					return armature.release();
+				}
+			case WORD_ACTIONTEXT:
+				{
+					System::string word = buffer.ReadWord();
+					std::unique_ptr<Virtual::Action> action;
+					action.reset(new Virtual::Action);
+					ParseAction(buffer, action.get());
+					Virtual::Action::add(word, action.get());
+					return action.release();
 				}
 			default:
 				throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);

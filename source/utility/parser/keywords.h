@@ -120,6 +120,7 @@ namespace Utility
 		WORD_WORLD_ORIGIN,
 		WORD_CELL,		
 		WORD_ARMATURETEXT,
+		WORD_ACTIONTEXT
 	};
 
 	struct Record
@@ -234,16 +235,18 @@ namespace Utility
 		{ WORD_STATIC_MESH,				L"*static_mesh" },		
 		{ WORD_FACE_NORMALS,			L"*face_normals" },
 		{ WORD_BONE_NODE,			    L"*bone_node" },
-		{ WORD_MAPDESCTEXT,				L"MAPDESCTEXT"},
-		{ WORD_REF,						L"*ref"},
-		{ WORD_RAW_DATA_SOURCE,			L"*raw_data_source"},
-		{ WORD_NUM_BLOCKS,				L"*num_blocks"},
-		{ WORD_BLOCK_SCALE,				L"*block_scale"},
-		{ WORD_BLOCK_SIZE,				L"*block_size"},
-		{ WORD_HEIGHT_SCALE,			L"*height_scale"},
-		{ WORD_WORLD_ORIGIN,			L"*world_origin"},
-		{ WORD_CELL,					L"*cell"},
-		{ WORD_ARMATURETEXT,			L"ARMATURETEXT"}
+		{ WORD_MAPDESCTEXT,				L"MAPDESCTEXT" },
+		{ WORD_REF,						L"*ref" },
+		{ WORD_RAW_DATA_SOURCE,			L"*raw_data_source" },
+		{ WORD_NUM_BLOCKS,				L"*num_blocks" },
+		{ WORD_BLOCK_SCALE,				L"*block_scale" },
+		{ WORD_BLOCK_SIZE,				L"*block_size" },
+		{ WORD_HEIGHT_SCALE,			L"*height_scale" },
+		{ WORD_WORLD_ORIGIN,			L"*world_origin" },
+		{ WORD_CELL,					L"*cell" },
+		{ WORD_ARMATURETEXT,			L"ARMATURETEXT" },
+		{ WORD_ACTIONTEXT,				L"ACTIONTEXT" }
 	};
 }
+
 #endif	//	_H_PUNK_VIRTUAL_KEY_WORDS
