@@ -25,6 +25,7 @@ namespace Virtual
 		Armature& operator = (const Armature&);
 
 		void AddRootBone(Bone* bone);
+		int GetBoneIndex(const System::string& name) const;
 		Bone* GetBoneByName(const System::string& name);
 		const Bone* GetBoneByName(const System::string& name) const;
 		Bone* GetBoneByIndex(int index);
@@ -42,7 +43,7 @@ namespace Virtual
 		static Armature* CreateFromFile(const System::string& path);
 		static Armature* CreateFromStream(std::istream& stream);
 
-		void UpdateHierarchy();
+		virtual void UpdateHierarchy();
 	private:
 		void CacheBones(Bone* b);
 		void Clear();

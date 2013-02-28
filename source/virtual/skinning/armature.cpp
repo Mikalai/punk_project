@@ -170,6 +170,16 @@ namespace Virtual
 		node->Load(stream);
 		return node.release();
 	}
+
+	int Armature::GetBoneIndex(const System::string& value) const
+	{
+		for (int i = 0, max_i = m_cache.size(); i != max_i; ++i)
+		{
+			if (m_cache[i]->GetName() == value)
+				return i;
+		}
+		throw System::PunkInvalidArgumentException(L"There is no bone with name " + value);
+	}
 }
 
 	//bool Armature::BuildSkeleton(const std::vector<Utility::BoneDesc*>& bones)
