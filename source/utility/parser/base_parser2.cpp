@@ -1719,6 +1719,17 @@ namespace Utility
 					ParseMapDescription(buffer, terrain.get());
 					return terrain.release();
 				}
+			case WORD_HUMMALARMATEXT:
+				{
+					System::string word = buffer.ReadWord();
+					KeywordCode code = Parse(word);		
+					if (WORD_ARMATURE != code)
+						throw System::PunkInvalidArgumentException(L"This is not a human male armature");
+					std::unique_ptr<Virtual::HumanMaleArmature> armature(new Virtual::HumanMaleArmature);
+					ParseArmature(buffer, armature.get());
+					Virtual::Armature::add(L"HumanMaleArmature", armature.get());
+					return armature.release();
+				}
 			default:
 				throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);
 			}
