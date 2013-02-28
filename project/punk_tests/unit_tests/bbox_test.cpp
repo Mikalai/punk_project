@@ -14,9 +14,9 @@ namespace unit_tests
 		{
 			std::vector<Math::vec3> points;
 			points.push_back(Math::vec3(-1, -2, 1));
-			points.push_back(Math::vec3(1, 0, 2));
-			points.push_back(Math::vec3(2, -1, 3));
-			points.push_back(Math::vec3(2, -1, 2));
+			points.push_back(Math::vec3( 1,  0, 2));
+			points.push_back(Math::vec3( 2, -1, 3));
+			points.push_back(Math::vec3( 2, -1, 2));
 
 			Math::mat3 m = CreateCovarianceMatrix(points[0], points.size(), sizeof(Math::vec3));
 			Math::mat3 test = Math::mat3(3.0f/2.0f, 1.0f / 2.0f, 3.0f / 4.0f, 1.0f / 2.0f, 1.0f / 2.0f, 1.0f / 4.0f, 3.0f / 4.0f, 1.0f / 4.0f, 1.0f / 2.0f);

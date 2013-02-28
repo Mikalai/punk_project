@@ -35,5 +35,8 @@
     <ClCompile Include="bbox_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="armature_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
