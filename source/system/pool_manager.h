@@ -3,10 +3,11 @@
 
 #include <vector>
 #include <memory>
+#include "../config.h"
 
 namespace System
 {
-	class PoolManager
+	class PUNK_ENGINE PoolManager
 	{
 	public:
 		typedef void (*CleanFunc)(void);

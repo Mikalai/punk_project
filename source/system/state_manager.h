@@ -4,11 +4,12 @@
 #include <vector>
 #include <stack>
 #include "smart_pointers/proxy.h"
+#include "poolable.h"
 
 namespace System
 {
 	template<class T>
-	class State
+	class State : public Poolable<State<T>>
 	{
 	public:
 
