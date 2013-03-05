@@ -9,5 +9,6 @@
 #include "bone_animation.h"
 #include "object_animation.h"
 #include "object_animation_Mixer.h"
+#include "action_male_walk.h"
 
 #endif	//	_H_PUNK_VIRTUAL_ANIMATION_MAIN_HEADER
