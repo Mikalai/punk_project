@@ -26,4 +26,9 @@ namespace GPU
 	{
 		//	do not delete pointers, because they are owned by someone else
 	}
+
+	CoreState* CoreState::Clone()
+	{
+		return new CoreState(*this);
+	}
 }

@@ -6,13 +6,15 @@
 #include "../../config.h"
 #include "../../math/module.h"
 #include "../../system/state_manager.h"
+#include "../../system/poolable.h"
 #include "../../virtual/interface.h"
 
 namespace GPU
 {
+	class Texture2D;
 	class AbstractRenderPolicy;
 
-	class PUNK_ENGINE CoreState
+	class PUNK_ENGINE CoreState : public System::Poolable<CoreState>
 	{
 	public:
 		enum BlendOperation { BLEND_SRC_ONE_MINUS_ALPHA };
@@ -20,6 +22,7 @@ namespace GPU
 		CoreState();
 		~CoreState();
 
+		Math::mat4 m_world;
 		Math::mat4 m_local;		
 		Math::mat4 m_projection;
 		Math::mat4 m_view;
@@ -53,7 +56,14 @@ namespace GPU
 		bool m_use_text_texture;
 		bool m_enable_shadows;
 		bool m_enable_lighting;
+		bool m_enable_diffuse_shading;
+		bool m_enable_specular_shading;
+		bool m_enable_bump_mapping;
+		bool m_enable_skinning;
+		bool m_cast_shadows;
+		bool m_receive_shadows;
 
+		Math::mat4 m_bone_matrix[256];
 		float m_line_width;
 		float m_point_size;
 		int m_diffuse_slot_0;
@@ -61,6 +71,11 @@ namespace GPU
 		int m_normal_slot;
 		int m_text_slot;
 		int m_height_map_slot;
+
+		const Texture2D* m_diffuse_map;
+		const Texture2D* m_normal_map;
+		const Texture2D* m_height_map;
+		const Texture2D* m_specular_map;
 
 		//	this pointers should not be deleted in destructor
 		std::vector<Virtual::Light*> m_lights;
@@ -71,6 +86,8 @@ namespace GPU
 		Virtual::Terrain* m_terrain;
 		Virtual::TerrainObserver* m_terrain_observer;
 		//	this pointers should not be deleted in destructor
+
+		CoreState* Clone();
 	};	
 }
 
