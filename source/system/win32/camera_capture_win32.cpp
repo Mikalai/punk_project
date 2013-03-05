@@ -13,7 +13,7 @@
 #include "../../system/environment.h"
 #include "../../images/formats.h"
 #include "../../images/converter/yuy2_to_rgb.h"
-#include "../../gpu/opengl/textures/texture2d.h"
+#include "../../gpu/common/texture2d.h"
 #include "../../gpu/opengl/gl/module.h"
 #include "../../system/timer.h"
 #include "../../gpu/opencl/module.h"

@@ -10,10 +10,7 @@
 
 namespace GPU
 {
-	namespace OpenGL
-	{
 		class Texture2D;
-	}
 }
 
 namespace System
