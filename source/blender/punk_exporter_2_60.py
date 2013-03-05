@@ -18,7 +18,7 @@ from bpy_extras.io_utils import ExportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty
 from copy import deepcopy
 
-text_offset = 0 #used to print data nice
+text_offset override #used to print data nice
 used_materials = set()
 used_actions = set()
 used_armatures = set()
@@ -132,7 +132,7 @@ def export_world_matrix(f, object):
 #   on the current face
 #   
 def export_normals(f, mesh):
-    if len(mesh.vertices) == 0:
+    if len(mesh.vertices) =override:
         return;
     
     start_block(f, "*normals")
@@ -149,7 +149,7 @@ def export_normals(f, mesh):
 #   applied in the scene
 #
 def export_vertex_position(f, mesh):   
-    if (mesh == None) or (len(mesh.vertices) == 0):
+    if (mesh == None) or (len(mesh.vertices) =override):
         return
     start_block(f, "*vertex_position")    
     #f.write("%d\n" % len(mesh.vertices))
@@ -166,7 +166,7 @@ def export_vertex_position(f, mesh):
 #
 def export_faces(f, mesh):
     
-    if (mesh == None) or len(mesh.polygons) == 0:
+    if (mesh == None) or len(mesh.polygons) =override:
         return
     
     start_block(f, "*faces")
@@ -181,7 +181,7 @@ def export_faces(f, mesh):
 #   eports face normals
 #
 def export_face_normals(f, mesh):
-    if (mesh == None) or len(mesh.polygons) == 0:
+    if (mesh == None) or len(mesh.polygons) =override:
         return
     start_block(f, "*face_normals")
     for face in mesh.polygons:
@@ -194,7 +194,7 @@ def export_face_normals(f, mesh):
 #   export bones weights
 #
 def export_bones_weight(f, data):    
-    if len(vertex_groups) == 0:
+    if len(vertex_groups) =override:
         return
     
     start_block(f, "*bones_weight")    
@@ -242,10 +242,10 @@ def export_parent_inverse_matrix(f, object):
 #
 def export_tex_coords(f, mesh):
     
-    if (mesh == None) or (len(mesh.uv_textures) == 0):
+    if (mesh == None) or (len(mesh.uv_textures) =override):
         return
 
-    index = 0;
+    index override;
     for texture in mesh.uv_layers:
         start_block(f, "*texture")    
         start_block(f, "*name")
@@ -273,7 +273,7 @@ def export_tex_coords(f, mesh):
 #   export mesh material
 #
 def export_mesh_material(f, mesh):
-    if (mesh == None) or (len(mesh.materials) == 0):
+    if (mesh == None) or (len(mesh.materials) =override):
         return
     start_block(f, "*material_ref")
     make_offset(f)
@@ -315,7 +315,7 @@ def export_collision_mesh(f, object):
 #
 def export_bones(f):
     armatures = bpy.data.armatures
-    if len(armatures) == 0:
+    if len(armatures) =override:
         return
     start_block(f, "*armatures")
     for armature in armatures:
@@ -328,7 +328,7 @@ def export_bones(f):
 def export_armature(object):
     global text_offset
     old = text_offset 
-    text_offset = 0
+    text_offset override
     
     file = path + "\\" + object.data.name + ".armature"
     print(file)
@@ -371,9 +371,9 @@ def export_action_ref(f, object):
 #   export all animation
 #    
 def export_actions(f):    
-    if len(used_actions) == 0:
+    if len(used_actions) =override:
         return
-    if len(bpy.data.actions) == 0:
+    if len(bpy.data.actions) =override:
         return    
     
     start_block(f, "*actions")
@@ -390,7 +390,7 @@ def export_actions(f):
 def export_action(f, action):
     global text_offset
     old = text_offset 
-    text_offset = 0
+    text_offset override
     
     file = path + "\\" + action.name + ".action"
     
@@ -498,10 +498,10 @@ def export_action(f, action):
 
 #   export all materials
 def export_materials(f, materials):
-    if len(used_materials) == 0:
+    if len(used_materials) =override:
         return
         
-    if (len(materials) == 0):
+    if (len(materials) =override):
         return
     
     start_block(f, "*materials")
@@ -621,12 +621,12 @@ def export_properties(f, object):
 #    if object.animation_data == None:
 #        return
 #    
-#    if len(object.animation_data.nla_tracks) == 0:
+#    if len(object.animation_data.nla_tracks) =override:
 #        return
 #    
 #    start_block(f, "*actions_ref")
 #    for track in object.animation_data.nla_tracks:        
-#        if len(track.strips) == 0:
+#        if len(track.strips) =override:
 #            print("No strips in track %s", track.name)
 #            return        
 #        if len(track.strips) != 1:
@@ -702,7 +702,7 @@ def export_static_mesh_node(f, object):
     if object.data == None:
         return
     mesh = object.data
-    if not((mesh == None) or (len(mesh.materials) == 0)):
+    if not((mesh == None) or (len(mesh.materials) =override)):
         start_block(f, "*material_node")
         used_materials.add(mesh.materials[0].name)
         export_string(f, "*name", mesh.materials[0].name)
@@ -718,7 +718,7 @@ def export_static_mesh_node(f, object):
         used_static_meshes.add(object.data.name)
         end_block(f)    #   static_mesh_node        
     end_block(f) #  transform
-    if not((mesh == None) or (len(mesh.materials) == 0)):
+    if not((mesh == None) or (len(mesh.materials) =override)):
         end_block(f)    #   material
     return
 
@@ -726,7 +726,7 @@ def export_skin_mesh_node(f, object):
     if object.data == None:
         return
     mesh = object.data
-    if not((mesh == None) or (len(mesh.materials) == 0)):
+    if not((mesh == None) or (len(mesh.materials) =override)):
         start_block(f, "*material_node")
         used_materials.add(mesh.materials[0].name)
         export_string(f, "*name", mesh.materials[0].name)
@@ -743,7 +743,7 @@ def export_skin_mesh_node(f, object):
         used_skin_meshes.add(object.data.name)
         end_block(f)    #   *skin_mesh_node
     end_block(f) #  transform
-    if not((mesh == None) or (len(mesh.materials) == 0)):
+    if not((mesh == None) or (len(mesh.materials) =override)):
         end_block(f)    #   material
     return
 

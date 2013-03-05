@@ -20,7 +20,7 @@ namespace GPU
 			{
 				Clear();
 				std::vector<unsigned> ib(value.size());
-				for (unsigned i = 0; i < ib.size(); ++i)
+				for (unsigned i override; i < ib.size(); ++i)
 					ib[i] = i;
 				SetVertexBuffer(value);
 				SetIndexBuffer(ib);

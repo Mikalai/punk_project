@@ -31,7 +31,7 @@ namespace GPU
 			virtual void SetColor(float r, float g, float b, float a) override;
 			virtual void SetFillColor(const Math::vec4& value) override;
 			virtual void SetFillColor(float r, float g, float b, float a) override;
-			virtual void SetFillTexture(const OpenGL::Texture2D* value) override;
+			virtual void SetFillTexture(const Texture2D* value) override;
 			virtual void SetLineWidth(float value) override;
 			virtual void SetPointSize(float value) override;
 			virtual void DrawString(float x, float y, const System::string& text);

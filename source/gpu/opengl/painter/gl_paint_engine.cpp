@@ -76,7 +76,7 @@ namespace GPU
 
 			void SetSurfaceSize(int width, int height)
 			{
-				m_rt->SetViewport(0, 0, width, height);
+				m_rt->SetViewport(0, 0, (float)width, (float)height);
 			}
 
 			bool Begin(PaintDevice* device) 
@@ -236,7 +236,7 @@ namespace GPU
 				m_fill_color.Set(r, g, b, a);
 			}
 
-			void SetFillTexture(const OpenGL::Texture2D* value) 
+			void SetFillTexture(const Texture2D* value) 
 			{
 				m_fill_texture = value;
 			}
@@ -404,7 +404,7 @@ namespace GPU
 			impl->SetFillColor(r, g, b, a);
 		}
 
-		void OpenGLPaintEngine::SetFillTexture(const OpenGL::Texture2D* value) 
+		void OpenGLPaintEngine::SetFillTexture(const Texture2D* value) 
 		{
 			impl->SetFillTexture(value);
 		}
