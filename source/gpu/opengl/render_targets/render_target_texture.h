@@ -7,10 +7,10 @@
 
 namespace GPU
 {
+	class Texture2D;
+
 	namespace OpenGL
 	{
-		class Texture2D;
-
 		class PUNK_ENGINE RenderTargetTexture : public OpenGLRenderTarget
 		{
 		public:

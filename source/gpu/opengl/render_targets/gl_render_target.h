@@ -7,7 +7,7 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class PUNK_ENGINE OpenGLRenderTarget : public RenderTarget
+		class PUNK_ENGINE OpenGLRenderTarget : public GPU::RenderTarget
 		{
 		public:
 

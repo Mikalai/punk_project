@@ -1,5 +1,5 @@
 #include "render_target_texture.h"
-#include "../textures/texture2d.h"
+#include "../textures/module.h"
 #include "../gl/module.h"
 
 namespace GPU
