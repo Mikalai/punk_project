@@ -17,8 +17,7 @@ namespace GPU
 {
 	class PaintDevice;
 	class Painter;
-
-	namespace OpenGL { class Texture2D; }
+	class Texture2D;
 
 	/**
 	*	This is an interface for Painter. This should be reimplemented
@@ -44,7 +43,7 @@ namespace GPU
 		virtual void SetColor(float r, float g, float b, float a) = 0;
 		virtual void SetFillColor(const Math::vec4& value) = 0;
 		virtual void SetFillColor(float r, float g, float b, float a) = 0;
-		virtual void SetFillTexture(const OpenGL::Texture2D* value) = 0;
+		virtual void SetFillTexture(const Texture2D* value) = 0;
 		virtual void SetLineWidth(float value) = 0;
 		virtual void SetPointSize(float value) = 0;
 		virtual void DrawString(float x, float y, const System::string& text) = 0;

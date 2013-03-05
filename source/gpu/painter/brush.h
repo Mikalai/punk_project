@@ -12,7 +12,7 @@ namespace Math
 
 namespace GPU
 {
-	namespace OpenGL { class Texture2D; }
+	class Texture2D;
 
 	class PUNK_ENGINE Brush sealed
 	{
@@ -28,8 +28,8 @@ namespace GPU
 		const Math::mat3& GetMatrix() const;
 		void SetStyle(int value);
 		int GetStyle() const;
-		void SetTexture(const OpenGL::Texture2D* texture);
-		const OpenGL::Texture2D* GetTexture() const;
+		void SetTexture(const Texture2D* texture);
+		const Texture2D* GetTexture() const;
 
 		struct BrushImpl;
 		BrushImpl* impl;
