@@ -425,17 +425,17 @@ namespace GUI
 		return GetY() * (float)Manager::Instance()->GetWindow()->GetHeight();
 	}
 
-	const GPU::OpenGL::Texture2D* Widget::GetBackgroundTexture() const
+	const GPU::Texture2D* Widget::GetBackgroundTexture() const
 	{
 		return m_background_texture;
 	}
 
-	const GPU::OpenGL::Texture2D* Widget::GetTextTexture() const
+	const GPU::Texture2D* Widget::GetTextTexture() const
 	{
 		return m_text_texture->GetTexture();
 	}
 
-	void Widget::SetBackgroundTexture(GPU::OpenGL::Texture2D* texture)
+	void Widget::SetBackgroundTexture(GPU::Texture2D* texture)
 	{
 		m_background_texture = texture;
 	}

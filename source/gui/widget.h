@@ -86,9 +86,9 @@ namespace GUI
 		void Store(System::Buffer& buffer) {}
 		void Restore(System::Buffer& buffer) {}
 
-		const GPU::OpenGL::Texture2D* GetTextTexture() const;
-		void SetBackgroundTexture(GPU::OpenGL::Texture2D* texture);
-		const GPU::OpenGL::Texture2D* GetBackgroundTexture() const;
+		const GPU::Texture2D* GetTextTexture() const;
+		void SetBackgroundTexture(GPU::Texture2D* texture);
+		const GPU::Texture2D* GetBackgroundTexture() const;
 
 		const Manager* GetManager() const;
 		Manager* GetManager();
@@ -175,7 +175,7 @@ namespace GUI
 		GPU::OpenGL::TextSurface* m_text_texture;
 
 		//	should be deleted outside widget
-		GPU::OpenGL::Texture2D* m_background_texture;
+		GPU::Texture2D* m_background_texture;
 		void* m_any_data;
 		Widget* m_parent;
 		Manager* m_manager;
