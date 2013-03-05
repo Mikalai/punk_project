@@ -3,7 +3,7 @@
 
 #include "node.h"
 
-namespace GPU { namespace OpenGL { class Texture2D; } }
+namespace GPU { class Texture2D; } 
 
 namespace Scene
 {
@@ -29,8 +29,8 @@ namespace Scene
 		float GetWidth() const { return m_width; }
 		float GetHeight() const { return m_height; }
 
-		void SetWatchTexture(GPU::OpenGL::Texture2D* value) { m_texture = value; }
-		GPU::OpenGL::Texture2D* GetWatchTexture() { return m_texture; }
+		void SetWatchTexture(GPU::Texture2D* value) { m_texture = value; }
+		GPU::Texture2D* GetWatchTexture() { return m_texture; }
 		
 		bool Apply(AbstractVisitor* visitor)
 		{
@@ -39,7 +39,7 @@ namespace Scene
 
 	private:
 		// this pointer should not be delete
-		GPU::OpenGL::Texture2D* m_texture;
+		GPU::Texture2D* m_texture;
 		float m_x, m_y, m_width, m_height;
 	};
 }
