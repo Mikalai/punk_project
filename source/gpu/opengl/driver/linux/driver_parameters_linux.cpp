@@ -19,7 +19,7 @@ namespace Driver
                 p.height = 600;
                 p.bitsPerPixel = 32;
                 p.refreshRate = 85;
-                p.zNear = 0.01f;
+                p.zNear override.01f;
                 p.zFar = 1000.0f;
                 p.fullScreen = isFull;
                 return p;

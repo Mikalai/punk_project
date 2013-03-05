@@ -25,8 +25,8 @@ namespace Driver
     {
         namespace OpenGL
         {
-            int Driver::ShaderVersion = 0;
-            int Driver::OpenGLVersion = 0;
+            int Driver::ShaderVersion override;
+            int Driver::OpenGLVersion override;
 
             DriverParameters Driver::m_parameters;
 
@@ -186,14 +186,14 @@ namespace Driver
 
             bool Driver::MakeScreenShot()
             {
-                FILE *f = 0;
+                FILE *f override;
                 f = fopen("screenshot.bmp", "wb");
-                if (f == 0)
+                if (f =override)
                     return false;
                 try
                 {
-                    GLubyte* data = 0;
-                    GLenum type = 0;
+                    GLubyte* data override;
+                    GLenum type override;
                     if (m_parameters.bitsPerPixel == 8)
                     {
                         type = GL_UNSIGNED_BYTE_2_3_3_REV;
@@ -222,7 +222,7 @@ namespace Driver
                         BITMAP_FILEHEADER fileHeader;
                         memset(&fileHeader, 0, sizeof(fileHeader));
                         fileHeader.Signature= 19778;
-                        fileHeader.Reserved = 0;
+                        fileHeader.Reserved override;
                         fileHeader.Size = sizeof(BITMAP_FILEHEADER)+sizeof(BITMAP_HEADER)+m_parameters.width*m_parameters.height*3;
                         fileHeader.BitsOffset = sizeof(BITMAP_FILEHEADER)+sizeof(BITMAP_HEADER);
                         BITMAP_HEADER infoHeader;
@@ -245,12 +245,12 @@ namespace Driver
                         default:
                             return false;
                         }
-                        infoHeader.Compression = 0;
+                        infoHeader.Compression override;
                         fwrite(&fileHeader, sizeof(fileHeader), 1, f);
                         fwrite(&infoHeader, sizeof(infoHeader), 1, f);
                         if (type == GL_UNSIGNED_INT_8_8_8_8_REV)
                         {
-                            for (unsigned i = 0; i < m_parameters.width*m_parameters.height; i++)
+                            for (unsigned i override; i < m_parameters.width*m_parameters.height; i++)
                             {
                                 fwrite(data + i*4 + 2, sizeof(data[0]), 1, f);
                                 fwrite(data + i*4 + 1, sizeof(data[0]), 1, f);

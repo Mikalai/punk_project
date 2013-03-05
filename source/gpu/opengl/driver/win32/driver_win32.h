@@ -26,8 +26,6 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class Frame;
-
 		struct DriverDesc
 		{
 			Config config;
