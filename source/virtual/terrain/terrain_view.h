@@ -19,7 +19,7 @@
 #include "../../system/types.h"
 #include "../../math/vec2.h"
 
-namespace GPU { namespace OpenGL { class Texture2D; } }
+namespace GPU { class Texture2D; } 
 namespace Physics { class BulletTerrain; }
 
 namespace Virtual
@@ -59,7 +59,7 @@ namespace Virtual
 		void UpdatePosition(const Math::vec2& value);
 		void SetUpdateThreshold(float value);
 		
-		GPU::OpenGL::Texture2D* GetHeightMap() { return m_height_map_front; }
+		GPU::Texture2D* GetHeightMap() { return m_height_map_front; }
 		void* GetViewData() { return m_front_buffer; }
 		const void* GetViewData() const { return m_front_buffer; }
 		void* GetBackViewData() { return m_back_buffer; }
@@ -89,9 +89,9 @@ namespace Virtual
 		//	Holds unprocessed last position;
 		Math::vec2 m_last_unprocessed;
 		//	Height map for rendering is stored here
-		GPU::OpenGL::Texture2D* m_height_map_front;
+		GPU::Texture2D* m_height_map_front;
 		//	Height map for asyncloading is stored here
-		GPU::OpenGL::Texture2D* m_height_map_back;
+		GPU::Texture2D* m_height_map_back;
 		//	flag that indicates that uploading is in process
 		bool m_loading;
 		//	holds last update result

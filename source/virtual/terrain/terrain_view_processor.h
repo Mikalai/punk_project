@@ -4,14 +4,14 @@
 #include "../../config.h"
 #include "../../system/streaming/data_processor.h"
 
-namespace GPU { namespace OpenGL { class Texture2D; } }
+namespace GPU { class Texture2D; } 
 
 namespace Virtual
 {
 	struct TerrainViewProcessorDesc
 	{
 		int m_view_size;
-		GPU::OpenGL::Texture2D* m_height_map;
+		GPU::Texture2D* m_height_map;
 		//	DMA pointer to the data
 		void* m_device_ptr;
 

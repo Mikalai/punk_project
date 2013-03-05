@@ -1,5 +1,5 @@
 #include "../../system/streaming/module.h"
-#include "../../gpu/opengl/textures/texture2d.h"
+#include "../../gpu/common/texture2d.h"
 #include "../../physics/module.h"
 
 #include "terrain_view_loader.h"
@@ -13,8 +13,8 @@ namespace Virtual
 		: m_desc(desc)
 		, m_front_buffer((void*)new float[m_desc.view_size*m_desc.view_size])
 		, m_back_buffer((void*)new float[m_desc.view_size*m_desc.view_size])
-		, m_height_map_front(new GPU::OpenGL::Texture2D())
-		, m_height_map_back(new GPU::OpenGL::Texture2D())
+		, m_height_map_front(new GPU::Texture2D())
+		, m_height_map_back(new GPU::Texture2D())
 		, m_loading(false)
 		, m_init(false)
 		, m_bullet_terrain(false)

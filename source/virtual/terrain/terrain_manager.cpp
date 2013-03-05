@@ -5,7 +5,7 @@
 #include "terrain_observer.h"
 #include "terrain_manager.h"
 #include "terrain_cell.h"
-#include "../../gpu/opengl/textures/texture2d.h"
+#include "../../gpu/common/texture2d.h"
 
 namespace Virtual
 {

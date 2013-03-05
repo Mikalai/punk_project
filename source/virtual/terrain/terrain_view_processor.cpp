@@ -1,4 +1,4 @@
-#include "../../gpu/opengl/textures/texture2d.h"
+#include "../../gpu/common/texture2d.h"
 #include "../../system/logger.h"
 #include "terrain_view_processor.h"
 #include "terrain_view.h"
