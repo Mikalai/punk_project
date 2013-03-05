@@ -73,11 +73,11 @@ public:
 		AddNewCube();
 
 		System::AsyncLoader::Instance()->MainThreadProc(1);		
-		t = new GPU::OpenGL::Texture2D;
+		t = new GPU::Texture2D;
 		unsigned char data[256*256];
 		memset(data, 0xFF, 256*256);
 		t->Create(64, 64, ImageModule::IMAGE_FORMAT_RGBA, data, false);
-		t = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png", true);		
+		t = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png", true);		
 	}
 
 	virtual ~TerrainTest()
@@ -155,11 +155,7 @@ public:
 	{	
 		Punk::Application::OnIdleEvent(e);
 		System::AsyncLoader::Instance()->MainThreadProc(1);
-		//node->SetWatchTexture(widget->GetTextTexture());
 		node->SetWatchTexture(t);
-		//node->SetWatchTexture(observer->GetTerrainView()->GetHeightMap());
-		//node->SetWatchTexture(t);
-
 		updater.Update();
 		render->Render();
 		Virtual::FirstPersonCamera* c = Cast<Virtual::FirstPersonCamera*>(scene->GetCameraNode()->GetCamera());
@@ -192,21 +188,10 @@ public:
 			widget->SetText(text);
 			observer->SetPosition(c->GetPosition());
 		}
-
-		//OpenGL::Driver* d = OpenGL::Driver::Instance();
-		//OpenGL::RenderPass* pass = new OpenGL::RenderPass;
-		//Math::mat4 m = Math::mat4::CreateRotation(1, 0, 0, y)*Math::mat4::CreateRotation(0, 1, 0, x);;
-		//Render::SolidObjectRender::Parameters p(*m_object, &camera,pass, &m);
-		//
-		//pass->SetRenderTarget(rt);
-		//render->Render(&p);
-		//frame.Begin();
-		//frame.AddRenderPass(pass);
-		//frame.End();	
 	}
 
 private:
-	GPU::OpenGL::Texture2D* t;
+	GPU::Texture2D* t;
 	Scene::SceneGraph* scene;
 	Virtual::TerrainObserver* observer;
 	bool m_left_down;

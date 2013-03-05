@@ -8,7 +8,7 @@ class MyApp : public Punk::Application
 {
 	Scene::SceneGraph* graph;
 	Render::SimpleRender* render;
-	GPU::OpenGL::Texture2D* t;
+	GPU::Texture2D* t;
 public:
 	virtual void Init(const Punk::Config& value) override
 	{

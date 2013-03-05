@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\..\source\audio\resource.h" />
     <ClInclude Include="..\..\..\source\config.h" />
     <ClInclude Include="..\..\..\source\gpu\common\abstract_render_context_policy.h" />
+    <ClInclude Include="..\..\..\source\gpu\common\frame.h" />
     <ClInclude Include="..\..\..\source\gpu\common\renderable.h" />
     <ClInclude Include="..\..\..\source\gpu\common\gpu_state.h" />
     <ClInclude Include="..\..\..\source\gpu\common\render_target.h" />
@@ -91,6 +92,9 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangle_strip.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\module.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_batch.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render_pass.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.h" />
@@ -134,10 +138,8 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\render_target_texture.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\internal_formats.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\module.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_impl.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_pbo_impl.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_context.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\text_surface.h" />
     <ClInclude Include="..\..\..\source\gpu\painter\brush.h" />
@@ -487,6 +489,7 @@
     <ClInclude Include="..\..\..\source\utility\parser\parser.h" />
     <ClInclude Include="..\..\..\source\utility\module.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\action.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\action_male_walk.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\module.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\animation.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\animation_mixer.h" />
@@ -526,6 +529,9 @@
     <ClInclude Include="..\..\..\source\virtual\motions\motion.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\motion_strategy.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\static_motion_strategy.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\human.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\human_impl.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\male_human.h" />
     <ClInclude Include="..\..\..\source\virtual\objects\module.h" />
     <ClInclude Include="..\..\..\source\virtual\objects\simple\module.h" />
     <ClInclude Include="..\..\..\source\virtual\objects\simple\solid_cube.h" />
@@ -603,6 +609,9 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\sphere_mesh.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\static_mesh.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_batch.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_frame.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_render_pass.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_grass.cpp" />
@@ -642,7 +651,6 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\render_target_texture.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\internal_formats.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture2d.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_context.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\text_surface.cpp" />
     <ClCompile Include="..\..\..\source\gpu\painter\brush.cpp" />
@@ -842,6 +850,7 @@
     <ClCompile Include="..\..\..\source\virtual\animation\animation_mixer.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\armature_animation_mixer.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\bone_animation.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\action_male_walk.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\object_animation.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\object_animation_mixer.cpp" />
     <ClCompile Include="..\..\..\source\virtual\building.cpp" />
@@ -862,6 +871,9 @@
     <ClCompile Include="..\..\..\source\virtual\manager\material_manager.cpp" />
     <ClCompile Include="..\..\..\source\virtual\motions\motion_strategy.cpp" />
     <ClCompile Include="..\..\..\source\virtual\motions\static_motion_strategy.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\human.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\male_human.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\male_human_impl.h" />
     <ClCompile Include="..\..\..\source\virtual\objects\simple\solid_cube.cpp" />
     <ClCompile Include="..\..\..\source\virtual\scheme.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\armature.cpp" />

@@ -41,5 +41,8 @@
     <ClCompile Include="action_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="portal_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

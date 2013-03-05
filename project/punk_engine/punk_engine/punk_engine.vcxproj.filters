@@ -256,6 +256,12 @@
     <Filter Include="gpu\opengl\painter">
       <UniqueIdentifier>{83bc82c5-69aa-4a80-bfe8-49ed8609b082}</UniqueIdentifier>
     </Filter>
+    <Filter Include="virtual\objects\characters">
+      <UniqueIdentifier>{16559c1f-db18-4c4a-b092-cd580a045377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gpu\opengl\render">
+      <UniqueIdentifier>{0fc1de59-63fc-403c-aa95-c39cf3a2acdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -1205,13 +1211,7 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\text_surface.h">
       <Filter>gpu\opengl\textures</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.h">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_context.h">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d.h">
       <Filter>gpu\opengl\textures</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_impl.h">
@@ -1738,6 +1738,30 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\skinning\human_female_armature.h">
       <Filter>virtual\skinning</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\animation\action_male_walk.h">
+      <Filter>virtual\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\human.h">
+      <Filter>virtual\objects\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\male_human.h">
+      <Filter>virtual\objects\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\human_impl.h">
+      <Filter>virtual\objects\characters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\common\frame.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_batch.h">
+      <Filter>gpu\opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render.h">
+      <Filter>gpu\opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render_pass.h">
+      <Filter>gpu\opengl\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2309,9 +2333,6 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\text_surface.cpp">
       <Filter>gpu\opengl\textures</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.cpp">
-      <Filter>gpu\opengl\textures</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_context.cpp">
       <Filter>gpu\opengl\textures</Filter>
     </ClCompile>
@@ -2605,6 +2626,27 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\skinning\human_female_armature.cpp">
       <Filter>virtual\skinning</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\animation\action_male_walk.cpp">
+      <Filter>virtual\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\human.cpp">
+      <Filter>virtual\objects\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\male_human.cpp">
+      <Filter>virtual\objects\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\male_human_impl.h">
+      <Filter>virtual\objects\characters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_batch.cpp">
+      <Filter>gpu\opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_frame.cpp">
+      <Filter>gpu\opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_render_pass.cpp">
+      <Filter>gpu\opengl\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

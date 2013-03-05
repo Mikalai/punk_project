@@ -13,13 +13,13 @@ namespace unit_tests
 		TEST_METHOD(ActionLoadTest1)
 		{
 			System::string filename = System::Environment::Instance()->GetModelFolder() + L"male_walk.action";
-			Virtual::Action* action =  Cast<Virtual::Action*>(Utility::ParsePunkFile(filename));
+			Virtual::ActionMaleWalk* action =  Cast<Virtual::ActionMaleWalk*>(Utility::ParsePunkFile(filename));
 		}
 
 		TEST_METHOD(ActionLoadTest2)
 		{
 			System::string filename = System::Environment::Instance()->GetModelFolder() + L"male_walk.action";
-			Virtual::Action* action =  Cast<Virtual::Action*>(Utility::ParsePunkFile(filename));
+			Virtual::ActionMaleWalk* action =  Cast<Virtual::ActionMaleWalk*>(Utility::ParsePunkFile(filename));
 			Virtual::Animation* animation = Cast<Virtual::Animation*>(action->Find(L"root"));
 			Assert::IsTrue(animation != nullptr);
 		}
@@ -27,7 +27,7 @@ namespace unit_tests
 		TEST_METHOD(ActionPositionInterpolationTest3)
 		{
 			System::string filename = System::Environment::Instance()->GetModelFolder() + L"male_walk.action";
-			Virtual::Action* action =  Cast<Virtual::Action*>(Utility::ParsePunkFile(filename));
+			Virtual::ActionMaleWalk* action =  Cast<Virtual::ActionMaleWalk*>(Utility::ParsePunkFile(filename));
 			Virtual::Animation* animation = Cast<Virtual::Animation*>(action->Find(L"root"));
 			Assert::IsTrue(animation != nullptr);
 
