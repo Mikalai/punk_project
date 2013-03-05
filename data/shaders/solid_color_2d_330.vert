@@ -2,7 +2,7 @@
 
 uniform mat4 uProjViewWorld;
 
-layout(location = 0) in vec4 rm_Vertex;
+layout(location override) in vec4 rm_Vertex;
 
 out vec2 pos;
 out vec2 topLeft;
