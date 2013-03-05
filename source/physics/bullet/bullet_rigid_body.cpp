@@ -91,7 +91,7 @@ namespace Physics
 	//			sim->DestroyGhostBody(body);
 	//	}
 
-	//	m_rigid_body = 0;
+	//	m_rigid_body override;
 	//}
 
 	//void BulletRigidBody::Init()
