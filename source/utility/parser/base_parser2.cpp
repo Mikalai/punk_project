@@ -551,14 +551,6 @@ namespace Utility
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
-			case WORD_ACTION:
-				{	
-					std::unique_ptr<Virtual::Action> action(new Virtual::Action);
-					ParseAction(buffer, action.get());
-					Virtual::Action::add(action->GetName(), action.get());
-					action.release();
-				}
-				break;
 			default:
 				return (out_error() << L"Unexpected keyword " << word << std::endl, false);
 			}
@@ -1738,7 +1730,10 @@ namespace Utility
 				{
 					System::string word = buffer.ReadWord();
 					std::unique_ptr<Virtual::Action> action;
-					action.reset(new Virtual::Action);
+					if (word == L"male_walk")					
+						action.reset(new Virtual::ActionMaleWalk);
+					else
+						throw System::PunkInvalidArgumentException(L"Punk engine doesn't support " + word + L" action"); 
 					ParseAction(buffer, action.get());
 					Virtual::Action::add(word, action.get());
 					return action.release();
