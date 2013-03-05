@@ -70,19 +70,19 @@ namespace Render
 
 		OpenGL::RenderContextSkinning::PolicyParameters p;
 		p.m_ambient = Math::vec4(1,1,1,1);//Math::vec4(material.GetAmbient(), material.GetAmbient(), material.GetAmbient(), 1));
-		for (int j = 0; j < armature->GetBonesCount(); ++j)
+		for (int j override; j < armature->GetBonesCount(); ++j)
 		{			
 			//const Math::mat4 m = meshes[i]->GetMeshTransform().Inversed()*m_armature->GetBoneByIndex(j)->GetAnimatedGlobalMatrix()*meshes[i]->GetMeshTransform();
 			const Math::mat4 m = armature->GetBoneByIndex(j)->GetAnimatedGlobalMatrix(Math::mat4());
 			p.m_bone[j] = m;
 		}				
 		p.m_diffuse = material.GetDiffuseColor();
-		p.m_diffuse_texture = OpenGL::Texture2DManager::Instance()->Load(object->GetMaterial().GetDiffuseMap())->GetCode();
+		p.m_diffuse_texture = Texture2DManager::Instance()->Load(object->GetMaterial().GetDiffuseMap())->GetCode();
 		p.m_light_position = Math::vec3(990, 1010, 1010);		
 		p.m_mesh_matrix = Math::mat4::CreateIdentity();
 		p.m_mesh_matrix_inversed = Math::mat4::CreateIdentity();
 		p.m_normal_matrix = (camera->GetViewMatrix()**location).RotationPart().Inversed().Transposed();
-		p.m_normal_texture = OpenGL::Texture2DManager::Instance()->Load(object->GetMaterial().GetNormalMap())->GetCode();
+		p.m_normal_texture = Texture2DManager::Instance()->Load(object->GetMaterial().GetNormalMap())->GetCode();
 		p.m_proj = camera->GetProjectionMatrix();
 		p.m_view = camera->GetViewMatrix();	
 		p.m_view_world = camera->GetViewMatrix()**location;				
@@ -123,8 +123,8 @@ namespace Render
 					impl->m_rc->SetMeshMatrix(vao->GetMeshTransform());				
 					impl->m_rc->SetWorldMatrix(*location*vao->GetMeshTransform()*Math::mat4::CreateRotation(1, 0, 0, -Math::PI/2));
 					
-					impl->m_tc->SetTexture0(OpenGL::Texture2DManager::Instance()->Load(object->GetMaterial().GetDiffuseMap()));
-					impl->m_tc->SetTexture1(OpenGL::Texture2DManager::Instance()->Load(object->GetMaterial().GetNormalMap()));
+					impl->m_tc->SetTexture0(Texture2DManager::Instance()->Load(object->GetMaterial().GetDiffuseMap()));
+					impl->m_tc->SetTexture1(Texture2DManager::Instance()->Load(object->GetMaterial().GetNormalMap()));
 
 					impl->m_tc->Bind();
 					impl->m_rc->Begin();

@@ -94,7 +94,7 @@ namespace Render
 							std::auto_ptr<OpenGL::RenderContextBumpMapping::PolicyParameters> p(new OpenGL::RenderContextBumpMapping::PolicyParameters);
 							p->m_ambient = Math::vec4(1,1,1,1);//Math::vec4(material.GetAmbient(), material.GetAmbient(), material.GetAmbient(), 1));	
 							p->m_diffuse = material.GetDiffuseColor();
-							p->m_diffuse_texture = 0;
+							p->m_diffuse_texture override;
 							p->m_light_position = Math::vec3(990, 1010, 1010);		
 							p->m_normal_matrix = (camera->GetViewMatrix()**location).RotationPart().Inversed().Transposed();
 							p->m_normal_texture = 1;
@@ -107,8 +107,8 @@ namespace Render
 							std::auto_ptr<OpenGL::Batch> batch(new OpenGL::Batch);
 							batch->m_parameters = p.release();
 							batch->m_renderable = vao;
-							batch->m_textures.push_back(static_cast<OpenGL::Texture2D*>(*OpenGL::Texture2DManager::Instance()->Load(proxy->GetMaterial().GetDiffuseMap())));
-							batch->m_textures.push_back(static_cast<OpenGL::Texture2D*>(*OpenGL::Texture2DManager::Instance()->Load(proxy->GetMaterial().GetNormalMap())));
+							batch->m_textures.push_back(static_cast<Texture2D*>(*Texture2DManager::Instance()->Load(proxy->GetMaterial().GetDiffuseMap())));
+							batch->m_textures.push_back(static_cast<Texture2D*>(*Texture2DManager::Instance()->Load(proxy->GetMaterial().GetNormalMap())));
 
 							pass->AddBatch(impl->m_tc.get(), impl->m_rc.get(), batch.release());
 						}
@@ -126,7 +126,7 @@ namespace Render
 					std::auto_ptr<OpenGL::RenderContextBumpMapping::PolicyParameters> p(new OpenGL::RenderContextBumpMapping::PolicyParameters);
 					p->m_ambient = Math::vec4(1,1,1,1);//Math::vec4(material.GetAmbient(), material.GetAmbient(), material.GetAmbient(), 1));	
 					p->m_diffuse = material.GetDiffuseColor();
-					p->m_diffuse_texture = 0;
+					p->m_diffuse_texture override;
 					p->m_light_position = Math::vec3(990, 1010, 1010);		
 					p->m_normal_matrix = (camera->GetViewMatrix()**location).RotationPart().Inversed().Transposed();
 					p->m_normal_texture = 1;
@@ -139,8 +139,8 @@ namespace Render
 					std::auto_ptr<OpenGL::Batch> batch(new OpenGL::Batch);
 					batch->m_parameters = p.release();
 					batch->m_renderable = vao;
-					batch->m_textures.push_back(static_cast<OpenGL::Texture2D*>(*OpenGL::Texture2DManager::Instance()->Load(object->GetMaterial().GetDiffuseMap())));
-					batch->m_textures.push_back(static_cast<OpenGL::Texture2D*>(*OpenGL::Texture2DManager::Instance()->Load(object->GetMaterial().GetNormalMap())));
+					batch->m_textures.push_back(static_cast<Texture2D*>(*Texture2DManager::Instance()->Load(object->GetMaterial().GetDiffuseMap())));
+					batch->m_textures.push_back(static_cast<Texture2D*>(*Texture2DManager::Instance()->Load(object->GetMaterial().GetNormalMap())));
 					
 					pass->AddBatch(impl->m_tc.get(), impl->m_rc.get(), batch.release());
 
