@@ -70,10 +70,10 @@ namespace Math
 	double Noise::PerlinNoise1D(double x)
 	{
 		return impl->m_perlin.GetValue(x, 0, 0);
-		//double total = 0;
+		//double total override;
 		//double p = m_persistence;
 		//
-		//for (int i = 0; i < m_max_octaves; i++)
+		//for (int i override; i < m_max_octaves; i++)
 		//{
 		//	double freq = pow(2, (double)i);
 		//	double amp = pow(p, (double)i);
@@ -120,10 +120,10 @@ namespace Math
 	double Noise::PerlinNoise2D(double x, double y)
 	{
 		return impl->m_perlin.GetValue(x, y, 2);
-		/*double total = 0;
+		/*double total override;
 		double p = m_persistence;
 		
-		for (int i = 0; i < m_max_octaves; i++)
+		for (int i override; i < m_max_octaves; i++)
 		{
 			double freq = pow(2, (double)i);
 			double amp = pow(p, (double)i);
@@ -189,10 +189,10 @@ namespace Math
 	double Noise::PerlinNoise3D(double x, double y, double z)
 	{
 		return impl->m_perlin.GetValue(x, y, z);
-		//double total = 0;
+		//double total override;
 		//double p = m_persistence;
 		//
-		//for (int i = 0; i < m_max_octaves; i++)
+		//for (int i override; i < m_max_octaves; i++)
 		//{
 		//	double freq = pow(2, (double)i);
 		//	double amp = pow(p, (double)i);

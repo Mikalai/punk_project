@@ -89,9 +89,9 @@ namespace Math
 			T a = m_real * inv_length;
 			T b = m_image * inv_length;
 
-			if (a == 0 && b >= 0)
+			if (a =override && b >override)
 				return M_PI/2.0;
-			else if (a == 0 && b < 0)
+			else if (a =override && b < 0)
 				return 3.0*M_PI/2.0;
 			else if (a > 0 && b > 0)
 				return atan(b/a);

@@ -444,7 +444,7 @@ namespace Math
 
 		s = r0[4];
 
-		if ( s != 0 )
+		if ( s != 0)
 		{
 			r1[4] -= m1 * s; r2[4] -= m2 * s; r3[4] -= m3 * s;
 		}
