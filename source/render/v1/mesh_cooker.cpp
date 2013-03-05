@@ -18,9 +18,9 @@ namespace Render
 	bool MeshCooker::Visit(Scene::TerrainNode* node)
 	{
 		Virtual::Material* material(new Virtual::Material);
-		material->GetCache().m_diffuse_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg");
-		material->GetCache().m_diffuse_texture_cache_2 = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"ground.png");
-		material->GetCache().m_normal_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"bump.png");
+		material->GetCache().m_diffuse_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg");
+		material->GetCache().m_diffuse_texture_cache_2 = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"ground.png");
+		material->GetCache().m_normal_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"bump.png");
 		node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->SetMaterial(material);
 		return true;
 	}
@@ -115,8 +115,8 @@ namespace Render
 		Virtual::Material::validate();
 		Virtual::Material* mat = Virtual::Material::find(node->GetName());
 		node->SetMaterial(mat);
-		mat->GetCache().m_diffuse_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetDiffuseMap());
-		mat->GetCache().m_normal_texture_cache = GPU::OpenGL::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetNormalMap());
+		mat->GetCache().m_diffuse_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetDiffuseMap());
+		mat->GetCache().m_normal_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetNormalMap());
 		for each (auto o in *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);

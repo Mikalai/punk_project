@@ -38,7 +38,7 @@ namespace Render
 		virtual bool Visit(Scene::TextureViewNode* node);
 
 		void RenderQuad(float x, float y, float width, float height, const Math::vec4& color);
-		void RenderTexturedQuad(float x, float y, float width, float height, GPU::OpenGL::Texture2D* texture);
+		void RenderTexturedQuad(float x, float y, float width, float height, GPU::Texture2D* texture);
 		void RenderText(float x, float y, const System::string& text, const Math::vec4& color);
 		void RenderCube(float width, float height, float depth);
 		void RenderSphere(const Math::vec3& position, float radius, const Math::vec4& color = Math::vec4(1,1,1,1));

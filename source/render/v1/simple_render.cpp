@@ -216,8 +216,8 @@ namespace Render
 		m_states.Push();
 		STATE.m_material = Virtual::Material::find(node->GetStorageName());
 		//m_tc = m_tc;
-		m_tc->SetTexture(0, Cast<GPU::OpenGL::Texture2D*>(node->GetMaterial()->GetCache().m_diffuse_texture_cache));
-		m_tc->SetTexture(1, Cast<GPU::OpenGL::Texture2D*>(node->GetMaterial()->GetCache().m_normal_texture_cache));
+		m_tc->SetTexture(0, Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_diffuse_texture_cache));
+		m_tc->SetTexture(1, Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_normal_texture_cache));
 		STATE.m_diffuse_slot_0 = 0;
 		STATE.m_normal_slot = 1;
 		//STATE.m_rc = m_context;
@@ -348,9 +348,9 @@ namespace Render
 		{
 			//m_tc = m_tc;
 			m_tc->SetTexture(0, view->GetHeightMap());
-			m_tc->SetTexture(1, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
-			m_tc->SetTexture(2, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
-			m_tc->SetTexture(3, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
+			m_tc->SetTexture(1, Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
+			m_tc->SetTexture(2, Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
+			m_tc->SetTexture(3, Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
 
 			m_terrain_rc->Begin();
 			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());
@@ -422,7 +422,7 @@ namespace Render
 		m_states.Pop();
 	}
 
-	void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, GPU::OpenGL::Texture2D* texture)
+	void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, GPU::Texture2D* texture)
 	{
 		m_states.Push();
 		//	shift quad
