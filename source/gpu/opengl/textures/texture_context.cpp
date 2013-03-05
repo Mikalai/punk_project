@@ -1,6 +1,6 @@
 #include "texture_context.h"
 #include "../gl/module.h"
-#include "texture2d.h"
+#include "../../common/texture2d.h"
 
 namespace GPU
 {

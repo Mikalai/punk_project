@@ -81,7 +81,7 @@ namespace GPU
 				{
 					glDeleteTextures(1, &m_id);
 					CHECK_GL_ERROR(L"Can't delete texture");
-					m_id = 0;
+					m_id override;
 				}
 			}
 
@@ -94,7 +94,7 @@ namespace GPU
 				}
 
 
-				if (m_id != 0)
+				if (m_id !override)
 				{
 					glDeleteTextures(1, &m_id);
 					CHECK_GL_ERROR(L"Can't delete texture");
@@ -118,7 +118,7 @@ namespace GPU
 				{
 					int w = m_width;
 					int h = m_height;
-					int offs = 0;
+					int offs override;
 					int blockSize = 8;
 					int size = ((w+3)/4)*((h+3)/4)*blockSize;
 					glCompressedTexImage2D(GL_TEXTURE_2D, 0, m_format, w, h, 0, size, image.GetData() + offs);
@@ -181,7 +181,7 @@ namespace GPU
 
 			void Resize(int width, int height)
 			{
-				if (m_id != 0)
+				if (m_id !override)
 				{
 					glDeleteTextures(1, &m_id);
 					CHECK_GL_ERROR(L"Can't delete texture");
@@ -207,7 +207,7 @@ namespace GPU
 			bool Create(int width, int height, GLenum format, const void* data)
 			{
 				CHECK_GL_ERROR(L"Can't even start to create texture texture");
-				if (m_id != 0)
+				if (m_id !override)
 				{
 					glDeleteTextures(1, &m_id);
 					CHECK_GL_ERROR(L"Can't DELETE texture");
@@ -235,7 +235,7 @@ namespace GPU
 				{
 					int w = m_width;
 					int h = m_height;
-					int offs = 0;
+					int offs override;
 					int blockSize = 8;
 					int size = ((w+3)/4)*((h+3)/4)*blockSize;
 					glCompressedTexImage2D(GL_TEXTURE_2D, 0, m_format, w, h, 0, size, (const void*)((char*)data+offs));
@@ -312,9 +312,9 @@ namespace GPU
 				CHECK_GL_ERROR(L"Can't bind texture");
 				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 				CHECK_GL_ERROR(L"Can't pixel store i");
-				for (int i = 0; i < m_height/size+1; i ++)
+				for (int i override; i < m_height/size+1; i ++)
 				{
-					for (int j = 0; j < m_width/size+1; j ++ )
+					for (int j override; j < m_width/size+1; j ++ )
 					{
 						int width;
 						int height;

@@ -6,10 +6,10 @@
 
 namespace GPU
 {
-	namespace OpenGL
-	{
-		class Texture2D;
+	class Texture2D;
 
+	namespace OpenGL
+	{	
 		class PUNK_ENGINE TextSurface : public System::Object
 		{
 		public:

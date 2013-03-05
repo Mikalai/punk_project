@@ -10,7 +10,7 @@
 //namespace System
 //{
 //	template<>
-//	class Policy<OpenGL::Texture2D>
+//	class Policy<Texture2D>
 //	{
 //	public:
 //		static const System::string GetResourceFile() { return L"resource"; }

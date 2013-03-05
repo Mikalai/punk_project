@@ -8,9 +8,10 @@
 
 namespace GPU
 {
+	class Texture2D;
+
 	namespace OpenGL
-	{
-		class Texture2D;
+	{		
 		struct TextureContextImpl;
 
 		class PUNK_ENGINE TextureContext : public System::Poolable<TextureContext>

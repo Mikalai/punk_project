@@ -1,5 +1,5 @@
 #include "text_surface.h"
-#include "texture2d.h"
+#include "../../common/texture2d.h"
 #include "../../../utility/fonts/font_builder.h"
 
 namespace GPU
