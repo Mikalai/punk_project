@@ -9,7 +9,7 @@ and handle different parameters about users video system
 #define _H_PUNK_DRIVER_VIDEO_OPENGL_DRIVER
 
 #ifdef _WIN32
-#include "win32/driver_win32.h"
+#include "win32/gl_driver_win32.h"
 #endif
 
 #ifdef __linux__
