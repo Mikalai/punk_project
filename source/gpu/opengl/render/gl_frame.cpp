@@ -1,125 +1,184 @@
-#include "../../common/frame.h"
 #include "../../common/gpu_state.h"
 #include "../../../system/state_manager.h"
 #include "gl_batch.h"
+#include "gl_frame.h"
+#include "../driver/gl_driver.h"
 
 namespace GPU
 {
-	struct Frame::FrameImpl
+	void Frame::FrameImpl::BeginRendering()
 	{
-		std::stack<CoreState*> m_state;
-		std::vector<OpenGL::Batch*> m_batches;
+		m_state.push(new CoreState);
+	}
 
-		void BeginRendering()
-		{
-			m_state.push(new CoreState);
-		}
+	void Frame::FrameImpl::Render(Renderable* value)
+	{
+		OpenGL::Batch* batch = new OpenGL::Batch;
+		batch->m_renderable = value;
+		batch->m_state = m_state.top()->Clone();
+		m_batches.push_back(batch);
+	}
 
-		void Render(Renderable* value)
-		{
-			OpenGL::Batch* batch = new OpenGL::Batch;
-			batch->m_renderable = value;
-			batch->m_state = m_state.top()->Clone();
-			m_batches.push_back(batch);
-		}
+	void Frame::FrameImpl::PushState()
+	{
+		m_state.push(m_state.top()->Clone());
+	}
 
-		void PushState()
-		{
-			m_state.push(m_state.top()->Clone());
-		}
+	void Frame::FrameImpl::PopState()
+	{
+		delete m_state.top();
+		m_state.pop();
+	}
 
-		void PopState()
-		{
-			delete m_state.top();
-			m_state.pop();
-		}
+	CoreState* Frame::FrameImpl::Top()
+	{
+		return m_state.top();
+	}
 
-		CoreState* Top()
-		{
-			return m_state.top();
-		}
+	void Frame::FrameImpl::SetWorldMatrix(const Math::mat4& value)
+	{
+		Top()->m_world = value;
+	}
 
-		void SetWorldMatrix(const Math::mat4& value)
-		{
-			Top()->m_world = value;
-		}
-			
-		void SetViewMatrix(const Math::mat4& value)
-		{
-			Top()->m_view = value;
-		}
+	void Frame::FrameImpl::MultWorldMatrix(const Math::mat4& value)
+	{
+		Top()->m_world *= value;
+	}
 
-		void SetProjectionMatrix(const Math::mat4& value)
-		{
-			Top()->m_projection = value;
-		}
+	void Frame::FrameImpl::SetViewMatrix(const Math::mat4& value)
+	{
+		Top()->m_view = value;
+	}
 
-		void SetDiffuseColor(const Math::vec4& value)
-		{
-			Top()->m_diffuse_color = value;
-		}
+	void Frame::FrameImpl::SetProjectionMatrix(const Math::mat4& value)
+	{
+		Top()->m_projection = value;
+	}
 
-		void SetDiffuseMap(const Texture2D* value)
-		{
-			Top()->m_diffuse_map = value;
-		}
+	void Frame::FrameImpl::SetDiffuseColor(const Math::vec4& value)
+	{
+		Top()->m_diffuse_color = value;
+	}
 
-		void EnableDiffuseShading(bool value)
-		{
-			Top()->m_enable_diffuse_shading = value;
-		}
+	void Frame::FrameImpl::SetDiffuseMap0(const Texture2D* value)
+	{
+		Top()->m_diffuse_map_0 = value;
+	}
 
-		void EnableSkinning(bool value)
-		{
-			Top()->m_enable_skinning = value;
-		}
+	void Frame::FrameImpl::SetDiffuseMap1(const Texture2D* value)
+	{
+		Top()->m_diffuse_map_1 = value;
+	}
 
-		void SetBoneMatrix(int bone_index, const Math::mat4& value)
-		{
-			Top()->m_bone_matrix[bone_index] = value;
-		}
+	void Frame::FrameImpl::EnableDiffuseShading(bool value)
+	{
+		Top()->m_enable_diffuse_shading = value;
+	}
 
-		void SetSpecularColor(const Math::vec4& value)
-		{
-			Top()->m_specular_color = value;
-		}
+	void Frame::FrameImpl::EnableSkinning(bool value)
+	{
+		Top()->m_enable_skinning = value;
+	}
 
-		void SetSpecularMap(const Texture2D* value)
-		{
-			Top()->m_specular_map = value;
-		}
+	void Frame::FrameImpl::SetBoneMatrix(int bone_index, const Math::mat4& value)
+	{
+		Top()->m_bone_matrix[bone_index] = value;
+	}
 
-		void EnableSpecularShading(bool value)
-		{
-			Top()->m_enable_specular_shading = value;
-		}
+	void Frame::FrameImpl::SetSpecularColor(const Math::vec4& value)
+	{
+		Top()->m_specular_color = value;
+	}
 
-		void SetBumpMap(const Texture2D* value)
-		{
-			Top()->m_normal_map = value;
-		}
+	void Frame::FrameImpl::SetSpecularMap(const Texture2D* value)
+	{
+		Top()->m_specular_map = value;
+	}
 
-		void EnableBumpMapping(bool value)
-		{
-			Top()->m_enable_bump_mapping = value;
-		}
+	void Frame::FrameImpl::EnableSpecularShading(bool value)
+	{
+		Top()->m_enable_specular_shading = value;
+	}
 
-		void CastShadows(bool value)
-		{
-			Top()->m_cast_shadows = value;
-		}
+	void Frame::FrameImpl::SetBumpMap(const Texture2D* value)
+	{
+		Top()->m_normal_map = value;
+	}
 
-		void ReceiveShadow(bool value)
-		{
-			Top()->m_receive_shadows = value;
-		}
+	void Frame::FrameImpl::EnableBumpMapping(bool value)
+	{
+		Top()->m_enable_bump_mapping = value;
+	}
 
-		void EndRendering()
-		{
-			//	array of batches should be submitted to the actual rendering
-		}
-	};
+	void Frame::FrameImpl::CastShadows(bool value)
+	{
+		Top()->m_cast_shadows = value;
+	}
 
+	void Frame::FrameImpl::ReceiveShadow(bool value)
+	{
+		Top()->m_receive_shadows = value;
+	}
+
+	void Frame::FrameImpl::EndRendering()
+	{
+		//	array of batches should be submitted to the actual rendering
+	}
+
+	void Frame::FrameImpl::SetVideoDriver(VideoDriver* driver)
+	{
+		m_driver = driver;
+	}
+
+	const Math::mat4& Frame::FrameImpl::GetWorldMatrix()
+	{
+		return Top()->m_world;
+	}
+
+	const Math::mat4& Frame::FrameImpl::GetViewMatrix()
+	{
+		return Top()->m_view;
+	}
+
+	const Math::mat4& Frame::FrameImpl::GetProjectionMatrix()
+	{
+		return Top()->m_projection;
+	}
+
+	const Math::vec4& Frame::FrameImpl::GetDiffuseColor()
+	{
+		return Top()->m_diffuse_color;
+	}
+
+	const Texture2D* Frame::FrameImpl::GetDiffuseMap0()
+	{
+		return Top()->m_diffuse_map_0;
+	}
+
+	const Texture2D* Frame::FrameImpl::GetDiffuseMap1()
+	{
+		return Top()->m_diffuse_map_1;
+	}
+
+	const Math::mat4& Frame::FrameImpl::GetBoneMatrix(int bone_index)
+	{
+		return Top()->m_bone_matrix[bone_index];
+	}
+
+	const Math::vec4& Frame::FrameImpl::GetSpecularColor()
+	{
+		return Top()->m_specular_color;
+	}
+
+	const Texture2D* Frame::FrameImpl::GetSpecularMap()
+	{
+		return Top()->m_specular_map;
+	}
+
+	const Texture2D* Frame::FrameImpl::GetBumpMap()
+	{
+		return Top()->m_normal_map;
+	}
 
 	Frame::Frame()
 		: impl(new FrameImpl)
@@ -150,6 +209,11 @@ namespace GPU
 		impl->SetWorldMatrix(value);
 	}
 
+	void Frame::MultWorldMatrix(const Math::mat4& value)
+	{
+		impl->MultWorldMatrix(value);
+	}
+
 	void Frame::SetViewMatrix(const Math::mat4& value)
 	{
 		impl->SetViewMatrix(value);
@@ -165,11 +229,16 @@ namespace GPU
 		impl->SetDiffuseColor(value);
 	}
 
-	void Frame::SetDiffuseMap(const Texture2D* value)
+	void Frame::SetDiffuseMap0(const Texture2D* value)
 	{
-		impl->SetDiffuseMap(value);
+		impl->SetDiffuseMap0(value);
 	}
-
+	
+	void Frame::SetDiffuseMap1(const Texture2D* value)
+	{
+		impl->SetDiffuseMap1(value);
+	}
+	
 	void Frame::EnableDiffuseShading(bool value)
 	{
 		impl->EnableDiffuseShading(value);
@@ -223,5 +292,55 @@ namespace GPU
 	void Frame::EndRendering()
 	{
 		impl->EndRendering();
+	}
+
+	const Math::mat4& Frame::GetWorldMatrix()
+	{
+		return impl->GetWorldMatrix();
+	}
+
+	const Math::mat4& Frame::GetViewMatrix()
+	{
+		return impl->GetViewMatrix();
+	}
+
+	const Math::mat4& Frame::GetProjectionMatrix()
+	{
+		return impl->GetProjectionMatrix();
+	}
+
+	const Math::vec4& Frame::GetDiffuseColor()
+	{
+		return impl->GetDiffuseColor();
+	}
+
+	const Texture2D* Frame::GetDiffuseMap0()
+	{
+		return impl->GetDiffuseMap0();
+	}
+
+	const Texture2D* Frame::GetDiffuseMap1()
+	{
+		return impl->GetDiffuseMap1();
+	}
+	
+	const Math::mat4& Frame::GetBoneMatrix(int bone_index)
+	{
+		return impl->GetBoneMatrix(bone_index);
+	}
+
+	const Math::vec4& Frame::GetSpecularColor()
+	{
+		return impl->GetSpecularColor();
+	}
+
+	const Texture2D* Frame::GetSpecularMap()
+	{
+		return impl->GetSpecularMap();
+	}
+
+	const Texture2D* Frame::GetBumpMap()
+	{
+		return impl->GetBumpMap();
 	}
 }
