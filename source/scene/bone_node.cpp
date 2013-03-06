@@ -7,11 +7,20 @@ namespace Scene
 {
 	BoneNode::BoneNode()
 	{
-		SetType(System::ObjectType::BONE_NODE);
 	}
 
 	BoneNode::~BoneNode()
 	{
+	}
+
+	Virtual::Bone* BoneNode::GetBone()
+	{
+		return m_bone;
+	}
+
+	void BoneNode::SetBone(Virtual::Bone* value)
+	{
+		m_bone = value;
 	}
 
 	bool BoneNode::Save(std::ostream& stream) const

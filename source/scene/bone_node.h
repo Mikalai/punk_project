@@ -7,6 +7,8 @@
 
 #include "node.h"
 
+namespace Virtual { class Bone; }
+
 namespace Scene
 {
 
@@ -24,9 +26,14 @@ namespace Scene
 			
 		virtual bool Apply(AbstractVisitor* visitor);
 
+		Virtual::Bone* GetBone();
+		void SetBone(Virtual::Bone* value);
+
 	private:
 		BoneNode(const BoneNode&);
 		BoneNode& operator = (const BoneNode&);
+
+		Virtual::Bone* m_bone;
 	};
 }
 
