@@ -35,10 +35,10 @@ namespace Punk
 		m_event_manager = new System::EventManager();
 		m_window = new System::Window(this);
 		System::Mouse::Instance()->LockInWindow(true);
-		m_video_driver = new GPU::OpenGL::Driver;
+		m_video_driver = new GPU::VideoDriver;
 
 		{
-			GPU::OpenGL::DriverDesc desc;
+			GPU::VideoDriverDesc desc;
 			desc.config = data.gpu_config;
 			desc.event_manager = m_event_manager;
 			desc.window = m_window;
@@ -205,7 +205,7 @@ namespace Punk
 		return m_event_manager;
 	}
 
-	GPU::OpenGL::Driver* Application::GetDriver()
+	GPU::VideoDriver* Application::GetVideoDriver()
 	{
 		return m_video_driver;
 	}

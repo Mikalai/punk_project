@@ -19,7 +19,7 @@ namespace Punk
 		virtual ~Application();
 		System::Window* GetWindow();
 		System::EventManager* GetEventManager();
-		GPU::OpenGL::Driver* GetDriver();
+		GPU::VideoDriver* GetVideoDriver();
 		Virtual::TerrainManager* GetTerrainManager();
 		GUI::Manager* GetGUIManager();
 		Physics::BulletSimulator* GetSimulator();
@@ -56,7 +56,7 @@ namespace Punk
 		GPU::PaintEngine* m_paint_engine;		
 		System::Window* m_window;
 		System::EventManager* m_event_manager;
-		GPU::OpenGL::Driver* m_video_driver;
+		GPU::VideoDriver* m_video_driver;
 		Physics::BulletSimulator* m_simulator;
 		Virtual::TerrainManager* m_terrain_manager;
 		System::Timer m_timer;	
