@@ -16,7 +16,7 @@ namespace Render
 	class PUNK_ENGINE SimpleRender : public Scene::AbstractVisitor
 	{
 	public:
-		SimpleRender(GPU::OpenGL::Driver* driver);
+		SimpleRender(GPU::VideoDriver* driver);
 		~SimpleRender();
 		bool Render();
 		void SetGUIHud(GUI::Widget* root) { m_root = root; }
@@ -37,6 +37,8 @@ namespace Render
 		virtual bool Visit(Scene::TerrainNode* node);
 		virtual bool Visit(Scene::TextureViewNode* node);
 
+		bool ApplyToChildren(Scene::Node* node);
+
 		void RenderQuad(float x, float y, float width, float height, const Math::vec4& color);
 		void RenderTexturedQuad(float x, float y, float width, float height, GPU::Texture2D* texture);
 		void RenderText(float x, float y, const System::string& text, const Math::vec4& color);
@@ -51,7 +53,7 @@ namespace Render
 		GPU::OpenGL::ScaledGridObject m_grid;
 		float m_time;
 		int m_terrain_slices;
-		System::StateManager<GPU::CoreState> m_states;		
+		//System::StateManager<GPU::CoreState> m_states;		
 
 		//	next pointers should be destroyed in destructor
 		GPU::RenderTarget* m_rt;				
@@ -59,9 +61,10 @@ namespace Render
 		GPU::OpenGL::TextureContext* m_tc;
 		GUIRender* m_gui_render;
 		GPU::PaintEngine* m_paint_engine;
+		GPU::Frame* m_frame;
 
 		// next pointers should not be delete in destructor
-		GPU::OpenGL::Driver* m_driver;
+		GPU::VideoDriver* m_driver;
 		GUI::Widget* m_root;
 		Scene::SceneGraph* m_scene;		
 		GPU::AbstractRenderPolicy* m_skin_rc;
@@ -70,6 +73,8 @@ namespace Render
 		GPU::AbstractRenderPolicy* m_textured_rc;
 		GPU::AbstractRenderPolicy* m_gui_rc;
 		GPU::AbstractRenderPolicy* m_terrain_rc;
+		Virtual::Armature* m_armature;
+		Virtual::Material* m_material;
 	};
 }
 
