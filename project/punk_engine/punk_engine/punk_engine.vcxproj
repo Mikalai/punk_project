@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\..\source\audio\resource.h" />
     <ClInclude Include="..\..\..\source\config.h" />
     <ClInclude Include="..\..\..\source\gpu\common\abstract_render_context_policy.h" />
+    <ClInclude Include="..\..\..\source\gpu\common\video_driver.h" />
     <ClInclude Include="..\..\..\source\gpu\common\frame.h" />
     <ClInclude Include="..\..\..\source\gpu\common\renderable.h" />
     <ClInclude Include="..\..\..\source\gpu\common\gpu_state.h" />
@@ -60,11 +61,11 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\pbo.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\template_buffer.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\vbo.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\driver\driver.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\gl_driver.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\video_memory.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\driver\win32\driver_win32.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\win32\gl_driver_win32.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\error\gl_error_check.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\error\gl_exceptions.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\error\module.h" />
@@ -93,8 +94,9 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_batch.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_frame.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render_pass.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_renderer.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.h" />
@@ -595,7 +597,7 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\driver\linux\video_driver_linux.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\driver\video_memory.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opengl\driver\win32\driver_win32.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\driver\win32\gl_driver_win32.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\error\gl_exceptions.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\gl\win32\extensions_win32.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\gpu_opengl_module.cpp" />
@@ -611,7 +613,7 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_batch.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_frame.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_render_pass.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_renderer.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_grass.cpp" />

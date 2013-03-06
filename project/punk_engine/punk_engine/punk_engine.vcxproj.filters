@@ -1199,9 +1199,6 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.h">
       <Filter>gpu\opengl\driver\linux</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opengl\driver\win32\driver_win32.h">
-      <Filter>gpu\opengl\driver\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\internal_formats.h">
       <Filter>gpu\opengl\textures</Filter>
     </ClInclude>
@@ -1254,9 +1251,6 @@
       <Filter>images</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\module.h">
-      <Filter>gpu\opengl\driver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opengl\driver\driver.h">
       <Filter>gpu\opengl\driver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\video_memory.h">
@@ -1760,7 +1754,19 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render.h">
       <Filter>gpu\opengl\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render_pass.h">
+    <ClInclude Include="..\..\..\source\gpu\common\video_driver.h">
+      <Filter>gpu\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_frame.h">
+      <Filter>gpu\opengl\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\gl_driver.h">
+      <Filter>gpu\opengl\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\win32\gl_driver_win32.h">
+      <Filter>gpu\opengl\driver\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_renderer.h">
       <Filter>gpu\opengl\render</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2324,9 +2330,6 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\driver\linux\video_driver_linux.cpp">
       <Filter>gpu\opengl\driver\linux</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opengl\driver\win32\driver_win32.cpp">
-      <Filter>gpu\opengl\driver\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\internal_formats.cpp">
       <Filter>gpu\opengl\textures</Filter>
     </ClCompile>
@@ -2645,7 +2648,10 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_frame.cpp">
       <Filter>gpu\opengl\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_render_pass.cpp">
+    <ClCompile Include="..\..\..\source\gpu\opengl\driver\win32\gl_driver_win32.cpp">
+      <Filter>gpu\opengl\driver\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_renderer.cpp">
       <Filter>gpu\opengl\render</Filter>
     </ClCompile>
   </ItemGroup>
