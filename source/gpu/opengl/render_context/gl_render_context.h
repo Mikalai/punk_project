@@ -14,9 +14,9 @@ namespace GPU
 		{
 		public:
 			OpenGLRenderContext();
-			virtual void Begin();
-			virtual void End();
-			virtual void Init();
+			virtual void Begin() override;
+			virtual void End() override;
+			virtual void Init() override;
 			bool SetUniformVector4f(const char * name, const float* value);
 			bool SetUniformVector4f( int loc, const float* value );
 			bool SetUniformVector3f(const char * name, const float* value );
