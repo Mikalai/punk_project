@@ -8,6 +8,8 @@
 #include "gpu_state.h"
 #include "render_target.h"
 #include "../gpu_config.h"
+#include "frame.h"
+#include "video_driver.h"
 
 namespace GPU
 {
