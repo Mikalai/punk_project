@@ -34,11 +34,12 @@ namespace GPU
 		Math::vec4 m_text_color;
 		Math::vec4 m_no_diffuse_texture_color;
 		Math::vec4 m_specular_color;
-		Math::vec4 m_specular_factor;		
+		float m_specular_factor;		
 		Math::vec3 m_camera_position;
 		Math::mat2 m_texture_matrix;
 		Math::vec2 m_terran_position;
 		Math::ClipSpace m_clip_space;
+		float m_ambient_color;
 
 		int m_terrain_level;
 		int m_terrain_i;
@@ -60,6 +61,9 @@ namespace GPU
 		bool m_enable_specular_shading;
 		bool m_enable_bump_mapping;
 		bool m_enable_skinning;
+		bool m_enable_terrain;
+		bool m_enable_water;
+		bool m_enable_texture;
 		bool m_cast_shadows;
 		bool m_receive_shadows;
 
@@ -72,19 +76,14 @@ namespace GPU
 		int m_text_slot;
 		int m_height_map_slot;
 
-		const Texture2D* m_diffuse_map;
+		const Texture2D* m_diffuse_map_1;
+		const Texture2D* m_diffuse_map_0;
 		const Texture2D* m_normal_map;
 		const Texture2D* m_height_map;
 		const Texture2D* m_specular_map;
 
 		//	this pointers should not be deleted in destructor
 		std::vector<Virtual::Light*> m_lights;
-		AbstractRenderPolicy* m_rc;
-		Virtual::Material* m_material;
-		Virtual::Camera* m_camera;
-		Virtual::Armature* m_armature;
-		Virtual::Terrain* m_terrain;
-		Virtual::TerrainObserver* m_terrain_observer;
 		//	this pointers should not be deleted in destructor
 
 		CoreState* Clone();

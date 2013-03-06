@@ -4,12 +4,6 @@ namespace GPU
 {
 	CoreState::CoreState()
 	{
-		m_rc = nullptr;
-		m_material = nullptr;
-		m_camera = nullptr;
-		m_armature = nullptr;
-		m_terrain = nullptr;
-		m_terrain_observer = nullptr;
 		m_depth_test = true;
 		m_blending = false;
 		m_line_smooth = true;
