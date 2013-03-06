@@ -10,7 +10,7 @@ uniform mat3 uNormalTransform;
 
 //uniform int ui;
 //uniform int uj;
-uniform int uViewSize;
+uniform int texture_size;
 //uniform int uSlice;
 
 uniform sampler2D uHeightMapUniform;
@@ -32,10 +32,10 @@ out float level;
 out vec4 t_color;
 
 float GetHeight(vec2 pos)
-{
+	float texture_size = textureSize(uHeightMapUniform);
 	//vec4 t = texture2D(uHeightMapUniform, pos).rgba;
-	vec2 offset = vec2(uViewSize / 2, uViewSize / 2);
-	float h = texture2D(uHeightMapUniform, (pos + offset)/ float(uViewSize)).r;
+	vec2 offset = vec2(texture_size / 2, texture_size / 2);
+	float h = texture2D(uHeightMapUniform, (pos + offset)/ float(texture_size)).r;
 	//float h = uVertScale*(255.0*t.x);//+255.0*255.0*t.y + 255.0*255.0*255.0*t.z);
 	return h;
 }
@@ -98,6 +98,7 @@ vec3 CalcNormal()
 
 void main()
 {
+	float texture_size = textureSize(uHeightMapUniform);
 	vec4 the_col;
 	float scale = rm_Normal.w;
 	float width = rm_Texcoord0.w;
@@ -133,6 +134,6 @@ void main()
 	gl_Position = uProjection * uView * vec4(pos, 1.0);	
 	
 	normal = CalcNormal();
-	tex_coord = abs(position + rm_Vertex.xz )  / uViewSize * 100;
+	tex_coord = abs(position + rm_Vertex.xz )  / texture_size * 100;
 	map_coord = (vertex_pos_offset + rm_Vertex.xz ) / 10;
 }
