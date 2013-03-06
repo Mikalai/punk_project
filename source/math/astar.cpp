@@ -2,7 +2,7 @@
 
 namespace Math
 {
-	Node::Node(const Location* location)
+	AStarNode::AStarNode(const Location* location)
 		: m_location(location)
 		, m_delete_flag(false)
 	{
@@ -12,7 +12,7 @@ namespace Math
 		m_parent = 0;
 	}
 
-	void Node::Init()
+	void AStarNode::Init()
 	{
 		if (m_successor.empty() && !m_location->GetNeighbours().empty())
 		{	
@@ -22,17 +22,17 @@ namespace Math
 		}
 	}
 
-	void Node::SetParent(Node* node)
+	void AStarNode::SetParent(AStarNode* node)
 	{
 		m_parent = node;
 	}
 
-	void Node::Clear()
+	void AStarNode::Clear()
 	{
 		if (!m_delete_flag)
 		{
 			m_delete_flag = true;
-			for (NodeList::iterator it = m_successor.begin(); it != m_successor.end(); ++it)
+			for (AStarNodeList::iterator it = m_successor.begin(); it != m_successor.end(); ++it)
 			{
 				delete *it;
 			}

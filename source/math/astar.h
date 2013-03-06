@@ -9,7 +9,7 @@
 
 namespace Math
 {
-	class Node;
+	class AStarNode;
 
 	class Location
 	{
@@ -26,9 +26,9 @@ namespace Math
 		virtual const std::string ToString() const = 0;
 	private:
 		LocationList m_neighbours;
-		mutable Node* m_node;
+		mutable AStarNode* m_node;
 
-		friend class Node;
+		friend class AStarNode;
 		friend class Algorithm;
 	};
 
@@ -39,15 +39,15 @@ namespace Math
 		virtual double TraverseCost(const Location* a, const Location* b) = 0;
 	};
 
-	class Node
+	class AStarNode
 	{
 	public:
-		typedef std::list<Node*> NodeList;
-		NodeList m_successor;
+		typedef std::list<AStarNode*> AStarNodeList;
+		AStarNodeList m_successor;
 
 	public:
-		Node(const Location* location);
-		~Node() { if (m_location) m_location->m_node = 0; }
+		AStarNode(const Location* location);
+		~AStarNode() { if (m_location) m_location->m_node = 0; }
 		void SetCostFromStart(double cost) { m_cost_from_start = cost; }
 		double GetCostFromStart() const { return m_cost_from_start; }
 
@@ -56,14 +56,14 @@ namespace Math
 
 		double GetTotalCost() const { return m_cost_from_start + m_cost_to_goal; }
 
-		void SetParent(Node* node);// { m_parent = node; }
-		Node* GetParent() { return m_parent; }
-		const Node* GetParent() const { return m_parent; }
+		void SetParent(AStarNode* node);// { m_parent = node; }
+		AStarNode* GetParent() { return m_parent; }
+		const AStarNode* GetParent() const { return m_parent; }
 
 		const Location* GetLocation() const { return m_location; }
 
-		NodeList& GetSuccessors() { return m_successor; }
-		const NodeList& GetSuccessors() const { return m_successor; }
+		AStarNodeList& GetSuccessors() { return m_successor; }
+		const AStarNodeList& GetSuccessors() const { return m_successor; }
 
 		void SetLocation(const Location* location) { m_location = location; }
 		void Init();
@@ -74,7 +74,7 @@ namespace Math
 		double m_cost_from_start;
 		double m_cost_to_goal;
 
-		Node* m_parent;	
+		AStarNode* m_parent;	
 		const Location* m_location;
 		bool  m_delete_flag;
 	};
@@ -83,31 +83,31 @@ namespace Math
 	{
 		struct Cmp
 		{
-			Node* m_current;
-			bool operator () (Node* a, Node* b)
+			AStarNode* m_current;
+			bool operator () (AStarNode* a, AStarNode* b)
 			{
 				return a->GetTotalCost() < b->GetTotalCost();
 			}
 		};
 
-		typedef System::priority_list<Node*, Cmp> OpenList;
-		typedef std::list<Node*> CloseList;
+		typedef System::priority_list<AStarNode*, Cmp> OpenList;
+		typedef std::list<AStarNode*> CloseList;
 
 		OpenList m_open;
 		CloseList m_close;
 
-		std::list<Node*> m_allocated_nodes;
-		std::list<Node*> m_free_nodes;
+		std::list<AStarNode*> m_allocated_nodes;
+		std::list<AStarNode*> m_free_nodes;
 	public:
 
-		Node* CreateNode(Location* location)
+		AStarNode* CreateAStarNode(Location* location)
 		{
-			Node* new_node = new Node(location);
+			AStarNode* new_node = new AStarNode(location);
 			m_allocated_nodes.push_back(new_node);
 			return new_node;
 		}
 
-		void DeleteNode(Node* node)
+		void DeleteAStarNode(AStarNode* node)
 		{
 		}
 
@@ -119,12 +119,12 @@ namespace Math
 			m_open.clear();
 			m_close.clear();
 
-			Node* start_node;
-			m_open.push(start_node = CreateStartNode(start_loc, end_loc, agent));
+			AStarNode* start_node;
+			m_open.push(start_node = CreateStartAStarNode(start_loc, end_loc, agent));
 
 			while (!m_open.empty())
 			{
-				Node* node = m_open.top(); m_open.pop();
+				AStarNode* node = m_open.top(); m_open.pop();
 				std::cout << "Try " << node->GetLocation()->ToString() << std::endl;
 				if (IsGoal(node->GetLocation(), end_loc))
 				{
@@ -138,13 +138,13 @@ namespace Math
 					for (Location::LocationList::const_iterator it = node->GetLocation()->GetNeighbours().begin(); it != node->GetLocation()->GetNeighbours().end(); ++it)
 					{
 						Location* location = *it;
-						Node* new_node = location->m_node;
+						AStarNode* new_node = location->m_node;
 						if (!new_node)
-							new_node = CreateNode(location);					
+							new_node = CreateAStarNode(location);					
 
 						double new_cost = node->GetCostFromStart() + agent->TraverseCost(node->GetLocation(), new_node->GetLocation());
 
-						if ((IsNodeInOpen(new_node) || IsNodeInClose(new_node))
+						if ((IsAStarNodeInOpen(new_node) || IsAStarNodeInClose(new_node))
 							&& new_node->GetCostFromStart() <= new_cost)
 						{						
 							continue;
@@ -156,13 +156,13 @@ namespace Math
 							new_node->SetCostToGoal(agent->EstimateCost(new_node->GetLocation(), end_loc));
 							//	new_node->m_total_cost = new_node->m_cost_from_start + new_node->m_cost_to_goal;							
 
-							if (IsNodeInClose(new_node))
+							if (IsAStarNodeInClose(new_node))
 							{
 								RemoveFromClose(new_node);		
 								//delete new_node;
 							}
 
-							if (IsNodeInOpen(new_node))
+							if (IsAStarNodeInOpen(new_node))
 							{
 								AdjustLocationInOpen(new_node);
 							}
@@ -180,12 +180,12 @@ namespace Math
 			return false;
 		}
 
-		void AdjustLocationInOpen(Node* node)
+		void AdjustLocationInOpen(AStarNode* node)
 		{
 			m_open.adjust_position(node);
 		}
 
-		void RemoveFromClose(Node* node)
+		void RemoveFromClose(AStarNode* node)
 		{
 			CloseList::iterator it = std::find(m_close.begin(), m_close.end(), node);
 			if (it == m_close.end())
@@ -196,25 +196,25 @@ namespace Math
 			m_close.erase(it);
 		}
 
-		bool IsNodeInOpen(Node* node)
+		bool IsAStarNodeInOpen(AStarNode* node)
 		{
 			return std::find(m_open.begin(), m_open.end(), node) != m_open.end();
 		}
 
-		bool IsNodeInClose(Node* node)
+		bool IsAStarNodeInClose(AStarNode* node)
 		{
 			return std::find(m_close.begin(), m_close.end(), node) != m_close.end();
 		}
 
-		Node* CreateStartNode(Location* start_loc, Location* end_loc, Agent* agent)
+		AStarNode* CreateStartAStarNode(Location* start_loc, Location* end_loc, Agent* agent)
 		{	
-			Node* start = CreateNode(start_loc);
+			AStarNode* start = CreateAStarNode(start_loc);
 			start->Init();
 			start->SetCostToGoal(agent->EstimateCost(start_loc, end_loc));
 			return start;
 		}
 
-		void ConstructPath(Node* node)
+		void ConstructPath(AStarNode* node)
 		{
 			if (node)
 			{
@@ -228,20 +228,20 @@ namespace Math
 			return current == goal;
 		}
 
-		void AddToOpen(Node* node)
+		void AddToOpen(AStarNode* node)
 		{
 			m_open.push(node);
 		}
 
 
-		bool SelectTheBest(Node node, Node* result)
+		bool SelectTheBest(AStarNode node, AStarNode* result)
 		{
 			return false;
 		}
 
 		void Clear()
 		{
-			for (std::list<Node*>::iterator it = m_allocated_nodes.begin(); it != m_allocated_nodes.end(); ++it)
+			for (std::list<AStarNode*>::iterator it = m_allocated_nodes.begin(); it != m_allocated_nodes.end(); ++it)
 			{
 				(*it)->SetLocation(0);
 				delete *it;
