@@ -60,11 +60,6 @@ namespace Virtual
 		if (!m_loading)
 		{
 			m_loading = true;
-			//	swap front and back buffers
-		
-			std::swap(m_front_buffer, m_back_buffer);
-			std::swap(m_height_map_front, m_height_map_back);
-			m_desc.position = m_position_back;
 
 			//	if not, than store position for future view
 			m_position_back = m_last_unprocessed;
@@ -104,6 +99,11 @@ namespace Virtual
 		//std::swap(view->m_height_map_front, view->m_height_map_back);
 		////	mark loading as finished
 		view->m_loading = false;
+		//	swap front and back buffers		
+		std::swap(view->m_front_buffer, view->m_back_buffer);
+		std::swap(view->m_height_map_front, view->m_height_map_back);
+		view->m_desc.position = view->m_position_back;
+
 		////	check if uploading is needed again
 		//if ((view->m_position - view->m_last_unprocessed).Length() > view->m_threshold)
 		//{
