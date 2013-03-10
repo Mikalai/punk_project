@@ -18,6 +18,19 @@ namespace GPU
 			int total_index_count = total_cells * index_per_cell;
 			std::vector<Vertex<VertexType>> v(total_vertex_count);
 			std::vector<unsigned int> index(total_index_count);
+			float total_width = 0;
+			for (int i = 1; i != levels+1; ++i)
+			{			
+				total_width += powf(2.0f, float(i +1)) * width;
+			}
+			m_total_width = total_width = total_width + 4.0f * width;
+
+			float total_height = 0;
+			for (int i = 1; i != levels+1; ++i)
+			{
+				total_height += (powf(2.0f, float(i+1))) * height;
+			}
+			m_total_height = total_height = total_height + 4.0f * height;
 
 			int cur_v = 0;
 			int cur_i = 0;
@@ -73,19 +86,25 @@ namespace GPU
 									w = 1.0f;	// x neighbours needed
 								}
 
+								float pos_x = k*(width/float(hor_slices)*float(j) + x);
+								float pos_y = k*(height/float(vert_slices)*float(i) + y);
+								
 								cur.m_position.Set(
-									k*(width/float(hor_slices)*float(j) + x),
+									pos_x,
 									0,
-									k*(height/float(vert_slices)*float(i) + y),
+									pos_y,
 									w);
 
 								//	store in the w component scale factor (level)
 								cur.m_normal.Set(0, 1.0f, 0, (float)k);
-
+								
 								//	store in the z w components number of hor and ver slices
+								//	texture coordinates are calculated with shift to make them positive
 								cur.m_texture0.Set(
-									1.0f/float(hor_slices)*float(j),
-									1.0f/float(vert_slices)*float(i), (float)hor_slices, (float)width);			
+									(total_width / 2.0f + pos_x) / total_width,
+									(total_height / 2.0f + pos_y) / total_height,
+									(float)hor_slices, 
+									(float)width);			
 								++cur_v;
 							}
 						}			
@@ -109,6 +128,16 @@ namespace GPU
 			SetVertexBuffer(v);
 			SetIndexBuffer(index);
 			VertexArrayObject2<PrimitiveType, VertexType>::Cook();/**/
+		}
+
+		float ScaledGridObject::GetTotalWidth() const
+		{
+			return m_total_width;
+		}
+
+		float ScaledGridObject::GetTotalHeight() const
+		{
+			return m_total_height;
 		}
 	}
 }

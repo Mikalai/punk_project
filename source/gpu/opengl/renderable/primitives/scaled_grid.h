@@ -22,9 +22,15 @@ namespace OpenGL
 
 		virtual void Cook(float width, float height, unsigned hor_slices, unsigned vert_slices, int levels);
 
+		float GetTotalWidth() const;
+		float GetTotalHeight() const;
+
 	private:
 		ScaledGridObject(const ScaledGridObject& quad);
 		ScaledGridObject& operator = (const ScaledGridObject& quad);
+
+		float m_total_width;
+		float m_total_height;
 	};
 }
 }
