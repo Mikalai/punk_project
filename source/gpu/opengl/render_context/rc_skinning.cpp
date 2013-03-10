@@ -81,7 +81,7 @@ namespace GPU
 			SetUniformMatrix4f(uViewWorld, &view_world[0]);
 			for (int i = 0; i < _countof(pparams.m_bone_matrix); ++i)
 			{
-				SetUniformMatrix4f(uBones[i], &(pparams.m_bone_matrix[i] * pparams.m_mesh_matrix_local)[0]);
+				SetUniformMatrix4f(uBones[i], &(pparams.m_bone_matrix[i] * pparams.m_local)[0]);
 			}
 		}
 

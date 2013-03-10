@@ -26,6 +26,7 @@ namespace GPU
 
 		private:
 			
+			unsigned uTextureMatrix;
 			unsigned uWorld;
 			unsigned uView;
 			unsigned uProjection;

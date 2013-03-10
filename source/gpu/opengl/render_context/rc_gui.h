@@ -61,7 +61,7 @@ namespace GPU
 				SetUniformVector4f(uNoDiffuseTexture, &pparams.m_no_diffuse_texture_color[0]);
 				SetUniformInt(uDiffuseMap, pparams.m_diffuse_slot_0);
 				SetUniformInt(uTextMap, pparams.m_text_slot);
-				if (pparams.m_wireframe)
+				if (pparams.m_enable_wireframe)
 				{
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 					CHECK_GL_ERROR(L"Can't change polygon mode");

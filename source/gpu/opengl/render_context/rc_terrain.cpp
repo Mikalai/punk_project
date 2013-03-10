@@ -22,25 +22,20 @@ namespace GPU
 
 		void RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::InitUniforms()
 		{
+			uTextureMatrix = GetUniformLocation("uTextureMatrix");
 			uWorld = GetUniformLocation("uWorld");
 			uView = GetUniformLocation("uView");
 			uProjection = GetUniformLocation("uProjection");
 			uProjViewWorld = GetUniformLocation("uProjViewWorld");
 			uNormalTransform = GetUniformLocation("uNormalTransform");
-			ui = GetUniformLocation("ui");
-			uj = GetUniformLocation("uj");
 			uHeightMapUniform = GetUniformLocation("uHeightMapUniform");
 			uScale = GetUniformLocation("uScale");
-			uPosition = GetUniformLocation("uPosition");
-			uLevel = GetUniformLocation("uLevel");
 			uNormalMapUniform = GetUniformLocation("uNormalMapUniform");
 			uDiffuseMapUniform1 = GetUniformLocation("uDiffuseMapUniform1");
 			uDiffuseMapUniform2 = GetUniformLocation("uDiffuseMapUniform2");
 			uDiffuseColor = GetUniformLocation("uDiffuseColor");
 			uLightDirection = GetUniformLocation("uLightDirection");
 			uViewSize = GetUniformLocation("uViewSize");
-			uTerrainPosition = GetUniformLocation("uTerrainPosition");
-			uSlice = GetUniformLocation("uSlice");
 		}
 
 		void RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::BindParameters(const CoreState& pparams)
@@ -53,7 +48,6 @@ namespace GPU
 			SetUniformMatrix4f(uView, &pparams.m_view[0]);
 			SetUniformMatrix4f(uProjection, &pparams.m_projection[0]);
 			SetUniformMatrix3f(uNormalTransform, &normal_matrix[0]);
-			SetUniformInt(uSlice, pparams.m_terrain_slices);
 
 			if (!pparams.m_lights.empty())
 				SetUniformVector3f(uLightDirection, &pparams.m_lights[0]->GetPosition().Normalized()[0]);
@@ -65,22 +59,14 @@ namespace GPU
 
 			SetUniformVector4f(uDiffuseColor, &pparams.m_diffuse_color[0]);
 
-			SetUniformVector2f(uPosition, &pparams.m_terran_position[0]);
-			SetUniformInt(uHeightMapUniform, pparams.m_height_map_slot);
-			SetUniformInt(uDiffuseMapUniform1, pparams.m_diffuse_slot_0);
-			SetUniformInt(uDiffuseMapUniform2, pparams.m_diffuse_slot_1);
-			SetUniformFloat(uLevel, float(pparams.m_terrain_level));
-			SetUniformInt(ui, pparams.m_terrain_i);
-			SetUniformInt(uj, pparams.m_terrain_j);
+
+			SetUniformMatrix4f(uTextureMatrix, &pparams.m_texture_matrix[0]);
+			SetUniformInt(uHeightMapUniform, 2);
+			SetUniformInt(uDiffuseMapUniform1, 0);
+			SetUniformInt(uDiffuseMapUniform2, 1);
 			SetUniformFloat(uScale, 1);		
 
-			auto vv = pparams.m_world.TranslationPart();
-			Math::vec2 v(floor(vv.X()), floor(vv.Y()));
-			SetUniformVector2f(uTerrainPosition, &v[0]);
-			//SetUniformVector2f(uPosition, &pparams.m_terran_position[0]);
-			SetUniformVector2f(uPosition, &v[0]);
-
-			if (pparams.m_wireframe)
+			if (pparams.m_enable_wireframe)
 			{
 				glLineWidth(pparams.m_line_width);
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

@@ -39,7 +39,7 @@ namespace GPU
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
 			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
 
-			if (params.m_wireframe)
+			if (params.m_enable_wireframe)
 			{
 				glLineWidth(params.m_line_width);
 				CHECK_GL_ERROR(L"Can't line width");

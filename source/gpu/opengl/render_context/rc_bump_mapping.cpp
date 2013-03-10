@@ -65,7 +65,7 @@ namespace GPU
 			SetUniformInt(uDiffuseMap, 0);
 			SetUniformInt(uNormalMap, 1);		
 
-			if (pparams.m_wireframe)
+			if (pparams.m_enable_wireframe)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				CHECK_GL_ERROR(L"Can't change polygon mode");

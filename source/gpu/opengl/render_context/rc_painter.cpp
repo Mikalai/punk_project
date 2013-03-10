@@ -54,7 +54,7 @@ namespace GPU
 
 			glLineWidth(pparams.m_line_width);
 
-			if (pparams.m_wireframe)
+			if (pparams.m_enable_wireframe)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				CHECK_GL_ERROR(L"Can't change polygon mode");
