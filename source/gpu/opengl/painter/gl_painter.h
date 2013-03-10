@@ -54,7 +54,7 @@ namespace GPU
 									
 			m_states.CurrentState()->Get().m_use_diffuse_texture = false;
 			m_states.CurrentState()->Get().m_use_text_texture = false;
-			m_states.CurrentState()->Get().m_wireframe = false;
+			m_states.CurrentState()->Get().m_enable_wireframe = false;
 			m_states.CurrentState()->Get().m_blending = true;
 			m_states.CurrentState()->Get().m_line_width = 5;
 			m_states.CurrentState()->Get().m_diffuse_color.Set(1,0,0,1);
