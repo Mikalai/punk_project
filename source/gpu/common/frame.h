@@ -14,7 +14,6 @@ namespace GPU
 {
 	class Texture2D;
 	class Renderable;
-	class VideoDriver;
 
 	class PUNK_ENGINE Frame : public System::Poolable<Frame>
 	{
@@ -26,8 +25,7 @@ namespace GPU
 		void Render(Renderable* value);
 		void PushState();
 		void PopState();
-		void MultWorldMatrix(const Math::mat4& value);
-		void SetLocalMatrix(const Math::mat4& value);
+		void MultWorldMatrix(const Math::mat4& value);		
 		void SetWorldMatrix(const Math::mat4& value);		
 		void SetViewMatrix(const Math::mat4& value);
 		void SetProjectionMatrix(const Math::mat4& value);
@@ -36,29 +34,31 @@ namespace GPU
 		void SetDiffuseMap1(const Texture2D* value);
 		void SetBoneMatrix(int bone_index, const Math::mat4& value);
 		void SetSpecularColor(const Math::vec4& value);
-		void SetAmbientColor(float value);
 		void SetSpecularFactor(float value);
+		void SetAmbientColor(float value);
 		void SetClipSpace(const Math::ClipSpace& value);
-		void SetSpecularMap(const Texture2D* value);		
-		void SetBumpMap(const Texture2D* value);		
-		void CastShadows(bool value);
 		void SetHeightMap(const Texture2D* value);
 		void SetLineWidth(float value);
 		void SetPointSize(float value);
-		void SetTextureMatrix(const Math::mat2& value);
+		void SetTextureMatrix(const Math::mat4& value);
+		void SetLocalMatrix(const Math::mat4& value);
 
-		const Math::mat4& GetWorldMatrix();		
-		const Math::mat4& GetLocalMatrix();
-		const Math::mat4& GetViewMatrix();
-		const Math::mat4& GetProjectionMatrix();
-		const Math::vec4& GetDiffuseColor();
-		const Texture2D* GetDiffuseMap0();
-		const Texture2D* GetDiffuseMap1();
-		const Math::mat4& GetBoneMatrix(int bone_index);
-		const Math::vec4& GetSpecularColor();
-		const Texture2D* GetSpecularMap();		
-		const Texture2D* GetBumpMap();		
-		const Math::ClipSpace& GetClipSpace();
+		void SetSpecularMap(const Texture2D* value);		
+		void SetBumpMap(const Texture2D* value);		
+		void CastShadows(bool value);		
+
+		const Math::mat4& GetWorldMatrix() const;		
+		const Math::mat4& GetLocalMatrix() const;
+		const Math::mat4& GetViewMatrix() const;
+		const Math::mat4& GetProjectionMatrix() const;
+		const Math::vec4& GetDiffuseColor() const;
+		const Texture2D* GetDiffuseMap0() const;
+		const Texture2D* GetDiffuseMap1() const;
+		const Math::mat4& GetBoneMatrix(int bone_index) const;
+		const Math::vec4& GetSpecularColor() const;
+		const Texture2D* GetSpecularMap() const;		
+		const Texture2D* GetBumpMap() const;		
+		const Math::ClipSpace& GetClipSpace() const;
 		
 		void ReceiveShadow(bool value);
 		void EndRendering();
@@ -77,7 +77,7 @@ namespace GPU
 		FrameImpl* impl;
 
 	private:
-		friend class VideoDriver;
+		friend struct VideoDriverImpl;
 		//	driver can create frames
 		Frame();
 

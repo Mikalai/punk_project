@@ -17,6 +17,8 @@ namespace GPU
 
 	class Frame;
 
+	struct VideoDriverImpl;
+
 	class PUNK_ENGINE VideoDriver
 	{
 	public:
@@ -32,7 +34,6 @@ namespace GPU
 		Frame* BeginFrame();
 		void EndFrame(Frame* value);
 
-		struct VideoDriverImpl;
 		VideoDriverImpl* impl;
 
 	private:
