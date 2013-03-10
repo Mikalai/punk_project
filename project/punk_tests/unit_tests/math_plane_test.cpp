@@ -55,7 +55,7 @@ public:
 		GetGUIManager()->AddRootWidget(widget);
 
 
-		render = new Render::SimpleRender(GetDriver());
+		render = new Render::SimpleRender(GetVideoDriver());
 		render->SetGUIHud(widget);
 		//render->SetPainter(GetPainter());
 

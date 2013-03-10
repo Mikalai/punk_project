@@ -15,7 +15,7 @@ public:
 		Application::Init(value);
 		graph = new Scene::SceneGraph();
 		graph->SetActiveCamera(new Virtual::FirstPersonCamera);			
-		render = new Render::SimpleRender(GetDriver());
+		render = new Render::SimpleRender(GetVideoDriver());
 		render->SetScene(graph);	
 		render->SetPaintEngine(GetPaintEngine());
 		System::Mouse::Instance()->LockInWindow(false);			
