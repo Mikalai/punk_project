@@ -277,4 +277,14 @@ namespace Virtual
 		}		
 		return true;
 	}
+
+	int Bone::GetIndex() const
+	{
+		return m_index;
+	}
+	
+	void Bone::SetIndex(int index)
+	{
+		m_index = index;
+	}
 }

@@ -86,6 +86,8 @@ namespace Virtual
 	void Armature::CacheBones(Bone* b)
 	{
 //		b->SetIndexInArmature(m_cache.size());
+		size_t index = m_cache.size();
+		b->SetIndex((int)index);
 		m_cache.push_back(b);
 		m_named_cache[b->GetName()] = b;
 

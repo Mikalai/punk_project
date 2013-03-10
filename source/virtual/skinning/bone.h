@@ -43,6 +43,7 @@ namespace Virtual
 		const Bone* GetParent() const;
 		const Math::mat4 GetWorldMatrix() const;		
 		int GetIndex() const;
+		void SetIndex(int index);
 
 		void SetLength(float v) { m_length = v; }
 		float GetLength() const { return m_length; }
@@ -67,6 +68,7 @@ namespace Virtual
 
 		void Clear();
 
+		int m_index;
 		Bone*				m_parent;
 		std::vector<Bone*>	m_children;
 		BoneName			m_name;
