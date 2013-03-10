@@ -13,13 +13,13 @@ namespace System
 		typedef void (*CleanFunc)(void);
 	public:
 
-		void AddCleaner(CleanFunc func);
-		~PoolManager();
+		//void AddCleaner(CleanFunc func);
+		//~PoolManager();
 		static PoolManager* Instance();
 		static void Destroy();
 
 	private:
-		std::vector<CleanFunc> m_cleaners;
+		//std::vector<CleanFunc> m_cleaners;
 		static std::auto_ptr<PoolManager> m_instance;
 	};
 }

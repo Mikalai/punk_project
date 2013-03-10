@@ -17,7 +17,7 @@ namespace System
 		Pool()
 		{
 			//out_message() << "Create pool for " << typeid(T).name() << ", and register cleaner in pool manager" << std::endl;
-			PoolManager::Instance()->AddCleaner(Poolable<T>::ClearPool);
+//			PoolManager::Instance()->AddCleaner(Poolable<T>::ClearPool);
 		}
 
 		~Pool()
@@ -29,11 +29,15 @@ namespace System
 		{			
 			if (m_free.empty())
 			{
-				out_message() << "Allocation requested for " << typeid(T).name() << std::endl;
-				void* chunk = operator new(sizeof(T));
+				out_message() << "Allocation requested for " << typeid(T).name() << std::endl;				
+				void* chunk = operator new(sizeof(T));				
+				//	clear memory
+				memset(chunk, 0, sizeof(T));
 				return chunk;
 			}
 			void* chunk = m_free.front();
+			//	clear memory
+			memset(chunk, 0, sizeof(T));
 			m_free.pop_front();
 			return chunk;
 		}

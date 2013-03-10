@@ -2,18 +2,18 @@
 
 namespace System
 {
-	void PoolManager::AddCleaner(PoolManager::CleanFunc func)
-	{
-		m_cleaners.push_back(func);
-	}
+	//void PoolManager::AddCleaner(PoolManager::CleanFunc func)
+	//{
+	//	m_cleaners.push_back(func);
+	//}
 
-	PoolManager::~PoolManager()
-	{
-		for (std::vector<CleanFunc>::iterator it = m_cleaners.begin(); it != m_cleaners.end(); ++it)
-		{
-			(*it)();
-		}
-	}
+	//PoolManager::~PoolManager()
+	//{
+	//	for (std::vector<CleanFunc>::iterator it = m_cleaners.begin(); it != m_cleaners.end(); ++it)
+	//	{
+	//		(*it)();
+	//	}
+	//}
 
 	PoolManager* PoolManager::Instance() 
 	{
