@@ -31,11 +31,22 @@ namespace GPU
 	}	
 
 
-	VideoDriver::VideoDriverImpl::VideoDriverImpl(VideoDriver* driver)
+	VideoDriverImpl::VideoDriverImpl(VideoDriver* driver)
 		: m_driver(driver)
 	{}
 
-	void VideoDriver::VideoDriverImpl::SetFullScreen(bool flag)
+	VideoDriverImpl::~VideoDriverImpl()
+	{
+		try
+		{
+			Shutdown();
+		}
+		catch(...)
+		{
+		}
+	}
+
+	void VideoDriverImpl::SetFullScreen(bool flag)
 	{
 		m_desc.config.fullscreen = flag;
 		if (flag)
@@ -76,7 +87,7 @@ namespace GPU
 		SetFocus(*m_desc.window);
 	}
 
-	bool VideoDriver::VideoDriverImpl::Start(const VideoDriverDesc& desc)
+	bool VideoDriverImpl::Start(const VideoDriverDesc& desc)
 	{
 		m_desc = desc;
 
@@ -216,13 +227,13 @@ namespace GPU
 		return true;
 	}
 
-	void VideoDriver::VideoDriverImpl::Restart()
+	void VideoDriverImpl::Restart()
 	{
 		Shutdown();
 		Start(m_desc);
 	}
 
-	void VideoDriver::VideoDriverImpl::Shutdown()
+	void VideoDriverImpl::Shutdown()
 	{
 		out_message() << L"Destroying video driver..." << std::endl;
 		ChangeDisplaySettings(NULL, 0);
@@ -231,13 +242,13 @@ namespace GPU
 		out_message() << L"Video driver destroyed..." << std::endl;
 	}
 
-	void VideoDriver::VideoDriverImpl::SwapBuffers()
+	void VideoDriverImpl::SwapBuffers()
 	{
 		if (!::SwapBuffers(::GetDC(*m_desc.window)))
 			out_error() << "Swap buffer failed" << std::endl;
 	}
 
-	void VideoDriver::VideoDriverImpl::OnResize(System::Event* e)
+	void VideoDriverImpl::OnResize(System::Event* e)
 	{
 		System::WindowResizeEvent* event = dynamic_cast<System::WindowResizeEvent*>(e);			
 		if (!event)
@@ -245,7 +256,7 @@ namespace GPU
 		glViewport(0, 0, event->width, event->height);
 	}
 
-	void VideoDriver::VideoDriverImpl::OnKeyDown(System::Event* e)
+	void VideoDriverImpl::OnKeyDown(System::Event* e)
 	{
 		System::KeyDownEvent* event = dynamic_cast<System::KeyDownEvent*>(e);
 		if (!event)
@@ -261,17 +272,18 @@ namespace GPU
 		}
 	}
 
-	System::Window* VideoDriver::VideoDriverImpl::GetWindow() { return m_desc.window; }
+	System::Window* VideoDriverImpl::GetWindow() { return m_desc.window; }
 
-	Frame* VideoDriver::VideoDriverImpl::BeginFrame()
+	Frame* VideoDriverImpl::BeginFrame()
 	{
 		Frame* frame = new Frame;
-		frame->impl->SetVideoDriver(m_driver);
+		frame->impl->SetVideoDriver(this);
 		return frame;
 	}
 
-	void VideoDriver::VideoDriverImpl::EndFrame(Frame* value)
+	void VideoDriverImpl::EndFrame(Frame* value)
 	{
+		delete value;
 	}
 
 	VideoDriver::VideoDriver()

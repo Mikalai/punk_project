@@ -9,7 +9,7 @@
 
 namespace GPU
 {
-	struct VideoDriver::VideoDriverImpl
+	struct VideoDriverImpl
 	{
 		//	video driver interface
 		void SetFullScreen(bool flag);
