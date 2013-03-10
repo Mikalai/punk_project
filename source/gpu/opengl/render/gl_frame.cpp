@@ -3,9 +3,25 @@
 #include "gl_batch.h"
 #include "gl_frame.h"
 #include "../driver/gl_driver.h"
+#include "gl_renderer.h"
 
 namespace GPU
 {
+	Frame::FrameImpl::FrameImpl()
+	{
+		m_driver = nullptr;
+	}
+
+	Frame::FrameImpl::~FrameImpl()
+	{
+		//	next should be delete in destructor
+		while (!m_state.empty())
+		{
+			delete m_state.top();
+			m_state.pop();
+		}
+	}
+
 	void Frame::FrameImpl::BeginRendering()
 	{
 		m_state.push(new CoreState);
@@ -31,6 +47,11 @@ namespace GPU
 	}
 
 	CoreState* Frame::FrameImpl::Top()
+	{
+		return m_state.top();
+	}
+
+	const CoreState* Frame::FrameImpl::Top() const
 	{
 		return m_state.top();
 	}
@@ -123,66 +144,171 @@ namespace GPU
 	void Frame::FrameImpl::EndRendering()
 	{
 		//	array of batches should be submitted to the actual rendering
+		OpenGL::RenderPass pass(m_batches);
+		pass.Run();
+		m_driver->SwapBuffers();
 	}
 
-	void Frame::FrameImpl::SetVideoDriver(VideoDriver* driver)
+	void Frame::FrameImpl::SetVideoDriver(VideoDriverImpl* driver)
 	{
 		m_driver = driver;
 	}
 
-	const Math::mat4& Frame::FrameImpl::GetWorldMatrix()
+	const Math::mat4& Frame::FrameImpl::GetWorldMatrix() const
 	{
 		return Top()->m_world;
 	}
 
-	const Math::mat4& Frame::FrameImpl::GetViewMatrix()
+	const Math::mat4& Frame::FrameImpl::GetViewMatrix() const
 	{
 		return Top()->m_view;
 	}
 
-	const Math::mat4& Frame::FrameImpl::GetProjectionMatrix()
+	const Math::mat4& Frame::FrameImpl::GetProjectionMatrix() const
 	{
 		return Top()->m_projection;
 	}
 
-	const Math::vec4& Frame::FrameImpl::GetDiffuseColor()
+	const Math::vec4& Frame::FrameImpl::GetDiffuseColor() const
 	{
 		return Top()->m_diffuse_color;
 	}
 
-	const Texture2D* Frame::FrameImpl::GetDiffuseMap0()
+	const Texture2D* Frame::FrameImpl::GetDiffuseMap0() const
 	{
 		return Top()->m_diffuse_map_0;
 	}
 
-	const Texture2D* Frame::FrameImpl::GetDiffuseMap1()
+	const Texture2D* Frame::FrameImpl::GetDiffuseMap1() const
 	{
 		return Top()->m_diffuse_map_1;
 	}
 
-	const Math::mat4& Frame::FrameImpl::GetBoneMatrix(int bone_index)
+	const Math::mat4& Frame::FrameImpl::GetBoneMatrix(int bone_index) const
 	{
 		return Top()->m_bone_matrix[bone_index];
 	}
 
-	const Math::vec4& Frame::FrameImpl::GetSpecularColor()
+	const Math::vec4& Frame::FrameImpl::GetSpecularColor() const
 	{
 		return Top()->m_specular_color;
 	}
 
-	const Texture2D* Frame::FrameImpl::GetSpecularMap()
+	const Texture2D* Frame::FrameImpl::GetSpecularMap() const
 	{
 		return Top()->m_specular_map;
 	}
 
-	const Texture2D* Frame::FrameImpl::GetBumpMap()
+	const Texture2D* Frame::FrameImpl::GetBumpMap() const
 	{
 		return Top()->m_normal_map;
+	}
+
+	const Math::ClipSpace& Frame::FrameImpl::GetClipSpace() const
+	{
+		return Top()->m_clip_space;
+	}
+
+	void Frame::FrameImpl::EnableBlending(bool value)
+	{
+		Top()->m_blending = value;
+	}
+
+	void Frame::FrameImpl::EnableDepthTest(bool value)
+	{
+		Top()->m_depth_test = value;
+	}
+
+	
+	//void Frame::FrameImpl::EnableSpecularShading(bool value)
+	//{
+	//	Top()->m_enable_specular_shading = value;
+	//}
+
+	//void Frame::FrameImpl::EnableBumpMapping(bool value)
+	//{
+	//	Top()->m_enable_bump_mapping = value;
+	//}
+		
+	//void Frame::FrameImpl::EnableDiffuseShading(bool value)
+	//{
+	//	Top()->m_enable_diffuse_shading = value;
+	//}
+
+	//void Frame::FrameImpl::EnableSkinning(bool value)
+	//{
+	//	Top()->m_enable_skinning = value;
+	//}
+
+	void Frame::FrameImpl::EnableWireframe(bool value)
+	{
+		Top()->m_enable_wireframe = value;
+	}
+
+	void Frame::FrameImpl::EnableTerrainRendering(bool value)
+	{
+		Top()->m_enable_terrain = value;
+	}
+
+	void Frame::FrameImpl::EnableLighting(bool value)
+	{
+		Top()->m_enable_lighting = value;
+	}
+
+	void Frame::FrameImpl::EnableTexturing(bool value)
+	{
+		Top()->m_enable_texture = value;
+	}
+
+	void Frame::FrameImpl::SetAmbientColor(float value)
+	{
+		Top()->m_ambient_color = value;
+	}
+	
+	void Frame::FrameImpl::SetClipSpace(const Math::ClipSpace& value)
+	{
+		Top()->m_clip_space = value;
+	}
+	
+	void Frame::FrameImpl::SetHeightMap(const Texture2D* value)
+	{
+		Top()->m_height_map = value;
+	}
+
+	void Frame::FrameImpl::SetLineWidth(float value)
+	{
+		Top()->m_line_width = value;
+	}
+
+	void Frame::FrameImpl::SetPointSize(float value)
+	{
+		Top()->m_point_size = value;
+	}
+
+	void Frame::FrameImpl::SetTextureMatrix(const Math::mat4& value)
+	{
+		Top()->m_texture_matrix = value;
+	}
+	
+	void Frame::FrameImpl::SetLocalMatrix(const Math::mat4& value)
+	{
+		Top()->m_local = value;
+	}
+
+	void Frame::FrameImpl::SetSpecularFactor(float value)
+	{
+		Top()->m_specular_factor = value;
 	}
 
 	Frame::Frame()
 		: impl(new FrameImpl)
 	{}
+
+	Frame::~Frame()
+	{
+		delete impl;
+		impl = nullptr;
+	}
 
 	void Frame::BeginRendering()
 	{
@@ -274,73 +400,168 @@ namespace GPU
 		impl->SetBumpMap(value);
 	}
 
-	void Frame::EnableBumpMapping(bool value)
-	{
-		impl->EnableBumpMapping(value);
-	}
+	//void Frame::EnableBumpMapping(bool value)
+	//{
+	//	impl->EnableBumpMapping(value);
+	//}
 
 	void Frame::CastShadows(bool value)
 	{
 		impl->CastShadows(value);
 	}
 
-	void Frame::ReceiveShadow(bool value)
+	void Frame::ReceiveShadow(bool value) 
 	{
 		impl->ReceiveShadow(value);
 	}
 
-	void Frame::EndRendering()
+	void Frame::EndRendering() 
 	{
 		impl->EndRendering();
 	}
 
-	const Math::mat4& Frame::GetWorldMatrix()
+	const Math::mat4& Frame::GetWorldMatrix() const
 	{
 		return impl->GetWorldMatrix();
 	}
 
-	const Math::mat4& Frame::GetViewMatrix()
+	const Math::mat4& Frame::GetViewMatrix() const
 	{
 		return impl->GetViewMatrix();
 	}
 
-	const Math::mat4& Frame::GetProjectionMatrix()
+	const Math::mat4& Frame::GetProjectionMatrix() const
 	{
 		return impl->GetProjectionMatrix();
 	}
 
-	const Math::vec4& Frame::GetDiffuseColor()
+	const Math::vec4& Frame::GetDiffuseColor() const
 	{
 		return impl->GetDiffuseColor();
 	}
 
-	const Texture2D* Frame::GetDiffuseMap0()
+	const Texture2D* Frame::GetDiffuseMap0() const
 	{
 		return impl->GetDiffuseMap0();
 	}
 
-	const Texture2D* Frame::GetDiffuseMap1()
-	{
+	const Texture2D* Frame::GetDiffuseMap1() const
+	{ 
 		return impl->GetDiffuseMap1();
 	}
 	
-	const Math::mat4& Frame::GetBoneMatrix(int bone_index)
+	const Math::mat4& Frame::GetBoneMatrix(int bone_index) const
 	{
 		return impl->GetBoneMatrix(bone_index);
 	}
 
-	const Math::vec4& Frame::GetSpecularColor()
+	const Math::vec4& Frame::GetSpecularColor() const
 	{
 		return impl->GetSpecularColor();
 	}
 
-	const Texture2D* Frame::GetSpecularMap()
+	const Texture2D* Frame::GetSpecularMap() const
 	{
 		return impl->GetSpecularMap();
 	}
 
-	const Texture2D* Frame::GetBumpMap()
+	const Texture2D* Frame::GetBumpMap() const
 	{
 		return impl->GetBumpMap();
+	}
+
+	const Math::ClipSpace& Frame::GetClipSpace() const
+	{
+		return impl->GetClipSpace();
+	}
+
+	void Frame::EnableBlending(bool value)
+	{
+		impl->EnableBlending(value);
+	}
+
+	void Frame::EnableDepthTest(bool value)
+	{
+		impl->EnableDepthTest(value);
+	}
+
+	//void Frame::EnableSpecularShading(bool value)
+	//{
+	//	impl->EnableSpecularShading(value);
+	//}
+
+	void Frame::EnableBumpMapping(bool value)
+	{
+		impl->EnableBumpMapping(value);
+	}
+
+	//void Frame::EnableDiffuseShading(bool value)
+	//{
+	//	impl->EnableDiffuseShading(value);
+	//}
+
+	//void Frame::EnableSkinning(bool value)
+	//{
+	//	impl->EnableSkinning(value);
+	//}
+
+	void Frame::EnableWireframe(bool value)
+	{
+		impl->EnableWireframe(value);
+	}
+
+	void Frame::EnableTerrainRendering(bool value)
+	{
+		impl->EnableTerrainRendering(value);
+	}
+
+	void Frame::EnableLighting(bool value)
+	{
+		impl->EnableTerrainRendering(value);
+	}
+
+	void Frame::EnableTexturing(bool value)
+	{
+		impl->EnableTexturing(value);
+	}
+
+	void Frame::SetAmbientColor(float value)
+	{
+		impl->SetAmbientColor(value);
+	}
+
+	void Frame::SetClipSpace(const Math::ClipSpace& value)
+	{
+		impl->SetClipSpace(value);
+	}
+
+	void Frame::SetHeightMap(const Texture2D* value)
+	{
+		impl->SetHeightMap(value);
+	}
+	
+	void Frame::SetLineWidth(float value)
+	{
+		impl->SetLineWidth(value);
+	}
+
+	void Frame::SetPointSize(float value)
+	{
+		impl->SetPointSize(value);
+	}
+	
+	void Frame::SetTextureMatrix(const Math::mat4& value)
+	{
+		impl->SetTextureMatrix(value);
+	}
+	
+	void Frame::SetLocalMatrix(const Math::mat4& value)
+	{
+		impl->SetLocalMatrix(value);
+	}
+
+	void Frame::SetSpecularFactor(float value)
+	{
+		impl->SetSpecularFactor(value);
 	}
 }

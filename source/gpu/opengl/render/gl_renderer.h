@@ -15,12 +15,12 @@ namespace GPU
 		{			
 		public:
 
-			RenderPass(std::vector<Batch*>& batches);
+			RenderPass(std::vector<Batch*> batches);
 			~RenderPass();
 			void Run();
 
 		private:
-			std::vector<Batch*>& m_batches;
+			std::vector<Batch*> m_batches;
 		};
 	}
 }
