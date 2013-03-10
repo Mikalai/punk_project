@@ -26,7 +26,6 @@ namespace GPU
 		Math::mat4 m_local;		
 		Math::mat4 m_projection;
 		Math::mat4 m_view;
-		Math::mat4 m_mesh_matrix_local;
 		//	corresponds to the part of the world matrix of the skin mesh
 		Math::mat4 m_armature_world;
 		Math::mat4 m_bone_world;
@@ -36,7 +35,7 @@ namespace GPU
 		Math::vec4 m_specular_color;
 		float m_specular_factor;		
 		Math::vec3 m_camera_position;
-		Math::mat2 m_texture_matrix;
+		Math::mat4 m_texture_matrix;
 		Math::vec2 m_terran_position;
 		Math::ClipSpace m_clip_space;
 		float m_ambient_color;
@@ -52,7 +51,7 @@ namespace GPU
 		bool m_line_smooth;
 		bool m_multisample;
 		bool m_polygon_smooth;
-		bool m_wireframe;
+		bool m_enable_wireframe;
 		bool m_use_diffuse_texture;
 		bool m_use_text_texture;
 		bool m_enable_shadows;
