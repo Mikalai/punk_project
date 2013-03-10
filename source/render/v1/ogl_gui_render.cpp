@@ -47,7 +47,7 @@ namespace Render
 		m_states.CurrentState()->Get().m_diffuse_slot_0 = 1;
 		m_states.CurrentState()->Get().m_text_slot = 0;
 		m_states.CurrentState()->Get().m_no_diffuse_texture_color = widget->GetBackColor();
-		m_states.CurrentState()->Get().m_texture_matrix = Math::mat2::CreateMirrorX();
+		m_states.CurrentState()->Get().m_texture_matrix = Math::mat4::CreateReflectX();
 		m_states.CurrentState()->Get().m_blending = true;
 		m_states.CurrentState()->Get().m_blend_operation = GPU::CoreState::BLEND_SRC_ONE_MINUS_ALPHA;
 		m_tc->Bind();
