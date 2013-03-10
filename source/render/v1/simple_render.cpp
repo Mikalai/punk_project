@@ -244,25 +244,23 @@ namespace Render
 		bool result = true;
 		m_frame->PushState();
 	
-		auto camera_position = m_frame->GetViewMatrix().TranslationPart();
-		Math::vec2 relative_pos = (node->GetTerrainObserver()->GetTerrainView()->GetPosition() - camera_position.XZ());		
-		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(camera_position.X(), 0, camera_position.Z()));
+		auto camera_position = m_frame->GetViewMatrix().Inversed().TranslationPart();
+		Math::vec2 terrain_position = node->GetTerrainObserver()->GetTerrainView()->GetPosition();
+		Math::vec2 texture_offset(camera_position.X() - terrain_position.X(), camera_position.Z() - terrain_position.Y());
+		/*m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(terrain_position.X(), 0, terrain_position.Y()) * Math::mat4::CreateTranslate(texture_offset.X(), 0, texture_offset.Y()));*/
 
-		//STATE.m_terrain = node->GetTerrainObserver()->GetTerrainView()->GetTerrain();
-		///STATE.m_terrain_observer = node->GetTerrainObserver();
+		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(floor(terrain_position.X()), 0, floor(terrain_position.Y())));
 
 		static Math::vec3 sun(100, 100, 100);
 		static float angle = 0;
 
-		//STATE.m_height_map_slot = 0;
-		/*STATE.m_diffuse_slot_0 = 1;
-		STATE.m_diffuse_slot_1 = 2;
-		STATE.m_normal_slot = 3;*/
-
 		Virtual::TerrainView* view = node->GetTerrainObserver()->GetTerrainView();
 		if (view && view->GetHeightMap()->IsValid())
-		{
+		{			
 			//m_tc = m_tc;
+			//m_frame->SetTextureMatrix(Math::mat4::CreateIdentity());
+			m_frame->SetTextureMatrix(Math::mat4::CreateTranslate(terrain_position.X() / m_grid.GetTotalWidth()
+				, terrain_position.Y() / m_grid.GetTotalHeight(), 0));
 			m_frame->SetHeightMap(view->GetHeightMap());
 			m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
 			m_frame->SetDiffuseMap1(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
@@ -320,11 +318,12 @@ namespace Render
 		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetDiffuseColor(Math::vec4(1,1,1,1));
-		m_frame->SetTextureMatrix(Math::mat2::CreateMirrorX());
+		m_frame->SetTextureMatrix(Math::mat4::CreateReflectX());
 		m_frame->EnableWireframe(false);
 		m_frame->SetDiffuseMap0(texture);
 		m_frame->EnableLighting(false);
 		m_frame->EnableTexturing(true);
+		m_frame->EnableDiffuseShading(true);
 		m_frame->Render(GPU::OpenGL::QuadObject::Instance());
 		m_frame->PopState();
 	}
@@ -346,7 +345,7 @@ namespace Render
 		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetDiffuseColor(Math::vec4(0,0,1,1));
-		m_frame->SetTextureMatrix(Math::mat2::CreateMirrorX());
+		m_frame->SetTextureMatrix(Math::mat4::CreateReflectX());
 		m_frame->SetDiffuseMap0(s.GetTexture());
 		m_frame->EnableTexturing(true);
 		m_frame->EnableLighting(false);
@@ -360,6 +359,7 @@ namespace Render
 		m_time += 0.1f;
 		m_rt->Activate();			
 		m_frame = m_driver->BeginFrame();
+		m_frame->BeginRendering();
 		if (m_scene)
 		{
 			m_frame->SetViewMatrix(m_scene->GetCameraNode()->GetCamera()->GetViewMatrix());
@@ -378,6 +378,7 @@ namespace Render
 			GPU::OpenGL::OpenGLPaintEngine* device = Cast<GPU::OpenGL::OpenGLPaintEngine*>(m_paint_engine);
 			RenderTexturedQuad(0, 0, 1, 1, device->GetRenderTarget()->GetColorBuffer());
 		}
+		m_frame->EndRendering();
 		m_driver->EndFrame(m_frame);
 		m_rt->Deactivate();
 		return true;
@@ -403,7 +404,8 @@ namespace Render
 		m_text = new GPU::OpenGL::TextSurface;
 		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
 		m_gui_render = new GUIRender;		
-		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 5);	}
+		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 2);	
+	}
 
 	//void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture)
 	//{
