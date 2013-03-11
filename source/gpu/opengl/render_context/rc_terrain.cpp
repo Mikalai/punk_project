@@ -50,7 +50,11 @@ namespace GPU
 			SetUniformMatrix3f(uNormalTransform, &normal_matrix[0]);
 
 			if (!pparams.m_lights.empty())
-				SetUniformVector3f(uLightDirection, &pparams.m_lights[0]->GetPosition().Normalized()[0]);
+			{
+				Math::vec3 v(0,1,1);
+				SetUniformVector3f(uLightDirection, &v.Normalized()[0]);
+				//SetUniformVector3f(uLightDirection, &pparams.m_lights[0]->GetPosition().Normalized()[0]);
+			}			
 			else
 			{
 				Math::vec3 v(1,1,0);

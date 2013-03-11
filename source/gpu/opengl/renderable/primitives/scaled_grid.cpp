@@ -8,10 +8,12 @@ namespace GPU
 		//	for terrain width and height supposed to be 1 and nothing else
 		void ScaledGridObject::Cook(float width, float height, unsigned hor_slices, unsigned vert_slices, int levels)
 		{		
-			hor_slices += 1;
-			vert_slices += 1;
-			int vertex_per_cell = (hor_slices+1)*(vert_slices+1);
-			int index_per_cell = 6*hor_slices*vert_slices;
+			int quads_per_cell_x = hor_slices + 1;
+			int quads_per_cell_y = vert_slices + 1;
+			int vertex_per_cell_x = quads_per_cell_x + 1;
+			int vertex_per_cell_y = quads_per_cell_y + 1;
+			int vertex_per_cell = (vertex_per_cell_x)*(vertex_per_cell_y);
+			int index_per_cell = 6*quads_per_cell_x*quads_per_cell_y;
 			//	outter plus interrior
 			int total_cells = 12*levels + 16;
 			int total_vertex_count = total_cells * vertex_per_cell;
@@ -57,9 +59,9 @@ namespace GPU
 						int base_vertex = cur_v;
 
 						//	iterate through each vertex of current cell
-						for (int i = 0; i < (int)vert_slices + 1; i++)
+						for (int i = 0; i != (int)vertex_per_cell_x; i++)
 						{
-							for (int j = 0; j < (int)hor_slices + 1; j++)
+							for (int j = 0; j != (int)vertex_per_cell_y; j++)
 							{
 								//	get access to the current vertex
 								Vertex<VertexType>& cur = v[cur_v];
@@ -68,7 +70,7 @@ namespace GPU
 								//	its position should be adjusted in the shader
 								float w = 0;
 								bool left_vertical = (ix == -2 && j == 0 && (i % 2) != 0);
-								bool right_vertical = (ix == 1 && j == hor_slices && (i % 2) != 0);
+								bool right_vertical = (ix == 1 && j == quads_per_cell_x && (i % 2) != 0);
 
 								//bool left_vertical = (ix == -2 && j == 0);
 								//bool right_vertical = (ix == 1 && j == hor_slices);
@@ -77,7 +79,7 @@ namespace GPU
 									w = -1.0f;	//	y neighbours needed
 								}
 
-								bool top_horizontal = (iy == 1 && i == vert_slices && (j % 2) != 0);
+								bool top_horizontal = (iy == 1 && i == quads_per_cell_y && (j % 2) != 0);
 								bool bottom_horizontal = (iy == -2 && i == 0 && (j % 2) != 0);
 								//bool top_horizontal = (iy == 1 && i == vert_slices);
 								//bool bottom_horizontal = (iy == -2 && i == 0);
@@ -86,8 +88,8 @@ namespace GPU
 									w = 1.0f;	// x neighbours needed
 								}
 
-								float pos_x = k*(width/float(hor_slices)*float(j) + x);
-								float pos_y = k*(height/float(vert_slices)*float(i) + y);
+								float pos_x = k*(width/float(quads_per_cell_x)*float(j) + x);
+								float pos_y = k*(height/float(quads_per_cell_y)*float(i) + y);
 								
 								cur.m_position.Set(
 									pos_x,
@@ -103,23 +105,23 @@ namespace GPU
 								cur.m_texture0.Set(
 									(total_width / 2.0f + pos_x) / total_width,
 									(total_height / 2.0f + pos_y) / total_height,
-									(float)hor_slices, 
-									(float)width);			
+									(float)(double(width) * double(k) / (double)(quads_per_cell_x) / (double)total_width), 
+									(float)total_width);			
 								++cur_v;
 							}
 						}			
 
-						for (int i = 0; i < (int)vert_slices; i++)
+						for (int i = 0; i < (int)quads_per_cell_x; i++)
 						{
-							for (int j = 0; j < (int)hor_slices; j++)
+							for (int j = 0; j < (int)quads_per_cell_y; j++)
 							{
-								index[cur_i++] = base_vertex + i*(hor_slices+1) + j + 0;
-								index[cur_i++] = base_vertex + (i+1)*(hor_slices+1) + j;
-								index[cur_i++] = base_vertex + i*(hor_slices+1) + j + 1;					
+								index[cur_i++] = base_vertex + i*(quads_per_cell_x + 1) + j + 0;
+								index[cur_i++] = base_vertex + (i+1)*(quads_per_cell_x + 1)+ j;
+								index[cur_i++] = base_vertex + i*(quads_per_cell_x + 1) + j + 1;					
 
-								index[cur_i++] = base_vertex + i*(hor_slices+1) + j + 1;
-								index[cur_i++] = base_vertex + (i+1)*(hor_slices+1) + j;
-								index[cur_i++] = base_vertex + (i+1)*(hor_slices+1) + j + 1;
+								index[cur_i++] = base_vertex + i*(quads_per_cell_x + 1) + j + 1;
+								index[cur_i++] = base_vertex + (i+1)*(quads_per_cell_x + 1) + j;
+								index[cur_i++] = base_vertex + (i+1)*(quads_per_cell_x + 1) + j + 1;
 							}
 						}
 					}

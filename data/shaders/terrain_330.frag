@@ -27,7 +27,7 @@ void main()
 	else
 		diffuse = diffuse2;
 
-	float s = max(0, dot(normalize(vec3(uLightDirection)), n));
+	float s = max(0, dot(normalize(vec3(vec3(0,-1,0))), n));
 	diffuse *= s;
 	diffuse.w = 1.0;
 

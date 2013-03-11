@@ -406,13 +406,4 @@ namespace Render
 		m_gui_render = new GUIRender;		
 		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 2);	
 	}
-
-	//void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture)
-	//{
-	//}
-
-	//void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4& color)
-	//{
-	//}
-
 }
