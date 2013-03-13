@@ -42,7 +42,7 @@ public:
 
 		scene = Cast<Scene::SceneGraph*>(Utility::LoadWorld(System::Environment::Instance()->GetModelFolder() + L"cube.pmd"));
 		GetTerrainManager()->Manage(L"test_map");
-		Virtual::FirstPersonCamera* c(new Virtual::FirstPersonCamera);
+		Virtual::Camera* c(new Virtual::Camera);
 		c->SetPosition(Math::vec3(x, 0, y));
 		scene->SetActiveCamera(c);
 
@@ -114,7 +114,7 @@ public:
 		x += 0.001 * (float)(e->x - e->x_prev);
 		y += 0.001 * (float)(e->y - e->y_prev);		
 
-		Virtual::FirstPersonCamera* c = Cast<Virtual::FirstPersonCamera*>(scene->GetCameraNode()->GetCamera());
+		Virtual::Camera* c = Cast<Virtual::Camera*>(scene->GetCameraNode()->GetCamera());
 		c->SetYawRollPitch(x, y, 0);
 	}
 
@@ -158,7 +158,7 @@ public:
 		node->SetWatchTexture(t);
 		updater.Update();
 		render->Render();
-		Virtual::FirstPersonCamera* c = Cast<Virtual::FirstPersonCamera*>(scene->GetCameraNode()->GetCamera());
+		Virtual::Camera* c = Cast<Virtual::Camera*>(scene->GetCameraNode()->GetCamera());
 		bool update = false;
 		float scale = 1;
 		if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
