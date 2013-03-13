@@ -502,9 +502,9 @@
     <ClInclude Include="..\..\..\source\virtual\animation\object_animation.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\object_animation_mixer.h" />
     <ClInclude Include="..\..\..\source\virtual\building.h" />
+    <ClInclude Include="..\..\..\source\virtual\controllers\camera_controller.h" />
     <ClInclude Include="..\..\..\source\virtual\controllers\controllers.h" />
     <ClInclude Include="..\..\..\source\virtual\data\camera.h" />
-    <ClInclude Include="..\..\..\source\virtual\data\cameras\fps_camera.h" />
     <ClInclude Include="..\..\..\source\virtual\data\module.h" />
     <ClInclude Include="..\..\..\source\virtual\data\door.h" />
     <ClInclude Include="..\..\..\source\virtual\data\entity.h" />
@@ -856,8 +856,8 @@
     <ClCompile Include="..\..\..\source\virtual\animation\object_animation.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\object_animation_mixer.cpp" />
     <ClCompile Include="..\..\..\source\virtual\building.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\controllers\camera_controller.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\camera.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\data\cameras\fps_camera.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\entity.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\geometry.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\light.cpp" />

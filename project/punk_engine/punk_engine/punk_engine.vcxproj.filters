@@ -70,9 +70,6 @@
     <Filter Include="virtual\data">
       <UniqueIdentifier>{81443023-d844-4d46-89f4-9d1386d76e9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="virtual\data\cameras">
-      <UniqueIdentifier>{cd2a9afb-72b5-445a-9342-4536595765e5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="virtual\controllers">
       <UniqueIdentifier>{41cac85d-1b4d-4c37-a41a-30f4cbf00354}</UniqueIdentifier>
     </Filter>
@@ -729,9 +726,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\data\camera.h">
       <Filter>virtual\data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\virtual\data\cameras\fps_camera.h">
-      <Filter>virtual\data\cameras</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\motions\static_motion_strategy.h">
       <Filter>virtual\motion</Filter>
@@ -1769,6 +1763,9 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_renderer.h">
       <Filter>gpu\opengl\render</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\virtual\controllers\camera_controller.h">
+      <Filter>virtual\controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2082,9 +2079,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\data\material.cpp">
       <Filter>virtual\data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\virtual\data\cameras\fps_camera.cpp">
-      <Filter>virtual\data\cameras</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\utility\descriptors\animation_desc.cpp">
       <Filter>utility\descriptors</Filter>
@@ -2653,6 +2647,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_renderer.cpp">
       <Filter>gpu\opengl\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\virtual\controllers\camera_controller.cpp">
+      <Filter>virtual\controllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
