@@ -81,11 +81,19 @@ namespace Render
 	}
 
 	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
-	{				
+	{						
+		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
 		m_frame->PushState();
 		m_frame->EnableBumpMapping(true);
-		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
-		GPU::Renderable* mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());		
+		GPU::Renderable* mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
+		if (!mesh)
+		{
+			GPU::OpenGL::StaticMesh* m = new GPU::OpenGL::StaticMesh();
+			m->Cook(node->GetStaticGeometry());
+			node->GetStaticGeometry()->SetGPUBufferCache(m);
+			mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
+		}
+
 		m_frame->Render(mesh);	
 		m_frame->PopState();
 		return true;
@@ -154,8 +162,15 @@ namespace Render
 		m_frame->PushState();
 		auto material = node->GetMaterial();
 		m_frame->SetDiffuseColor(material->GetDiffuseColor());
-		m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_diffuse_texture_cache));
-		m_frame->SetBumpMap(Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_normal_texture_cache));
+		
+		Virtual::Material* m = node->GetMaterial();
+		if (m->GetCache().m_diffuse_texture_cache == nullptr)
+			m->GetCache().m_diffuse_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + m->GetDiffuseMap());
+		if (m->GetCache().m_normal_texture_cache == nullptr)
+			m->GetCache().m_normal_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + m->GetNormalMap());
+
+		m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(m->GetCache().m_diffuse_texture_cache));
+		m_frame->SetBumpMap(Cast<GPU::Texture2D*>(m->GetCache().m_normal_texture_cache));
 		m_frame->SetSpecularColor(material->GetSpecularColor());
 		m_frame->SetSpecularMap(Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_specular_texture_cache));
 		m_frame->SetAmbientColor(material->GetAmbient());
@@ -293,6 +308,8 @@ namespace Render
 		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(position) * Math::mat4::CreateScaling(radius, radius, radius));		
 		m_frame->SetDiffuseColor(color);
 		m_frame->EnableWireframe(true);
+		m_frame->EnableTexturing(false);
+		m_frame->EnableDiffuseShading(true);
 		m_frame->SetLineWidth(5.0f);
 		m_frame->Render(GPU::OpenGL::SphereObject::Instance());
 		m_frame->PopState();
@@ -396,7 +413,7 @@ namespace Render
 		if (m_scene)
 			m_scene->GetRootNode()->Apply(&m_cooker);		
 		m_context = GPU::AbstractRenderPolicy::find(GPU::RC_BUMP_MAPING);
-		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLD_3D);
+		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_3D);
 		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TEXTURED_3D);
 		m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
 		m_skin_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SKINNING);
