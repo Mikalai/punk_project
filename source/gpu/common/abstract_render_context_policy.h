@@ -9,7 +9,7 @@
 namespace GPU
 {
 	enum RenderPolicySet { 
-	RC_SOLD_3D,
+	RC_SOLID_3D,
 	RC_TEXTURED_3D,
 	RC_GUI,
 	RC_TERRAIN,

@@ -45,7 +45,7 @@ namespace GPU
 				m_rt->Init(&props);
 				m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);							
 
-				m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLD_3D);
+				m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_3D);
 				m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
 				m_painter_rc = GPU::AbstractRenderPolicy::find(GPU::RC_PAINTER);
 

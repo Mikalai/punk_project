@@ -104,8 +104,8 @@ namespace GPU
 					{
 						if (state->m_enable_diffuse_shading)
 						{
-							//	skinning-diffuse
-							policy;
+							//	diffuse only
+							policy = AbstractRenderPolicy::find(RC_SOLID_3D);
 						}
 					}
 				}

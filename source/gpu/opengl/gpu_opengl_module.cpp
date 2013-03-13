@@ -9,7 +9,7 @@ namespace GPU
 			AbstractRenderPolicy::add(RenderPolicySet::RC_BUMP_MAPING, new RenderContextBumpMapping());
 			AbstractRenderPolicy::add(RenderPolicySet::RC_GUI, new RenderContextGUI());
 			AbstractRenderPolicy::add(RenderPolicySet::RC_SKINNING, new RenderContextSkinning());
-			AbstractRenderPolicy::add(RenderPolicySet::RC_SOLD_3D, new RenderContextSolid3D());
+			AbstractRenderPolicy::add(RenderPolicySet::RC_SOLID_3D, new RenderContextSolid3D());
 			AbstractRenderPolicy::add(RenderPolicySet::RC_TERRAIN, new RenderContextTerrain());
 			AbstractRenderPolicy::add(RenderPolicySet::RC_TEXTURED_3D, new RenderContextSolidTexture3D());
 			AbstractRenderPolicy::add(RenderPolicySet::RC_PAINTER, new RenderContextPainter());
