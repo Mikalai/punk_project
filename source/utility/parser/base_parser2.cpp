@@ -804,6 +804,13 @@ namespace Utility
 					geometry->SetTextureMeshes(t);
 				}
 				break;
+			case WORD_WORLD_MATRIX:
+				{
+					Math::mat4 m;
+					ParseBlockedMatrix4x4f(buffer, m);
+					geometry->SetWorldOffset(m);
+				}
+				break;
 			default:
 				throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);
 			}
@@ -865,6 +872,13 @@ namespace Utility
 					Virtual::SkinGeometry::BoneWeights b;
 					ParseBonesWeights(buffer, b);
 					geometry->SetBoneWeights(b);
+				}
+				break;
+			case WORD_WORLD_MATRIX:
+				{
+					Math::mat4 m;
+					ParseBlockedMatrix4x4f(buffer, m);
+					geometry->SetWorldOffset(m);
 				}
 				break;
 			default:
@@ -1738,6 +1752,23 @@ namespace Utility
 					Virtual::Action::add(word, action.get());
 					return action.release();
 				}
+			case WORD_STATICMESHTEXT:
+				{
+					System::string word = buffer.ReadWord();
+					std::unique_ptr<Virtual::StaticGeometry> mesh(new Virtual::StaticGeometry);
+					ParseStaticMesh(buffer, mesh.get());
+					Virtual::StaticGeometry::add(word, mesh.get());
+					return mesh.release();
+				}
+				break;
+			case WORD_MATERIALTEXT:
+				{
+					System::string word = buffer.ReadWord();
+					std::unique_ptr<Virtual::Material> material(new Virtual::Material);
+					ParseMaterial(buffer, material.get());
+					Virtual::Material::add(word, material.get());
+					return material.release();
+				}
 			default:
 				throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);
 			}
@@ -1758,7 +1789,7 @@ namespace Utility
 		System::BinaryFile::Load(path, buffer);
 		std::unique_ptr<Scene::SceneGraph> scene(new Scene::SceneGraph);
 		ParseWorld(buffer, scene.get());
-		scene->SetActiveCamera(new Virtual::FirstPersonCamera());
+		scene->SetActiveCamera(new Virtual::Camera());
 		return scene.release();
 	}
 
