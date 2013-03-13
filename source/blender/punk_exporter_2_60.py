@@ -18,7 +18,7 @@ from bpy_extras.io_utils import ExportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty
 from copy import deepcopy
 
-text_offset override #used to print data nice
+text_offset = 0 #used to print data nice
 used_materials = set()
 used_actions = set()
 used_armatures = set()
@@ -132,7 +132,7 @@ def export_world_matrix(f, object):
 #   on the current face
 #   
 def export_normals(f, mesh):
-    if len(mesh.vertices) =override:
+    if len(mesh.vertices) == 0:
         return;
     
     start_block(f, "*normals")
@@ -149,7 +149,7 @@ def export_normals(f, mesh):
 #   applied in the scene
 #
 def export_vertex_position(f, mesh):   
-    if (mesh == None) or (len(mesh.vertices) =override):
+    if (mesh == None) or (len(mesh.vertices) == 0):
         return
     start_block(f, "*vertex_position")    
     #f.write("%d\n" % len(mesh.vertices))
@@ -166,7 +166,7 @@ def export_vertex_position(f, mesh):
 #
 def export_faces(f, mesh):
     
-    if (mesh == None) or len(mesh.polygons) =override:
+    if (mesh == None) or len(mesh.polygons) == 0:
         return
     
     start_block(f, "*faces")
@@ -181,7 +181,7 @@ def export_faces(f, mesh):
 #   eports face normals
 #
 def export_face_normals(f, mesh):
-    if (mesh == None) or len(mesh.polygons) =override:
+    if (mesh == None) or len(mesh.polygons) == 0:
         return
     start_block(f, "*face_normals")
     for face in mesh.polygons:
@@ -194,7 +194,7 @@ def export_face_normals(f, mesh):
 #   export bones weights
 #
 def export_bones_weight(f, data):    
-    if len(vertex_groups) =override:
+    if len(vertex_groups) == 0:
         return
     
     start_block(f, "*bones_weight")    
@@ -242,10 +242,10 @@ def export_parent_inverse_matrix(f, object):
 #
 def export_tex_coords(f, mesh):
     
-    if (mesh == None) or (len(mesh.uv_textures) =override):
+    if (mesh == None) or (len(mesh.uv_textures) == 0):
         return
 
-    index override;
+    index = 0;
     for texture in mesh.uv_layers:
         start_block(f, "*texture")    
         start_block(f, "*name")
@@ -273,7 +273,7 @@ def export_tex_coords(f, mesh):
 #   export mesh material
 #
 def export_mesh_material(f, mesh):
-    if (mesh == None) or (len(mesh.materials) =override):
+    if (mesh == None) or (len(mesh.materials) == 0):
         return
     start_block(f, "*material_ref")
     make_offset(f)
@@ -315,7 +315,7 @@ def export_collision_mesh(f, object):
 #
 def export_bones(f):
     armatures = bpy.data.armatures
-    if len(armatures) =override:
+    if len(armatures) == 0:
         return
     start_block(f, "*armatures")
     for armature in armatures:
@@ -328,7 +328,7 @@ def export_bones(f):
 def export_armature(object):
     global text_offset
     old = text_offset 
-    text_offset override
+    text_offset = 0
     
     file = path + "\\" + object.data.name + ".armature"
     print(file)
@@ -371,9 +371,9 @@ def export_action_ref(f, object):
 #   export all animation
 #    
 def export_actions(f):    
-    if len(used_actions) =override:
+    if len(used_actions) == 0:
         return
-    if len(bpy.data.actions) =override:
+    if len(bpy.data.actions) == 0:
         return    
     
     start_block(f, "*actions")
@@ -390,7 +390,7 @@ def export_actions(f):
 def export_action(f, action):
     global text_offset
     old = text_offset 
-    text_offset override
+    text_offset = 0
     
     file = path + "\\" + action.name + ".action"
     
@@ -494,14 +494,57 @@ def export_action(f, action):
     
     text_offset = old
     return
- 
+
+def export_material(f, m):
+    global text_offset
+    old = text_offset 
+    text_offset = 0
+    
+    file = path + "\\" + m.name + ".material"
+    print(file)
+    f = open(file, "w")
+    f.write("MATERIALTEXT\n")
+    start_block(f, m.name)
+    export_float(f, "*alpha", m.alpha)
+    export_float(f, "*ambient", m.ambient)
+    export_float(f, "*darkness", m.darkness)
+    export_vec3(f, "*diffuse_color", m.diffuse_color)
+    export_float(f, "*diffuse_fresnel", m.diffuse_fresnel)
+    export_float(f, "*diffuse_fresnel_factor", m.diffuse_fresnel_factor)
+    export_float(f, "*diffuse_intensity", m.diffuse_intensity)
+    export_float(f, "*emit", m.emit)
+    export_vec3(f, "*mirror_color", m.mirror_color)
+    export_float(f, "*roughness", m.roughness)
+    export_float(f, "*specular_alpha", m.specular_alpha)
+    export_vec3(f, "*specular_color", m.specular_color)
+    export_float(f, "*specular_hardness", m.specular_hardness)
+    export_float(f, "*specular_intensity", m.specular_intensity)
+    export_float(f, "*specular_ior", m.specular_ior)
+    export_float(f, "*specular_slope", m.specular_slope)
+    export_float(f, "*translucency", m.translucency)
+
+    try:            
+        export_string(f, "*diffuse_map", m.texture_slots[0].texture.image.name)   
+    except:
+        print("No texture found")
+        
+    try:
+        export_string(f, "*normal_map", m.texture_slots[1].texture.image.name)
+    except:
+            print("No texture found")
+                        
+    end_block(f)  # *material
+    f.close()        
+    
+    text_offset = old  
+    return 
 
 #   export all materials
 def export_materials(f, materials):
-    if len(used_materials) =override:
+    if len(used_materials) == 0:
         return
         
-    if (len(materials) =override):
+    if (len(materials) == 0):
         return
     
     start_block(f, "*materials")
@@ -541,6 +584,30 @@ def export_materials(f, materials):
     end_block(f)    #   *materials
     return
 
+def export_static_mesh(f, object):
+    global text_offset
+    old = text_offset 
+    text_offset = 0
+    
+    file = path + "\\" + object.data.name + ".static"
+    print(file)
+    f = open(file, "w")
+    f.write("STATICMESHTEXT\n")
+    mesh = object.data
+    start_block(f, mesh.name)
+    export_world_matrix(f, object)
+    export_vertex_position(f, mesh)
+    export_normals(f, mesh)
+    export_faces(f, mesh)
+    export_tex_coords(f, mesh)
+    if len(mesh.materials) != 0:
+        export_material(f, bpy.data.materials[mesh.materials[0].name])        
+    end_block(f)    #   skin_mesh        
+    f.close()        
+    
+    text_offset = old    
+    return
+    
 def export_static_meshes(f, meshes): 
     start_block(f, "*static_meshes")
     for name in used_static_meshes:
@@ -551,10 +618,33 @@ def export_static_meshes(f, meshes):
         export_normals(f, data)
         export_faces(f, data)
         export_tex_coords(f, data)
-        end_block(f)    #   static_mesh        
+        end_block(f)    #   static_mesh
     end_block(f)    #   *static_meshes
     return
 
+def export_skin_mesh(object):
+    global text_offset
+    old = text_offset 
+    text_offset = 0
+    
+    file = path + "\\" + object.data.name + ".skin"
+    print(file)
+    f = open(file, "w")
+    f.write("SKINMESHTEXT\n")
+    skin = object.data
+    start_block(f, skin.name)
+    export_world_matrix(f, object)
+    export_vertex_position(f, skin)
+    export_normals(f, skin)
+    export_faces(f, skin)
+    export_tex_coords(f, skin)
+    export_bones_weight(f, skin)
+    end_block(f)    #   skin_mesh        
+    f.close()        
+    
+    text_offset = old
+    return
+        
 def export_skin_meshes(f, skins):     
     start_block(f, "*skin_meshes")
     for name in used_skin_meshes:
@@ -646,7 +736,6 @@ def export_point_lamp(f, lamp):
     export_vec3(f, "*color", lamp.color)
     export_float(f, "*distance", lamp.distance)
     export_float(f, "*energy", lamp.energy)
-#    export_string(f, "*fallof_type", lamp.falloff_type)
     export_float(f, "*linear_attenuation", lamp.linear_attenuation)
     export_float(f, "*quadratic_attenuation", lamp.quadratic_attenuation)
     end_block(f);
@@ -702,7 +791,7 @@ def export_static_mesh_node(f, object):
     if object.data == None:
         return
     mesh = object.data
-    if not((mesh == None) or (len(mesh.materials) =override)):
+    if not((mesh == None) or (len(mesh.materials) == 0)):
         start_block(f, "*material_node")
         used_materials.add(mesh.materials[0].name)
         export_string(f, "*name", mesh.materials[0].name)
@@ -716,9 +805,10 @@ def export_static_mesh_node(f, object):
         start_block(f, "*static_mesh_node")
         export_string(f, "*name", object.data.name)
         used_static_meshes.add(object.data.name)
+        export_static_mesh(f, object)
         end_block(f)    #   static_mesh_node        
     end_block(f) #  transform
-    if not((mesh == None) or (len(mesh.materials) =override)):
+    if not((mesh == None) or (len(mesh.materials) == 0)):
         end_block(f)    #   material
     return
 
@@ -726,7 +816,7 @@ def export_skin_mesh_node(f, object):
     if object.data == None:
         return
     mesh = object.data
-    if not((mesh == None) or (len(mesh.materials) =override)):
+    if not((mesh == None) or (len(mesh.materials) == 0)):
         start_block(f, "*material_node")
         used_materials.add(mesh.materials[0].name)
         export_string(f, "*name", mesh.materials[0].name)
@@ -741,9 +831,10 @@ def export_skin_mesh_node(f, object):
         export_string(f, "*name", object.data.name)
         vertex_groups[object.data.name] = object.vertex_groups
         used_skin_meshes.add(object.data.name)
+        export_skin_mesh(object)
         end_block(f)    #   *skin_mesh_node
     end_block(f) #  transform
-    if not((mesh == None) or (len(mesh.materials) =override)):
+    if not((mesh == None) or (len(mesh.materials) == 0)):
         end_block(f)    #   material
     return
 
@@ -843,7 +934,7 @@ def export_object(f, object):
         export_location_indoor(f, object)
     elif object.punk_entity_type == "TRANSFORM":
         export_transform(f, object)
-    elif object.punk_entity_type == "ARMATURE":
+    elif object.punk_entity_type == "HUMAN_ARMATURE":
         export_armature_node(f, object)
     elif object.punk_entity_type == "LIGHT":
         export_light(f, object)
