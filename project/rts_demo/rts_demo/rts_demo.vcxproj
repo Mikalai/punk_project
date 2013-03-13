@@ -10,6 +10,30 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\building.h" />
+    <ClInclude Include="..\source\construction.h" />
+    <ClInclude Include="..\source\dynamic.h" />
+    <ClInclude Include="..\source\game_entity.h" />
+    <ClInclude Include="..\source\house.h" />
+    <ClInclude Include="..\source\house_scheme.h" />
+    <ClInclude Include="..\source\ibuilder.h" />
+    <ClInclude Include="..\source\structure.h" />
+    <ClInclude Include="..\source\structure_scheme.h" />
+    <ClInclude Include="..\source\worker.h" />
+    <ClInclude Include="..\source\world.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\building.cpp" />
+    <ClCompile Include="..\source\construction.cpp" />
+    <ClCompile Include="..\source\house.cpp" />
+    <ClCompile Include="..\source\house_scheme.cpp" />
+    <ClCompile Include="..\source\main.cpp" />
+    <ClCompile Include="..\source\structure.cpp" />
+    <ClCompile Include="..\source\structure_scheme.cpp" />
+    <ClCompile Include="..\source\worker.cpp" />
+    <ClCompile Include="..\source\world.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5F5FA22D-F016-4DC1-BF92-F9575E2FA581}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -81,9 +105,6 @@
       <AdditionalDependencies>punk_engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\source\main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

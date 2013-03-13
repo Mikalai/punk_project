@@ -1,5 +1,5 @@
 #include "../../../source/punk_engine.h"
-
+#include "world.h"
 
 class TerrainTest : public Punk::Application
 {
@@ -11,81 +11,80 @@ public:
 		, m_left_down(false)
 	{}
 
-	void AddNewCube()
-	{
-		auto c = scene->GetCameraNode()->GetCamera()->GetPosition();
-		Scene::TransformNode* trans_node = new Scene::TransformNode;
-		{		
-			m_cube = new Virtual::Cube();
-			m_cube->EnterPhysicalSimulator(GetSimulator());
-			Scene::StaticMeshNode* mesh_node = new Scene::StaticMeshNode();
-			Virtual::StaticGeometry* geom = new Virtual::StaticGeometry;
-			auto gpu_cube = new GPU::OpenGL::CubeObject;
-			gpu_cube->Cook(1,1,1);
-			geom->SetGPUBufferCache(gpu_cube); 
-			mesh_node->SetGeometry(geom);
-			m_cube->SetTransform(Math::mat4::CreateTranslate(c.X(), c.Y(), c.Z()));
+	//void AddNewCube()
+	//{
+	//	auto c = scene->GetCameraNode()->GetCamera()->GetPosition();
+	//	Scene::TransformNode* trans_node = new Scene::TransformNode;
+	//	{		
+	//		m_cube = new Virtual::Cube();
+	//		m_cube->EnterPhysicalSimulator(GetSimulator());
+	//		Scene::StaticMeshNode* mesh_node = new Scene::StaticMeshNode();
+	//		Virtual::StaticGeometry* geom = new Virtual::StaticGeometry;
+	//		auto gpu_cube = new GPU::OpenGL::CubeObject;
+	//		gpu_cube->Cook(1,1,1);
+	//		geom->SetGPUBufferCache(gpu_cube); 
+	//		mesh_node->SetGeometry(geom);
+	//		m_cube->SetTransform(Math::mat4::CreateTranslate(c.X(), c.Y(), c.Z()));
 
-			trans_node->Add(mesh_node);
-			trans_node->SetUserData(m_cube);
-		}		
-		auto root = scene->GetRootNode();
-		root->Add(trans_node);
-	}
+	//		trans_node->Add(mesh_node);
+	//		trans_node->SetUserData(m_cube);
+	//	}		
+	//	auto root = scene->GetRootNode();
+	//	root->Add(trans_node);
+	//}
 
 	virtual void Init(const Punk::Config& value) override
 	{
 		Punk::Application::Init(value);
 
-		scene = Cast<Scene::SceneGraph*>(Utility::LoadWorld(System::Environment::Instance()->GetModelFolder() + L"cube.pmd"));
-		GetTerrainManager()->Manage(L"test_map");
-		Virtual::FirstPersonCamera* c(new Virtual::FirstPersonCamera);
-		c->SetPosition(Math::vec3(x, 0, y));		
-		scene->SetActiveCamera(c);
-
-		observer = GetTerrainManager()->CreateTerrainObserver(Math::vec3(c->GetPosition()));
-		node = new Scene::TextureViewNode;			
-		Scene::Node* root = scene->GetRootNode();
-		node->SetSize(0, 0.5, 0.5, 0.5);
-		widget = new GUI::Widget(0, 0, 0.5, 0.5, L"Hello World!!!");
-
-		GetGUIManager()->AddRootWidget(widget);
-
-
-		render = new Render::SimpleRender(GetVideoDriver());
-		render->SetGUIHud(widget);
-		//render->SetPainter(GetPainter());
-
-		//GetPainter()->DrawLine(Math::vec2(-1, -1), Math::vec2(1, 1));
-
-		terrain_node = new Scene::TerrainNode();
-		terrain_node->SetTerrainObserver(observer);
-		root->Add(terrain_node);
-		root->Add(node);		
-		Render::MeshCooker cooker;
-		cooker.Visit(scene->GetRootNode());
-		render->SetScene(scene);
-		updater.SetScene(scene);	
-
-		AddNewCube();
-
-		System::AsyncLoader::Instance()->MainThreadProc(1);		
-		t = new GPU::Texture2D;
-		unsigned char data[256*256];
-		memset(data, 0xFF, 256*256);
-		t->Create(64, 64, ImageModule::IMAGE_FORMAT_RGBA, data, false);
-		t = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png", true);		
+		m_world = new World(this);		
+		//
+		////		scene = Cast<Scene::SceneGraph*>(Utility::LoadWorld(System::Environment::Instance()->GetModelFolder() + L"cube.pmd"));
+		//		Virtual::FirstPersonCamera* c(new Virtual::FirstPersonCamera);
+		//		c->SetPosition(Math::vec3(x, 0, y));		
+		////		scene->SetActiveCamera(c);
+		//
+		////		node = new Scene::TextureViewNode;			
+		//	//	Scene::Node* root = scene->GetRootNode();
+		//	//	node->SetSize(0, 0.5, 0.5, 0.5);
+		////		widget = new GUI::Widget(0, 0, 0.5, 0.5, L"Hello World!!!");
+		//
+		//	//	GetGUIManager()->AddRootWidget(widget);
+		//
+		//
+		////		render = new Render::SimpleRender(GetVideoDriver());
+		////		render->SetGUIHud(widget);
+		//		//render->SetPainter(GetPainter());
+		//
+		//		//GetPainter()->DrawLine(Math::vec2(-1, -1), Math::vec2(1, 1));
+		//
+		////		terrain_node = new Scene::TerrainNode();
+		////		terrain_node->SetTerrainObserver(observer);
+		////		root->Add(node);		
+		//		Render::MeshCooker cooker;
+		//		cooker.Visit(scene->GetRootNode());
+		//	//	render->SetScene(scene);
+		//		updater.SetScene(scene);	
+		//
+		//	//	AddNewCube();
+		//
+		//		System::AsyncLoader::Instance()->MainThreadProc(1);		
+		//		t = new GPU::Texture2D;
+		//		unsigned char data[256*256];
+		//		memset(data, 0xFF, 256*256);
+		//		t->Create(64, 64, ImageModule::IMAGE_FORMAT_RGBA, data, false);
+		//		t = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"checker2.png", true);		
 	}
 
 	virtual ~TerrainTest()
 	{
 		try
 		{
-			safe_delete(m_cube);
-			safe_delete(t);
-			safe_delete(observer);
-			safe_delete(render);		
-			safe_delete(scene);
+			//			safe_delete(m_cube);
+			//		safe_delete(t);
+			//	safe_delete(render);		
+			//safe_delete(scene);
+			safe_delete(m_world);
 		}
 		catch(...)
 		{
@@ -111,7 +110,7 @@ public:
 		x += 0.001 * (float)(e->x - e->x_prev);
 		y += 0.001 * (float)(e->y - e->y_prev);		
 
-		Virtual::FirstPersonCamera* c = Cast<Virtual::FirstPersonCamera*>(scene->GetCameraNode()->GetCamera());
+		Virtual::Camera* c = Cast<Virtual::Camera*>(m_world->GetCamera());
 		c->SetYawRollPitch(x, y, 0);
 	}
 
@@ -122,17 +121,17 @@ public:
 		{
 		case System::PUNK_KEY_F5:
 			{
-				std::ofstream stream("scene.save", std::ios_base::binary);
-				scene->Save(stream);
+				//std::ofstream stream("scene.save", std::ios_base::binary);
+				//scene->Save(stream);
 			}
 			break;
 		case System::PUNK_KEY_F9:
 			{			
-				safe_delete(scene);
-				scene = new Scene::SceneGraph;
-				std::ifstream stream("scene.save", std::ios_base::binary);
-				scene->Load(stream);
-				render->SetScene(scene);
+				//safe_delete(scene);
+				//scene = new Scene::SceneGraph;
+				//std::ifstream stream("scene.save", std::ios_base::binary);
+				//scene->Load(stream);
+				//render->SetScene(scene);
 			}
 		case System::PUNK_KEY_A:
 			{
@@ -140,7 +139,7 @@ public:
 			break;
 		case System::PUNK_KEY_SPACE:
 			{
-				AddNewCube();
+				//				AddNewCube();
 			}
 			break;
 		default:
@@ -152,10 +151,13 @@ public:
 	{	
 		Punk::Application::OnIdleEvent(e);
 		System::AsyncLoader::Instance()->MainThreadProc(1);
-		node->SetWatchTexture(observer->GetTerrainView()->GetHeightMap());
-		updater.Update();
-		render->Render();
-		Virtual::FirstPersonCamera* c = Cast<Virtual::FirstPersonCamera*>(scene->GetCameraNode()->GetCamera());
+		m_world->Update(e->elapsed_time_s);
+		m_world->Draw();
+		//		node->SetWatchTexture(observer->GetTerrainView()->GetHeightMap());
+		//		updater.Update();
+		//		render->Render();
+
+		Virtual::Camera* c = Cast<Virtual::Camera*>(m_world->GetCamera());
 		bool update = false;
 		float scale = 0.5;
 		if (System::Keyboard::Instance()->GetKeyState(System::PUNK_KEY_A))
@@ -180,26 +182,20 @@ public:
 		}
 
 		if (update)
-		{
+		{			
 			System::string text = System::string::Format(L"X: %f; Z: %f, Height: %f", c->GetPosition().X(), c->GetPosition().Z(), c->GetPosition().Y());
-			widget->SetText(text);
-			observer->SetPosition(c->GetPosition());			
+			//widget->SetText(text);
+			m_world->GetTerrainObserver()->SetPosition(c->GetPosition());
+			//			observer->SetPosition(c->GetPosition());			
 		}
 	}
 
 private:
-	GPU::Texture2D* t;
-	Scene::SceneGraph* scene;
-	Virtual::TerrainObserver* observer;
 	bool m_left_down;
-	Scene::TextureViewNode* node;
-	Scene::TerrainNode* terrain_node;
 	Scene::BoundingVolumeUpdater updater;
-	Render::SimpleRender* render;
-	GUI::Widget* widget;
 	float x;
 	float y;
-	Virtual::Cube* m_cube;
+	World* m_world;
 };
 
 //TEST_METHOD(TerrainManagerTest)
@@ -212,10 +208,20 @@ private:
 
 int main()
 {
-	TerrainTest app;
-	Punk::Config config;	
-	app.Init(config);		
-	
-	app.Run();
-	System::AsyncLoader::Destroy();
+	try
+	{
+		TerrainTest app;
+		Punk::Config config;	
+		app.Init(config);			
+		app.Run();
+		System::AsyncLoader::Destroy();
+	}
+	catch(System::PunkException& e)
+	{
+		out_error() << e.ToString() << std::endl;
+	}
+	catch(...)
+	{
+		out_error() << "Fuck" << std::endl;
+	}
 }
