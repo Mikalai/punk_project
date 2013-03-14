@@ -36,7 +36,7 @@ namespace Math
 		//m_planes[PLANE_TOP].Set(vec3(0, -e/sqrt(e*e+a*a), -1/sqrt(e*e+a*a)), 0);
 	}
 
-	void Frustum::Set(float left, float right, float top, float bottom, float znear, float zfar)
+	/*void Frustum::Set(float left, float right, float top, float bottom, float znear, float zfar)
 	{
 		m_left = left;
 		m_right = right;
@@ -45,21 +45,21 @@ namespace Math
 		UpdateMatrix();
 		CalculatePlanes();
 	}
-
+*/
 	//void Frustum::Set(float fov, float width, float height, float znear, float zfar)
 	//{
 	//	Set(fov, height/width, znear, zfar);
 	//}
 
-	//void Frustum::Set(float fov, float aspect, float znear, float zfar)
-	//{
-	//	m_fov = fov;
-	//	m_aspect = aspect;
-	//	m_znear = znear;
-	//	m_zfar = zfar;
-	//	UpdateMatrix();
-	//	CalculatePlanes();
-	//}
+	void Frustum::Set(float fov, float aspect, float znear, float zfar)
+	{
+		m_fov = fov;
+		m_aspect = aspect;
+		m_znear = znear;
+		m_zfar = zfar;
+		UpdateMatrix();
+		CalculatePlanes();
+	}
 
 	const mat4& Frustum::GetProjectionMatrix() const
 	{
@@ -79,7 +79,7 @@ namespace Math
 
 	void Frustum::UpdateMatrix()
 	{
-		m_projection_matrix = mat4::CreatePerspectiveProjection(m_left, m_right, m_top, m_bottom, m_znear, m_zfar);
+		m_projection_matrix = mat4::CreatePerspectiveProjection(m_fov, m_aspect, m_znear, m_zfar);
 	}
 
 	bool Frustum::Save(std::ostream& stream) const

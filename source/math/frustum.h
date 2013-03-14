@@ -20,12 +20,17 @@ namespace Math
 
 		Frustum();
 
-		void Set(float left, float right, float top, float bottom, float znear, float zfar);
+		//void Set(float left, float right, float top, float bottom, float znear, float zfar);
 		//void Set(float fov, float width, float height, float near, float far);
-		//void Set(float fov, float aspect, float near, float far);
+		void Set(float fov, float aspect, float near, float far);
 		const mat4& GetProjectionMatrix() const;
 		const ClipSpace ToClipSpace() const;
 
+		float GetFOV() const { return m_fov; }
+		float GetAspectRation() const { return m_aspect; }
+		float GetNearPlane() const { return m_znear; }
+		float GetFarPlane() const { return m_zfar; }
+		
 		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 
