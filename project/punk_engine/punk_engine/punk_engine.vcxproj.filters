@@ -1679,9 +1679,6 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_painter.h">
       <Filter>gpu\opengl\render_context</Filter>
     </ClInclude>
-    <ClInclude Include="Header.h">
-      <Filter>math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\math\rect.h">
       <Filter>math</Filter>
     </ClInclude>
@@ -1765,6 +1762,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\controllers\camera_controller.h">
       <Filter>virtual\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\scene\collider.h">
+      <Filter>scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2650,6 +2650,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\controllers\camera_controller.cpp">
       <Filter>virtual\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\scene\collider.cpp">
+      <Filter>scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

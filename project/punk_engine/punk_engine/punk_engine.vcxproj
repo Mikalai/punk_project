@@ -314,6 +314,7 @@
     <ClInclude Include="..\..\..\source\scene\bone_node.h" />
     <ClInclude Include="..\..\..\source\scene\bounding_volume_updater.h" />
     <ClInclude Include="..\..\..\source\scene\camera_node.h" />
+    <ClInclude Include="..\..\..\source\scene\collider.h" />
     <ClInclude Include="..\..\..\source\scene\default_visitor.h" />
     <ClInclude Include="..\..\..\source\scene\geometry_node.h" />
     <ClInclude Include="..\..\..\source\scene\interface.h" />
@@ -565,7 +566,6 @@
     <ClInclude Include="..\..\..\source\virtual\texture_faces.h" />
     <ClInclude Include="..\..\..\source\virtual\track_pos.h" />
     <ClInclude Include="..\..\..\source\virtual\module.h" />
-    <ClInclude Include="Header.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\application\application.cpp">
@@ -754,6 +754,7 @@
     <ClCompile Include="..\..\..\source\scene\bone_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\bounding_volume_updater.cpp" />
     <ClCompile Include="..\..\..\source\scene\camera_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\collider.cpp" />
     <ClCompile Include="..\..\..\source\scene\default_visitor.cpp" />
     <ClCompile Include="..\..\..\source\scene\geometry_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\light_node.cpp" />

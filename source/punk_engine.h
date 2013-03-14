@@ -10,7 +10,7 @@
 
 #include "string\string.h"
 #include "utility\module.h"
-#include "scene\scene_graph.h"
+#include "scene\module.h"
 #include "gpu\module.h"
 #include "raytracer\raytracer.h"
 #include "application/module.h"
