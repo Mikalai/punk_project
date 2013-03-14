@@ -1,22 +1,26 @@
-#ifndef _H_PUNK_SCENE_BOUNDING_VOLUME_UPDATER
-#define _H_PUNK_SCENE_BOUNDING_VOLUME_UPDATER
+#ifndef _H_PUNK_SCENE_COLLIDER
+#define _H_PUNK_SCENE_COLLIDER
 
 #include "../config.h"
 #include "visitor.h"
-#include "../system/smart_pointers/proxy.h"
-#include "../math/bounding_shere.h"
 #include "../system/state_manager.h"
-
-namespace Virtual { class Armature; }
+#include "../math/mat4.h"
+#include "../math/bounding_shere.h"
 
 namespace Scene
-{	
+{
 	class SceneGraph;
 
-	class PUNK_ENGINE BoundingVolumeUpdater : public AbstractVisitor
+	class PUNK_ENGINE Collider: public AbstractVisitor
 	{
 	public:
-		BoundingVolumeUpdater();
+		
+		struct CollisionResult
+		{
+			std::vector<Scene::Node*> m_nodes;
+		};
+
+		Collider();
 		virtual bool Visit(CameraNode* node);
 		virtual bool Visit(StaticMeshNode* node);
 		virtual bool Visit(SkinMeshNode* node);
@@ -30,22 +34,24 @@ namespace Scene
 		virtual bool Visit(BoneNode* node);
 		virtual bool Visit(TerrainNode* node);
 		void SetScene(SceneGraph* value);
-		void Update();
+		const CollisionResult Run(const Math::BoundingSphere& sphere);
 
 	private:
 
-		struct BoundingVolumeState
+		struct State
 		{
 			Math::mat4 m_local;
 			Math::mat4 m_armature_world;
-			Math::BoundingSphere m_sphere;
-			Virtual::Armature* m_armature;			
+			Math::BoundingSphere m_sphere;			
+			Virtual::Armature* m_armature;
 		};
-		
-		System::StateManager<BoundingVolumeState> m_states;
+
+		Math::BoundingSphere m_current_sphere;
+		CollisionResult m_result;
+		System::StateManager<State> m_states;
 		//	should not be deleted
 		SceneGraph* m_scene;
 	};
 }
 
-#endif	//	_H_PUNK_SCENE_BOUNDING_VOLUME_UPDATER
+#endif	//	_H_PUNK_SCENE_COLLIDER

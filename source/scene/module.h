@@ -20,5 +20,6 @@
 #include "transform_node.h"
 #include "visitor.h"
 #include "texture_view_node.h"
+#include "collider.h"
 
 #endif	//	_H_PUNK_SCENE_MODULE
