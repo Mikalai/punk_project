@@ -30,5 +30,6 @@ project-build-*
 3rd
 data
 !data\shaders\*
+!source\virtual\data
 old
 log*
