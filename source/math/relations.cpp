@@ -870,4 +870,14 @@ namespace Math
 
 		return Relation::NOT_INTERSECT;
 	}
+
+	Relation CrossSphereSphere(const Sphere& a, const Sphere& b)
+	{
+		float dst = a.GetRadius() + b.GetRadius();
+		float sqr_dst = dst * dst;
+		float cur_dst = (a.GetCenter() - b.GetCenter()).SquareLength();
+		if (cur_dst < sqr_dst)
+			return Relation::INTERSECT;
+		return Relation::NOT_INTERSECT;
+	}
 }

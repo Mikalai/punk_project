@@ -47,6 +47,7 @@ namespace Math
 	PUNK_ENGINE Relation CrossLineEllipsoid(const Line3D& line, const Ellipsoid& ellipsoid, vec3& p1, vec3& p2);
 	PUNK_ENGINE Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, float& t1, float& t2, int& face_index1, int& face_index2);
 	PUNK_ENGINE Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, vec3& p1, vec3& p2, int& face_index1, int& face_index2);
+	PUNK_ENGINE Relation CrossSphereSphere(const Sphere& a, const Sphere& b);
 
 	PUNK_ENGINE Relation CrossThreePlane(const Plane& a, const Plane& b, const Plane& c, vec3& point);
 	PUNK_ENGINE Relation CrossPlanePlane(const Plane& a, const Plane& b, Line3D& line);	
