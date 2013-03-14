@@ -5,6 +5,7 @@
 #include "../../math/mat4.h"
 #include "../../math/frustum.h"
 #include "../../math/constants.h"
+#include "../../math/rect.h"
 //#include "../../system/object.h"
 #include "entity.h"
 
@@ -64,6 +65,10 @@ namespace Virtual
 		Math::Frustum& GetFrustum() { return m_frustum; }
 		const Math::Frustum& GetFrustum() const { return m_frustum; }
 
+		const Math::Rect& GetViewport() const { return m_viewport; }
+		void SetViewport(float x, float y, float width, float height) { m_viewport.Set(x, y, width, height); }
+
+		const Math::Line3D GetWorldRay(float view_x, float view_y);
 	private:
 		Math::vec3 m_yrp;	//	yaw roll pitch
 		Math::vec3 m_position;
@@ -72,6 +77,7 @@ namespace Virtual
 		Math::vec3 m_up;
 		Math::mat4 m_view_matrix;
 		Math::Frustum m_frustum;
+		Math::Rect m_viewport;
 
 		void UpdateInternals();
 	};

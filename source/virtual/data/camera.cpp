@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "../../math/helper.h"
 #include "../../math/frustum.h"
+#include "../../math/line3d.h"
 
 namespace Virtual
 {
@@ -10,7 +11,7 @@ namespace Virtual
 
 	Camera::Camera(const CameraOptions& options)
 	{
-		m_frustum.Set(-1, 1, options.m_aspect, -options.m_aspect, options.m_near, options.m_far);			
+		m_frustum.Set(options.m_fov, options.m_aspect, options.m_near, options.m_far);					
 	}
 
 	void Camera::SetYaw(float value)
@@ -96,5 +97,30 @@ namespace Virtual
 		std::unique_ptr<Camera> node(new Camera);
 		node->Load(stream);
 		return node.release();
+	}
+
+	const Math::Line3D Camera::GetWorldRay(float x, float y)
+	{	
+		//	aspect ratio as used in opengl
+		float aspect = m_viewport.GetWidth() / m_viewport.GetHeight();
+		//	translate x and y to projection plane
+		float proj_x = aspect*(-1.0f + 2.0f * (float)x / m_viewport.GetWidth());
+		float proj_y = -1.0f + 2.0f * (float)(m_viewport.GetHeight() - y) / m_viewport.GetHeight();
+				
+
+		//	find mouse point in the view space 
+		Math::vec3 mouse_in_view(proj_x, proj_y, -1.0f / tan(m_frustum.GetFOV()/2.0f));
+		//	translate mouse point to the world space
+		Math::vec4 mouse_in_world_4 = (m_view_matrix.Inversed() * Math::vec4(mouse_in_view, 1.0f));
+		mouse_in_world_4 /= mouse_in_world_4[3];		
+		Math::vec3 mouse_in_world = mouse_in_world_4.XYZ();
+		//m_mouse_world = mouse_in_world;
+		//	translate view center to the world
+		Math::vec3 view_pos((m_view_matrix.Inversed() * Math::vec4(0,0,0, 1.0f)).XYZ());
+		
+		//	create a ray to intersect everything with it
+		Math::Line3D ray;
+		ray.SetOriginDestination(view_pos, mouse_in_world);
+		return ray;
 	}
 }
