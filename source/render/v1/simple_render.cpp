@@ -372,13 +372,14 @@ namespace Render
 	}
 
 	bool SimpleRender::Render()
-	{
+	{		
 		m_time += 0.1f;
 		m_rt->Activate();			
 		m_frame = m_driver->BeginFrame();
 		m_frame->BeginRendering();
 		if (m_scene)
 		{
+			m_rt->SetViewport(m_scene->GetCameraNode()->GetCamera()->GetViewport());
 			m_frame->SetViewMatrix(m_scene->GetCameraNode()->GetCamera()->GetViewMatrix());
 			m_frame->SetProjectionMatrix(m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix());
 			m_frame->SetClipSpace(m_scene->GetCameraNode()->GetCamera()->ToClipSpace());
