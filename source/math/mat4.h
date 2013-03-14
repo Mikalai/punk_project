@@ -21,6 +21,12 @@ namespace Math
 		T m[16];
 	public:
 
+		static const Matrix4x4<T> CreateFromPoistionAndDirection(const Math::Vector3<T>& position, const Math::Vector3<T>& direction)
+		{
+			Matrix4x4<T> result = CreateTargetCameraMatrix(position, position + direction, Math::Vector3<T>(0, 1, 0)).Inversed();
+			return result;
+		}
+
 		static Matrix4x4<T> CreatePerspectiveProjection(T fovx, T aspect, T znear, T zfar)
 		{
 			Matrix4x4<T> res;
