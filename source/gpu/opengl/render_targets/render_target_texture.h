@@ -27,7 +27,7 @@ namespace GPU
 			virtual ~RenderTargetTexture();
 		//	void Init(int width, int height);
 			
-			void SetViewport(float x, float y, float width, float height) override;
+			void SetViewport(const Math::Rect& value) override;
 			bool Init(Properties* props) override;
 			void Activate() override;
 			void Deactivate() override;

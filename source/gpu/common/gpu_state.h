@@ -65,6 +65,7 @@ namespace GPU
 		bool m_enable_texture;
 		bool m_cast_shadows;
 		bool m_receive_shadows;
+		bool m_enable_text_rendering;
 
 		Math::mat4 m_bone_matrix[256];
 		float m_line_width;

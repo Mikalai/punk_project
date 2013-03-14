@@ -35,7 +35,7 @@ namespace GPU
 
 		void RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader>::BindParameters(const CoreState& params)
 		{			
-			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_local;
+			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_world;
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
 			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
 

@@ -23,10 +23,10 @@ namespace GPU
 			CHECK_GL_ERROR(L"Unable to clear buffer");			
 		}
 
-		void OpenGLRenderTarget::SetViewport(float x, float y, float width, float height)
+		void OpenGLRenderTarget::SetViewport(const Math::Rect& value)
 		{
 			Activate();
-			glViewport((GLsizei)x, (GLsizei)y, (GLsizei)width, (GLsizei)height);
+			glViewport((GLsizei)value.GetX(), (GLsizei)value.GetY(), (GLsizei)value.GetWidth(), (GLsizei)value.GetHeight());
 			Deactivate();
 		}
 

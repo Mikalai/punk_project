@@ -2,6 +2,7 @@
 #define _H_PUNK_RENDER_TARGET
 
 #include "../../config.h"
+#include "../../math/rect.h"
 
 namespace GPU
 {
@@ -25,7 +26,7 @@ namespace GPU
 		void SetClearMask(int mask);
 		void SetClearColor(float r, float g, float b, float a);
 		
-		virtual void SetViewport(float x, float y, float width, float height) = 0;
+		virtual void SetViewport(const Math::Rect& value) = 0;
 		virtual bool Init(Properties* props) = 0;
 		virtual void Activate() = 0;
 		virtual void Deactivate() = 0;

@@ -11,10 +11,11 @@ namespace GPU
 		{
 		public:
 
-			virtual void SetViewport(float x, float y, float width, float height);
-			virtual bool Init(Properties* props);
-			virtual void Activate();
-			virtual void Deactivate();
+			void SetViewport(const Math::Rect& value) override;
+			bool Init(Properties* props) override;
+			void Activate() override;
+			void Deactivate() override;
+
 			virtual ~OpenGLRenderTarget();
 
 		protected:

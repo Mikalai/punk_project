@@ -23,11 +23,11 @@ namespace GPU
 			, m_depth_texture(nullptr)
 		{}
 
-		void RenderTargetTexture::SetViewport(float x, float y, float width, float height)
+		void RenderTargetTexture::SetViewport(const Math::Rect& v)
 		{
-			OpenGLRenderTarget::SetViewport(x, y, width, height);
-			m_properties.m_texture_width = (int)width;
-			m_properties.m_texture_height = (int)height;
+			OpenGLRenderTarget::SetViewport(v);
+			m_properties.m_texture_width = (int)v.GetWidth();
+			m_properties.m_texture_height = (int)v.GetHeight();
 			Init(&m_properties);
 		}
 

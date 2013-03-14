@@ -76,7 +76,7 @@ namespace GPU
 
 			void SetSurfaceSize(int width, int height)
 			{
-				m_rt->SetViewport(0, 0, (float)width, (float)height);
+				m_rt->SetViewport(Math::Rect(0, 0, (float)width, (float)height));
 			}
 
 			bool Begin(PaintDevice* device) 
@@ -169,7 +169,7 @@ namespace GPU
 			{
 				m_states.Push();
 				//	shift quadSTATE
-				STATE.m_local = Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1);
+				STATE.m_world = Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1);
 				STATE.m_projection = Math::mat4::CreateIdentity();
 				STATE.m_view = Math::mat4::CreateIdentity();
 				STATE.m_diffuse_color = color;
@@ -269,7 +269,7 @@ namespace GPU
 				float width = 2.0f * len / max_width;
 				float height = 2.0f * h / max_height;
 				//	shift quad
-				STATE.m_local = Math::mat4::CreateTranslate( 2.0f * x / max_width - 1.0f, 2.0f * y / max_height - 1.0f, 0) * Math::mat4::CreateScaling(width, height, 1.0f);
+				STATE.m_world = Math::mat4::CreateTranslate( 2.0f * x / max_width - 1.0f, 2.0f * y / max_height - 1.0f, 0) * Math::mat4::CreateScaling(width, height, 1.0f);
 				STATE.m_projection = Math::mat4::CreateIdentity();
 				STATE.m_view = Math::mat4::CreateIdentity();
 				STATE.m_diffuse_slot_0 = 0;
