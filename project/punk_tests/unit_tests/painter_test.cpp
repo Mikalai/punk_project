@@ -39,7 +39,7 @@ public:
 	virtual void OnIdleEvent(System::IdleEvent* e) override
 	{
 		Punk::Application::OnIdleEvent(e);
-		
+				
 		/*	It is possible to drawing on idle, but if no changes
 		*	happened there is no need to draw data every frame 
 		*/
@@ -61,6 +61,7 @@ public:
 	{
 		Punk::Application::OnResizeEvent(e);
 
+		graph->GetCameraNode()->GetCamera()->SetViewport(0,0,e->width, e->height);
 		//	we will redraw 2d surface only when resized
 		auto p = GetPaintEngine();
 		int count = 100;
