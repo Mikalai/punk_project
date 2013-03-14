@@ -59,7 +59,7 @@ namespace Punk
 		GPU::VideoDriver* m_video_driver;
 		Physics::BulletSimulator* m_simulator;
 		Virtual::TerrainManager* m_terrain_manager;
-		System::Timer m_timer;	
+		System::Timer m_timer;
 
 		void Step(System::Event* event);
 		void Render();

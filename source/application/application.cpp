@@ -160,6 +160,8 @@ namespace Punk
 		auto p = GetPaintEngine();
 		if (p)
 			p->SetSurfaceSize(event->width, event->height);
+
+		
 	}
 
 	void Application::OnCreateEvent()
