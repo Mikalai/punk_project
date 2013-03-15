@@ -338,6 +338,7 @@
     <ClInclude Include="..\..\..\source\system\abstract_manager.h" />
     <ClInclude Include="..\..\..\source\system\allocator.h" />
     <ClInclude Include="..\..\..\source\system\aop\aop.h" />
+    <ClInclude Include="..\..\..\source\system\atomicint.h" />
     <ClInclude Include="..\..\..\source\system\binary_file.h" />
     <ClInclude Include="..\..\..\source\system\buffer.h" />
     <ClInclude Include="..\..\..\source\system\camera_capture.h" />

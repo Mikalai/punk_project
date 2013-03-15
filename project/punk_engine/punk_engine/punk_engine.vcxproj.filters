@@ -1766,6 +1766,9 @@
     <ClInclude Include="..\..\..\source\scene\collider.h">
       <Filter>scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\system\atomicint.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
