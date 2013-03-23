@@ -1,3 +1,7 @@
+﻿/**
+*	ł
+*/
+
 #include "astar.h"
 
 namespace Math

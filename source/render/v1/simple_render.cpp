@@ -1,4 +1,8 @@
-﻿#include "simple_render.h"
+﻿/**
+*	ł
+*/
+
+#include "simple_render.h"
 #include "../../gpu/module.h"
 #include "../../virtual/module.h"
 #include "../../scene/module.h"
@@ -26,7 +30,7 @@ namespace Render
 		m_textured_rc = nullptr;
 		m_gui_rc = nullptr;
 		m_terrain_rc = nullptr;
-		m_paint_engine = nullptr;
+		m_paint_engine = nullptr;		
 
 	}
 

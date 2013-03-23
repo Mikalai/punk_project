@@ -40,8 +40,8 @@ namespace GPU
 			SetUniformVector4f(uDiffuseColor, &pparams.m_diffuse_color[0]);
 			SetUniformVector4f(uTextColor, &pparams.m_text_color[0]);
 			SetUniformVector4f(uNoDiffuseTexture, &pparams.m_no_diffuse_texture_color[0]);
-			SetUniformInt(uDiffuseMap, 0);
-			SetUniformInt(uTextMap, 1);
+			SetUniformInt(uDiffuseMap, 1);
+			SetUniformInt(uTextMap, 0);
 			if (pparams.m_enable_wireframe)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
