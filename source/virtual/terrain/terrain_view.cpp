@@ -1,6 +1,7 @@
 #include "../../system/streaming/module.h"
 #include "../../gpu/common/texture2d.h"
 #include "../../physics/module.h"
+#include "../../math/line3d.h"
 
 #include "terrain_view_loader.h"
 #include "terrain_view_processor.h"
@@ -115,5 +116,50 @@ namespace Virtual
 	{		
 		m_bullet_terrain->UpdateData(this);
 		m_bullet_terrain->EnterWorld(m_desc.manager->GetPhysicsSimulator()->GetWorld());
+	}
+
+	float TerrainView::GetHeightAboveSurface(const Math::vec3& world_point)
+	{
+		float* heights = (float*)m_front_buffer;
+		Math::vec2 local = world_point.XZ() - m_desc.position;
+		if (abs(local.X()) > m_desc.view_size / 2)
+			return 0;
+		if (abs(local.Y()) > m_desc.view_size / 2)
+			return 0;
+
+		float terrain_height = heights[int(local.Y()) * m_desc.view_size + int(local.X())];
+		return world_point.Y() - terrain_height;
+	}
+
+	bool TerrainView::IntersectRay(const Math::Line3D& ray, Math::vec3& c)
+	{
+		Math::vec3 a = ray.GetOrigin();
+		Math::vec3 b = ray.GetDestination();
+
+		float start_height = GetHeightAboveSurface(a);
+		float end_height = GetHeightAboveSurface(a);
+		if (start_height > 0 && end_height > 0)
+			return false;
+		if (start_height < 0 && end_height < 0)
+			return false;
+
+		float eps = 1e-3;
+		while (fabs(start_height - end_height) > eps)
+		{
+			c = (a + b) / 2.0f;
+			float h = GetHeightAboveSurface(c);
+
+			if (h > 0)
+			{
+				a = c;
+				start_height = h;
+			}
+			else 
+			{
+				b = c;
+				end_height = h;
+			}
+		}
+		return true;
 	}
 }

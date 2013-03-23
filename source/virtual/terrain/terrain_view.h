@@ -21,6 +21,7 @@
 
 namespace GPU { class Texture2D; } 
 namespace Physics { class BulletTerrain; }
+namespace Math { class Line3D; }
 
 namespace Virtual
 {
@@ -70,6 +71,19 @@ namespace Virtual
 
 		const Math::vec2& GetPosition() const { return m_desc.position; }
 
+		/**
+		*	Calculates height above the surface of the point with
+		*	coordinates in world coorinate system
+		*/
+		float GetHeightAboveSurface(const Math::vec3& world_point);
+		
+		/**
+		*	Calculates point of intersection line with terrain.
+		*	Binary search is used.
+		*	Line supposed to be in the world coordinates
+		*/
+		bool IntersectRay(const Math::Line3D& ray, Math::vec3& result);
+		
 		/**
 		*	this will copy date to the physics terrain
 		*/
