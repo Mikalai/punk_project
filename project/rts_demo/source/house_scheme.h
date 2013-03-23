@@ -9,6 +9,9 @@ class HouseScheme : public StructureScheme
 {
 public:
 	HouseScheme();
+
+	Structure* CreateNewStruture() override;
+
 private:	
 	int m_max_capacity;
 };

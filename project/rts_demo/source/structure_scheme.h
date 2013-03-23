@@ -1,7 +1,14 @@
 #ifndef _H_STRUCTURE_SCHEME
 #define _H_STRUCTURE_SCHEME
 
-#include "../../../source/punk_engine.h"
+#include <vector>
+//#include "../../../source/punk_engine.h"
+
+namespace Virtual 
+{
+	class Geometry; 
+	class Material;
+}
 
 class ResourceRequirenments;
 class Structure;
@@ -17,6 +24,9 @@ public:
 
 	Virtual::Material* GetMaterial() { return m_material; }
 	std::vector<Virtual::Geometry*>& GetFinalGeometry() { return m_final_geometry; }
+	std::vector<Virtual::Geometry*>& GetConstructionGeometry() { return m_construction_elements; }
+
+	virtual Structure* CreateNewStruture() = 0;
 
 protected:
 	std::vector<Virtual::Geometry*> m_construction_elements;

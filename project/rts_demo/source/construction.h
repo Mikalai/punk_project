@@ -14,24 +14,27 @@ class GameEntity;
 class Construction : public IDynamic
 {
 public:
+	Construction();
 
 	void SetWorld(World* world);
 	void SetFinishAction(IAction* action);
 	void SetBudget(int budget);
 	void SetLocation(const Math::vec3& value);
 	void SetDirection(const Math::vec3& value);
-	void StartBuilding(StructureScheme* scheme);
+	void StartBuilding();
+	void SetScheme(StructureScheme* scheme);
 	void AddWorker(IBuilder* worker);	//	increase worker count by one
 	void RemoveWorker(IBuilder* worker);	//	decrease worker count by one
+	void AdvanceConstruction(float steps);
 
-	virtual Structure* ToStructure() = 0;
+	Structure* ToStructure();
 
 	bool NeedRemove() override;
 	bool NeedDelete() override;
 	void Update(double time, double dt) override;
 
-	GameEntity* ToGameEntity() { return m_node; }
-
+	GameEntity* ToGameEntity() { return m_game_entity; }
+	StructureScheme* GetStructureScheme() { return m_scheme; }
 private:
 
 	World* m_world;
@@ -42,7 +45,12 @@ private:
 	std::vector<IBuilder*> m_workers;
 	std::map<IBuilder*, double> m_salary;
 	IAction* m_on_finish;
-	GameEntity* m_node;
+	GameEntity* m_game_entity;
+	Scene::TransformNode* m_transform_node;
+	Scene::MaterialNode* m_material_node;
+
+	Math::vec3 m_location;
+	Math::vec3 m_direction;
 };
 
 

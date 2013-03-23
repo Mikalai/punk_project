@@ -18,7 +18,7 @@ const Math::BoundingSphere Structure::GetBoundingSphere()
 
 const Math::vec3 Structure::GetPosition()
 {
-	return m_world_position;
+	return m_location;
 }
 
 const Math::vec3 Structure::GetDirection()
@@ -27,6 +27,13 @@ const Math::vec3 Structure::GetDirection()
 	return dir;
 }
 	
+void Structure::SetPosition(const Math::vec3& value)
+{
+	m_location = value;
+	Math::mat4 m = Math::mat4::CreateFromPoistionAndDirection(m_location, GetDirection());
+	m_transform_node->SetLocalMatrix(m);
+}
+
 GameEntity* Structure::ToGameEntity()
 {
 	return m_node;

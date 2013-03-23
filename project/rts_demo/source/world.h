@@ -15,8 +15,13 @@ public:
 	void Update(double dt);
 	void Draw();
 	void AddGameEntity(GameEntity* entity);
+	void RemoveGameEntity(GameEntity* entity);
 	Virtual::Camera* GetCamera() { return m_camera; }
 	Virtual::TerrainObserver* GetTerrainObserver() { return m_observer; }
+	bool CheckCollisitionWithObjects(GameEntity* node);
+	const Math::vec3 IntersectTerrain(const Math::Line3D& ray);
+
+	void OnSelectorMove(const Math::Line3D& ray);
 
 private:
 	Punk::Application* m_app;

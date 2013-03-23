@@ -1,4 +1,5 @@
 #include "construction.h"
+#include "game_entity.h"
 #include "world.h"
 #include "ibuilder.h"
 #include "structure_scheme.h"
@@ -19,12 +20,44 @@ void Construction::SetBudget(int budget)
 	m_budget = budget;
 };
 
-void Construction::StartBuilding(StructureScheme* scheme)
+/**
+*	Scheme should not be deleted in the class. 
+*/
+void Construction::SetScheme(StructureScheme* scheme)
 {
-	m_jobs_elements_left = scheme->GetTotalJobsElements();
 	m_scheme = scheme;
+
+	m_game_entity = new GameEntity;
+	m_transform_node = new Scene::TransformNode;
+
+	for (auto geom : m_scheme->GetConstructionGeometry())
+	{
+		Scene::StaticMeshNode* mesh_node = new Scene::StaticMeshNode;
+		mesh_node->SetGeometry(geom);
+		m_transform_node->Add(mesh_node);
+	}
+
+	Scene::MaterialNode* material_node = new Scene::MaterialNode;
+	material_node->SetMaterial(m_scheme->GetMaterial());
+	material_node->Add(m_transform_node);
+	m_game_entity->Add(m_material_node);
+}
+
+void Construction::StartBuilding()
+{
+	m_jobs_elements_left = m_scheme->GetTotalJobsElements();
 	m_can_be_deleted = false;
 }
+
+void Construction::SetLocation(const Math::vec3& value)
+{
+	m_location = value;
+	Math::mat4 m = Math::mat4::CreateFromPoistionAndDirection(m_location, m_direction);
+	m_transform_node->SetLocalMatrix(m);
+}
+
+void Construction::SetDirection(const Math::vec3& value)
+{}
 
 bool Construction::NeedRemove() 
 {
@@ -38,27 +71,20 @@ bool Construction::NeedDelete()
 
 void Construction::Update(double time, double dt) 
 {
-	for (std::vector<IBuilder*>::iterator it = m_workers.begin(); it != m_workers.end(); ++it)
+	if (m_jobs_elements_left <= 0.0f)
 	{
-		IBuilder* worker = *it;
-		int cost_per_hour = worker->EstimateConstructionCost(m_scheme);
-		m_salary[worker] += (float)cost_per_hour * dt / 60.0 / 60.0;
-		m_jobs_elements_left -= (float)worker->GetConstructionProductivity() * dt / 60.0 / 60.0;
-		if (m_jobs_elements_left <= 0)
-		{
-			for (std::map<IBuilder*, double>::iterator salary_it = m_salary.begin(); salary_it != m_salary.end(); ++salary_it)
-			{
-				double salary = salary_it->second;
-				IBuilder* w = salary_it->first;
-				w->Pay((int)salary);
-			}					
-			Structure* s = ToStructure();
-			m_scheme->Add(s);
-			m_world->AddGameEntity(s->ToGameEntity());
-			m_can_be_deleted = true;
-		}
-		return;
+		Structure* s = ToStructure();
+		m_scheme->Add(s);
+		m_world->AddGameEntity(s->ToGameEntity());
+		m_world->RemoveGameEntity(ToGameEntity());
+		m_can_be_deleted = true;
 	}
+	return;
+}
+
+void Construction::AdvanceConstruction(float steps)
+{
+	m_jobs_elements_left -= steps;
 }
 
 void Construction::AddWorker(IBuilder* worker)
@@ -69,4 +95,11 @@ void Construction::AddWorker(IBuilder* worker)
 void Construction::RemoveWorker(IBuilder* worker)
 {
 	m_workers.erase(m_workers.begin(), std::remove(m_workers.begin(), m_workers.end(), worker));
+}
+
+Structure* Construction::ToStructure()
+{
+	Structure* s = m_scheme->CreateNewStruture();
+	s->SetPosition(m_location);	
+	return s;
 }

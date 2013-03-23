@@ -1,3 +1,4 @@
+#include "../../../source/punk_engine.h"
 #include "world.h"
 #include "game_entity.h"
 #include "dynamic.h"
@@ -17,7 +18,7 @@ World::World(Punk::Application* app)
 
 	m_house_scheme = new HouseScheme;
 	
-	House* house = new House(m_house_scheme);
+	House* house = Cast<House*>(m_house_scheme->CreateNewStruture());
 
 	AddGameEntity(house->ToGameEntity());
 }
@@ -55,6 +56,13 @@ void World::AddGameEntity(GameEntity* entity)
 	m_scene->GetRootNode()->Add(entity);
 }
 
+void World::RemoveGameEntity(GameEntity* entity)
+{
+	std::vector<GameEntity*>::iterator it = std::find(m_entity.begin(), m_entity.end(), entity);
+	m_entity.erase(it);
+	m_scene->GetRootNode()->Remove(entity);
+}
+
 void World::Draw()
 {
 	m_updater->Update();
@@ -79,4 +87,42 @@ void World::Update(double dt)
 		}
 	}
 	m_entity.erase(m_entity.begin(), std::remove(m_entity.begin(), m_entity.end(), nullptr));
+}
+
+bool World::CheckCollisitionWithObjects(GameEntity* node)
+{
+	Scene::Collider collider;
+	collider.SetScene(m_scene);
+	auto result = collider.Run(node->GetBoundingSphere());
+
+	for (auto item : result.m_nodes)
+	{
+		if (As<GameEntity*>(item))
+			return true;
+	}
+	return false;
+}
+
+const Math::vec3 World::IntersectTerrain(const Math::Line3D& ray)
+{
+	Math::vec3 result;
+	m_observer->GetTerrainView()->IntersectRay(ray, result);
+	return result;
+}
+
+void World::OnSelectorMove(const Math::Line3D& line)
+{
+	//Math::Line3D ray;
+	//ray.SetOriginDestination(line.GetOrigin(), line.GetOrigin() + line.GetDirection() * 100.0f);
+	//Math::vec3 point = IntersectTerrain(ray);
+
+	//House* house = nullptr;
+	//for (auto e : m_entity)
+	//{
+	//	house = As<House*>(e);
+	//	if (house)
+	//		break;
+	//}
+	//if (house)
+	//	house->SetPosition(point);
 }

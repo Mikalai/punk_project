@@ -27,6 +27,7 @@ private:
 	Scene::TransformNode* m_transform;
 	Math::vec3 m_position;
 	Math::vec3 m_direction;
+	float m_money;
 };
 
 #endif	//	_H_RTS_DEMO_WORKER

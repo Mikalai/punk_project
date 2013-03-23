@@ -1,5 +1,8 @@
 #include "../../../source/punk_engine.h"
 #include "world.h"
+#include "construction.h"
+
+enum OperationType { RTS_OPERATION_NO, RTS_OPERATION_SELECT, RTS_OPERATION_CONSTRUCT_STEP_0, RTS_OPERATION_CONSTRUCT_STEP_1 };
 
 class TerrainTest : public Punk::Application
 {
@@ -9,7 +12,9 @@ public:
 		: x(0)
 		, y(0)
 		, m_left_down(false)
-	{}
+	{
+		m_current_operation = RTS_OPERATION_SELECT;
+	}
 
 	//void AddNewCube()
 	//{
@@ -92,9 +97,34 @@ public:
 		}
 	}
 
+	virtual void OnResizeEvent(System::WindowResizeEvent* event) override
+	{
+		Punk::Application::OnResizeEvent(event);
+		m_world->GetCamera()->SetViewport(0, 0, event->width, event->height);
+	}
+
 	virtual void OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* e) override
 	{		
 		Punk::Application::OnMouseLeftButtonDownEvent(e);
+
+		////	if we initiate construction 
+		//if (m_current_operation == RTS_OPERATION_CONSTRUCT_STEP_0)
+		//{
+		//		Math::vec3 p = m_world->IntersectTerrain(e->x, e->y);				
+		//		m_current_construction->SetLocation(p);
+		//		if (!m_world->CheckCollisitionWithObjects(m_current_construction->ToGameEntity()))
+		//		{
+		//			m_current_operation = RTS_OPERATION_CONSTRUCT_STEP_1;
+		//		}
+		//		m_world->AddGameEntity(m_current_construction->ToGameEntity());				
+		//}
+		//else if (m_current_operation == RTS_OPERATION_CONSTRUCT_STEP_1)
+		//{
+		//	if (!e->shiftButton)
+		//		m_current_operation = RTS_OPERATION_NO;
+		//	else 
+		//		m_current_operation = RTS_OPERATION_CONSTRUCT_STEP_0;
+		//}
 		m_left_down = true;
 	}
 
@@ -105,8 +135,11 @@ public:
 	}
 
 	void OnMouseMoveEvent(System::MouseMoveEvent* e) override
-	{
+	{		
 		Punk::Application::OnMouseMoveEvent(e);
+		auto ray = m_world->GetCamera()->GetWorldRay(e->x, e->y);			
+		m_world->OnSelectorMove(ray);
+		
 		x += 0.001 * (float)(e->x - e->x_prev);
 		y += 0.001 * (float)(e->y - e->y_prev);		
 
@@ -142,6 +175,12 @@ public:
 				//				AddNewCube();
 			}
 			break;
+		case System::PUNK_KEY_1:
+			{
+				//m_current_operation = OperationType::RTS_OPERATION_CONSTRUCT_STEP_0;	
+				//m_current_construction = new Construction;
+				//m_current_construction->SetScheme(m_house_scheme);				
+			}
 		default:
 			break;
 		}
@@ -196,6 +235,9 @@ private:
 	float x;
 	float y;
 	World* m_world;
+	OperationType m_current_operation;
+	Construction* m_current_construction;
+	HouseScheme* m_house_scheme;
 };
 
 //TEST_METHOD(TerrainManagerTest)
