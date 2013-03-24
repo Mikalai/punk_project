@@ -1,12 +1,35 @@
-#ifndef _H_PUNK_SYSTEM_THREAD_MUTEX
-#define _H_PUNK_SYSTEM_THREAD_MUTEX
+#ifndef _H_PUNK_SYSMTE_THREAD_MUTEX
+#define _H_PUNK_SYSMTE_THREAD_MUTEX
 
 #ifdef _WIN32
-#include "win32/thread_mutex_win32.h"
-#endif //	_WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <Windows.h>
+#endif	//	_WIN32
 
-#ifdef __linux__
-#include "linux/thread_mutex_linux.h"
-#endif //	__linux__
+#include "../../config.h"
 
-#endif	//	_H_PUNK_SYSTEM_THREAD_MUTEX
+namespace System
+{
+	class PUNK_ENGINE ThreadMutex
+	{
+	public:
+		
+		ThreadMutex();
+		~ThreadMutex();
+
+		bool Create();
+		void Destroy();
+		void Lock();
+		bool TryLock();
+		void Unlock();		
+
+	private:
+#ifdef _WIN32
+		CRITICAL_SECTION m_mutex;
+#endif	//	_WIN32
+	};
+}
+
+#endif // _H_PUNK_SYSMTE_THREAD_MUTEX

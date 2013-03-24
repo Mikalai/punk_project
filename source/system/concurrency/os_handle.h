@@ -1,11 +1,16 @@
-#ifndef _H_PUNK_SYSTEM_CONCURRENCY_OS_HANDLE_WIN32
-#define _H_PUNK_SYSTEM_CONCURRENCY_OS_HANDLE_WIN32
+#ifndef _H_PUNK_SYSTEM_CONCURRENCY_OS_HANDLE
+#define _H_PUNK_SYSTEM_CONCURRENCY_OS_HANDLE
 
+#ifdef _WIN32
 #include <Windows.h>
-#include "../../../config.h"
+#endif //	_WIN32
+
+#include "../../config.h"
 
 namespace System
 {
+
+#ifdef _WIN32
 	class PUNK_ENGINE OsHandle
 	{
 	public:
@@ -15,6 +20,8 @@ namespace System
 	private:
 		HANDLE m_handle;
 	};
+#endif	//	_WIN32
+
 }
 
-#endif	//	 _H_PUNK_SYSTEM_CONCURRENCY_OS_HANDLE_WIN32
+#endif	//	 _H_PUNK_SYSTEM_CONCURRENCY_OS_HANDLE

@@ -1,12 +1,21 @@
 #ifndef _H_PUNK_THREAD
 #define _H_PUNK_THREAD
 
-#ifdef _WIN32
-#include "win32\thread_win32.h"
-#endif
+#include "../../config.h"
+#include "os_handle.h"
 
-#ifdef __linux__
-#include "linux\thread_linux.h"
-#endif
+namespace System
+{
+	class PUNK_ENGINE Thread : public OsHandle
+	{
+	public:
+		bool Create(unsigned (__stdcall *thread_func)(void*), void* data = 0, unsigned stack = 4096); 
+		bool Join();
+		bool Resume();
+		bool Destroy();
+		//bool Terminate();
+		~Thread();
+	};
+}
 
-#endif
+#endif	//	_H_PUNK_THREAD
