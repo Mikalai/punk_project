@@ -77,11 +77,6 @@ namespace ImageModule
 		impl_image->SetDepth(bpp);
 	}
 
-	const System::Descriptor& Image::GetDescriptor() const
-	{
-		return impl_image->m_descriptor;
-	}
-
 	unsigned Image::GetSizeInBytes() const
 	{
 		return impl_image->m_size;

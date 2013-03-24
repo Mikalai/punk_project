@@ -342,15 +342,6 @@
     <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\static_array.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\static_string.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\types_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\allocator.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -1687,6 +1678,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\concurrency\process.h">
       <Filter>system\concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\handler.h">
+      <Filter>system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

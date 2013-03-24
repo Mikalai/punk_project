@@ -1,12 +1,18 @@
 #ifndef _H_SYSTEM_TYPES
 #define _H_SYSTEM_TYPES
 
-#ifdef _WIN32
-#include "win32/types_win32.h"
-#endif
+#include "handler.h"
 
-#ifdef __linux__
-#include "linux/types_linux.h"
+typedef signed char Int8;
+typedef unsigned char UInt8;
+typedef signed short int Int16;
+typedef unsigned short int UInt16;
+typedef signed int Int32;
+typedef unsigned int UInt32;
+
+#ifdef _WIN32
+typedef signed __int64 Int64;
+typedef unsigned __int64 UInt64;
 #endif
 
 #endif // _H_SYSTEM_TYPES

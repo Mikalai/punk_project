@@ -20,7 +20,6 @@
 #include "environment.h"
 #include "logger.h"
 #include "config_file.h"
-#include "handle.h"
 #include "resource.h"
 #include "profiler.h"
 

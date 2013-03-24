@@ -8,7 +8,6 @@
 #include "../formats.h"
 #include "component.h"
 #include "../../system/buffer.h"
-#include "../../system/handle.h"
 #include "../import_export/png_importer.h"
 #include "../import_export/jpg_importer.h"
 
@@ -23,7 +22,6 @@ namespace ImageModule
 		unsigned m_bit_depth;
 		ImageFormat m_format;
 		std::vector<Component> m_data;
-		System::Descriptor m_descriptor;
 
 		ImageImpl()
 			: m_width(0)
@@ -31,7 +29,6 @@ namespace ImageModule
 			, m_components(0)
 			, m_size(0)
 			, m_data()
-			, m_descriptor()
 			, m_bit_depth(0)
 			, m_format(IMAGE_FORMAT_BAD)
 		{}
@@ -42,7 +39,6 @@ namespace ImageModule
 			, m_components(impl.m_components)
 			, m_size(impl.m_size)
 			, m_data(impl.m_data.begin(), impl.m_data.end())
-			, m_descriptor(impl.m_descriptor)
 			, m_bit_depth(impl.m_bit_depth)
 			, m_format(impl.m_format)
 		{}
@@ -91,7 +87,6 @@ namespace ImageModule
 
 		bool Save(std::ostream& stream) const
 		{
-			stream.write(reinterpret_cast<const char*>(&m_descriptor), sizeof(m_descriptor));
 			stream.write(reinterpret_cast<const char*>(&m_width), sizeof(m_width));
 			stream.write(reinterpret_cast<const char*>(&m_height), sizeof(m_height));
 			stream.write(reinterpret_cast<const char*>(&m_components), sizeof(m_components));

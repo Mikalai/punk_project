@@ -28,7 +28,6 @@ namespace ImageModule
 
 		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);				
-		const System::Descriptor& GetDescriptor() const;		
 		unsigned GetSizeInBytes() const;
 		unsigned GetComponentsCount() const;
 		unsigned GetWidth() const;

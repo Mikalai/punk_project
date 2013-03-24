@@ -392,6 +392,7 @@
     <ClInclude Include="..\..\..\source\system\event_manager.h" />
     <ClInclude Include="..\..\..\source\system\factory.h" />
     <ClInclude Include="..\..\..\source\system\folder.h" />
+    <ClInclude Include="..\..\..\source\system\handler.h" />
     <ClInclude Include="..\..\..\source\system\hresource.h" />
     <ClInclude Include="..\..\..\source\system\input\camera_capture.h" />
     <ClInclude Include="..\..\..\source\system\input\console.h" />
@@ -440,9 +441,6 @@
     <ClInclude Include="..\..\..\source\system\win32\handle_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\monitor_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\static_array.h" />
-    <ClInclude Include="..\..\..\source\system\win32\static_string.h" />
-    <ClInclude Include="..\..\..\source\system\win32\types_win32.h" />
     <ClInclude Include="..\..\..\source\system\window\module.h" />
     <ClInclude Include="..\..\..\source\system\window\window.h" />
     <ClInclude Include="..\..\..\source\system\window\window_adapter.h" />

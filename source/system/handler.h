@@ -1,16 +1,7 @@
-#ifndef _H_SYSTEM_WIN32_TYPES
-#define _H_SYSTEM_WIN32_TYPES
+#ifndef _H_SYSTEM_HANDLER
+#define _H_SYSTEM_HANDLER
 
-#include "../events/events.h"
-
-typedef signed char Int8;
-typedef unsigned char UInt8;
-typedef signed short int Int16;
-typedef unsigned short int UInt16;
-typedef signed int Int32;
-typedef unsigned int UInt32;
-typedef signed __int64 Int64;
-typedef unsigned __int64 UInt64;
+#include "events/events.h"
 
 namespace System
 {
