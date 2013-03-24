@@ -5,5 +5,6 @@
 #include "thread_pool.h"
 #include "semaphore.h"
 #include "thread_mutex.h"
+#include "process.h"
 
 #endif	//	_H_SYSTEM_CONCURRENCY_MODULE

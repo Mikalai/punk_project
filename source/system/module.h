@@ -16,7 +16,6 @@
 #include "binary_file.h"
 #include "string.h"
 #include "buffer.h"
-#include "console.h"
 #include "process.h"
 #include "environment.h"
 #include "logger.h"

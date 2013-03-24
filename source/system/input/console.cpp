@@ -1,13 +1,46 @@
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif	//	NOMINMAX
+#include <Windows.h>
+#endif	//	_WIN32
+
+#include <iostream>
 #include <cstdio>
 #include <clocale>
-#include "console_win32.h"
+#include "console.h"
 
 namespace System
 {
-	//
-	//	Console implementation goes here
-	//
-	Console::Console()
+#ifdef _WIN32
+
+	struct Console::Impl
+	{
+		//	handle of the console object
+		HANDLE m_console_handle;
+		//	current cursor position
+		COORD m_cursor_position;
+		//	selected text color
+		WORD m_text_color;
+		//	selected back color
+		WORD m_back_color;
+		//	information of the console screen buffer
+		CONSOLE_SCREEN_BUFFER_INFO m_screen_info;
+
+		Impl();
+		void SetPosition(int x, int y);
+		void SetTextColor(Color col);
+		void SetBackColor(Color col);
+		int GetScreenBufferWidth() const;
+		int GetScreenBufferHeight() const;
+		int GetViewportWidth();
+		int GetViewportHeight();
+		void Clear();
+		std::ostream& Write();
+		std::istream& Read();
+	};
+
+	Console::Impl::Impl()
 	{
 		m_console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
 		if (m_console_handle)
@@ -21,7 +54,8 @@ namespace System
 		}
 	}
 
-	void Console::SetPosition(int x, int y)
+	//	set new cursor position in console
+	void Console::Impl::SetPosition(int x, int y)
 	{
 		if (m_console_handle)
 		{
@@ -30,28 +64,8 @@ namespace System
 			SetConsoleCursorPosition(m_console_handle, m_cursor_position);
 		}
 	}
-
-	void Console::Clear()
-	{
-		if (m_console_handle)
-		{
-			static const int SIZE = 32768;
-			char buf[SIZE];
-			memset(buf, ' ', sizeof(buf)/sizeof(buf[0])); 
-			int to_fill = m_screen_info.dwSize.X*m_screen_info.dwSize.Y;				
-			int res = 0;
-			DWORD written = 0;
-			SetPosition(0,0);		
-			while (to_fill > 0)
-			{					
-				res = WriteConsoleA(m_console_handle, buf, SIZE, &written, 0);		
-				to_fill -= written;
-			}		
-			SetPosition(0,0);
-		}
-	}
-
-	void Console::SetTextColor(Color col)
+	//	set new text color 
+	void Console::Impl::SetTextColor(Color col)
 	{
 		if (m_console_handle)
 		{
@@ -111,7 +125,8 @@ namespace System
 		}
 	}
 
-	void Console::SetBackColor(Color col)
+	//	set new back color
+	void Console::Impl::SetBackColor(Color col)
 	{
 		if (m_console_handle)
 		{
@@ -170,6 +185,90 @@ namespace System
 		}
 	}
 
+	//	retreive console screen buffer width
+	int Console::Impl::GetScreenBufferWidth() const 
+	{ 
+		return m_screen_info.dwSize.X; 
+	}
+	//	retrieve console screen buffer height
+	int Console::Impl::GetScreenBufferHeight() const 
+	{ 
+		return m_screen_info.dwSize.Y; 
+	}
+	//	retrieve visible width of the console screen
+	int Console::Impl::GetViewportWidth() 
+	{
+		GetConsoleScreenBufferInfo(m_console_handle, &m_screen_info);
+		return m_screen_info.srWindow.Right - m_screen_info.srWindow.Left;
+		//return m_screen_info.dwMaximumWindowSize.X; 
+	}
+	//	retrieve visisble height of the console screen
+	int Console::Impl::GetViewportHeight() 
+	{
+		GetConsoleScreenBufferInfo(m_console_handle, &m_screen_info);
+		return m_screen_info.srWindow.Bottom - m_screen_info.srWindow.Top;
+		//return m_screen_info.dwMaximumWindowSize.Y; 
+	}
+	//	fills console with back color
+	void Console::Impl::Clear()
+	{
+		if (m_console_handle)
+		{
+			static const int SIZE = 32768;
+			char buf[SIZE];
+			memset(buf, ' ', sizeof(buf)/sizeof(buf[0])); 
+			int to_fill = m_screen_info.dwSize.X*m_screen_info.dwSize.Y;				
+			int res = 0;
+			DWORD written = 0;
+			SetPosition(0,0);		
+			while (to_fill > 0)
+			{					
+				res = WriteConsoleA(m_console_handle, buf, SIZE, &written, 0);		
+				to_fill -= written;
+			}		
+			SetPosition(0,0);
+		}
+	}
+
+	std::ostream& Console::Impl::Write()
+	{
+		return std::cout;
+	}
+
+	std::istream& Console::Impl::Read()
+	{
+		return std::cin;
+	}
+
+#endif	//	_WIN32
+
+	//
+	//	Console implementation goes here
+	//
+	Console::Console()
+		: impl(new Impl)
+	{}
+
+	void Console::SetPosition(int x, int y)
+	{
+		impl->SetPosition(x, y);
+	}
+
+	void Console::Clear()
+	{
+		impl->Clear();
+	}
+
+	void Console::SetTextColor(Color col)
+	{
+		impl->SetTextColor(col);
+	}
+
+	void Console::SetBackColor(Color col)
+	{
+		impl->SetBackColor(col);
+	}
+
 	Console* Console::Instance()
 	{
 		if (!m_instance.get())
@@ -183,5 +282,4 @@ namespace System
 	}
 
 	std::auto_ptr<Console> Console::m_instance;
-
 }

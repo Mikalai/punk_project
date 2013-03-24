@@ -9,7 +9,7 @@
 
 #include "../config.h"
 //#include "stack_trace.h"
-#include "console.h"
+#include "input/console.h"
 #include "system_clock.h"
 #include "../string/string.h"
 

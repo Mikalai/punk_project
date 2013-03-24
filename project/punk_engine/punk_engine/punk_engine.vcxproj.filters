@@ -88,9 +88,6 @@
     <Filter Include="virtual\manager">
       <UniqueIdentifier>{c72a20e8-3ead-4041-bb9c-46621a949d4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\win32\web_camera">
-      <UniqueIdentifier>{87cc7e40-8a8a-41f0-8656-322f1fe664b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="images\converter">
       <UniqueIdentifier>{a6e4e543-6e90-4616-bf91-4555a0fb956f}</UniqueIdentifier>
     </Filter>
@@ -330,9 +327,6 @@
     <ClInclude Include="..\..\..\source\system\win32\config_file_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\console_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\environment_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
@@ -343,9 +337,6 @@
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\monitor_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\process_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h">
@@ -373,9 +364,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\config_file.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\console.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\environment.h">
@@ -1694,6 +1682,12 @@
     <ClInclude Include="..\..\..\source\system\input\mouse.h">
       <Filter>system\input</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\system\input\console.h">
+      <Filter>system\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\concurrency\process.h">
+      <Filter>system\concurrency</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -1762,9 +1756,6 @@
     <ClCompile Include="..\..\..\source\system\win32\config_file_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\console_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
@@ -1772,9 +1763,6 @@
       <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\handle_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp">
@@ -2554,6 +2542,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\input\mouse.cpp">
       <Filter>system\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\input\console.cpp">
+      <Filter>system\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\concurrency\process.cpp">
+      <Filter>system\concurrency</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
