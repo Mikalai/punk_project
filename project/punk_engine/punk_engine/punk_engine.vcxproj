@@ -437,8 +437,6 @@
     <ClInclude Include="..\..\..\source\system\win32\clock_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\config_file_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\environment_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\folder_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\handle_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\monitor_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h" />
     <ClInclude Include="..\..\..\source\system\window\module.h" />
@@ -776,6 +774,7 @@
     <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp" />
     <ClCompile Include="..\..\..\source\system\event_manager.cpp" />
     <ClCompile Include="..\..\..\source\system\factory.cpp" />
+    <ClCompile Include="..\..\..\source\system\folder.cpp" />
     <ClCompile Include="..\..\..\source\system\hresource.cpp" />
     <ClCompile Include="..\..\..\source\system\input\camera_capture.cpp" />
     <ClCompile Include="..\..\..\source\system\input\console.cpp" />
@@ -796,8 +795,6 @@
     <ClCompile Include="..\..\..\source\system\win32\clock_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\config_file_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\folder_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\handle_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\window\window.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\action_desc.cpp" />

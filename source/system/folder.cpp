@@ -1,7 +1,15 @@
+
 #ifdef _WIN32
-#include "../logger.h"
-#include "../../string/string.h"
-#include "folder_win32.h"
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif // NOMINMAX
+#include <Windows.h>
+#endif // _WIN32
+
+#include "logger.h"
+#include "../string/string.h"
+#include "errors/module.h"
+#include "folder.h"
 
 namespace System
 {
@@ -16,9 +24,10 @@ namespace System
 
 	bool Folder::Open(const System::string& name)
 	{
+#ifdef _WIN32
 		wchar_t buf[2048];
 		GetCurrentDirectory(2048, buf);
-		prevFolder = buf;
+		m_prev_folder_name = buf;
 		if (SetCurrentDirectory(name.Data()) == TRUE)
 		{
 			return true;
@@ -32,12 +41,14 @@ namespace System
 				return true;
 			}
 		}
-	
-		return (out_error() << "Can't open folder " << name << std::endl, false);
+#endif	//	_WIN32
+		throw PunkInvalidArgumentException(L"Can't open folder " + name);
 	}
 
 	bool Folder::IsContain(const System::string& name) const
 	{
+
+#ifdef _WIN32
 		WIN32_FIND_DATA dir;
 		HANDLE file;
 
@@ -51,18 +62,23 @@ namespace System
 				return true;
 		}
 		while (FindNextFile(file, &dir));
+#endif	//	_WIN32
 
 		return false;
 	}
 
 	void Folder::Close()
 	{
-		SetCurrentDirectory(prevFolder.Data());
+#ifdef _WIN32
+		SetCurrentDirectory(m_prev_folder_name.Data());
+#endif	//	_WIN32
 	}
 
 	std::list<System::string> Folder::ListAllItems()
 	{
 		std::list<System::string> res;
+
+#ifdef _WIN32
 		WIN32_FIND_DATA dir;
 		wchar_t dirName[256];
 		GetCurrentDirectory(256, dirName);
@@ -79,23 +95,29 @@ namespace System
 			}
 			while (FindNextFile(file, &dir));
 		}
+#endif	//	_WIN32
 
 		return res;
 	}
 
 	const System::string& Folder::Name() const
 	{
-		return folderName;
+		return m_folder_name;
 	}
 
 	void Folder::DeleteFile(const System::string& path)
 	{
+#ifdef _WIN32
 		::DeleteFile(path.Data());
+#endif	//	_WIN32
+
 	}
 	
 	std::list<System::string> Folder::Find(const System::string& name) const
 	{
 		std::list<System::string> res;
+
+#ifdef _WIN32
 		WIN32_FIND_DATA dir;
 		wchar_t dirName[256];
 		GetCurrentDirectory(256, dirName);
@@ -113,9 +135,8 @@ namespace System
 			}
 			while (FindNextFile(file, &dir));
 		}
+#endif	//	_WIN32
 
 		return res;
 	}
 }
-
-#endif

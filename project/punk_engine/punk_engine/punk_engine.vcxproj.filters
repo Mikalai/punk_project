@@ -330,12 +330,6 @@
     <ClInclude Include="..\..\..\source\system\win32\environment_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\folder_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\handle_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\monitor_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
@@ -1753,12 +1747,6 @@
     <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\folder_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\handle_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
@@ -2542,6 +2530,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\concurrency\process.cpp">
       <Filter>system\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\folder.cpp">
+      <Filter>system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
