@@ -234,7 +234,7 @@ namespace System
 			profiler.End();
 			out_message() << profiler.ToString() << std::endl;
 			LeaveCriticalSection(m_cs);
-			g_timer.UpdateStartPoint();
+			g_timer.Reset();
 		}
 		HRESULT   ret  =  Receive_   ( inst, smp );   
 		return    ret; 

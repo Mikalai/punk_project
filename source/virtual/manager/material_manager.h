@@ -1,7 +1,6 @@
 #ifndef _H_PUNK_VIRTUAL_MATERIAL_MANAGER
 #define _H_PUNK_VIRTUAL_MATERIAL_MANAGER
 
-#include "../../system/resource_manager.h"
 #include "../../system/environment.h"
 #include "../data/material.h"
 

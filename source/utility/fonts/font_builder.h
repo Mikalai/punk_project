@@ -2,7 +2,6 @@
 #define _H_FONT_BUILDER
 
 #include "../../config.h"
-#include "../../system/singletone.h"
 #include <map>
 
 namespace System

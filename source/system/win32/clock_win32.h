@@ -9,7 +9,6 @@
 
 #include <time.h>
 #include "../../string/string.h"
-#include "../singletone.h"
 #include "../../config.h"
 #include "buffer_win32.h"
 

@@ -6,7 +6,6 @@
 #include <windows.h>
 #include "config_file_win32.h"
 #include "../logger.h"
-#include "../singletone.h"
 #include "../errors/module.h"
 
 namespace System

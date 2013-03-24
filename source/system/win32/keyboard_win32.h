@@ -1,7 +1,6 @@
 #ifndef _H_PUNK_KEYBOARD_WIN32
 #define _H_PUNK_KEYBOARD_WIN32
 
-#include "../singletone.h"
 #include "../../config.h"
 
 namespace System

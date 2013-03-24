@@ -2,7 +2,6 @@
 #include "errors/module.h"
 #include "event_manager.h"
 #include "logger.h"
-#include "singletone.h"
 
 namespace System
 {

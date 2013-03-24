@@ -7,9 +7,6 @@
     <Filter Include="system\events">
       <UniqueIdentifier>{f7255437-7299-48ea-b0d7-32d8f8161966}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\linux">
-      <UniqueIdentifier>{4eab4f36-a885-4431-a3b2-f24b5392f636}</UniqueIdentifier>
-    </Filter>
     <Filter Include="system\types">
       <UniqueIdentifier>{48ef528b-873f-496f-95fe-e2dadc0f8b28}</UniqueIdentifier>
     </Filter>
@@ -159,12 +156,6 @@
     </Filter>
     <Filter Include="system\window">
       <UniqueIdentifier>{dae30aa1-d462-4712-8832-e1907c77ba31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\window\linux">
-      <UniqueIdentifier>{57c1bbd2-79a7-4e76-a759-65590047d4d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system\window\win32">
-      <UniqueIdentifier>{ab215b43-0896-43fd-808a-b3842e88f674}</UniqueIdentifier>
     </Filter>
     <Filter Include="gui\events">
       <UniqueIdentifier>{4457ff91-dab3-4083-9936-58b9b20d7e47}</UniqueIdentifier>
@@ -318,24 +309,6 @@
     <ClInclude Include="..\..\..\source\system\events\window_resize_event.h">
       <Filter>system\events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\linux\clock_linux.h">
-      <Filter>system\linux</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\linux\folder_linux.h">
-      <Filter>system\linux</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\linux\monitor_linux.h">
-      <Filter>system\linux</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\linux\text_file_linux.h">
-      <Filter>system\linux</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\linux\timer_linux.h">
-      <Filter>system\linux</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\linux\types_linux.h">
-      <Filter>system\linux</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\types\list.h">
       <Filter>system\types</Filter>
     </ClInclude>
@@ -387,14 +360,8 @@
     <ClInclude Include="..\..\..\source\system\win32\static_string.h">
       <Filter>system\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\timer_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\types_win32.h">
       <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\abstract_manager.h">
-      <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\allocator.h">
       <Filter>system</Filter>
@@ -414,12 +381,6 @@
     <ClInclude Include="..\..\..\source\system\console.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\dynamic_array.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\dynamic_data.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\environment.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -427,9 +388,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\folder.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\global_resource_manager.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\hresource.h">
@@ -444,16 +402,7 @@
     <ClInclude Include="..\..\..\source\system\module.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\monitor.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\monitor_scope.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\mouse.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\node.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\pool.h">
@@ -496,9 +445,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\types.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\window.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\application\application.h">
@@ -820,9 +766,6 @@
     <ClInclude Include="..\..\..\source\system\pool_manager.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\mega_destroyer.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\data\world.h">
       <Filter>virtual\data</Filter>
     </ClInclude>
@@ -961,9 +904,6 @@
     <ClInclude Include="..\..\..\source\virtual\manager\manager.h">
       <Filter>virtual\manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\type.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\factory.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -1007,15 +947,6 @@
       <Filter>scene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\punk_engine.h" />
-    <ClInclude Include="..\..\..\source\system\resource_manager_3.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\resource_manager_2_old.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\resource_manager.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\scene\armature_node.h">
       <Filter>scene</Filter>
     </ClInclude>
@@ -1568,12 +1499,6 @@
     <ClInclude Include="..\..\..\source\system\window\window_adapter.h">
       <Filter>system\window</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\window\win32\window_win32.h">
-      <Filter>system\window\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\window\linux\window_linux.h">
-      <Filter>system\window\linux</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\application\module.h">
       <Filter>application</Filter>
     </ClInclude>
@@ -1822,18 +1747,6 @@
     <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp">
       <Filter>system\events</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\linux\clock_linux.cpp">
-      <Filter>system\linux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\linux\folder_linux.cpp">
-      <Filter>system\linux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\linux\text_file_linux.cpp">
-      <Filter>system\linux</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\linux\timer_linux.cpp">
-      <Filter>system\linux</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\types\list.cpp">
       <Filter>system\types</Filter>
     </ClCompile>
@@ -1873,25 +1786,16 @@
     <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\clock.cpp">
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\event_manager.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\global_resource_manager.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\hresource.cpp">
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\logger.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\node.cpp">
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\system_clock.cpp">
@@ -2101,9 +2005,6 @@
     <ClCompile Include="..\..\..\source\system\pool_manager.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\mega_destroyer.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\data\world.cpp">
       <Filter>virtual\data</Filter>
     </ClCompile>
@@ -2216,9 +2117,6 @@
       <Filter>scene</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\main.cpp" />
-    <ClCompile Include="..\..\..\source\system\resource_manager_3.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\scene\armature_node.cpp">
       <Filter>scene</Filter>
     </ClCompile>
@@ -2540,12 +2438,6 @@
     <ClCompile Include="..\..\..\source\physics\bullet\bullet_rigid_body.cpp">
       <Filter>physics\bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\window\win32\window_win32.cpp">
-      <Filter>system\window\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\window\linux\window_linux.cpp">
-      <Filter>system\window\linux</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\gpu_config.cpp">
       <Filter>gpu</Filter>
     </ClCompile>
@@ -2657,13 +2549,16 @@
     <ClCompile Include="..\..\..\source\scene\collider.cpp">
       <Filter>scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\system\timer.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\window\window.cpp">
+      <Filter>system\window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\source\blender\punk_exporter_2_60.py">
       <Filter>blender</Filter>
-    </None>
-    <None Include="..\..\..\source\system\poolable.inl">
-      <Filter>system</Filter>
     </None>
     <None Include="..\..\..\source\images\converter\yuy2_to_rgb.cl">
       <Filter>images\converter</Filter>

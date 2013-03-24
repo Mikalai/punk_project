@@ -3,7 +3,6 @@
 
 #include <memory>
 #include "../../string/string.h"
-#include "../singletone.h"
 #include "../../config.h"
 
 namespace System

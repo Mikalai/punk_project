@@ -6,7 +6,6 @@
 #include "environment_win32.h"
 #include "config_file_win32.h"
 #include "../window/module.h"
-#include "../mega_destroyer.h"
 
 namespace System
 {

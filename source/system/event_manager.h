@@ -12,7 +12,6 @@
 #include "events/events.h"
 //#include "monitor.h"
 #include "types.h"
-#include "singletone.h"
 
 namespace System
 {

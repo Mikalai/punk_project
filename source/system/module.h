@@ -20,13 +20,10 @@
 #include "mouse.h"
 #include "process.h"
 #include "environment.h"
-#include "singletone.h"
 #include "logger.h"
 #include "config_file.h"
 #include "handle.h"
 #include "resource.h"
-#include "template_singletone.h"
-#include "resource_manager.h"
 #include "profiler.h"
 #include "camera_capture.h"
 

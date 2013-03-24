@@ -3,7 +3,6 @@
 
 #include "../system/storable_data.h"
 #include "hresource.h"
-#include "global_resource_manager.h"
 //#include "abstract_manager.h"
 #include "logger.h"
 

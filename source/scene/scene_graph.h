@@ -1,7 +1,6 @@
 #ifndef _H_PUNK_SCENE_MAIN_HEADER
 #define _H_PUNK_SCENE_MAIN_HEADER
 
-#include "../system/resource_manager.h"
 #include "../system/object.h"
 #include "node.h"
 #include "geometry_node.h"

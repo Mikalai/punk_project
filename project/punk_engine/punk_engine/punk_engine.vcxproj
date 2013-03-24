@@ -335,7 +335,6 @@
     <ClInclude Include="..\..\..\source\scene\visitor.h" />
     <ClInclude Include="..\..\..\source\string\string.h" />
     <ClInclude Include="..\..\..\source\string\win32\string_win32.h" />
-    <ClInclude Include="..\..\..\source\system\abstract_manager.h" />
     <ClInclude Include="..\..\..\source\system\allocator.h" />
     <ClInclude Include="..\..\..\source\system\aop\aop.h" />
     <ClInclude Include="..\..\..\source\system\atomicint.h" />
@@ -362,8 +361,6 @@
     <ClInclude Include="..\..\..\source\system\config_file.h" />
     <ClInclude Include="..\..\..\source\system\console.h" />
     <ClInclude Include="..\..\..\source\system\decl_property.h" />
-    <ClInclude Include="..\..\..\source\system\dynamic_array.h" />
-    <ClInclude Include="..\..\..\source\system\dynamic_data.h" />
     <ClInclude Include="..\..\..\source\system\environment.h" />
     <ClInclude Include="..\..\..\source\system\errors\assert2.h" />
     <ClInclude Include="..\..\..\source\system\errors\exceptions.h" />
@@ -395,22 +392,11 @@
     <ClInclude Include="..\..\..\source\system\event_manager.h" />
     <ClInclude Include="..\..\..\source\system\factory.h" />
     <ClInclude Include="..\..\..\source\system\folder.h" />
-    <ClInclude Include="..\..\..\source\system\global_resource_manager.h" />
     <ClInclude Include="..\..\..\source\system\hresource.h" />
     <ClInclude Include="..\..\..\source\system\keyboard.h" />
-    <ClInclude Include="..\..\..\source\system\linux\clock_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\folder_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\monitor_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\text_file_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\timer_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\types_linux.h" />
     <ClInclude Include="..\..\..\source\system\logger.h" />
-    <ClInclude Include="..\..\..\source\system\mega_destroyer.h" />
     <ClInclude Include="..\..\..\source\system\module.h" />
-    <ClInclude Include="..\..\..\source\system\monitor.h" />
-    <ClInclude Include="..\..\..\source\system\monitor_scope.h" />
     <ClInclude Include="..\..\..\source\system\mouse.h" />
-    <ClInclude Include="..\..\..\source\system\node.h" />
     <ClInclude Include="..\..\..\source\system\object.h" />
     <ClInclude Include="..\..\..\source\system\pool.h" />
     <ClInclude Include="..\..\..\source\system\pool_manager.h" />
@@ -419,9 +405,6 @@
     <ClInclude Include="..\..\..\source\system\region.h" />
     <ClInclude Include="..\..\..\source\system\resource.h" />
     <ClInclude Include="..\..\..\source\system\resource_creator.h" />
-    <ClInclude Include="..\..\..\source\system\resource_manager.h" />
-    <ClInclude Include="..\..\..\source\system\resource_manager_2_old.h" />
-    <ClInclude Include="..\..\..\source\system\resource_manager_3.h" />
     <ClInclude Include="..\..\..\source\system\scene_graph.h" />
     <ClInclude Include="..\..\..\source\system\serializable.h" />
     <ClInclude Include="..\..\..\source\system\signal_slot\signal_slot.h" />
@@ -440,7 +423,6 @@
     <ClInclude Include="..\..\..\source\system\system_clock.h" />
     <ClInclude Include="..\..\..\source\system\template_singletone.h" />
     <ClInclude Include="..\..\..\source\system\timer.h" />
-    <ClInclude Include="..\..\..\source\system\type.h" />
     <ClInclude Include="..\..\..\source\system\types.h" />
     <ClInclude Include="..\..\..\source\system\types\base_types.h" />
     <ClInclude Include="..\..\..\source\system\types\list.h" />
@@ -462,12 +444,8 @@
     <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\static_array.h" />
     <ClInclude Include="..\..\..\source\system\win32\static_string.h" />
-    <ClInclude Include="..\..\..\source\system\win32\timer_win32.h" />
     <ClInclude Include="..\..\..\source\system\win32\types_win32.h" />
-    <ClInclude Include="..\..\..\source\system\window.h" />
-    <ClInclude Include="..\..\..\source\system\window\linux\window_linux.h" />
     <ClInclude Include="..\..\..\source\system\window\module.h" />
-    <ClInclude Include="..\..\..\source\system\window\win32\window_win32.h" />
     <ClInclude Include="..\..\..\source\system\window\window.h" />
     <ClInclude Include="..\..\..\source\system\window\window_adapter.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\action_desc.h" />
@@ -801,23 +779,16 @@
     <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp" />
     <ClCompile Include="..\..\..\source\system\event_manager.cpp" />
     <ClCompile Include="..\..\..\source\system\factory.cpp" />
-    <ClCompile Include="..\..\..\source\system\global_resource_manager.cpp" />
     <ClCompile Include="..\..\..\source\system\hresource.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\clock_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\folder_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\text_file_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\timer_linux.cpp" />
     <ClCompile Include="..\..\..\source\system\logger.cpp" />
-    <ClCompile Include="..\..\..\source\system\mega_destroyer.cpp" />
-    <ClCompile Include="..\..\..\source\system\node.cpp" />
     <ClCompile Include="..\..\..\source\system\object.cpp" />
     <ClCompile Include="..\..\..\source\system\poolable.h" />
     <ClCompile Include="..\..\..\source\system\pool_manager.cpp" />
-    <ClCompile Include="..\..\..\source\system\resource_manager_3.cpp" />
     <ClCompile Include="..\..\..\source\system\storable.cpp" />
     <ClCompile Include="..\..\..\source\system\streaming\async_loader.cpp" />
     <ClCompile Include="..\..\..\source\system\streaming\data_loader.h" />
     <ClCompile Include="..\..\..\source\system\system_clock.cpp" />
+    <ClCompile Include="..\..\..\source\system\timer.cpp" />
     <ClCompile Include="..\..\..\source\system\types\list.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\binary_file_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\buffer_win32.cpp" />
@@ -832,9 +803,7 @@
     <ClCompile Include="..\..\..\source\system\win32\mouse_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp" />
     <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\window\linux\window_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\window\win32\window_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\window\window.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\action_desc.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\animation_desc.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\armature_desc.cpp" />
@@ -939,7 +908,6 @@
     <None Include="..\..\..\data\shaders\textured_2d_330.vert" />
     <None Include="..\..\..\source\blender\punk_exporter_2_60.py" />
     <None Include="..\..\..\source\images\converter\yuy2_to_rgb.cl" />
-    <None Include="..\..\..\source\system\poolable.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\source\gpu\common\module.h" />

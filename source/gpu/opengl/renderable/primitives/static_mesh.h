@@ -1,7 +1,6 @@
 #ifndef _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 #define _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 
-#include "../../../../system/resource_manager.h"
 #include "../../../../system/object.h"
 #include "vertex_array_object.h"
 
