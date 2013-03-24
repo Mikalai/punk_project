@@ -3,9 +3,9 @@
 
 #include "CL/opencl.h"
 #include "errors/module.h"
-#include "kernel.h"
+#include "cl_kernel.h"
 #include "../../math/helper.h"
-#include "buffer_impl.h"
+#include "cl_buffer_impl.h"
 
 namespace GPU
 {

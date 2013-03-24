@@ -10,9 +10,6 @@
     <Filter Include="system\types">
       <UniqueIdentifier>{48ef528b-873f-496f-95fe-e2dadc0f8b28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\win32">
-      <UniqueIdentifier>{0fe2ecb6-3ebb-41c4-a302-8fb57360d715}</UniqueIdentifier>
-    </Filter>
     <Filter Include="application">
       <UniqueIdentifier>{e2a5bd39-63b1-43b3-ab93-701b37c7fe1d}</UniqueIdentifier>
     </Filter>
@@ -315,31 +312,7 @@
     <ClInclude Include="..\..\..\source\system\types\priority_list.h">
       <Filter>system\types</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\binary_file_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\buffer_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\clock_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\config_file_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\environment_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\monitor_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\allocator.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\binary_file.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\buffer.h">
@@ -372,9 +345,6 @@
     <ClInclude Include="..\..\..\source\system\pool.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\process.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\profiler.h">
       <Filter>system</Filter>
     </ClInclude>
@@ -397,9 +367,6 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\storable_data.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\system_clock.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\template_singletone.h">
@@ -1040,48 +1007,6 @@
     <ClInclude Include="..\..\..\source\scene\terrain_node.h">
       <Filter>scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\buffer.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\buffer_impl.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\command_queue.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\command_queue_impl.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\context.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\context_impl.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\device.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\device_impl.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\kernel.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\kernel_impl.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\platform.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\platform_impl.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\program.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\program_impl.h">
-      <Filter>gpu\opencl</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.h">
       <Filter>gpu\opengl\driver\linux</Filter>
     </ClInclude>
@@ -1198,9 +1123,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\module.h">
       <Filter>gpu</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\gpu\opencl\module.h">
-      <Filter>gpu\opencl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opencl\errors\module.h">
       <Filter>gpu\opencl\errors</Filter>
@@ -1676,6 +1598,57 @@
     <ClInclude Include="..\..\..\source\system\handler.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\system\binary_file.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\events\interface.h">
+      <Filter>system\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_buffer_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_buffer.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_command_queue.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_command_queue_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_context.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_context_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_device.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_device_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_kernel.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_kernel_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_platform.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_platform_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_program.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_program_impl.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\gpu\opencl\module.h">
+      <Filter>gpu\opencl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -1732,24 +1705,6 @@
     <ClCompile Include="..\..\..\source\system\types\list.cpp">
       <Filter>system\types</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\binary_file_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\buffer_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\clock_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\config_file_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\system\clock.cpp">
       <Filter>system</Filter>
     </ClCompile>
@@ -1760,9 +1715,6 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\logger.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\system_clock.cpp">
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\application\application.cpp">
@@ -2159,27 +2111,6 @@
     <ClCompile Include="..\..\..\source\scene\terrain_node.cpp">
       <Filter>scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opencl\buffer.cpp">
-      <Filter>gpu\opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opencl\command_queue.cpp">
-      <Filter>gpu\opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opencl\context.cpp">
-      <Filter>gpu\opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opencl\device.cpp">
-      <Filter>gpu\opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opencl\kernel.cpp">
-      <Filter>gpu\opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opencl\platform.cpp">
-      <Filter>gpu\opencl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\gpu\opencl\program.cpp">
-      <Filter>gpu\opencl</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.cpp">
       <Filter>gpu\opengl\driver\linux</Filter>
     </ClCompile>
@@ -2533,6 +2464,42 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\folder.cpp">
       <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\binary_file.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\buffer.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\config_file.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\environment.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\profiler.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_buffer.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_command_queue.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_context.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_device.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_kernel.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_platform.cpp">
+      <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_program.cpp">
+      <Filter>gpu\opencl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

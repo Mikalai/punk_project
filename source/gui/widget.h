@@ -11,6 +11,7 @@
 #include "../math/math.h"
 #include "../gpu/opengl/textures/text_surface.h"
 #include "events/interface.h"
+#include "../system/events/interface.h"
 
 namespace GUI
 {

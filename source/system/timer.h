@@ -19,7 +19,7 @@ namespace System
 		double GetElapsedMiliseconds() const;
 		long long GetElapsedTicks() const;
 		long long GetFrequency() const;
-        void Reset();		
+        long long Reset();		
 
 	private:
 		Timer(const Timer&);

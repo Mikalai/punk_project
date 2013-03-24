@@ -139,4 +139,16 @@ namespace System
 
 		return res;
 	}
+
+	const string Folder::GetCurrentFolder()
+	{
+		wchar_t buf[MAX_PATH];
+		GetCurrentDirectory(MAX_PATH, buf);
+		return string(buf);
+	}
+
+	void Folder::SetCurrentFolder(const string& value)
+	{
+		SetCurrentDirectory(value.Data());
+	}
 }

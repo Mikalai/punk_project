@@ -1,6 +1,6 @@
-#include "command_queue_impl.h"
-#include "context_impl.h"
-#include "device_impl.h"
+#include "cl_command_queue_impl.h"
+#include "cl_context_impl.h"
+#include "cl_device_impl.h"
 
 namespace GPU
 {

@@ -1,5 +1,5 @@
-#include "device_impl.h"
-#include "platform_impl.h"
+#include "cl_device_impl.h"
+#include "cl_platform_impl.h"
 
 namespace GPU
 {

@@ -3,7 +3,7 @@
 
 #include <CL/opencl.h>
 #include "errors/module.h"
-#include "command_queue.h"
+#include "cl_command_queue.h"
 
 namespace GPU
 {

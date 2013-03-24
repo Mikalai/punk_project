@@ -1,11 +1,5 @@
-
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
-#include "environment_win32.h"
-#include "config_file_win32.h"
-#include "../window/module.h"
+#include "environment.h"
+#include "folder.h"
 
 namespace System
 {
@@ -36,19 +30,12 @@ namespace System
 
 	const string Environment::GetCurrentFolder()
 	{
-		wchar_t buffer[MAX_PATH];
-		GetCurrentDirectory(MAX_PATH, buffer);
-		return string(buffer);
-		/*ConfigFile conf;
-		conf.Open(System::Window::Instance()->GetTitle());
-		string folder = conf.ReadOptionString(L"data");
-		conf.Close();
-		return folder;*/
+		return Folder::GetCurrentFolder();
 	}
 
 	void Environment::SetCurrentFolder(const string& dir)
 	{
-		::SetCurrentDirectory(dir.Data());
+		Folder::SetCurrentFolder(dir);
 	}
 
 	const string Environment::GetFontFolder()

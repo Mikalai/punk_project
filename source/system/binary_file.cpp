@@ -1,14 +1,14 @@
-#ifndef _H_PUNK_BINARY_FILE
-#define _H_PUNK_BINARY_FILE
-
+#ifdef _WIN32
 #include <istream>
 #ifndef NOMINMAX
 #define NOMINMAX
-#endif
+#endif	//	NOMINMAX
 #include <Windows.h>
+#endif	//	_WIN32
 
-#include "../errors/module.h"
-#include "binary_file_win32.h"
+#include "errors/module.h"
+#include "binary_file.h"
+#include "buffer.h"
 
 namespace System
 {
@@ -24,6 +24,7 @@ namespace System
 
 	bool BinaryFile::Load(const string& filename, Buffer& buffer)
 	{
+#ifdef _WIN32
 		DWORD error = GetLastError();
 
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -41,11 +42,14 @@ namespace System
 
 		CloseHandle(hFile);
 		CHECK_SYS_ERROR(L"Binary file load failed " + filename);
+#endif	//	_WIN32
+
 		return true;
 	}
 
 	bool BinaryFile::Save(const string& filename, const Buffer& buffer)
 	{
+#ifdef _WIN32
 		DWORD error = GetLastError();
 
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0,CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -60,11 +64,13 @@ namespace System
 
 		CloseHandle(hFile);
 		CHECK_SYS_ERROR(L"Saving binary file failed " + filename);
+#endif	//	_WIN32
 		return true;
 	}
 
 	bool BinaryFile::Append(const string& filename, const Buffer& buffer)
 	{
+#ifdef _WIN32
 		DWORD error = GetLastError();
 
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -83,11 +89,13 @@ namespace System
 
 		CloseHandle(hFile);
 		CHECK_SYS_ERROR(L"Failed to append a file " + filename);
+#endif	//	_WIN32
 		return true;
 	}
 
 	bool BinaryFile::Truncate(const string& filename)
 	{
+#ifdef _WIN32
 		DWORD error = GetLastError();
 
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0, TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);		
@@ -99,8 +107,7 @@ namespace System
 
 		CloseHandle(hFile);
 		CHECK_SYS_ERROR(L"Failed to truncate a file " + filename);
+#endif	//	_WIN32
 		return true;
 	}
 }
-
-#endif

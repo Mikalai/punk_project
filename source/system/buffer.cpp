@@ -1,10 +1,13 @@
 
+#ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
 #include <Windows.h>
-#include "../logger.h"
-#include "buffer_win32.h"
+#endif	//	_WIN32
+
+#include "logger.h"
+#include "buffer.h"
 
 namespace System
 {
@@ -256,7 +259,9 @@ namespace System
 	void Buffer::Resize(unsigned new_size)
 	{
 		unsigned char* tmp = new unsigned char[new_size];
+#ifdef _WIN32
 		memcpy_s(tmp, new_size, m_buffer, m_size);
+#endif	//	_WIN32
 		m_current = tmp + (m_current - m_buffer);
 		delete[] m_buffer;
 		m_buffer = tmp;
@@ -273,7 +278,9 @@ namespace System
 
 		if (m_current + size >= m_buffer + m_size)
 			Resize(m_size+2*size);
-		memcpy(m_current, data, size);
+#ifdef _WIN32
+		memcpy_s(m_current, size, data, size);
+#endif	//	_WIN32
 		m_current += size;
 	}
 }

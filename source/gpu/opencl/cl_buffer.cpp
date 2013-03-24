@@ -1,6 +1,6 @@
-#include "buffer_impl.h"
-#include "context_impl.h"
-#include "command_queue_impl.h"
+#include "cl_buffer_impl.h"
+#include "cl_context_impl.h"
+#include "cl_command_queue_impl.h"
 #include <algorithm>
 
 namespace GPU

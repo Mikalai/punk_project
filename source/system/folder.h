@@ -24,6 +24,8 @@ namespace System
 		const System::string& Name() const;
 
 		static void DeleteFile(const System::string& filename);
+		static const string GetCurrentFolder();
+		static void SetCurrentFolder(const string& value);
 	};
 }
 

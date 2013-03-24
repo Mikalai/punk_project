@@ -10,7 +10,7 @@
 #include "../config.h"
 //#include "stack_trace.h"
 #include "input/console.h"
-#include "system_clock.h"
+#include "clock.h"
 #include "../string/string.h"
 
 namespace System
@@ -31,7 +31,7 @@ namespace System
 	public:
 		Streamer()
 		{
-			string cur_time = SystemClock::Instance()->NowAsUTC();
+			string cur_time = System::Clock::SysTimeAsUTC();
 			// cook a nice name for the log file
 			cur_time[3] = cur_time[7] = cur_time[10] = cur_time[19] = 0;		//	split string into several strings
 			const wchar_t* buf = cur_time.Data();
@@ -241,7 +241,7 @@ namespace System
 		void Header()
 		{			
 			Console::Instance()->SetTextColor(Console::COLOR_WHITE);
-			Streamer::Instance() << SystemClock::Instance()->NowAsLocal();
+			Streamer::Instance() << Clock::SysTimeNowAsLocal();
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 
@@ -249,7 +249,7 @@ namespace System
 		void Header<LOG_MESSAGE>()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGREEN);
-			Streamer::Instance() << SystemClock::Instance()->NowAsLocal() << L": Message: ";
+			Streamer::Instance() << Clock::SysTimeNowAsLocal() << L": Message: ";
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 
@@ -257,7 +257,7 @@ namespace System
 		void Header<LOG_WARNING>()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_YELLOW);
-			Streamer::Instance() << SystemClock::Instance()->NowAsLocal() << L": Warning: ";
+			Streamer::Instance() << Clock::SysTimeNowAsLocal() << L": Warning: ";
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 
@@ -266,7 +266,7 @@ namespace System
 		void Header<LOG_ERROR>()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTRED);
-			Streamer::Instance()<< SystemClock::Instance()->NowAsLocal() << ": Error: ";			
+			Streamer::Instance()<< Clock::SysTimeNowAsLocal() << ": Error: ";			
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 	};

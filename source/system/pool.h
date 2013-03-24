@@ -2,7 +2,6 @@
 #define _H_PUNK_POOL
 
 #include "../config.h"
-#include "logger.h"
 #include <deque>
 #include "pool_manager.h"
 
@@ -29,7 +28,7 @@ namespace System
 		{			
 			if (m_free.empty())
 			{
-				out_message() << "Allocation requested for " << typeid(T).name() << std::endl;				
+//				out_message() << "Allocation requested for " << typeid(T).name() << std::endl;				
 				void* chunk = operator new(sizeof(T));				
 				//	clear memory
 				memset(chunk, 0, sizeof(T));

@@ -1,12 +1,23 @@
 #ifndef _H_PUNK_BINARY_FILE
 #define _H_PUNK_BINARY_FILE
 
-#ifdef _WIN32
-#include "win32\binary_file_win32.h"
-#endif
+#include <iosfwd>
+#include "../string/string.h"
+#include "../config.h"
 
-#ifdef __linux__
-#include "linux\binary_file_linux.h"
-#endif
+namespace System
+{
+	class Buffer;
 
-#endif
+	class PUNK_ENGINE BinaryFile
+	{
+	public:
+		static bool Load(const string& filename, Buffer& buffer);
+		static bool Load(std::istream& stream, Buffer& buffer);
+		static bool Save(const string& filename, const Buffer& buffer);
+		static bool Append(const string& filename, const Buffer& buffer);
+		static bool Truncate(const string& filename);
+	};
+}
+
+#endif	//	_H_PUNK_BINARY_FILE

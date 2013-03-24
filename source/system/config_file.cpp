@@ -1,12 +1,13 @@
 #ifdef _WIN32
-
 #ifndef NOMINMAX
 #define NOMINMAX
-#endif
+#endif	//	NOMINMAX
 #include <windows.h>
-#include "config_file_win32.h"
-#include "../logger.h"
-#include "../errors/module.h"
+#endif	//	_WIN32
+
+#include "config_file.h"
+#include "logger.h"
+#include "errors/module.h"
 
 namespace System
 {
@@ -21,6 +22,7 @@ namespace System
 
 	bool ConfigFile::Open(const System::string &filename)
 	{
+#ifdef _WIN32
 		DWORD result;
 		LONG error;
 		HKEY software;
@@ -32,17 +34,21 @@ namespace System
 		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't create/open %s in registry", m_filename.Data()));
 
 		out_message() << string::Format(L"Config file %s has been opened", m_filename.Data()) << std::endl;
+#endif	//	_WIN32
 		return true;
 	}
 
 	void ConfigFile::Close()
 	{
+#ifdef _WIN32
 		RegCloseKey(m_key);
 		out_message() << string::Format(L"Config file %s has been closed", m_filename.Data()) << std::endl;
+#endif	//	_WIN32
 	}
 
 	bool ConfigFile::ReadOptionString(const string& option, string& res)
 	{		
+#ifdef _WIN32
 		LONG error;
 		DWORD type;
 		DWORD size;
@@ -56,12 +62,13 @@ namespace System
 		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, &buf[0], &size);
 		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't get value %s from registry", option.Data()));		
 		res = string(&buf[0]);
-
+#endif	//	_WIN32
 		return true;
 	}
 
 	bool ConfigFile::ReadOptionInt(const string& option, int& res)
 	{
+#ifdef _WIN32
 		DWORD type;
 		DWORD size;
 		LONG error;
@@ -73,32 +80,37 @@ namespace System
 
 		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_DWORD, &type, (void*)&res, &size);
 		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't get value %s from registry", option.Data()));
-		
+#endif	//	_WIN32
 		return true;
 	}
 
 	bool ConfigFile::WriteOptionString(const string& option, const string& value)
 	{
+#ifdef _WIN32
 		if (ERROR_SUCCESS != RegSetValueEx(m_key, option.Data(), 0, REG_SZ, (const BYTE*)value.Data(), (value.Length()+1)*sizeof(wchar_t)))
 		{
 			out_error() << string::Format(L"Can't write option %s with value %s into %s", option.Data(), value.Data(), m_filename.Data())  << std::endl;
 			return false;
 		}
+#endif	//	_WIN32
 		return true;
 	}
 
 	bool ConfigFile::WriteOptionInt(const string& option, int value)
 	{
+#ifdef _WIN32
 		if (ERROR_SUCCESS != RegSetValueEx(m_key, option.Data(), 0, REG_DWORD, (const BYTE*)&value, sizeof(int)))
 		{
 			out_error() << string::Format(L"Can't write option %s with value %d into %s", option.Data(), value, m_filename.Data()) << std::endl;
 			return false;
 		}
+#endif	//	_WIN32
 		return true;
 	}
 
 	bool ConfigFile::IsExistOption(const string& option)
 	{
+#ifdef _WIN32
 		DWORD type;
 		DWORD size;
 		LONG err;
@@ -111,8 +123,7 @@ namespace System
 			}
 			out_error() << L"Fatal error" << std::endl;
 		}
+#endif	//	_WIN32
 		return true;
 	}
 }
-
-#endif

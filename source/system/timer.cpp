@@ -41,9 +41,10 @@ namespace System
 			return m_frequency.QuadPart;
 		}
 
-		void Reset()
+		long long Reset()
 		{
 			QueryPerformanceCounter(&m_last_check);
+			return m_last_check.QuadPart;
 		}
 
 		Impl()
@@ -91,8 +92,8 @@ namespace System
 		return impl->GetFrequency();
 	}
 
-	void Timer::Reset()
+	long long Timer::Reset()
     {
-		impl->Reset();
+		return impl->Reset();
     }
 }

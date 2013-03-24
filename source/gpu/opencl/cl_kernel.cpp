@@ -1,4 +1,4 @@
-#include "kernel_impl.h"
+#include "cl_kernel_impl.h"
 
 namespace GPU
 {

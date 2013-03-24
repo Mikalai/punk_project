@@ -3,7 +3,7 @@
 
 #include <CL/opencl.h>
 #include "errors/module.h"
-#include "buffer.h"
+#include "cl_buffer.h"
 
 namespace GPU
 {
