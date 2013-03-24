@@ -130,9 +130,6 @@
     <Filter Include="system\errors">
       <UniqueIdentifier>{30c85d4e-b9b2-450d-8377-6e9dcc642e64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\errors\win32">
-      <UniqueIdentifier>{84c787ac-2495-437f-8f62-40c9b7ad1e26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="images\error">
       <UniqueIdentifier>{d3dbb5a8-a7ee-4543-8ca3-75cb21ffd14e}</UniqueIdentifier>
     </Filter>
@@ -1094,12 +1091,6 @@
     <ClInclude Include="..\..\..\source\system\errors\assert2.h">
       <Filter>system\errors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\errors\win32\assert2_win32.h">
-      <Filter>system\errors\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\errors\win32\stack_trace_win32.h">
-      <Filter>system\errors\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\errors\stack_trace.h">
       <Filter>system\errors</Filter>
     </ClInclude>
@@ -1127,17 +1118,11 @@
     <ClInclude Include="..\..\..\source\gpu\opencl\errors\cl_error_check.h">
       <Filter>gpu\opencl\errors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\errors\win32\error_win32.h">
-      <Filter>system\errors\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\images\error\module.h">
       <Filter>images\error</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\images\error\image_exceptions.h">
       <Filter>images\error</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\errors\sys_check_error.h">
-      <Filter>system\errors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opengl\module.h">
       <Filter>gpu\opengl</Filter>
@@ -1639,6 +1624,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\gpu\opencl\module.h">
       <Filter>gpu\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\errors\error.h">
+      <Filter>system\errors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2153,20 +2141,11 @@
     <ClCompile Include="..\..\..\source\gpu\error\gpu_excpetions.cpp">
       <Filter>gpu\error</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\system\errors\win32\assert2_win32.cpp">
-      <Filter>system\errors\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\errors\win32\stack_trace_win32.cpp">
-      <Filter>system\errors\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opengl\error\gl_exceptions.cpp">
       <Filter>gpu\opengl\error</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opencl\errors\cl_exceptions.cpp">
       <Filter>gpu\opencl\errors</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\errors\win32\error_win32.cpp">
-      <Filter>system\errors\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\render\v1\simple_render.cpp">
       <Filter>render\v1</Filter>
@@ -2491,6 +2470,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\gpu\opencl\cl_program.cpp">
       <Filter>gpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\errors\assert2.cpp">
+      <Filter>system\errors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\errors\error.cpp">
+      <Filter>system\errors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\errors\stack_trace.cpp">
+      <Filter>system\errors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

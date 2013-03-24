@@ -3,13 +3,14 @@
 #define NOMINMAX
 #endif
 #include <Windows.h>
-#include "error_win32.h"
-#include "../exceptions.h"
+#include "error.h"
+#include "exceptions.h"
 
 namespace System
 {
 	void CheckOSError(const System::string& msg)
 	{
+#ifdef _WIN32
 		string error;
 
 		DWORD id = GetLastError();
@@ -28,13 +29,14 @@ namespace System
 				error = L"Unknown error from GetLastError()";
 			}
 			throw OSException(error);
-		}		
+		}	
+#endif
 	}
 
 	void CheckOSError(LONG code, const System::string& msg)
 	{
 		string error;
-
+#ifdef _WIN32
 		if (code != S_OK)
 		{
 			HLOCAL hLocal = 0;
@@ -51,6 +53,7 @@ namespace System
 			}
 			throw OSException(error);
 		}		
+#endif
 	}
 
 }

@@ -7,8 +7,8 @@
 #endif NOMINMAX
 
 #include <Windows.h>
-#include "../../../config.h"
-#include "../../../string/string.h"
+#include "../../config.h"
+#include "../../string/string.h"
 
 namespace System
 {

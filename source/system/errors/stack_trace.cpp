@@ -1,31 +1,36 @@
+#ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
-#endif
+#endif	//	NOMINMAX
 #include <Windows.h>
 #include <DbgHelp.h>
 #include <ostream>
+#endif	//	_WIN32
 
-#include "stack_trace_win32.h"
-#include "../exceptions.h"
+#include "stack_trace.h"
+#include "exceptions.h"
 
 namespace System
 {
 	Stack::Stack()
 	{
+#ifdef _WIN32
 		if (!SymInitialize(GetCurrentProcess(), NULL, TRUE))
 			throw PunkException(L"Unable to find initialize debug info");
+#endif	//	_WIN32
 	}
 
 	Stack::~Stack()
 	{
-
+#ifdef _WIN32
 		SymCleanup(GetCurrentProcess());
+#endif	//	_WIN32
 	}
 
 	string Stack::GetStackTrace()
 	{
-
 		string result;
+#ifdef _WIN32
 		CONTEXT c;
 		memset(&c, 0, sizeof(c));
 		RtlCaptureContext(&c);
@@ -42,7 +47,7 @@ namespace System
 
 #ifdef _M_AMD64
 		StackWalk64();
-#endif
+#endif	//	_M_AMD64
 #ifdef _M_IX86
 		IMAGEHLP_SYMBOL64* pSym = (IMAGEHLP_SYMBOL64*)malloc(sizeof(IMAGEHLP_SYMBOL64)+1024);
 		memset(pSym, 0, sizeof(IMAGEHLP_SYMBOL64) + 1024);
@@ -118,7 +123,8 @@ namespace System
 
 		free(pSym);
 
-#endif
+#endif	//	_M_IX86
+#endif //	_WIN32
 
 		return result;
 	}
@@ -126,6 +132,7 @@ namespace System
 	/// Using ILogger interface StackWalker
 	void Stack::Print(std::wostream& stream)
 	{
+#ifdef _WIN32
 		CONTEXT c;
 		memset(&c, 0, sizeof(c));
 		RtlCaptureContext(&c);
@@ -188,6 +195,7 @@ namespace System
 				break;
 		}
 		free(pSym);
-#endif
+#endif	//	_M_IX86
+#endif	//	_WIN32
 	}
 }

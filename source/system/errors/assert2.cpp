@@ -1,6 +1,6 @@
 #include <sstream>
-#include "assert2_win32.h"
-#include "stack_trace_win32.h"
+#include "assert2.h"
+#include "stack_trace.h"
 
 namespace System
 {
@@ -9,11 +9,12 @@ namespace System
 
 #ifndef NOMINMAX
 #define NOMINMAX
-#endif
+#endif	//	NOMINMAX
 
 #include <Windows.h>
 
 #ifdef _DEBUG
+
 	int CustomAssertFunction(bool exp, const System::string& description, char* func, int line, char* file)
 	{
 		Stack walker;
