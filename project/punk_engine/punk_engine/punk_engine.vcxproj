@@ -427,10 +427,8 @@
     <ClInclude Include="..\..\..\source\system\template_singletone.h" />
     <ClInclude Include="..\..\..\source\system\timer.h" />
     <ClInclude Include="..\..\..\source\system\types.h" />
-    <ClInclude Include="..\..\..\source\system\types\base_types.h" />
     <ClInclude Include="..\..\..\source\system\types\list.h" />
     <ClInclude Include="..\..\..\source\system\types\priority_list.h" />
-    <ClInclude Include="..\..\..\source\system\types\win32\base_types_win32.h" />
     <ClInclude Include="..\..\..\source\system\window\module.h" />
     <ClInclude Include="..\..\..\source\system\window\window.h" />
     <ClInclude Include="..\..\..\source\system\window\window_adapter.h" />

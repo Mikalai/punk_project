@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_WINDOW_ADAPTER
 #define _H_PUNK_WINDOW_ADAPTER
 
-#include "../types/base_types.h"
+#include "../types.h"
 
 namespace System
 {

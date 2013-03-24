@@ -2,6 +2,7 @@
 #define _H_PUNK_SYSTEM_TYPES
 
 #include "handler.h"
+#include "atomicint.h"
 
 namespace System
 {

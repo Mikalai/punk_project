@@ -121,9 +121,6 @@
     <Filter Include="system\concurrency\linux">
       <UniqueIdentifier>{064a33c7-76b0-43ad-9e13-d8b1a7a8a3d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="system\types\win32">
-      <UniqueIdentifier>{319ec42d-2843-41f6-8e6c-4b5509335200}</UniqueIdentifier>
-    </Filter>
     <Filter Include="system\types\linux">
       <UniqueIdentifier>{678483ba-5a3f-4584-94eb-bf27352152fc}</UniqueIdentifier>
     </Filter>
@@ -988,12 +985,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\concurrency\win32\atomic_win32.h">
       <Filter>system\concurrency\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\types\base_types.h">
-      <Filter>system\types</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\types\win32\base_types_win32.h">
-      <Filter>system\types\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\terrain\terrain_processor.h">
       <Filter>virtual\terrain</Filter>
