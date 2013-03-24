@@ -1,5 +1,8 @@
-#ifndef _H_PUNK_SYSTEM_CAMERA_CAPTURE_WIN32
-#define _H_PUNK_SYSTEM_CAMERA_CAPTURE_WIN32
+
+// ATTENTION: under construction
+
+#ifndef _H_PUNK_SYSTEM_CAMERA_CAPTURE
+#define _H_PUNK_SYSTEM_CAMERA_CAPTURE
 
 #include "../../config.h"
 #ifndef NOMINMAX

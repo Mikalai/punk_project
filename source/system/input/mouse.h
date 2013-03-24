@@ -1,5 +1,5 @@
-#ifndef _H_PUNK_MOUSE_WIN32
-#define _H_PUNK_MOUSE_WIN32
+#ifndef _H_PUNK_SYSTEM_MOUSE
+#define _H_PUNK_SYSTEM_MOUSE
 
 #include "../../config.h"
 #include "../smart_pointers/module.h"

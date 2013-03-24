@@ -1,4 +1,4 @@
-#include "mouse_win32.h"
+#include "mouse.h"
 #include "../window/module.h"
 
 namespace System
@@ -46,7 +46,9 @@ namespace System
 
 	void Mouse::Show(bool value)
 	{
+#ifdef _WIN32
 		ShowCursor(m_visible = value);
+#endif
 	}
 
 	bool Mouse::IsLocked() const
@@ -66,33 +68,41 @@ namespace System
 
 	int Mouse::GetGlobalX() const
 	{
+#ifdef _WIN32
 		POINT p;
 		GetCursorPos(&p);
 		return p.x;
+#endif
 	}
 
 	int Mouse::GetGlobalY() const
 	{
+#ifdef _WIN32
 		POINT p;
 		GetCursorPos(&p);
 		return p.y;
+#endif
 	}
 
 	int Mouse::GetLocalX() const
 	{
+#ifdef _WIN32
 		POINT p;
 		GetCursorPos(&p);
 		if (m_region == 0)
 			return p.x;
 		return p.x - m_region->GetX();
+#endif
 	}
 
 	int Mouse::GetLocalY() const
 	{
+#ifdef _WIN32
 		POINT p;
 		GetCursorPos(&p);
 		if (m_region == 0)
 			return p.y;
 		return p.y - m_region->GetY();
+#endif
 	}
 }

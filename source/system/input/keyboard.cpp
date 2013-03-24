@@ -1,4 +1,4 @@
-#include "keyboard_win32.h"
+#include "keyboard.h"
 #include <memory.h>
 
 namespace System
@@ -39,7 +39,7 @@ namespace System
 	}
 
 	bool Keyboard::GetKeyState(int key) const
-	{
+	{		
 		return m_keys[key];
 	}
 }

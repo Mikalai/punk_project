@@ -1,4 +1,4 @@
-#include "camera_capture_win32.h"
+#include "camera_capture.h"
 #include "../window/module.h"
 #include "../logger.h"
 #include <Vfw.h>

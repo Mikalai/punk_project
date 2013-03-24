@@ -6,8 +6,7 @@
 #include "../../math/helper.h"
 #include "../event_manager.h"
 #include "../logger.h"
-#include "../win32/keyboard_win32.h"
-#include "../win32/mouse_win32.h"
+#include "../input/module.h"
 #include "../timer.h"
 
 namespace System

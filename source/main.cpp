@@ -16,7 +16,7 @@
 
 #include <Windows.h>
 #include <dshow.h>
-#include "system\win32\camera_capture_win32.h"
+#include "system\input\camera_capture.h"
 #pragma comment(lib, "strmiids")
 
 void Init()

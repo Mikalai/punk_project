@@ -250,6 +250,9 @@
     <Filter Include="gpu\opengl\render">
       <UniqueIdentifier>{0fc1de59-63fc-403c-aa95-c39cf3a2acdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system\input">
+      <UniqueIdentifier>{90502834-2036-4031-8e4e-da521dbf1e8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -339,13 +342,7 @@
     <ClInclude Include="..\..\..\source\system\win32\handle_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\keyboard_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\monitor_win32.h">
-      <Filter>system\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\mouse_win32.h">
       <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\win32\process_win32.h">
@@ -393,16 +390,10 @@
     <ClInclude Include="..\..\..\source\system\hresource.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\system\keyboard.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\system\logger.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\module.h">
-      <Filter>system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\mouse.h">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\pool.h">
@@ -771,9 +762,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\virtual\manager\camera_manager.h">
       <Filter>virtual\manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\system\win32\camera_capture_win32.h">
-      <Filter>system\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\system\camera_capture.h">
       <Filter>system</Filter>
@@ -1694,6 +1682,18 @@
     <ClInclude Include="..\..\..\source\system\atomicint.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\system\input\module.h">
+      <Filter>system\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\input\camera_capture.h">
+      <Filter>system\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\input\keyboard.h">
+      <Filter>system\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\system\input\mouse.h">
+      <Filter>system\input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -1772,12 +1772,6 @@
       <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\handle_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\keyboard_win32.cpp">
-      <Filter>system\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\mouse_win32.cpp">
       <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp">
@@ -2007,9 +2001,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\virtual\data\world.cpp">
       <Filter>virtual\data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\system\win32\camera_capture_win32.cpp">
-      <Filter>system\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\images\converter\yuy2_to_rgb.cpp">
       <Filter>images\converter</Filter>
@@ -2554,6 +2545,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\window\window.cpp">
       <Filter>system\window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\input\camera_capture.cpp">
+      <Filter>system\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\input\keyboard.cpp">
+      <Filter>system\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\system\input\mouse.cpp">
+      <Filter>system\input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
