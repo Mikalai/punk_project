@@ -21,9 +21,24 @@
     <ClInclude Include="..\..\..\source\application\module.h" />
     <ClInclude Include="..\..\..\source\audio\audio_buffer.h" />
     <ClInclude Include="..\..\..\source\audio\audio_config.h" />
-    <ClInclude Include="..\..\..\source\audio\player.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_distance_model.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_format.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_listener.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_loader.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_ogg_loader.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_ogg_processor.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_source.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\alext.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_distance_models.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_error.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_format.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_buffer_impl.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_listener_impl.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_source_impl.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\openal.h" />
     <ClInclude Include="..\..\..\source\audio\punk_audio.h" />
     <ClInclude Include="..\..\..\source\audio\resource.h" />
+    <ClInclude Include="..\..\..\source\audio\sound_system.h" />
     <ClInclude Include="..\..\..\source\config.h" />
     <ClInclude Include="..\..\..\source\gpu\common\abstract_render_context_policy.h" />
     <ClInclude Include="..\..\..\source\gpu\common\video_driver.h" />
@@ -527,9 +542,17 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_listener.cpp" />
     <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp" />
     <ClCompile Include="..\..\..\source\audio\audio_config.cpp" />
-    <ClCompile Include="..\..\..\source\audio\player.cpp" />
+    <ClCompile Include="..\..\..\source\audio\audio_ogg_loader.cpp" />
+    <ClCompile Include="..\..\..\source\audio\audio_ogg_processor.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\alext.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_distance_models.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_error.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_format.cpp" />
+    <ClCompile Include="..\..\..\source\audio\audio_source.cpp" />
+    <ClCompile Include="..\..\..\source\audio\sound_system.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\abstract_render_context_policy.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\gpu_common_module.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\renderable.cpp" />

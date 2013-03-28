@@ -1,97 +1,93 @@
-#include "audio_buffer.h"
 #include <vector>
 #include <ostream>
 #include <istream>
 #include <fstream>
-#include <openal/al.h>
-
+#include "openal/al_buffer_impl.h"
 #include "../system/environment.h"
 
 namespace Audio
 {
-	void OnInit()
-	{
-		//ALFWInit();
-
-		//if (!ALFWInitOpenAL())
-		//{
-		//	out_error() << L"Failed to initialize OpenAL" << std::endl;
-		//	ALFWShutdown();
-		//	return;
-		//}
-	}
-
-	void OnDestroy()
-	{
-		//ALFWShutdownOpenAL();
-		//ALFWShutdown();
-	}
-
-	AudioBuffer::AudioBuffer()
-		: m_buffer(0)
-//		, m_index(-1)
+	Buffer::Buffer()
+		: impl(new BufferImpl)
 	{}
 
-	AudioBuffer::~AudioBuffer()
+	Buffer::~Buffer()
 	{
-		Clear();
+		delete impl;
+		impl = nullptr;
 	}
 
-	void AudioBuffer::Clear()
+	void Buffer::SetData(Format format, void* data, int size, int frequency)
 	{
-		if (m_buffer != 0)
-		{
-			alDeleteBuffers(1, &m_buffer);
-//			CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
-			m_buffer = 0;
-		}
+		impl->SetData(format, data, size, frequency);
 	}
 
-	void AudioBuffer::Init()
+	int Buffer::GetFrequency() const 
 	{
-		Clear();
-		alGenBuffers(1, &m_buffer);
-//		CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
+		return impl->GetFrequency();
 	}
 
-	bool AudioBuffer::Save(std::ostream& stream) const
-	{				
-		//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));		
-		//m_file.Save(stream);
-		return false;
-	}
-
-	bool AudioBuffer::Load(std::istream& stream)
+	int Buffer::GetBits() const
 	{
-		{			
-			// check if this is a wave file
-			struct WaveHeader { char riff[4]; int data; char wave[4]; };
-			WaveHeader buffer;
-			stream.read(reinterpret_cast<char*>(&buffer), sizeof(buffer));
-			if (memcmp(buffer.riff, "RIFF", 4) == 0 && memcmp(buffer.wave, "WAVE", 4) == 0)
-			{			
-				stream.seekg(0, std::ios_base::beg);
-				LoadFromWAV(stream);
-				return true;
-			}			
-		}					
-		return false;
+		return impl->GetBits();
 	}
 
-	bool AudioBuffer::LoadFromWAV(std::istream& stream)
-	{			
-		alGenBuffers(1, &m_buffer);
-
-		//if (!ALFWLoadWaveToBuffer(stream, m_buffer))
-		//{
-		//	out_error() << L"Failed to load AudioBuffer file from stream" << std::endl;			
-		//	alDeleteBuffers(1, &m_buffer);
-		//	return false;
-		//}
-		return false;
+	int Buffer::GetChannels() const
+	{
+		return impl->GetChannels();
 	}
 
-	AudioBuffer* AudioBuffer::CreateFromFile(const System::string& path)
+	int Buffer::GetSize() const
+	{
+		return impl->GetSize();
+	}
+
+	void* Buffer::GetData() const 
+	{
+		return impl->GetData();
+	}
+
+	void Buffer::SetDescription(const System::string& value)
+	{
+		impl->SetDescription(value);
+	}
+
+	const System::string& Buffer::GetDescription() const
+	{
+		return impl->GetDescription();
+	}
+
+	//bool AudioBuffer::Load(std::istream& stream)
+	//{
+	//	{			
+	//		// check if this is a wave file
+	//		struct WaveHeader { char riff[4]; int data; char wave[4]; };
+	//		WaveHeader buffer;
+	//		stream.read(reinterpret_cast<char*>(&buffer), sizeof(buffer));
+	//		if (memcmp(buffer.riff, "RIFF", 4) == 0 && memcmp(buffer.wave, "WAVE", 4) == 0)
+	//		{			
+	//			stream.seekg(0, std::ios_base::beg);
+	//			LoadFromWAV(stream);
+	//			return true;
+	//		}			
+	//	}					
+	//	return false;
+	//}
+
+	//bool AudioBuffer::LoadFromWAV(std::istream& stream)
+	//{			
+	//	alGenBuffers(1, &m_buffer);
+
+	//	//if (!ALFWLoadWaveToBuffer(stream, m_buffer))
+	//	//{
+	//	//	out_error() << L"Failed to load AudioBuffer file from stream" << std::endl;			
+	//	//	alDeleteBuffers(1, &m_buffer);
+	//	//	return false;
+	//	//}
+	//	return false;
+	//}
+
+	/*AudioBuffer* AudioBuffer::CreateFromFile(const System::string& path)
 	{
 		std::unique_ptr<AudioBuffer> buffer(new AudioBuffer);
 
@@ -106,5 +102,5 @@ namespace Audio
 		std::unique_ptr<AudioBuffer> buffer(new AudioBuffer);
 		buffer->Load(stream);
 		return buffer.release();
-	}
+	}*/
 }

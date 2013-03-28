@@ -22,7 +22,7 @@ namespace Virtual
 				return (out_error() << "Can't lock object" << std::endl, System::STREAM_ERROR);
 		}
 		m_desc.m_device_ptr = m_desc.m_height_map->Map();
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainViewProcessor::UnlockDeviceObject()
@@ -32,7 +32,7 @@ namespace Virtual
 		m_size = 0;
 		if (m_desc.OnEnd)
 			m_desc.OnEnd(m_desc.m_on_end_data);
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 	
 	System::StreamingStepResult TerrainViewProcessor::Process(void* data, unsigned size)
@@ -40,18 +40,18 @@ namespace Virtual
 		m_data = data;
 		m_size = size;
 		//	here it will be possible to convert float point representation to any other
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainViewProcessor::CopyToResource()
 	{
 		memcpy(m_desc.m_device_ptr, m_data, m_size);
 		reinterpret_cast<Virtual::TerrainView*>(m_desc.m_on_end_data)->UpdatePhysics();
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainViewProcessor::SetResourceError()
 	{
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 }

@@ -235,6 +235,9 @@
     <Filter Include="system\input">
       <UniqueIdentifier>{90502834-2036-4031-8e4e-da521dbf1e8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="audio\openal">
+      <UniqueIdentifier>{13a7034f-af8d-4328-9e90-2fdca02fb1e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\system\events\event.h">
@@ -370,15 +373,6 @@
       <Filter>application</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\audio\audio_buffer.h">
-      <Filter>audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\player.h">
-      <Filter>audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\punk_audio.h">
-      <Filter>audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\audio\resource.h">
       <Filter>audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\gui\manager.h">
@@ -1607,6 +1601,60 @@
     <ClInclude Include="..\..\..\source\system\concurrency\monitor.h">
       <Filter>system\concurrency</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\alext.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\sound_system.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\al_error.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\openal.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_format.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\al_format.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_loader.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_ogg_loader.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_ogg_processor.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\punk_audio.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\resource.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_source.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\al_buffer_impl.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\al_source_impl.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\al_listener_impl.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_listener.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\audio_distance_model.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\al_distance_models.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -1679,9 +1727,6 @@
       <Filter>application</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp">
-      <Filter>audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\audio\player.cpp">
       <Filter>audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\gui\manager.cpp">
@@ -2458,6 +2503,33 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\system\concurrency\thread_mutex.cpp">
       <Filter>system\concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\alext.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\sound_system.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\al_error.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\al_format.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_ogg_loader.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_ogg_processor.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_source.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_listener.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\al_distance_models.cpp">
+      <Filter>audio\openal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

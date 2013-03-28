@@ -1,50 +1,46 @@
-#ifndef _H_PUNK_AudioBuffer
-#define _H_PUNK_AudioBuffer
+#ifndef _H_PUNK_AUDIO_BUFFER
+#define _H_PUNK_AUDIO_BUFFER
 
 #include <iosfwd>
 #include "../system/object.h"
 #include "../string/string.h"
-
+#include "audio_format.h"
 #include "../config.h"
 
 namespace Audio
 {
-	class AudioManager;
-	class Player;
+	struct BufferImpl;
 
-	class PUNK_ENGINE AudioBuffer : public System::Object
+	class PUNK_ENGINE Buffer
 	{		
-		AudioBuffer(const AudioBuffer&);
-		AudioBuffer& operator = (const AudioBuffer&);
 	public:
 		
-		AudioBuffer();
-		~AudioBuffer();
-		void Init();
-		void Clear();
+		Buffer();
+		~Buffer();
 		
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);		
 
-		/// wav, ogg etc.
-		//void SetSourceFile(const System::string& file) { m_file = file; }
-		//const System::string& GetSourceFile() const { return m_file; }
-		//int GetIndex() const { return m_index; }
-		//void SetIndex(int value) { m_index = value; }
+		static Buffer* CreateFromFile(const System::string& path);
+		static Buffer* CreateFromStream(std::istream& stream);
 
-		static AudioBuffer* CreateFromFile(const System::string& path);
-		static AudioBuffer* CreateFromStream(std::istream& stream);
+		void SetData(Format format, void* data, int size, int frequency);
+		int GetFrequency() const;
+		int GetBits() const;
+		int GetChannels() const;
+		int GetSize() const;
+		void* GetData() const;
+		void SetDescription(const System::string& value);
+		const System::string& GetDescription() const;
+
+		BufferImpl* impl;
 
 	private:
-		bool LoadFromWAV(std::istream& stream);
-		unsigned m_buffer;
-
-		friend class AudioManager;
-		friend class Player;
+		Buffer(const Buffer&);
+		Buffer(const Buffer&&);
+		Buffer& operator = (const Buffer&);
+		Buffer& operator = (const Buffer&&);
 	};	
-
-	extern PUNK_ENGINE void OnInit();
-	extern PUNK_ENGINE void OnDestroy();
 }
 
 #endif//	_H_PUNK_AudioBuffer

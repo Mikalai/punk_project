@@ -134,18 +134,18 @@ namespace Virtual
 			}
 		}
 				
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainViewLoader::Decompress(void** data, unsigned* size)
 	{
 		*data = m_desc.m_buffer;
 		*size = m_desc.m_buffer_size;
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainViewLoader::Destroy()
 	{
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 }
