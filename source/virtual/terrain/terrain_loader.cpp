@@ -17,22 +17,22 @@ namespace Virtual
 		
 		System::Buffer buffer;
 		if (!System::BinaryFile::Load(filename, buffer))
-			return (out_error() << "Can't load " << filename << std::endl, System::STREAM_ERROR);
+			return (out_error() << "Can't load " << filename << std::endl, System::StreamingStepResult::STREAM_ERROR);
 		m_size = buffer.GetSize();
 		m_data = buffer.Release();
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainLoader::Decompress(void** data, unsigned* size)
 	{
 		*data = m_data;
 		*size = m_size;
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainLoader::Destroy()
 	{
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	TerrainLoader::~TerrainLoader()

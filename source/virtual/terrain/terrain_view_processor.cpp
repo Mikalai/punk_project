@@ -19,7 +19,7 @@ namespace Virtual
 			|| m_desc.m_height_map->GetWidth() != m_desc.m_view_size)			
 		{
 			if (!m_desc.m_height_map->Create(m_desc.m_view_size, m_desc.m_view_size, ImageModule::IMAGE_FORMAT_R32F, 0, true))
-				return (out_error() << "Can't lock object" << std::endl, System::STREAM_ERROR);
+				return (out_error() << "Can't lock object" << std::endl, System::StreamingStepResult::STREAM_ERROR);
 		}
 		m_desc.m_device_ptr = m_desc.m_height_map->Map();
 		return System::StreamingStepResult::STREAM_OK;

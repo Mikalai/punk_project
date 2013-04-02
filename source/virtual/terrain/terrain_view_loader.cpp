@@ -20,7 +20,7 @@ namespace Virtual
 	{
 		Terrain* terrain = m_desc.m_manager->GetTerrain();
 		if (!terrain)
-			return (out_error() << L"Manager do not manage any terrain" << std::endl, System::STREAM_ERROR);
+			return (out_error() << L"Manager do not manage any terrain" << std::endl, System::StreamingStepResult::STREAM_ERROR);
 
 		//	find coordinates of the observer position in the map coordinate system
 		auto mark = (m_desc.m_view_point - m_desc.m_world_origin) / m_desc.m_block_scale;
@@ -72,7 +72,7 @@ namespace Virtual
 
 		//	if not all cell are in memory return false
 		if (!is_valid)
-			return System::STREAM_TRY_AGAIN;
+			return System::StreamingStepResult::STREAM_TRY_AGAIN;
 
 		float* dst_buffer = (float*)m_desc.m_buffer;
 		memset(dst_buffer, 0, m_desc.m_buffer_size);
