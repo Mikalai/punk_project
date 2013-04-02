@@ -92,6 +92,7 @@
     <ClCompile Include="bbox_test.cpp" />
     <ClCompile Include="painter_test.cpp" />
     <ClCompile Include="portal_test.cpp" />
+    <ClCompile Include="sound_test.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
