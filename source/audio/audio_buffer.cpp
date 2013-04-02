@@ -57,6 +57,11 @@ namespace Audio
 		return impl->GetDescription();
 	}
 
+	bool Buffer::IsValid() const
+	{
+		return impl->IsValid();
+	}
+
 	//bool AudioBuffer::Load(std::istream& stream)
 	//{
 	//	{			

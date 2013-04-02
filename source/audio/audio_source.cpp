@@ -3,6 +3,16 @@
 
 namespace Audio
 {
+	Source::Source()
+		: impl(new SourceImpl)
+	{}
+
+	Source::~Source()
+	{
+		delete impl;
+		impl = nullptr;
+	}
+
 	void Source::SetPitch(float value)
 	{
 		impl->SetPitch(value);

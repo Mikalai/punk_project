@@ -46,4 +46,5 @@ namespace Audio
 		default:
 			throw System::PunkException(L"Bad distance model requested");
 		}
+	}
 }

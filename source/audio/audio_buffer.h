@@ -18,9 +18,6 @@ namespace Audio
 		Buffer();
 		~Buffer();
 		
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);		
-
 		static Buffer* CreateFromFile(const System::string& path);
 		static Buffer* CreateFromStream(std::istream& stream);
 
@@ -32,7 +29,7 @@ namespace Audio
 		void* GetData() const;
 		void SetDescription(const System::string& value);
 		const System::string& GetDescription() const;
-
+		bool IsValid() const;
 		BufferImpl* impl;
 
 	private:

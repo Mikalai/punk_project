@@ -1655,6 +1655,9 @@
     <ClInclude Include="..\..\..\source\audio\openal\al_distance_models.h">
       <Filter>audio\openal</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\audio\openal\al_sound_system_impl.h">
+      <Filter>audio\openal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\system\events\events.cpp">
@@ -2529,6 +2532,18 @@
       <Filter>audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\audio\openal\al_distance_models.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\al_buffer_impl.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\al_listener_impl.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\al_sound_system_impl.cpp">
+      <Filter>audio\openal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\openal\al_source_impl.cpp">
       <Filter>audio\openal</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,7 +9,8 @@ namespace Audio
 {
 	struct OggLoaderImpl;
 	class Buffer;
-	class OggLoader : public Loader
+	
+	class PUNK_ENGINE OggLoader : public Loader
 	{
 	public:
 		
@@ -32,7 +33,7 @@ namespace Audio
 		/**
 		*	when 0 returns it means an error
 		*/
-		System::StreamingStepResult Destroy() override;
+		System::StreamingStepResult Destroy() override { return System::StreamingStepResult::STREAM_OK; }
 
 		OggLoaderImpl* impl;
 

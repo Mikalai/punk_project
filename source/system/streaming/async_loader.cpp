@@ -11,7 +11,7 @@ namespace System
 		if (!m_instance.get())
 		{
 			m_instance.reset(new AsyncLoader);
-			m_instance->InitAsyncLoading(1);
+			//m_instance->InitAsyncLoading(1);
 		}
 		return m_instance.get();
 	}
@@ -121,12 +121,12 @@ namespace System
 				{
 					auto res = request.m_loader->Load();
 					//	if error, mark request as invalid
-					if (STREAM_ERROR == res)
+					if (StreamingStepResult::STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
 					}
 					//	if try again, mark add request to the io queue again, and continue
-					else if (STREAM_TRY_AGAIN == res)
+					else if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{
 						m_io_queue_mutex.Lock();
 						m_io_queue.push_back(request);
@@ -155,12 +155,12 @@ namespace System
 					//	try to copy data to device memory
 					auto res = request.m_processor->CopyToResource();
 					//	mark invalid is error
-					if (STREAM_ERROR == res)
+					if (StreamingStepResult::STREAM_ERROR == res)
 					{
 						//	if troubles invalidate request
 						request.m_valid_flag = false;
 					}
-					else if (STREAM_TRY_AGAIN == res)
+					else if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{						
 						m_io_queue_mutex.Lock();
 						m_io_queue.push_back(request);
@@ -214,17 +214,17 @@ namespace System
 				//	decompress data using loader
 				auto res = request.m_loader->Decompress(&data, &size);				
 				//	if all ok continue decompression
-				if (STREAM_OK == res)
+				if (StreamingStepResult::STREAM_OK == res)
 				{
 					// process data using processor
 					res = request.m_processor->Process(data, size); 					
 					//	if failed set request is invalid
-					if (STREAM_ERROR == res)
+					if (StreamingStepResult::STREAM_ERROR == res)
 					{						
 						request.m_valid_flag = false;
 					}
 					//	try again if required
-					else if (STREAM_TRY_AGAIN == res)
+					else if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{
 						m_process_queue_mutex.Lock();
 						m_process_queue.push_back(request);
@@ -233,7 +233,7 @@ namespace System
 					}
 				}
 				//	try again if required
-				else if (res == STREAM_TRY_AGAIN)
+				else if (res == StreamingStepResult::STREAM_TRY_AGAIN)
 				{
 					m_process_queue_mutex.Lock();
 					m_process_queue.push_back(request);
@@ -241,7 +241,7 @@ namespace System
 					m_process_thread_semaphore.Release();				
 				}
 				//	if decompress failed set request as invalid
-				else if (res == STREAM_ERROR)
+				else if (res == StreamingStepResult::STREAM_ERROR)
 				{
 					request.m_valid_flag = false;
 				}
@@ -287,7 +287,7 @@ namespace System
 					//	try to lock is request is still valid
 					auto res = request.m_processor->LockDeviceObject();
 					//	if there was not enough resource now, try again later
-					if (STREAM_TRY_AGAIN == res)
+					if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{
 						m_render_queue_mutex.Lock();
 						m_render_queue.push_back(request);
@@ -295,7 +295,7 @@ namespace System
 						continue;
 					} 
 					//	if it was a complete fail, just mark this request is not valid
-					else if (STREAM_ERROR == res)
+					else if (StreamingStepResult::STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
 					}
@@ -321,11 +321,11 @@ namespace System
 				{
 					//	if object is valid, unloc resource
 					auto res = request.m_processor->UnlockDeviceObject();					
-					if (STREAM_ERROR == res)
+					if (StreamingStepResult::STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
 					}
-					else if (STREAM_TRY_AGAIN == res)
+					else if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{
 						m_render_queue_mutex.Lock();
 						m_render_queue.push_back(request);

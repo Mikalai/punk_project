@@ -21,22 +21,22 @@ namespace Audio
 		/**
 		*	This do nothing, because we have a texture to copy data in
 		*/
-		System::StreamingStepResult LockDeviceObject() override {};
+		System::StreamingStepResult LockDeviceObject() override { return System::StreamingStepResult::STREAM_OK; };
 		/**
 		*	This do nothing 
 		*/
-		System::StreamingStepResult UnlockDeviceObject() override {};
+		System::StreamingStepResult UnlockDeviceObject() override { return System::StreamingStepResult::STREAM_OK; };
 		/**
 		*	This can perform data convertion, if float textures
 		*	are not supported
 		*/
-		System::StreamingStepResult Process(void* data, unsigned size) override {};
+		System::StreamingStepResult Process(void* data, unsigned size) override { return System::StreamingStepResult::STREAM_OK; };
 		/**
 		*	Data is copied to the texture here
 		*/
-		System::StreamingStepResult CopyToResource() override {};
+		System::StreamingStepResult CopyToResource() override { return System::StreamingStepResult::STREAM_OK; };
 
-		System::StreamingStepResult SetResourceError() override {};
+		System::StreamingStepResult SetResourceError() override { return System::StreamingStepResult::STREAM_OK; };
 	};
 }
 #endif	//	_H_PUNK_VIRTUAL_TERRAIN_VIEW_PROCESSOR

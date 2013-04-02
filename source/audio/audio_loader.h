@@ -8,7 +8,7 @@ namespace Audio
 {
 	class Buffer;
 
-	class Loader : public System::AbstractDataLoader
+	class PUNK_ENGINE Loader : public System::AbstractDataLoader
 	{
 	public:
 		/**
