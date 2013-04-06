@@ -4,15 +4,15 @@
 #define NOMINMAX
 #endif
 #include <Windows.h>
-#include "../../../gpu_config.h"
-#include "../../../../config.h"
-#include "../../../../system/smart_pointers/module.h"
+#include "../../gpu_config.h"
+#include "../../../config.h"
+#include "../../../system/smart_pointers/module.h"
 
-#include "../../../../system/module.h"
-#include "../../gl/module.h"
-#include "../../error/module.h"
-#include "gl_driver_win32.h"
-#include "../../render/gl_frame.h"
+#include "../../../system/module.h"
+#include "../gl/module.h"
+#include "../error/module.h"
+#include "gl_driver.h"
+#include "../render/gl_frame.h"
 
 namespace GPU
 {

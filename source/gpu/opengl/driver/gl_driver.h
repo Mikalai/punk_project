@@ -1,19 +1,51 @@
-/*
-File: Driver.h
-Author: Abramau Mikalaj
-Description: Contains an entity that must initialise OpenGL
-and handle different parameters about users video system
-*/
-
-#ifndef _H_PUNK_DRIVER_VIDEO_OPENGL_DRIVER
-#define _H_PUNK_DRIVER_VIDEO_OPENGL_DRIVER
+#ifndef _H_PUNK_OPENGL_DRIVER_WIN32
+#define _H_PUNK_OPENGL_DRIVER_WIN32
 
 #ifdef _WIN32
-#include "win32/gl_driver_win32.h"
-#endif
+#include <map>
+#include <list>
 
-#ifdef __linux__
-#include 
-#endif
+#include "../../common/video_driver.h"
 
-#endif
+namespace GPU
+{
+	struct VideoDriverImpl
+	{
+		//	video driver interface
+		void SetFullScreen(bool flag);
+		bool Start(const VideoDriverDesc& desc);
+		void Restart();
+		void Shutdown();				
+		System::Window* GetWindow();
+		Frame* BeginFrame();
+		void EndFrame(Frame* value);
+
+		//	constructoion part
+		VideoDriverImpl(VideoDriver* driver);
+		~VideoDriverImpl();	
+
+		//	implementation part
+		void SwapBuffers();
+		void OnResize(System::Event* e);
+		void OnKeyDown(System::Event* e);
+
+	private:
+
+		int m_shader_version;
+		int m_opengl_version;
+		HGLRC m_opengl_context;
+		VideoDriverDesc m_desc;
+		VideoDriver* m_driver;
+
+	private:
+		void Init();
+		void Clear();
+		void ReadConfig();
+		void InitShaderPrograms();
+		void SubscribeForSystemMessages();
+		void InitInternalVertexBuffers();
+	};
+}
+
+#endif	//	_WIN32
+#endif	//	_H_PUNK_OPENGL_DRIVER_WIN32
