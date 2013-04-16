@@ -15,13 +15,7 @@
 
 namespace System
 {
-	enum LoggerType
-	{
-		LOG_NO = 0,
-		LOG_MESSAGE = 0,
-		LOG_WARNING = 1,
-		LOG_ERROR = 2,
-	};
+	enum class LoggerType { No, Message, Warning, Error };
 
 	struct PUNK_ENGINE Streamer
 	{
@@ -29,185 +23,28 @@ namespace System
 		typedef std::basic_ostream<wchar_t, std::char_traits<wchar_t>> _Myt;
 		typedef std::basic_ios<wchar_t, std::char_traits<wchar_t>> _Myios;
 	public:
-		Streamer()
-		{
-			string cur_time = System::Clock::SysTimeAsUTC();
-			// cook a nice name for the log file
-			cur_time[3] = cur_time[7] = cur_time[10] = cur_time[19] = 0;		//	split string into several strings
-			const wchar_t* buf = cur_time.Data();
-			//	makefile name according to the current date
-			string filename(L"log_" + string(&buf[20]) + L"_" + string(&buf[4]) + L"_" + string(&buf[8]));
-			m_stream.open(filename.Data(), std::ios_base::app);
-		}
-
-		Streamer& operator << (const string& s)
-		{
-			std::wcout << s.Data();
-			if (m_stream.is_open())
-				m_stream << s.Data();
-			return *this;
-		}
-
-		Streamer& operator << (const char* v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (const wchar_t* v)
-		{
-			std::wcout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (const std::string& v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v.c_str();
-			return *this;
-		}
-
-		Streamer& operator << (char v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (wchar_t v)
-		{
-			std::wcout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (unsigned char v)
-		{				
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (short v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (unsigned short v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (long v)
-		{			
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (unsigned long v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (int v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (unsigned int v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (__int64 v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (unsigned __int64 v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (float v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (double v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (long double v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& operator << (_Myt& (__cdecl *_Pfn)(_Myt&))
-		{
-			std::wcout << _Pfn;
-			if (m_stream.is_open())
-				m_stream << _Pfn;
-			return *this;
-		}
-
-		Streamer& operator << (_Myios& (__cdecl *_Pfn)(_Myios&))
-		{	
-			std::wcout << _Pfn;
-			if (m_stream.is_open())
-				m_stream << _Pfn;
-			return *this;
-		}	
-
-		Streamer& operator << (std::ios_base& (__cdecl *_Pfn)(std::ios_base&))
-		{	
-			std::wcout << _Pfn;
-			if (m_stream.is_open())
-				m_stream << _Pfn;
-			return *this;
-		}		
-
+		Streamer();
+		Streamer& operator << (const string& s);
+		Streamer& operator << (const char* v);
+		Streamer& operator << (const wchar_t* v);
+		Streamer& operator << (const std::string& v);
+		Streamer& operator << (char v);
+		Streamer& operator << (wchar_t v);
+		Streamer& operator << (unsigned char v);
+		Streamer& operator << (short v);
+		Streamer& operator << (unsigned short v);
+		Streamer& operator << (long v);
+		Streamer& operator << (unsigned long v);
+		Streamer& operator << (int v);
+		Streamer& operator << (unsigned int v);
+		Streamer& operator << (__int64 v);
+		Streamer& operator << (unsigned __int64 v);
+		Streamer& operator << (float v);
+		Streamer& operator << (double v);
+        Streamer& operator << (long double v);
+		Streamer& operator << (_Myt& (__cdecl *_Pfn)(_Myt&));
+		Streamer& operator << (_Myios& (__cdecl *_Pfn)(_Myios&));
+		Streamer& operator << (std::ios_base& (__cdecl *_Pfn)(std::ios_base&));
 		static Streamer& Instance();
 		static void Destroy();
 
@@ -217,58 +54,69 @@ namespace System
 		std::ofstream m_stream;
 	};
 
-	//	wired message outputer, suitable only for ASCII symbols
-	template<LoggerType type>
-	class Logger
-	{		
-	public:
+    template<LoggerType type> class LoggerBase;
 
-		Logger() {}
-
-	public:
-
-		Streamer& operator () ()
-		{			
-			Header<type>();
-			return m_stream;
-		}
-
-	private:
-
-		Streamer m_stream;
-
-		template<LoggerType LT>
+    template<> class LoggerBase<LoggerType::No>
+    {
+    protected:
 		void Header()
-		{			
+		{
 			Console::Instance()->SetTextColor(Console::COLOR_WHITE);
 			Streamer::Instance() << Clock::SysTimeNowAsLocal();
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
+    };
 
-		template<>
-		void Header<LOG_MESSAGE>()
+    template<> class LoggerBase<LoggerType::Message>
+    {
+    protected:
+		void Header()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGREEN);
 			Streamer::Instance() << Clock::SysTimeNowAsLocal() << L": Message: ";
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
+    };
 
-		template<> 
-		void Header<LOG_WARNING>()
+    template<> class LoggerBase<LoggerType::Warning>
+    {
+    protected:
+    	void Header()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_YELLOW);
 			Streamer::Instance() << Clock::SysTimeNowAsLocal() << L": Warning: ";
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
+    };
 
-		//	special header for error
-		template<>
-		void Header<LOG_ERROR>()
+	template<>
+	class LoggerBase<LoggerType::Error>
+	{
+    protected:
+	    void Header()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTRED);
-			Streamer::Instance()<< Clock::SysTimeNowAsLocal() << ": Error: ";			
+			Streamer::Instance()<< Clock::SysTimeNowAsLocal() << ": Error: ";
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
+	};
+
+	//	wired message outputer, suitable only for ASCII symbols
+	template<LoggerType type>
+	class Logger : protected LoggerBase<type>
+	{
+	public:
+		Logger() {}
+
+	public:
+		Streamer& operator () ()
+		{
+			LoggerBase<type>::Header();
+			return m_stream;
+		}
+
+	private:
+		Streamer m_stream;
 	};
 }
 
@@ -291,12 +139,12 @@ inline std::wostream& operator << (std::wostream& stream, const Tab& value)
 
 
 //
-//	global staff fro printing messages, warnings and errors to console and to log file 
+//	global staff fro printing messages, warnings and errors to console and to log file
 //
 #ifdef _DEBUG
-extern PUNK_ENGINE System::Logger<System::LOG_MESSAGE> out_message;
-extern PUNK_ENGINE System::Logger<System::LOG_WARNING> out_warning;
-extern PUNK_ENGINE System::Logger<System::LOG_ERROR> out_error;
+extern PUNK_ENGINE System::Logger<System::LoggerType::Message> out_message;
+extern PUNK_ENGINE System::Logger<System::LoggerType::Warning> out_warning;
+extern PUNK_ENGINE System::Logger<System::LoggerType::Warning> out_error;
 #else
 extern PUNK_ENGINE System::Logger<System::LOG_MESSAGE> out_message;
 extern PUNK_ENGINE System::Logger<System::LOG_WARNING> out_warning;
