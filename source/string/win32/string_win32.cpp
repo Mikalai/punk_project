@@ -71,12 +71,12 @@ namespace System
 
 	const string operator + (const wchar_t* s1, const string& s2)
 	{
-		string s3(s1);		
+		string s3(s1);
 		return s3 += s2;
 	}
 
 	const string operator + (const string& s1, const wchar_t* s2)
-	{		
+	{
 		string s3(s1);
 		s3 += s2;
 		return s3;
@@ -128,13 +128,13 @@ namespace System
 		size = m_rep->m_length + 1;
 		buffer = new char[size];
 		memset(buffer, 0, sizeof(char)*size);
-		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0); 		
+		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0);
 	}
 
 	void string::ToANSI(char* buffer, int size) const
-	{	
+	{
 		memset(buffer, 0, sizeof(char)*size);
-		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0); 		
+		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0);
 	}
 
 	string& string::operator+= (const wchar_t* s)
@@ -176,8 +176,8 @@ namespace System
 			const wchar_t* next = wcsstr(s1.m_rep->m_data + offset, what.m_rep->m_data);
 
 			if (!next)
-				return s1;						
-			string s2(s1.m_rep->m_data + (next - start) + what.Length());		
+				return s1;
+			string s2(s1.m_rep->m_data + (next - start) + what.Length());
 			s1 = string(s1.m_rep->m_data, next - start) + with + s2;
 
 			offset = next - start + with.Length();
@@ -244,7 +244,7 @@ namespace System
 		}
 	}
 
-	string::string() 
+	string::string()
 	{
 		m_rep = new Representation(L"", 0);
 		m_cstring_cache = 0;
@@ -256,10 +256,10 @@ namespace System
 	}
 
 	string::string(const char* s)
-	{	
+	{
 		if (s != 0)
 		{
-			m_rep = new Representation(s, strlen(s));			
+			m_rep = new Representation(s, strlen(s));
 		}
 		else
 		{
@@ -284,7 +284,7 @@ namespace System
 	}
 
 	string::string(const char* s, int length)
-	{	
+	{
 		m_rep = new Representation(s, length);
 		m_cstring_cache = 0;
 	}
@@ -360,7 +360,7 @@ namespace System
 		{
 			delete[] m_data;
 			m_length = length;
-			m_data = new wchar_t[m_length+1];			
+			m_data = new wchar_t[m_length+1];
 		}
 		CopyMemory(m_data, data, sizeof(wchar_t)*m_length);
 		m_data[m_length] = 0;
@@ -390,7 +390,7 @@ namespace System
 	}
 
 	void string::Representation::Erase(int start, int len)
-	{	
+	{
 		for (int i = 0; i < len; i++)
 		{
 			for (int j = start; j < m_length; j++)
@@ -412,7 +412,7 @@ namespace System
 		}
 		new_data[pos] = chr;
 		m_data = new_data;
-		m_length = m_length + 1;		
+		m_length = m_length + 1;
 		m_data[m_length] = 0;
 	}
 
@@ -433,7 +433,7 @@ namespace System
 			stream.read(reinterpret_cast<char*>(&data[0]), m_length*sizeof(wchar_t));
 			Assign(&data[0], m_length);
 		}
-		else 
+		else
 		{
 			Assign(L"", 0);
 		}
@@ -479,10 +479,10 @@ namespace System
 		int base = 1;
 
 		while (1)
-		{			
+		{
 			switch(*start)
 			{
-			case L'0': case L'1': case L'2': case L'3': case L'4': case L'5': case L'6': case L'7': case L'8': case L'9':				
+			case L'0': case L'1': case L'2': case L'3': case L'4': case L'5': case L'6': case L'7': case L'8': case L'9':
 				res += base*(*start - L'0');
 				break;
 			case L'a': case L'A':
@@ -535,7 +535,7 @@ namespace System
 		wchar_t buf[128];
 		_ultow_s<128>((unsigned long)value, buf, radix);
 		return string(buf);
-	}		
+	}
 
 	const string string::Convert(signed char value)
 	{
@@ -644,13 +644,13 @@ namespace System
 		va_list argumentPointer;
 		va_start(argumentPointer, fmt);
 		vswprintf_s<FORMAT_MAX_LENGTH>(buffer, fmt, argumentPointer);
-		va_end(argumentPointer);		
+		va_end(argumentPointer);
 #undef	FORMAT_MAX_LENGTH
 		return string(buffer);
 	}
 
 	const string string::Trim(const wchar_t* delimiters) const
-	{    
+	{
 		unsigned delLength = (unsigned)wcslen(delimiters);
 		unsigned strLength = Length();
 		unsigned start = 0;
@@ -718,7 +718,7 @@ namespace System
 			res.push_back(string(m_rep->m_data + start, Length() - start).Trim(delimiters));
 		}/**/
 		return res;
-	}  
+	}
 
 	wchar_t* string::I_know_what_I_do_just_give_me_the_pointer()
 	{
@@ -772,6 +772,20 @@ namespace System
 		m_rep = m_rep->GetOwnCopy();
 		return m_rep->Load(stream);
 	}
+
+    const std::string string::ToStdString()
+    {
+        std::vector<char> buffer(Length());
+
+        ToANSI(&buffer[0], buffer.size());
+
+        return std::string(&buffer[0], buffer.size());
+    }
+
+    const std::wstring string::ToStdWString()
+    {
+        return std::wstring(m_rep->m_data);
+    }
 }/**/
 
 #endif

@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <iosfwd>
+#include <string>
 
 #include "../../config.h"
 
@@ -14,7 +15,7 @@
 //
 
 namespace System
-{	
+{
 	//class PUNK_ENGINE StringError : public std::exception
 	//{
 	//public:
@@ -50,6 +51,9 @@ namespace System
 
 		wchar_t operator [] (int i) const;
 		wchar_t& operator [] (int i);
+
+        const std::string ToStdString();
+        const std::wstring ToStdWString();
 
 		int Length() const;
 		int Size() const;
