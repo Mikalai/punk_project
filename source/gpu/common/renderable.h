@@ -15,7 +15,7 @@ namespace GPU
 
 		virtual ~Renderable() {}
 
-		virtual void Bind(VertexAttributes supported_by_context)
+		virtual void Bind(int64_t supported_by_context)
 		{
 			throw GPUException(L"Bind() not implemented");
 		}
@@ -29,13 +29,6 @@ namespace GPU
 		{
 			throw GPUException(L"Load() not implemented");
 		}
-
-		/*virtual bool Save(std::ostream& stream) const;
-
-		virtual bool Load(std::istream& stream);*/
-
-		/*static System::Proxy<Renderable> CreateFromStream(std::istream& stream) = 0;
-		static System::Proxy<Renderable> CreateFromFile(const System::string& path) = 0;*/
 
 	protected:
 

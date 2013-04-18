@@ -63,6 +63,7 @@ namespace GPU
 		bool m_enable_terrain;
 		bool m_enable_water;
 		bool m_enable_texture;
+		bool m_enable_font_rendering;
 		bool m_cast_shadows;
 		bool m_receive_shadows;
 		bool m_enable_text_rendering;
@@ -81,6 +82,7 @@ namespace GPU
 		const Texture2D* m_normal_map;
 		const Texture2D* m_height_map;
 		const Texture2D* m_specular_map;
+		const Texture2D* m_text_map;
 
 		//	this pointers should not be deleted in destructor
 		std::vector<Virtual::Light*> m_lights;

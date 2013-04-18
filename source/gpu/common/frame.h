@@ -32,6 +32,8 @@ namespace GPU
 		void SetDiffuseColor(const Math::vec4& value);
 		void SetDiffuseMap0(const Texture2D* value);
 		void SetDiffuseMap1(const Texture2D* value);
+		void SetTextColor(const Math::vec4& value);
+		void SetFontMap(const Texture2D* value);
 		void SetBoneMatrix(int bone_index, const Math::mat4& value);
 		void SetSpecularColor(const Math::vec4& value);
 		void SetSpecularFactor(float value);
@@ -73,6 +75,7 @@ namespace GPU
 		void EnableTerrainRendering(bool value);
 		void EnableLighting(bool value);
 		void EnableTexturing(bool value);
+		void EnableFontRendering(bool value);
 		struct FrameImpl;
 		FrameImpl* impl;
 

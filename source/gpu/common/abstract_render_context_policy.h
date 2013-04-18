@@ -23,14 +23,14 @@ namespace GPU
 		AbstractRenderPolicy();
 		virtual void InitUniforms() = 0;
 		virtual void BindParameters(const CoreState& params) = 0;
-		virtual VertexAttributes GetRequiredAttributesSet() const = 0;
+		virtual int64_t GetRequiredAttributesSet() const = 0;
 		virtual void Begin() = 0;
 		virtual void End() = 0;
 		virtual void Init() = 0;		
 		virtual ~AbstractRenderPolicy();
 	protected:
 		bool m_was_modified;
-		VertexAttributes m_vertex_attributes;
+		int64_t  m_vertex_attributes;
 	};
 }
 
