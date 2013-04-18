@@ -4,7 +4,7 @@
 
 #ifndef NOMINMAX
 #define NOMINMAX
-#endif NOMINMAX
+#endif // NOMINMAX
 
 #include <Windows.h>
 #include "../../config.h"

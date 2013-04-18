@@ -45,9 +45,9 @@ namespace System
 		m_console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
 		if (m_console_handle)
 		{
-			setlocale(LC_CTYPE, "Russian");			
+			setlocale(LC_CTYPE, "Russian");
 			m_text_color = FOREGROUND_BLUE|FOREGROUND_GREEN|FOREGROUND_RED|FOREGROUND_INTENSITY;
-			m_back_color = 0;		
+			m_back_color = 0;
 			GetConsoleScreenBufferInfo(m_console_handle, &m_screen_info);
 			SetBackColor(COLOR_BLACK);
 			Clear();
@@ -64,7 +64,7 @@ namespace System
 			SetConsoleCursorPosition(m_console_handle, m_cursor_position);
 		}
 	}
-	//	set new text color 
+	//	set new text color
 	void Console::Impl::SetTextColor(Color col)
 	{
 		if (m_console_handle)
@@ -186,28 +186,28 @@ namespace System
 	}
 
 	//	retreive console screen buffer width
-	int Console::Impl::GetScreenBufferWidth() const 
-	{ 
-		return m_screen_info.dwSize.X; 
+	int Console::Impl::GetScreenBufferWidth() const
+	{
+		return m_screen_info.dwSize.X;
 	}
 	//	retrieve console screen buffer height
-	int Console::Impl::GetScreenBufferHeight() const 
-	{ 
-		return m_screen_info.dwSize.Y; 
+	int Console::Impl::GetScreenBufferHeight() const
+	{
+		return m_screen_info.dwSize.Y;
 	}
 	//	retrieve visible width of the console screen
-	int Console::Impl::GetViewportWidth() 
+	int Console::Impl::GetViewportWidth()
 	{
 		GetConsoleScreenBufferInfo(m_console_handle, &m_screen_info);
 		return m_screen_info.srWindow.Right - m_screen_info.srWindow.Left;
-		//return m_screen_info.dwMaximumWindowSize.X; 
+		//return m_screen_info.dwMaximumWindowSize.X;
 	}
 	//	retrieve visisble height of the console screen
-	int Console::Impl::GetViewportHeight() 
+	int Console::Impl::GetViewportHeight()
 	{
 		GetConsoleScreenBufferInfo(m_console_handle, &m_screen_info);
 		return m_screen_info.srWindow.Bottom - m_screen_info.srWindow.Top;
-		//return m_screen_info.dwMaximumWindowSize.Y; 
+		//return m_screen_info.dwMaximumWindowSize.Y;
 	}
 	//	fills console with back color
 	void Console::Impl::Clear()
@@ -216,16 +216,16 @@ namespace System
 		{
 			static const int SIZE = 32768;
 			char buf[SIZE];
-			memset(buf, ' ', sizeof(buf)/sizeof(buf[0])); 
-			int to_fill = m_screen_info.dwSize.X*m_screen_info.dwSize.Y;				
+			memset(buf, ' ', sizeof(buf)/sizeof(buf[0]));
+			int to_fill = m_screen_info.dwSize.X*m_screen_info.dwSize.Y;
 			int res = 0;
 			DWORD written = 0;
-			SetPosition(0,0);		
+			SetPosition(0,0);
 			while (to_fill > 0)
-			{					
-				res = WriteConsoleA(m_console_handle, buf, SIZE, &written, 0);		
+			{
+				res = WriteConsoleA(m_console_handle, buf, SIZE, &written, 0);
 				to_fill -= written;
-			}		
+			}
 			SetPosition(0,0);
 		}
 	}
@@ -281,5 +281,5 @@ namespace System
 		m_instance.reset(0);
 	}
 
-	std::auto_ptr<Console> Console::m_instance;
+	std::unique_ptr<Console> Console::m_instance;
 }

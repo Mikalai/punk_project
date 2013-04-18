@@ -20,7 +20,7 @@ namespace System
 		unsigned total_count = m_children.size();
 		stream.write((char*)&total_count, sizeof(total_count));
 
-		for each (const auto& o in m_children)
+		for (const auto& o : m_children)
 		{
 			System::GetFactory()->SaveToStream(stream, o);
 		}
@@ -31,7 +31,7 @@ namespace System
 	bool CompoundObject::Load(std::istream& stream)
 	{
 		Object::Load(stream);
-			
+
 
 		unsigned total_count = 0;
 		stream.read((char*)&total_count, sizeof(total_count));
@@ -99,7 +99,7 @@ namespace System
 		if  (!OnRemove(m_children[it->second]))
 			return (out_error() << "OnRemove failed" << std::endl, false);
 
-		m_children.erase(m_children.begin() + it->second);	
+		m_children.erase(m_children.begin() + it->second);
 		m_cache.erase(it);
 		return true;
 	}

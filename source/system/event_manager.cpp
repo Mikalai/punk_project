@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <vector>
 #include "errors/module.h"
 #include "event_manager.h"
 #include "logger.h"
@@ -32,7 +33,7 @@ namespace System
 	void EventManager::UnsubscribeHandler(long event, Handler handler)
 	{
 //		MonitorScope lock(monitor);
-		std::vector<Handler>::const_iterator i = std::find(eventHandlers[event].begin(), eventHandlers[event].end(), handler);
+		std::vector<Handler>::iterator i = std::find(eventHandlers[event].begin(), eventHandlers[event].end(), handler);
 		if ( i == eventHandlers[event].end())
 		{
 			out_warning() << string::Format(L"There is no handler to unsubscribe with code %d", event) << std::endl;

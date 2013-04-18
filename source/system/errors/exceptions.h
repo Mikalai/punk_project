@@ -8,7 +8,7 @@
 namespace System
 {
 	class PUNK_ENGINE PunkException
-	{		
+	{
 	public:
 		PunkException();
 		PunkException(const System::string& data);
@@ -38,6 +38,13 @@ namespace System
 	public:
 		PunkNotInitializedException() : PunkException(L"PunkNotInitializedException") {}
 		PunkNotInitializedException(const string& msg) : PunkException(L"PunkNotInitializedException: " + msg) {}
+	};
+
+	class PUNK_ENGINE PunkNotImplemented : public PunkException
+	{
+    public:
+		PunkNotImplemented() : PunkException(L"PunkNotImplemented") {}
+		PunkNotImplemented(const string& msg) : PunkException(L"PunkNotImplemented: " + msg) {}
 	};
 
 	class PUNK_ENGINE OSException : public PunkException

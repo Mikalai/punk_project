@@ -12,7 +12,7 @@ namespace System
 	public:
 
 		//	possible colors that can be use in console
-		typedef enum {COLOR_BLACK, 
+		typedef enum {COLOR_BLACK,
 			COLOR_BLUE,
 			COLOR_GREEN,
 			COLOR_CYAN,
@@ -27,11 +27,11 @@ namespace System
 			COLOR_LIGHTRED,
 			COLOR_LIGHTMAGENTA,
 			COLOR_YELLOW,
-			COLOR_WHITE} Color;	
+			COLOR_WHITE} Color;
 
 		//	set new cursor position in console
 		void SetPosition(int x, int y);
-		//	set new text color 
+		//	set new text color
 		void SetTextColor(Color col);
 		//	set new back color
 		void SetBackColor(Color col);
@@ -40,7 +40,7 @@ namespace System
 		//	retrieve console screen buffer height
 		int GetScreenBufferHeight()const;
 		//	retrieve visible width of the console screen
-		int GetViewportWidth(); 
+		int GetViewportWidth();
 		//	retrieve visisble height of the console screen
 		int GetViewportHeight();
 		//	fills console with back color
@@ -64,7 +64,7 @@ namespace System
 		//	no public constructor
 		Console();
 		//	instance of the console is stored here
-		static std::auto_ptr<Console> m_instance;
+		static std::unique_ptr<Console> m_instance;
 	};
 }
 

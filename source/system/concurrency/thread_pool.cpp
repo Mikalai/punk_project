@@ -14,11 +14,11 @@ namespace System
 	ThreadPool::~ThreadPool()
 	{
 #ifdef _WIN32
-		for each (HANDLE thread in m_threads)
+		for (HANDLE thread : m_threads)
 		{
 			CloseHandle(thread);
 		}
-		DeleteCriticalSection(&m_cs);	
+		DeleteCriticalSection(&m_cs);
 #endif	//	_WIN32
 	}
 

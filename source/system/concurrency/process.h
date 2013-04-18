@@ -19,7 +19,7 @@ namespace System
 #ifdef _WIN32
 		STARTUPINFOEXW m_startup_info;
 		PROCESS_INFORMATION m_process_info;
-#endif	_WIN32
+#endif	// _WIN32
 
 		bool m_is_launched;
 	public:

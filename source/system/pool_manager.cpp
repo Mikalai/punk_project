@@ -15,7 +15,7 @@ namespace System
 	//	}
 	//}
 
-	PoolManager* PoolManager::Instance() 
+	PoolManager* PoolManager::Instance()
 	{
 		if (!m_instance.get())
 			m_instance.reset(new PoolManager);
@@ -27,5 +27,5 @@ namespace System
 		m_instance.reset(0);
 	}
 
-	std::auto_ptr<PoolManager> PoolManager::m_instance;
+	std::unique_ptr<PoolManager> PoolManager::m_instance;
 }

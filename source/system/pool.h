@@ -1,16 +1,17 @@
 #ifndef _H_PUNK_POOL
 #define _H_PUNK_POOL
 
+#include <string.h>
 #include "../config.h"
 #include <deque>
 #include "pool_manager.h"
 
 namespace System
 {
-	template<class T> 
+	template<class T>
 	class Pool
-	{	
-		std::deque<void*> m_free;	
+	{
+		std::deque<void*> m_free;
 	public:
 
 		Pool()
@@ -25,13 +26,13 @@ namespace System
 		}
 
 		void* Alloc()
-		{			
+		{
 			if (m_free.empty())
 			{
-//				out_message() << "Allocation requested for " << typeid(T).name() << std::endl;				
-				void* chunk = operator new(sizeof(T));				
+//				out_message() << "Allocation requested for " << typeid(T).name() << std::endl;
+				void* chunk = operator new(sizeof(T));
 				//	clear memory
-				memset(chunk, 0, sizeof(T));
+				::memset(chunk, 0, sizeof(T));
 				return chunk;
 			}
 			void* chunk = m_free.front();

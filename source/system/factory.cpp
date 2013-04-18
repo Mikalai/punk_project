@@ -31,7 +31,7 @@ namespace System
 
 	bool Factory::Init()
 	{
-		for each (auto creator in m_creator)
+		for (auto creator : m_creator)
 		{
 			creator.second->Init();
 		}
@@ -82,11 +82,11 @@ namespace System
 		stream.write((char*)&type, sizeof(type));
 		if (flag)
 		{
-			o->Save(stream);				
+			o->Save(stream);
 		}
 		else
 		{
-			o->GetStorageName().Save(stream);				
+			o->GetStorageName().Save(stream);
 		}
 		return true;
 	}
@@ -95,7 +95,7 @@ namespace System
 	{
 		bool flag = false;
 		ObjectType type = ObjectType::RESOURCE_NONE;
-		stream.read((char*)&flag, sizeof(flag));			
+		stream.read((char*)&flag, sizeof(flag));
 		stream.read((char*)&type, sizeof(type));
 		if (flag)
 		{
@@ -109,11 +109,11 @@ namespace System
 			storage.Load(stream);
 			Object* o = GetFactory()->Create(storage, type);
 			return o;
-		}		
+		}
 	}
 
 	Object* Factory::CreateFromTextFile(const string& path)
-	{		
+	{
 		return Utility::LoadWorld(path);
 	}
 

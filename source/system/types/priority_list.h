@@ -12,7 +12,7 @@ namespace System
 {
 	template<typename T, typename Cmp = std::less<T> >
 	class priority_list
-	{	
+	{
 	private:
 		typedef std::list<T> container;
 
@@ -24,14 +24,14 @@ namespace System
 		container m_list;
 		Cmp m_cmp;
 
-		template<class T>
+		template<typename Y>
 		struct Find
 		{
-			T& m_e;
+			Y& m_e;
 			Cmp& m_cmp;
-			Find(T& e, Cmp& cmp) : m_e(e), m_cmp(cmp) {}
+			Find(Y& e, Cmp& cmp) : m_e(e), m_cmp(cmp) {}
 
-			bool operator () (T& e)
+			bool operator () (Y& e)
 			{
 				return m_cmp(m_e, e);
 			}
@@ -65,9 +65,9 @@ namespace System
 
 		void adjust_position(T t)
 		{
-			container::iterator it = std::find(m_list.begin(), m_list.end(), t);
+			typename container::iterator it = std::find(m_list.begin(), m_list.end(), t);
 			if (it == m_list.end())
-			{			
+			{
 				std::cout << "Can't adjust position. No element found. " << std::endl;
 				return;
 			}
@@ -207,7 +207,7 @@ namespace System
 			return m_head;
 		}
 
-		Node* m_head;	
+		Node* m_head;
 	};
 #endif	//	USE_OWN_LIST
 }

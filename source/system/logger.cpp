@@ -4,7 +4,7 @@ int Tab::m_offset = 0;
 
 namespace System
 {
-	std::auto_ptr<Streamer> Streamer::m_instance;
+	std::unique_ptr<Streamer> Streamer::m_instance;
 
 	Streamer& Streamer::Instance()
 	{
@@ -198,6 +198,6 @@ namespace System
 		}
 }
 
-PUNK_ENGINE System::Logger<System::LOG_MESSAGE> out_message;
-PUNK_ENGINE System::Logger<System::LOG_WARNING> out_warning;
-PUNK_ENGINE System::Logger<System::LOG_ERROR> out_error;
+PUNK_ENGINE System::Logger<System::LoggerType::Message> out_message;
+PUNK_ENGINE System::Logger<System::LoggerType::Warning> out_warning;
+PUNK_ENGINE System::Logger<System::LoggerType::Error> out_error;

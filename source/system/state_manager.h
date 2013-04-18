@@ -4,6 +4,7 @@
 #include <vector>
 #include <stack>
 #include "smart_pointers/proxy.h"
+#include "errors/module.h"
 #include "poolable.h"
 
 namespace System
@@ -22,10 +23,10 @@ namespace System
 	template<class T>
 	class StateManager
 	{
-	public:		
-		StateManager() 
-		{ 
-			m_current_state = new State<T>; 
+	public:
+		StateManager()
+		{
+			m_current_state = new State<T>;
 		}
 
 		~StateManager()
@@ -61,7 +62,7 @@ namespace System
 	private:
 		State<T>* m_current_state;
 		std::stack<State<T>*> m_states;
-	};	
+	};
 }
 
 #endif	//	_H_PUNK_SYSTEM_STATE

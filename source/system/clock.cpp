@@ -1,4 +1,9 @@
 #include "clock.h"
+
+#ifdef __GNUC__
+#include <time.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 
@@ -17,7 +22,7 @@ namespace System
 	{
 		delete m_instance;
 		m_instance = 0;
-	}		
+	}
 
 	Clock::Clock()
 	{
@@ -81,7 +86,7 @@ namespace System
 
 	void Clock::Advance(Int64 dt)
 	{
-		m_us += dt;		
+		m_us += dt;
 		m_time += m_us / 1000000;
 		m_us %= 1000000;
 		_gmtime64_s(&m_date, &m_time);
@@ -97,10 +102,10 @@ namespace System
 	const string Clock::SysTimeAsUTC()
 	{
 		char buffer[32];
-		time_t t;
+		__time32_t t;
 		time(&t);
 		tm _tm;
-		_gmtime64_s(&_tm, &t);
+		_gmtime32_s(&_tm, &t);
 		asctime_s(buffer, 32, &_tm);
 		// replace new line in the time string. 24 because total length 26 and it is STANDARD
 		buffer[24] = '\0';
@@ -113,7 +118,7 @@ namespace System
 		time_t t;
 		time(&t);
 		tm _tm;
-		_localtime64_s(&_tm, &t);
+		_localtime32_s(&_tm, &t);
 		asctime_s(buffer, 32, &_tm);
 		// replace new line in the time string. 24 because total length 26 and it is STANDARD
 		buffer[24] = '\0';

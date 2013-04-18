@@ -20,7 +20,7 @@ namespace System
 
 	private:
 		//std::vector<CleanFunc> m_cleaners;
-		static std::auto_ptr<PoolManager> m_instance;
+		static std::unique_ptr<PoolManager> m_instance;
 	};
 }
 

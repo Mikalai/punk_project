@@ -49,7 +49,7 @@ namespace System
 		static void Destroy();
 
 	private:
-		static std::auto_ptr<Streamer> m_instance;
+		static std::unique_ptr<Streamer> m_instance;
 
 		std::ofstream m_stream;
 	};
@@ -144,11 +144,11 @@ inline std::wostream& operator << (std::wostream& stream, const Tab& value)
 #ifdef _DEBUG
 extern PUNK_ENGINE System::Logger<System::LoggerType::Message> out_message;
 extern PUNK_ENGINE System::Logger<System::LoggerType::Warning> out_warning;
-extern PUNK_ENGINE System::Logger<System::LoggerType::Warning> out_error;
+extern PUNK_ENGINE System::Logger<System::LoggerType::Error> out_error;
 #else
-extern PUNK_ENGINE System::Logger<System::LOG_MESSAGE> out_message;
-extern PUNK_ENGINE System::Logger<System::LOG_WARNING> out_warning;
-extern PUNK_ENGINE System::Logger<System::LOG_ERROR> out_error;
+extern PUNK_ENGINE System::Logger<System::LoggerType::Message> out_message;
+extern PUNK_ENGINE System::Logger<System::LoggerType::Warning> out_warning;
+extern PUNK_ENGINE System::Logger<System::LoggerType::Error> out_error;
 #endif	//	_DEBUG
 
 #endif	//	_H_PUNK_SYSTEM_LOGGER

@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_SYSTEM_OBJECT
 #define _H_PUNK_SYSTEM_OBJECT
 
+#include <typeinfo>
 #include "../config.h"
 #include "hresource.h"
 #include "../string/string.h"
@@ -49,23 +50,23 @@ namespace System
 		string m_storage_name;
 		string m_name;
 		string m_text;
-		Object* m_owner;		
+		Object* m_owner;
 	};
 }
 
-template<class T> 
+template<class T>
 inline T As(System::Object* o)
 {
 	return dynamic_cast<T>(o);
 }
 
-template<class T> 
+template<class T>
 inline T As(const System::Object* o)
 {
 	return dynamic_cast<T>(o);
 }
 
-template<class T, class U> 
+template<class T, class U>
 inline T As(U o)
 {
 	return dynamic_cast<T>(o);
