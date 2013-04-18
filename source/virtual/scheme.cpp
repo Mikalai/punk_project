@@ -149,7 +149,7 @@ namespace Utility
 		res->SetVertexCount(mesh->mNumVertices);
 		res->SetVertexBuffer(new VertexPositionNormalTextureTangentBitangent[mesh->mNumVertices]);
 		res->SetOneVertexSize(sizeof(VertexPositionNormalTextureTangentBitangent));
-		res->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT);
+		res->SetVertexComponent(POSITION|NORMAL|TEXTURE|BITANGENT|TANGENT);
 		res->SetVertexBufferSize(mesh->mNumVertices*sizeof(VertexPositionNormalTextureTangentBitangent));
 
 		for (int face = 0; face < mesh->mNumFaces; ++face)
@@ -233,7 +233,7 @@ namespace Utility
 		res->SetVertexCount(mesh->mNumVertices);
 		res->SetVertexBuffer(new VertexPositionNormalTextureTangentBitangentBone[mesh->mNumVertices]);
 		res->SetOneVertexSize(sizeof(VertexPositionNormalTextureTangentBitangentBone));
-		res->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
+		res->SetVertexComponent(POSITION|NORMAL|TEXTURE|BITANGENT|TANGENT|BONE_ID|BONE_WEIGHT);
 		res->SetVertexBufferSize(mesh->mNumVertices*sizeof(VertexPositionNormalTextureTangentBitangentBone));
 
 		for (int face = 0; face < mesh->mNumFaces; ++face)

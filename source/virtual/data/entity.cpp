@@ -282,7 +282,7 @@ namespace Virtual
 //			}
 //
 //			m_static_mesh->SetMeshOffset(GetLocalMatrix());
-//			m_static_mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT);
+//			m_static_mesh->SetVertexComponent(POSITION|NORMAL|TEXTURE|BITANGENT|TANGENT);
 //			m_static_mesh->SetOneVertexSize(sizeof(Vertex));
 //		}
 //
@@ -498,7 +498,7 @@ namespace Virtual
 //			//CookBonesMatrix(bones, count);
 //
 //			m_skinned_mesh->SetMeshOffset(GetLocalMatrix());
-//			m_skinned_mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
+//			m_skinned_mesh->SetVertexComponent(POSITION|NORMAL|TEXTURE|BITANGENT|TANGENT|BONE_ID|BONE_WEIGHT);
 //			m_skinned_mesh->SetOneVertexSize(sizeof(Vertex));	
 //
 //		}

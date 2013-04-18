@@ -9,7 +9,7 @@
 *	allocated for TerrainCells data to the memory of the back buffer.
 *	When loading is completed a new height map should be created in order
 *	to perform terrain visualizing.
-*	
+*
 *	The main part of the TerrainView is two arrays of data.
 *	Also it is known the size of the view in world coordinates.
 */
@@ -19,8 +19,8 @@
 #include "../../system/types.h"
 #include "../../math/vec2.h"
 
-namespace GPU { class Texture2D; } 
-namespace Physics { class BulletTerrain; }
+namespace GPU { class Texture2D; }
+namespace Physics { class Terrain; }
 namespace Math { class Line3D; }
 
 namespace Virtual
@@ -54,12 +54,12 @@ namespace Virtual
 		*/
 		TerrainView(const TerrainViewDesc& desc);
 		~TerrainView();
-		
+
 		int GetViewSize() const { return m_desc.view_size; }
 
 		void UpdatePosition(const Math::vec2& value);
 		void SetUpdateThreshold(float value);
-		
+
 		GPU::Texture2D* GetHeightMap() { return m_height_map_front; }
 		void* GetViewData() { return m_front_buffer; }
 		const void* GetViewData() const { return m_front_buffer; }
@@ -76,14 +76,14 @@ namespace Virtual
 		*	coordinates in world coorinate system
 		*/
 		float GetHeightAboveSurface(const Math::vec3& world_point);
-		
+
 		/**
 		*	Calculates point of intersection line with terrain.
 		*	Binary search is used.
 		*	Line supposed to be in the world coordinates
 		*/
 		bool IntersectRay(const Math::Line3D& ray, Math::vec3& result);
-		
+
 		/**
 		*	this will copy date to the physics terrain
 		*/
@@ -93,7 +93,7 @@ namespace Virtual
 		static void OnEnd(void* data);
 
 		//	some data is stored here
-		TerrainViewDesc m_desc;		
+		TerrainViewDesc m_desc;
 		//	front buffer that is used for physics and rendering
 		void* m_front_buffer;
 		//	back buffer thst is used for asynchronous uploading dat from cells
@@ -110,10 +110,10 @@ namespace Virtual
 		bool m_loading;
 		//	holds last update result
 		unsigned m_result;
-		//	
+		//
 		bool m_init;
 		//	should be deleted in destructor
-		Physics::BulletTerrain* m_bullet_terrain;
+		Physics::Terrain* m_bullet_terrain;
 	};
 
 	typedef TerrainView* TerrainViewRef;

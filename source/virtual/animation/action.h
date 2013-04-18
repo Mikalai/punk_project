@@ -14,12 +14,12 @@ namespace Virtual
 namespace Virtual
 {
 	//	Animation is a child of Action
-	class PUNK_ENGINE Action abstract : public System::CompoundObject, public System::Aspect<Action*, System::string>
-	{			
-	public:		
+	class PUNK_ENGINE Action : public System::CompoundObject, public System::Aspect<Action*, System::string>
+	{
+	public:
 		Action();
 
-		int GetStartFrame() const { return m_start_frame; }		
+		int GetStartFrame() const { return m_start_frame; }
 		int GetEndFrame() const { return m_end_frame; }
 
 		virtual bool Save(std::ostream& stream) const;
@@ -35,7 +35,7 @@ namespace Virtual
 
 	private:
 		int m_start_frame;
-		int m_end_frame;			
+		int m_end_frame;
 	};
 }
 

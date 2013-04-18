@@ -14,11 +14,11 @@ namespace Virtual
 
 		if (!Geometry::Save(stream))
 			throw System::PunkInvalidCastException(L"Can't save static geometry");
-	
+
 		if (!m_bbox.Save(stream))
 			throw System::PunkInvalidCastException(L"Can't save static geometry");
 
-		int size = (int)m_vertices.size();		
+		int size = (int)m_vertices.size();
 		stream.write((char*)&size, sizeof(size));
 		stream.write((char*)&m_vertices[0], sizeof(m_vertices[0])*size);
 		size = (int)m_faces.size();
@@ -39,13 +39,13 @@ namespace Virtual
 
 		count = m_bone_weights.size();
 		stream.write((char*)&count, sizeof(count));
-		for each (auto it in m_bone_weights)
+		for (auto it : m_bone_weights)
 		{
 			int index = it.first;
 			stream.write((char*)&index, sizeof(index));
 			int count = it.second.size();
 			stream.write((char*)&count, sizeof(count));
-			for each (auto it2 in it.second)
+			for (auto it2 : it.second)
 			{
 				it2.first.Save(stream);
 				float weight = it2.second;
@@ -60,7 +60,7 @@ namespace Virtual
 	{
 		if (!Geometry::Load(stream))
 			throw System::PunkInvalidCastException(L"Can't save static geometry");
-	
+
 		if (!m_bbox.Load(stream))
 			throw System::PunkInvalidCastException(L"Can't load static geometry");
 
@@ -68,7 +68,7 @@ namespace Virtual
 		stream.read((char*)&size, sizeof(size));
 		m_vertices.resize(size);
 		stream.read((char*)&m_vertices[0], sizeof(m_vertices[0])*size);
-		
+
 		size = 0;
 		stream.read((char*)&size, sizeof(size));
 		m_faces.resize(size);
@@ -116,7 +116,7 @@ namespace Virtual
 
 	SkinGeometry* SkinGeometry::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
@@ -129,21 +129,21 @@ namespace Virtual
 		return node.release();
 	}
 
-	void SkinGeometry::DropCache() 
-	{ 
+	void SkinGeometry::DropCache()
+	{
 		safe_delete(m_cache.m_gpu_buffer);
 	}
-	
-	bool SkinGeometry::IsCacheValid() 
-	{ 
-		return m_cache.m_gpu_buffer != nullptr; 
+
+	bool SkinGeometry::IsCacheValid()
+	{
+		return m_cache.m_gpu_buffer != nullptr;
 	}
 
 	void SkinGeometry::SetGPUBufferCache(Object* value)
-	{ 
+	{
 		if (m_cache.m_gpu_buffer)
 			safe_delete(m_cache.m_gpu_buffer);
-		m_cache.m_gpu_buffer = value; 
+		m_cache.m_gpu_buffer = value;
 	}
 
 }

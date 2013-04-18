@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "bone.h"
 #include "armature.h"
 #include "../../system/logger.h"
@@ -13,7 +14,7 @@
 namespace Virtual
 {
 	Bone::Bone()
-	{		
+	{
 		m_parent = nullptr;
 	}
 
@@ -30,10 +31,10 @@ namespace Virtual
 		m_need_update_global_matrix = bone.m_need_update_global_matrix;
 		m_parent = nullptr;
 
-		for each (auto bone in m_children)
+		for (auto bone : m_children)
 		{
-			Bone* bone = new Bone(*bone);			
-			AddChild(bone);
+			Bone* b = new Bone(*bone);
+			AddChild(b);
 		}
 	}
 
@@ -54,10 +55,10 @@ namespace Virtual
 			m_need_update_global_matrix = bone.m_need_update_global_matrix;
 			m_parent = nullptr;
 
-			for each (auto bone in m_children)
+			for (auto bone : m_children)
 			{
-				Bone* bone = new Bone(*bone);			
-				AddChild(bone);
+				Bone* b = new Bone(*bone);
+				AddChild(b);
 			}
 		}
 		return *this;
@@ -76,7 +77,7 @@ namespace Virtual
 	}
 
 	const Math::mat4 Bone::GetWorldMatrix() const
-	{		
+	{
 		return m_global_matrix;
 	}
 
@@ -107,7 +108,8 @@ namespace Virtual
 
 	void Bone::AddChild(Bone* child)
 	{
-		if (std::find(m_children.begin(), m_children.end(), child) == m_children.end())
+	    auto it = std::find(m_children.begin(), m_children.end(), child);
+		if (it == m_children.end())
 		{
 			m_children.push_back(child);
 			if (child->GetParent() != this)
@@ -117,13 +119,13 @@ namespace Virtual
 
 	Bone* Bone::Find(const System::string& name)
 	{
-		for each (Bone* bone in m_children)
+		for (Bone* bone : m_children)
 		{
 			if (bone->GetName() == name)
 				return bone;
 		}
 
-		for each (Bone* bone in m_children)
+		for (Bone* bone : m_children)
 		{
 			Bone* res = bone->Find(name);
 			if (res)
@@ -133,7 +135,7 @@ namespace Virtual
 		return nullptr;
 	}
 
-		
+
 	const Math::mat4& Bone::GetAnimatedGlobalMatrix() const
 	{
 		if (m_need_update_global_matrix)
@@ -152,7 +154,7 @@ namespace Virtual
 		}
 		return m_last_global_matrix_update;
 	}
-	
+
 	const Math::mat4& Bone::GetAnimatedGlobalMatrix2() const
 	{
 		if (m_need_update_global_matrix2)
@@ -204,7 +206,7 @@ namespace Virtual
 	void Bone::UpdatePose(Virtual::AnimationMixer* m, float frame, bool deep)
 	{
 		if (!m || m->GetType() != System::ObjectType::ARMATURE_ANIMATION_MIXER)
-		{		
+		{
 			out_error() << "Can't update bone position " << m_name << ", because of bad animation Mixer" << std::endl;
 			return;
 		}
@@ -214,7 +216,7 @@ namespace Virtual
 		if (m_last_get_global_matrix != frame)
 		{
 			m_last_get_global_matrix = frame;
-			Mixer->GetBoneMatrix(m_name, m_last_local_matrix_update);			
+			Mixer->GetBoneMatrix(m_name, m_last_local_matrix_update);
 			m_need_update_global_matrix = true;
 
 			if (deep)
@@ -224,7 +226,7 @@ namespace Virtual
 					bone->UpdatePose(Mixer, frame, deep);
 				}
 			}
-		}		
+		}
 	}
 
 	void Bone::ResetCache()
@@ -233,7 +235,7 @@ namespace Virtual
 	}
 
 	bool Bone::Save(std::ostream& stream) const
-	{		
+	{
 		m_name.Save(stream);
 		m_parent_name.Save(stream);
 //		stream.write(reinterpret_cast<const char*>(&m_index_in_armature), sizeof(m_index_in_armature));
@@ -242,7 +244,7 @@ namespace Virtual
 		m_last_local_matrix_update.Save(stream);
 		m_last_global_matrix_update.Save(stream);
 		stream.write(reinterpret_cast<const char*>(&m_last_get_global_matrix), sizeof(m_last_get_global_matrix));
-		stream.write(reinterpret_cast<const char*>(&m_need_update_global_matrix), sizeof(m_need_update_global_matrix));		
+		stream.write(reinterpret_cast<const char*>(&m_need_update_global_matrix), sizeof(m_need_update_global_matrix));
 
 		int children_count = m_children.size();
 		stream.write(reinterpret_cast<const char*>(&children_count), sizeof(children_count));
@@ -264,7 +266,7 @@ namespace Virtual
 		m_last_local_matrix_update.Load(stream);
 		m_last_global_matrix_update.Load(stream);
 		stream.read(reinterpret_cast<char*>(&m_last_get_global_matrix), sizeof(m_last_get_global_matrix));
-		stream.read(reinterpret_cast<char*>(&m_need_update_global_matrix), sizeof(m_need_update_global_matrix));		
+		stream.read(reinterpret_cast<char*>(&m_need_update_global_matrix), sizeof(m_need_update_global_matrix));
 
 		int children_count = 0;
 		stream.read(reinterpret_cast<char*>(&children_count), sizeof(children_count));
@@ -274,7 +276,7 @@ namespace Virtual
 			if (!child->Load(stream))
 				return (out_error() << "Can't load children bones" << std::endl, false);
 			AddChild(child.release());
-		}		
+		}
 		return true;
 	}
 
@@ -282,7 +284,7 @@ namespace Virtual
 	{
 		return m_index;
 	}
-	
+
 	void Bone::SetIndex(int index)
 	{
 		m_index = index;

@@ -12,12 +12,12 @@ namespace Virtual
 	{
 		m_pos_track.AddKey(frame, position);
 	}
-		
+
 	void Animation::AddRotationKey(int frame, Math::quat& rotation)
 	{
 		m_rot_track.AddKey(frame, rotation);
 	}
-		
+
 	Math::vec3& Animation::GetOrCreatePositionKey(int time)
 	{
 		if (!m_pos_track.HasKeyAt(time))
@@ -38,7 +38,7 @@ namespace Virtual
 	{
 		return m_pos_track.GetKey(time);
 	}
-		
+
 	const Math::quat Animation::GetRotation(float time) const
 	{
 		return m_rot_track.GetKey(time);
@@ -64,7 +64,7 @@ namespace Virtual
 
 	Animation* Animation::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		stream.is_open();
 		return CreateFromStream(stream);
 	}

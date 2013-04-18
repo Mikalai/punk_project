@@ -1,3 +1,4 @@
+#include <limits>
 #include "../../system/streaming/module.h"
 #include "../../gpu/common/texture2d.h"
 #include "../../physics/module.h"
@@ -23,8 +24,8 @@ namespace Virtual
 		memset(m_front_buffer, 0, sizeof(m_desc.view_size*m_desc.view_size*sizeof(float)));
 		m_last_unprocessed.Set(std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
 		m_position_back = m_desc.position;
-		m_bullet_terrain = new Physics::BulletTerrain();
-		UpdatePosition(m_desc.position);		
+		m_bullet_terrain = new Physics::Terrain();
+		UpdatePosition(m_desc.position);
 	}
 
 	TerrainView::~TerrainView()
@@ -51,7 +52,7 @@ namespace Virtual
 		{
 			m_init = true;
 			//	Start uploading if position is far from previos one
-			InitiateAsynchronousUploading();			
+			InitiateAsynchronousUploading();
 		}
 	}
 
@@ -84,7 +85,7 @@ namespace Virtual
 			proc_desc.m_on_end_data = this;
 			TerrainViewProcessor* processor = new TerrainViewProcessor(proc_desc);
 
-			System::AsyncLoader::Instance()->AddWorkItem(loader, processor, &m_result);						
+			System::AsyncLoader::Instance()->AddWorkItem(loader, processor, &m_result);
 		}
 	}
 
@@ -100,7 +101,7 @@ namespace Virtual
 		//std::swap(view->m_height_map_front, view->m_height_map_back);
 		////	mark loading as finished
 		view->m_loading = false;
-		//	swap front and back buffers		
+		//	swap front and back buffers
 		std::swap(view->m_front_buffer, view->m_back_buffer);
 		std::swap(view->m_height_map_front, view->m_height_map_back);
 		view->m_desc.position = view->m_position_back;
@@ -110,12 +111,12 @@ namespace Virtual
 		//{
 		//	view->InitiateAsynchronousUploading();
 		//}
-	}	
+	}
 
 	void TerrainView::UpdatePhysics()
-	{		
+	{
 		m_bullet_terrain->UpdateData(this);
-		m_bullet_terrain->EnterWorld(m_desc.manager->GetPhysicsSimulator()->GetWorld());
+		m_bullet_terrain->EnterWorld(m_desc.manager->GetPhysicsSimulator());
 	}
 
 	float TerrainView::GetHeightAboveSurface(const Math::vec3& world_point)
@@ -154,7 +155,7 @@ namespace Virtual
 				a = c;
 				start_height = h;
 			}
-			else 
+			else
 			{
 				b = c;
 				end_height = h;

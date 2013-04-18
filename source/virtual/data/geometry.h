@@ -19,7 +19,7 @@ namespace Virtual
 	public:
 		typedef int FaceIndex;
 		typedef std::vector<Math::vec3> Vertices;
-		typedef std::vector<Math::vec3> Normals;	
+		typedef std::vector<Math::vec3> Normals;
 		typedef std::vector<Math::ivec3> Faces;
 
 	public:
@@ -42,7 +42,7 @@ namespace Virtual
 		System::Object* GetPhysicsCache();
 
 	private:
-			
+
 		/**
 		*	When cache is dropped data should be completely deleted
 		*	It means that cache is the only storage of runtime data,
@@ -55,7 +55,7 @@ namespace Virtual
 			GPU::Renderable* m_gpu_buffer;
 			System::Object* m_physics_buffer;
 
-			Cache() 
+			Cache()
 				: m_gpu_buffer(nullptr)
 				, m_physics_buffer(nullptr)
 			{}
@@ -65,4 +65,4 @@ namespace Virtual
 	};
 }
 
-#endif _H_PUNK_VIRTUAL_GEOMETRY
+#endif // _H_PUNK_VIRTUAL_GEOMETRY

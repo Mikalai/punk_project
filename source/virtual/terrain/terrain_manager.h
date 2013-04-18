@@ -5,7 +5,7 @@
 #include "../../config.h"
 #include "terrain.h"
 
-namespace Physics { class BulletSimulator; }
+namespace Physics { class Simulator; }
 
 namespace Virtual
 {
@@ -18,7 +18,7 @@ namespace Virtual
 		unsigned memory_usage;
 		float view_size;
 		float threshold;
-		Physics::BulletSimulator* simulator;
+		Physics::Simulator* simulator;
 
 		TerrainManagerDesc()
 			: memory_usage(0)
@@ -28,7 +28,7 @@ namespace Virtual
 		{}
 	};
 
-	class PUNK_ENGINE TerrainManager 
+	class PUNK_ENGINE TerrainManager
 	{
 	public:
 		/**
@@ -36,7 +36,7 @@ namespace Virtual
 		*/
 		TerrainManager(const TerrainManagerDesc& desc);
 		~TerrainManager();
-		
+
 		/**
 		*	Means that current manager should manager map with specified name
 		*	From map name it is possible to deduce folder name with scheme and
@@ -52,7 +52,7 @@ namespace Virtual
 
 		const System::string GetCurrentMap() { return m_current_map; }
 
-		Physics::BulletSimulator* GetPhysicsSimulator() { return m_desc.simulator; }
+		Physics::Simulator* GetPhysicsSimulator() { return m_desc.simulator; }
 
 	private:
 		bool Init(const Terrain& terrain);

@@ -4,13 +4,13 @@
 #include "../../../math/vec3.h"
 #include "../../../system/object.h"
 #include "../../../scene/scene_graph_adapter.h"
-#include "../../../physics/bullet/bullet_adapter.h"
+#include "../../../physics/module.h"
 
 namespace Virtual
 {
 	class Geometry;
 
-	class PUNK_ENGINE Cube : public System::Object, public Scene::SceneGraphAdapter, public Physics::BulletAdapter
+	class PUNK_ENGINE Cube : public System::Object, public Scene::SceneGraphAdapter, public Physics::Adapter
 	{
 	public:
 		Cube();
@@ -27,7 +27,7 @@ namespace Virtual
 		virtual void OnEnterVisibility() override;
 		virtual void OnLostVisibility() override;
 
-		virtual void EnterPhysicalSimulator(Physics::BulletSimulator* value) override;
+		virtual void EnterPhysicalSimulator(Physics::Simulator* value) override;
 		virtual void LeavePhysicalSimulator() override;
 		virtual void SetTransform(const Math::mat4& value) override;
 		virtual void GetTransform(Math::mat4& value) override;

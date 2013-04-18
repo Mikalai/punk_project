@@ -15,7 +15,7 @@ namespace Virtual
 
 	Armature::Armature(const Armature& armature)
 	{
-		for each (auto bone in armature.m_root_bones)
+		for (auto bone : armature.m_root_bones)
 		{
 			Bone* root_bone = new Bone(*bone);
 			m_root_bones.push_back(root_bone);
@@ -28,7 +28,7 @@ namespace Virtual
 		if (this != &armature)
 		{
 			Clear();
-			for each(Bone* bone in armature.m_root_bones)
+			for (Bone* bone : armature.m_root_bones)
 			{
 				Bone* root_bone = new Bone(*bone);
 				m_root_bones.push_back(root_bone);
@@ -44,7 +44,7 @@ namespace Virtual
 		if (it == m_named_cache.end())
 		{
 			//	try to find in root bones
-			for each (Bone* bone in m_root_bones)
+			for (Bone* bone : m_root_bones)
 			{
 				if (bone->GetName() == name)
 					return bone;
@@ -76,7 +76,7 @@ namespace Virtual
 	{
 		m_cache.clear();
 		m_named_cache.clear();
-		for each (auto bone in m_root_bones)
+		for (auto bone : m_root_bones)
 		{
 			bone->UpdatePose(0, 0, true);
 			CacheBones(bone);
@@ -121,7 +121,7 @@ namespace Virtual
 		stream.write((char*)&count, sizeof(count));
 		for (auto root : m_cache)
 		{
-			root->Save(stream);		
+			root->Save(stream);
 		}
 		return true;
 	}
@@ -139,7 +139,7 @@ namespace Virtual
 			std::unique_ptr<Bone> bone(new Bone);
 			bone->Load(stream);
 			CacheBones(bone.get());
-			m_root_bones.push_back(bone.release());			
+			m_root_bones.push_back(bone.release());
 		}
 		return true;
 	}
@@ -160,7 +160,7 @@ namespace Virtual
 
 	Armature* Armature::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
@@ -211,7 +211,7 @@ namespace Virtual
 	//			}
 
 	//			m_root_bones.push_back(root.get());
-	//			root.release();				
+	//			root.release();
 	//			result = true;
 	//		}
 	//	}
@@ -234,7 +234,7 @@ namespace Virtual
 	//			parent->AddChild(bone.get());
 
 	//			if (!BuildBone(bone.get(), bones))
-	//				return false;			
+	//				return false;
 
 	//			bone.release();
 	//		}

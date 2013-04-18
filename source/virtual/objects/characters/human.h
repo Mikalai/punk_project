@@ -7,10 +7,10 @@ namespace Virtual
 {
 	class Armature;
 
-	class PUNK_ENGINE Human abstract
+	class PUNK_ENGINE Human
 	{
 	public:
-		Human();		
+		Human();
 		virtual ~Human();
 
 		Armature* GetArmature();
