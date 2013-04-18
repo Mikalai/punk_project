@@ -44,8 +44,8 @@ namespace Math
 
 		void GenerateHeightMap(double offset_x, double offset_y, double dim_x, double dim_y, int width, int height, float* data);
 
-	private:		
-		std::unique_ptr<NoiseImpl> impl;
+	private:
+		NoiseImpl* impl;
 	};
 }
 

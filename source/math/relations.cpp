@@ -27,8 +27,8 @@ namespace Math
 
 		float cosa = (p-org).Dot(dst);
 		if (Math::Abs(1.0f - Math::Abs(cosa)) < EPS)
-		{			
-			float t = (p - org).Length() / (dst - org).Length();			
+		{
+			float t = (p - org).Length() / (dst - org).Length();
 			if (Math::Abs(t) < EPS)
 				return Relation::START;
 			if (Math::Abs(1 - t) < EPS)
@@ -59,7 +59,7 @@ namespace Math
 	Relation ClassifyPoint(const vec3& p, const Triangle3D& triangle)
 	{
 		const vec3& n = triangle.GetNormal();
-		float org_dst = triangle.GetDistance();		
+		float org_dst = triangle.GetDistance();
 
 		float dst = p.Dot(n) + org_dst;
 
@@ -89,7 +89,7 @@ namespace Math
 
 		if (dst < 0.0f)
 			return Relation::BACK;
-		return Relation::FRONT;		
+		return Relation::FRONT;
 	}
 
 	Relation ClassifyPoint(const vec3& point, const BoundingBox& bbox)
@@ -196,7 +196,7 @@ namespace Math
 			vec3 q1 = bbox.GetCenter() - 0.5f * bbox.GetR();
 			vec3 q2 = bbox.GetCenter() + 0.5f * bbox.GetR();
 
-			for each (const auto& plane in clipper)
+			for (const auto& plane : clipper)
 			{
 				const vec3& n = plane.GetNormal();
 				float r_eff = 0.5f * ( Abs(n.Dot(bbox.GetS())) + Abs(n.Dot(bbox.GetT())));
@@ -223,7 +223,7 @@ namespace Math
 		}
 		else
 		{
-			for each (const auto& plane in clipper)
+			for (const auto& plane : clipper)
 			{
 				const vec3& n = plane.GetNormal();
 				float r_eff = 0.5f * (Abs(n.Dot(bbox.GetR())) + Abs(n.Dot(bbox.GetS())) + Abs(n.Dot(bbox.GetT())));
@@ -239,7 +239,7 @@ namespace Math
 	Relation ClassifyBoudingSphere(const Sphere& sphere, const ClipSpace& clipper)
 	{
 		const vec3& q = sphere.GetCenter();
-		for each (const auto& plane in clipper)
+		for (const auto& plane : clipper)
 		{
 			float r = plane * q;
 			if (r <= -sphere.GetRadius())
@@ -248,10 +248,10 @@ namespace Math
 		return Relation::VISIBLE;
 	}
 
-	Relation CrossLinePlane(const Line3D& line, const Plane& p, float& t) 
+	Relation CrossLinePlane(const Line3D& line, const Plane& p, float& t)
 	{
 		const vec3& org = line.GetOrigin();
-		const vec3& dst = line.GetDestination();	
+		const vec3& dst = line.GetDestination();
 		const vec3& n = p.GetNormal();
 		float org_dst = p.GetDistance();
 		const vec3 dir = dst - org;
@@ -268,8 +268,8 @@ namespace Math
 				return Relation::FRONT;
 		}
 
-		t = - (n.Dot(org) + org_dst) / v;		
-		return Relation::INTERSECT;	
+		t = - (n.Dot(org) + org_dst) / v;
+		return Relation::INTERSECT;
 	}
 
 	Relation CrossLinePlane(const Line3D& line, const Plane& p, vec3& point)
@@ -373,7 +373,7 @@ namespace Math
 		float r = ellipsoid.GetRadiusX();
 
 		const vec3 s = line.GetOrigin() - ellipsoid.GetCenter();
-		const vec3 v = line.GetDestination() - line.GetOrigin();	
+		const vec3 v = line.GetDestination() - line.GetOrigin();
 
 		float a = v[0]*v[0] + m*m*v[1]*v[1] + n*n*v[2]*v[2];
 		float b = 2*(s[0]*v[0] + m*m*s[1]*v[1] + n*n*s[2]*v[2]);
@@ -433,7 +433,7 @@ namespace Math
 		int** cur_face = res_face;
 
 		for (int i = 0; i < (int)faces.size(); ++i)
-		{			
+		{
 			Triangle3D t(points[faces[i][0]], points[faces[i][1]], points[faces[i][2]]);
 			Relation res = CrossLineTriangle(line, t, **cur_param);
 			if (res == Relation::INTERSECT)
@@ -623,7 +623,7 @@ namespace Math
 				return (out_error() << "Supposed to have a cross" << std::endl, Relation::NOT_INTERSECT);
 
 			if (s1 <= 0 && s2 >= 0)
-			{				
+			{
 				(*cur_back) = Triangle3D(t[0], t[1], p);
 				(*cur_front) = Triangle3D(p, t[2], t[0]);
 				return Relation::SPLIT_1_FRONT_1_BACK;
@@ -631,9 +631,9 @@ namespace Math
 			else
 			{
 				(*cur_back) = Triangle3D(p, t[2], t[0]);
-				(*cur_front) = Triangle3D(t[0], t[1], p);				
+				(*cur_front) = Triangle3D(t[0], t[1], p);
 				return Relation::SPLIT_1_FRONT_1_BACK;
-			}			
+			}
 		}
 
 		if (s1 == 0)	//	split on front and back
@@ -654,7 +654,7 @@ namespace Math
 			else
 			{
 				(*cur_back) = Triangle3D(t[1], t[2], p);
-				(*cur_front) = Triangle3D(t[1], p, t[0]);				
+				(*cur_front) = Triangle3D(t[1], p, t[0]);
 				return Relation::SPLIT_1_FRONT_1_BACK;
 			}
 		}
@@ -742,7 +742,7 @@ namespace Math
 
 	//	clipping should be performed in camera space
 	Relation ClipPortal(const ClipSpace& clipper, const Portal& portal, Portal& clipped_portal, ClipSpace& reduced_frustum)
-	{		
+	{
 		//	check negative side of the portal
 		if (portal.GetDistance() < 0)
 		{
@@ -754,7 +754,7 @@ namespace Math
 		bool partial_visible = false;
 		Portal temp(portal);
 		Frustum::FrustumPlane p = (Frustum::FrustumPlane)0;
-		for each (const auto& plane in clipper)
+		for (const auto& plane : clipper)
 		{
 			std::vector<int> in_points; in_points.reserve(portal.size());
 			std::vector<int> out_points; out_points.reserve(portal.size());
@@ -799,7 +799,7 @@ namespace Math
 
 			// otherwise portal should be clipped
 		//	out_message() << "PORTAL PARTIALLY VISIBLE" << std::endl;
-			int mod = temp.size();			
+			int mod = temp.size();
 			Portal::PointsCollection new_points;
 			for (int i = 0; i < (int)temp.size(); ++i)
 			{
@@ -840,7 +840,7 @@ namespace Math
 
 		if (partial_visible)
 			return Relation::PARTIALLY_VISIBLE;
-		
+
 		return Relation::VISIBLE;
 	}
 

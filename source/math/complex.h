@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "../system/buffer.h"
+#include "constants.h"
 #include "vec2.h"
 
 namespace Math
@@ -28,7 +29,7 @@ namespace Math
 		{
 			return m_real;
 		}
-		
+
 		const T& Real() const
 		{
 			return m_real;
@@ -46,7 +47,7 @@ namespace Math
 
 		const wchar_t ToString() const
 		{
-			swprintf(m_buffer, L"(%.3f; %.3f)", m_real, m_image);
+		    StringCbPrintfW(m_buffer, sizeof(m_buffer), L"(%.3f; %.3f)", m_real, m_image);
 			return m_buffer;
 		}
 
@@ -89,14 +90,14 @@ namespace Math
 			T a = m_real * inv_length;
 			T b = m_image * inv_length;
 
-			if (a =override && b >override)
-				return M_PI/2.0;
-			else if (a =override && b < 0)
-				return 3.0*M_PI/2.0;
+			if (a == 0 && b >= 0)
+				return PI/2.0;
+			else if (a == && b < 0)
+				return 3.0*PI/2.0;
 			else if (a > 0 && b > 0)
 				return atan(b/a);
 			else
-				return M_PI + atan(b/a);
+				return PI + atan(b/a);
 		}
 
 		friend Complex<T> operator + (const Complex<T>& c1, const Complex<T>& c2);

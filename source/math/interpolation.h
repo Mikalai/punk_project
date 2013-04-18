@@ -1,14 +1,15 @@
 #ifndef _H_PUNK_INTERPOLATION
 #define _H_PUNK_INTERPOLATION
 
-//#include "constants.h"
+#include <cmath>
+#include "constants.h"
 
 namespace Math
 {
 	template<typename T, typename K>
 	T linear_interpolation(const T& a, const T& b, const K& k)
 	{
-		T res = b*k + (1-k)*a; 
+		T res = b*k + (1-k)*a;
 		return res;
 	}
 
@@ -49,7 +50,7 @@ namespace Math
 			T _q2 = std::sin(theta*t)/std::sin(theta)*q2;
 			return _q1 + _q2;
 		}
-		else		
+		else
 			return linear_interpolation(q1, q2, t);
 	}
 }

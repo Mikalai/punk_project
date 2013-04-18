@@ -15,7 +15,7 @@ namespace Math
 		const vec3& p2 = m_points[2];
 
 		m_plane.Set(p0, p1, p2);
-		
+
 		return true;
 	}
 
@@ -44,7 +44,7 @@ namespace Math
 	const Portal operator * (const mat4& m, const Portal& p)
 	{
 		Portal::PointsCollection points;
-		for each (auto& point in p)
+		for (auto& point : p)
 		{
 			points.push_back(m*point);
 		}

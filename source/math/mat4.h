@@ -129,7 +129,7 @@ namespace Math
 			vec3 yAxis = zAxis.Cross(xAxis);
 			yAxis.Normalize();
 
-			mat4 res;
+			Matrix4x4<T> res;
 			float* m = res.m;
 
 			/*m[0*4 + 0] = xAxis[0];
@@ -359,13 +359,13 @@ namespace Math
 				m[6] = m[7] = m[8] = m[9] = m[10] = m[11] =
 				m[12] = m[13] = m[14] = m[15] = T(0);
 			m[0] = m[5] = m[10] = m[15] = T(1);
-		} 
+		}
 
 		Matrix4x4<T>(const Matrix4x4<T>& v)
 		{
 			for (int i = 0; i < 16; ++i)
-				m[i] = v[i];			
-		} 
+				m[i] = v[i];
+		}
 
 		T& operator [] (int i)
 		{
@@ -713,7 +713,7 @@ namespace Math
 		buffer.WriteBuffer(m, sizeof(m));
 		}
 
-		bool Load(System::Buffer& buffer) 
+		bool Load(System::Buffer& buffer)
 		{
 		buffer.ReadBuffer(m, sizeof(m));
 		}
@@ -830,7 +830,7 @@ namespace Math
 		{
 			stream << Tab();
 			for (int col = 0; col < 4; ++col)
-			{				
+			{
 				stream << std::fixed << m[col*4 + row] << '\t';
 			}
 			stream << std::endl;

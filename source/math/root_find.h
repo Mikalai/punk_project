@@ -14,7 +14,7 @@ namespace Math
 		RESULT_THREE_SOLUTIONS,
 		RESULT_FOUR_SOLUTIONS
 	};
-	
+
 	template<class T>
 	RootFindResult SolveQuadric(const T c[3], T out[2])
 	{
@@ -54,21 +54,21 @@ namespace Math
 
 		if (Abs(D) < 1e-6)
 		{
-			T r = pow(-q, T(1.0)/T(3.0));			
+			T r = pow(-q, T(1.0)/T(3.0));
 			out[0] = T(2) * r;
 			out[1] = out[2] = -r;
-		
+
 			out[0] -= A/T(3.0);
 			out[1] -= A/T(3.0);
 			out[2] -= A/T(3.0);
-			return RootFindResult::RESULT_TWO_SOLUTIONS;		
+			return RootFindResult::RESULT_TWO_SOLUTIONS;
 		}
 
 		if (D < 0.0)
 		{
-			T r = pow(-q + sqrt(-D), T(1.0)/T(3.0));			
-			T s = pow(-q - sqrt(-D), T(1.0)/T(3.0));			
-			out[0] = r + s;			
+			T r = pow(-q + sqrt(-D), T(1.0)/T(3.0));
+			T s = pow(-q - sqrt(-D), T(1.0)/T(3.0));
+			out[0] = r + s;
 
 			out[0] -= A/T(3.0);
 			return RootFindResult::RESULT_ONE_SOLUTION;
@@ -111,7 +111,7 @@ namespace Math
 
 		T c0[] = {r*p/T(2.0) - q*q/T(8.0), -r, -p/T(2.0), T(1.0)};
 		T out0[4];
-		Result res = SolveCubic(c0, out0);
+		RootFindResult res = SolveCubic(c0, out0);
 
 		if (res == RootFindResult::RESULT_NO_SOLUTION)
 			return RootFindResult::RESULT_NO_SOLUTION;
@@ -124,16 +124,16 @@ namespace Math
 		if (q >= 0)
 		{
 			T c1[] = {z - sqrt(z*z-r), sqrt(T(2.0)*z-p), 1};
-			T c2[] = {z + sqrt(z*z-r),-sqrt(T(2.0)*z-p), 1};	
-			res1 = SolveQuadric(c1, out1);	
-			res2 = SolveQuadric(c2, out2);	
+			T c2[] = {z + sqrt(z*z-r),-sqrt(T(2.0)*z-p), 1};
+			res1 = SolveQuadric(c1, out1);
+			res2 = SolveQuadric(c2, out2);
 		}
 		else
 		{
 			T c1[] = {z + sqrt(z*z-r), sqrt(T(2.0)*z-p), 1};
-			T c2[] = {z - sqrt(z*z-r),-sqrt(T(2.0)*z-p), 1};	
-			res1 = SolveQuadric(c1, out1);	
-			res2 = SolveQuadric(c2, out2);	
+			T c2[] = {z - sqrt(z*z-r),-sqrt(T(2.0)*z-p), 1};
+			res1 = SolveQuadric(c1, out1);
+			res2 = SolveQuadric(c2, out2);
 		}
 
 		if (res1 == RootFindResult::RESULT_NO_SOLUTION && res2 == RootFindResult::RESULT_NO_SOLUTION)

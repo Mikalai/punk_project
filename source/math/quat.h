@@ -2,6 +2,7 @@
 #define _H_QUAT_MATH
 
 #include <cmath>
+#include <stdexcept>
 #include <stdio.h>
 #include "../string/string.h"
 #include "vec4.h"
@@ -60,8 +61,8 @@ namespace Math
 				res[0] = m_vec[0]; // if it is important that axis is normalised then replace with x=1; y=z=0;
 				res[1] = m_vec[1];
 				res[2] = m_vec[2];
-			} 
-			else 
+			}
+			else
 			{
 				res[0] = m_vec[0] / (float)s; // normalise axis
 				res[1] = m_vec[1] / (float)s;
@@ -108,7 +109,7 @@ namespace Math
 			m_vec.Set(x, y, z);
 		}
 
-		T& W() 
+		T& W()
 		{
 			return m_scalar;
 		}
@@ -118,7 +119,7 @@ namespace Math
 			return m_scalar;
 		}
 
-		T& X() 
+		T& X()
 		{
 			return m_vec[0];
 		}
@@ -128,7 +129,7 @@ namespace Math
 			return m_vec[0];
 		}
 
-		T& Y() 
+		T& Y()
 		{
 			return m_vec[1];
 		}
@@ -138,7 +139,7 @@ namespace Math
 			return m_vec[1];
 		}
 
-		T& Z() 
+		T& Z()
 		{
 			return m_vec[2];
 		}
@@ -160,7 +161,7 @@ namespace Math
 			return *this;
 		}
 
-		Quaternion<T>& Normalize() 
+		Quaternion<T>& Normalize()
 		{
 			T l = Length();
 			m_scalar /= l;
@@ -275,7 +276,7 @@ namespace Math
 	public:
 		quat() : Quaternion<float>() {}
 		quat(float w, float x, float y, float z) : Quaternion<float>(w, x, y, z) {}
-		quat(float w, const vec3& v) : Quaternion<float>(w, v) {}		
+		quat(float w, const vec3& v) : Quaternion<float>(w, v) {}
 		quat(const Quaternion<float>& q) : Quaternion<float>(q) {}
 	};
 
@@ -310,7 +311,7 @@ const T& operator[] (int i) const
 return m_v[i];
 }
 
-T& W() 
+T& W()
 {
 return m_v[0];
 }
@@ -320,7 +321,7 @@ const T& W() const
 return m_v[0];
 }
 
-T& X() 
+T& X()
 {
 return m_v[1];
 }
@@ -330,7 +331,7 @@ const T& X() const
 return m_v[1];
 }
 
-T& Y() 
+T& Y()
 {
 return m_v[2];
 }
@@ -340,7 +341,7 @@ const T& Y() const
 return m_v[2];
 }
 
-T& Z() 
+T& Z()
 {
 return m_v[3];
 }
@@ -402,12 +403,12 @@ G = (q1[0] + q1[2]) * (q2[0] - q2[3]);
 H = (q1[0] - q1[2]) * (q2[0] + q2[3]);
 
 v[0] = B + (-E - F + G + H) * 0.5;
-v[1] = A - ( E + F + G + H) * 0.5; 
+v[1] = A - ( E + F + G + H) * 0.5;
 v[2] =-C + ( E - F + G - H) * 0.5;
 v[3] =-D + ( E - F - G + H) * 0.5;
 
 return Quaternion<T>(v[0], v[1], v[2], v[3]);
-}	
+}
 /*
 template<class T>
 Quaternion<T> operator * (const Quaternion<T>& q, T s)

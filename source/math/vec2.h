@@ -2,11 +2,13 @@
 #define _H_VEC2_MATH
 
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
 #include "../string/string.h"
 #include "relations.h"
 
 namespace Math
-{	  
+{
 	template<class T>
 	class  Vector2
 	{
@@ -16,49 +18,49 @@ namespace Math
 
 		const T& X() const
 		{
-			return m_v[0]; 
+			return m_v[0];
 		}
 
 		T& X()
 		{
-			return m_v[0]; 
+			return m_v[0];
 		}
 
 		T& Y()
 		{
-			return m_v[1]; 
+			return m_v[1];
 		}
 
 		const T& Y() const
-		{ 
-			return m_v[1]; 
+		{
+			return m_v[1];
 		}
 
 		T& R()
 		{
-			return m_v[0]; 		
+			return m_v[0];
 		}
 
-		const T& R() const 
+		const T& R() const
 		{
-			return m_v[0]; 
+			return m_v[0];
 		}
 
 		const T& G() const
 		{
-			return m_v[1]; 
+			return m_v[1];
 		}
 
-		T& G() 
+		T& G()
 		{
-			return m_v[1]; 
+			return m_v[1];
 		}
 
 		Vector2<T> XY() const
 		{
-			return Vector2<T>(m_v[0], m_v[1]); 
+			return Vector2<T>(m_v[0], m_v[1]);
 		}
-		
+
 		operator T* ()
 		{
 			return m_v;
@@ -85,7 +87,7 @@ namespace Math
 			memset(m_v, 0, sizeof(m_v));
 		}
 
-		Vector2<T>(T x, T y) 
+		Vector2<T>(T x, T y)
 		{
 			m_v[0] = x; m_v[1] = y;
 		}
@@ -99,7 +101,7 @@ namespace Math
 		{
 			m_v[0] = destination.m_v[0] - origin.m_v[0];
 			m_v[1] = destination.m_v[1] - origin.m_v[1];
-		}       
+		}
 
 		Vector2<T>& Normalize()
 		{
@@ -131,7 +133,7 @@ namespace Math
 			m_v[0] = x;
 			m_v[1] = y;
 			return *this;
-		}    
+		}
 
 		Vector2<T> ComponentMult(const Vector2<T>& v)
 		{
@@ -166,7 +168,7 @@ namespace Math
 				return Relation::START;
 			if (p1 == p2)
 				return Relation::END;
-			return Relation::BACK;            
+			return Relation::BACK;
 		}
 	};
 

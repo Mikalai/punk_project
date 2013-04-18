@@ -35,7 +35,7 @@ namespace Math
 	PUNK_ENGINE bool YawPitchRollToUpDirection(float yaw, float pitch, float roll, vec3& up, vec3& dir);
 
 	template<class T>
-	const Quaternion<T> Matrix4x4ToQuaternion(const Matrix4x4<T>& m) 
+	const Quaternion<T> Matrix4x4ToQuaternion(const Matrix4x4<T>& m)
 	{
 		T t = m[0] + m[5] + m[10] + T(1);
 		if (t > 0)
@@ -91,7 +91,7 @@ namespace Math
 	}
 
 	template<class T>
-	const Matrix4x4<T> QuaternionToMatrix4x4(const Quaternion<T>& q) 
+	const Matrix4x4<T> QuaternionToMatrix4x4(const Quaternion<T>& q)
 	{
 		Matrix4x4<T> m;
 		T xx = q.X()*q.X();
@@ -179,12 +179,6 @@ namespace Math
 	}
 
 	template<class T>
-	T Clamp(T min_val, T max_val, T x)
-	{
-		return Min(Max(x, min_val), max_val);
-	}
-
-	template<class T>
 	inline T Min(T x, T y)
 	{
 		return x < y ? x : y;
@@ -206,6 +200,12 @@ namespace Math
 	inline T Max(T a, T b, T c)
 	{
 		return Max(a, Max(b, c));
+	}
+
+	template<class T>
+	T Clamp(T min_val, T max_val, T x)
+	{
+		return Min(Max(x, min_val), max_val);
 	}
 
 	template<class T>
@@ -236,15 +236,15 @@ namespace Math
 	{
 		return x*(1-a)+y*a;
 	}
-	template<class T> 
+	template<class T>
 	Vector3<T> CalculateNormal(const Vector3<T>& p1, const Vector3<T>& p2, const Vector3<T>& p3)
 	{
 		return ((p2-p1).Cross(p3-p1)).Normalize();
 	}
 
 	template<class T>
-	static void CalculateTBN(const Vector3<T>& p1, const Vector3<T>& p2, const Vector3<T>& p3, 
-		const Vector2<T>& tex1, const Vector2<T>& tex2, const Vector2<T>& tex3, 
+	static void CalculateTBN(const Vector3<T>& p1, const Vector3<T>& p2, const Vector3<T>& p3,
+		const Vector2<T>& tex1, const Vector2<T>& tex2, const Vector2<T>& tex3,
 		Vector3<T>& tng, Vector3<T>& btn, Vector3<T>& nrm, T& mm)
 	{
 		nrm = CalculateNormal(p1, p2, p3);
@@ -274,7 +274,7 @@ namespace Math
 
 		if (btn.Length()==0 || tng.Length() == 0)
 		{
-			nrm.Normalize();	
+			nrm.Normalize();
 			mm = 1;
 		}
 		else
@@ -297,4 +297,4 @@ namespace Math
 
 }
 
-#endif 
+#endif
