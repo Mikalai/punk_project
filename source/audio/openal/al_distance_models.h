@@ -1,3 +1,5 @@
+#ifdef USE_OPENAL
+
 #ifndef _H_PUNK_AUDIO_OPENAL_DISTANCE_MODLES
 #define _H_PUNK_AUDIO_OPENAL_DISTANCE_MODLES
 
@@ -11,3 +13,5 @@ namespace Audio
 }
 
 #endif	//	_H_PUNK_AUDIO_OPENAL_DISTANCE_MODLES
+
+#endif // USE_OPENAL

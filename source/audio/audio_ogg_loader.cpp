@@ -1,5 +1,9 @@
+
+#ifdef USE_VORBIS
 #include <vorbis/vorbisfile.h>
 #include <vorbis/codec.h>
+#endif  //  USE_VORBIS
+
 #include <sstream>
 #include "../system/errors/exceptions.h"
 #include "../string/string.h"
@@ -8,6 +12,8 @@
 
 namespace Audio
 {
+    #ifdef USE_VORBIS
+
 	struct OggLoaderImpl
 	{
 		Buffer* m_buffer;
@@ -16,6 +22,7 @@ namespace Audio
 		int m_channels;
 		int m_size;
 		System::string m_c;
+
 		OggLoaderImpl(Buffer* buffer, const System::string& filename);
 		~OggLoaderImpl();
 		void Load();
@@ -52,7 +59,7 @@ namespace Audio
 
 		char buffer[4096];
 		int current_section = 0;
-		
+
 		std::vector<char> data;
 #ifdef _WIN32
 		long read = 0;
@@ -68,10 +75,10 @@ namespace Audio
 			else if (read != 0)
 				data.insert(data.end(), buffer, buffer + read);
 		}
-		while (read != 0);			
+		while (read != 0);
 #else	//	_WIN32
 		error;
-#endif	
+#endif
 		m_buffer->SetData(Format::STEREO16, reinterpret_cast<void*>(&data[0]), static_cast<int>(data.size()), m_rate);
 		m_buffer->SetDescription(System::string(stream.str().c_str()));
 	}
@@ -79,18 +86,27 @@ namespace Audio
 	void OggLoaderImpl::Decompress(void** data, unsigned* size)
 	{}
 
+    #endif  //  USE_VORBIS
+
 	OggLoader::OggLoader(Buffer* buffer, const System::string& filename)
+	#ifdef USE_VORBIS
 		: impl(new OggLoaderImpl(buffer, filename))
+    #else
+        : impl(nullptr)
+    #endif
 	{}
 
 	OggLoader::~OggLoader()
 	{
+	    #ifdef USE_VORBIS
 		delete impl;
 		impl = nullptr;
+		#endif
 	}
 
 	System::StreamingStepResult OggLoader::Load()
 	{
+	    #ifdef USE_VORBIS
 		try
 		{
 			impl->Load();
@@ -100,10 +116,14 @@ namespace Audio
 		{
 			return System::StreamingStepResult::STREAM_ERROR;
 		}
+		#else
+		return System::StreamingStepResult::STREAM_ERROR;
+		#endif
 	}
 
-	System::StreamingStepResult OggLoader::Decompress(void** data, unsigned* size) 
+	System::StreamingStepResult OggLoader::Decompress(void** data, unsigned* size)
 	{
+	    #ifdef USE_VORBIS
 		try
 		{
 			impl->Decompress(data, size);
@@ -113,6 +133,9 @@ namespace Audio
 		{
 			return System::StreamingStepResult::STREAM_ERROR;
 		}
+		#else
+		return System::StreamingStepResult::STREAM_ERROR;
+		#endif
 	}
 }
 

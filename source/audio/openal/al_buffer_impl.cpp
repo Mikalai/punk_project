@@ -1,3 +1,5 @@
+#ifdef USE_OPENAL
+
 #include "al_buffer_impl.h"
 
 namespace Audio
@@ -91,3 +93,5 @@ namespace Audio
 		return flag;
 	}
 }
+
+#endif // USE_OPENAL

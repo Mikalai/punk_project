@@ -1,3 +1,5 @@
+#ifdef USE_OPENAL
+
 #include "al_source_impl.h"
 
 namespace Audio
@@ -10,7 +12,7 @@ namespace Audio
 	}
 
 	SourceImpl::~SourceImpl()
-	{		
+	{
 		if (alIsSource(m_source))
 			alDeleteSources(1, &m_source);
 	}
@@ -262,7 +264,7 @@ namespace Audio
 	void SourceImpl::Pause()
 	{
 		alSourcePause(m_source);
-		ValidateOpenAL(L"Can't pause source");	
+		ValidateOpenAL(L"Can't pause source");
 	}
 
 	bool SourceImpl::IsPaused() const
@@ -304,3 +306,5 @@ namespace Audio
 		ValidateOpenAL(L"Can't queue buffer in the source");
 	}
 }
+
+#endif // USE_OPENAL

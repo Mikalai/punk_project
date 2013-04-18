@@ -1,6 +1,8 @@
 #ifndef _H_PUNK_AUDIO_OPENAL_SOUND_SYSTEM
 #define _H_PUNK_AUDIO_OPENAL_SOUND_SYSTEM
 
+#ifdef USE_OPENAL
+
 #include "openal.h"
 #include "../sound_system.h"
 
@@ -10,7 +12,7 @@ namespace Audio
 	{
 		ALboolean m_eax_support;
 
-		void Initialize();	
+		void Initialize();
 		~SoundSystemImpl();
 		void SetSoundSpeed(float value);
 		float GetSoundSpeed() const;
@@ -20,5 +22,7 @@ namespace Audio
 		DistanceModel GetDistanceModel();
 	};
 }
+
+#endif  //  USE_OPENAL
 
 #endif	//	_H_PUNK_AUDIO_OPENAL_SOUND_SYSTEM

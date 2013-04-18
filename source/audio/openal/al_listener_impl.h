@@ -1,6 +1,8 @@
 #ifndef _H_PUNK_AUDIO_OPENAL_LISTENER
 #define _H_PUNK_AUDIO_OPENAL_LISTENER
 
+#ifdef USE_OPENAL
+
 #include "openal.h"
 #include "../../math/vec3.h"
 #include "../audio_listener.h"
@@ -31,5 +33,7 @@ namespace Audio
 		void Deactivate();
 	};
 }
+
+#endif  //  USE_OPENAL
 
 #endif	//	_H_PUNK_AUDIO_OPENAL_LISTENER

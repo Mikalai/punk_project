@@ -1,3 +1,5 @@
+#ifdef USE_OPENAL
+
 #include "al_distance_models.h"
 
 namespace Audio
@@ -28,7 +30,7 @@ namespace Audio
 	DistanceModel OpenALDistanceModelToDistanceModel(ALenum value)
 	{
 		switch (value)
-		{		
+		{
 		case AL_NONE:
 			return Audio::DistanceModel::NONE;
 		case AL_INVERSE_DISTANCE:
@@ -48,3 +50,5 @@ namespace Audio
 		}
 	}
 }
+
+#endif // USE_OPENAL

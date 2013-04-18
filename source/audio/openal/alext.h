@@ -1,6 +1,8 @@
 #ifndef ALEXT_H
 #define ALEXT_H
 
+#ifdef USE_OPENAL
+
 #define AL_NO_PROTOTYPES
 #include <openal/al.h>
 #include <openal/alc.h>
@@ -106,5 +108,7 @@ namespace Audio
 	extern LPALCCAPTURESTOP alcCaptureStop;
 	extern LPALCCAPTURESAMPLES alcCaptureSamples;
 }
+
+#endif  //  USE_OPENAL
 
 #endif // ALEXT_H

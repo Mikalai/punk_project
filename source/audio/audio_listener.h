@@ -3,11 +3,13 @@
 
 #include "../config.h"
 
+namespace Math { class vec3; }
+
 namespace Audio
 {
 	struct ListenerImpl;
 
-	class PUNK_ENGINE Listener 
+	class PUNK_ENGINE Listener
 	{
 	public:
 		Listener();

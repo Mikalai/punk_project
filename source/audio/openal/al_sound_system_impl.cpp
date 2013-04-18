@@ -1,3 +1,5 @@
+#ifdef USE_OPENAL
+
 #include "al_sound_system_impl.h"
 
 namespace Audio
@@ -5,13 +7,13 @@ namespace Audio
 	void SoundSystemImpl::Initialize()
 	{
 		Init();
-		//auto device = alcOpenDevice(nullptr); 		
+		//auto device = alcOpenDevice(nullptr);
 		//if (device) {
 		//	auto context = alcCreateContext(device, nullptr);
 		//	alcMakeContextCurrent(context);
 		//}
 		// Check for EAX 2.0 support
-		m_eax_support = alIsExtensionPresent("EAX2.0"); 
+		m_eax_support = alIsExtensionPresent("EAX2.0");
 	}
 
 	SoundSystemImpl::~SoundSystemImpl()
@@ -20,7 +22,7 @@ namespace Audio
 		//auto device = alcGetContextsDevice(context);
 		//alcMakeContextCurrent(nullptr);
 		//alcDestroyContext(context);
-		//alcCloseDevice(device); 
+		//alcCloseDevice(device);
 		Destroy();
 	}
 
@@ -63,3 +65,5 @@ namespace Audio
 		return OpenALDistanceModelToDistanceModel(value);
 	}
 }
+
+#endif // USE_OPENAL

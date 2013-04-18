@@ -1,3 +1,5 @@
+#ifdef USE_OPENAL
+
 #include "alext.h"
 #include "al_error.h"
 
@@ -25,3 +27,5 @@ namespace Audio
 		}
 	}
 }
+
+#endif // USE_OPENAL

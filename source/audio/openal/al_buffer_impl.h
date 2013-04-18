@@ -1,3 +1,5 @@
+#ifdef USE_OPENAL
+
 #ifndef _H_PUNK_AUDIO_OPENAL_BUFFER
 #define _H_PUNK_AUDIO_OPENAL_BUFFER
 
@@ -23,9 +25,11 @@ namespace Audio
 		int GetSize() const;
 		void* GetData() const;
 		void SetDescription(const System::string& value);
-		const System::string& GetDescription() const; 
+		const System::string& GetDescription() const;
 		bool IsValid() const;
 	};
 }
 
 #endif	//	_H_PUNK_AUDIO_OPENAL_BUFFER
+
+#endif // USE_OPENAL

@@ -1,6 +1,8 @@
 #ifndef _H_PUNK_AUDIO_OPENAL_SOURCE
 #define _H_PUNK_AUDIO_OPENAL_SOURCE
 
+#ifdef USE_OPENAL
+
 #include "../../math/vec3.h"
 #include "openal.h"
 #include "al_buffer_impl.h"
@@ -57,5 +59,7 @@ namespace Audio
 		void EnqueBuffer(Buffer* value);
 	};
 }
+
+#endif  //  USE_OPENAL
 
 #endif	//	_H_PUNK_AUDIO_OPENAL_SOURCE

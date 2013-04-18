@@ -1,4 +1,6 @@
-#ifdef WIN32
+#ifdef USE_OPENAL
+
+#ifdef _WIN32
 #include <windows.h>
 #endif
 
@@ -141,7 +143,7 @@ namespace Audio
 	{
 		alcMakeContextCurrent(NULL);
 		alcDestroyContext(g_context);
-		alcCloseDevice(g_device);	
+		alcCloseDevice(g_device);
 		FreeLibrary(g_openal32);
 		return true;
 	}
@@ -256,9 +258,9 @@ namespace Audio
 			g_context = alcCreateContext(g_device, NULL);
 			alcMakeContextCurrent(g_context);
 		}
-		else 
+		else
 			return false;
-		return true;	
+		return true;
 	}
 
 	bool Init()
@@ -275,3 +277,5 @@ namespace Audio
 		return true;
 	}
 }
+
+#endif // USE_OPENAL

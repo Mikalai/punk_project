@@ -1,3 +1,5 @@
+#ifdef USE_OPENAL
+
 #include "al_listener_impl.h"
 
 namespace Audio
@@ -101,3 +103,5 @@ namespace Audio
 		m_active = false;
 	}
 }
+
+#endif // USE_OPENAL
