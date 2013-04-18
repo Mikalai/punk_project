@@ -6,6 +6,7 @@
 #include <wchar.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <exception>
 #include <istream>
 #include <ostream>
@@ -523,17 +524,17 @@ namespace System
 		return _wtof(m_rep->m_data);
 	}
 
-	const string string::Convert(__int32 value, int radix)
+	const string string::Convert(int32_t value, int radix)
 	{
-		wchar_t buf[128];
-		_itow_s<128>(value, buf, radix);
+		char buf[128];
+		itoa(value, buf, radix);
 		return string(buf);
 	}
 
-	const string string::Convert(unsigned __int32 value, int radix)
+	const string string::Convert(uint32_t value, int radix)
 	{
-		wchar_t buf[128];
-		_ultow_s<128>((unsigned long)value, buf, radix);
+		char buf[128];
+		_ultoa(value, buf, radix);
 		return string(buf);
 	}
 
@@ -553,41 +554,42 @@ namespace System
 		return string(buf);
 	}
 
-	const string string::Convert(__int16 value, int radix)
+	const string string::Convert(int16_t value, int radix)
 	{
-		wchar_t buf[128];
-		_itow_s<128>(value, buf, radix);
+		char buf[128];
+		itoa(value, buf, radix);
 		return string(buf);
 	}
 
-	const string string::Convert(unsigned __int16 value, int radix)
+	const string string::Convert(uint16_t value, int radix)
 	{
-		wchar_t buf[128];
-		_itow_s<128>(value, buf, radix);
-		return string(buf);
-	}
-	const string string::Convert(__int8 value, int radix)
-	{
-		wchar_t buf[128];
-		_itow_s<128>(value, buf, radix);
+		char buf[128];
+		_ultoa(value, buf, radix);
 		return string(buf);
 	}
 
-	const string string::Convert(unsigned __int8 value, int radix)
+	const string string::Convert(int8_t value, int radix)
 	{
-		wchar_t buf[128];
-		_itow_s<128>(value, buf, radix);
+		char buf[128];
+		itoa(value, buf, radix);
 		return string(buf);
 	}
 
-	const string string::Convert(__int64 value, int radix)
+	const string string::Convert(uint8_t value, int radix)
 	{
-		wchar_t buf[128];
-		_i64tow_s(value, buf, 128, radix);
+		char buf[128];
+		itoa(value, buf, radix);
 		return string(buf);
 	}
 
-	const string string::Convert(unsigned __int64 value, int radix)
+	const string string::Convert(int64_t value, int radix)
+	{
+		char buf[128];
+		_i64toa_s(value, buf, 128, radix);
+		return string(buf);
+	}
+
+	const string string::Convert(uint64_t value, int radix)
 	{
 		wchar_t buf[128];
 		_ui64tow_s(value, buf, 128, radix);
@@ -597,14 +599,14 @@ namespace System
 	const string string::Convert(float value, int precision)
 	{
 		char buf[128];
-		_gcvt_s<128>(buf, value, precision);
+		gcvt(value, precision, buf);
 		return string(buf);
 	}
 
 	const string string::Convert(double value, int precision)
 	{
 		char buf[128];
-		_gcvt_s<128>(buf, value, precision);
+		gcvt(value, precision, buf);
 		return string(buf);
 	}
 
@@ -631,7 +633,7 @@ namespace System
 		return string(buf);
 #else
 		wchar_t buf[128];
-		_ultow_s<128>((unsigned)value, buf, 16);
+		_ultow_s((unsigned)value, buf, 128, 16);
 		return string(buf);
 #endif
 	}
@@ -773,7 +775,7 @@ namespace System
 		return m_rep->Load(stream);
 	}
 
-    const std::string string::ToStdString()
+    const std::string string::ToStdString() const
     {
         std::vector<char> buffer(Length());
 
@@ -782,7 +784,7 @@ namespace System
         return std::string(&buffer[0], buffer.size());
     }
 
-    const std::wstring string::ToStdWString()
+    const std::wstring string::ToStdWString() const
     {
         return std::wstring(m_rep->m_data);
     }

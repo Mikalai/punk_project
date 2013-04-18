@@ -6,7 +6,7 @@
 #include <vector>
 #include <iosfwd>
 #include <string>
-
+#include <cstdint>
 #include "../../config.h"
 
 //
@@ -52,8 +52,8 @@ namespace System
 		wchar_t operator [] (int i) const;
 		wchar_t& operator [] (int i);
 
-        const std::string ToStdString();
-        const std::wstring ToStdWString();
+        const std::string ToStdString() const;
+        const std::wstring ToStdWString() const;
 
 		int Length() const;
 		int Size() const;
@@ -87,14 +87,14 @@ namespace System
 		friend PUNK_ENGINE bool operator < (const string& s1, const wchar_t* s2);
 
 
-		static const string Convert(int value, int radix = 10);
-		static const string Convert(unsigned value, int radix = 10);
-		static const string Convert(__int64 value, int radix = 10);
-		static const string Convert(unsigned __int64 value, int radix = 10);
-		static const string Convert(__int16 value, int radix = 10);
-		static const string Convert(unsigned __int16 value, int radix = 10);
-		static const string Convert(__int8 value, int radix = 10);
-		static const string Convert(unsigned __int8 value, int radix = 10);
+		static const string Convert(int32_t value, int radix = 10);
+		static const string Convert(uint32_t value, int radix = 10);
+		static const string Convert(int64_t value, int radix = 10);
+		static const string Convert(uint64_t value, int radix = 10);
+		static const string Convert(int16_t value, int radix = 10);
+		static const string Convert(uint16_t value, int radix = 10);
+		static const string Convert(int8_t value, int radix = 10);
+		static const string Convert(uint8_t value, int radix = 10);
 		static const string Convert(signed char value);
 		static const string Convert(unsigned char value);
 		static const string Convert(float value, int precision = 5);
