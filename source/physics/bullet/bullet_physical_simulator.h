@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #ifndef _H_BULLET_PHYSICAL_SIMULATOR
 #define _H_BULLET_PHYSICAL_SIMULATOR
 
@@ -33,7 +35,7 @@ namespace Physics
 		virtual void Clear();
 		virtual void Update(float delta);
 		virtual void SetGravity(const Math::vec3& g);
-		virtual ~BulletSimulator();		
+		virtual ~BulletSimulator();
 
 		btDiscreteDynamicsWorld* GetWorld() { return m_dynamics_world; }
 
@@ -49,3 +51,5 @@ namespace Physics
 }
 
 #endif
+
+#endif // USE_BULLET_PHYSICS

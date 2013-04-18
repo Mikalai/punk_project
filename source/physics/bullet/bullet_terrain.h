@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #ifndef _H_PUNK_PHYSICS_BULLET_TERRAIN
 #define _H_PUNK_PHYSICS_BULLET_TERRAIN
 
@@ -24,7 +26,7 @@ namespace Physics
 		void EnterWorld(btDiscreteDynamicsWorld* world);
 		void Leave();
 		void Clear();
-	private:		
+	private:
 
 		btVector3 m_up_vector;
 		//	should be deleted in destructor
@@ -37,3 +39,5 @@ namespace Physics
 }
 
 #endif	//	_H_PUNK_PHYSICS_BULLET_TERRAIN
+
+#endif // USE_BULLET_PHYSICS

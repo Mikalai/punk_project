@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #include "bullet_physical_simulator.h"
 #include "bullet_rigid_body.h"
 
@@ -65,7 +67,7 @@ namespace Physics
 		delete m_broad_phase_interface;
 		delete m_dispatcher;
 		delete m_collision_configuration;
-		
+
 		//	delete collision shapes
 		for (int i = 0; i < m_collision_shapes.size(); ++i)
 		{
@@ -97,11 +99,11 @@ namespace Physics
 
 	//void BulletSimulator::DestroyGhostBody(btGhostObject* body)
 	//{
-	//	m_dynamics_world->removeCollisionObject(body);		
+	//	m_dynamics_world->removeCollisionObject(body);
 	//}
 
 	//void BulletSimulator::SetTerrain(Terrain& terrain)
-	//{		
+	//{
 	//}
 
 	//void BulletSimulator::CreateConvexHulls(Object& object)
@@ -124,7 +126,7 @@ namespace Physics
 	//	//	//	create BulletShapeBody
 	//	//	BulletShapeBody* shape_body = new BulletShapeBody;
 	//	//	shape_body->SetCollisionShape(bullet_shape);
-	//	//	
+	//	//
 	//	//	//	save shape body in the object
 	//	//	object.SetShapeBody(shape_body);
 	//	//}
@@ -153,7 +155,7 @@ namespace Physics
 	////}
 
 	//void BulletSimulator::CreateDynamicShapeBody(Object& object)
-	//{		
+	//{
 	//	////	create for each collision volume collision shape
 	//	//CreateConvexHulls(object);
 
@@ -161,7 +163,7 @@ namespace Physics
 	//	//btCompoundShape* bullet_shape = new btCompoundShape;
 	//	//m_collision_shapes.push_back(bullet_shape);
 	//	////	make compound shape
-	//	//CombineConvexHulls(bullet_shape, object, Math::mat4::CreateIdentity());	
+	//	//CombineConvexHulls(bullet_shape, object, Math::mat4::CreateIdentity());
 
 	//	//BulletShapeBody* final_shape_body = new BulletShapeBody;
 	//	//final_shape_body->SetCollisionShape(bullet_shape);
@@ -182,9 +184,9 @@ namespace Physics
 
 	//		btScalar characterHeight = 1.0;
 	//		btScalar characterWidth = 0.5;
-	//		btConvexShape* capsule = new btCapsuleShape(characterWidth,characterHeight);			
+	//		btConvexShape* capsule = new btCapsuleShape(characterWidth,characterHeight);
 
-	//		m_ghostObject->setCollisionShape(capsule);			
+	//		m_ghostObject->setCollisionShape(capsule);
 	//		m_ghostObject->getWorldTransform().setOrigin(btVector3(0, 1, 0));
 	//		m_ghostObject->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
 
@@ -274,7 +276,7 @@ namespace Physics
 
 	//void BulletSimulator::SetRender(void* drawer)
 	//{
-	//	m_dynamics_world->setDebugDrawer((btIDebugDraw*)(drawer));		
+	//	m_dynamics_world->setDebugDrawer((btIDebugDraw*)(drawer));
 	//}
 
 	//void BulletSimulator::Draw()
@@ -282,3 +284,5 @@ namespace Physics
 	//	m_dynamics_world->debugDrawWorld();
 	//}
 };
+
+#endif // USE_BULLET_PHYSICS

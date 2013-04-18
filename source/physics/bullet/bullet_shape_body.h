@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #ifndef _H_BULLET_SHAPE_BODY
 #define _H_BULLET_SHAPE_BODY
 
@@ -12,7 +14,7 @@ namespace Physics
 	class PUNK_ENGINE BulletShapeBody : public System::Object
 	{
 		btCollisionShape* m_shape;
-	public: 
+	public:
 		BulletShapeBody();
 		virtual ~BulletShapeBody();
 		virtual void InitConvexHull(Virtual::Geometry* geom, bool auto_cache = true);
@@ -25,3 +27,5 @@ namespace Physics
 }
 
 #endif	//	_H_BULLET_SHAPE_BODY
+
+#endif // USE_BULLET_PHYSICS

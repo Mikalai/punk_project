@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #include <bullet/btBulletCollisionCommon.h>
 #include <bullet/BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 #include "../../math/module.h"
@@ -22,7 +24,7 @@ namespace Physics
 	{
 		Clear();
 
-		const float* data = reinterpret_cast<const float*>(view->GetBackViewData());		
+		const float* data = reinterpret_cast<const float*>(view->GetBackViewData());
 		btAssert(data != nullptr && " no data in the terrain view");
 
 		int width = view->GetViewSize();
@@ -36,7 +38,7 @@ namespace Physics
 			if (max_height < data[i])
 				max_height = data[i];
 		}
-		
+
 		if (max_height < -min_height) {
 			max_height = -min_height;
 		}
@@ -45,7 +47,7 @@ namespace Physics
 		}
 		//	pack in auto ptr not to loose memory if exception
 		std::unique_ptr<btHeightfieldTerrainShape> temp_shape(new btHeightfieldTerrainShape(width, height, data, 1, min_height, max_height, 1, PHY_FLOAT, false));
-		
+
 		btAssert(temp_shape.get() && "null heightfield");
 
 		// set origin to middle of heightfield
@@ -73,7 +75,7 @@ namespace Physics
 	void BulletTerrain::EnterWorld(btDiscreteDynamicsWorld* world)
 	{
 		if (!m_body)
-			throw System::PunkInvalidArgumentException(L"Terrain can't enter physical world because it has no data");		
+			throw System::PunkInvalidArgumentException(L"Terrain can't enter physical world because it has no data");
 		m_body->EnterWorld(world);
 	}
 
@@ -92,3 +94,5 @@ namespace Physics
 			safe_delete(m_heightfieldShape);
 	}
 }
+
+#endif // USE_BULLET_PHYSICS
