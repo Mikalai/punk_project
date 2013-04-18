@@ -11,9 +11,9 @@
 
 class Viewer
 {
-	std::auto_ptr<GUI::Manager> m_gui;
+	std::unique_ptr<GUI::Manager> m_gui;
 	OpenGL::Driver m_driver;
-	std::auto_ptr<OpenGL::RenderContextLight> m_light_context;
+	std::unique_ptr<OpenGL::RenderContextLight> m_light_context;
 	GUI::ListBox* lst_all_weapon;
 	GUI::Button* btn_load;
 	GUI::Widget* lbl_file;
@@ -71,25 +71,25 @@ class Viewer
 	GUI::Button* btn_delete;
 	GUI::Button* btn_clear;
 
-	std::auto_ptr<OpenGL::Texture2D> m_render_target;
-	std::auto_ptr<OpenGL::Texture2D> m_diffuse_map;
-	std::auto_ptr<OpenGL::Texture2D> m_normal_map;
+	std::unique_ptr<OpenGL::Texture2D> m_render_target;
+	std::unique_ptr<OpenGL::Texture2D> m_diffuse_map;
+	std::unique_ptr<OpenGL::Texture2D> m_normal_map;
 
-	std::auto_ptr<OpenGL::StaticObject> m_vao;
-	std::auto_ptr<OpenGL::RenderContextBumpMapping> m_rc;
-	std::auto_ptr<OpenGL::TextureContext> m_tc;
-	std::auto_ptr<OpenGL::FrameBuffer> m_frame_buffer;
+	std::unique_ptr<OpenGL::StaticObject> m_vao;
+	std::unique_ptr<OpenGL::RenderContextBumpMapping> m_rc;
+	std::unique_ptr<OpenGL::TextureContext> m_tc;
+	std::unique_ptr<OpenGL::FrameBuffer> m_frame_buffer;
 	float m_phi, m_psy, x, y, z;
 
 	Utility::Camera m_camera;
 
-	std::auto_ptr<Audio::Player> m_player;
+	std::unique_ptr<Audio::Player> m_player;
 
 	Utility::WeaponType m_weapon;
 public:
 
 	Viewer()
-	{		
+	{
 		/// start driver
 		m_driver.Start(System::Window::Instance());
 		System::Window::Instance()->SetSize(800, 600);
@@ -103,7 +103,7 @@ public:
 		float w0 = 0.2f;
 		float w1 = 0.2f;
 		float w2 = 1 - w1 - w0;
-		btn_load = new GUI::Button(w0, y, w1+w2, h, L"Load");		
+		btn_load = new GUI::Button(w0, y, w1+w2, h, L"Load");
 		lbl_barrel_type = new GUI::Widget(w0+w1+w2/2, y-h, w2/2, h, L"Barrel type:");
 		lst_barrel_type = new GUI::ListBox(w0+w1+w2/2, y-6*h, w2/2, 5*h);
 		y -= h;
@@ -128,11 +128,11 @@ public:
 		lbl_bullet_type = new GUI::Widget(w0, y+count*h, (1-w0)/4, h, L"Bullet type:");
 		lst_bullet_type = new GUI::ListBox(w0, y, (1-w0)/4, count*h);
 		lbl_backsight_type = new GUI::Widget(w0+(1-w0)/4, y+count*h, (1-w0)/4, h, L"Backsight type:");
-		lst_backsight_type = new GUI::ListBox(w0+(1-w0)/4, y, (1-w0)/4, count*h);		
+		lst_backsight_type = new GUI::ListBox(w0+(1-w0)/4, y, (1-w0)/4, count*h);
 		lbl_purpose_type = new GUI::Widget(w0+2.0f*(1-w0)/4.0f, y+count*h, (1-w0)/4, h, L"Purpose type:");
-		lst_purpose_type = new GUI::ListBox(w0+2.0f*(1-w0)/4, y, (1-w0)/4, count*h);		
+		lst_purpose_type = new GUI::ListBox(w0+2.0f*(1-w0)/4, y, (1-w0)/4, count*h);
 		lbl_control_type = new GUI::Widget(w0+3.0f*(1-w0)/4, y+count*h, (1-w0)/4, h, L"Control type:");
-		lst_control_type = new GUI::ListBox(w0+3.0f*(1-w0)/4, y, (1-w0)/4, count*h);		
+		lst_control_type = new GUI::ListBox(w0+3.0f*(1-w0)/4, y, (1-w0)/4, count*h);
 		y -= (count+1)*h;
 		lbl_kill_source_type = new GUI::Widget(w0, y+count*h, (1-w0)/4, h, L"Kill source:");
 		lst_kill_source_type = new GUI::ListBox(w0, y, (1-w0)/4, count*h);
@@ -144,7 +144,7 @@ public:
 		lst_barrel_count_type = new GUI::ListBox(w0+3.0f*(1-w0)/4, y, (1-w0)/4, count*h);
 		y -= h;
 		btn_index = new GUI::Button(w0, y, w1, h, L"Index:");
-		txt_index = new GUI::TextBox(w0+w1, y, w2/4, h);		
+		txt_index = new GUI::TextBox(w0+w1, y, w2/4, h);
 		btn_save = new GUI::Button(w0+w1+w2/4, y, w2/4, h, L"Save");
 		btn_clear = new GUI::Button(w0+w1+2.0f*w2/4, y, w2/4, h, L"Clear fields");
 		btn_delete = new GUI::Button(w0+w1+3*w2/4, y, w2/4, h, L"Delete");
@@ -172,7 +172,7 @@ public:
 		wid_second->AddChild(wid_viewer);
 
 		wid_third = new GUI::Widget(0, 0, 1, 1, L"");
-		lbl_shoot_sound = new GUI::Widget(0, 0.95, w0, 0.05, L"Shoot:");		
+		lbl_shoot_sound = new GUI::Widget(0, 0.95, w0, 0.05, L"Shoot:");
 		wid_third->AddChild(lbl_shoot_sound);
 		lbl_reload_sound = new GUI::Widget(0, 0.45, w0, 0.05, L"Reload:");
 		wid_third->AddChild(lbl_reload_sound);
@@ -229,7 +229,7 @@ public:
 		wid_first->AddChild(lst_barrel_type);
 		wid_first->AddChild(btn_index);
 		wid_first->AddChild(txt_index);
-		m_gui->SetFocusedWidget(tab_widget->GetFirstTabButton());	
+		m_gui->SetFocusedWidget(tab_widget->GetFirstTabButton());
 		//m_gui->AddRootWidget(wid_viewer);
 
 
@@ -250,7 +250,7 @@ public:
 		lst_kill_source_type->SetNextWidget(lst_usage_type);
 		lst_usage_type->SetNextWidget(lst_automatic_type);
 		lst_automatic_type->SetNextWidget(lst_barrel_count_type);
-		lst_barrel_count_type->SetNextWidget(btn_index);		
+		lst_barrel_count_type->SetNextWidget(btn_index);
 		btn_index->SetNextWidget(txt_index);
 		txt_index->SetNextWidget(btn_save);
 		btn_save->SetNextWidget(btn_clear);
@@ -279,7 +279,7 @@ public:
 			return;
 
 		System::string file = lst_diffuse_map->GetItem(new_item)->GetText();
-		int index = (int)lst_diffuse_map->GetItem(new_item)->GetData();		
+		int index = (int)lst_diffuse_map->GetItem(new_item)->GetData();
 
 		m_weapon.GetMapDiffuse().SetDiffuse(file);
 	}
@@ -291,7 +291,7 @@ public:
 			return;
 
 		System::string file = lst_normal_map->GetItem(new_item)->GetText();
-		int index = (int)lst_normal_map->GetItem(new_item)->GetData();		
+		int index = (int)lst_normal_map->GetItem(new_item)->GetData();
 
 		m_weapon.GetMapNormal().SetNormal(file);
 	}
@@ -303,7 +303,7 @@ public:
 			return;
 
 		System::string file = lst_sound_shoot->GetItem(new_item)->GetText();
-		int index = (int)lst_sound_shoot->GetItem(new_item)->GetData();		
+		int index = (int)lst_sound_shoot->GetItem(new_item)->GetData();
 		m_player.reset(new Audio::Player);
 		m_player->SetSound(Audio::AudioManager::Instance()->Get(index));
 		m_player->Stop();
@@ -319,7 +319,7 @@ public:
 			return;
 
 		System::string file = lst_sound_shoot->GetItem(new_item)->GetText();
-		int index = (int)lst_sound_shoot->GetItem(new_item)->GetData();		
+		int index = (int)lst_sound_shoot->GetItem(new_item)->GetData();
 		m_player.reset(new Audio::Player);
 		m_player->SetSound(Audio::AudioManager::Instance()->Get(index));
 		m_player->Stop();
@@ -335,7 +335,7 @@ public:
 			return;
 
 		System::string file = lst_sound_reload->GetItem(new_item)->GetText();
-		int index = (int)lst_sound_reload->GetItem(new_item)->GetData();		
+		int index = (int)lst_sound_reload->GetItem(new_item)->GetData();
 		m_player.reset(new Audio::Player);
 		m_player->SetSound(Audio::AudioManager::Instance()->Get(index));
 		m_player->Stop();
@@ -347,7 +347,7 @@ public:
 
 	void InitRender()
 	{
-		CreateTexture();	
+		CreateTexture();
 		//
 		//	create vao
 
@@ -370,11 +370,11 @@ public:
 	}
 
 	void Render()
-	{		
+	{
 		m_frame_buffer->Activate();
 		m_driver.SetClearColor(1, 1, 0, 1);
-		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER | OpenGL::Driver::DEPTH_BUFFER);				
-	
+		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER | OpenGL::Driver::DEPTH_BUFFER);
+
 		if (m_vao.get())
 		{
 			m_rc->SetAmbientColor(Math::vec4(0,0,0,1));
@@ -401,7 +401,7 @@ public:
 	{
 		if (obj)
 		{
-			std::auto_ptr<OpenGL::StaticObject> vao(new OpenGL::StaticObject);
+			std::unique_ptr<OpenGL::StaticObject> vao(new OpenGL::StaticObject);
 			if (obj->GetMesh())
 			{
 				vao->SetStaticObject(scene->CookStaticMesh(obj->GetName()));
@@ -430,7 +430,7 @@ public:
 		System::string file = lst_geom->GetItem(new_item)->GetText();
 
 		Utility::Scene* scene = Utility::SceneFileManager::Instance()->Get(new_item);
-		
+
 		if (!scene)
 		{
 			System::Logger::Instance()->WriteError(L"No scheme for weapon");
@@ -438,11 +438,11 @@ public:
 		}
 
 		m_weapon.MakeFromScheme(txt_file->GetText(), *scene);
-	
-		
+
+
 		for (int i = 0; i < scene->GetObjectsCount(); i++)
 		{
-			MakeVao(scene, scene->FindObjectByName(scene->GetObjectName(i)));			
+			MakeVao(scene, scene->FindObjectByName(scene->GetObjectName(i)));
 		}
 
 		///	recache data in the folder
@@ -452,9 +452,9 @@ public:
 	void CreateTexture()
 	{
 		ImageModule::Importer importer;
-		std::auto_ptr<ImageModule::RGBAImage> test(importer.LoadRGBA(System::Environment::Instance()->GetTextureFolder() + L"checker2.png"));	
+		std::unique_ptr<ImageModule::RGBAImage> test(importer.LoadRGBA(System::Environment::Instance()->GetTextureFolder() + L"checker2.png"));
 		m_diffuse_map.reset(new OpenGL::Texture2D(*test));
-		std::auto_ptr<ImageModule::RGBImage> testrgb(importer.LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"bump.png"));
+		std::unique_ptr<ImageModule::RGBImage> testrgb(importer.LoadRGB(System::Environment::Instance()->GetTextureFolder() + L"bump.png"));
 		m_normal_map.reset(new OpenGL::Texture2D(*testrgb));
 
 		//
@@ -472,8 +472,8 @@ public:
 
 		for each (auto sound in all_sounds)
 		{
-			std::auto_ptr<GUI::ListBox::ListBoxItem> item1(new GUI::ListBox::ListBoxItem(sound->GetLocation(), (void*)sound->GetIndex()));
-			std::auto_ptr<GUI::ListBox::ListBoxItem> item2(new GUI::ListBox::ListBoxItem(sound->GetLocation(), (void*)sound->GetIndex()));
+			std::unique_ptr<GUI::ListBox::ListBoxItem> item1(new GUI::ListBox::ListBoxItem(sound->GetLocation(), (void*)sound->GetIndex()));
+			std::unique_ptr<GUI::ListBox::ListBoxItem> item2(new GUI::ListBox::ListBoxItem(sound->GetLocation(), (void*)sound->GetIndex()));
 			lst_sound_reload->AddItem(item1.release());
 			lst_sound_shoot->AddItem(item2.release());
 		}
@@ -503,7 +503,7 @@ public:
 	void InitPurposeType()
 	{
 		lst_purpose_type->RemoveAllItems();
-		lst_purpose_type->AddItem(new GUI::ListBox::ListBoxItem(L"NO", (void*)Utility::WeaponType::PURPOSE_NO)); 
+		lst_purpose_type->AddItem(new GUI::ListBox::ListBoxItem(L"NO", (void*)Utility::WeaponType::PURPOSE_NO));
 		lst_purpose_type->AddItem(new GUI::ListBox::ListBoxItem(L"WAR", (void*)Utility::WeaponType::PURPOSE_WAR));
 		lst_purpose_type->AddItem(new GUI::ListBox::ListBoxItem(L"RANGING", (void*)Utility::WeaponType::PURPOSE_RANGING));
 		lst_purpose_type->AddItem(new GUI::ListBox::ListBoxItem(L"CLASS", (void*)Utility::WeaponType::PURPOSE_CLASS));
@@ -584,7 +584,7 @@ public:
 			std::ifstream stream(buf, std::ios_base::binary);
 			bullet.Load(stream);
 			stream.close();
-			lst_bullet_type->AddItem(new GUI::ListBox::ListBoxItem(bullet.m_name, (void*)bullet.m_index));			
+			lst_bullet_type->AddItem(new GUI::ListBox::ListBoxItem(bullet.m_name, (void*)bullet.m_index));
 		}
 		fld.Close();
 	}
@@ -675,7 +675,7 @@ public:
 		char buf[256];
 
 		m_weapon = *Utility::WeaponTypeManager::Instance()->Load(lst_all_weapon->GetItem(cur_sel)->GetText());
-	
+
 		txt_file->SetText(lst_all_weapon->GetItem(cur_sel)->GetText().Replace(L".weapon", L""));
 		txt_desc->SetText(m_weapon.GetDescription());
 		txt_name->SetText(m_weapon.GetName());
@@ -703,7 +703,7 @@ public:
 	}
 
 	void OnSave(System::Event*)
-	{		
+	{
 		m_weapon.SetName(txt_name->GetText().Data());
 		m_weapon.SetDescription(txt_desc->GetText().Data());
 		try
@@ -743,10 +743,10 @@ public:
 	}
 
 	void OnIdle(System::Event* event)
-	{	
+	{
 
 		Render();
-	
+
 		m_gui->Render();
 
 		m_driver.SwapBuffers();
@@ -755,7 +755,7 @@ public:
 
 int main(int argc, char** argv)
 {
-	System::Window::Instance()->SetTitle(L"WeaponMaker");	
+	System::Window::Instance()->SetTitle(L"WeaponMaker");
 	System::Mouse::Instance()->LockInWindow(false);
 	OpenGL::Module module;
 	module.Init();

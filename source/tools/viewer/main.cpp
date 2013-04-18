@@ -11,13 +11,13 @@
 class Viewer
 {
 	OpenGL::Driver m_driver;
-	std::auto_ptr<OpenGL::RenderContextLight> m_light_context;
+	std::unique_ptr<OpenGL::RenderContextLight> m_light_context;
 	Utility::Camera m_camera;
 	float x, y, z;
-	std::vector<std::shared_ptr<Utility::StaticMesh>> m_meshes; 
+	std::vector<std::shared_ptr<Utility::StaticMesh>> m_meshes;
 	std::vector<std::shared_ptr<OpenGL::StaticObject>> m_vaos;
 public:
-	
+
 	Viewer(const char* filename)
 	{
 		Utility::Scene scene;
@@ -31,7 +31,7 @@ public:
 			const System::string& name = scene.GetObjectName(i);
 			m_meshes[i].reset(scene.CookStaticMesh(name));
 		}
-				
+
 		/// start driver
 		m_driver.Start(System::Window::Instance());
 		m_driver.SetClearColor(0.7, 0.6, 0, 1);
@@ -43,7 +43,7 @@ public:
 		for (int i = 0; i < objects_count; ++i)
 		{
 			m_vaos[i].reset(new OpenGL::StaticObject());
-			m_vaos[i]->SetStaticObject(m_meshes[i].get());			
+			m_vaos[i]->SetStaticObject(m_meshes[i].get());
 			m_vaos[i]->Init();
 		}
 
@@ -66,11 +66,11 @@ public:
 	}
 
 	void OnIdle(System::Event* event)
-	{	
+	{
 		static float a = 0;
 		a+= 0.001;
 
-		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);				
+		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);
 		for (int i = 0; i < m_vaos.size(); ++i)
 		{
 			m_light_context->SetWorldMatrix(Math::mat4::CreateTranslate(0, 0, i*10));
@@ -81,9 +81,9 @@ public:
 			m_light_context->SetDiffuseColor(Math::vec4(1,1,1,1));
 			m_light_context->SetSpecularPower(16);
 			m_light_context->SetLightPosition(Math::vec3(10, 1, 10));
-			m_light_context->Begin();		
+			m_light_context->Begin();
 			m_vaos[i]->Bind(m_light_context->GetSupportedVertexAttributes());
-			m_vaos[i]->Render();		
+			m_vaos[i]->Render();
 			m_vaos[i]->Unbind();
 			m_light_context->End();
 		}
