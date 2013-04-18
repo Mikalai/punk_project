@@ -40,10 +40,10 @@ namespace Render
 		else
 			m_states.CurrentState()->Get().m_diffuse_color = widget->BackColor();
 
-		m_states.CurrentState()->Get().m_text_color = widget->TextColor();		
+		m_states.CurrentState()->Get().m_text_color = widget->TextColor();
 		m_states.CurrentState()->Get().m_use_diffuse_texture = widget->GetBackgroundTexture() != nullptr;
-		m_tc->SetTexture(1, widget->GetBackgroundTexture());		
-		m_tc->SetTexture(0, widget->GetTextTexture());	
+		m_tc->SetTexture(1, widget->GetBackgroundTexture());
+		m_tc->SetTexture(0, widget->GetTextTexture());
 		m_states.CurrentState()->Get().m_diffuse_slot_0 = 1;
 		m_states.CurrentState()->Get().m_text_slot = 0;
 		m_states.CurrentState()->Get().m_no_diffuse_texture_color = widget->GetBackColor();
@@ -52,7 +52,7 @@ namespace Render
 		m_states.CurrentState()->Get().m_blend_operation = GPU::CoreState::BLEND_SRC_ONE_MINUS_ALPHA;
 		m_tc->Bind();
 
-		m_rc->Begin();		
+		m_rc->Begin();
 		m_rc->BindParameters(m_states.CurrentState()->Get());
 		GPU::OpenGL::QuadObject::Instance()->Bind(m_rc->GetRequiredAttributesSet());
 		GPU::OpenGL::QuadObject::Instance()->Render();
@@ -60,7 +60,7 @@ namespace Render
 		m_tc->Unbind();
 		m_rc->End();
 
-		for each (auto o in *widget)
+		for (auto o : *widget)
 		{
 			GUI::Widget* child = As<GUI::Widget*>(o);
 			if (child)
@@ -80,7 +80,7 @@ namespace Render
 		m_rc->End();
 	}
 
-	//void GUIRender::RenderTabWidget(const GUI::TabWidget* tw) 
+	//void GUIRender::RenderTabWidget(const GUI::TabWidget* tw)
 	//{
 	//	RenderWidget(tw);
 	//}
@@ -101,18 +101,18 @@ namespace Render
 	//		float w = lb->GetWidth();
 	//		float h = lb->GetHeight() * (float)lb->GetTextSize() / lb->GetTextTexture()->GetHeight();
 	//		float start = float(lb->GetCurrentSelection() - lb->GetStartOffset());
-	//		float x = -1 + 2*lb->GetX();			
-	//		float y = -1 + 2*(lb->GetY() + lb->GetHeight() - (start + 1) * h);			
-	//		m_rc->SetProjectionMatrix(Math::mat4::CreateIdentity());									
+	//		float x = -1 + 2*lb->GetX();
+	//		float y = -1 + 2*(lb->GetY() + lb->GetHeight() - (start + 1) * h);
+	//		m_rc->SetProjectionMatrix(Math::mat4::CreateIdentity());
 	//		m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
 	//		m_rc->SetDiffuseColor(color);
-	//		m_rc->SetTextColor(lb->TextColor());			
+	//		m_rc->SetTextColor(lb->TextColor());
 	//		m_tc->SetTexture1(lb->GetBackgroundTexture());
 	//		m_rc->RenderDiffuseTexture(lb->GetBackgroundTexture() != 0);
 	//		m_tc->SetTexture1(0);
 	//		m_rc->Begin();
 	//		m_tc->Bind();
-	//		m_quad->Bind(m_rc->GetSupportedVertexAttributes());
+	//		m_quad->Bind(m_rc->GetSupportedint());
 	//		m_quad->Render();
 	//		m_quad->Unbind();
 	//		m_tc->Unbind();
@@ -132,13 +132,13 @@ namespace Render
 	//		m_rc->SetDiffuseColor(tb->BackColor() + m_selection_color_delta);
 	//	else
 	//		m_rc->SetDiffuseColor(tb->BackColor());
-	//	m_rc->SetTextColor(tb->TextColor());		
+	//	m_rc->SetTextColor(tb->TextColor());
 	//	m_tc->SetTexture1(tb->GetBackgroundTexture());
 	//	m_rc->RenderDiffuseTexture(tb->GetBackgroundTexture() != 0);
 	//	m_tc->SetTexture0(tb->GetTextTexture());
 	//	m_rc->Begin();
 	//	m_tc->Bind();
-	//	m_quad->Bind(m_rc->GetSupportedVertexAttributes());
+	//	m_quad->Bind(m_rc->GetSupportedint());
 	//	m_quad->Render();
 	//	m_quad->Unbind();
 	//	m_tc->Unbind();
@@ -159,8 +159,8 @@ namespace Render
 	//	m_tc->SetTexture1(slider->GetBackgroundTexture());
 	//	m_tc->SetTexture0(0);
 	//	m_tc->Bind();
-	//	m_quad->Bind(m_rc->GetSupportedVertexAttributes());
-	//	m_quad->Render();			
+	//	m_quad->Bind(m_rc->GetSupportedint());
+	//	m_quad->Render();
 	//	m_quad->Unbind();
 	//	m_tc->Unbind();
 	//	m_rc->End();
@@ -168,17 +168,17 @@ namespace Render
 	//	x = -1 + 2 * slider->GetX();
 	//	y = -1 + 2 * (slider->GetY() + slider->GetHeight() * (slider->GetMax() - slider->GetCurrent()) / float(slider->GetMax() - slider->GetMin()));
 	//	w = slider->GetWidth();
-	//	h = 0.01f;					
+	//	h = 0.01f;
 	//	m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
 	//	m_rc->SetDiffuseColor(Math::vec4(1,1,1,1) - slider->BackColor());
-	//	m_rc->SetTextColor(Math::vec4(1,1,1,1) - slider->TextColor());		
+	//	m_rc->SetTextColor(Math::vec4(1,1,1,1) - slider->TextColor());
 	//	m_tc->SetTexture1(slider->GetBackgroundTexture());
 	//	m_rc->RenderDiffuseTexture(slider->GetBackgroundTexture() != 0);
 	//	m_tc->SetTexture0(slider->GetTextTexture());
-	//	m_rc->Begin();	
+	//	m_rc->Begin();
 	//	m_tc->Bind();
-	//	m_quad->Bind(m_rc->GetSupportedVertexAttributes());
-	//	m_quad->Render();			
+	//	m_quad->Bind(m_rc->GetSupportedint());
+	//	m_quad->Render();
 	//	m_quad->Unbind();
 	//	m_tc->Unbind();
 	//	m_rc->End();
@@ -200,13 +200,13 @@ namespace Render
 	//	float h = widget->GetHeight()*widget->GetScale();
 	//	m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
 	//	m_rc->SetDiffuseColor(widget->BackColor());
-	//	m_rc->SetTextColor(widget->TextColor());		
+	//	m_rc->SetTextColor(widget->TextColor());
 	//	m_tc->SetTexture1(widget->GetBackgroundTexture());
 	//	m_rc->RenderDiffuseTexture(widget->GetBackgroundTexture() != 0);
 	//	m_tc->SetTexture0(widget->GetTextTexture());
 	//	m_rc->Begin();
 	//	m_tc->Bind();
-	//	m_quad->Bind(m_rc->GetSupportedVertexAttributes());
+	//	m_quad->Bind(m_rc->GetSupportedint());
 	//	m_quad->Render();
 	//	m_quad->Unbind();
 	//	m_tc->Unbind();
@@ -219,5 +219,5 @@ namespace Render
 	//		if (child->IsVisible())
 	//			child->Render(this);
 	//	}
-	//}	
+	//}
 }

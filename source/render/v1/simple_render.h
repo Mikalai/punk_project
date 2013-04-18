@@ -75,6 +75,7 @@ namespace Render
 		GPU::AbstractRenderPolicy* m_terrain_rc;
 		Virtual::Armature* m_armature;
 		Virtual::Material* m_material;
+		GPU::OpenGL::TextSurface s;
 	};
 }
 

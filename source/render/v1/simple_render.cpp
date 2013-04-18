@@ -13,16 +13,19 @@
 
 namespace Render
 {
+// TODO (chip#1#): global variable should be removed
+    Utility::FontBuilder g_font_builder;
+
 	SimpleRender::SimpleRender(GPU::VideoDriver* driver)
 		: m_driver(driver)
 	{
-		m_rt = nullptr;				
+		m_rt = nullptr;
 		m_text = nullptr;
 		m_tc = nullptr;
 		m_gui_render = nullptr;
 
 		// next pointers should not be delete in destructor
-		m_scene = nullptr;		
+		m_scene = nullptr;
 		m_root = nullptr;
 		m_skin_rc = nullptr;
 		m_context = nullptr;
@@ -30,7 +33,7 @@ namespace Render
 		m_textured_rc = nullptr;
 		m_gui_rc = nullptr;
 		m_terrain_rc = nullptr;
-		m_paint_engine = nullptr;		
+		m_paint_engine = nullptr;
 
 	}
 
@@ -47,15 +50,15 @@ namespace Render
 	void SimpleRender::Clear()
 	{
 		safe_delete(m_rt);
-		//safe_delete(m_scene);				
-		safe_delete(m_text);		
+		//safe_delete(m_scene);
+		safe_delete(m_text);
 		safe_delete(m_gui_render);
 		safe_delete(m_tc);
 	}
 
 	bool SimpleRender::ApplyToChildren(Scene::Node* node)
 	{
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)
@@ -85,7 +88,7 @@ namespace Render
 	}
 
 	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
-	{						
+	{
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
 		m_frame->PushState();
 		m_frame->EnableBumpMapping(true);
@@ -98,23 +101,23 @@ namespace Render
 			mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
 		}
 
-		m_frame->Render(mesh);	
+		m_frame->Render(mesh);
 		m_frame->PopState();
 		return true;
 	}
 
 	bool SimpleRender::Visit(Scene::SkinMeshNode* node)
-	{			
+	{
 		m_frame->PushState();
-		m_frame->EnableSkinning(true);		
+		m_frame->EnableSkinning(true);
 		GPU::OpenGL::SkinMesh* mesh = Cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
-		m_frame->Render(mesh);		
+		m_frame->Render(mesh);
 		m_frame->PopState();
 		return true;
 	}
 
 	bool SimpleRender::Visit(Scene::ArmatureNode* node)
-	{		
+	{
 		bool result = true;
 		Virtual::Action::validate();
 		m_frame->PushState();
@@ -127,11 +130,11 @@ namespace Render
 			Virtual::Bone* bone = armature->GetBoneByIndex(i);
 			Virtual::Animation* anim = Cast<Virtual::Animation*>(action->Find(bone->GetName()));
 			auto pos = anim->GetPosition(m_time);
-			auto rot = anim->GetRotation(m_time);			
+			auto rot = anim->GetRotation(m_time);
 			Math::mat4 m = Math::mat4::CreateTranslate(pos) * Math::QuaternionToMatrix4x4(rot);
 			bone->SetBoneMatrix(m);
-		}	
-		
+		}
+
 		result = ApplyToChildren(node);
 
 		m_frame->PopState();
@@ -144,10 +147,10 @@ namespace Render
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(1, 1, 0, 1));
 		m_frame->PushState();
 
-		Virtual::Bone* bone = node->GetBone();		
+		Virtual::Bone* bone = node->GetBone();
 		m_frame->MultWorldMatrix(bone->GetAnimatedGlobalMatrix());
-		m_frame->SetBoneMatrix(bone->GetIndex(), m_frame->GetWorldMatrix());		
-		
+		m_frame->SetBoneMatrix(bone->GetIndex(), m_frame->GetWorldMatrix());
+
 		result = ApplyToChildren(node);
 
 		m_frame->PopState();
@@ -156,7 +159,7 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::LightNode* node)
 	{
-		return ApplyToChildren(node);		
+		return ApplyToChildren(node);
 	}
 
 	bool SimpleRender::Visit(Scene::MaterialNode* node)
@@ -166,7 +169,7 @@ namespace Render
 		m_frame->PushState();
 		auto material = node->GetMaterial();
 		m_frame->SetDiffuseColor(material->GetDiffuseColor());
-		
+
 		Virtual::Material* m = node->GetMaterial();
 		if (m->GetCache().m_diffuse_texture_cache == nullptr)
 			m->GetCache().m_diffuse_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + m->GetDiffuseMap());
@@ -188,10 +191,10 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::Node* node)
 	{
-		return ApplyToChildren(node);		
+		return ApplyToChildren(node);
 	}
 	bool SimpleRender::Visit(Scene::TransformNode* node)
-	{		
+	{
 		bool result = true;
 		const Math::mat4& view = m_frame->GetViewMatrix();
 		const Math::ClipSpace& clip_space = m_frame->GetClipSpace();
@@ -220,7 +223,7 @@ namespace Render
 		if (Math::ClassifyPoint(world.Inversed() * pos, node->GetConvexShape()) != Math::Relation::INSIDE)
 		{
 			out_message() << "OUTSIDE" << std::endl;
-			for each (auto o in *node)
+			for (auto o : *node)
 			{
 				Scene::PortalNode* portals = As<Scene::PortalNode*>(o);
 				if (portals)
@@ -239,7 +242,7 @@ namespace Render
 					}
 				}
 			}
-		}	
+		}
 		else
 		{
 			out_message() << "INSIDE" << std::endl;
@@ -262,7 +265,7 @@ namespace Render
 	{
 		bool result = true;
 		m_frame->PushState();
-	
+
 		auto camera_position = m_frame->GetViewMatrix().Inversed().TranslationPart();
 		Math::vec2 terrain_position = node->GetTerrainObserver()->GetTerrainView()->GetPosition();
 		Math::vec2 texture_offset(camera_position.X() - terrain_position.X(), camera_position.Z() - terrain_position.Y());
@@ -275,7 +278,7 @@ namespace Render
 
 		Virtual::TerrainView* view = node->GetTerrainObserver()->GetTerrainView();
 		if (view && view->GetHeightMap()->IsValid())
-		{			
+		{
 			//m_tc = m_tc;
 			//m_frame->SetTextureMatrix(Math::mat4::CreateIdentity());
 			m_frame->SetTextureMatrix(Math::mat4::CreateTranslate(terrain_position.X() / m_grid.GetTotalWidth()
@@ -298,7 +301,7 @@ namespace Render
 	{
 		m_frame->PushState();
 		//	shift quad
-		m_frame->MultWorldMatrix(Math::mat4::CreateScaling(width, height, depth));		
+		m_frame->MultWorldMatrix(Math::mat4::CreateScaling(width, height, depth));
 		m_frame->SetDiffuseColor(Math::vec4(0,1,0,1));
 		m_frame->EnableWireframe(true);
 		m_frame->Render(GPU::OpenGL::CubeObject::Instance());
@@ -309,7 +312,7 @@ namespace Render
 	{
 		m_frame->PushState();
 		//	shift quad
-		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(position) * Math::mat4::CreateScaling(radius, radius, radius));		
+		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(position) * Math::mat4::CreateScaling(radius, radius, radius));
 		m_frame->SetDiffuseColor(color);
 		m_frame->EnableWireframe(true);
 		m_frame->EnableTexturing(false);
@@ -339,7 +342,7 @@ namespace Render
 		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetDiffuseColor(Math::vec4(1,1,1,1));
-		m_frame->SetTextureMatrix(Math::mat4::CreateReflectX());
+		m_frame->SetTextureMatrix(Math::mat4::CreateReflectY());
 		m_frame->EnableWireframe(false);
 		m_frame->SetDiffuseMap0(texture);
 		m_frame->EnableLighting(false);
@@ -351,34 +354,32 @@ namespace Render
 
 	void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4& color)
 	{
-		Utility::FontBuilder::Instance()->SetCharSize(14, 14);
-		int len = Utility::FontBuilder::Instance()->CalculateLength(text.Data());
-		int h = Utility::FontBuilder::Instance()->CalculateHeight(text.Data());
-		GPU::OpenGL::TextSurface s;
+		g_font_builder.SetCharSize(14, 14);
+		int len = g_font_builder.CalculateLength(text.Data());
+		int h = g_font_builder.CalculateHeight(text.Data());
 		s.SetSize(len, h);
 		s.SetText(text);
-		
+
 		m_frame->PushState();
 		float width = 2.0f * len / (float)m_driver->GetWindow()->GetWidth();
 		float height = 2.0f * h / (float)m_driver->GetWindow()->GetHeight();
 		//	shift quad
-		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(width, height, 1));
+		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(2*x-1.0f, 2*y - 1.0f, 0) * Math::mat4::CreateScaling(width, height, 1));
 		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetDiffuseColor(Math::vec4(0,0,1,1));
-		m_frame->SetTextureMatrix(Math::mat4::CreateReflectX());
-		m_frame->SetDiffuseMap0(s.GetTexture());
-		m_frame->EnableTexturing(true);
-		m_frame->EnableLighting(false);
-		m_frame->EnableDiffuseShading(true);
+		m_frame->SetTextColor(Math::vec4(1, 1, 1, 1));
+		m_frame->SetTextureMatrix(Math::mat4::CreateReflectY());
+		m_frame->SetFontMap(s.GetTexture());
+		m_frame->EnableFontRendering(true);
 		m_frame->Render(GPU::OpenGL::QuadObject::Instance());
 		m_frame->PopState();
 	}
 
 	bool SimpleRender::Render()
-	{		
+	{
 		m_time += 0.1f;
-		m_rt->Activate();			
+		m_rt->Activate();
 		m_frame = m_driver->BeginFrame();
 		m_frame->BeginRendering();
 		if (m_scene)
@@ -387,7 +388,7 @@ namespace Render
 			m_frame->SetViewMatrix(m_scene->GetCameraNode()->GetCamera()->GetViewMatrix());
 			m_frame->SetProjectionMatrix(m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix());
 			m_frame->SetClipSpace(m_scene->GetCameraNode()->GetCamera()->ToClipSpace());
-			m_scene->GetRootNode()->Apply(this);			
+			m_scene->GetRootNode()->Apply(this);
 		}
 		if (m_root)
 		{
@@ -397,8 +398,9 @@ namespace Render
 		}
 		if (m_paint_engine)
 		{
-			GPU::OpenGL::OpenGLPaintEngine* device = Cast<GPU::OpenGL::OpenGLPaintEngine*>(m_paint_engine);
-			RenderTexturedQuad(0, 0, 1, 1, device->GetRenderTarget()->GetColorBuffer());
+			RenderText(0, 0, L"SDFGSDFGS DFGSDFG SDF", Math::vec4(1,1,1,1));
+			//GPU::OpenGL::OpenGLPaintEngine* device = Cast<GPU::OpenGL::OpenGLPaintEngine*>(m_paint_engine);
+			///RenderTexturedQuad(0, 0, 1, 1, device->GetRenderTarget()->GetColorBuffer());
 		}
 		m_frame->EndRendering();
 		m_driver->EndFrame(m_frame);
@@ -416,7 +418,7 @@ namespace Render
 		m_rt->Init(&p);
 		m_scene = scene;
 		if (m_scene)
-			m_scene->GetRootNode()->Apply(&m_cooker);		
+			m_scene->GetRootNode()->Apply(&m_cooker);
 		m_context = GPU::AbstractRenderPolicy::find(GPU::RC_BUMP_MAPING);
 		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_3D);
 		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TEXTURED_3D);
@@ -425,7 +427,7 @@ namespace Render
 		m_terrain_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TERRAIN);
 		m_text = new GPU::OpenGL::TextSurface;
 		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
-		m_gui_render = new GUIRender;		
-		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 2);	
+		m_gui_render = new GUIRender;
+		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 2);
 	}
 }

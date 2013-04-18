@@ -43,20 +43,20 @@ namespace Render
 			bool m_show_only_tangents;
 			bool m_show_only_diffuse_map;
 			bool m_show_only_normal_map;
-			
+
 			bool m_show_bbox;
 			bool m_show_aabb;
-		
+
 		public:
-		
-			Parameters(Utility::Entity* object, 
-				Utility::Camera* camera, 
+
+			Parameters(Utility::Entity* object,
+				Utility::Camera* camera,
 				OpenGL::RenderPass* pass,
 				Math::Matrix4x4<float>* location,
-				bool render_production = true, 
-				bool use_diffuse_map = false, 
+				bool render_production = true,
+				bool use_diffuse_map = false,
 				bool use_normal_map = false,
-				bool show_only_texture_coords = false, 
+				bool show_only_texture_coords = false,
 				bool show_only_normals = false,
 				bool show_only_bitangents = false,
 				bool show_only_tangents = false,
@@ -78,7 +78,7 @@ namespace Render
 
 		void Render(const Utility::Entity* object, const Math::Matrix4x4<float>* parent, const Parameters* parameters);
 		struct SolidObjectRenderImpl;
-		std::auto_ptr<SolidObjectRenderImpl> impl;
+		std::unique_ptr<SolidObjectRenderImpl> impl;
 	};
 }
 

@@ -14,4 +14,4 @@ namespace Render
 	};
 }
 
-#endif	_H_PUNK_RENDER_CONFIG
+#endif	// _H_PUNK_RENDER_CONFIG
