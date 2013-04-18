@@ -21,7 +21,6 @@ namespace Punk
 		Virtual::Material::clear();
 		safe_delete(m_paint_engine);
 		GUI::Manager::Destroy();
-		Utility::FontBuilder::Destroy();
 		safe_delete(m_terrain_manager);
 		safe_delete(m_simulator);
 		GPU::GPU_DESTROY();
@@ -31,7 +30,7 @@ namespace Punk
 	}
 
 	void Application::Init(const Config& data)
-	{	
+	{
 		m_event_manager = new System::EventManager();
 		m_window = new System::Window(this);
 		System::Mouse::Instance()->LockInWindow(true);
@@ -50,10 +49,6 @@ namespace Punk
 		}
 
 		{
-			Utility::FontBuilder::Instance()->Init();	
-		}
-
-		{
 			GUI::ManagerDesc man_desc;
 			man_desc.adapter = this;
 			man_desc.event_manager = m_event_manager;
@@ -62,7 +57,7 @@ namespace Punk
 		}
 
 		{
-			m_simulator = new Physics::BulletSimulator;
+			m_simulator = new Physics::Simulator;
 			m_simulator->Init();
 		}
 
@@ -85,7 +80,7 @@ namespace Punk
 	{
 		m_simulator->Update(float(event->elapsed_time_s));
 		m_event_manager->FixEvent(event);
-		m_event_manager->Process();	
+		m_event_manager->Process();
 	}
 
 	void Application::OnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event)
@@ -161,7 +156,7 @@ namespace Punk
 		if (p)
 			p->SetSurfaceSize(event->width, event->height);
 
-		
+
 	}
 
 	void Application::OnCreateEvent()
@@ -228,7 +223,7 @@ namespace Punk
 		m_time_scale_denomiator = denominator;
 	}
 
-	Physics::BulletSimulator* Application::GetSimulator()
+	Physics::Simulator* Application::GetSimulator()
 	{
 		return m_simulator;
 	}

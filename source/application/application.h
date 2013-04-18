@@ -15,17 +15,17 @@ namespace Punk
 	class PUNK_ENGINE Application : public System::WindowAdapter, public GUI::Adapter
 	{
 	public:
-		Application();	
+		Application();
 		virtual ~Application();
 		System::Window* GetWindow();
 		System::EventManager* GetEventManager();
 		GPU::VideoDriver* GetVideoDriver();
 		Virtual::TerrainManager* GetTerrainManager();
 		GUI::Manager* GetGUIManager();
-		Physics::BulletSimulator* GetSimulator();
+		Physics::Simulator* GetSimulator();
 		GPU::PaintEngine* GetPaintEngine();
 
-		int Run();		
+		int Run();
 		void SetTimeScale(__int64 nominator, __int64 denominator);
 
 		virtual void OnIdleEvent(System::IdleEvent* event) override;
@@ -53,19 +53,19 @@ namespace Punk
 		virtual void Init(const Config& value);
 
 	private:
-		GPU::PaintEngine* m_paint_engine;		
+		GPU::PaintEngine* m_paint_engine;
 		System::Window* m_window;
 		System::EventManager* m_event_manager;
 		GPU::VideoDriver* m_video_driver;
-		Physics::BulletSimulator* m_simulator;
+		Physics::Simulator* m_simulator;
 		Virtual::TerrainManager* m_terrain_manager;
 		System::Timer m_timer;
 
 		void Step(System::Event* event);
 		void Render();
-		
+
 		//
-		//	to perform speed up and slow down	
+		//	to perform speed up and slow down
 		//
 		__int64 m_time_scale_nominator;
 		__int64 m_time_scale_denomiator;
