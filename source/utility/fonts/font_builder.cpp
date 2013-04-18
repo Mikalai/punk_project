@@ -1,26 +1,17 @@
 #include <map>
+
+#ifdef USE_FREETYPE
 #include <freetype/ft2build.h>
 #include FT_FREETYPE_H
+#endif //   USE_FREETYPE
 
 #include "../../system/module.h"
 #include "font_builder.h"
 
 namespace Utility
 {
-	FontBuilder* FontBuilder::m_instance;
+    #ifdef USE_FREETYPE
 
-	FontBuilder* FontBuilder::Instance()
-	{
-		if (!m_instance)
-			m_instance = new FontBuilder;
-		return m_instance;
-	}
-
-	void FontBuilder::Destroy()
-	{
-		delete m_instance;
-		m_instance = 0;
-	}
 	struct CacheData
 	{
 		unsigned char* buffer;
@@ -30,30 +21,107 @@ namespace Utility
 		int y_offset;
 		int x_advance;
 		int y_advance;
-	}; 
+	};
 
-	FT_Library library;
-	
-	std::map<System::string, FT_Face> fontFace;
+    struct FontBuilder::FontBuilderImpl
+    {
+        FT_Library library;
 
-	FT_Face curFace;	
-	int curSize;
-	std::map<int, std::map<void*, std::map<char, CacheData*> > > cache;
-	std::map<int, std::map<void*, std::map<wchar_t, CacheData*> > > wcache;
+        std::map<System::string, FT_Face> fontFace;
 
-	FontBuilder::FontBuilder()
+        FT_Face curFace;
+        int curSize;
+        std::map<int, std::map<void*, std::map<char, CacheData*> > > cache;
+        std::map<int, std::map<void*, std::map<wchar_t, CacheData*> > > wcache;
+
+        FontBuilderImpl();
+        void SetCurrentFace(const System::string& fontName);
+
+        void CacheSymbol(wchar_t symb);
+        void Init();
+		void SetCurrentFace(const System::string& fontName);
+		void RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer);
+		void SetCharSize(int width, int height);
+		void RenderChar(wchar_t symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer);
+		int CalculateLength(const wchar_t* text);
+		int CalculateHeight(const wchar_t* text);
+		int GetHeight(wchar_t s);
+		int GetWidth(wchar_t s);
+		int GetMaxOffset(const System::string& s);
+		int GetMinOffset(const System::string& s);
+		int GetMaxOffset(wchar_t s);
+		int GetMinOffset(wchar_t s);
+    };
+
+    FontBuilder::FontBuilderImpl::FontBuilderImpl()
+    {
+        Init();
+    }
+
+    void FontBuilder::FontBuilderImpl::Init()
 	{
-		Init();
+		System::string iniFontsFile;
+		System::string pathToFonts = System::Environment::Instance()->GetFontFolder();
+
+		System::ConfigFile conf;
+
+		iniFontsFile = System::Environment::Instance()->GetFontFolder() + L"fonts.ini";
+
+		FT_Error error = FT_Init_FreeType(&library);
+		if (error)
+		{
+			out_error() << L"Error occured during freetype initialization" << std::endl;
+		}
+
+
+		System::Buffer buffer;
+		System::BinaryFile::Load(iniFontsFile, buffer);
+
+		while(!buffer.IsEnd())
+		{
+			System::string name = buffer.ReadWord();
+			System::string path = pathToFonts + buffer.ReadWord();
+			out_message() << L"Loading font " + path << std::endl;
+
+			FT_Face face;
+
+			char ansi[1024];
+			int len = 1024;
+			path.ToANSI(ansi, len);
+			error = FT_New_Face(library, ansi, 0, &face);
+
+			if (error == FT_Err_Unknown_File_Format)
+			{
+				out_error() << L"The font file could be opened, but it appears that it's font format is unsupported" << std::endl;
+			}
+			else if (error)
+			{
+				out_error() << L"The font file could not be opened" << std::endl;
+			}
+
+			error = FT_Set_Char_Size(face, 16*64, 16*64, 300, 300);
+
+			if (error)
+			{
+				out_error() << L"Can't set char size" << std::endl;
+			}
+
+			out_message() << L"Font style: " + System::string(face->style_name) << std::endl;
+			out_message() << System::string::Format(L"Num glyphs: %d", face->num_glyphs) << std::endl;
+
+			curFace = face;
+			fontFace[name] = face;
+		}
 	}
 
-	void FontBuilder::SetCurrentFace(const System::string& fontName)
+	void FontBuilder::FontBuilderImpl::SetCurrentFace(const System::string& fontName)
 	{
 		FT_Face f = fontFace[fontName];
 		if (f != 0)
 			curFace = f;
 	}
 
-	void FontBuilder::SetCharSize(int width, int height)
+	void FontBuilder::FontBuilderImpl::SetCharSize(int width, int height)
 	{
 		curSize = width * 1000 + height;
 		FT_Error error = FT_Set_Char_Size(curFace, width*64, height*64, 96, 96);
@@ -61,7 +129,15 @@ namespace Utility
 			out_error() << L"Can't set new char size" << std::endl;
 	}
 
-	void FontBuilder::CacheSymbol(wchar_t s)
+    void FontBuilder::FontBuilderImpl::SetCharSize(int width, int height)
+	{
+		curSize = width * 1000 + height;
+		FT_Error error = FT_Set_Char_Size(curFace, width*64, height*64, 96, 96);
+		if (error)
+			out_error() << L"Can't set new char size" << std::endl;
+	}
+
+    void FontBuilder::FontBuilderImpl::CacheSymbol(wchar_t s)
 	{
 		CacheData* data = wcache[curSize][curFace][s];
 		if (!data)
@@ -76,7 +152,7 @@ namespace Utility
 				error = FT_Render_Glyph(curFace->glyph, FT_RENDER_MODE_NORMAL);
 				if (error)
 					out_error() << L"Error occured while rendering a glyph" << std::endl;
-			}		
+			}
 
 			FT_GlyphSlot slot = curFace->glyph;
 
@@ -97,18 +173,18 @@ namespace Utility
 		}
 	}
 
-	int FontBuilder::CalculateLength(const wchar_t* text)
+    int FontBuilder::FontBuilderImpl::CalculateLength(const wchar_t* text)
 	{
 		int res = 0;
 		const wchar_t* cur = text;
 		while (*cur)
 		{
 			CacheData* data = wcache[curSize][curFace][*cur];
-			
-			if (!data)
-				CacheSymbol(*cur);	
 
-			data = wcache[curSize][curFace][*cur];	
+			if (!data)
+				CacheSymbol(*cur);
+
+			data = wcache[curSize][curFace][*cur];
 			if (res != 0)
 				res += data->x_offset;
 			res += data->x_advance;
@@ -117,7 +193,7 @@ namespace Utility
 		return res;
 	}
 
-	int FontBuilder::CalculateHeight(const wchar_t* text)
+    int FontBuilder::FontBuilderImpl::CalculateHeight(const wchar_t* text)
 	{
 		int res = 0;
 		int min_h = 0;
@@ -126,41 +202,41 @@ namespace Utility
 		while (*cur)
 		{
 			CacheData* data = wcache[curSize][curFace][*cur];
-			
-			if (!data)
-				CacheSymbol(*cur);	
 
-			data = wcache[curSize][curFace][*cur];				
+			if (!data)
+				CacheSymbol(*cur);
+
+			data = wcache[curSize][curFace][*cur];
 			if (max_h < data->y_offset)
 				max_h = data->y_offset;
 			if (min_h > data->y_offset - data->height)
-				min_h = data->y_offset - data->height;						
+				min_h = data->y_offset - data->height;
 			cur++;
 		}
 		return max_h - min_h;
 	}
 
-	int FontBuilder::GetWidth(wchar_t s)
+    int FontBuilder::FontBuilderImpl::GetWidth(wchar_t s)
 	{
 		CacheData* data = wcache[curSize][curFace][s];
 		if (!data)
-			CacheSymbol(s);	
+			CacheSymbol(s);
 
-		data = wcache[curSize][curFace][s];			
+		data = wcache[curSize][curFace][s];
 		return data->x_advance ;
 	}
 
-	int FontBuilder::GetHeight(wchar_t s)
+	int FontBuilder::FontBuilderImpl::GetHeight(wchar_t s)
 	{
 		CacheData* data = wcache[curSize][curFace][s];
 		if (!data)
-			CacheSymbol(s);	
+			CacheSymbol(s);
 
-		data = wcache[curSize][curFace][s];			
+		data = wcache[curSize][curFace][s];
 		return data->height + abs(data->y_offset);
 	}
 
-	int FontBuilder::GetMaxOffset(const System::string& s)
+	int FontBuilder::FontBuilderImpl::GetMaxOffset(const System::string& s)
 	{
 		int res = 0;
 		for (int i = 0, max_i = s.Length(); i < max_i; ++i)
@@ -173,7 +249,7 @@ namespace Utility
 		return res;
 	}
 
-	int FontBuilder::GetMinOffset(const System::string& s)
+	int FontBuilder::FontBuilderImpl::GetMinOffset(const System::string& s)
 	{
 		int res = 0;
 		for (int i = 0, max_i = s.Length(); i < max_i; ++i)
@@ -186,27 +262,27 @@ namespace Utility
 		return res;
 	}
 
-	int FontBuilder::GetMaxOffset(wchar_t s)
+	int FontBuilder::FontBuilderImpl::GetMaxOffset(wchar_t s)
 	{
 		CacheData* data = wcache[curSize][curFace][s];
 		if (!data)
-			CacheSymbol(s);	
+			CacheSymbol(s);
 
-		data = wcache[curSize][curFace][s];			
+		data = wcache[curSize][curFace][s];
 		return data->y_offset ;
 	}
 
-	int FontBuilder::GetMinOffset(wchar_t s)
+	int FontBuilder::FontBuilderImpl::GetMinOffset(wchar_t s)
 	{
 		CacheData* data = wcache[curSize][curFace][s];
 		if (!data)
-			CacheSymbol(s);	
+			CacheSymbol(s);
 
-		data = wcache[curSize][curFace][s];			
+		data = wcache[curSize][curFace][s];
 		return data->y_offset - data->height;
 	}
 
-	void FontBuilder::RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
+    void FontBuilder::FontBuilderImpl::RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
 	{
 		CacheData* data = cache[curSize][curFace][symbol];
 		if (!data)
@@ -221,7 +297,7 @@ namespace Utility
 				error = FT_Render_Glyph(curFace->glyph, FT_RENDER_MODE_NORMAL);
 				if (error)
 					out_error() << L"Error occured while rendering a glyph" << std::endl;
-			}		
+			}
 
 			//System::Logger::Instance()->WriteDebugMessage("bitmap (%d; %d)", curFace->glyph->bitmap.width, curFace->glyph->bitmap.rows);
 
@@ -253,8 +329,8 @@ namespace Utility
 		*buffer = data->buffer;
 		//putchar('\n');/**/
 	}
-	
-	void FontBuilder::RenderChar(wchar_t symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
+
+    void FontBuilder::FontBuilderImpl::RenderChar(wchar_t symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
 	{
 		CacheData* data = wcache[curSize][curFace][symbol];
 		if (!data)
@@ -270,60 +346,128 @@ namespace Utility
 		*buffer = data->buffer;
 		//putchar('\n');/**/
 	}
+    #endif // USE_FREETYPE
 
-	void FontBuilder::Init()
+	FontBuilder::FontBuilder()
+	#ifdef USE_FREETYPE
+	: impl(new FontBuilderImpl)
+	#else
+	: impl(nullptr)
+	#endif // USE_FREETYPE
+	{}
+
+    FontBuilder::~FontBuilder()
+    {
+        #ifdef USE_FREETYPE
+        delete impl;
+        impl = nullptr;
+        #endif // USE_FREETYPE
+    }
+	void FontBuilder::SetCurrentFace(const System::string& fontName)
 	{
-		System::string iniFontsFile;
-		System::string pathToFonts = System::Environment::Instance()->GetFontFolder();
+	    #ifdef USE_FREETYPE
+	    impl->SetCurrentFace(fontName);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-		System::ConfigFile conf;
-		
-		iniFontsFile = System::Environment::Instance()->GetFontFolder() + L"fonts.ini";	
+	void FontBuilder::SetCharSize(int width, int height)
+	{
+        #ifdef USE_FREETYPE
+	    impl->SetCharSize(width, height);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-		FT_Error error = FT_Init_FreeType(&library);
-		if (error)
-		{
-			out_error() << L"Error occured during freetype initialization" << std::endl;
-		}
+	int FontBuilder::CalculateLength(const wchar_t* text)
+	{
+        #ifdef USE_FREETYPE
+	    impl->CalculateLength(text);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-		
-		System::Buffer buffer;
-		System::BinaryFile::Load(iniFontsFile, buffer);
+	int FontBuilder::CalculateHeight(const wchar_t* text)
+	{
+        #ifdef USE_FREETYPE
+	    impl->CalculateHeight(text);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-		while(!buffer.IsEnd())
-		{
-			System::string name = buffer.ReadWord();
-			System::string path = pathToFonts + buffer.ReadWord();
-			out_message() << L"Loading font " + path << std::endl;
-			
-			FT_Face face;
+	int FontBuilder::GetWidth(wchar_t s)
+	{
+        #ifdef USE_FREETYPE
+	    impl->GetWidth(s);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-			char ansi[1024];
-			int len = 1024;
-			path.ToANSI(ansi, len);
-			error = FT_New_Face(library, ansi, 0, &face);
+	int FontBuilder::GetHeight(wchar_t s)
+	{
+        #ifdef USE_FREETYPE
+	    impl->GetHeight(s);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-			if (error == FT_Err_Unknown_File_Format)
-			{
-				out_error() << L"The font file could be opened, but it appears that it's font format is unsupported" << std::endl;
-			}
-			else if (error)
-			{
-				out_error() << L"The font file could not be opened" << std::endl;
-			}
+	int FontBuilder::GetMaxOffset(const System::string& s)
+	{
+        #ifdef USE_FREETYPE
+	    impl->GetMaxOffset(s);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-			error = FT_Set_Char_Size(face, 16*64, 16*64, 300, 300);
+	int FontBuilder::GetMinOffset(const System::string& s)
+    {
+        #ifdef USE_FREETYPE
+	    impl->GetMinOffset(s);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-			if (error)
-			{
-				out_error() << L"Can't set char size" << std::endl;
-			}
+	int FontBuilder::GetMaxOffset(wchar_t s)
+	{
+        #ifdef USE_FREETYPE
+	    impl->GetMaxOffset(s);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-			out_message() << L"Font style: " + System::string(face->style_name) << std::endl;
-			out_message() << System::string::Format(L"Num glyphs: %d", face->num_glyphs) << std::endl;
+	int FontBuilder::GetMinOffset(wchar_t s)
+	{
+        #ifdef USE_FREETYPE
+	    impl->GetMinOffset(s);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
 
-			curFace = face;
-			fontFace[name] = face;
-		}
+	void FontBuilder::RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
+	{
+        #ifdef USE_FREETYPE
+	    impl->RenderChar(symbol, width, height, x_offset, y_offset, x_advance, y_advance, buffer);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
+	}
+
+	void FontBuilder::RenderChar(wchar_t symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer)
+	{
+        #ifdef USE_FREETYPE
+	    impl->RenderChar(symbol, width, height, x_offset, y_offset, x_advance, y_advance, buffer);
+	    #else
+	    throw System::PunkException(L"Freetype is unavailable");
+	    #endif // USE_FREETYPE
 	}
 }

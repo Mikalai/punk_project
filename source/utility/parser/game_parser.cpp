@@ -782,7 +782,7 @@
 //			}
 //
 //			mesh->SetMeshOffset(o.GetLocalMatrix());
-//			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT);
+//			mesh->SetVertexComponent(POSITION|NORMAL|TEXTURE|BITANGENT|TANGENT);
 //			mesh->SetOneVertexSize(sizeof(Vertex));
 //
 //			return mesh.release();
@@ -966,7 +966,7 @@
 //			//CookBonesMatrix(bones, count);
 //
 //			mesh->SetMeshOffset(o.GetLocalMatrix());
-//			mesh->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
+//			mesh->SetVertexComponent(POSITION|NORMAL|TEXTURE|BITANGENT|TANGENT|BONE_ID|BONE_WEIGHT);
 //			mesh->SetOneVertexSize(sizeof(Vertex));
 //			return mesh.release();
 //		}
