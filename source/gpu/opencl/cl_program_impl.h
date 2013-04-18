@@ -1,17 +1,22 @@
 #ifndef _H_PUNK_OPENCL_PROGRAM_IMPL
 #define _H_PUNK_OPENCL_PROGRAM_IMPL
 
+#ifdef USE_OPENCL
 #include <CL/opencl.h>
 #include "../../system/buffer.h"
 #include "../../system/binary_file.h"
 #include "cl_program.h"
 #include "errors/module.h"
 #include "cl_kernel_impl.h"
+#else
+#include "cl_program.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
+	    #ifdef USE_OPENCL
 		struct Program::ProgramImpl
 		{
 			cl_program m_program;
@@ -63,10 +68,10 @@ namespace GPU
 				Clear();
 
 				System::Buffer buffer;
-				System::BinaryFile::Load(path, buffer);				
+				System::BinaryFile::Load(path, buffer);
 
 				cl_int error;
-				const void* source = buffer.StartPointer(); 
+				const void* source = buffer.StartPointer();
 				size_t source_size = buffer.GetSize();
 				m_program = clCreateProgramWithSource(m_context, 1, (const char**)&source, &source_size, &error);
 
@@ -74,18 +79,19 @@ namespace GPU
 
 				error = clBuildProgram(m_program, 1, &m_device, nullptr, nullptr, nullptr);
 				if (error != CL_SUCCESS)
-				{				
+				{
 					size_t size;
 					clGetProgramBuildInfo(m_program, m_device, CL_PROGRAM_BUILD_LOG, 0, 0, &size);
 					std::vector<char> buf(size);
 					error = clGetProgramBuildInfo(m_program, m_device, CL_PROGRAM_BUILD_LOG, size, &buf[0], &size);
 					CHECK_CL_ERROR(error, L"Can't even get error build log");
 					System::string log(&buf[0], buf.size());
-					throw OpenCLException(log);				
+					throw OpenCLException(log);
 				}
 				return true;
 			}
 		};
+		#endif
 	}
 }
 

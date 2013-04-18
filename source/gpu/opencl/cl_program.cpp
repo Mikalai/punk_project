@@ -1,15 +1,34 @@
 #include <algorithm>
+
+#ifdef USE_OPENCL
 #include "cl_program_impl.h"
 #include "cl_context_impl.h"
 #include "cl_device_impl.h"
 #include "cl_command_queue_impl.h"
+#else
+#include "cl_program.h"
+#include "../system/errors/module.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
-		Program::Program() : m_impl(new Program::ProgramImpl) {}
-		Program::Program(const Program& value) : m_impl(new Program::ProgramImpl(*value.m_impl)) {}
+		Program::Program()
+		#ifdef USE_OPENCL
+		 : m_impl(new Program::ProgramImpl)
+        #else
+         : m_impl(nullptr)
+        #endif
+		 {}
+
+		Program::Program(const Program& value)
+		#ifdef USE_OPENCL
+		: m_impl(new Program::ProgramImpl(*value.m_impl))
+		#else
+		: m_impl(nullptr)
+		#endif
+		{}
 
 		Program& Program::operator = (const Program& value)
 		{
@@ -20,22 +39,37 @@ namespace GPU
 
 		bool Program::Init(Context& context, Device& device, CommandQueue& queue)
 		{
+		    #ifdef USE_OPENCL
 			return m_impl->Init(context.m_impl->m_context, device.m_impl->m_device, queue.m_impl->m_queue);
+			#else
+			throw System::PunkException(L"OpenCL is not available");
+			#endif
 		}
 
 		bool Program::CreateFromFile(const System::string& path)
 		{
-			return m_impl->CreateFromFile(path);		
+		    #ifdef USE_OPENCL
+			return m_impl->CreateFromFile(path);
+			#else
+			throw System::PunkException(L"OpenCL is not available");
+			#endif
 		}
 
 		bool Program::GetKernel(const System::string& name, Kernel& value)
 		{
+		    #ifdef USE_OPENCL
 			return m_impl->GetKernel(name, value);
+			#else
+			throw System::PunkException(L"OpenCL is not available");
+			#endif
 		}
 
 		Program::~Program()
 		{
-			m_impl.reset(0);
+		    #ifdef USE_OPENCL
+			delete m_impl;
+			m_impl = nullptr;
+			#endif
 		}
 	}
 }

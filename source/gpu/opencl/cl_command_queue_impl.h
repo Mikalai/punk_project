@@ -1,14 +1,17 @@
 #ifndef _H_PUNK_OPENCL_COMMAND_QUEUE_IMPL
 #define _H_PUNK_OPENCL_COMMAND_QUEUE_IMPL
 
+#ifdef USE_OPENCL
 #include <CL/opencl.h>
 #include "errors/module.h"
 #include "cl_command_queue.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
+	    #ifdef USE_OPENCL
 		struct CommandQueue::CommandQueueImpl
 		{
 			cl_command_queue m_queue;
@@ -39,6 +42,7 @@ namespace GPU
 				Clear();
 			}
 		};
+		#endif
 	}
 }
 

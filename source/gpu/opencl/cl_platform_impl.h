@@ -1,14 +1,19 @@
 #ifndef _H_PUNK_OPENCL_PLATFORM_IMPL
 #define _H_PUNK_OPENCL_PLATFORM_IMPL
 
+#ifdef USE_OPENCL
 #include <CL/opencl.h>
 #include "errors/module.h"
 #include "cl_platform.h"
+#else
+#include "cl_platform.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
+	    #ifdef USE_OPENCL
 		struct Platform::PlatformImpl
 		{
 			cl_platform_id m_platform;
@@ -34,6 +39,7 @@ namespace GPU
 				Clear();
 			}
 		};
+		#endif  //  USE_OPENCL
 	}
 }
 

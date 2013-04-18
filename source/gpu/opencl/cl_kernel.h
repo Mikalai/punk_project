@@ -23,7 +23,7 @@ namespace GPU
 			bool SetArgument(int index, int value);
 
 			struct KernelImpl;
-			std::unique_ptr<KernelImpl> m_impl;
+			KernelImpl* m_impl;
 		};
 	}
 }

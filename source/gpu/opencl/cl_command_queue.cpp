@@ -1,13 +1,31 @@
+#ifdef USE_OPENCL
 #include "cl_command_queue_impl.h"
 #include "cl_context_impl.h"
 #include "cl_device_impl.h"
+#else
+#include "cl_command_queue.h"
+#include "../system/errors/module.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
-		CommandQueue::CommandQueue() : m_impl(new CommandQueueImpl) {}
-		CommandQueue::CommandQueue(const CommandQueue& value) : m_impl(new CommandQueueImpl(*value.m_impl)) {}
+		CommandQueue::CommandQueue()
+		#ifdef USE_OPENCL
+		: m_impl(new CommandQueueImpl)
+		#else
+		: m_impl(nullptr)
+		#endif
+		{}
+
+		CommandQueue::CommandQueue(const CommandQueue& value)
+		#ifdef USE_OPENCL
+		: m_impl(new CommandQueueImpl(*value.m_impl))
+		#else
+		: m_impl(nullptr)
+		#endif
+		{}
 
 		CommandQueue& CommandQueue::operator = (const CommandQueue& value)
 		{
@@ -18,12 +36,19 @@ namespace GPU
 
 		CommandQueue::~CommandQueue()
 		{
-			m_impl.reset(nullptr);
+		    #ifdef USE_OPENCL
+			delete m_impl;
+			m_impl = nullptr;
+			#endif
 		}
 
 		bool CommandQueue::Init(Context& context, Device& device)
 		{
+		    #ifdef USE_OPENCL
 			return m_impl->Int(context.m_impl->m_context, device.m_impl->m_device);
+			#else
+			throw System::PunkException(L"OpenCL is not available");
+			#endif
 		}
 	}
 }

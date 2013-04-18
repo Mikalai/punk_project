@@ -1,14 +1,17 @@
 #ifndef _H_PUNK_OPENCL_CONTEXT_IMPL
 #define _H_PUNK_OPENCL_CONTEXT_IMPL
 
+#ifdef USE_OPENCL
 #include <CL/opencl.h>
 #include "errors/module.h"
 #include "cl_context.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
+	    #ifdef USE_OPENCL
 		struct ContextImpl
 		{
 			cl_context m_context;
@@ -39,6 +42,7 @@ namespace GPU
 				Clear();
 			}
 		};
+		#endif  //  USE_OPENCL
 	}
 }
 

@@ -2,14 +2,13 @@
 #define _H_PUNK_OPENCL_PLATFORM
 
 #include "../../config.h"
-#include <memory>
 
 namespace GPU
 {
 	namespace OpenCL
 	{
 		class PUNK_ENGINE Platform
-		{		
+		{
 		public:
 			Platform();
 			Platform(const Platform& value);
@@ -19,7 +18,7 @@ namespace GPU
 			bool Init();
 
 			struct PlatformImpl;
-			std::unique_ptr<PlatformImpl> m_impl;
+			PlatformImpl* m_impl;
 		};
 	}
 }

@@ -64,6 +64,6 @@
 	} }
 #else
 #define CHECK_CL_ERROR(CODE, X)
-#endif	_DEBUG
+#endif	// _DEBUG
 
 #endif	//	_H_PUNK_OPENCL_ERROR_CHECK

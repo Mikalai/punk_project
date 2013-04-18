@@ -1,14 +1,17 @@
 #ifndef _H_PUNK_OPENCL_BUFFER_IMPL
 #define _H_PUNK_OPENCL_BUFFER_IMPL
 
+#ifdef USE_OPENCL
 #include <CL/opencl.h>
 #include "errors/module.h"
 #include "cl_buffer.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
+	    #ifdef USE_OPENCL
 		struct Buffer::BufferImpl
 		{
 			cl_mem m_buffer;
@@ -58,6 +61,7 @@ namespace GPU
 				return true;
 			}
 		};
+		#endif
 	}
 }
 

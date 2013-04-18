@@ -1,16 +1,19 @@
 #ifndef _H_PUNK_OPENCL_KERNEL_IMPL
 #define _H_PUNK_OPENCL_KERNEL_IMPL
 
+#ifdef USE_OPENCL
 #include "CL/opencl.h"
 #include "errors/module.h"
 #include "cl_kernel.h"
 #include "../../math/helper.h"
 #include "cl_buffer_impl.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
+	    #ifdef USE_OPENCL
 		struct Kernel::KernelImpl
 		{
 			cl_kernel m_kernel;
@@ -56,6 +59,8 @@ namespace GPU
 				Clear();
 			}
 		};
+
+		#endif
 	}
 }
 

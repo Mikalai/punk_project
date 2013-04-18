@@ -28,7 +28,7 @@ namespace GPU
 			bool GetKernel(const System::string& name, Kernel& value);
 
 			struct ProgramImpl;
-			std::unique_ptr<ProgramImpl> m_impl;
+			ProgramImpl* m_impl;
 		};
 	}
 }

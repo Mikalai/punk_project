@@ -2,7 +2,6 @@
 #define _H_PUNK_OPENCL_BUFFER
 
 #include "../../config.h"
-#include <memory>
 
 namespace GPU
 {
@@ -28,7 +27,7 @@ namespace GPU
 			bool Read(void* data, int size);
 
 			struct BufferImpl;
-			std::unique_ptr<BufferImpl> m_impl;
+			BufferImpl* m_impl;
 		};
 	}
 }

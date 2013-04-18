@@ -21,7 +21,7 @@ namespace GPU
 			bool Init(Platform& value);
 
 			struct DeviceImpl;
-			std::unique_ptr<DeviceImpl> m_impl;
+			DeviceImpl* m_impl;
 		};
 	}
 }

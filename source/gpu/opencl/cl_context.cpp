@@ -1,12 +1,30 @@
+#ifdef USE_OPENCL
 #include "cl_context_impl.h"
 #include "cl_device_impl.h"
+#else
+#include "cl_context.h"
+#include "../system/errors/module.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
-		Context::Context() : m_impl(new ContextImpl) {}
-		Context::Context(const Context& value) : m_impl(new ContextImpl(*value.m_impl)) {}
+		Context::Context()
+		#ifdef USE_OPENCL
+		: m_impl(new ContextImpl)
+		#else
+		: m_impl(nullptr)
+		#endif
+		{}
+
+		Context::Context(const Context& value)
+		#ifdef USE_OPENCL
+		: m_impl(new ContextImpl(*value.m_impl))
+		#else
+		: m_impl(nullptr)
+		#endif
+		{}
 
 		Context& Context::operator = (const Context& value)
 		{
@@ -17,12 +35,19 @@ namespace GPU
 
 		Context::~Context()
 		{
-			m_impl.reset(nullptr);
+		    #ifdef USE_OPENCL
+            delete m_impl;
+            m_impl = nullptr;
+            #endif
 		}
 
 		bool Context::Init(Device& device)
 		{
+		    #ifdef USE_OPENCL
 			return m_impl->Init(device.m_impl->m_device);
+			#else
+			throw System::PunkException(L"OpenCL is not available");
+			#endif
 		}
 	}
 }

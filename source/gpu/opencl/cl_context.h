@@ -2,7 +2,6 @@
 #define _H_PUNK_OPENCL_CONTEXT
 
 #include "../../config.h"
-#include <memory>
 
 namespace GPU
 {
@@ -21,8 +20,8 @@ namespace GPU
 			~Context();
 
 			bool Init(Device& device);
-			
-			std::unique_ptr<ContextImpl> m_impl;
+
+			ContextImpl* m_impl;
 		};
 	}
 }

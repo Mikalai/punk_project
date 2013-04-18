@@ -1,14 +1,17 @@
 #ifndef _H_PUNK_OPENCL_DEVICE_IMPL
 #define _H_PUNK_OPENCL_DEVICE_IMPL
 
+#ifdef USE_OPENCL
 #include <CL/opencl.h>
 #include "errors/module.h"
 #include "cl_device.h"
+#endif
 
 namespace GPU
 {
 	namespace OpenCL
 	{
+	    #ifdef USE_OPENCL
 		struct Device::DeviceImpl
 		{
 			cl_device_id m_device;
@@ -34,6 +37,7 @@ namespace GPU
 				Clear();
 			}
 		};
+		#endif
 	}
 }
 
