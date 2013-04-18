@@ -1,4 +1,4 @@
-prepare.cmd
+start /WAIT prepare.cmd
 
 mkdir project
 cd .\project
