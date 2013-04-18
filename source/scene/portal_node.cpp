@@ -12,20 +12,20 @@ namespace Scene
 	bool PortalNode::Save(std::ostream& stream) const
 	{
 		TransformNode::Save(stream);
-		m_portal.Save(stream);		
+		m_portal.Save(stream);
 		return true;
 	}
 
 	bool PortalNode::Load(std::istream& stream)
 	{
 		TransformNode::Load(stream);
-		m_portal.Load(stream);		
+		m_portal.Load(stream);
 		return true;
 	}
 
 	PortalNode* PortalNode::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);

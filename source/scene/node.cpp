@@ -19,7 +19,7 @@ namespace Scene
 	}
 
 	bool Node::Save(std::ostream& stream) const
-	{		
+	{
 		System::CompoundObject::Save(stream);
 
 		m_bbox.Save(stream);
@@ -38,7 +38,7 @@ namespace Scene
 
 	bool Node::Update(int time_ms)
 	{
-		for each (auto o in *this)
+		for (auto o : *this)
 		{
 			Node* child = dynamic_cast<Node*>(o);
 			if (child)
@@ -50,7 +50,7 @@ namespace Scene
 
 	Node* Node::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
@@ -77,8 +77,8 @@ namespace Scene
 
 		if (m_entity)
 			m_entity->OnEnterSceneGraph(nullptr, this);
-	}	
-	
+	}
+
 	SceneGraphAdapter* Node::GetUserData()
 	{
 		return m_entity;

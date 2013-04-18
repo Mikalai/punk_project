@@ -12,7 +12,7 @@ namespace Scene
 	bool GeometryNode::Save(std::ostream& stream) const
 	{
 		Node::Save(stream);
-				
+
 //		if (!System::GetFactory()->SaveToStream(stream, m_geometry))
 
 		return true;
@@ -27,7 +27,7 @@ namespace Scene
 
 	GeometryNode* GeometryNode::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw  System::PunkException(L"Can't open file");
 		return CreateFromStream(stream);
@@ -36,7 +36,7 @@ namespace Scene
 	GeometryNode* GeometryNode::CreateFromStream(std::istream& stream)
 	{
 		std::unique_ptr<GeometryNode> node(new GeometryNode);
-		node->Load(stream);			
+		node->Load(stream);
 		return node.release();
 	}
 

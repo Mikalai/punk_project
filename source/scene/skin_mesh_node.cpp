@@ -11,7 +11,7 @@ namespace Scene
 	bool SkinMeshNode::Save(std::ostream& stream) const
 	{
 		if (!GeometryNode::Save(stream))
-			return (out_error() << "Can't save portal node" << std::endl, false);		
+			return (out_error() << "Can't save portal node" << std::endl, false);
 		return true;
 	}
 
@@ -19,13 +19,13 @@ namespace Scene
 	{
 		if (!GeometryNode::Load(stream))
 			return (out_error() << "Can't load portal node" << std::endl, false);
-		
+
 		return true;
 	}
 
 	SkinMeshNode* SkinMeshNode::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw System::PunkException(L"Can't open file " + path);
 		return CreateFromStream(stream);

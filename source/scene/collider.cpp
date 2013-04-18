@@ -14,7 +14,7 @@ namespace Scene
 	{
 		m_states.Push();
 
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Node* child = As<Node*>(o);
 			if (child)
@@ -24,7 +24,7 @@ namespace Scene
 	}
 
 	bool Collider::Visit(Scene::StaticMeshNode* node)
-	{	
+	{
 		{
 			GPU::OpenGL::StaticMesh* mesh = dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
 			if (mesh)
@@ -44,7 +44,7 @@ namespace Scene
 	}
 
 	bool Collider::Visit(Scene::SkinMeshNode* node)
-	{				
+	{
 		GPU::OpenGL::SkinMesh* mesh = dynamic_cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		if (Math::CrossSphereSphere(m_current_sphere, node->GetBoundingSphere()))
@@ -55,15 +55,15 @@ namespace Scene
 	}
 
 	bool Collider::Visit(Scene::ArmatureNode* node)
-	{				
-		m_states.Push();	
+	{
+		m_states.Push();
 		Virtual::Armature* armature = Virtual::Armature::find(node->GetStorageName());
 
 		m_states.CurrentState()->Get().m_armature = armature;
 		m_states.CurrentState()->Get().m_armature_world = m_states.CurrentState()->Get().m_local;
 
 		bool was = false;
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)
@@ -79,7 +79,7 @@ namespace Scene
 				{
 					node->SetBoundingSphere(node->GetBoundingSphere() + child->GetBoundingSphere());
 				}
-			
+
 				if (Math::CrossSphereSphere(m_current_sphere, node->GetBoundingSphere()))
 				{
 					m_result.m_nodes.push_back(node);
@@ -105,7 +105,7 @@ namespace Scene
 		m_states.CurrentState()->Get().m_local *= bone->GetAnimatedGlobalMatrix();
 
 		bool was = false;
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)
@@ -136,7 +136,7 @@ namespace Scene
 	bool Collider::Visit(Scene::LightNode* node)
 	{
 		bool was = false;
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)
@@ -160,9 +160,9 @@ namespace Scene
 
 	bool Collider::Visit(Scene::MaterialNode* node)
 	{
-		m_states.Push();		
+		m_states.Push();
 		bool was = false;
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)
@@ -188,7 +188,7 @@ namespace Scene
 	bool Collider::Visit(Scene::Node* node)
 	{
 		bool was = false;
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)
@@ -219,7 +219,7 @@ namespace Scene
 		m_states.Push();
 		m_states.CurrentState()->Get().m_local *= node->GetLocalMatrix();
 		bool was = false;
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)
@@ -252,7 +252,7 @@ namespace Scene
 		m_states.Push();
 		m_states.CurrentState()->Get().m_local *= node->GetLocalMatrix();
 		bool was = false;
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)
@@ -283,9 +283,9 @@ namespace Scene
 	bool Collider::Visit(Scene::TerrainNode* node)
 	{
 		m_states.Push();
-		m_states.CurrentState()->Get().m_local.Identity();			
+		m_states.CurrentState()->Get().m_local.Identity();
 		bool was = false;
-		for each (auto o in *node)
+		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
 			if (child)

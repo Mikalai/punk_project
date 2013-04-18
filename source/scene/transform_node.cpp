@@ -27,7 +27,7 @@ namespace Scene
 
 	TransformNode* TransformNode::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);

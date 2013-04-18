@@ -15,14 +15,14 @@ namespace Scene
 	bool ArmatureNode::Save(std::ostream& stream) const
 	{
 		Node::Save(stream);
-		
+
 		bool flag = m_armature != 0;
 		stream.write((char*)&flag, sizeof(flag));
 		if (flag)
 		{
 			m_armature->GetName().Save(stream);
 		}
-		
+
 		return true;
 	}
 
@@ -44,7 +44,7 @@ namespace Scene
 
 	ArmatureNode* ArmatureNode::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
@@ -62,7 +62,7 @@ namespace Scene
 		m_armature = value;
 	}
 
-	Virtual::Armature* ArmatureNode::GetArmature() 
+	Virtual::Armature* ArmatureNode::GetArmature()
 	{
 		return m_armature;
 	}

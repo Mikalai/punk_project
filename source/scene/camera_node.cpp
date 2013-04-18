@@ -15,13 +15,13 @@ namespace Scene
 
 		System::GetFactory()->SaveToStream(stream, m_camera);
 
-		return true;		
+		return true;
 	}
 
-	bool CameraNode::Load(std::istream& stream) 
+	bool CameraNode::Load(std::istream& stream)
 	{
 		Node::Load(stream);
-		
+
 		m_camera = Cast<Virtual::Camera*>(System::GetFactory()->LoadFromStream(stream));
 
 		return true;
@@ -29,7 +29,7 @@ namespace Scene
 
 	CameraNode* CameraNode::CreateFromFile(const System::string& path)
 	{
-		std::ifstream stream(path.Data(), std::ios::binary);
+		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
 		if (!stream.is_open())
 			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
 		return CreateFromStream(stream);
