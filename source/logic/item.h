@@ -14,16 +14,16 @@ namespace Logic
 	class Item
 	{
 		class ItemImpl;
-		std::auto_ptr<ItemImpl> impl_item;
+		std::unique_ptr<ItemImpl> impl_item;
 	public:
-		typedef unsigned Integer;		
+		typedef unsigned Integer;
 	public:
 		Item();
 		Item(const Item& item);
 		Item& operator = (const Item& item);
 
 		Integer GetWeight();
-		void SetWeight(Integer weight);		
+		void SetWeight(Integer weight);
 
 	protected:
 		virtual bool IsHangable() const;

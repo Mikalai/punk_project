@@ -13,7 +13,7 @@ namespace Logic
 	class GotoQuest : public Quest
 	{
 		struct GotoQuestImpl;
-		std::auto_ptr<GotoQuestImpl> impl_goto_quest;
+		std::unique_ptr<GotoQuestImpl> impl_goto_quest;
 	public:
 		GotoQuest();
 		GotoQuest(const GotoQuest& quest);
@@ -21,12 +21,12 @@ namespace Logic
 
 		void SetDestinationRegion(const System::ID& region);
 
-		virtual const System::string ToString() const;				
+		virtual const System::string ToString() const;
 		virtual System::string& GetDescription();
-		
+
 		virtual void Update();
-		virtual std::auto_ptr<Quest> Clone();
-		
+		virtual std::unique_ptr<Quest> Clone();
+
 		virtual void Save(System::Buffer& buffer);
 		virtual void Load(System::Buffer& buffer);
 
