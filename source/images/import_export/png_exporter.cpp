@@ -2,12 +2,16 @@
 #include "../internal_images/image.h"
 #include "../../string/string.h"
 #include "../error/module.h"
+
+#ifdef USE_PNG
 #include <png/png.h>
+#endif // USE_PNG
 
 namespace ImageModule
 {
 	void PngExporter::Export(const System::string& filename, const Image& image)
 	{
+	    #ifdef USE_PNG
 		FILE *fp;
 		png_structp png_ptr;
 		png_infop info_ptr;
@@ -141,5 +145,8 @@ namespace ImageModule
 
 		/* close the file */
 		fclose(fp);
+#else
+		throw System::PunkNotImplemented(L"PNG image can't be handled");
+#endif  //  USE_PNG
 	}
 }

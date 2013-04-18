@@ -6,8 +6,11 @@
 
 #include "png_importer.h"
 #include "../internal_images/image_impl.h"
-#include <png/png.h>
 #include <stdio.h>
+
+#ifdef USE_PNG
+#include <png/png.h>
+#endif // USE_PNG
 
 namespace ImageModule
 {
@@ -15,16 +18,19 @@ namespace ImageModule
 		: Importer()
 	{}
 
+#ifdef USE_PNG
 	void read(png_structp png, png_bytep data, png_size_t size)
 	{
 		std::istream& stream = *(std::istream*)(png_get_io_ptr(png));
 		stream.read((char*)data, size);
 	}
+#endif  //  USE_PNG
 
 	bool PngImporter::Load(std::istream& stream, Image* image)
 	{
+#ifdef USE_PNG
 		const int bytesToCheck = 8;
-		
+
 		char sig[bytesToCheck];
 		stream.read(sig, bytesToCheck);
 		if ( png_sig_cmp((png_bytep)sig, (png_size_t)0, bytesToCheck) )
@@ -61,7 +67,7 @@ namespace ImageModule
 			return false;
 		}
 
-		png_set_read_fn(png_ptr, &stream, read); 
+		png_set_read_fn(png_ptr, &stream, read);
 		//png_init_io(png_ptr, );
 		png_set_sig_bytes(png_ptr, bytesToCheck);
 		png_read_info(png_ptr, info_ptr);
@@ -71,7 +77,7 @@ namespace ImageModule
 		unsigned bpp = png_get_bit_depth(png_ptr, info_ptr);
 		int	colorType = png_get_color_type(png_ptr, info_ptr);
 		int	rowBytes = png_get_rowbytes(png_ptr, info_ptr);
-		unsigned channels = png_get_channels(png_ptr, info_ptr);		
+		unsigned channels = png_get_channels(png_ptr, info_ptr);
 		ImageFormat format = IMAGE_FORMAT_ALPHA;
 		image->SetDepth(bpp);
 
@@ -192,7 +198,7 @@ namespace ImageModule
 					*offset++ = src[0];
 				}
 				else if (channels == 3)
-				{							
+				{
 					*offset++ = src[0];
 					*offset++ = src[1];
 					*offset++ = src[2];
@@ -204,7 +210,7 @@ namespace ImageModule
 					*offset++ = src[1];
 					*offset++ = src[2];
 					*offset++ = src[3];
-				}						
+				}
 			}
 
 			free ( rowPtr [i] );
@@ -217,11 +223,14 @@ namespace ImageModule
 		png_destroy_read_struct ( &png_ptr, &info_ptr, &end_info );
 
 		return true;
+#else   //  USE_PNG
+        throw System::PunkNotImplemented(L"Can't import png, because png lib was not included in the project");
+#endif  //  USE_PNG
 	}
 
 	bool PngImporter::Load(const System::string& file)
 	{
-		std::ifstream stream(file.Data(), std::ios_base::binary);
+		std::ifstream stream(file.ToStdString().c_str(), std::ios_base::binary);
 		if (!stream.is_open())
 		{
 			out_error() << L"Can't open file: " + file << std::endl;

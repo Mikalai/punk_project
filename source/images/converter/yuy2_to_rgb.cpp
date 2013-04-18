@@ -22,7 +22,7 @@ namespace ImageModule
 				int y0 = src[i];
 				int u0 = src[i+1];
 				int y1 = src[i+2];
-				int v0 = src[i+3];		
+				int v0 = src[i+3];
 
 				float f[16] = {1.164383f,  1.596027f,  0.000f, -222.912f,
 					1.164383f, -0.813000f, -0.391f,  135.488f,
@@ -32,30 +32,32 @@ namespace ImageModule
 
 				float a1[4];
 				float a2[4];
-				__asm 
-				{					
-					movups xmm0, v1;
-					movups xmm1, f;
-					movups xmm2, f+0x10;
-					movups xmm3, f+0x20;
-					dpps xmm1, xmm0, 241;
-					dpps xmm2, xmm0, 241;
-					dpps xmm3, xmm0, 241;					
-					shufps xmm1, xmm2, 00000000b;					
-					shufps xmm1, xmm3, 00001100b;
-					movups a1, xmm1;					
+// TODO (chip#1#): Need color conversion assembler built in code compliant with gcc
 
-					movups xmm0, v2;
-					movups xmm1, f;
-					movups xmm2, f+0x10;
-					movups xmm3, f+0x20;
-					dpps xmm1, xmm0, 241;
-					dpps xmm2, xmm0, 241;
-					dpps xmm3, xmm0, 241;					
-					shufps xmm1, xmm2, 00000000b;					
-					shufps xmm1, xmm3, 00001100b;
-					movups a2, xmm1;					
-				}
+//				__asm
+//				{
+//					movups xmm0, v1;
+//					movups xmm1, f;
+//					movups xmm2, f+0x10;
+//					movups xmm3, f+0x20;
+//					dpps xmm1, xmm0, 241;
+//					dpps xmm2, xmm0, 241;
+//					dpps xmm3, xmm0, 241;
+//					shufps xmm1, xmm2, 00000000b;
+//					shufps xmm1, xmm3, 00001100b;
+//					movups a1, xmm1;
+//
+//					movups xmm0, v2;
+//					movups xmm1, f;
+//					movups xmm2, f+0x10;
+//					movups xmm3, f+0x20;
+//					dpps xmm1, xmm0, 241;
+//					dpps xmm2, xmm0, 241;
+//					dpps xmm3, xmm0, 241;
+//					shufps xmm1, xmm2, 00000000b;
+//					shufps xmm1, xmm3, 00001100b;
+//					movups a2, xmm1;
+//				}
 
 				dst[0] = Clamp( 0, 255, (int)a1[0]);
 				dst[1] = Clamp( 0, 255, (int)a1[1]);

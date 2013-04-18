@@ -6,9 +6,13 @@
 
 #include "jpg_importer.h"
 #include "../internal_images/image_impl.h"
+#include <stdio.h>
+
+#ifdef USE_JPEG
 #include <jpeg/jpeglib.h>
 #include <jpeg/jerror.h>
-#include <stdio.h>
+#include <setjmp.h>
+#endif  //  USE_JPEG
 
 namespace ImageModule
 {
@@ -16,6 +20,7 @@ namespace ImageModule
 		: Importer()
 	{}
 
+#ifdef USE_JPEG
 	struct my_error_mgr {
 		struct jpeg_error_mgr pub;	/* "public" fields */
 
@@ -42,9 +47,9 @@ namespace ImageModule
 		longjmp(myerr->setjmp_buffer, 1);
 	}
 
-	typedef struct 
+	typedef struct
 	{
-		struct jpeg_source_mgr pub;	/* public fields */	
+		struct jpeg_source_mgr pub;	/* public fields */
 		std::istream* stream;
 		JOCTET * buffer;		/* start of buffer */
 		boolean start_of_file;
@@ -286,11 +291,13 @@ namespace ImageModule
 		src->bytes_in_buffer = (size_t) insize;
 		src->next_input_byte = (JOCTET *) inbuffer;
 	}
+#endif  //  USE_JPEG
 
 	bool JpgImporter::Load(std::istream& stream, Image* image)
 	{
+	    #ifdef USE_JPEG
 		struct my_error_mgr jerr;
-		struct jpeg_decompress_struct cinfo;		
+		struct jpeg_decompress_struct cinfo;
 
 		jpeg_create_decompress(&cinfo);
 		cinfo.err = jpeg_std_error(&jerr.pub);
@@ -303,7 +310,7 @@ namespace ImageModule
 		int output_width = cinfo.output_width;
 		int output_height = cinfo.output_height;
 		int out_color_components = cinfo.out_color_components;
-		int output_components = cinfo.output_components;		
+		int output_components = cinfo.output_components;
 		int actual_number_of_colors	= cinfo.actual_number_of_colors;
 
 		ImageFormat format;
@@ -311,7 +318,7 @@ namespace ImageModule
 			format = ImageFormat::IMAGE_FORMAT_ALPHA;
 		else if (output_components == 3)
 			format = ImageFormat::IMAGE_FORMAT_RGB;
-		else 
+		else
 		{
 			jpeg_destroy_decompress(&cinfo);
 			return (out_error() << "Bad image format" << std::endl, false);
@@ -339,11 +346,14 @@ namespace ImageModule
 		jpeg_destroy_decompress(&cinfo);
 
 		return true;
+		#else
+		throw System::PunkNotImplemented(L"Can't work with jpeg files, cause jpeg lib was not used");
+		#endif  //  USE_JPEG
 	}
 
 	bool JpgImporter::Load(const System::string& file)
 	{
-		std::ifstream stream(file.Data(), std::ios_base::binary);
+		std::ifstream stream(file.ToStdString().c_str(), std::ios_base::binary);
 		if (!stream.is_open())
 		{
 			out_error() << L"Can't open file: " + file << std::endl;

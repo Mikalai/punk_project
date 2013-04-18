@@ -18,16 +18,16 @@ namespace ImageModule
 	struct ImageImpl;
 
 	class PUNK_ENGINE Image
-	{		
+	{
 	public:
-		
+
 		Image();
 		Image(const Image& image);
 		Image& operator = (const Image& image);
 		~Image();
 
 		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);				
+		bool Load(std::istream& stream);
 		unsigned GetSizeInBytes() const;
 		unsigned GetComponentsCount() const;
 		unsigned GetWidth() const;
@@ -45,7 +45,7 @@ namespace ImageModule
 		const Component* GetData() const;
 		Component* GetData();
 		ImageFormat GetImageFormat() const;
-		std::auto_ptr<ImageImpl> impl_image;		
+		std::unique_ptr<ImageImpl> impl_image;
 	};
 }
 
