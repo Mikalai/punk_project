@@ -30,7 +30,13 @@ namespace GPU
 				tc.Clear();
 				AbstractRenderPolicy* policy = nullptr;
 				CoreState* state = batch->m_state;
-				if (state->m_enable_skinning)
+				if (state->m_enable_font_rendering)
+				{
+					tc.SetTexture(0, state->m_text_map);
+					tc.SetTexture(1, state->m_diffuse_map_0);
+					policy = AbstractRenderPolicy::find(RC_GUI);
+				}
+				else if (state->m_enable_skinning)
 				{				
 					tc.SetTexture(0, state->m_diffuse_map_0);
 					tc.SetTexture(1, state->m_normal_map);

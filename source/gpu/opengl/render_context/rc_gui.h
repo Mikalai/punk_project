@@ -28,7 +28,7 @@ namespace GPU
 			void Init() override;
 			void InitUniforms() override;
 			void BindParameters(const CoreState& pparams) override;
-			VertexAttributes GetRequiredAttributesSet() const override;
+			int64_t GetRequiredAttributesSet() const override;
 			void Begin() override;
 			void End() override;
 		};

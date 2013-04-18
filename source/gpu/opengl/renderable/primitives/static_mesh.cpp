@@ -11,6 +11,12 @@ namespace GPU
 {
 	namespace OpenGL
 	{
+		int64_t StaticMesh::VertexCode = Vertex<VertexComponent::Position,
+					VertexComponent::Normal,
+					VertexComponent::Tangent,
+					VertexComponent::Bitangent,
+					VertexComponent::Texture0>::Value();
+
 		StaticMesh::StaticMesh()
 		{
 			SetType(System::ObjectType::STATIC_MESH);
@@ -18,7 +24,7 @@ namespace GPU
 
 		StaticMesh* StaticMesh::CreateFromFile(const System::string& path)
 		{
-			std::ifstream stream(path.Data(), std::ios_base::binary);
+			std::ifstream stream(path.ToStdString().c_str(), std::ios_base::binary);
 			if (!stream.is_open())
 				throw System::PunkInvalidArgumentException(L"Can't load static mesh from " + path);
 			std::unique_ptr<StaticMesh> mesh(new StaticMesh);
@@ -35,7 +41,7 @@ namespace GPU
 
 		bool StaticMesh::Save(std::ostream& stream) const
 		{
-			if (!VertexArrayObject2<PrimitiveType, VertexType>::Save(stream))
+			if (!VertexArrayObject2<PrimitiveType, CurrentVertex>::Save(stream))
 				throw System::PunkInvalidArgumentException(L"Can't save static mesh");
 			if (!Object::Save(stream))
 				throw System::PunkInvalidArgumentException(L"Can't save static mesh");
@@ -44,15 +50,15 @@ namespace GPU
 
 		bool StaticMesh::Load(std::istream& stream)
 		{
-			if (!VertexArrayObject2<PrimitiveType, VertexType>::Load(stream))
+			if (!VertexArrayObject2<PrimitiveType, CurrentVertex>::Load(stream))
 				throw System::PunkInvalidArgumentException(L"Can't load static mesh");
 			if (!Object::Load(stream))
 				throw System::PunkInvalidArgumentException(L"Can't load static mesh");
-			return true;	
+			return true;
 		}
 
 		bool StaticMesh::Cook(Virtual::StaticGeometry* mesh)
-		{						
+		{
 			if (mesh->GetVertices().empty())
 				throw System::PunkInvalidArgumentException(L"Can't create static mesh from empty vertex list in mesh descriptor");
 			if (mesh->GetTextureMeshes().empty())
@@ -65,7 +71,7 @@ namespace GPU
 			for (unsigned i = 0; i < ib.size(); i++)
 				ib[i] = i;
 
-			std::vector<Vertex<VertexType>> vb(mesh->GetFaces().size()*3);
+			std::vector<CurrentVertex> vb(mesh->GetFaces().size()*3);
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 			int index = 0;
@@ -81,13 +87,13 @@ namespace GPU
 				Math::vec3 btn;
 				float det;
 
-				for (int j = 0; j < 3; ++j) 
+				for (int j = 0; j < 3; ++j)
 				{
 					int index_0 = j;
 					int index_1 = (j+1)%3;
 					int index_2 = (j+2)%3;
 
-					Math::CalculateTBN(position[index_0], position[index_1], position[index_2], texture[index_0], texture[index_1], texture[index_2], tgn, btn, nrm, det); 
+					Math::CalculateTBN(position[index_0], position[index_1], position[index_2], texture[index_0], texture[index_1], texture[index_2], tgn, btn, nrm, det);
 
 					det = (det < 0) ? -1.0f : 1.0f;
 
@@ -98,7 +104,7 @@ namespace GPU
 					vb[index].m_bitangent.Set(btn[0], btn[1], btn[2], 0);
 					base_index.push_back(f[j]);
 					index++;
-				}			
+				}
 			}
 
 			/// Smooth TBN
@@ -110,13 +116,13 @@ namespace GPU
 				Math::vec3 btan;
 				for (int j = 0; j < (int)vb.size(); j++)
 				{
-					Vertex<VertexType>* v = &vb[j];
+					CurrentVertex* v = &vb[j];
 					if (base_index[j] == i)
-					{					
+					{
 						norm += v->m_normal.XYZ();
 						tang += v->m_tangent.XYZ();
 						btan += v->m_bitangent.XYZ();
-					}				
+					}
 				}
 
 				norm.Normalize();
@@ -132,20 +138,20 @@ namespace GPU
 				float w = m.Determinant();
 
 				for (int j = 0; j < (int)vb.size(); j++)
-				{	
-					Vertex<VertexType>* v = &vb[j];
+				{
+					CurrentVertex* v = &vb[j];
 					if (base_index[j] == i)
-					{					
+					{
 						v->m_normal = norm;
 						v->m_tangent.Set(tang[0], tang[1], tang[2], w);
 						v->m_bitangent = btan;
-					}				
+					}
 				}
 			}
 			SetVertexBuffer(vb);
 			SetIndexBuffer(ib);
 
-			return VertexArrayObject2<PrimitiveType, VertexType>::Cook();		
+			return VertexArrayObject2<PrimitiveType, CurrentVertex>::Cook();
 		}
 	}
 }

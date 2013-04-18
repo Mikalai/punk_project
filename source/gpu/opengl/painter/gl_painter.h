@@ -14,7 +14,10 @@ namespace GPU
 {
 	struct Painter::PainterImpl
 	{
-		typedef Vertex<COMPONENT_POSITION|COMPONENT_COLOR|COMPONENT_TEXTURE|COMPONENT_FLAG> VertexType;
+		typedef Vertex<VertexComponent::Position
+			, VertexComponent::Texture0
+			, VertexComponent::Flag
+			, VertexComponent::Color> VertexType;
 
 		System::StateManager<GPU::CoreState> m_states;
 		std::vector<VertexType> m_points;
@@ -23,8 +26,8 @@ namespace GPU
 		bool m_lines_modified;
 		std::vector<VertexType> m_triangles;
 		bool m_triangles_modified;
-		OpenGL::Points<COMPONENT_POSITION|COMPONENT_COLOR|COMPONENT_TEXTURE|COMPONENT_FLAG> m_points_vao;
-		OpenGL::Lines<COMPONENT_POSITION|COMPONENT_COLOR|COMPONENT_TEXTURE|COMPONENT_FLAG> m_lines_vao;
+		OpenGL::Points<VertexType> m_points_vao;
+		OpenGL::Lines<VertexType> m_lines_vao;
 		RenderTarget* m_rt;
 		AbstractRenderPolicy* m_rc;
 		OpenGL::TextureContext* m_tc;

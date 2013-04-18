@@ -15,22 +15,18 @@ namespace GPU
 	{	
 		class PUNK_ENGINE SkinMesh 
 			: public System::Object
-			, public VertexArrayObject2<GL_TRIANGLES, COMPONENT_POSITION|
-			COMPONENT_NORMAL|
-			COMPONENT_TANGENT|
-			COMPONENT_BITANGENT|
-			COMPONENT_TEXTURE|
-			COMPONENT_BONE_ID|
-			COMPONENT_BONE_WEIGHT>
+			, public VertexArrayObject2<GL_TRIANGLES, 
+				Vertex<VertexComponent::Position, 
+					VertexComponent::Normal, 
+					VertexComponent::Tangent, 
+					VertexComponent::Bitangent,
+					VertexComponent::Texture0,
+					VertexComponent::BoneID, 
+					VertexComponent::BoneWeight>>
 		{
 			enum { PrimitiveType = GL_TRIANGLES };
-			enum { VertexType = COMPONENT_POSITION|
-				COMPONENT_NORMAL|
-				COMPONENT_TANGENT|
-				COMPONENT_BITANGENT|
-				COMPONENT_TEXTURE|
-				COMPONENT_BONE_ID|
-				COMPONENT_BONE_WEIGHT};
+			static int64_t VertexCode;
+
 		public:
 
 			SkinMesh();

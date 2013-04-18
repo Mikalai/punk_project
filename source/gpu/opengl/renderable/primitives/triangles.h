@@ -9,24 +9,26 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		template<int Attributes>
-		class PUNK_ENGINE Triangles: public VertexArrayObject2<GL_TRIANGLES, Attributes>
+		template<typename VertexType>
+		class PUNK_ENGINE Triangles: public VertexArrayObject2<GL_TRIANGLES, VertexType>
 		{
 			enum { PrimitiveType = GL_TRIANGLES };
-			enum { VertexType = Attributes };
+			static int64_t VertexCode;
 		public:
 
-			void Cook(const std::vector<Vertex<VertexType>>& value)
+			void Cook(const std::vector<VertexType>& value)
 			{
-				Clear();
+				VertexArrayObject2<PrimitiveType, VertexType>::Clear();
 				std::vector<unsigned> ib(value.size());
-				for (unsigned i override; i < ib.size(); ++i)
+				for (unsigned i = 0; i < ib.size(); ++i)
 					ib[i] = i;
-				SetVertexBuffer(value);
-				SetIndexBuffer(ib);
+				VertexArrayObject2<PrimitiveType, VertexType>::SetVertexBuffer(value);
+				VertexArrayObject2<PrimitiveType, VertexType>::SetIndexBuffer(ib);
 				VertexArrayObject2<PrimitiveType, VertexType>::Cook();
 			}
 		};
+
+		template<typename VertexType> int64_t Triangles<VertexType>::VertexCode = VertexType::Value();
 	}
 }
 

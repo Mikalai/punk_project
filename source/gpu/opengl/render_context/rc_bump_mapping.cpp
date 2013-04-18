@@ -68,18 +68,18 @@ namespace GPU
 			if (pparams.m_enable_wireframe)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}			
 			else
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}
 		}
 
-		VertexAttributes RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader>::GetRequiredAttributesSet() const 
+		int64_t RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader>::GetRequiredAttributesSet() const 
 		{
-			return COMPONENT_POSITION|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_NORMAL;
+			return Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Tangent, VertexComponent::Bitangent, VertexComponent::Texture0>::Value();
 		}
 
 		void RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader>::Begin()
@@ -88,21 +88,21 @@ namespace GPU
 			OpenGLRenderContext::Begin();
 
 			glEnable(GL_DEPTH_TEST);
-			//CHECK_GL_ERROR(L"Unable to enable depth test");
+			//ValidateOpenGL(L"Unable to enable depth test");
 			//glDepthFunc(GL_LESS);
-			//CHECK_GL_ERROR(L"Unable to set less depth function");
+			//ValidateOpenGL(L"Unable to set less depth function");
 			//glDepthMask(GL_TRUE);
-			//CHECK_GL_ERROR(L"Unable to enable depth mask");
+			//ValidateOpenGL(L"Unable to enable depth mask");
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			//CHECK_GL_ERROR(L"Unable to set polygon mode");
+			//ValidateOpenGL(L"Unable to set polygon mode");
 			/*glEnable(GL_BLEND);
-			CHECK_GL_ERROR(L"Unable to enable blend");
+			ValidateOpenGL(L"Unable to enable blend");
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			CHECK_GL_ERROR(L"Unable to set blend func");
+			ValidateOpenGL(L"Unable to set blend func");
 			glEnable(GL_CULL_FACE);
-			CHECK_GL_ERROR(L"Unable to enable cull facing");
+			ValidateOpenGL(L"Unable to enable cull facing");
 			glCullFace(GL_FRONT);
-			CHECK_GL_ERROR(L"Unable to set cull face mode");*/
+			ValidateOpenGL(L"Unable to set cull face mode");*/
 		}
 
 		void RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader>::End()

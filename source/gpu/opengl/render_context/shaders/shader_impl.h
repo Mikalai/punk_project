@@ -60,7 +60,7 @@ namespace GPU
 					if (m_shader_index)
 					{
 						glDeleteShader(m_shader_index);
-						CHECK_GL_ERROR(L"Unable to delete shader");
+						ValidateOpenGL(L"Unable to delete shader");
 						m_shader_index = 0;
 					}
 				}

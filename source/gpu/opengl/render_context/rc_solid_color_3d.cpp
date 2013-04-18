@@ -42,31 +42,31 @@ namespace GPU
 			if (params.m_enable_wireframe)
 			{
 				glLineWidth(params.m_line_width);
-				CHECK_GL_ERROR(L"Can't line width");
+				ValidateOpenGL(L"Can't line width");
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}			
 			else
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}
 
 			if (params.m_depth_test)
 			{
 				glEnable(GL_DEPTH_TEST);
-				CHECK_GL_ERROR(L"Can't enable depth test");
+				ValidateOpenGL(L"Can't enable depth test");
 			}
 			else
 			{
 				glDisable(GL_DEPTH_TEST);
-				CHECK_GL_ERROR(L"Can't disable depth test");
+				ValidateOpenGL(L"Can't disable depth test");
 			}
 		}
 
-		VertexAttributes RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader>::GetRequiredAttributesSet() const 
+		int64_t RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader>::GetRequiredAttributesSet() const 
 		{
-			return COMPONENT_POSITION;
+			return Vertex<VertexComponent::Position>::Value();
 		}
 
 		void RenderContextPolicy<VertexShaderSolid, FragmentShaderSolid, NoShader>::Begin()

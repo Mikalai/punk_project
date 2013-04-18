@@ -173,6 +173,8 @@ namespace GPU
 		PFNGLCULLFACEPROC glCullFace;
 		PFNGLLINEWIDTHPROC glLineWidth;
 
+        PROC WINAPI (*wglGetProcAddress(LPCSTR));
+
 		bool IsSupported(const char* extension, VideoDriver* driver)
 		{
 			const char* allWgl = wglGetExtensionsStringARB(::GetDC(*driver->GetWindow()));

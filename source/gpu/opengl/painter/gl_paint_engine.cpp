@@ -15,7 +15,7 @@ namespace GPU
 	{
 		struct OpenGLPaintEngine::OpenGLPaintEngineImpl
 		{
-			typedef Vertex<COMPONENT_POSITION|COMPONENT_COLOR|COMPONENT_TEXTURE|COMPONENT_FLAG> VertexType;
+			typedef Vertex<VertexComponent::Position, VertexComponent::Texture0, VertexComponent::Flag, VertexComponent::Color> VertexType;
 
 			RenderTargetTexture* m_rt;
 			System::StateManager<GPU::CoreState> m_states;
@@ -25,8 +25,9 @@ namespace GPU
 			TextureContext* m_tc;
 			GPU::AbstractRenderPolicy* m_gui_rc;
 			GPU::AbstractRenderPolicy* m_painter_rc;
+			Utility::FontBuilder m_font_builder;
 
-			OpenGL::Lines<COMPONENT_POSITION|COMPONENT_COLOR|COMPONENT_TEXTURE|COMPONENT_FLAG> m_lines_vao;
+			OpenGL::Lines<VertexType> m_lines_vao;
 
 			const Texture2D* m_fill_texture;
 			bool m_use_border;
@@ -43,7 +44,7 @@ namespace GPU
 				auto props = GPU::OpenGL::RenderTargetTexture::RenderTargetTextureProperties();
 
 				m_rt->Init(&props);
-				m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);							
+				m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);
 
 				m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_3D);
 				m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
@@ -79,7 +80,7 @@ namespace GPU
 				m_rt->SetViewport(Math::Rect(0, 0, (float)width, (float)height));
 			}
 
-			bool Begin(PaintDevice* device) 
+			bool Begin(PaintDevice* device)
 			{
 				m_rt->Activate();
 				return true;
@@ -88,7 +89,7 @@ namespace GPU
 			void CookCPULineBuffer(const Math::Line2D* lines, size_t count)
 			{
 				float max_width = (float)m_rt->GetColorBuffer()->GetWidth();
-				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();			
+				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();
 
 				m_lines_modified = true;
 				for (size_t i = 0; i < count; ++i)
@@ -123,7 +124,7 @@ namespace GPU
 				}
 			}
 
-			void DrawLines(const Math::Line2D* lines, size_t count) 
+			void DrawLines(const Math::Line2D* lines, size_t count)
 			{
 				CookCPULineBuffer(lines, count);
 				CookGPULinesBuffer();
@@ -131,7 +132,7 @@ namespace GPU
 				m_states.CurrentState()->Get().m_use_diffuse_texture = false;
 				m_states.CurrentState()->Get().m_use_text_texture = false;
 				m_states.CurrentState()->Get().m_enable_wireframe = false;
-				m_states.CurrentState()->Get().m_blending = true;				
+				m_states.CurrentState()->Get().m_blending = true;
 				m_states.CurrentState()->Get().m_diffuse_color = m_color;
 
 				m_tc->Bind();
@@ -150,19 +151,19 @@ namespace GPU
 				m_tc->Unbind();
 			}
 
-			void DrawRects(const Math::Rect* rects, size_t count) 
+			void DrawRects(const Math::Rect* rects, size_t count)
 			{}
 
-			void DrawArc(float xc, float yc, float width, float height, float start_angle, float span_angle) 
+			void DrawArc(float xc, float yc, float width, float height, float start_angle, float span_angle)
 			{}
 
-			void DrawChord(float xc, float yc, float width, float height, float start_angle, float span_angle) 
+			void DrawChord(float xc, float yc, float width, float height, float start_angle, float span_angle)
 			{}
 
-			void DrawPoint(float x, float y) 
+			void DrawPoint(float x, float y)
 			{}
 
-			void DrawEllipse(float xc, float yc, float major_axis, float minor_axis) 
+			void DrawEllipse(float xc, float yc, float major_axis, float minor_axis)
 			{}
 
 			void RenderQuad(float x, float y, float width, float height, const Math::vec4& color)
@@ -173,7 +174,7 @@ namespace GPU
 				STATE.m_projection = Math::mat4::CreateIdentity();
 				STATE.m_view = Math::mat4::CreateIdentity();
 				STATE.m_diffuse_color = color;
-				STATE.m_depth_test = false;				
+				STATE.m_depth_test = false;
 				STATE.m_blending = true;
 				m_solid_rc->Begin();
 				m_solid_rc->BindParameters(STATE);
@@ -184,69 +185,69 @@ namespace GPU
 				m_states.Pop();
 			}
 
-			void DrawRect(const Math::Rect& rect) 
+			void DrawRect(const Math::Rect& rect)
 			{
 				float max_width = (float)m_rt->GetColorBuffer()->GetWidth();
-				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();			
-				
+				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();
+
 				if (m_use_fill)
 				{
-					RenderQuad(rect.GetX() / max_width, rect.GetY() / max_height, 
+					RenderQuad(rect.GetX() / max_width, rect.GetY() / max_height,
 						rect.GetWidth() / max_width, rect.GetHeight() / max_height, m_fill_color);
 				}
 
 				if (m_use_border)
 				{
 					std::vector<Math::Line2D> lines;
-					lines.push_back(Math::Line2D(Math::vec2(rect.GetX(), rect.GetY()), 
+					lines.push_back(Math::Line2D(Math::vec2(rect.GetX(), rect.GetY()),
 						Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY())));
-					lines.push_back(Math::Line2D(Math::vec2(rect.GetX()+rect.GetWidth(), rect.GetY()), 
+					lines.push_back(Math::Line2D(Math::vec2(rect.GetX()+rect.GetWidth(), rect.GetY()),
 						Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY() + rect.GetHeight())));
-					lines.push_back(Math::Line2D(Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY() + rect.GetHeight()), 
+					lines.push_back(Math::Line2D(Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY() + rect.GetHeight()),
 						Math::vec2(rect.GetX(), rect.GetY() + rect.GetHeight())));
-					lines.push_back(Math::Line2D(Math::vec2(rect.GetX(), rect.GetY() + rect.GetHeight()), 
+					lines.push_back(Math::Line2D(Math::vec2(rect.GetX(), rect.GetY() + rect.GetHeight()),
 						Math::vec2(rect.GetX(), rect.GetY())));
 					DrawLines(&lines[0], lines.size());
 				}
 			}
 
-			bool End() 
+			bool End()
 			{
 				m_rt->Deactivate();
 				return true;
 			}
 
-			void SetColor(const Math::vec4& value) 
+			void SetColor(const Math::vec4& value)
 			{
 				m_color = value;
 			}
 
-			void SetColor(float r, float g, float b, float a) 
+			void SetColor(float r, float g, float b, float a)
 			{
 				m_color.Set(r, g, b, a);
 			}
 
-			void SetFillColor(const Math::vec4& value) 
+			void SetFillColor(const Math::vec4& value)
 			{
 				m_fill_color = value;
 			}
 
-			void SetFillColor(float r, float g, float b, float a) 
+			void SetFillColor(float r, float g, float b, float a)
 			{
 				m_fill_color.Set(r, g, b, a);
 			}
 
-			void SetFillTexture(const Texture2D* value) 
+			void SetFillTexture(const Texture2D* value)
 			{
 				m_fill_texture = value;
 			}
 
-			void SetLineWidth(float value) 
+			void SetLineWidth(float value)
 			{
 				STATE.m_line_width = value;
 			}
 
-			void SetPointSize(float value) 
+			void SetPointSize(float value)
 			{
 				STATE.m_point_size = value;
 			}
@@ -254,12 +255,12 @@ namespace GPU
 			void RenderText(float x, float y, const System::string& text, const Math::vec4& color)
 			{
 				float max_width = (float)m_rt->GetColorBuffer()->GetWidth();
-				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();			
+				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();
 
-				Utility::FontBuilder::Instance()->SetCurrentFace(m_font_name);
-				Utility::FontBuilder::Instance()->SetCharSize(m_font_size, m_font_size);				
-				int len = Utility::FontBuilder::Instance()->CalculateLength(text.Data());
-				int h = Utility::FontBuilder::Instance()->CalculateHeight(text.Data());
+				m_font_builder.SetCurrentFace(m_font_name);
+				m_font_builder.SetCharSize(m_font_size, m_font_size);
+				int len = m_font_builder.CalculateLength(text.Data());
+				int h = m_font_builder.CalculateHeight(text.Data());
 				GPU::OpenGL::TextSurface s;
 				s.SetTextSize(m_font_size);
 				s.SetSize(len, h);
@@ -296,22 +297,22 @@ namespace GPU
 				RenderText(x, y, text, m_color);
 			}
 
-			void EnableFill(bool value) 
+			void EnableFill(bool value)
 			{
 				m_use_fill = value;
 			}
 
-			void EnableBorder(bool value) 
+			void EnableBorder(bool value)
 			{
 				m_use_border = value;
 			}
 
-			void SetFontName(const System::string& font) 
+			void SetFontName(const System::string& font)
 			{
 				m_font_name = font;
 			}
 
-			void SetFontSize(int size) 
+			void SetFontSize(int size)
 			{
 				m_font_size = size;
 			}
@@ -334,17 +335,17 @@ namespace GPU
 			return impl->GetRenderTarget();
 		}
 
-		bool OpenGLPaintEngine::Begin(PaintDevice* device) 
+		bool OpenGLPaintEngine::Begin(PaintDevice* device)
 		{
 			return impl->Begin(device);
 		}
 
-		void OpenGLPaintEngine::DrawLines(const Math::Line2D* lines, size_t count) 
+		void OpenGLPaintEngine::DrawLines(const Math::Line2D* lines, size_t count)
 		{
 			impl->DrawLines(lines, count);
 		}
 
-		void OpenGLPaintEngine::DrawRects(const Math::Rect* rects, size_t count) 
+		void OpenGLPaintEngine::DrawRects(const Math::Rect* rects, size_t count)
 		{
 			impl->DrawRects(rects, count);
 		}
@@ -354,27 +355,27 @@ namespace GPU
 			impl->DrawArc(xc, yc, width, height, start_angle, span_angle);
 		}
 
-		void OpenGLPaintEngine::DrawChord(float xc, float yc, float width, float height, float start_angle, float span_angle) 
+		void OpenGLPaintEngine::DrawChord(float xc, float yc, float width, float height, float start_angle, float span_angle)
 		{
 			impl->DrawChord(xc, yc, width, height, start_angle, span_angle);
 		}
 
-		void OpenGLPaintEngine::DrawPoint(float x, float y) 
+		void OpenGLPaintEngine::DrawPoint(float x, float y)
 		{
 			impl->DrawPoint(x, y);
 		}
 
-		void OpenGLPaintEngine::DrawEllipse(float xc, float yc, float major_axis, float minor_axis) 
+		void OpenGLPaintEngine::DrawEllipse(float xc, float yc, float major_axis, float minor_axis)
 		{
 			impl->DrawEllipse(xc, yc, major_axis, minor_axis);
 		}
 
-		void OpenGLPaintEngine::DrawRect(const Math::Rect& rect) 
+		void OpenGLPaintEngine::DrawRect(const Math::Rect& rect)
 		{
 			impl->DrawRect(rect);
 		}
 
-		bool OpenGLPaintEngine::End() 
+		bool OpenGLPaintEngine::End()
 		{
 			return impl->End();
 		}
@@ -384,37 +385,37 @@ namespace GPU
 			impl->SetSurfaceSize(width, height);
 		}
 
-		void OpenGLPaintEngine::SetColor(const Math::vec4& value) 
+		void OpenGLPaintEngine::SetColor(const Math::vec4& value)
 		{
 			impl->SetColor(value);
 		}
 
-		void OpenGLPaintEngine::SetColor(float r, float g, float b, float a) 
+		void OpenGLPaintEngine::SetColor(float r, float g, float b, float a)
 		{
 			impl->SetColor(r, g, b, a);
 		}
 
-		void OpenGLPaintEngine::SetFillColor(const Math::vec4& value) 
+		void OpenGLPaintEngine::SetFillColor(const Math::vec4& value)
 		{
 			impl->SetFillColor(value);
 		}
 
-		void OpenGLPaintEngine::SetFillColor(float r, float g, float b, float a) 
+		void OpenGLPaintEngine::SetFillColor(float r, float g, float b, float a)
 		{
 			impl->SetFillColor(r, g, b, a);
 		}
 
-		void OpenGLPaintEngine::SetFillTexture(const Texture2D* value) 
+		void OpenGLPaintEngine::SetFillTexture(const Texture2D* value)
 		{
 			impl->SetFillTexture(value);
 		}
 
-		void OpenGLPaintEngine::SetLineWidth(float value) 
+		void OpenGLPaintEngine::SetLineWidth(float value)
 		{
 			impl->SetLineWidth(value);
 		}
 
-		void OpenGLPaintEngine::SetPointSize(float value) 
+		void OpenGLPaintEngine::SetPointSize(float value)
 		{
 			impl->SetPointSize(value);
 		}
@@ -424,22 +425,22 @@ namespace GPU
 			impl->DrawString(x, y, text);
 		}
 
-		void OpenGLPaintEngine::EnableFill(bool value) 
+		void OpenGLPaintEngine::EnableFill(bool value)
 		{
 			impl->EnableFill(value);
 		}
 
-		void OpenGLPaintEngine::EnableBorder(bool value) 
+		void OpenGLPaintEngine::EnableBorder(bool value)
 		{
 			impl->EnableBorder(value);
 		}
 
-		void OpenGLPaintEngine::SetFontName(const System::string& font) 
+		void OpenGLPaintEngine::SetFontName(const System::string& font)
 		{
 			impl->SetFontName(font);
 		}
 
-		void OpenGLPaintEngine::SetFontSize(int size) 
+		void OpenGLPaintEngine::SetFontSize(int size)
 		{
 			impl->SetFontSize(size);
 		}

@@ -13,12 +13,12 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		template<int PrimitiveType, int VertexType>
+		template<int PrimitiveType, typename VertexType>
 		class VertexArrayObject2 : public Renderable
 		{
 		protected:
 
-			typedef Vertex<VertexType> CurrentVertex;
+			typedef VertexType CurrentVertex;
 			VertexBufferObject* m_vertex_buffer;	
 			IndexBufferObject* m_index_buffer;
 			GLuint m_vao;
@@ -62,16 +62,16 @@ namespace GPU
 				return m_index_buffer != nullptr && m_vertex_buffer != nullptr;
 			}
 
-			void Bind(VertexAttributes supported_by_context) 
+			void Bind(int64_t supported_by_context) 
 			{
 				if (m_was_modified)
 				{
 					Cook();
 					m_was_modified = false;
 				}
-				CHECK_GL_ERROR(L"Already with error");
+				ValidateOpenGL(L"Already with error");
 				glBindVertexArray(m_vao);
-				CHECK_GL_ERROR(L"Unable to bind vertex array");
+				ValidateOpenGL(L"Unable to bind vertex array");
 				m_vertex_buffer->Bind();
 				m_index_buffer->Bind();
 
@@ -85,7 +85,7 @@ namespace GPU
 				{
 					glDisableVertexAttribArray(i);
 				}
-				CHECK_GL_ERROR(L"Unable to unbind vao");
+				ValidateOpenGL(L"Unable to unbind vao");
 			}
 
 			void SetVertexBuffer(const std::vector<CurrentVertex>& vbuffer)
@@ -97,7 +97,7 @@ namespace GPU
 			{
 				int type = PrimitiveType;
 				glDrawElements(type, m_index_count, GL_UNSIGNED_INT, 0);
-				CHECK_GL_ERROR(L"Unable to draw elements");
+				ValidateOpenGL(L"Unable to draw elements");
 			}
 
 			void SetVertexBuffer(const void* vbuffer, int size_in_bytes)
@@ -146,19 +146,19 @@ namespace GPU
 				if (m_vao)
 				{
 					glDeleteVertexArrays(1, &m_vao);
-					CHECK_GL_ERROR(L"Unable to delete vao");
+					ValidateOpenGL(L"Unable to delete vao");
 				}
 
 				glGenVertexArrays(1, &m_vao);
-				CHECK_GL_ERROR(L"Unable to generate vao");
+				ValidateOpenGL(L"Unable to generate vao");
 				glBindVertexArray(m_vao);
-				CHECK_GL_ERROR(L"Unable to bind vao");
+				ValidateOpenGL(L"Unable to bind vao");
 
 				m_vertex_buffer->Bind();
 				m_index_buffer->Bind();
 
 				glBindVertexArray(0);
-				CHECK_GL_ERROR(L"Unable to unbind vao");
+				ValidateOpenGL(L"Unable to unbind vao");
 
 				return true;
 			}
@@ -186,7 +186,7 @@ namespace GPU
 				if (m_vao)
 				{
 					glDeleteVertexArrays(1, &m_vao);
-					CHECK_GL_ERROR(L"Unable to delete vao");
+					ValidateOpenGL(L"Unable to delete vao");
 				}
 			}
 
@@ -198,7 +198,7 @@ namespace GPU
 				//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));
 				//m_location.Save(stream);
 
-				const_cast<VertexArrayObject2<PrimitiveType, VertexType>*>(this)->Bind(VertexType);
+				const_cast<VertexArrayObject2<PrimitiveType, CurrentVertex>*>(this)->Bind(VertexType::Value());
 
 				GLvoid* vb = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
 				stream.write(reinterpret_cast<const char*>(&m_vb_size), sizeof(m_vb_size));
@@ -215,7 +215,7 @@ namespace GPU
 				int primitive_type = PrimitiveType;
 				stream.write(reinterpret_cast<const char*>(&primitive_type), sizeof(primitive_type));			
 				stream.write(reinterpret_cast<const char*>(&m_was_modified), sizeof(m_was_modified));
-				int combination = VertexType;
+				int64_t combination = CurrentVertex::Value();
 				stream.write(reinterpret_cast<const char*>(&combination), sizeof(combination));
 				stream.write(reinterpret_cast<const char*>(&m_primitive_count), sizeof(m_primitive_count));
 
@@ -274,9 +274,9 @@ namespace GPU
 					return false;
 				}
 
-				if (combination != VertexType)
+				if (combination != VertexType::Value())
 				{
-					out_error() << "Bad vertex type format " << primitive_type << ". Expected " << VertexType << "." << std::endl;
+					out_error() << "Bad vertex type format " << primitive_type << ". Expected " << VertexType::Value() << "." << std::endl;
 					return false;
 				}
 

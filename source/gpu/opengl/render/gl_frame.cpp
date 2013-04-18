@@ -91,6 +91,11 @@ namespace GPU
 		Top()->m_diffuse_map_1 = value;
 	}
 
+	void Frame::FrameImpl::SetFontMap(const Texture2D* value)
+	{
+		Top()->m_text_map = value;
+	}
+
 	void Frame::FrameImpl::EnableDiffuseShading(bool value)
 	{
 		Top()->m_enable_diffuse_shading = value;
@@ -260,6 +265,11 @@ namespace GPU
 		Top()->m_enable_texture = value;
 	}
 
+	void Frame::FrameImpl::EnableFontRendering(bool value)
+	{
+		Top()->m_enable_font_rendering = value;
+	}
+
 	void Frame::FrameImpl::SetAmbientColor(float value)
 	{
 		Top()->m_ambient_color = value;
@@ -300,6 +310,11 @@ namespace GPU
 		Top()->m_specular_factor = value;
 	}
 
+	void Frame::FrameImpl::SetTextColor(const Math::vec4& value)
+	{
+		Top()->m_text_color = value;
+	}
+
 	Frame::Frame()
 		: impl(new FrameImpl)
 	{}
@@ -319,7 +334,7 @@ namespace GPU
 	{
 		impl->Render(value);
 	}
-
+	
 	void Frame::PushState()
 	{
 		impl->PushState();
@@ -363,6 +378,16 @@ namespace GPU
 	void Frame::SetDiffuseMap1(const Texture2D* value)
 	{
 		impl->SetDiffuseMap1(value);
+	}
+
+	void Frame::SetTextColor(const Math::vec4& value)
+	{
+		impl->SetTextColor(value);
+	}
+
+	void Frame::SetFontMap(const Texture2D* value)
+	{
+		impl->SetFontMap(value);
 	}
 	
 	void Frame::EnableDiffuseShading(bool value)
@@ -523,6 +548,11 @@ namespace GPU
 	void Frame::EnableTexturing(bool value)
 	{
 		impl->EnableTexturing(value);
+	}
+
+	void Frame::EnableFontRendering(bool value)
+	{
+		impl->EnableFontRendering(value);
 	}
 
 	void Frame::SetAmbientColor(float value)

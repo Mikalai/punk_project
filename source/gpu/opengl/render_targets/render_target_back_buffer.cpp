@@ -27,7 +27,7 @@ namespace GPU
 			//	simply unbind all previous buffers
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glClearColor(m_r, m_g, m_b, m_a);
-			CHECK_GL_ERROR(L"Can't set clear color");
+			ValidateOpenGL(L"Can't set clear color");
 			ClearTarget();
 		}
 

@@ -18,9 +18,9 @@ namespace GPU
 				b |= GL_STENCIL_BUFFER_BIT;
 
 			glClearColor(m_r, m_g, m_b, m_a);
-			CHECK_GL_ERROR(L"Unable to set clear color");
+			ValidateOpenGL(L"Unable to set clear color");
 			glClear(b);
-			CHECK_GL_ERROR(L"Unable to clear buffer");			
+			ValidateOpenGL(L"Unable to clear buffer");			
 		}
 
 		void OpenGLRenderTarget::SetViewport(const Math::Rect& value)

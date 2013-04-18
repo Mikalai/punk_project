@@ -96,13 +96,13 @@ namespace GPU
 		void RenderTargetTexture::Clear()
 		{
 			glDeleteFramebuffers(1, &m_fb);
-			CHECK_GL_ERROR(L"Can't delete frame buffer object");
+			ValidateOpenGL(L"Can't delete frame buffer object");
 			glDeleteFramebuffers(1, &m_resolve_fb);
-			CHECK_GL_ERROR(L"Can't delete resolve frame buffer object");
+			ValidateOpenGL(L"Can't delete resolve frame buffer object");
 			glDeleteRenderbuffers(1, &m_color_rb);
-			CHECK_GL_ERROR(L"Can't delete color render buffer object");
+			ValidateOpenGL(L"Can't delete color render buffer object");
 			glDeleteRenderbuffers(1, &m_depth_rb);
-			CHECK_GL_ERROR(L"Can't delete depth render buffer object");
+			ValidateOpenGL(L"Can't delete depth render buffer object");
 			safe_delete(m_color_texture);
 			safe_delete(m_depth_texture);
 		}
@@ -115,31 +115,31 @@ namespace GPU
 		void RenderTargetTexture::Activate()
 		{
 			glDepthFunc(GL_LEQUAL);
-			CHECK_GL_ERROR(L"Can't set depth func to GL_EQUAL");
+			ValidateOpenGL(L"Can't set depth func to GL_EQUAL");
 			glBindFramebuffer(GL_FRAMEBUFFER, m_fb);
-			CHECK_GL_ERROR(L"Can't bind frame buffer");
+			ValidateOpenGL(L"Can't bind frame buffer");
 			ClearTarget();
 		}
 
 		void RenderTargetTexture::Deactivate()
 		{
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fb);
-			CHECK_GL_ERROR(L"Can't bind read frame buffer");
+			ValidateOpenGL(L"Can't bind read frame buffer");
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_resolve_fb);
-			CHECK_GL_ERROR(L"Can't bind draw frame buffer");
+			ValidateOpenGL(L"Can't bind draw frame buffer");
 			glBlitFramebuffer(0, 0, m_color_texture->GetWidth(), m_color_texture->GetHeight(), 0, 0, m_color_texture->GetWidth(), m_color_texture->GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
-			CHECK_GL_ERROR(L"Can't blit frame buffer");
+			ValidateOpenGL(L"Can't blit frame buffer");
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			CHECK_GL_ERROR(L"Can't unbind frame buffer");
+			ValidateOpenGL(L"Can't unbind frame buffer");
 
 			glBindTexture(GL_TEXTURE_2D, m_color_texture->GetCode());
-			CHECK_GL_ERROR(L"Can't bind texture");
+			ValidateOpenGL(L"Can't bind texture");
 			glGenerateMipmap(GL_TEXTURE_2D);
-			CHECK_GL_ERROR(L"Can't generate mipmaps");
+			ValidateOpenGL(L"Can't generate mipmaps");
 			glBindTexture(GL_TEXTURE_2D, 0);
-			CHECK_GL_ERROR(L"Can't unbind texture");
+			ValidateOpenGL(L"Can't unbind texture");
 			glDepthFunc(GL_LESS);
-			CHECK_GL_ERROR(L"Can't set depth func to GL_LESS");
+			ValidateOpenGL(L"Can't set depth func to GL_LESS");
 		}
 
 		Texture2D* RenderTargetTexture::GetColorBuffer()

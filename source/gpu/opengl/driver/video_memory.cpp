@@ -7,7 +7,8 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		std::auto_ptr<VideoMemory> VideoMemory::m_instance;		
+		std::unique_ptr<VideoMemory> VideoMemory::m_instance;
+
 		VideoMemory* VideoMemory::Instance()
 		{
 			if (!m_instance.get())
@@ -30,7 +31,7 @@ namespace GPU
 			glGetIntegerv(GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &mem[2]);
 			glGetIntegerv(GPU_MEMORY_INFO_EVICTION_COUNT_NVX, &mem[3]);
 			glGetIntegerv(GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, &mem[4]);
-			m_core.m_max_mem_usage = (m_core.m_max_mem_available << 1) / 3;						
+			m_core.m_max_mem_usage = (m_core.m_max_mem_available << 1) / 3;
 		}
 
 		void VideoMemory::SetMaxMemoryUsage(size_t value)
@@ -53,12 +54,12 @@ namespace GPU
 		}
 
 		PixelBufferObject* VideoMemory::AllocatePixelBuffer(size_t size)
-		{			
+		{
 			VerifyMemory(size);
 			PixelBufferObject* value(new PixelBufferObject);
 			try
 			{
-				value->Create(0, size);				
+				value->Create(0, size);
 				m_core.m_mem_usage += size;
 				return value;
 			}
@@ -79,7 +80,7 @@ namespace GPU
 		}
 
 		VertexBufferObject* VideoMemory::AllocateVertexBuffer(size_t size)
-		{			
+		{
 			VerifyMemory(size);
 			VertexBufferObject* value(new VertexBufferObject);
 			try
@@ -107,7 +108,7 @@ namespace GPU
 		IndexBufferObject* VideoMemory::AllocateIndexBuffer(size_t size)
 		{
 			VerifyMemory(size);
-			IndexBufferObject* value(new IndexBufferObject);		
+			IndexBufferObject* value(new IndexBufferObject);
 			try
 			{
 				value->Create(0, size);
@@ -138,7 +139,7 @@ namespace GPU
 		}
 
 		//void VideoMemory::OptimizeMemoryUsage(size_t size)
-		//{		
+		//{
 		//	size_t to_free override;
 		//	//	remove useless textures
 		//	for (size_t i override; i < m_pbo_list.size(); ++i)

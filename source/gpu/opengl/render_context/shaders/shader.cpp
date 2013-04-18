@@ -33,17 +33,17 @@ namespace GPU
 		void Shader::CookFromString(const char* string, unsigned length)
 		{
 			impl_shader->m_shader_index = glCreateShader(impl_shader->m_type);
-			CHECK_GL_ERROR(L"Unable to create shader");
+			ValidateOpenGL(L"Unable to create shader");
 			out_message() << L"Loading vertex shader\n" + System::string(string, length) << std::endl;
 			const char * body = string;
 			int len = length;
 			GLint compileStatus;
 			glShaderSource(impl_shader->m_shader_index, 1, (const char**)&body,  &len);
-			CHECK_GL_ERROR(L"Unable to set shader source");
+			ValidateOpenGL(L"Unable to set shader source");
 			glCompileShader(impl_shader->m_shader_index);
-			CHECK_GL_ERROR(L"Unable to compile shader");
+			ValidateOpenGL(L"Unable to compile shader");
 			glGetShaderiv(impl_shader->m_shader_index, GL_COMPILE_STATUS, &compileStatus);
-			CHECK_GL_ERROR(L"Unable to get shader compile status");
+			ValidateOpenGL(L"Unable to get shader compile status");
 			if (compileStatus == GL_TRUE)
 			{
 				out_message() << L"Shader has been compiled successfully" << std::endl;
@@ -52,12 +52,12 @@ namespace GPU
 			{
 				GLint logLength;
 				glGetShaderiv(impl_shader->m_shader_index, GL_INFO_LOG_LENGTH, &logLength);
-				CHECK_GL_ERROR(L"Unable to get shader info log length");
+				ValidateOpenGL(L"Unable to get shader info log length");
 				if (logLength > 65536)
 				{
 					GLchar* buffer = new GLchar[logLength];
 					glGetShaderInfoLog(impl_shader->m_shader_index, logLength, NULL, buffer);
-					CHECK_GL_ERROR(L"Unable to get shader info log text");
+					ValidateOpenGL(L"Unable to get shader info log text");
 					out_error() << System::string(buffer) << std::endl;
 					delete[] buffer;
 				}
@@ -65,7 +65,7 @@ namespace GPU
 				{
 					GLchar buffer[65536];
 					glGetShaderInfoLog(impl_shader->m_shader_index, 65536, NULL, buffer);
-					CHECK_GL_ERROR(L"Unable to get shader info log text");
+					ValidateOpenGL(L"Unable to get shader info log text");
 					out_error() << System::string(buffer) << std::endl;
 				}
 				out_error() << L"Can't create vertex shader" << std::endl;
@@ -77,17 +77,17 @@ namespace GPU
 			System::Buffer shader_data;
 			System::BinaryFile::Load(filename, shader_data);		
 			impl_shader->m_shader_index = glCreateShader(impl_shader->m_type);
-			CHECK_GL_ERROR(L"Unable to create shader");
+			ValidateOpenGL(L"Unable to create shader");
 			out_message() << L"Loading vertex shader " + filename << std::endl;
 			char * body = (char*)shader_data.StartPointer();
 			int len = shader_data.GetSize();
 			GLint compileStatus;
 			glShaderSource(impl_shader->m_shader_index, 1, (const char**)&body,  &len);
-			CHECK_GL_ERROR(L"Unable to set shader source");
+			ValidateOpenGL(L"Unable to set shader source");
 			glCompileShader(impl_shader->m_shader_index);
-			CHECK_GL_ERROR(L"Unable to compile shader");
+			ValidateOpenGL(L"Unable to compile shader");
 			glGetShaderiv(impl_shader->m_shader_index, GL_COMPILE_STATUS, &compileStatus);
-			CHECK_GL_ERROR(L"Unable to get shader compile status");
+			ValidateOpenGL(L"Unable to get shader compile status");
 			if (compileStatus == GL_TRUE)
 			{
 				out_message() << filename + L" has been compiled successfully" << std::endl;
@@ -96,12 +96,12 @@ namespace GPU
 			{
 				GLint logLength;
 				glGetShaderiv(impl_shader->m_shader_index, GL_INFO_LOG_LENGTH, &logLength);
-				CHECK_GL_ERROR(L"Unable to get shader info log length");
+				ValidateOpenGL(L"Unable to get shader info log length");
 				if (logLength > 65536)
 				{
 					GLchar* buffer = new GLchar[logLength];
 					glGetShaderInfoLog(impl_shader->m_shader_index, logLength, NULL, buffer);
-					CHECK_GL_ERROR(L"Unable to get shader info log text");
+					ValidateOpenGL(L"Unable to get shader info log text");
 					out_error() << System::string(buffer) << std::endl;
 					delete[] buffer;
 				}
@@ -109,7 +109,7 @@ namespace GPU
 				{
 					GLchar buffer[65536];
 					glGetShaderInfoLog(impl_shader->m_shader_index, 65536, NULL, buffer);
-					CHECK_GL_ERROR(L"Unable to get shader info log text");
+					ValidateOpenGL(L"Unable to get shader info log text");
 					out_error() << System::string(buffer) << std::endl;
 				}
 				out_error() << L"Can't create vertex shader" << std::endl;

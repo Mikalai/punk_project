@@ -4,6 +4,9 @@ namespace GPU
 {
 	namespace OpenGL
 	{
+		int64_t ScaledGridObject::VertexType = Vertex<VertexComponent::Position, 
+				VertexComponent::Normal, 
+				VertexComponent::Texture0>::Value();
 
 		//	for terrain width and height supposed to be 1 and nothing else
 		void ScaledGridObject::Cook(float width, float height, unsigned hor_slices, unsigned vert_slices, int levels)
@@ -18,7 +21,7 @@ namespace GPU
 			int total_cells = 12*levels + 16;
 			int total_vertex_count = total_cells * vertex_per_cell;
 			int total_index_count = total_cells * index_per_cell;
-			std::vector<Vertex<VertexType>> v(total_vertex_count);
+			std::vector<CurrentVertex> v(total_vertex_count);
 			std::vector<unsigned int> index(total_index_count);
 			float total_width = 0;
 			for (int i = 1; i != levels+1; ++i)
@@ -64,7 +67,7 @@ namespace GPU
 							for (int j = 0; j != (int)vertex_per_cell_y; j++)
 							{
 								//	get access to the current vertex
-								Vertex<VertexType>& cur = v[cur_v];
+								CurrentVertex& cur = v[cur_v];
 
 								//	check if it is a border and odd vertex
 								//	its position should be adjusted in the shader
@@ -129,7 +132,7 @@ namespace GPU
 			}
 			SetVertexBuffer(v);
 			SetIndexBuffer(index);
-			VertexArrayObject2<PrimitiveType, VertexType>::Cook();/**/
+			VertexArrayObject2<PrimitiveType, CurrentVertex>::Cook();/**/
 		}
 
 		float ScaledGridObject::GetTotalWidth() const

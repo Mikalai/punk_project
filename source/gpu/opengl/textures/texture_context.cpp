@@ -28,7 +28,7 @@ namespace GPU
 				if (m_textures[i])
 				{
 					glActiveTexture(GL_TEXTURE0 + i);
-					CHECK_GL_ERROR(L"Unable to activate GL_TEXTURE0+i");
+					ValidateOpenGL(L"Unable to activate GL_TEXTURE0+i");
 					m_textures[i]->Bind();
 				}
 			}
@@ -41,9 +41,9 @@ namespace GPU
 				if (m_textures[i])
 				{
 					glActiveTexture(GL_TEXTURE0 + i);// place some usefull code here
-					CHECK_GL_ERROR(L"Unable to activate GL_TEXTUREi");
+					ValidateOpenGL(L"Unable to activate GL_TEXTUREi");
 					glBindTexture(GL_TEXTURE_2D, 0);
-					CHECK_GL_ERROR(L"Unable to unbind");
+					ValidateOpenGL(L"Unable to unbind");
 					m_textures[i] = nullptr;
 				}
 			}

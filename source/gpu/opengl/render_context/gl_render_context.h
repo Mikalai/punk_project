@@ -47,9 +47,9 @@ namespace GPU
 			virtual ~OpenGLRenderContext();
 
 		protected:
-			std::auto_ptr<Shader> m_vertex_shader;
-			std::auto_ptr<Shader> m_fragment_shader;
-			std::auto_ptr<Shader> m_geometry_shader;
+			std::unique_ptr<Shader> m_vertex_shader;
+			std::unique_ptr<Shader> m_fragment_shader;
+			std::unique_ptr<Shader> m_geometry_shader;
 
 			unsigned m_program;
 		};

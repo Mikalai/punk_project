@@ -22,7 +22,7 @@ namespace GPU
 {
 	class VideoDriver;
 	namespace OpenGL
-	{	
+	{
 		extern PFNGLGETBUFFERPARAMETERI64VPROC glGetBufferParameteri64v;
 		extern PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv;
 		extern PFNGLGETBUFFERPARAMETERI64VPROC glGetBufferParameterui64v;
@@ -204,6 +204,7 @@ namespace GPU
 		extern PFNGLTEXTURESTORAGE1DEXTPROC glTextureStorage1DEXT;
 		extern PFNGLTEXTURESTORAGE2DEXTPROC glTextureStorage2DEXT;
 
+        //  windows specific
 		extern void InitExtensions(void* (*GetGPUProcAddres)(const char*));
 		extern bool IsSupported(const char* name);
 	}

@@ -28,6 +28,7 @@ namespace GPU
 		void SetDiffuseColor(const Math::vec4& value);
 		void SetDiffuseMap0(const Texture2D* value);
 		void SetDiffuseMap1(const Texture2D* value);
+		void SetFontMap(const Texture2D* value);
 		void SetBoneMatrix(int bone_index, const Math::mat4& value);
 		void SetSpecularColor(const Math::vec4& value);
 		void SetSpecularMap(const Texture2D* value);
@@ -43,6 +44,7 @@ namespace GPU
 		void SetTextureMatrix(const Math::mat4& value);
 		void SetLocalMatrix(const Math::mat4& value);
 		void SetSpecularFactor(float value);
+		void SetTextColor(const Math::vec4& value);
 
 		const Math::mat4& GetWorldMatrix() const;		
 		const Math::mat4& GetLocalMatrix() const;
@@ -67,6 +69,7 @@ namespace GPU
 		void EnableTerrainRendering(bool value);
 		void EnableLighting(bool value);
 		void EnableTexturing(bool value);
+		void EnableFontRendering(bool value);
 
 		void SetVideoDriver(VideoDriverImpl* driver);
 	private:

@@ -36,7 +36,7 @@ namespace GPU
 		{									
 			Math::mat4 proj_view_world = pparams.m_projection * pparams.m_view * pparams.m_world;
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
-			SetUniformMatrix2f(uTextureMatrix, &pparams.m_texture_matrix[0]);
+			SetUniformMatrix4f(uTextureMatrix, &pparams.m_texture_matrix[0]);
 			SetUniformVector4f(uDiffuseColor, &pparams.m_diffuse_color[0]);
 			SetUniformVector4f(uTextColor, &pparams.m_text_color[0]);
 			SetUniformVector4f(uNoDiffuseTexture, &pparams.m_no_diffuse_texture_color[0]);
@@ -45,12 +45,12 @@ namespace GPU
 			if (pparams.m_enable_wireframe)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}			
 			else
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}
 
 			if (pparams.m_blending)
@@ -64,9 +64,9 @@ namespace GPU
 			}
 		}
 
-		VertexAttributes RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader>::GetRequiredAttributesSet() const 
+		int64_t RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader>::GetRequiredAttributesSet() const 
 		{
-			return COMPONENT_POSITION|COMPONENT_TEXTURE;
+			return Vertex<VertexComponent::Position, VertexComponent::Texture0>::Value();
 		}
 
 		void RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader>::Begin()

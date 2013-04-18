@@ -20,7 +20,7 @@ namespace GPU
 		: impl(new Texture2DImpl())
 	{}
 
-	Texture2D::Texture2D(const ImageModule::Image& image) 
+	Texture2D::Texture2D(const ImageModule::Image& image)
 		: impl(new Texture2DImpl(image))
 	{}
 
@@ -35,16 +35,16 @@ namespace GPU
 		return *this;
 	}
 
-	void Texture2D::Bind() const 
+	void Texture2D::Bind() const
 	{
 		glBindTexture(GL_TEXTURE_2D, impl->m_texture_id);
-		CHECK_GL_ERROR(L"Unable to bind texture");
+		ValidateOpenGL(L"Unable to bind texture");
 	}
 
 	void Texture2D::Unbind() const
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
-		CHECK_GL_ERROR(L"Unable to unbind texture");
+		ValidateOpenGL(L"Unable to unbind texture");
 	}
 
 	Texture2D::~Texture2D()
@@ -72,7 +72,7 @@ namespace GPU
 	{
 		if (impl)
 			delete impl;
-		impl = new Texture2DImpl;		
+		impl = new Texture2DImpl;
 		return impl->Create(width, height, ImageFormatToOpenGL(format), data, use_mipmaps);
 	}
 
@@ -153,18 +153,18 @@ namespace GPU
 	}
 
 	bool Texture2D::Save(std::ostream& stream) const
-	{	
+	{
 		return false;
 	}
 
 	Texture2D* Texture2D::CreateFromFile(const System::string& path, bool use_mip_maps)
-	{		
+	{
 		ImageModule::Importer importer;
-		std::auto_ptr<ImageModule::Image> image(importer.LoadAnyImage(path));
+		std::unique_ptr<ImageModule::Image> image(importer.LoadAnyImage(path));
 
 		if (image.get())
 		{
-			std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
+			std::unique_ptr<Texture2D> result(new Texture2D);//(*image));
 			result->Create(*image, use_mip_maps);
 			return result.release();
 		}
@@ -173,8 +173,8 @@ namespace GPU
 	}
 
 	Texture2D* Texture2D::CreateFromStream(std::istream& stream, bool use_mip_maps)
-	{		
-		std::unique_ptr<Texture2D> result(new Texture2D);//(*image));		
+	{
+		std::unique_ptr<Texture2D> result(new Texture2D);//(*image));
 		result->Load(stream);
 		return result.release();
 	}

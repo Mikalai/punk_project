@@ -4,11 +4,14 @@
 
 namespace GPU
 {
+// TODO (chip#1#): Global variable should be removed
+    Utility::FontBuilder g_font_builder;
+
 	namespace OpenGL
 	{
 		TextSurface::TextSurface()
 		{
-			m_texture = new Texture2D;		
+			m_texture = new Texture2D;
 			m_halignment = TextHorizontalAlignment::HORIZONTAL_LEFT;
 			m_valignment = TextVerticalAlignment::VERTICAL_TOP;
 			m_font = L"times.ttf";
@@ -33,7 +36,7 @@ namespace GPU
 				start_x = 0;
 			else if (TextHorizontalAlignment::HORIZONTAL_CENTER == m_halignment)
 			{
-				int length = Utility::FontBuilder::Instance()->CalculateLength(text.Data());
+				int length = g_font_builder.CalculateLength(text.Data());
 				if (length >= m_texture->GetWidth())
 					start_x = 0;
 				else
@@ -41,7 +44,7 @@ namespace GPU
 			}
 			else if (TextHorizontalAlignment::HORIZONTAL_RIGHT == m_halignment)
 			{
-				int length = Utility::FontBuilder::Instance()->CalculateLength(text.Data());
+				int length = g_font_builder.CalculateLength(text.Data());
 				if (length >= m_texture->GetWidth())
 					start_x = 0;
 				else
@@ -52,12 +55,12 @@ namespace GPU
 
 		int TextSurface::CalculateTextYOffset(const System::string& text)
 		{
-			const wchar_t* cur = text.Data();		
-			int length = Utility::FontBuilder::Instance()->CalculateLength(cur);
+			const wchar_t* cur = text.Data();
+			int length = g_font_builder.CalculateLength(cur);
 			if (length == 0)
-				return 1;		
-			int max_offset = Utility::FontBuilder::Instance()->GetMaxOffset(text);
-			int min_offset = Utility::FontBuilder::Instance()->GetMinOffset(text);
+				return 1;
+			int max_offset = g_font_builder.GetMaxOffset(text);
+			int min_offset = g_font_builder.GetMinOffset(text);
 			int max_height = max_offset - min_offset;
 			int max_lines = m_texture->GetHeight() / max_height;
 			int req_lines = length / m_texture->GetWidth();
@@ -87,10 +90,10 @@ namespace GPU
 			int x = start_x = CalculateTextXOffset(m_text);
 			int y = start_y = CalculateTextYOffset(m_text);
 			m_texture->Fill(0);
-			Utility::FontBuilder::Instance()->SetCurrentFace(m_font);
-			Utility::FontBuilder::Instance()->SetCharSize(m_font_size, m_font_size);
+			g_font_builder.SetCurrentFace(m_font);
+			g_font_builder.SetCharSize(m_font_size, m_font_size);
 			for (const wchar_t* a = m_text.Data(); *a; a++)
-			{ 
+			{
 				int width;
 				int height;
 				int x_offset;
@@ -98,18 +101,18 @@ namespace GPU
 				int x_advance;
 				int y_advance;
 				unsigned char* buffer;
-				Utility::FontBuilder::Instance()->RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
+				g_font_builder.RenderChar(*a, &width, &height, &x_offset, &y_offset, &x_advance, &y_advance, &buffer);
 				if (x_offset < 0 && x == 0)
 					x += -x_offset;
 				if (x + x_offset + width >= m_texture->GetWidth())
 				{
-					y -= Utility::FontBuilder::Instance()->GetHeight(L'M');
+					y -= g_font_builder.GetHeight(L'M');
 					x = CalculateTextXOffset(a);
 					if (y < 0)
 						return true;
-				}							
-				m_texture->CopyFromCPU(x + x_offset, y - y_offset, width, height, buffer);			
-				x += x_advance;				
+				}
+				m_texture->CopyFromCPU(x + x_offset, y - y_offset, width, height, buffer);
+				x += x_advance;
 			}/**/
 			return true;
 		}

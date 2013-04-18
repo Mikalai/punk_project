@@ -20,15 +20,15 @@ namespace GPU
 
 	void* GetGPUProcAddress(const char* name)
 	{
-		void* res = wglGetProcAddress(name);
+		void* res = (void*)wglGetProcAddress(name);
 		if (res != 0)
 			return res;
-		HMODULE lib = LoadLibrary(TEXT("OpenGL32.dll"));
-		res = ::GetProcAddress(lib, name);
+		HMODULE lib = LoadLibrary(L"OpenGL32.dll");
+		res = (void*)::GetProcAddress(lib, name);
 		FreeLibrary(lib);
 		GetLastError();
 		return res;
-	}	
+	}
 
 
 	VideoDriverImpl::VideoDriverImpl(VideoDriver* driver)
@@ -69,7 +69,7 @@ namespace GPU
 			LONG code;
 			if (code = ChangeDisplaySettings(&mode, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL)
 			{
-				out_error() << L"Can't change display settings " << std::endl;					
+				out_error() << L"Can't change display settings " << std::endl;
 				return;
 			}
 		}
@@ -250,7 +250,7 @@ namespace GPU
 
 	void VideoDriverImpl::OnResize(System::Event* e)
 	{
-		System::WindowResizeEvent* event = dynamic_cast<System::WindowResizeEvent*>(e);			
+		System::WindowResizeEvent* event = dynamic_cast<System::WindowResizeEvent*>(e);
 		if (!event)
 			throw OpenGLInvalidValueException(L"Can't understand event");
 		glViewport(0, 0, event->width, event->height);

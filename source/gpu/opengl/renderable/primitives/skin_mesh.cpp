@@ -9,12 +9,20 @@ namespace GPU
 {
 	namespace OpenGL
 	{
+		int64_t SkinMesh::VertexCode = Vertex<VertexComponent::Position,
+					VertexComponent::Normal,
+					VertexComponent::Tangent,
+					VertexComponent::Bitangent,
+					VertexComponent::Texture0,
+					VertexComponent::BoneID,
+					VertexComponent::BoneWeight>::Value();
+
 		SkinMesh::SkinMesh()
 		{}
 
 		SkinMesh* SkinMesh::CreateFromFile(const System::string& path)
 		{
-			std::ifstream stream(path.Data(), std::ios_base::binary);
+			std::ifstream stream(path.ToStdString().c_str(), std::ios_base::binary);
 			if (!stream.is_open())
 				throw System::PunkInvalidArgumentException(L"Can't load skinned mesh from " + path);
 			std::unique_ptr<SkinMesh> mesh(new SkinMesh);
@@ -30,7 +38,7 @@ namespace GPU
 		}
 
 		bool SkinMesh::Cook(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature)
-		{				
+		{
 			SetType(System::ObjectType::SKIN_MESH);
 			if (!mesh)
 				throw System::PunkInvalidArgumentException(L"Can't created skinned mesh from NULL mesh descriptor");
@@ -48,7 +56,7 @@ namespace GPU
 			for (unsigned i = 0; i < ib.size(); i++)
 				ib[i] = i;
 
-			std::vector<Vertex<VertexType>> vb(mesh->GetFaces().size()*3);
+			std::vector<CurrentVertex> vb(mesh->GetFaces().size()*3);
 
 			std::vector<int> base_index;		/// contains vertex index in the source array
 			int index = 0;
@@ -71,7 +79,7 @@ namespace GPU
 					int index_1 = (j+1)%3;
 					int index_2 = (j+2)%3;
 
-					Math::CalculateTBN(position[index_0], position[index_1], position[index_2], texture[index_0], texture[index_1], texture[index_2], tgn, btn, nrm, det); 
+					Math::CalculateTBN(position[index_0], position[index_1], position[index_2], texture[index_0], texture[index_1], texture[index_2], tgn, btn, nrm, det);
 					det = (det < 0) ? -1.0f : 1.0f;
 
 					vb[index].m_position = position[index_0];
@@ -85,7 +93,7 @@ namespace GPU
 
 					base_index.push_back(f[j]);
 					index++;
-				}			
+				}
 			}
 
 			/// Smooth TBN
@@ -97,13 +105,13 @@ namespace GPU
 				Math::vec3 btan;
 				for (int j = 0; j < (int)vb.size(); j++)
 				{
-					Vertex<VertexType>* v = &vb[j];
+					CurrentVertex* v = &vb[j];
 					if (base_index[j] == i)
-					{					
+					{
 						norm += v->m_normal.XYZ();
 						tang += v->m_tangent.XYZ();
 						btan += v->m_bitangent.XYZ();
-					}				
+					}
 				}
 
 				norm.Normalize();
@@ -119,21 +127,20 @@ namespace GPU
 				float w = m.Determinant();
 
 				for (int j = 0; j < (int)vb.size(); j++)
-				{	
-					Vertex<VertexType>* v = &vb[j];
+				{
+					CurrentVertex* v = &vb[j];
 					if (base_index[j] == i)
-					{					
+					{
 						v->m_normal = norm;
 						v->m_tangent.Set(tang[0], tang[1], tang[2], w);
 						v->m_bitangent = btan;
-					}				
+					}
 				}
 			}
 			SetVertexBuffer(vb);
 			SetIndexBuffer(ib);
 
-			int vt = VertexType;
-			return VertexArrayObject2<PrimitiveType, VertexType>::Cook();
+			return VertexArrayObject2<PrimitiveType, CurrentVertex>::Cook();
 		}
 
 		bool SkinMesh::CookOneVertexWithBone(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature, int index, Math::vec4& bone, Math::vec4& weight) const
@@ -148,7 +155,7 @@ namespace GPU
 			{
 				const Virtual::Bone* cur_bone = armature->GetBoneByIndex(i);
 				if (weights.find(cur_bone->GetName()) != weights.end())
-				{	
+				{
 					// replace the least significant bone
 					int Min = 0;
 					for (int j = 0; j < 4; j++)
@@ -179,12 +186,12 @@ namespace GPU
 
 		bool SkinMesh::Save(std::ostream& stream) const
 		{
-			return VertexArrayObject2<PrimitiveType, VertexType>::Save(stream);
+			return VertexArrayObject2<PrimitiveType, CurrentVertex>::Save(stream);
 		}
 
 		bool SkinMesh::Load(std::istream& stream)
 		{
-			return VertexArrayObject2<PrimitiveType, VertexType>::Load(stream);
+			return VertexArrayObject2<PrimitiveType, CurrentVertex>::Load(stream);
 		}
 	}
 }

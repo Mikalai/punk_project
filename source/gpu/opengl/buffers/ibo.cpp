@@ -25,13 +25,13 @@ namespace GPU
 				Destroy();
 
 			glGenBuffers(1, &m_index);
-			CHECK_GL_ERROR(L"Unable to generate Index buffer");
+			ValidateOpenGL(L"Unable to generate Index buffer");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index);
-			CHECK_GL_ERROR(L"Unable to bind Index buffer");
+			ValidateOpenGL(L"Unable to bind Index buffer");
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-			CHECK_GL_ERROR(L"Unable to fill Index buffer with data");
+			ValidateOpenGL(L"Unable to fill Index buffer with data");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			CHECK_GL_ERROR(L"Unable to unbind Index buffer");	
+			ValidateOpenGL(L"Unable to unbind Index buffer");	
 			m_size = size;
 		}
 
@@ -40,7 +40,7 @@ namespace GPU
 			if (m_index)
 			{
 				glDeleteBuffers(1, &m_index);				
-				CHECK_GL_ERROR(L"Unable to delete Indext buffer");
+				ValidateOpenGL(L"Unable to delete Indext buffer");
 				m_index = 0;
 			}
 		}
@@ -56,7 +56,7 @@ namespace GPU
 				throw OpenGLInvalidValueException(L"Buffer is not valid");
 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index);
-			CHECK_GL_ERROR(L"Unable to bind Index buffer");
+			ValidateOpenGL(L"Unable to bind Index buffer");
 		}
 
 		void IndexBufferObject::Unbind() const
@@ -64,7 +64,7 @@ namespace GPU
 			if (!IsValid())
 				throw OpenGLInvalidValueException(L"Buffer is not valid");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			CHECK_GL_ERROR(L"Unable to unbind Index buffer");
+			ValidateOpenGL(L"Unable to unbind Index buffer");
 		}
 
 
@@ -72,7 +72,7 @@ namespace GPU
 		{
 			Bind();
 			GLvoid* buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_WRITE);
-			CHECK_GL_ERROR(L"Unable to map buffer");
+			ValidateOpenGL(L"Unable to map buffer");
 			Unbind();
 			return buffer;
 		}
@@ -81,7 +81,7 @@ namespace GPU
 		{
 			Bind();
 			GLvoid* buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_BUFFER);
-			CHECK_GL_ERROR(L"Unable to map buffer");
+			ValidateOpenGL(L"Unable to map buffer");
 			Unbind();
 			return buffer;			
 		}
@@ -90,7 +90,7 @@ namespace GPU
 		{
 			Bind();
 			glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-			CHECK_GL_ERROR(L"Unable to map buffer");
+			ValidateOpenGL(L"Unable to map buffer");
 			Unbind();
 		}
 

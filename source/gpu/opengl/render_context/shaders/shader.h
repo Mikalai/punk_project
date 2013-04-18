@@ -19,8 +19,8 @@ namespace GPU
 		{
 		public:
 			enum ShaderType { SHADER_BAD, SHADER_VERTEX, SHADER_FRAGMENT, SHADER_GEOMETRY };
-		protected:	
-			std::auto_ptr<ShaderImpl> impl_shader;
+		protected:
+			std::unique_ptr<ShaderImpl> impl_shader;
 		public:
 			explicit Shader(ShaderType type);
 			Shader(const Shader& shader);

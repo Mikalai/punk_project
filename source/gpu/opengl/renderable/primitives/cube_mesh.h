@@ -7,10 +7,16 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class PUNK_ENGINE CubeObject : public VertexArrayObject2<GL_TRIANGLES, COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_TANGENT|COMPONENT_BITANGENT >
+		class PUNK_ENGINE CubeObject : public VertexArrayObject2<GL_TRIANGLES,
+			Vertex<VertexComponent::Position,
+				VertexComponent::Normal,
+				VertexComponent::Tangent,
+				VertexComponent::Bitangent,
+				VertexComponent::Texture0>>
 		{
 			enum { PrimitiveType = GL_TRIANGLES };
-			enum { VertexType = COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_TANGENT|COMPONENT_BITANGENT };
+			const int64_t VertexCode = CurrentVertex::Value();
+
 		public:
 			CubeObject();
 			void Cook(float width, float height, float depth);
@@ -19,7 +25,7 @@ namespace GPU
 			static void Destroy();
 
 		private:
-			static std::auto_ptr<CubeObject> m_instance;
+			static std::unique_ptr<CubeObject> m_instance;
 		};
 	}
 }

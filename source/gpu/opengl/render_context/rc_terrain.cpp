@@ -74,12 +74,12 @@ namespace GPU
 			{
 				glLineWidth(pparams.m_line_width);
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}			
 			else
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}
 
 			if (pparams.m_depth_test)
@@ -92,9 +92,9 @@ namespace GPU
 			}
 		}
 
-		VertexAttributes RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::GetRequiredAttributesSet() const 
+		int64_t RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::GetRequiredAttributesSet() const 
 		{
-			return COMPONENT_POSITION|COMPONENT_TEXTURE|COMPONENT_NORMAL|COMPONENT_FLAG;
+			return Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0, VertexComponent::Flag>::Value();
 		}
 
 		void RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::Begin()

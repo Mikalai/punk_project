@@ -20,7 +20,7 @@ namespace GPU
 		*	textures and buffers.
 		*	This is a singletone class
 		*/
-		class PUNK_ENGINE VideoMemory
+		class VideoMemory
 		{
 		public:
 
@@ -52,7 +52,7 @@ namespace GPU
 			*/
 			void OptimizeMemoryUsage(size_t size);
 
-			static std::auto_ptr<VideoMemory> m_instance;		
+			static std::unique_ptr<VideoMemory> m_instance;
 
 			struct Core
 			{

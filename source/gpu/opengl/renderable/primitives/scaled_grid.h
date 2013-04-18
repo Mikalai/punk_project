@@ -7,18 +7,17 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class PUNK_ENGINE ScaledGridObject : public VertexArrayObject2<GL_TRIANGLES, COMPONENT_POSITION|
-			COMPONENT_NORMAL|
-			COMPONENT_TEXTURE>
+		class PUNK_ENGINE ScaledGridObject : public VertexArrayObject2<GL_TRIANGLES, 
+			Vertex<VertexComponent::Position, 
+				VertexComponent::Normal, 
+				VertexComponent::Texture0>>
 		{
 			enum { PrimitiveType = GL_TRIANGLES };
-			enum { VertexType = COMPONENT_POSITION|
-				COMPONENT_NORMAL|
-				COMPONENT_TEXTURE};
+			static int64_t VertexType;
 
 		public:
 
-			ScaledGridObject::ScaledGridObject() {}
+			ScaledGridObject() {}
 
 			virtual void Cook(float width, float height, unsigned hor_slices, unsigned vert_slices, int levels);
 
