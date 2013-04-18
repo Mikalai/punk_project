@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 
-namespace Math 
+namespace Math
 {
 	class vec4;
 	class mat3;
@@ -14,10 +14,10 @@ namespace GPU
 {
 	class Texture2D;
 
-	class PUNK_ENGINE Brush sealed
+	class PUNK_ENGINE Brush final
 	{
 	public:
-		Brush();		
+		Brush();
 		Brush(const Brush& value);
 		Brush& operator = (const Brush& value);
 		~Brush();

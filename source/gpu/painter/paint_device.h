@@ -12,9 +12,9 @@ namespace GPU
 	*	to the device PaintEngine is used.
 	*	This should be implemented by low level API
 	*
-	*	
+	*
 	*/
-	class PUNK_ENGINE PaintDevice abstract
+	class PUNK_ENGINE PaintDevice
 	{
 	public:
 		PaintDevice();
@@ -47,8 +47,8 @@ namespace GPU
 	inline int PaintDevice::GetHeight() const
 	{
 		return m_height;
-	}	
-	
+	}
+
 	inline void PaintDevice::SetWidth(int width)
 	{
 		m_width = width;
@@ -59,7 +59,7 @@ namespace GPU
 		m_height = height;
 	}
 
-	inline PaintEngine* PaintDevice::GetPaintEngine() 
+	inline PaintEngine* PaintDevice::GetPaintEngine()
 	{
 		return m_engine;
 	}

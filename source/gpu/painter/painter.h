@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_GPU_PAINTER
 #define _H_PUNK_GPU_PAINTER
 
+#include <cstddef>
 #include "../../config.h"
 #include <vector>
 
@@ -19,7 +20,7 @@ namespace Math
 	class Line2D;
 	class Triangle2D;
 	class vec2;
-	class ivec2;	
+	class ivec2;
 	class Rect;
 	class mat3;
 }
@@ -34,7 +35,7 @@ namespace GPU
 	class PUNK_ENGINE Painter final
 	{
 	public:
-		Painter();		
+		Painter();
 		~Painter();
 		void Begin(PaintDevice* device);
 		void End();
@@ -52,7 +53,7 @@ namespace GPU
 		void DrawEllipse(float xc, float yc, float major_axis, float minor_axis);
 		void DrawEllipse(const Math::Rect& rect);
 		void DrawImage(float x, float y, const ImageModule::Image& image);
-		void DrawImage(const Math::vec2& point, const ImageModule::Image& image);		
+		void DrawImage(const Math::vec2& point, const ImageModule::Image& image);
 		void DrawRect(const Math::Rect& rect);
 		void DrawRect(float x, float y, float width, float height);
 		void DrawRoundedRect(float x, float y, float x_r, float y_r);

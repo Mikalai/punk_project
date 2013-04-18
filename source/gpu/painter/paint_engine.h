@@ -1,10 +1,11 @@
 #ifndef _H_PUNK_PAINT_ENGINE
 #define _H_PUNK_PAINT_ENGINE
 
+#include <cstddef>
 #include "../../config.h"
 
-namespace Math 
-{ 
+namespace Math
+{
 	class Line2D;
 	class vec2;
 	class Rect;
@@ -24,7 +25,7 @@ namespace GPU
 	*	using OpenGL or other low level api
 	*	Paint engine performs its rendering into PaintDevice
 	*/
-	class PUNK_ENGINE PaintEngine abstract
+	class PUNK_ENGINE PaintEngine
 	{
 	public:
 
