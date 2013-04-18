@@ -12,7 +12,7 @@
 namespace Raytracer
 {
 	struct Scene::SceneImpl
-	{		
+	{
 		struct Object
 		{
 			Math::Sphere m_sphere;
@@ -33,7 +33,7 @@ namespace Raytracer
 			Math::vec3 m_color;
 			float m_angle;
 
-			Light() 
+			Light()
 				: m_position(0,0,0)
 				, m_direction(0, 0, -1)
 				, m_color(1,1,1)
@@ -65,7 +65,7 @@ namespace Raytracer
 			float g_plus_lh = g + l_h;
 
 			float f = 0.5f * (g_minus_lh*g_minus_lh) / (g_plus_lh*g_plus_lh);
-			
+
 			float a = l_h*(g_plus_lh) - 1.0f;
 			float b = l_h*(g_minus_lh) + 1.0f;
 
@@ -113,16 +113,16 @@ namespace Raytracer
 
 		const Math::vec3 CalclLightOmni(const Light& light, const Math::vec3& point, const Math::vec3& normal, const Math::vec3& diffuse, float k, float m)
 		{
-			auto light_dir = (light.m_position - point).Normalized();			
+			auto light_dir = (light.m_position - point).Normalized();
 			auto view_dir = Math::vec3(0,0,1);
 			float s = normal.Dot(light_dir);
 
 			Math::vec3 spec(1,1,1);
-			auto h = (light_dir + Math::vec3(0,0,1)).Normalized();			
+			auto h = (light_dir + Math::vec3(0,0,1)).Normalized();
 			auto spec_s = CookTorrenceFunction(view_dir, light_dir, normal, 1.333f, m);
 
 			if (s > 0)
-				return k*s*diffuse.ComponentMult(light.m_color) + (1.0f - k)*spec_s*spec;				
+				return k*s*diffuse.ComponentMult(light.m_color) + (1.0f - k)*spec_s*spec;
 			else
 				return Math::vec3(0,0,0);
 		}
@@ -132,11 +132,11 @@ namespace Raytracer
 			auto light_dir = (light.m_position - point).Normalized();
 
 			Math::vec3 spec(1,1,1);
-			auto h = (light_dir + Math::vec3(0,0,1)).Normalized();			
-			auto spec_s = pow(Math::Max(normal.Dot(h), 0.0f), 128);
+			Math::vec3 h = (light_dir + Math::vec3(0,0,1)).Normalized();
+			float spec_s = powf(Math::Max(normal.Dot(h), 0.0f), 128);
 
-			auto s1 = pow(Math::Max(light_dir.Dot(light.m_direction.Negated()), 0.0f), 10);
-			auto s2 = normal.Dot(light_dir);
+			float s1 = powf(Math::Max(light_dir.Dot(light.m_direction.Negated()), 0.0f), 10);
+			float s2 = normal.Dot(light_dir);
 			return s1*s2*light.m_color*diffuse + spec_s*spec;
 		}
 
@@ -146,8 +146,8 @@ namespace Raytracer
 			float s = normal.Dot(light_dir);
 
 			Math::vec3 spec(1,1,1);
-			auto h = (light_dir + Math::vec3(0,0,1)).Normalized();			
-			auto spec_s = pow(Math::Max(normal.Dot(h), 0.0f), 128);
+			auto h = (light_dir + Math::vec3(0,0,1)).Normalized();
+			auto spec_s = powf(Math::Max(normal.Dot(h), 0.0f), 128);
 
 			if (s > 0)
 				return s*diffuse.ComponentMult(light.m_color) + spec_s*spec;
@@ -160,20 +160,20 @@ namespace Raytracer
 			float min_t1 = 1e10;
 			const Object* near_object = nullptr;
 			Math::vec3 color;
-			for each (auto& object in m_children)
+			for (auto& object : m_children)
 			{
-				float t1, t2;				
+				float t1, t2;
 				Math::vec3 p1, p2;
 				Math::Relation res = Math::CrossLineSphere(line, object.m_sphere, t1, t2);
 				if (res != Math::Relation::INTERSECT_2)
 					continue;
-				
+
 				if (min_t1 > t1)
 				{
 					near_object = &object;
 					min_t1 = t1;
 				}
-				
+
 				if (min_t1 > t2)
 				{
 					near_object = &object;
@@ -184,7 +184,7 @@ namespace Raytracer
 			if (!near_object || min_t1 <= 0)
 				return Point(0,0,0);
 
-			for each(const auto& light in m_lights)
+			for (const auto& light : m_lights)
 			{
 				const auto p1 = line.PointAt(min_t1);
 				const auto normal = (p1 - near_object->m_sphere.GetCenter()).Normalized();
