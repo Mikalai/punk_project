@@ -8,13 +8,12 @@ uniform sampler2D uTextMap;
 
 in vec2 pos;
 in vec2 texCoord;
-in vec2 diffuseMapTexcoord;
 out vec4 color;
 
 void main(void)
 {
 	vec4 diffuse_color;
-	diffuse_color = texture(uDiffuseMap, diffuseMapTexcoord);
+	diffuse_color = texture(uDiffuseMap, texCoord);
 	diffuse_color = clamp(diffuse_color + uNoDiffuseTexture, 0.0, 1.0);
 
 	vec4 mask = texture(uTextMap, texCoord);
