@@ -224,6 +224,8 @@ namespace System
 			while (to_fill > 0)
 			{
 				res = WriteConsoleA(m_console_handle, buf, SIZE, &written, 0);
+                if (!res)
+                    break;
 				to_fill -= written;
 			}
 			SetPosition(0,0);
