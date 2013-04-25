@@ -19,12 +19,13 @@ namespace System
                 class CallObject {};
                 CallObject* o = (CallObject*)object;
                 void (CallObject::*m)(Event*);
-                void** a = (void**)&m;
-                void** b = (void**)&method;
+                volatile void** a = (volatile void**)&m;
+                volatile void** b = (volatile void**)&method;
                 *a = *b;
 				if (reciever)
 					params->reciever = reciever;
                 (o->*m)(params);
+
             }
 
 			if (!object && method)

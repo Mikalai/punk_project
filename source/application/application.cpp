@@ -57,8 +57,9 @@ namespace Punk
 		}
 
 		{
-			m_simulator = new Physics::Simulator;
-			m_simulator->Init();
+		    m_simulator =  nullptr;
+		//	m_simulator = new Physics::Simulator;
+		//	m_simulator->Init();
 		}
 
 		{
@@ -78,7 +79,7 @@ namespace Punk
 
 	void Application::OnIdleEvent(System::IdleEvent* event)
 	{
-		m_simulator->Update(float(event->elapsed_time_s));
+		//m_simulator->Update(float(event->elapsed_time_s));
 		m_event_manager->FixEvent(event);
 		m_event_manager->Process();
 	}
