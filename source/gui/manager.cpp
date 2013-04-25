@@ -1,6 +1,7 @@
 #include "../system/event_manager.h"
 #include "../system/window/module.h"
 #include <stdexcept>
+#include <memory>
 #include "events/module.h"
 #include "manager.h"
 #include "gui_render.h"

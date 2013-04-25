@@ -7,7 +7,7 @@
 #include "cl_command_queue_impl.h"
 #else
 #include "cl_program.h"
-#include "../system/errors/module.h"
+#include "../../system/errors/module.h"
 #endif
 
 namespace GPU

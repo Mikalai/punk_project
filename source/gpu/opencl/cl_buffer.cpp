@@ -5,7 +5,7 @@
 #include <algorithm>
 #else
 #include "cl_buffer.h"
-#include "../system/errors/module.h"
+#include "../../system/errors/module.h"
 #endif
 
 namespace GPU

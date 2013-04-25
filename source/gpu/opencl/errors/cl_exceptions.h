@@ -1,7 +1,10 @@
 #ifndef _H_OPENCL_EXCEPTIONS
 #define _H_OPENCL_EXCEPTIONS
 
+#ifdef USE_OPENCL
 #include <CL/cl.h>
+#endif
+
 #include "../../../system/errors/module.h"
 
 #define CreateOpenCLException(X) \

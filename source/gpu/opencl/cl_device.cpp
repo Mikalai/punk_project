@@ -3,7 +3,7 @@
 #include "cl_platform_impl.h"
 #else
 #include "cl_device.h"
-#include "../system/errors/module.h"
+#include "../../system/errors/module.h"
 #endif
 
 namespace GPU
