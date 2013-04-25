@@ -1,46 +1,21 @@
 #ifndef _H_SYSTEM_HANDLER
 #define _H_SYSTEM_HANDLER
 
+#include <functional>
 #include "events/event.h"
+
 
 namespace System
 {
     struct Handler
     {
-        Handler() : object(0), method(0) {}
+        Handler();
         void* object;
         void* method;
 		void* reciever;
 
-        void operator() (Event* params)
-        {
-            if (object && method)
-            {
-                class CallObject {};
-                CallObject* o = (CallObject*)object;
-                void (CallObject::*m)(Event*);
-                volatile void** a = (volatile void**)&m;
-                volatile void** b = (volatile void**)&method;
-                *a = *b;
-				if (reciever)
-					params->reciever = reciever;
-                (o->*m)(params);
-
-            }
-
-			if (!object && method)
-			{
-				void (*f)(Event*);
-				void** ff = (void**)&f;
-				*ff = (void*)method;
-				f(params);
-			}
-        }
-
-        bool operator == (const Handler& handler)
-        {
-            return object == handler.object && method == handler.method;
-        }
+        void operator() (Event* params);
+        bool operator == (const Handler& handler);
     };
 
     template<class T> Handler EventHandler(T* object, void (T::*method)(Event*))
