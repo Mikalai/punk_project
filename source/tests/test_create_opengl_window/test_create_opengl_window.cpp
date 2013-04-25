@@ -11,6 +11,7 @@ void CreateOpenGLWindow::Run()
     try
     {
         app.Init(Punk::Config());
+        System::Mouse::Instance()->LockInWindow(false);
         app.Run();
     }
     catch(...)

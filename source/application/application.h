@@ -24,6 +24,7 @@ namespace Punk
 		GUI::Manager* GetGUIManager();
 		Physics::Simulator* GetSimulator();
 		GPU::PaintEngine* GetPaintEngine();
+        System::Mouse* GetMouse();
 
 		int Run();
 		void SetTimeScale(__int64 nominator, __int64 denominator);
@@ -60,7 +61,7 @@ namespace Punk
 		Physics::Simulator* m_simulator;
 		Virtual::TerrainManager* m_terrain_manager;
 		System::Timer m_timer;
-
+        System::Mouse* m_mouse;
 		void Step(System::Event* event);
 		void Render();
 

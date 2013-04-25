@@ -1763,7 +1763,8 @@ SOURCES += ../../source/main.cpp \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_color.cpp \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_terrain.cpp \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_transform_3d.cpp \
-           ../../source/gpu/opengl/render_context/shaders/vertex/vs_transformed_textured_3d.cpp
+           ../../source/gpu/opengl/render_context/shaders/vertex/vs_transformed_textured_3d.cpp \
+    ../../source/system/handler.cpp
 
 contains(DEFINES, USE_JPEG) {
 SOURCES += ../../source/3rd/jpeg/ansi2knr.c \
