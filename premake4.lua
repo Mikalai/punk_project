@@ -1,3 +1,7 @@
+require "qt-support"
+
+_ACTION = _ACTION or "gmake"
+
 -- A solution contains projects, and defines the available configurations
 solution "punk_engine"
    configurations { "Debug", "Release" }
