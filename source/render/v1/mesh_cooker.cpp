@@ -5,12 +5,13 @@
 
 namespace Render
 {
-	MeshCooker::MeshCooker()
+    MeshCooker::MeshCooker(GPU::VideoDriver* driver)
+        : m_video_driver(driver)
 	{
 		//m_light_set.Reset(new Virtual::LightSet);
 	}
 
-	bool MeshCooker::Visit(Scene::CameraNode* node)
+    bool MeshCooker::Visit(Scene::CameraNode*)
 	{
 		return true;
 	}
@@ -18,9 +19,9 @@ namespace Render
 	bool MeshCooker::Visit(Scene::TerrainNode* node)
 	{
 		Virtual::Material* material(new Virtual::Material);
-		material->GetCache().m_diffuse_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg");
-		material->GetCache().m_diffuse_texture_cache_2 = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"ground.png");
-		material->GetCache().m_normal_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + L"bump.png");
+		material->GetCache().m_diffuse_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg", true);
+		material->GetCache().m_diffuse_texture_cache_2 = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"ground.png", true);
+		material->GetCache().m_normal_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"bump.png", true);
 		node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->SetMaterial(material);
 		return true;
 	}
@@ -32,16 +33,16 @@ namespace Render
 			Virtual::SkinGeometry::validate();
 			Virtual::SkinGeometry* geom = Virtual::SkinGeometry::find(node->GetStorageName());
 
-			GPU::OpenGL::SkinMesh* mesh = nullptr;
+			GPU::SkinMesh* mesh = nullptr;
 			if (geom->IsCacheValid())
-				mesh = Cast<GPU::OpenGL::SkinMesh*>(geom->GetGPUBufferCache());
+				mesh = nullptr;	//	Cast<GPU::SkinMesh*>(geom->GetGPUBufferCache());
 			else
 			{
-				mesh = new GPU::OpenGL::SkinMesh;
+				mesh = nullptr;	//	 new GPU::SkinMesh;
 				try
 				{
 					mesh->Cook(geom, m_current_armature);
-					geom->SetGPUBufferCache(mesh);
+					geom->SetGPUBufferCache(nullptr);
 				}
 				catch(...)
 				{
@@ -76,16 +77,16 @@ namespace Render
 			Virtual::StaticGeometry::validate();
 			Virtual::StaticGeometry* geom = Virtual::StaticGeometry::find(node->GetStorageName());
 
-			GPU::OpenGL::StaticMesh* mesh = 0;
+			GPU::StaticMesh* mesh = 0;
 			if (geom->IsGPUCacheValid())
-				mesh = Cast<GPU::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
+				mesh = nullptr;	//	Cast<GPU::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
 			else
 			{
-				mesh = new GPU::OpenGL::StaticMesh;
+				mesh = nullptr;	//new GPU::OpenGL::StaticMesh;
 				try
 				{
 					mesh->Cook(geom);
-					geom->SetGPUBufferCache(mesh);
+					geom->SetGPUBufferCache(nullptr);
 				}
 				catch (...)
 				{
@@ -115,8 +116,8 @@ namespace Render
 		Virtual::Material::validate();
 		Virtual::Material* mat = Virtual::Material::find(node->GetName());
 		node->SetMaterial(mat);
-		mat->GetCache().m_diffuse_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetDiffuseMap());
-		mat->GetCache().m_normal_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + mat->GetNormalMap());
+		mat->GetCache().m_diffuse_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + mat->GetDiffuseMap(), true);
+		mat->GetCache().m_normal_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + mat->GetNormalMap(), true);
 		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);
@@ -170,7 +171,7 @@ namespace Render
 		return true;
 	}
 
-	bool MeshCooker::Visit(Scene::PortalNode* node)
+    bool MeshCooker::Visit(Scene::PortalNode*)
 	{
 		return true;
 	}

@@ -50,7 +50,7 @@ namespace Render
 
 	private:
 		MeshCooker m_cooker;
-		GPU::OpenGL::ScaledGridObject m_grid;
+		GPU::ScaledGridObject m_grid;
 		float m_time;
 		int m_terrain_slices;
 		//System::StateManager<GPU::CoreState> m_states;		
@@ -58,7 +58,7 @@ namespace Render
 		//	next pointers should be destroyed in destructor
 		GPU::RenderTarget* m_rt;				
 		GPU::OpenGL::TextSurface* m_text;
-		GPU::OpenGL::TextureContext* m_tc;
+        GPU::TextureContext* m_tc;
 		GUIRender* m_gui_render;
 		GPU::PaintEngine* m_paint_engine;
 		GPU::Frame* m_frame;
@@ -76,6 +76,9 @@ namespace Render
 		Virtual::Armature* m_armature;
 		Virtual::Material* m_material;
 		GPU::OpenGL::TextSurface s;
+		GPU::CubeObject m_cube;
+		GPU::SphereObject m_sphere;
+		GPU::QuadObject m_quad;
 	};
 }
 

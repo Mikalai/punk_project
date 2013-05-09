@@ -18,6 +18,12 @@ namespace Render
 
 	SimpleRender::SimpleRender(GPU::VideoDriver* driver)
 		: m_driver(driver)
+        , m_grid(driver)
+        , s(driver)
+        , m_cooker(driver)
+		, m_cube(driver)
+		, m_sphere(driver)
+		, m_quad(driver)
 	{
 		m_rt = nullptr;
 		m_text = nullptr;
@@ -91,11 +97,10 @@ namespace Render
 	{
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
 		m_frame->PushState();
-		m_frame->EnableBumpMapping(true);
 		GPU::Renderable* mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
 		if (!mesh)
 		{
-			GPU::OpenGL::StaticMesh* m = new GPU::OpenGL::StaticMesh();
+			GPU::StaticMesh* m = nullptr;//	new GPU::OpenGL::StaticMesh();
 			m->Cook(node->GetStaticGeometry());
 			node->GetStaticGeometry()->SetGPUBufferCache(m);
 			mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
@@ -110,7 +115,7 @@ namespace Render
 	{
 		m_frame->PushState();
 		m_frame->EnableSkinning(true);
-		GPU::OpenGL::SkinMesh* mesh = Cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
+		GPU::SkinMesh* mesh = nullptr;	// Cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
 		m_frame->Render(mesh);
 		m_frame->PopState();
 		return true;
@@ -172,9 +177,9 @@ namespace Render
 
 		Virtual::Material* m = node->GetMaterial();
 		if (m->GetCache().m_diffuse_texture_cache == nullptr)
-			m->GetCache().m_diffuse_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + m->GetDiffuseMap());
+			m->GetCache().m_diffuse_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetDiffuseMap(), true);
 		if (m->GetCache().m_normal_texture_cache == nullptr)
-			m->GetCache().m_normal_texture_cache = GPU::Texture2D::CreateFromFile(System::Environment::Instance()->GetTextureFolder() + m->GetNormalMap());
+			m->GetCache().m_normal_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetNormalMap(), true);
 
 		m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(m->GetCache().m_diffuse_texture_cache));
 		m_frame->SetBumpMap(Cast<GPU::Texture2D*>(m->GetCache().m_normal_texture_cache));
@@ -252,7 +257,7 @@ namespace Render
 		return result;
 	}
 
-	bool SimpleRender::Visit(Scene::PortalNode* node)
+    bool SimpleRender::Visit(Scene::PortalNode*)
 	{
 		//RenderCube(1,1,1);
 		//m_text->SetText(L"Hello world");
@@ -273,8 +278,8 @@ namespace Render
 
 		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(floor(terrain_position.X()), 0, floor(terrain_position.Y())));
 
-		static Math::vec3 sun(100, 100, 100);
-		static float angle = 0;
+    //	static Math::vec3 sun(100, 100, 100);
+//		static float angle = 0;
 
 		Virtual::TerrainView* view = node->GetTerrainObserver()->GetTerrainView();
 		if (view && view->GetHeightMap()->IsValid())
@@ -304,7 +309,7 @@ namespace Render
 		m_frame->MultWorldMatrix(Math::mat4::CreateScaling(width, height, depth));
 		m_frame->SetDiffuseColor(Math::vec4(0,1,0,1));
 		m_frame->EnableWireframe(true);
-		m_frame->Render(GPU::OpenGL::CubeObject::Instance());
+		m_frame->Render(&m_cube);
 		m_frame->PopState();
 	}
 
@@ -318,7 +323,7 @@ namespace Render
 		m_frame->EnableTexturing(false);
 		m_frame->EnableDiffuseShading(true);
 		m_frame->SetLineWidth(5.0f);
-		m_frame->Render(GPU::OpenGL::SphereObject::Instance());
+		m_frame->Render(&m_sphere);
 		m_frame->PopState();
 	}
 
@@ -330,7 +335,7 @@ namespace Render
 		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetDiffuseColor(color);
-		m_frame->Render(GPU::OpenGL::QuadObject::Instance());
+		m_frame->Render(&m_quad);
 		m_frame->PopState();
 	}
 
@@ -348,11 +353,11 @@ namespace Render
 		m_frame->EnableLighting(false);
 		m_frame->EnableTexturing(true);
 		m_frame->EnableDiffuseShading(true);
-		m_frame->Render(GPU::OpenGL::QuadObject::Instance());
+		m_frame->Render(&m_quad);
 		m_frame->PopState();
 	}
 
-	void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4& color)
+    void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4&)
 	{
 		g_font_builder.SetCharSize(14, 14);
 		int len = g_font_builder.CalculateLength(text.Data());
@@ -372,19 +377,19 @@ namespace Render
 		m_frame->SetTextureMatrix(Math::mat4::CreateReflectY());
 		m_frame->SetFontMap(s.GetTexture());
 		m_frame->EnableFontRendering(true);
-		m_frame->Render(GPU::OpenGL::QuadObject::Instance());
+		m_frame->Render(&m_quad);
 		m_frame->PopState();
 	}
 
 	bool SimpleRender::Render()
 	{
 		m_time += 0.1f;
-		m_rt->Activate();
+        //m_rt->Activate();
 		m_frame = m_driver->BeginFrame();
 		m_frame->BeginRendering();
 		if (m_scene)
 		{
-			m_rt->SetViewport(m_scene->GetCameraNode()->GetCamera()->GetViewport());
+//			m_rt->SetViewport(m_scene->GetCameraNode()->GetCamera()->GetViewport());
 			m_frame->SetViewMatrix(m_scene->GetCameraNode()->GetCamera()->GetViewMatrix());
 			m_frame->SetProjectionMatrix(m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix());
 			m_frame->SetClipSpace(m_scene->GetCameraNode()->GetCamera()->ToClipSpace());
@@ -404,7 +409,7 @@ namespace Render
 		}
 		m_frame->EndRendering();
 		m_driver->EndFrame(m_frame);
-		m_rt->Deactivate();
+//		m_rt->Deactivate();
 		return true;
 	}
 
@@ -412,22 +417,22 @@ namespace Render
 	{
 		m_terrain_slices = 63;
 		m_time = 0;
-		GPU::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
-		m_tc = new GPU::OpenGL::TextureContext;
-		m_rt = new GPU::OpenGL::RenderTargetBackBuffer;
-		m_rt->Init(&p);
+//		GPU::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
+        m_tc = new GPU::TextureContext;
+    //	m_rt = new GPU::OpenGL::RenderTargetBackBuffer;
+    //	m_rt->Init(&p);
 		m_scene = scene;
 		if (m_scene)
 			m_scene->GetRootNode()->Apply(&m_cooker);
 		m_context = GPU::AbstractRenderPolicy::find(GPU::RC_BUMP_MAPING);
 		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_3D);
-		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TEXTURED_3D);
+		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_TEXTURED_3D);
 		m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
 		m_skin_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SKINNING);
 		m_terrain_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TERRAIN);
-		m_text = new GPU::OpenGL::TextSurface;
+        m_text = new GPU::OpenGL::TextSurface(m_driver);
 		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
-		m_gui_render = new GUIRender;
+		m_gui_render = new GUIRender(m_driver);
 		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 2);
 	}
 }

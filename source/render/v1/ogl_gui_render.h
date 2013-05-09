@@ -9,7 +9,7 @@ namespace Render
 	class GUIRender : public GUI::IGUIRender
 	{
 	public:
-		GUIRender();
+		GUIRender(GPU::VideoDriver* driver);
 		virtual ~GUIRender();
 		virtual void Begin(int x, int y, int width, int height);
 		virtual void End();
@@ -27,10 +27,12 @@ namespace Render
 		System::StateManager<GPU::CoreState> m_states;
 
 		//	next pointers should be destroyed in destructor		
-		GPU::OpenGL::TextureContext* m_tc;		
+        GPU::TextureContext* m_tc;
 
 		//	next pointers should not be destroyed in destructor
 		GPU::AbstractRenderPolicy* m_rc;		
+
+		GPU::QuadObject m_quad;
 	};
 }
 

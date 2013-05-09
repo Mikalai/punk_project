@@ -7,29 +7,35 @@
 #include "../../virtual/interface.h"
 #include "../../system/smart_pointers/module.h"
 
+namespace GPU
+{
+    class VideoDriver;
+}
+
 namespace Render
 {
 	class PUNK_ENGINE MeshCooker : public Scene::AbstractVisitor
 	{
 	public:
-		MeshCooker();
-		virtual bool Visit(Scene::CameraNode* node);
-		virtual bool Visit(Scene::StaticMeshNode* node);
-		virtual bool Visit(Scene::SkinMeshNode* node);
-		virtual bool Visit(Scene::ArmatureNode* node);
-		virtual bool Visit(Scene::LightNode* node);
-		virtual bool Visit(Scene::MaterialNode* node);
-		virtual bool Visit(Scene::Node* node);
-		virtual bool Visit(Scene::TransformNode* node);
-		virtual bool Visit(Scene::LocationIndoorNode* node);		
-		virtual bool Visit(Scene::PortalNode* node);
-		virtual bool Visit(Scene::BoneNode* node);
-		virtual bool Visit(Scene::TerrainNode* node);
-		virtual bool Visit(Scene::TextureViewNode* node) { return true; };
+        MeshCooker(GPU::VideoDriver* driver);
+        virtual bool Visit(Scene::CameraNode*);
+        virtual bool Visit(Scene::StaticMeshNode*);
+        virtual bool Visit(Scene::SkinMeshNode*);
+        virtual bool Visit(Scene::ArmatureNode*);
+        virtual bool Visit(Scene::LightNode*);
+        virtual bool Visit(Scene::MaterialNode*);
+        virtual bool Visit(Scene::Node*);
+        virtual bool Visit(Scene::TransformNode*);
+        virtual bool Visit(Scene::LocationIndoorNode*);
+        virtual bool Visit(Scene::PortalNode*);
+        virtual bool Visit(Scene::BoneNode*);
+        virtual bool Visit(Scene::TerrainNode*);
+        virtual bool Visit(Scene::TextureViewNode*) { return true; }
 
 		//	this data should not be deleted
 		std::vector<Virtual::Light*> m_light_set;
 		Virtual::Armature* m_current_armature;
+        GPU::VideoDriver* m_video_driver;
 	};
 }
 

@@ -5,11 +5,12 @@
 
 namespace Render
 {
-	GUIRender::GUIRender()
+	GUIRender::GUIRender(GPU::VideoDriver* driver)
 		: m_selection_color_delta(0.1f, 0.1f, 0.1f, 0.1f)
+		, m_quad(driver)
 	{
 		m_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
-		m_tc = new GPU::OpenGL::TextureContext();
+        m_tc = new GPU::TextureContext();
 	}
 
 	GUIRender::~GUIRender()
@@ -54,9 +55,11 @@ namespace Render
 
 		m_rc->Begin();
 		m_rc->BindParameters(m_states.CurrentState()->Get());
-		GPU::OpenGL::QuadObject::Instance()->Bind(m_rc->GetRequiredAttributesSet());
-		GPU::OpenGL::QuadObject::Instance()->Render();
-		GPU::OpenGL::QuadObject::Instance()->Unbind();
+
+		m_quad.Bind(m_rc->GetRequiredAttributesSet());
+		m_quad.Render();
+		m_quad.Unbind();
+
 		m_tc->Unbind();
 		m_rc->End();
 
@@ -70,7 +73,7 @@ namespace Render
 		m_states.Pop();
 	}
 
-	void GUIRender::Begin(int x, int y, int width, int height)
+    void GUIRender::Begin(int, int, int, int)
 	{
 		//m_rc->SetProjectionMatrix(Math::mat4::CreateOrthographicProjection(x, x+width, y+height, y, 0, 1));
 	}
