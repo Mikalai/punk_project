@@ -30,7 +30,7 @@ namespace Audio
 		*	This can perform data convertion, if float textures
 		*	are not supported
 		*/
-		System::StreamingStepResult Process(void* data, unsigned size) override { return System::StreamingStepResult::STREAM_OK; };
+        System::StreamingStepResult Process(void*, unsigned) override { return System::StreamingStepResult::STREAM_OK; };
 		/**
 		*	Data is copied to the texture here
 		*/

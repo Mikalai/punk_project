@@ -20,8 +20,10 @@ namespace Audio
 
 	Source::~Source()
 	{
+#ifdef HAS_AUDIO_SOURCE
 		delete impl;
 		impl = nullptr;
+#endif
 	}
 
 	void Source::SetPitch(float value)
@@ -29,6 +31,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetPitch(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -47,6 +50,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetGain(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -65,6 +69,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetMinGain(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -83,6 +88,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetMaxGain(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -91,7 +97,7 @@ namespace Audio
 	{
 	    #ifdef HAS_AUDIO_SOURCE
 		return impl->GetMaxGain();
-		#else
+		#else        
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -101,6 +107,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetRolloffFactor(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -109,7 +116,7 @@ namespace Audio
 	{
 	    #ifdef HAS_AUDIO_SOURCE
 		return impl->GetRolloffFactor();
-		#else
+		#else        
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -119,6 +126,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetMaxDistance(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -137,6 +145,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetConeOuterGain(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -155,6 +164,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetConeInnerAngle(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -173,6 +183,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetConeOuterAngle(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -191,6 +202,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetReferenceDistance(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -209,6 +221,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetPosition(Math::vec3(x, y, z));
 		#else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -218,6 +231,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetPosition(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -236,6 +250,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetVelocity(Math::vec3(x, y, z));
 		#else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -245,6 +260,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetVelocity(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -263,6 +279,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetDirection(Math::vec3(x, y, z));
 		#else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -272,6 +289,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetDirection(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -290,6 +308,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetRelative(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -308,6 +327,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetLooping(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -326,6 +346,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->SetBuffer(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}
@@ -335,6 +356,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SOURCE
 		impl->EnqueBuffer(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio source is not available");
 		#endif
 	}

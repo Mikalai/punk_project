@@ -23,8 +23,10 @@ namespace Audio
 
 	Buffer::~Buffer()
 	{
+#ifdef HAS_AUDIO_BUFFER
 		delete impl;
 		impl = nullptr;
+#endif
 	}
 
 	void Buffer::SetData(Format format, void* data, int size, int frequency)
@@ -32,6 +34,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_BUFFER
 		impl->SetData(format, data, size, frequency);
 		#else
+        (void)format; (void)data; (void)size; (void)frequency;
 		throw System::PunkException(L"Audio buffer not supported");
 		#endif
 	}
@@ -86,6 +89,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_BUFFER
 		impl->SetDescription(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio buffer not supported");
 		#endif
 	}

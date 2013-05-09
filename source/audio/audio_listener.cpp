@@ -18,12 +18,15 @@ namespace Audio
 
 	Listener::~Listener()
 	{
+#ifdef HAS_AUDIO_LISTENER
 		delete impl;
 		impl = nullptr;
+#endif
 	}
 
 	void Listener::SetGain(float value)
 	{
+        (void)value;
 	    #ifdef HAS_AUDIO_LISTENER
 		impl->SetGain(value);
 		#else
@@ -41,19 +44,21 @@ namespace Audio
 	}
 
 	void Listener::SetPosition(const Math::vec3& value)
-	{
+	{        
 	    #ifdef HAS_AUDIO_LISTENER
 		impl->SetPosition(value);
         #else
+        (void)value;
 		throw System::PunkException(L"Audio listenere is not available");
 		#endif
 	}
 
 	void Listener::SetPosition(float x, float y, float z)
-	{
+	{        
 	    #ifdef HAS_AUDIO_LISTENER
 		impl->SetPosition(Math::vec3(x, y, z));
 		#else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Audio listenere is not available");
 		#endif
 	}
@@ -72,6 +77,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_LISTENER
 		impl->SetVelocity(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Audio listenere is not available");
 		#endif
 	}
@@ -81,6 +87,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_LISTENER
 		impl->SetVelocity(Math::vec3(x, y, z));
 		#else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Audio listenere is not available");
 		#endif
 	}
@@ -99,6 +106,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_LISTENER
 		impl->SetOrientation(at, up);
 		#else
+        (void)at; (void)up;
 		throw System::PunkException(L"Audio listenere is not available");
 		#endif
 	}

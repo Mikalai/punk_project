@@ -44,6 +44,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SYSTEM
 		impl->SetSoundSpeed(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Sound system is not available");
 		#endif
 	}
@@ -62,6 +63,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SYSTEM
 		impl->SetDopplerFactor(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Sound system is not available");
 		#endif
 	}
@@ -80,6 +82,7 @@ namespace Audio
 	    #ifdef HAS_AUDIO_SYSTEM
 		impl->SetDistanceModel(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Sound system is not available");
 		#endif
 	}

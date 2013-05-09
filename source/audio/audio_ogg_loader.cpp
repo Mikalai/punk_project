@@ -91,10 +91,14 @@ namespace Audio
 	OggLoader::OggLoader(Buffer* buffer, const System::string& filename)
 	#ifdef USE_VORBIS
 		: impl(new OggLoaderImpl(buffer, filename))
-    #else
+    #else    
         : impl(nullptr)
     #endif
-	{}
+    {
+#ifndef USE_VORBIS
+        (void)buffer; (void)filename;
+#endif
+    }
 
 	OggLoader::~OggLoader()
 	{
@@ -134,6 +138,7 @@ namespace Audio
 			return System::StreamingStepResult::STREAM_ERROR;
 		}
 		#else
+        (void)data; (void)size;
 		return System::StreamingStepResult::STREAM_ERROR;
 		#endif
 	}
