@@ -116,7 +116,7 @@ namespace System
 		}
 		catch(...)
 		{
-			out_error() << "Can't remove object with " << index << " index" << std::endl, false;
+            return (out_error() << "Can't remove object with " << index << " index" << std::endl, false);
 		}
 		return true;
 	}

@@ -8,9 +8,9 @@ namespace System
 {
 	class PUNK_ENGINE Buffer
 	{
+        int m_size;
 		unsigned char* m_buffer;		
 		unsigned char* m_current;
-		int m_size;
 	public:
 
 		Buffer();

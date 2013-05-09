@@ -16,7 +16,7 @@ namespace System
 			Destroy();
 		Handle() = CreateSemaphore(0, 0, max_count, nullptr);
 		return NULL != Handle();
-#endif	_WIN32
+#endif	//  _WIN32
 	}
 
 	bool Semaphore::Destroy()
@@ -25,7 +25,7 @@ namespace System
 		if (Handle())
 			CloseHandle(Handle());
 		return true;
-#endif	_WIN32
+#endif	//  _WIN32
 	}
 
 	bool Semaphore::Release(long count)

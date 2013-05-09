@@ -25,7 +25,6 @@ namespace System
 	bool BinaryFile::Load(const string& filename, Buffer& buffer)
 	{
 #ifdef _WIN32
-		DWORD error = GetLastError();
 
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		CHECK_SYS_ERROR(L"Error in binary file, can't load it " + filename);
@@ -37,7 +36,7 @@ namespace System
 		ReadFile(hFile, buffer.StartPointer(), size, &read, 0);
 		CHECK_SYS_ERROR(L"Error in binary file, can't read data " + filename);
 
-		if (read != size)
+        if (read != (DWORD)size)
 			throw OSException(L"Error in binary file, read data less than file contains, possible bad staff happenes " + filename);
 
 		CloseHandle(hFile);
@@ -50,7 +49,6 @@ namespace System
 	bool BinaryFile::Save(const string& filename, const Buffer& buffer)
 	{
 #ifdef _WIN32
-		DWORD error = GetLastError();
 
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0,CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		CHECK_SYS_ERROR(L"Error in binary file, open file for saving " + filename);
@@ -59,7 +57,7 @@ namespace System
 		WriteFile(hFile, (LPCVOID)buffer.StartPointer(), (DWORD)buffer.GetPosition(), &read, 0);
 		CHECK_SYS_ERROR(L"Error in binary file, can't write data to file " + filename);
 
-		if (read != buffer.GetPosition())
+        if (read != (DWORD)buffer.GetPosition())
 			throw OSException(L"Error in binary file, written data is less than should be " + filename);
 
 		CloseHandle(hFile);
@@ -71,8 +69,6 @@ namespace System
 	bool BinaryFile::Append(const string& filename, const Buffer& buffer)
 	{
 #ifdef _WIN32
-		DWORD error = GetLastError();
-
 		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		CHECK_SYS_ERROR(L"Error in binary file, can't open file for appending it " + filename);
 
@@ -84,7 +80,7 @@ namespace System
 		WriteFile(hFile, (LPCVOID)buffer.StartPointer(), (DWORD)buffer.GetPosition(), &read, 0);
 		CHECK_SYS_ERROR(L"Error in binary file, can't write data to file " + filename);
 
-		if (read != buffer.GetPosition())
+        if (read != static_cast<DWORD>(buffer.GetPosition()))
 			throw OSException(L"Error in binary file, written data is less than should be in " + filename);
 
 		CloseHandle(hFile);

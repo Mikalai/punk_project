@@ -41,8 +41,8 @@ namespace System
 
 	protected:
 
-		virtual bool OnAdd(System::Object* object) { return true; }
-		virtual bool OnRemove(System::Object* object) { return true; }
+        virtual bool OnAdd(System::Object*) { return true; }
+        virtual bool OnRemove(System::Object*) { return true; }
 	private:
 
 		CollectionType m_children;
