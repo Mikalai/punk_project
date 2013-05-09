@@ -8,32 +8,34 @@
 #include "../../../../math/bounding_shere.h"
 #include "../../buffers/module.h"
 #include "../../driver/module.h"
+#include "../gl_primitive_type.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
-		template<int PrimitiveType, typename VertexType>
+		template<PrimitiveType CurrentPrimitive, typename VT>
 		class VertexArrayObject2 : public Renderable
 		{
 		protected:
-
-			typedef VertexType CurrentVertex;
-			VertexBufferObject* m_vertex_buffer;	
-			IndexBufferObject* m_index_buffer;
-			GLuint m_vao;
-			GLuint m_index_count;
-			unsigned m_vertex_size;				
+			using CurrentVertex = VT;
+            VideoDriverImpl* m_driver;			
+            GLuint m_index_count;
+			GLuint m_vao;			
+            unsigned m_vertex_size;
+            bool m_was_modified;
 			unsigned m_primitive_count;
 			int m_vb_size;
 			int m_ib_size;		
 			Math::BoundingBox m_bbox;
-			Math::BoundingSphere m_sphere;
-			bool m_was_modified;
+            Math::BoundingSphere m_sphere;
+            IndexBufferObject* m_index_buffer;
+            VertexBufferObject* m_vertex_buffer;
 
 		public:
-			VertexArrayObject2()
-				: m_index_count(0)
+            VertexArrayObject2(VideoDriver* driver)
+                : m_driver(driver->impl)
+                , m_index_count(0)
 				, m_vao(0)
 				, m_vertex_size(0)
 				, m_was_modified(true)
@@ -42,8 +44,9 @@ namespace GPU
 				, m_vertex_buffer(nullptr)
 			{}
 
-			VertexArrayObject2(const VertexArrayObject2& impl)
-				: m_vertex_buffer(impl.m_vertex_buffer)
+			VertexArrayObject2(const VertexArrayObject2& impl)            
+                : m_driver(impl.m_driver)
+                , m_vertex_buffer(impl.m_vertex_buffer)
 				, m_index_buffer(impl.m_index_buffer)
 				, m_index_count(impl.m_index_count)
 				, m_vao(impl.m_vao)
@@ -75,7 +78,7 @@ namespace GPU
 				m_vertex_buffer->Bind();
 				m_index_buffer->Bind();
 
-				AttributeConfiger<VertexType> p(supported_by_context);			
+				AttributeConfiger<CurrentVertex> p(supported_by_context);
 			}
 
 			void Unbind()
@@ -95,7 +98,7 @@ namespace GPU
 
 			void Render()
 			{
-				int type = PrimitiveType;
+				GLenum type = PrimitiveTypeToOpenGL(CurrentPrimitive);
 				glDrawElements(type, m_index_count, GL_UNSIGNED_INT, 0);
 				ValidateOpenGL(L"Unable to draw elements");
 			}
@@ -104,7 +107,7 @@ namespace GPU
 			{
 				m_vb_size = size_in_bytes;
 
-				m_vertex_buffer = VideoMemory::Instance()->AllocateVertexBuffer(size_in_bytes);
+                m_vertex_buffer = m_driver->GetVideoMemory()->AllocateVertexBuffer(size_in_bytes);
 				m_vertex_buffer->Bind();
 				m_vertex_buffer->CopyData(vbuffer, m_vb_size);
 				m_vertex_buffer->Unbind();
@@ -123,7 +126,7 @@ namespace GPU
 			{	
 				m_index_count = size / sizeof(unsigned);	// This code depends on Render when GL_UNSIGNED_INT used in glDrawElements*
 
-				m_index_buffer = VideoMemory::Instance()->AllocateIndexBuffer(size);
+                m_index_buffer = m_driver->GetVideoMemory()->AllocateIndexBuffer(size);
 				m_index_buffer->Bind();
 				m_index_buffer->CopyData(ibuffer, size);
 				m_index_buffer->Unbind();
@@ -180,8 +183,8 @@ namespace GPU
 
 			void Clear()
 			{
-				VideoMemory::Instance()->FreeVertexBuffer(m_vertex_buffer);
-				VideoMemory::Instance()->FreeIndexBuffer(m_index_buffer);
+                m_driver->GetVideoMemory()->FreeVertexBuffer(m_vertex_buffer);
+                m_driver->GetVideoMemory()->FreeIndexBuffer(m_index_buffer);
 
 				if (m_vao)
 				{
@@ -198,7 +201,7 @@ namespace GPU
 				//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));
 				//m_location.Save(stream);
 
-				const_cast<VertexArrayObject2<PrimitiveType, CurrentVertex>*>(this)->Bind(VertexType::Value());
+				const_cast<VertexArrayObject2<CurrentPrimitive, CurrentVertex>*>(this)->Bind(CurrentVertex::Value());
 
 				GLvoid* vb = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
 				stream.write(reinterpret_cast<const char*>(&m_vb_size), sizeof(m_vb_size));
@@ -212,7 +215,7 @@ namespace GPU
 				glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
 				stream.write(reinterpret_cast<const char*>(&m_index_count), sizeof(m_index_buffer));
-				int primitive_type = PrimitiveType;
+				int primitive_type = CurrentPrimitive;
 				stream.write(reinterpret_cast<const char*>(&primitive_type), sizeof(primitive_type));			
 				stream.write(reinterpret_cast<const char*>(&m_was_modified), sizeof(m_was_modified));
 				int64_t combination = CurrentVertex::Value();
@@ -261,22 +264,22 @@ namespace GPU
 				delete[] ib;
 
 				stream.read(reinterpret_cast<char*>(&m_index_count), sizeof(m_index_buffer));
-				int primitive_type;
+				PrimitiveType primitive_type;
 				stream.read(reinterpret_cast<char*>(&primitive_type), sizeof(primitive_type));
 				stream.read(reinterpret_cast<char*>(&m_was_modified), sizeof(m_was_modified));
 				int combination;
 				stream.read(reinterpret_cast<char*>(&combination), sizeof(combination));
 				stream.read(reinterpret_cast<char*>(&m_primitive_count), sizeof(m_primitive_count));
 
-				if (primitive_type != PrimitiveType)
+				if (primitive_type != CurrentPrimitive)
 				{
-					out_error() << "Bad primitive format " << primitive_type << ". Expected " << PrimitiveType << "." << std::endl;
+					out_error() << "Bad primitive format " << AsString(primitive_type) << ". Expected " << AsString(CurrentPrimitive) << "." << std::endl;
 					return false;
 				}
 
-				if (combination != VertexType::Value())
+				if (combination != CurrentVertex::Value())
 				{
-					out_error() << "Bad vertex type format " << primitive_type << ". Expected " << VertexType::Value() << "." << std::endl;
+					out_error() << "Bad vertex type format " << AsString(primitive_type) << ". Expected " << CurrentVertex::Value() << "." << std::endl;
 					return false;
 				}
 

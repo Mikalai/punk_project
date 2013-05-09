@@ -31,6 +31,8 @@ namespace GPU
 				return GL_TRIANGLE_STRIP_ADJACENCY;
 			case GPU::PrimitiveType::TRIANGLES_ADJANCECY:
 				return GL_TRIANGLES_ADJACENCY;
+			case GPU::PrimitiveType::QUADS:	//	if QUADS are used, they should be internally converted to triangles
+				return GL_TRIANGLES;
 			default:
 				throw OpenGLException(L"Unsupported primitive type");
 			}
