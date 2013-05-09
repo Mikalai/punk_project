@@ -63,7 +63,7 @@ namespace Utility
 	/// This function convert a string representation of the file into code
 	KeywordCode Parse(const System::string& word)
 	{
-		for (int i = 0; i < sizeof(Keyword)/sizeof(Record); i++)
+        for (unsigned i = 0; i < sizeof(Keyword)/sizeof(Record); i++)
 		{
 			if (word == Keyword[i].word)
 				return Keyword[i].code;
@@ -697,11 +697,11 @@ namespace Utility
 	bool ParseArmatures(System::Buffer& buffer)
 	{
 		CHECK_START(buffer);
-		System::string name;
 		while (1)
 		{
 			System::string word = buffer.ReadWord();
-			switch(KeywordCode code = Parse(word))
+            KeywordCode code = Parse(word);
+            switch(code)
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
@@ -764,7 +764,8 @@ namespace Utility
 
 			System::string word = buffer.ReadWord();
 
-			switch(int index = Parse(word))
+            KeywordCode code = Parse(word);
+            switch(code)
 			{
 			case WORD_CLOSE_BRACKET:				
 				return true;
@@ -827,7 +828,8 @@ namespace Utility
 
 			System::string word = buffer.ReadWord();
 
-			switch(int index = Parse(word))
+            KeywordCode code = Parse(word);
+            switch(code)
 			{
 			case WORD_CLOSE_BRACKET:				
 				return true;
@@ -894,7 +896,8 @@ namespace Utility
 		while (1)
 		{
 			System::string word = buffer.ReadWord();
-			switch(KeywordCode code = Parse(word))
+            KeywordCode code = Parse(word);
+            switch(code)
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
@@ -920,7 +923,8 @@ namespace Utility
 		while (1)
 		{
 			System::string word = buffer.ReadWord();
-			switch(KeywordCode code = Parse(word))
+            KeywordCode code = Parse(word);
+            switch(code)
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
@@ -1072,14 +1076,15 @@ namespace Utility
 		return false;
 	}
 
-	bool ParseMaterials(System::Buffer& buffer, Scene::SceneGraph* scene)
+    bool ParseMaterials(System::Buffer& buffer, Scene::SceneGraph*)
 	{
 		CHECK_START(buffer);
 		System::string name;
 		while (1)
 		{
 			System::string word = buffer.ReadWord();
-			switch(KeywordCode code = Parse(word))
+            KeywordCode code = Parse(word);
+            switch(code)
 			{
 			case WORD_CLOSE_BRACKET:
 				return true;
