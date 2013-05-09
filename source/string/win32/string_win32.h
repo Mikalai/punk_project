@@ -39,10 +39,10 @@ namespace System
 		string();
 		explicit string(const char* s);
 		string(const wchar_t* s);
-		string(const char* s, int length);
-		string(const wchar_t* s, int length);
+        string(const char* s, size_t length);
+        string(const wchar_t* s, size_t length);
 		string(const string& s);
-		explicit string(int length);
+        explicit string(size_t length);
 
 		string& operator = (const string& s);
 		string& operator = (const wchar_t* s);
@@ -55,8 +55,8 @@ namespace System
         const std::string ToStdString() const;
         const std::wstring ToStdWString() const;
 
-		int Length() const;
-		int Size() const;
+        size_t Length() const;
+        size_t Size() const;
 		string& Erase(int start, int len);
 		string& Insert(wchar_t chr, int pos);
 		const string Replace(const string& what, const string& with) const;
@@ -69,8 +69,8 @@ namespace System
 		string& operator += (const string& s);
 		string& operator += (const wchar_t* s);
 
-		void ToANSI(char*& buffer, int& length) const;
-		void ToANSI(char* buffer, int size) const;
+        void ToANSI(char*& buffer, size_t& length) const;
+        void ToANSI(char* buffer, size_t size) const;
 
 		int ToInt32() const;
 		int ToInt32FromHex() const;

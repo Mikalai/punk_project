@@ -124,7 +124,7 @@ namespace System
 		return wcscmp(s1.Data(), s2) < 0;
 	}
 
-	void string::ToANSI(char*& buffer, int& size) const
+    void string::ToANSI(char*& buffer, size_t& size) const
 	{
 		size = m_rep->m_length + 1;
 		buffer = new char[size];
@@ -132,7 +132,7 @@ namespace System
 		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0);
 	}
 
-	void string::ToANSI(char* buffer, int size) const
+    void string::ToANSI(char* buffer, size_t size) const
 	{
 		memset(buffer, 0, sizeof(char)*size);
 		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0);
@@ -191,12 +191,12 @@ namespace System
 		return string(m_rep->m_data + start, end - start);
 	}
 
-	int string::Size() const
+    size_t string::Size() const
 	{
-		return m_rep->m_length*sizeof(wchar_t) + sizeof(int);
+        return (size_t)(m_rep->m_length*sizeof(wchar_t) + sizeof(int));
 	}
 
-	int string::Length() const
+    size_t string::Length() const
 	{
 		return m_rep->m_length;
 	}
@@ -251,7 +251,7 @@ namespace System
 		m_cstring_cache = 0;
 	}
 
-	string::string(int length)
+    string::string(size_t length)
 	{
 		m_rep = new Representation(length);
 	}
@@ -284,13 +284,13 @@ namespace System
 		}
 	}
 
-	string::string(const char* s, int length)
+    string::string(const char* s, size_t length)
 	{
 		m_rep = new Representation(s, length);
 		m_cstring_cache = 0;
 	}
 
-	string::string(const wchar_t* s, int length)
+    string::string(const wchar_t* s, size_t length)
 	{
 		m_rep = new Representation(s, length);
 		m_cstring_cache = 0;
@@ -471,7 +471,6 @@ namespace System
 		}
 		const wchar_t *end = m_rep->m_data;
 		const wchar_t *start = m_rep->m_data + m_rep->m_length-1;
-		int len = m_rep->m_length;
 		if (end[0] == L'0' && (end[1] == L'x' || end[1] == L'X'))
 			end += 2;
 		int res = 0;
