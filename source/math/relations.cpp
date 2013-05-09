@@ -161,7 +161,6 @@ namespace Math
 	Relation ClassifyLine(const Line3D& line, const Triangle3D& triangle)
 	{
 		const vec3& org = line.GetOrigin();
-		const vec3& dst = line.GetDestination();
 		const vec3& n = triangle.GetNormal();
 		float org_dst = triangle.GetDistance();
 		const vec3& dir = line.GetDirection();
@@ -283,7 +282,6 @@ namespace Math
 	Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, float& t)
 	{
 		const vec3& org = line.GetOrigin();
-		const vec3& dst = line.GetDestination();
 		const vec3& n = triangle.GetNormal();
 		float org_dst = triangle.GetDistance();
 		const vec3& dir = line.GetDirection();
@@ -320,7 +318,6 @@ namespace Math
 
 	Relation CrossLineSphere(const Line3D& line, const Sphere& sphere, float& t1, float& t2)
 	{
-		float r = sphere.GetRadius();
 		const vec3 org = line.GetOrigin() - sphere.GetCenter();
 		const vec3 dir = line.GetDestination() - line.GetOrigin();
 		float a = dir.SquareLength();
@@ -422,7 +419,6 @@ namespace Math
 	{
 		const ConvexShapeMesh::PointsCollection& points = mesh.GetPoints();
 		const ConvexShapeMesh::FacesCollection& faces = mesh.GetFaces();
-		const ConvexShapeMesh::NormalsCollection& normals = mesh.GetNormals();
 
 		Relation result[] = {Relation::NOT_INTERSECT, Relation::INTERSECT_1, Relation::INTERSECT_2};
 		int* res_face[] = {&face1, &face2};
@@ -532,7 +528,7 @@ namespace Math
 
 		res = CrossLinePlane(ca, plane, t);
 		if (res == Relation::INTERSECT && t >= 0.0f && t <= 1.0f)
-			(*cur, ca.PointAt(t), ++cur);
+            (*cur = ca.PointAt(t), ++cur);
 
 		if (cur == p+1)	//	we got two points
 		{
@@ -542,7 +538,7 @@ namespace Math
 		return Relation::NOT_INTERSECT;
 	}
 
-	Relation CrossTriangleTriangle(const Triangle3D& a, const Triangle3D& b, Line3D& line)
+    Relation CrossTriangleTriangle(const Triangle3D& a, const Triangle3D& b, Line3D& /*line*/)
 	{
 		Line3D ab(a[0], a[1]);
 		Line3D bc(a[1], a[2]);
@@ -583,7 +579,8 @@ namespace Math
 
 	Relation CrossPlanePolygon(const Plane& plane, const Polygon3D& polygon, const Polygon3D& front, const Polygon3D& back)
 	{
-		return Relation::NOT_INTERSECT;
+        (void)plane; (void)polygon; (void)front; (void)back;
+        throw MathError(L"Not implemented");
 	}
 
 	Relation SplitTriangle(const Plane& splitter, const Triangle3D& t, Triangle3D front[2], Triangle3D back[2])
@@ -685,33 +682,29 @@ namespace Math
 		const vec3* a = &t[0];
 		const vec3* b = &t[1];
 		const vec3* c = &t[2];
-		int s = 1;
 
 		Relation result = Relation::SPLIT_1_FRONT_2_BACK;
 
 		//	common case
-		if (s1 < 0 && s2 < 0 || s1 > 0 && s2 > 0)
+        if ((s1 < 0 && s2 < 0) || (s1 > 0 && s2 > 0))
 		{
 			a = &t[0];
 			b = &t[1];
 			c = &t[2];
-			s = s0;
 		}
 
-		if (s2 < 0 && s0 < 0 || s2 > 0 && s0 > 0)
+        if ((s2 < 0 && s0 < 0) || (s2 > 0 && s0 > 0))
 		{
 			a = &t[1];
 			b = &t[2];
 			c = &t[0];
-			s = s1;
 		}
 
-		if (s0 < 0 && s1 < 0 || s0 > 0 && s1 > 0)
+        if ((s0 < 0 && s1 < 0) || (s0 > 0 && s1 > 0))
 		{
 			a = &t[2];
 			b = &t[0];
 			c = &t[1];
-			s = s2;
 		}
 
 		if (s1 < 0)
@@ -750,7 +743,6 @@ namespace Math
 			return Relation::NOT_VISIBLE;
 		}
 
-		Relation result = Relation::NOT_VISIBLE;
 		bool partial_visible = false;
 		Portal temp(portal);
 		Frustum::FrustumPlane p = (Frustum::FrustumPlane)0;
@@ -840,6 +832,8 @@ namespace Math
 
 		if (partial_visible)
 			return Relation::PARTIALLY_VISIBLE;
+
+        clipped_portal = temp;  //  TODO: Check this statement
 
 		return Relation::VISIBLE;
 	}

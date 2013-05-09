@@ -16,8 +16,8 @@ namespace Math
 	inline const BoundingSphere operator * (const mat4& m, const BoundingSphere& bsphere)
 	{
 		BoundingSphere res;
-		mat4 plane_matrix = m.Inversed().Transposed();
-		mat3 normal_matrix = plane_matrix.RotationPart();
+        //  mat4 plane_matrix = m.Inversed().Transposed();
+        //	mat3 normal_matrix = plane_matrix.RotationPart();
 
 		res.SetCenter(m * bsphere.GetCenter());
 		res.SetRadius(bsphere.GetRadius());

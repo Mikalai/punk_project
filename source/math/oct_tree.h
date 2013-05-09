@@ -20,6 +20,10 @@ namespace Math
 	private:
 		static const int MaxFaceCount = 8;
 		static const int MaxDepth = 20;
+        OctTree* m_parent;
+        AxisAlignedBox m_bbox;
+        int m_face_count;
+        bool m_is_finale;
 		int m_cur_depth;
 		std::unique_ptr<OctTree> m_right_front_up;
 		std::unique_ptr<OctTree> m_right_front_down;
@@ -28,13 +32,9 @@ namespace Math
 		std::unique_ptr<OctTree> m_left_front_up;
 		std::unique_ptr<OctTree> m_left_front_down;
 		std::unique_ptr<OctTree> m_left_back_up;
-		std::unique_ptr<OctTree> m_left_back_down;
-		OctTree* m_parent;
-		AxisAlignedBox m_bbox;
-		int m_face_count;
+		std::unique_ptr<OctTree> m_left_back_down;						
 		FaceList m_face_list;
-		//VertexList vertexList;
-		bool m_is_finale;
+		//VertexList vertexList;		
 
 	public:
 		OctTree(OctTree* parent = 0);

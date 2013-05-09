@@ -51,10 +51,13 @@ namespace Math
 	Noise::Noise(unsigned seed)
 	#ifdef USE_NOISE
 	: impl(new NoiseImpl(seed))
-	#else
+	#else    
 	: impl(nullptr)
 	#endif
 	{
+#ifndef USE_NOISE
+        (void)seed;
+#endif
 	}
 
 	Noise::~Noise()
@@ -71,6 +74,7 @@ namespace Math
 		impl->m_rnd.SetSeed(int(impl->m_rnd.Noise(x)*100000.0));
 		return impl->m_rnd.Uniform(-1.0, 1.0);
 		#else
+        (void)x;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 
@@ -81,6 +85,7 @@ namespace Math
 	    #ifdef USE_NOISE
 		return Noise1D(x) / 2.0f + Noise1D(x-1)/4.0f + Noise1D(x+1)/4.0f;
 		#else
+        (void)x;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -97,6 +102,7 @@ namespace Math
 
 		return cosine_interpolation(v1, v2, frac);
 		#else
+        (void)x;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -117,6 +123,7 @@ namespace Math
 		//}
 		//return total;
 		#else
+        (void)x;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -128,6 +135,7 @@ namespace Math
 		impl->m_rnd.SetSeed(int(impl->m_rnd.Noise(x)*100000.0));
 		return impl->m_rnd.Uniform(-1.0, 1.0);
 		#else
+        (void)x; (void)y;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -140,6 +148,7 @@ namespace Math
 		double center = Noise2D(x,y) / 4.0f;
 		return corner + sides + center;
 		#else
+        (void)x; (void)y;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -163,6 +172,7 @@ namespace Math
 
 		return cosine_interpolation(i1, i2, frac_y);
 		#else
+        (void)x; (void)y;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -183,6 +193,7 @@ namespace Math
 		}
 		return total;*/
 		#else
+        (void)x; (void)y;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -194,6 +205,7 @@ namespace Math
 		impl->m_rnd.SetSeed(int(impl->m_rnd.Noise(x)*100000.0));
 		return impl->m_rnd.Uniform(-1.0, 1.0);
         #else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -212,6 +224,7 @@ namespace Math
 		double center = Noise3D(x,y,z) / 4.0f;
 		return corner + sides + center + diag_corner;
 		#else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -248,6 +261,7 @@ namespace Math
 
 		return cosine_interpolation(ii1, ii2, frac_z);
 		#else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -268,6 +282,7 @@ namespace Math
 		//}
 		//return total;
 		#else
+        (void)x; (void)y; (void)z;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -277,6 +292,7 @@ namespace Math
 	    #ifdef USE_NOISE
 		impl->m_perlin.SetOctaveCount(count);
 		#else
+        (void)count;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -286,6 +302,7 @@ namespace Math
 	    #ifdef USE_NOISE
 		impl->m_perlin.SetPersistence(value);
 		#else
+        (void)value;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}
@@ -346,6 +363,7 @@ namespace Math
 
 		memcpy(data, heightMap.GetSlabPtr(), width*height*sizeof(float));
         #else
+        (void)offset_x; (void)offset_y; (void)dim_x; (void)dim_y; (void)width; (void)height; (void)data;
 		throw System::PunkException(L"Lib noise is not available");
 		#endif
 	}

@@ -20,7 +20,7 @@ namespace Math
         m_distance = -normal.Dot(point);
     }
 
-    Plane::Plane(const vec3& normal, float distances) : m_normal(normal), m_distance(m_distance)
+    Plane::Plane(const vec3& normal, float distances) : m_normal(normal), m_distance(distances)
     {}
 
     Plane::Plane(const vec3& a, const vec3& b, const vec3& c)

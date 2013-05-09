@@ -107,7 +107,7 @@ namespace Math
 			return new_node;
 		}
 
-		void DeleteAStarNode(AStarNode* node)
+        void DeleteAStarNode(AStarNode*)
 		{
 		}
 
@@ -234,7 +234,7 @@ namespace Math
 		}
 
 
-		bool SelectTheBest(AStarNode node, AStarNode* result)
+        bool SelectTheBest(AStarNode*, AStarNode* )
 		{
 			return false;
 		}

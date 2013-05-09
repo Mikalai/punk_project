@@ -13,7 +13,7 @@
 
 namespace Math
 {    
-	class PUNK_ENGINE Line3D;
+    class Line3D;
 
     class PUNK_ENGINE Plane
     {        
@@ -43,7 +43,7 @@ namespace Math
         const Plane TransformNode(const mat4& matrix) const;
 		const vec3& GetNormal() const { return m_normal; }
 		float GetDistance() const { return m_distance; }
-		friend class PUNK_ENGINE Line3D;
+        friend class Line3D;
 
 		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);

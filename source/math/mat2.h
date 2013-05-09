@@ -1,8 +1,8 @@
-/****************************************************/
-/*	File: mat2.h
-/*	Author: Mikalai Abramau
-/*	Desc: Class implemeting 2x2 matrix
-/****************************************************/
+/****************************************************
+*	File: mat2.h
+*    Author: Mikalai Abramau
+*	Desc: Class implemeting 2x2 matrix
+****************************************************/
 
 #ifndef _H_MAT2X2_MATH
 #define _H_MAT2X2_MATH

@@ -19,13 +19,13 @@ namespace Math
 	class MatrixNxM
 	{
 		struct Rep
-		{
-			T* m_cell;
-			int m_usage_count;
+		{						
+            T* m_cell;
 			int m_width;
-			int m_height;			
+			int m_height;			            
+            int m_usage_count;
 
-			Rep() : m_width(4), m_height(4), m_cell(0), m_usage_count(1)
+            Rep() : m_cell(nullptr), m_width(4), m_height(4), m_usage_count(1)
 			{			
 				SetSize(m_width, m_height);
 			}
@@ -38,7 +38,7 @@ namespace Math
 				m_cell = rep.m_cell;
 			}
 
-			Rep(int width, int height) : m_width(width), m_height(height), m_cell(0), m_usage_count(1)
+            Rep(int width, int height) : m_cell(nullptr), m_width(width), m_height(height), m_usage_count(1)
 			{
 				SetSize(m_width, m_height);
 			}

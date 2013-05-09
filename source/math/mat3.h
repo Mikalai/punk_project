@@ -1,8 +1,8 @@
 /**********************************************************
-/*	File: mat3.h
-/*	Author: Mikalai Abramau
-/*	Desc: Implements a 3x3 matrix entity
-/***********************************************************/
+*	File: mat3.h
+*	Author: Mikalai Abramau
+*	Desc: Implements a 3x3 matrix entity
+***********************************************************/
 
 #ifndef _H_MAT3X3_MATH
 #define _H_MAT3X3_MATH
