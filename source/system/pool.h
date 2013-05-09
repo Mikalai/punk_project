@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_POOL
 #define _H_PUNK_POOL
 
+#include <iostream>
 #include <string.h>
 #include "../config.h"
 #include <deque>
@@ -11,7 +12,7 @@ namespace System
 	template<class T>
 	class Pool
 	{
-		std::deque<void*> m_free;
+        std::deque<T*> m_free;
 	public:
 
 		Pool()
@@ -25,24 +26,24 @@ namespace System
 			Clear();
 		}
 
-		void* Alloc()
+        T* Alloc()
 		{
 			if (m_free.empty())
 			{
 //				out_message() << "Allocation requested for " << typeid(T).name() << std::endl;
-				void* chunk = operator new(sizeof(T));
+                T* chunk = (T*)operator new(sizeof(T));
 				//	clear memory
 				::memset(chunk, 0, sizeof(T));
 				return chunk;
 			}
-			void* chunk = m_free.front();
+            T* chunk = m_free.front();
 			//	clear memory
 			memset(chunk, 0, sizeof(T));
 			m_free.pop_front();
 			return chunk;
 		}
 
-		void Free(void* value)
+        void Free(T* value)
 		{
 			//out_message() << "Free requested" << std::endl;
 			m_free.push_back(value);
@@ -50,7 +51,8 @@ namespace System
 
 		void Clear()
 		{
-			for (std::deque<void*>::iterator it = m_free.begin(); it != m_free.end(); ++it)
+            std::cout << "Clear pool of " << typeid(T).name() << std::endl;
+            for (typename std::deque<T*>::iterator it = m_free.begin(); it != m_free.end(); ++it)
 			{
 				delete *it;
 			}

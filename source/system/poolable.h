@@ -11,8 +11,8 @@ namespace System
 	{
 		static Pool<T> pool;	
 	public:
-		static void* operator new (size_t size) { return pool.Alloc(); }
-		static void operator delete (void* obj) { pool.Free(obj); }
+        static void* operator new (size_t) { return (void*)pool.Alloc(); }
+        static void operator delete (void* obj) { pool.Free((T*)obj); }
 		static void ClearPool() { pool.Clear(); }
 	};
 
