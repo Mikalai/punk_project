@@ -7,20 +7,9 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class PUNK_ENGINE RenderTargetBackBuffer : public OpenGLRenderTarget
+        class PUNK_ENGINE RenderTargetBackBuffer : public RenderTarget
 		{
-		public:
-
-			struct PUNK_ENGINE RenderTargetBackBufferProperties : public RenderTarget::Properties
-			{
-				RenderTargetBackBufferProperties();
-			};
-
-		public:
-			virtual bool Init(RenderTarget::Properties* props);
-			virtual void Activate();
-			virtual void Deactivate();		
-			virtual ~RenderTargetBackBuffer();
+		public:		
 		};
 	}
 }
