@@ -23,14 +23,14 @@ namespace System
 	bool ConfigFile::Open(const System::string &filename)
 	{
 #ifdef _WIN32
+		HRESULT error;
 		DWORD result;
-		LONG error;
 		HKEY software;
 		m_filename = filename;
-		error = RegCreateKeyEx(HKEY_CURRENT_USER, L"Software", 0, 0, REG_OPTION_NON_VOLATILE, KEY_READ|KEY_WRITE, 0, &software, &result);
+        RegCreateKeyEx(HKEY_CURRENT_USER, L"Software", 0, 0, REG_OPTION_NON_VOLATILE, KEY_READ|KEY_WRITE, 0, &software, &result);
 		CHECK_SYS_ERROR_CODE(error, L"Can't open 'Software' in registry");
 
-		error = RegCreateKeyEx(software, m_filename.Data(), 0, 0, REG_OPTION_NON_VOLATILE, KEY_READ|KEY_WRITE, 0, &m_key, &result);
+        RegCreateKeyEx(software, m_filename.Data(), 0, 0, REG_OPTION_NON_VOLATILE, KEY_READ|KEY_WRITE, 0, &m_key, &result);
 		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't create/open %s in registry", m_filename.Data()));
 
 		out_message() << string::Format(L"Config file %s has been opened", m_filename.Data()) << std::endl;
@@ -49,17 +49,17 @@ namespace System
 	bool ConfigFile::ReadOptionString(const string& option, string& res)
 	{		
 #ifdef _WIN32
-		LONG error;
+		HRESULT error;
 		DWORD type;
 		DWORD size;
-		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, 0, &size);
+        RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, 0, &size);
 		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't get value %s from registry", option.Data()));
 
 		if (type != REG_SZ)
 			throw PunkInvalidArgumentException(string::Format(L"Bad type of %s. Expected string", option.Data()));
 
 		std::vector<wchar_t> buf(size);
-		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, &buf[0], &size);
+        RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, &buf[0], &size);
 		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't get value %s from registry", option.Data()));		
 		res = string(&buf[0]);
 #endif	//	_WIN32
@@ -69,16 +69,16 @@ namespace System
 	bool ConfigFile::ReadOptionInt(const string& option, int& res)
 	{
 #ifdef _WIN32
+		HRESULT error;
 		DWORD type;
 		DWORD size;
-		LONG error;
-		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, 0, &size);
+        RegGetValue(m_key, 0, option.Data(), RRF_RT_ANY, &type, 0, &size);
 		CHECK_SYS_ERROR_CODE(error, L"Can't read key " + option);
 
 		if (type != REG_DWORD)
 			throw PunkInvalidArgumentException(string::Format(L"Bad type of %s. Expected dword", option.Data()));
 
-		error = RegGetValue(m_key, 0, option.Data(), RRF_RT_DWORD, &type, (void*)&res, &size);
+        RegGetValue(m_key, 0, option.Data(), RRF_RT_DWORD, &type, (void*)&res, &size);
 		CHECK_SYS_ERROR_CODE(error, string::Format(L"Can't get value %s from registry", option.Data()));
 #endif	//	_WIN32
 		return true;
