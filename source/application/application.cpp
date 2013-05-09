@@ -1,9 +1,14 @@
+#ifndef _WIN32
+#include <windows.h>
+#endif
+
 #include "application.h"
 #include "../system/module.h"
 #include "../gpu/module.h"
 #include "../utility/module.h"
 #include "../gui/module.h"
 #include "../physics/module.h"
+#include "../virtual/module.h"
 
 namespace Punk
 {
@@ -32,7 +37,13 @@ namespace Punk
 	void Application::Init(const Config& data)
 	{
 		m_event_manager = new System::EventManager();
-		m_window = new System::Window(this);
+        System::WindowDesc wnd_desc;
+        if (data.gpu_config.m_hwnd)
+        {
+            wnd_desc.m_use_parent_window = true;
+            wnd_desc.m_hwnd = data.gpu_config.m_hwnd;
+        }
+        m_window = new System::Window(this, wnd_desc);
 		System::Mouse::Instance()->LockInWindow(true);
 		m_video_driver = new GPU::VideoDriver;
 
@@ -72,99 +83,99 @@ namespace Punk
 		}
 
 		{
-			m_paint_engine = new GPU::OpenGL::OpenGLPaintEngine;
-			m_paint_engine->SetSurfaceSize(GetWindow()->GetWidth(), GetWindow()->GetHeight());
+//			m_paint_engine = new GPU::OpenGL::OpenGLPaintEngine;
+//			m_paint_engine->SetSurfaceSize(GetWindow()->GetWidth(), GetWindow()->GetHeight());
 		}
+
+		OnInit(data);
 	}
 
-	void Application::OnIdleEvent(System::IdleEvent* event)
+	void Application::WndOnIdleEvent(System::IdleEvent* event)
 	{
 		//m_simulator->Update(float(event->elapsed_time_s));
 		m_event_manager->FixEvent(event);
 		m_event_manager->Process();
+
+        Render();
 	}
 
-	void Application::OnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event)
+	void Application::WndOnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event)
+	void Application::WndOnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event)
+	void Application::WndOnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event)
+	void Application::WndOnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event)
+	void Application::WndOnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event)
+	void Application::WndOnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnMouseHooverEvent(System::MouseHooverEvent* event)
+	void Application::WndOnMouseHooverEvent(System::MouseHooverEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnMouseMoveEvent(System::MouseMoveEvent* event)
+	void Application::WndOnMouseMoveEvent(System::MouseMoveEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnMouseWheelEvent(System::MouseWheelEvent* event)
+	void Application::WndOnMouseWheelEvent(System::MouseWheelEvent* event)
+	{
+		MouseWheel(event);
+		m_event_manager->FixEvent(event);
+	}
+
+	void Application::WndOnCharEvent(System::KeyCharEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnCharEvent(System::KeyCharEvent* event)
+	void Application::WndOnWideCharEvent(System::KeyWCharEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnWideCharEvent(System::KeyWCharEvent* event)
+	void Application::WndOnKeyDownEvent(System::KeyDownEvent* event)
+	{
+		KeyDown(event);
+		m_event_manager->FixEvent(event);
+	}
+
+	void Application::WndOnKeyUpEvent(System::KeyUpEvent* event)
 	{
 		m_event_manager->FixEvent(event);
 	}
 
-	void Application::OnKeyDownEvent(System::KeyDownEvent* event)
+	void Application::WndOnResizeEvent(System::WindowResizeEvent* event)
 	{
-		m_event_manager->FixEvent(event);
+		Resize(event);
 	}
 
-	void Application::OnKeyUpEvent(System::KeyUpEvent* event)
-	{
-		m_event_manager->FixEvent(event);
-	}
-
-	void Application::OnResizeEvent(System::WindowResizeEvent* event)
-	{
-		m_event_manager->FixEvent(event);
-
-		auto p = GetPaintEngine();
-		if (p)
-			p->SetSurfaceSize(event->width, event->height);
-
-
-	}
-
-	void Application::OnCreateEvent()
+	void Application::WndOnCreateEvent()
 	{
 	}
 
-	void Application::OnDestroyEvent()
+	void Application::WndOnDestroyEvent()
 	{
 	}
 
@@ -232,5 +243,66 @@ namespace Punk
 	GPU::PaintEngine* Application::GetPaintEngine()
 	{
 		return m_paint_engine;
+	}
+
+    void Application::OnRender(GPU::Frame*)
+    {
+
+    }
+
+	void Application::OnInit(const Config &value)
+	{
+
+	}
+
+    void Application::Render()
+    {
+        GPU::VideoDriver* driver = GetVideoDriver();
+        GPU::Frame* frame = driver->BeginFrame();        
+        OnRender(frame);        
+        driver->EndFrame(frame);
+    }
+
+#ifdef _WIN32
+    LRESULT Application::CustomDefWindowProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
+    {
+        return GetWindow()->CustomDefWindowProc(wnd, msg, wParam, lParam);
+    }
+#endif
+
+	void Application::OnResize(System::WindowResizeEvent *event)
+	{}
+
+	void Application::OnKeyDown(System::KeyDownEvent *event)
+	{}
+
+	void Application::OnMouseWheel(System::MouseWheelEvent *event)
+	{}
+
+	void Application::Resize(System::WindowResizeEvent *event)
+	{
+		m_event_manager->FixEvent(event);
+
+		auto p = GetPaintEngine();
+		if (p)
+			p->SetSurfaceSize(event->width, event->height);
+
+		auto driver = GetVideoDriver();
+		if (driver)
+		{
+			driver->SetViewport(0, 0, event->width, event->height);
+		}
+
+		OnResize(event);
+	}
+
+	void Application::KeyDown(System::KeyDownEvent *event)
+	{
+		OnKeyDown(event);
+	}
+
+	void Application::MouseWheel(System::MouseWheelEvent *event)
+	{
+		OnMouseWheel(event);
 	}
 }

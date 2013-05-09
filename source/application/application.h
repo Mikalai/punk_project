@@ -29,31 +29,41 @@ namespace Punk
 		int Run();
 		void SetTimeScale(__int64 nominator, __int64 denominator);
 
-		virtual void OnIdleEvent(System::IdleEvent* event) override;
-		virtual void OnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event) override;
-		virtual void OnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event) override;
-		virtual void OnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event) override;
-		virtual void OnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event) override;
-		virtual void OnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event) override;
-		virtual void OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event) override;
-		virtual void OnMouseHooverEvent(System::MouseHooverEvent* event) override;
-		virtual void OnMouseMoveEvent(System::MouseMoveEvent* event) override;
-		virtual void OnMouseWheelEvent(System::MouseWheelEvent* event) override;
-		virtual void OnCharEvent(System::KeyCharEvent* value) override;
-		virtual void OnWideCharEvent(System::KeyWCharEvent* event) override;
-		virtual void OnKeyDownEvent(System::KeyDownEvent* event) override;
-		virtual void OnKeyUpEvent(System::KeyUpEvent* event) override;
-		virtual void OnResizeEvent(System::WindowResizeEvent* event) override;
-		virtual void OnCreateEvent() override;
-		virtual void OnDestroyEvent() override;
+		virtual void WndOnIdleEvent(System::IdleEvent* event) override;
+		virtual void WndOnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event) override;
+		virtual void WndOnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event) override;
+		virtual void WndOnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event) override;
+		virtual void WndOnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event) override;
+		virtual void WndOnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event) override;
+		virtual void WndOnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event) override;
+		virtual void WndOnMouseHooverEvent(System::MouseHooverEvent* event) override;
+		virtual void WndOnMouseMoveEvent(System::MouseMoveEvent* event) override;
+		virtual void WndOnMouseWheelEvent(System::MouseWheelEvent* event) override;
+		virtual void WndOnCharEvent(System::KeyCharEvent* value) override;
+		virtual void WndOnWideCharEvent(System::KeyWCharEvent* event) override;
+		virtual void WndOnKeyDownEvent(System::KeyDownEvent* event) override;
+		virtual void WndOnKeyUpEvent(System::KeyUpEvent* event) override;
+		virtual void WndOnResizeEvent(System::WindowResizeEvent* event) override;
+		virtual void WndOnCreateEvent() override;
+		virtual void WndOnDestroyEvent() override;
 		virtual void OnSetFocusedEvent(GUI::SetFocusedEvent* event) override;
 		virtual void OnSetUnFocusedEvent(GUI::SetUnFocusedEvent* event) override;
 		virtual void OnMouseEnterEvent(GUI::MouseEnterEvent* event) override;
 		virtual void OnMouseLeaveEvent(GUI::MouseLeaveEvent* event) override;
+#ifdef _WIN32
+		virtual LRESULT CustomDefWindowProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
+#endif
 
-		virtual void Init(const Config& value);
+		//	User can override next methods
+        virtual void OnRender(GPU::Frame* frame);		
+		virtual void OnInit(const Config& value);
+		virtual void OnResize(System::WindowResizeEvent* event);
+		virtual void OnKeyDown(System::KeyDownEvent* event);
+		virtual void OnMouseWheel(System::MouseWheelEvent* event);
 
+		void Init(const Config& value);
 	private:
+
 		GPU::PaintEngine* m_paint_engine;
 		System::Window* m_window;
 		System::EventManager* m_event_manager;
@@ -63,14 +73,16 @@ namespace Punk
 		System::Timer m_timer;
         System::Mouse* m_mouse;
 		void Step(System::Event* event);
-		void Render();
+		void Render();		
+		void Resize(System::WindowResizeEvent* event);
+		void KeyDown(System::KeyDownEvent* event);
+		void MouseWheel(System::MouseWheelEvent* event);
 
 		//
 		//	to perform speed up and slow down
 		//
 		__int64 m_time_scale_nominator;
 		__int64 m_time_scale_denomiator;
-
 
 	};
 }

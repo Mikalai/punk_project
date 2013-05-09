@@ -6,7 +6,7 @@ QMAKE_CXXFLAGS += -std=c++11
 
 CONFIG -= QT
 
-DEFINES += _WIN32
+DEFINES += _WIN32 USE_OPENGL
 
 TEMPLATE = app
 TARGET = punk_tests
@@ -15,7 +15,7 @@ DEPENDPATH += . ..\..\source\tests\test_create_opengl_window
 DEPENDPATH += . ..\..\source\tests\test_create_opengl_window
 
 Release:LIBPATH += ./../../bin/release
-Debug:LIBPATH += ./../../bin/release
+Debug:LIBPATH += ./../../bin/debug
 
 LIBS += -lpunk_engine
 
@@ -34,7 +34,24 @@ Debug:UI_DIR = debug/.ui
 # Input
 HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_window.h \
            ../../source/tests/test_interface.h \
+    ../../source/tests/test_clear_window/test_clear_buffer.h \
+    ../../source/tests/test_first_triangle/firsttriangleandquad.h \
+    rotate_triangle.h \
+    ../../source/tests/rotate_triangle.h \
+    ../../source/tests/colored_triangle_test.h \
+    ../../source/tests/test5.h \
+    ../../source/tests/test6.h \
+    ../../source/tests/test7.h \
+    ../../source/tests/test8.h
 
 SOURCES += ../../source/tests/main.cpp \
            ../../source/tests/test_create_opengl_window/test_create_opengl_window.cpp \
+    ../../source/tests/test_clear_window/test_clear_buffer.cpp \
+    ../../source/tests/test_first_triangle/firsttriangleandquad.cpp \
+    ../../source/tests/colored_triangle_test.cpp \
+    ../../source/tests/rotate_triangle.cpp \
+    ../../source/tests/test5.cpp \
+    ../../source/tests/test6.cpp \
+    ../../source/tests/test7.cpp \
+    ../../source/tests/test8.cpp
 
