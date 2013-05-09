@@ -126,11 +126,11 @@ class Tab
 public:
 	static const Tab Inc() { m_offset++; return Tab(); }
 	static const Tab Dec() { m_offset--; return Tab(); }
-	friend std::wostream& operator << (std::wostream& stream, const Tab& value);
+    friend std::wostream& operator << (std::wostream& stream, const Tab&);
 };
 
 
-inline std::wostream& operator << (std::wostream& stream, const Tab& value)
+inline std::wostream& operator << (std::wostream& stream, const Tab&)
 {
 	if (Tab::m_offset)
 		stream << std::wstring(2*Tab::m_offset, L' ');
