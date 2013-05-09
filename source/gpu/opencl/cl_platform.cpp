@@ -25,7 +25,11 @@ namespace GPU
 		#else
 		: m_impl(nullptr)
 		#endif
-		{}
+        {
+#ifndef USE_OPENCL
+            (void)value;
+#endif
+        }
 
 		Platform& Platform::operator = (const Platform& value)
 		{

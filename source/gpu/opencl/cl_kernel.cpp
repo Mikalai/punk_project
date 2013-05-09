@@ -23,7 +23,11 @@ namespace GPU
 		#else
 		: m_impl(nullptr)
 		#endif
-		{}
+        {
+#ifndef USE_OPENCL
+            (void)value;
+#endif
+        }
 
 		Kernel& Kernel::operator = (const Kernel& value)
 		{
@@ -45,6 +49,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->Call(value);
 			#else
+            (void)value;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}
@@ -54,6 +59,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->SetArgument(index, value);
 			#else
+            (void)value; (void)index;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}
@@ -63,6 +69,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->SetArgument(index, value);
 			#else
+            (void)index; (void)value;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}

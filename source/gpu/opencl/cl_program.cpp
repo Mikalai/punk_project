@@ -28,7 +28,11 @@ namespace GPU
 		#else
 		: m_impl(nullptr)
 		#endif
-		{}
+        {
+#ifndef USE_OPENCL
+            (void)value;
+#endif
+        }
 
 		Program& Program::operator = (const Program& value)
 		{
@@ -42,6 +46,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->Init(context.m_impl->m_context, device.m_impl->m_device, queue.m_impl->m_queue);
 			#else
+            (void)context; (void)device; (void)queue;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}
@@ -51,6 +56,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->CreateFromFile(path);
 			#else
+            (void)path;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}
@@ -60,6 +66,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->GetKernel(name, value);
 			#else
+            (void)name; (void)value;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}

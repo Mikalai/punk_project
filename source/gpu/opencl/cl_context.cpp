@@ -24,7 +24,11 @@ namespace GPU
 		#else
 		: m_impl(nullptr)
 		#endif
-		{}
+        {
+#ifndef USE_OPENCL
+            (void)value;
+#endif
+        }
 
 		Context& Context::operator = (const Context& value)
 		{
@@ -46,6 +50,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->Init(device.m_impl->m_device);
 			#else
+            (void)device;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}

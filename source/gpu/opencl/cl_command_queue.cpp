@@ -25,7 +25,11 @@ namespace GPU
 		#else
 		: m_impl(nullptr)
 		#endif
-		{}
+        {
+#ifndef USE_OPENCL
+            (void)value;
+#endif
+        }
 
 		CommandQueue& CommandQueue::operator = (const CommandQueue& value)
 		{
@@ -47,6 +51,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->Int(context.m_impl->m_context, device.m_impl->m_device);
 			#else
+            (void)context; (void)device;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}

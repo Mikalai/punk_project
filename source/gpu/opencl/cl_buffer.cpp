@@ -23,10 +23,14 @@ namespace GPU
 		Buffer::Buffer(const Buffer& buffer)
 		#ifdef USE_OPENCL
 		: m_impl(new Buffer::BufferImpl(*buffer.m_impl)) {}
-		#else
+		#else        
 		: m_impl(nullptr)
 		#endif
-        {}
+        {
+#ifndef USE_OPENCL
+            (void)buffer;
+#endif
+        }
 
 		Buffer& Buffer::operator = (const Buffer& buffer)
 		{
@@ -53,6 +57,7 @@ namespace GPU
 
 			return m_impl->Init(context.m_impl->m_context, queue.m_impl->m_queue, flags, size);
 			#else
+            (void)context; (void)queue; (void)type; (void)size;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}
@@ -62,6 +67,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->Write(data, size);
 			#else
+            (void)data; (void)size;
 			throw System::PunkException(L"OpenCL is not available");
             #endif
 
@@ -72,6 +78,7 @@ namespace GPU
 		    #ifdef USE_OPENCL
 			return m_impl->Read(data, size);
 			#else
+            (void)data; (void)size;
 			throw System::PunkException(L"OpenCL is not available");
 			#endif
 		}
