@@ -7,10 +7,12 @@ namespace Virtual
 {
 	void ObjectAnimationMixer::AddTrack(const std::string& name, Animation* anim)
 	{
+        (void)name; (void)anim;
 	}
 
 	void ObjectAnimationMixer::RemoveTrack(const std::string& name)
 	{
+        (void)name;
 	}
 
 	Animation* ObjectAnimationMixer::GetOrCreateTrack(const System::string& name)

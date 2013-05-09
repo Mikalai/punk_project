@@ -17,7 +17,7 @@ namespace Virtual
 		}
 
 		void SetData(void* data) { m_data = data; }
-		~TerrainData() { delete[] m_data; }
+        ~TerrainData() { delete[] (float*)m_data; }
 
 	private:		
 		//	height map data

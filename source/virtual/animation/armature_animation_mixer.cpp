@@ -54,7 +54,9 @@ namespace Virtual
 				if (options.m_enable)
 				{
 					if (time > options.m_max_time)
+                    {
 						if (options.m_loop)
+                        {
 							if (options.m_max_time > 0)
 								while (time > options.m_max_time) time -= options.m_max_time;
 							else
@@ -62,8 +64,10 @@ namespace Virtual
 								out_error() << "Bad Max time of the frame " << name << " with value " << options.m_max_time << std::endl;
 								return;
 							}
+                        }
 						else
-							time = options.m_max_time;
+							time = options.m_max_time;                        
+                    }
 
 					//	animation for all bones
 					auto armature_anim = named_track.second;
@@ -111,12 +115,12 @@ namespace Virtual
 		m_options[track_name].m_loop = flag;
 	}
 
-	bool ArmatureAnimationMixer::Save(std::ostream& stream) const
+    bool ArmatureAnimationMixer::Save(std::ostream&) const
 	{
 		return false;
 	}
 
-	bool ArmatureAnimationMixer::Load(std::istream& stream)
+    bool ArmatureAnimationMixer::Load(std::istream&)
 	{
 		return false;
 	}
