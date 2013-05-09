@@ -29,7 +29,7 @@ namespace GPU
 	{
 	public:
 
-		PaintEngine();
+        PaintEngine();
 		virtual ~PaintEngine();
 
 		virtual bool Begin(PaintDevice* device) = 0;

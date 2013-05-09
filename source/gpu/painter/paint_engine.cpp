@@ -2,7 +2,7 @@
 
 namespace GPU
 {
-	PaintEngine::PaintEngine()
+    PaintEngine::PaintEngine()
 		: m_device(nullptr)
 		, m_painter(nullptr)
 	{}
