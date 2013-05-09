@@ -5,7 +5,9 @@
 #include <map>
 #include <list>
 
+#include "video_memory.h"
 #include "../../common/video_driver.h"
+#include "../render_targets/module.h"
 
 namespace GPU
 {
@@ -17,8 +19,11 @@ namespace GPU
 		void Restart();
 		void Shutdown();				
 		System::Window* GetWindow();
-		Frame* BeginFrame();
-		void EndFrame(Frame* value);
+		void SetViewport(float x, float y, float width, float height);
+		void SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer);
+		void SetClearColor(const Math::vec4& color);
+		void SetClearDepth(float value);
+		void Clear(bool color, bool depth, bool stencil);
 
 		//	constructoion part
 		VideoDriverImpl(VideoDriver* driver);
@@ -29,13 +34,18 @@ namespace GPU
 		void OnResize(System::Event* e);
 		void OnKeyDown(System::Event* e);
 
+        OpenGL::VideoMemory* GetVideoMemory();
+        const OpenGL::VideoMemory* GetVideoMemory() const;
+
 	private:
 
 		int m_shader_version;
 		int m_opengl_version;
 		HGLRC m_opengl_context;
 		VideoDriverDesc m_desc;
-		VideoDriver* m_driver;
+        VideoDriver* m_driver;
+        OpenGL::VideoMemory* m_memory;
+		std::unique_ptr<OpenGL::RenderTarget> m_rt;
 
 	private:
 		void Init();

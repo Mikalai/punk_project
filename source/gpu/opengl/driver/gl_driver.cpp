@@ -12,7 +12,8 @@
 #include "../gl/module.h"
 #include "../error/module.h"
 #include "gl_driver.h"
-#include "../render/gl_frame.h"
+#include "../../../math/vec4.h"
+#include "../../common/frame.h"
 
 namespace GPU
 {
@@ -32,7 +33,7 @@ namespace GPU
 
 
 	VideoDriverImpl::VideoDriverImpl(VideoDriver* driver)
-		: m_driver(driver)
+		: m_driver(driver)		
 	{}
 
 	VideoDriverImpl::~VideoDriverImpl()
@@ -67,7 +68,7 @@ namespace GPU
 			SetWindowPos(*m_desc.window, 0, 0, 0, m_desc.config.view_width, m_desc.config.view_height, SWP_SHOWWINDOW);
 
 			LONG code;
-			if (code = ChangeDisplaySettings(&mode, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL)
+            if ((code = ChangeDisplaySettings(&mode, CDS_FULLSCREEN)) != DISP_CHANGE_SUCCESSFUL)
 			{
 				out_error() << L"Can't change display settings " << std::endl;
 				return;
@@ -104,7 +105,7 @@ namespace GPU
 			1,
 			PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
 			PFD_TYPE_RGBA,
-			m_desc.config.bits_per_pixel,
+            (BYTE)m_desc.config.bits_per_pixel,
 			0, 0, 0, 0, 0, 0,
 			0,
 			0,
@@ -145,7 +146,7 @@ namespace GPU
 
 		PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 
-		int forward = 0;
+//		int forward = 0;
 		int attributes[] = {WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
 			WGL_CONTEXT_MINOR_VERSION_ARB, 3, 0,
 			WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB, 0,
@@ -224,6 +225,8 @@ namespace GPU
 		m_desc.event_manager->SubscribeHandler(System::EVENT_WINDOW_RESIZE, System::EventHandler(this, &VideoDriverImpl::OnResize));
 		m_desc.event_manager->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &VideoDriverImpl::OnKeyDown));
 
+		m_memory = new VideoMemory;
+
 		return true;
 	}
 
@@ -235,11 +238,49 @@ namespace GPU
 
 	void VideoDriverImpl::Shutdown()
 	{
+        delete m_memory;
 		out_message() << L"Destroying video driver..." << std::endl;
 		ChangeDisplaySettings(NULL, 0);
 		wglMakeCurrent(::GetDC(*m_desc.window), NULL);
 		wglDeleteContext(m_opengl_context);
 		out_message() << L"Video driver destroyed..." << std::endl;
+	}
+
+	void VideoDriverImpl::SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer)
+	{
+		if (color_buffer || depth_buffer)
+		{
+			m_rt.reset(new RenderTargetTexture(color_buffer, depth_buffer));
+		}
+		else
+		{
+			m_rt.reset(new RenderTargetBackBuffer());
+		}
+	}
+
+	void VideoDriverImpl::SetClearColor(const Math::vec4& color)
+	{
+		glClearColor(color[0], color[1], color[2], color[3]);
+	}
+
+	void VideoDriverImpl::SetClearDepth(float value)
+	{
+		glClearDepth(value);
+	}
+
+	void VideoDriverImpl::Clear(bool color, bool depth, bool stencil)
+	{
+		GLbitfield b = 0;
+
+		if (color)
+			b |= GL_COLOR_BUFFER_BIT;
+		if (depth)
+			b |= GL_DEPTH_BUFFER_BIT;
+		if (stencil)
+			b |= GL_STENCIL_BUFFER_BIT;
+
+		glClear(b);
+		ValidateOpenGL(L"Unable to clear buffer");
 	}
 
 	void VideoDriverImpl::SwapBuffers()
@@ -254,6 +295,12 @@ namespace GPU
 		if (!event)
 			throw OpenGLInvalidValueException(L"Can't understand event");
 		glViewport(0, 0, event->width, event->height);
+	}
+
+	void VideoDriverImpl::SetViewport(float x, float y, float width, float height)
+	{
+		if (glViewport)
+			glViewport(x, y, width, height);
 	}
 
 	void VideoDriverImpl::OnKeyDown(System::Event* e)
@@ -272,19 +319,17 @@ namespace GPU
 		}
 	}
 
+    OpenGL::VideoMemory* VideoDriverImpl::GetVideoMemory()
+    {
+        return m_memory;
+    }
+
+    const OpenGL::VideoMemory* VideoDriverImpl::GetVideoMemory() const
+    {
+        return m_memory;
+    }
+
 	System::Window* VideoDriverImpl::GetWindow() { return m_desc.window; }
-
-	Frame* VideoDriverImpl::BeginFrame()
-	{
-		Frame* frame = new Frame;
-		frame->impl->SetVideoDriver(this);
-		return frame;
-	}
-
-	void VideoDriverImpl::EndFrame(Frame* value)
-	{
-		delete value;
-	}
 
 	VideoDriver::VideoDriver()
 		: impl(new VideoDriverImpl(this))
@@ -319,17 +364,48 @@ namespace GPU
 
 	Frame* VideoDriver::BeginFrame()
 	{
-		return impl->BeginFrame();
+		Frame* frame = new Frame(this);
+		return frame;
 	}
 
 	void VideoDriver::EndFrame(Frame* value)
 	{
-		impl->EndFrame(value);
+		delete value;
 	}
 
 	System::Window* VideoDriver::GetWindow()
 	{
 		return impl->GetWindow();
+	}      
+
+	void VideoDriver::SetViewport(float x, float y, float width, float height)
+	{
+		impl->SetViewport(x, y, width, height);
+	}
+
+	void VideoDriver::SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer)
+	{
+		impl->SetRenderTarget(color_buffer, depth_buffer);
+	}
+
+	void VideoDriver::SetClearColor(const Math::vec4& color)
+	{
+		impl->SetClearColor(color);
+	}
+
+	void VideoDriver::SetClearDepth(float value)
+	{
+		impl->SetClearDepth(value);
+	}
+
+	void VideoDriver::Clear(bool color, bool depth, bool stencil)
+	{
+		impl->Clear(color, depth, stencil);
+	}
+
+	void VideoDriver::SwapBuffers()
+	{
+		impl->SwapBuffers();
 	}
 }
 
