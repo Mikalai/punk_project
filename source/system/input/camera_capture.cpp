@@ -17,7 +17,7 @@
 #include "../../gpu/opengl/gl/module.h"
 #include "../../system/timer.h"
 #include "../../gpu/opencl/module.h"
-#pragma comment (lib, "vfw32.lib")
+
 
 namespace System
 {	
@@ -324,6 +324,7 @@ namespace System
 
 		hr = ctrl->Run();   
 
+        (void)hr;
 	};
 
 
