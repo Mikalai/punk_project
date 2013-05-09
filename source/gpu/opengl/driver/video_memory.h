@@ -31,8 +31,8 @@ namespace GPU
 			size_t GetMemoryUsage() const;
 			size_t GetMaxAvailableMemory() const;
 
-			static VideoMemory* Instance();
-			static void Destroy();
+        //	static VideoMemory* Instance();
+        //	static void Destroy();
 
 			PixelBufferObject* AllocatePixelBuffer(size_t size);
 			void FreePixelBuffer(PixelBufferObject* value);
@@ -52,7 +52,7 @@ namespace GPU
 			*/
 			void OptimizeMemoryUsage(size_t size);
 
-			static std::unique_ptr<VideoMemory> m_instance;
+        //	static std::unique_ptr<VideoMemory> m_instance;
 
 			struct Core
 			{

@@ -5,6 +5,7 @@
 
 namespace GPU
 {
+    class VideoDriver;
 	namespace OpenGL
 	{
 		class RenderTargetTexture;
@@ -12,7 +13,7 @@ namespace GPU
 		class OpenGLPaintEngine : public PaintEngine
 		{
 		public:
-			OpenGLPaintEngine();
+            OpenGLPaintEngine(VideoDriver* driver);
 			virtual	~OpenGLPaintEngine();
 
 			void SetRenderTarget(RenderTargetTexture* value);

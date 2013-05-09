@@ -21,7 +21,9 @@ namespace GPU
 			case GL_OUT_OF_MEMORY: throw OpenGLOutOfMemoryException(msg);
 			default: throw OpenGLException(msg);
 			};
-#endif	//	_DEBUG
+#else
+            (void)msg;
+#endif  //	_DEBUG
 		}
 	}
 }

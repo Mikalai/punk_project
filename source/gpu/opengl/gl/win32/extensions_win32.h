@@ -148,6 +148,8 @@ namespace GPU
 		extern PFNGLGETINTEGERVPROC glGetIntegerv;
 		extern PFNGLVIEWPORTPROC glViewport;
 		extern PFNGLCLEARCOLORPROC glClearColor;
+		extern PFNGLCLEARDEPTHFPROC glClearDepthf;
+		extern PFNGLCLEARDEPTHPROC glClearDepth;
 		extern PFNGLENABLEPROC glEnable;
 		extern PFNGLDISABLEPROC glDisable;
 		extern PFNGLREADPIXELSPROC glReadPixels;

@@ -5,10 +5,11 @@
 #include "../driver/module.h"
 #include "../textures/module.h"
 #include "../buffers/module.h"
-#include "../renderable/module.h"
 #include "../../../system/state_manager.h"
 #include "../../common/gpu_state.h"
 #include "../../common/vertex.h"
+#include "../../common/texture_context.h"
+#include "../../common/primitives/module.h"
 
 namespace GPU
 {
@@ -26,17 +27,19 @@ namespace GPU
 		bool m_lines_modified;
 		std::vector<VertexType> m_triangles;
 		bool m_triangles_modified;
-		OpenGL::Points<VertexType> m_points_vao;
-		OpenGL::Lines<VertexType> m_lines_vao;
+		Points<VertexType> m_points_vao;
+		Lines<VertexType> m_lines_vao;
 		RenderTarget* m_rt;
 		AbstractRenderPolicy* m_rc;
-		OpenGL::TextureContext* m_tc;
-		PainterImpl()
-			: m_lines_modified(false)
-			, m_points_modified(false)
+        TextureContext* m_tc;
+        PainterImpl(VideoDriver* driver)
+            : m_points_modified(false)
+            , m_lines_modified(false)
+            , m_points_vao(driver)
+            , m_lines_vao(driver)
 		{
 			m_rc = AbstractRenderPolicy::find(RC_PAINTER);
-			m_tc = new OpenGL::TextureContext();
+            m_tc = new TextureContext();
 		}
 
 		~PainterImpl()
@@ -44,11 +47,11 @@ namespace GPU
 			safe_delete(m_tc);
 		}
 
-		void Begin(RenderTarget* value)
+        void Begin(RenderTarget*)
 		{
-			m_rt = value;
-			if (m_rt)
-				m_rt->Activate();
+//			m_rt = value;
+//			if (m_rt)
+//				m_rt->Activate();
 		}
 
 		void End()
@@ -81,8 +84,8 @@ namespace GPU
 			m_rc->End();
 			m_tc->Unbind();
 			
-			if (m_rt)
-				m_rt->Deactivate();
+//			if (m_rt)
+//				m_rt->Deactivate();
 		}
 
 		void CookBuffers()

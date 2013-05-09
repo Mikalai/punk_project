@@ -6,6 +6,7 @@
 #include "../../common/module.h"
 #include "../renderable/module.h"
 #include "../../../utility/module.h"
+#include "../../common/primitives/module.h"
 
 #define STATE m_states.CurrentState()->Get()
 
@@ -17,17 +18,19 @@ namespace GPU
 		{
 			typedef Vertex<VertexComponent::Position, VertexComponent::Texture0, VertexComponent::Flag, VertexComponent::Color> VertexType;
 
+            VideoDriver* m_driver;
 			RenderTargetTexture* m_rt;
 			System::StateManager<GPU::CoreState> m_states;
 			GPU::AbstractRenderPolicy* m_solid_rc;
 			Math::vec4 m_color;
 			Math::vec4 m_fill_color;
-			TextureContext* m_tc;
+            GPU::TextureContext* m_tc;
 			GPU::AbstractRenderPolicy* m_gui_rc;
 			GPU::AbstractRenderPolicy* m_painter_rc;
 			Utility::FontBuilder m_font_builder;
 
-			OpenGL::Lines<VertexType> m_lines_vao;
+			GPU::Lines<VertexType> m_lines_vao;
+			GPU::QuadObject m_quad;
 
 			const Texture2D* m_fill_texture;
 			bool m_use_border;
@@ -38,13 +41,18 @@ namespace GPU
 
 			std::vector<VertexType> m_lines;
 
-			OpenGLPaintEngineImpl()
-				: m_rt(new RenderTargetTexture)
+            OpenGLPaintEngineImpl(VideoDriver* driver)
+                : m_driver(driver)
+                , m_rt(nullptr)
+                , m_lines_vao(driver)
+				, m_quad(driver)
 			{
-				auto props = GPU::OpenGL::RenderTargetTexture::RenderTargetTextureProperties();
+                try
+                {
+                //auto props = GPU::OpenGL::RenderTargetTexture::RenderTargetTextureProperties();
 
-				m_rt->Init(&props);
-				m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);
+                //m_rt->Init(&props);
+                //m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);
 
 				m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_3D);
 				m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
@@ -59,6 +67,11 @@ namespace GPU
 				m_fill_color.Set(1,1,1,0.5f);
 				m_font_size = 14;
 				m_font_name = L"times.ttf";
+                }
+                catch(System::PunkException& e)
+                {
+                    out_error() << e.ToString() << std::endl;
+                }
 			}
 
 			~OpenGLPaintEngineImpl()
@@ -75,14 +88,14 @@ namespace GPU
 				return m_rt;
 			}
 
-			void SetSurfaceSize(int width, int height)
+            void SetSurfaceSize(int, int)
 			{
-				m_rt->SetViewport(Math::Rect(0, 0, (float)width, (float)height));
+            //	m_rt->SetViewport(Math::Rect(0, 0, (float)width, (float)height));
 			}
 
-			bool Begin(PaintDevice* device)
+            bool Begin(PaintDevice*)
 			{
-				m_rt->Activate();
+            //	m_rt->Activate();
 				return true;
 			}
 
@@ -151,20 +164,28 @@ namespace GPU
 				m_tc->Unbind();
 			}
 
-			void DrawRects(const Math::Rect* rects, size_t count)
+            void DrawRects(const Math::Rect*, size_t)
 			{}
 
 			void DrawArc(float xc, float yc, float width, float height, float start_angle, float span_angle)
-			{}
+            {
+                (void)xc; (void)yc; (void)width; (void)height; (void)start_angle; (void)span_angle;
+            }
 
 			void DrawChord(float xc, float yc, float width, float height, float start_angle, float span_angle)
-			{}
+            {
+                (void)xc; (void)yc; (void)width; (void)height; (void)start_angle; (void)span_angle;
+            }
 
 			void DrawPoint(float x, float y)
-			{}
+            {
+                (void)x; (void)y;
+            }
 
 			void DrawEllipse(float xc, float yc, float major_axis, float minor_axis)
-			{}
+            {
+                (void)xc; (void)yc; (void)major_axis; (void)minor_axis;
+            }
 
 			void RenderQuad(float x, float y, float width, float height, const Math::vec4& color)
 			{
@@ -178,9 +199,9 @@ namespace GPU
 				STATE.m_blending = true;
 				m_solid_rc->Begin();
 				m_solid_rc->BindParameters(STATE);
-				GPU::OpenGL::QuadObject::Instance()->Bind(m_solid_rc->GetRequiredAttributesSet());
-				GPU::OpenGL::QuadObject::Instance()->Render();
-				GPU::OpenGL::QuadObject::Instance()->Unbind();
+				m_quad.Bind(m_solid_rc->GetRequiredAttributesSet());
+				m_quad.Render();
+				m_quad.Unbind();
 				m_solid_rc->End();
 				m_states.Pop();
 			}
@@ -261,7 +282,7 @@ namespace GPU
 				m_font_builder.SetCharSize(m_font_size, m_font_size);
 				int len = m_font_builder.CalculateLength(text.Data());
 				int h = m_font_builder.CalculateHeight(text.Data());
-				GPU::OpenGL::TextSurface s;
+                GPU::OpenGL::TextSurface s(m_driver);
 				s.SetTextSize(m_font_size);
 				s.SetSize(len, h);
 				s.SetText(text);
@@ -284,9 +305,9 @@ namespace GPU
 				m_tc->Bind();
 				m_gui_rc->Begin();
 				m_gui_rc->BindParameters(STATE);
-				GPU::OpenGL::QuadObject::Instance()->Bind(m_gui_rc->GetRequiredAttributesSet());
-				GPU::OpenGL::QuadObject::Instance()->Render();
-				GPU::OpenGL::QuadObject::Instance()->Unbind();
+				m_quad.Bind(m_gui_rc->GetRequiredAttributesSet());
+				m_quad.Render();
+				m_quad.Unbind();
 				m_gui_rc->End();
 				m_tc->Unbind();
 				m_states.Pop();
@@ -319,8 +340,8 @@ namespace GPU
 
 		};
 
-		OpenGLPaintEngine::OpenGLPaintEngine()
-			: impl(new OpenGLPaintEngineImpl)
+        OpenGLPaintEngine::OpenGLPaintEngine(VideoDriver* driver)
+            : impl(new OpenGLPaintEngineImpl(driver))
 		{
 		}
 

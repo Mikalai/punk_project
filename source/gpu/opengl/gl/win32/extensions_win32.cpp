@@ -172,6 +172,8 @@ namespace GPU
 		PFNGLPOINTPARAMETERFPROC glPointParameterf;
 		PFNGLCULLFACEPROC glCullFace;
 		PFNGLLINEWIDTHPROC glLineWidth;
+		PFNGLCLEARDEPTHFPROC glClearDepthf;
+		PFNGLCLEARDEPTHPROC glClearDepth;
 
         PROC WINAPI (*wglGetProcAddress(LPCSTR));
 
@@ -366,6 +368,8 @@ namespace GPU
 			glPointParameterf = (PFNGLPOINTPARAMETERFPROC)GetGPUProcAddres("glPointParameterf");
 			glCullFace = (PFNGLCULLFACEPROC)GetGPUProcAddres("glCullFace");
 			glLineWidth = (PFNGLLINEWIDTHPROC)GetGPUProcAddres("glLineWidth");
+			glClearDepthf = (PFNGLCLEARDEPTHFPROC)GetGPUProcAddres("glClearDepthf");
+			glClearDepth = (PFNGLCLEARDEPTHPROC)GetGPUProcAddres("glClearDepth");
 		}
 	}
 }

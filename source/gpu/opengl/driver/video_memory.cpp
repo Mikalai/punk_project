@@ -7,19 +7,19 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		std::unique_ptr<VideoMemory> VideoMemory::m_instance;
+//		std::unique_ptr<VideoMemory> VideoMemory::m_instance;
 
-		VideoMemory* VideoMemory::Instance()
-		{
-			if (!m_instance.get())
-				m_instance.reset(new VideoMemory);
-			return m_instance.get();
-		}
+//		VideoMemory* VideoMemory::Instance()
+//		{
+//			if (!m_instance.get())
+//				m_instance.reset(new VideoMemory);
+//			return m_instance.get();
+//		}
 
-		void VideoMemory::Destroy()
-		{
-			m_instance.reset(0);
-		}
+//		void VideoMemory::Destroy()
+//		{
+//			m_instance.reset(0);
+//		}
 
 		VideoMemory::VideoMemory()
 		{
@@ -36,6 +36,8 @@ namespace GPU
 
 		void VideoMemory::SetMaxMemoryUsage(size_t value)
 		{
+            (void)value;
+            throw System::PunkNotImplemented();
 		}
 
 		size_t VideoMemory::GetMaxMemoryUsage() const

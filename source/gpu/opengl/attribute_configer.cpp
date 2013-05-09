@@ -84,7 +84,7 @@ namespace GPU
 				ValidateOpenGL(L"Unable to set vertex attrib pointer vao");
 				
 				glVertexAttribPointer(VertexComponent::Color::Slot(), 4, GL_FLOAT, GL_FALSE
-					, sizeof(CurrentVertex), (void*)CurrentVertex::ColorOffset());	//	texture_0
+					, sizeof(CurrentVertex), (void*)CurrentVertex::ColorOffset());	//	color
 				ValidateOpenGL(L"Unable to set vertex attrib pointer vao");
 
 				glEnableVertexAttribArray(VertexComponent::Position::Slot());
