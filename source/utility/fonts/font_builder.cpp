@@ -368,6 +368,7 @@ namespace Utility
 	    #ifdef USE_FREETYPE
 	    impl->SetCurrentFace(fontName);
 	    #else
+        (void)fontName;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -377,6 +378,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->SetCharSize(width, height);
 	    #else
+        (void)width; (void)height;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -386,6 +388,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->CalculateLength(text);
 	    #else
+        (void)text;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -395,6 +398,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->CalculateHeight(text);
 	    #else
+        (void)text;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -404,6 +408,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->GetWidth(s);
 	    #else
+        (void)s;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -413,6 +418,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->GetHeight(s);
 	    #else
+        (void)s;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -422,6 +428,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->GetMaxOffset(s);
 	    #else
+        (void)s;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -431,6 +438,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->GetMinOffset(s);
 	    #else
+        (void)s;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -440,6 +448,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->GetMaxOffset(s);
 	    #else
+        (void)s;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -449,6 +458,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->GetMinOffset(s);
 	    #else
+        (void)s;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -458,6 +468,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->RenderChar(symbol, width, height, x_offset, y_offset, x_advance, y_advance, buffer);
 	    #else
+        (void)symbol; (void)width; (void)height; (void)x_offset; (void)y_offset; (void)x_advance; (void)y_advance; (void)buffer;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
@@ -467,6 +478,7 @@ namespace Utility
         #ifdef USE_FREETYPE
 	    impl->RenderChar(symbol, width, height, x_offset, y_offset, x_advance, y_advance, buffer);
 	    #else
+        (void)symbol; (void)width; (void)height; (void)x_offset; (void)y_offset; (void)x_advance; (void)y_advance; (void)buffer;
 	    throw System::PunkException(L"Freetype is unavailable");
 	    #endif // USE_FREETYPE
 	}
