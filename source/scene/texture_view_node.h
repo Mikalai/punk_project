@@ -37,10 +37,13 @@ namespace Scene
 			return visitor->Visit(this);
 		}
 
-	private:
-		// this pointer should not be delete
-		GPU::Texture2D* m_texture;
-		float m_x, m_y, m_width, m_height;
+	private:		
+        float m_x;
+        float m_y;
+        float m_width;
+        float m_height;
+        // this pointer should not be delete
+        GPU::Texture2D* m_texture;
 	};
 }
 

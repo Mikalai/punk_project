@@ -26,7 +26,7 @@ namespace Scene
 	bool Collider::Visit(Scene::StaticMeshNode* node)
 	{
 		{
-			GPU::OpenGL::StaticMesh* mesh = dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
+			GPU::StaticMesh* mesh = NULL;// dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
 			if (mesh)
 			{
 				node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
@@ -45,7 +45,7 @@ namespace Scene
 
 	bool Collider::Visit(Scene::SkinMeshNode* node)
 	{
-		GPU::OpenGL::SkinMesh* mesh = dynamic_cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
+		GPU::SkinMesh* mesh = nullptr;	// dynamic_cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		if (Math::CrossSphereSphere(m_current_sphere, node->GetBoundingSphere()))
 		{
@@ -307,7 +307,7 @@ namespace Scene
 		return true;
 	}
 
-	bool Collider::Visit(Scene::PortalNode* node)
+    bool Collider::Visit(Scene::PortalNode*)
 	{
 		return true;
 	}

@@ -26,7 +26,7 @@ namespace Scene
 	bool BoundingVolumeUpdater::Visit(Scene::StaticMeshNode* node)
 	{
 		{
-			GPU::OpenGL::StaticMesh* mesh = dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
+			GPU::StaticMesh* mesh = nullptr; //	dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
 			if (mesh)
 			{
 				node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
@@ -40,7 +40,7 @@ namespace Scene
 
 	bool BoundingVolumeUpdater::Visit(Scene::SkinMeshNode* node)
 	{
-		GPU::OpenGL::SkinMesh* mesh = dynamic_cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
+		GPU::SkinMesh* mesh = nullptr;	// dynamic_cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
 		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		return true;
 		return true;
@@ -275,7 +275,7 @@ namespace Scene
 		return true;
 	}
 
-	bool BoundingVolumeUpdater::Visit(Scene::PortalNode* node)
+    bool BoundingVolumeUpdater::Visit(Scene::PortalNode*)
 	{
 		return true;
 	}

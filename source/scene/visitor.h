@@ -17,22 +17,22 @@ namespace Scene
 	class TextureViewNode;
 	class TerrainNode;
 
-	class PUNK_ENGINE AbstractVisitor
+    class AbstractVisitor
 	{
 	public:
-		virtual bool Visit(CameraNode* node) = 0;
-		virtual bool Visit(StaticMeshNode* node) = 0;
-		virtual bool Visit(SkinMeshNode* node) = 0;
-		virtual bool Visit(ArmatureNode* node) = 0;
-		virtual bool Visit(LightNode* node) = 0;
-		virtual bool Visit(MaterialNode* node) = 0;
-		virtual bool Visit(Node* node) = 0;
-		virtual bool Visit(TransformNode* node) = 0;
-		virtual bool Visit(LocationIndoorNode* node) = 0;		
-		virtual bool Visit(PortalNode* node) = 0;
-		virtual bool Visit(BoneNode* node) = 0;
-		virtual bool Visit(TerrainNode* node) = 0;
-		virtual bool Visit(TextureViewNode* node) { return true; }		
+        virtual bool Visit(CameraNode*) = 0;
+        virtual bool Visit(StaticMeshNode*) = 0;
+        virtual bool Visit(SkinMeshNode*) = 0;
+        virtual bool Visit(ArmatureNode*) = 0;
+        virtual bool Visit(LightNode*) = 0;
+        virtual bool Visit(MaterialNode*) = 0;
+        virtual bool Visit(Node*) = 0;
+        virtual bool Visit(TransformNode*) = 0;
+        virtual bool Visit(LocationIndoorNode*) = 0;
+        virtual bool Visit(PortalNode*) = 0;
+        virtual bool Visit(BoneNode*) = 0;
+        virtual bool Visit(TerrainNode*) = 0;
+        virtual bool Visit(TextureViewNode*) = 0;
 	};
 }
 
