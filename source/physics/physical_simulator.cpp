@@ -1,4 +1,4 @@
-#ifdef defined USE_BULLET_PHYSICS
+#ifdef USE_BULLET_PHYSICS
 #define HAS_PHYSICS
 #include "bullet/module.h"
 #else
@@ -12,6 +12,7 @@ namespace Physics
     {
         #ifdef HAS_PHYSICS
         #else
+        (void)dt;
         throw System::PunkException(L"Physics simulator is not available");
         #endif // HAS_PHYSICS
     }

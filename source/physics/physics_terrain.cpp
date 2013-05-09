@@ -12,6 +12,7 @@ namespace Physics
     {
         #ifdef HAS_PHYSICS
         #else
+        (void)view;
         throw System::PunkException(L"Physics simulator is not available");
         #endif // HAS_PHYSICS
     }
@@ -20,6 +21,7 @@ namespace Physics
     {
         #ifdef HAS_PHYSICS
         #else
+        (void)simulator;
         throw System::PunkException(L"Physics simulator is not available");
         #endif // HAS_PHYSICS
     }

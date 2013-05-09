@@ -3,9 +3,9 @@
 
 namespace Physics
 {
-	class BulletSimulator;
-	class BulletRigidBody;
-	class BulletShapeBody;
+    class Simulator;
+    class RigidBody;
+    class ShapeBody;
 }
 
 #endif	//	_H_PUNK_PHYSICS_INTERFACE
