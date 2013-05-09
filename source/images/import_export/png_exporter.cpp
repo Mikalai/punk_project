@@ -146,6 +146,7 @@ namespace ImageModule
 		/* close the file */
 		fclose(fp);
 #else
+        (void)filename; (void)image;
 		throw System::PunkNotImplemented(L"PNG image can't be handled");
 #endif  //  USE_PNG
 	}

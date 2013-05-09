@@ -18,39 +18,39 @@ namespace ImageModule
 		unsigned m_width;
 		unsigned m_height;
 		unsigned m_components;
-		unsigned m_size;	
+		unsigned m_size;	        
 		unsigned m_bit_depth;
 		ImageFormat m_format;
-		std::vector<Component> m_data;
+        std::vector<Component> m_data;
 
 		ImageImpl()
 			: m_width(0)
 			, m_height(0)
 			, m_components(0)
-			, m_size(0)
-			, m_data()
+			, m_size(0)		
 			, m_bit_depth(0)
 			, m_format(IMAGE_FORMAT_BAD)
+            , m_data()
 		{}
 
 		ImageImpl(const ImageImpl& impl)
 			: m_width(impl.m_width)
 			, m_height(impl.m_height)
 			, m_components(impl.m_components)
-			, m_size(impl.m_size)
-			, m_data(impl.m_data.begin(), impl.m_data.end())
+			, m_size(impl.m_size)			
 			, m_bit_depth(impl.m_bit_depth)
 			, m_format(impl.m_format)
+            , m_data(impl.m_data.begin(), impl.m_data.end())
 		{}
 
 		ImageImpl(int width, int height, int components)
 			: m_width(width)
 			, m_height(height)
 			, m_components(components)
-			, m_size(m_width*m_height*m_components*sizeof(Component))
-			, m_data(m_size)
+			, m_size(m_width*m_height*m_components*sizeof(Component))			
 			, m_bit_depth(0)
 			, m_format(IMAGE_FORMAT_BAD)
+            , m_data(m_size)
 		{
 			std::fill(m_data.begin(), m_data.end(), 0);
 		}
@@ -73,7 +73,7 @@ namespace ImageModule
 		void Clear()
 		{}		
 
-		void PutLine(int y, int width_in_pixel, int components_per_pixel, Component* data)
+        void PutLine(int y, unsigned width_in_pixel, unsigned components_per_pixel, Component* data)
 		{
 			if (!m_data.empty())
 				throw ImageException(L"Data is not allocated");
@@ -94,7 +94,7 @@ namespace ImageModule
 			return true;
 		}
 
-		bool Load(std::istream& stream)
+        bool Load(std::istream&)
 		{			
 			//stream.read(reinterpret_cast<char*>(&m_descriptor), sizeof(m_descriptor));
 			//stream.read(reinterpret_cast<char*>(&m_width), sizeof(m_width));

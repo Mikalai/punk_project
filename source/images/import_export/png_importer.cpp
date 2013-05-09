@@ -100,12 +100,22 @@ namespace ImageModule
 			break;
 
 		case PNG_COLOR_TYPE_PALETTE:
-			//channels = bpp / 8;
+			channels = 3;
+			format = IMAGE_FORMAT_RGB;
 			break;
 
 		default:
 			break;
 		}
+
+//		if (colorType == PNG_COLOR_TYPE_PALETTE)
+//			png_set_palette_to_rgb(png_ptr);
+
+//		if (colorType == PNG_COLOR_TYPE_GRAY && bpp < 8)
+//			png_set_expand_gray_1_2_4_to_8(png_ptr);
+
+//		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+//			png_set_tRNS_to_alpha(png_ptr);
 
 		if ( channels == 0 )
 		{
@@ -180,7 +190,7 @@ namespace ImageModule
 				{
 					int	ind = ptr [z];
 
-					lineBuf [z] = pngPal[ind].blue | pngPal[ind].green << 8 | pngPal[ind].red << 16;
+					lineBuf [z] = pngPal[ind].red | pngPal[ind].green << 8 | pngPal[ind].blue << 16;
 				}
 			}
 			else
@@ -224,6 +234,7 @@ namespace ImageModule
 
 		return true;
 #else   //  USE_PNG
+        (void)stream; (void)image;
         throw System::PunkNotImplemented(L"Can't import png, because png lib was not included in the project");
 #endif  //  USE_PNG
 	}

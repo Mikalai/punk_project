@@ -347,6 +347,7 @@ namespace ImageModule
 
 		return true;
 		#else
+        (void)stream; (void)image;
 		throw System::PunkNotImplemented(L"Can't work with jpeg files, cause jpeg lib was not used");
 		#endif  //  USE_JPEG
 	}
