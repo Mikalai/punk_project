@@ -1,6 +1,15 @@
 #ifndef _H_PUNK_WINDOW_ADAPTER
 #define _H_PUNK_WINDOW_ADAPTER
 
+#ifdef _WIN32
+
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
+#include <windows.h>
+#endif
+
 #include "../types.h"
 
 namespace System
@@ -27,29 +36,37 @@ namespace System
 		unsigned m_y;
 		unsigned m_width;
 		unsigned m_height;
-		WindowDesc() : m_x(100), m_y(100), m_width(1024), m_height(768) {}
+
+#ifdef _WIN32
+        bool m_use_parent_window;
+        HWND m_hwnd;
+#endif
+        WindowDesc() : m_x(100), m_y(100), m_width(1024), m_height(768), m_use_parent_window(false), m_hwnd(0) {}
 	};
 
 	class WindowAdapter
 	{
 	public:
-		virtual void OnIdleEvent(IdleEvent* event) = 0;
-		virtual void OnMouseMiddleButtonUpEvent(MouseMiddleButtonUpEvent* event) = 0;
-		virtual void OnMouseMiddleButtonDownEvent(MouseMiddleButtonDownEvent* event) = 0;
-		virtual void OnMouseRightButtonUpEvent(MouseRightButtonUpEvent* event) = 0;
-		virtual void OnMouseRightButtonDownEvent(MouseRightButtonDownEvent* event) = 0;
-		virtual void OnMouseLeftButtonUpEvent(MouseLeftButtonUpEvent* event) = 0;
-		virtual void OnMouseLeftButtonDownEvent(MouseLeftButtonDownEvent* event) = 0;
-		virtual void OnMouseHooverEvent(MouseHooverEvent* event) = 0;
-		virtual void OnMouseMoveEvent(MouseMoveEvent* event) = 0;
-		virtual void OnMouseWheelEvent(MouseWheelEvent* event) = 0;
-		virtual void OnCharEvent(KeyCharEvent* value) = 0;
-		virtual void OnWideCharEvent(KeyWCharEvent* event) = 0;
-		virtual void OnKeyDownEvent(KeyDownEvent* event) = 0;
-		virtual void OnKeyUpEvent(KeyUpEvent* event) = 0;
-		virtual void OnResizeEvent(WindowResizeEvent* event) = 0;
-		virtual void OnCreateEvent() = 0;
-		virtual void OnDestroyEvent() = 0;
+		virtual void WndOnIdleEvent(IdleEvent* event) = 0;
+		virtual void WndOnMouseMiddleButtonUpEvent(MouseMiddleButtonUpEvent* event) = 0;
+		virtual void WndOnMouseMiddleButtonDownEvent(MouseMiddleButtonDownEvent* event) = 0;
+		virtual void WndOnMouseRightButtonUpEvent(MouseRightButtonUpEvent* event) = 0;
+		virtual void WndOnMouseRightButtonDownEvent(MouseRightButtonDownEvent* event) = 0;
+		virtual void WndOnMouseLeftButtonUpEvent(MouseLeftButtonUpEvent* event) = 0;
+		virtual void WndOnMouseLeftButtonDownEvent(MouseLeftButtonDownEvent* event) = 0;
+		virtual void WndOnMouseHooverEvent(MouseHooverEvent* event) = 0;
+		virtual void WndOnMouseMoveEvent(MouseMoveEvent* event) = 0;
+		virtual void WndOnMouseWheelEvent(MouseWheelEvent* event) = 0;
+		virtual void WndOnCharEvent(KeyCharEvent* value) = 0;
+		virtual void WndOnWideCharEvent(KeyWCharEvent* event) = 0;
+		virtual void WndOnKeyDownEvent(KeyDownEvent* event) = 0;
+		virtual void WndOnKeyUpEvent(KeyUpEvent* event) = 0;
+		virtual void WndOnResizeEvent(WindowResizeEvent* event) = 0;
+		virtual void WndOnCreateEvent() = 0;
+		virtual void WndOnDestroyEvent() = 0;
+#ifdef _WIN32
+        virtual LRESULT CustomDefWindowProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam) = 0;
+#endif
 	};
 }
 
