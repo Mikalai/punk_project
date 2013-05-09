@@ -1,4 +1,5 @@
 #include "text_surface.h"
+#include "../../common/video_driver.h"
 #include "../../common/texture2d.h"
 #include "../../../utility/fonts/font_builder.h"
 
@@ -9,9 +10,10 @@ namespace GPU
 
 	namespace OpenGL
 	{
-		TextSurface::TextSurface()
+        TextSurface::TextSurface(VideoDriver* driver)
+            : m_video_driver(driver)
 		{
-			m_texture = new Texture2D;
+            m_texture = m_video_driver->CreateTexture2D(64, 64, ImageModule::IMAGE_FORMAT_RED, nullptr, false);
 			m_halignment = TextHorizontalAlignment::HORIZONTAL_LEFT;
 			m_valignment = TextVerticalAlignment::VERTICAL_TOP;
 			m_font = L"times.ttf";
@@ -26,7 +28,7 @@ namespace GPU
 
 		void TextSurface::SetSize(int width, int height)
 		{
-			m_texture->Create(width, height, ImageModule::IMAGE_FORMAT_RED, 0, false);
+            m_texture->Resize(width, height);
 		}
 
 		int TextSurface::CalculateTextXOffset(const System::string& text)
@@ -62,7 +64,7 @@ namespace GPU
 			int max_offset = g_font_builder.GetMaxOffset(text);
 			int min_offset = g_font_builder.GetMinOffset(text);
 			int max_height = max_offset - min_offset;
-			int max_lines = m_texture->GetHeight() / max_height;
+            //int max_lines = m_texture->GetHeight() / max_height;
 			int req_lines = length / m_texture->GetWidth();
 			int start_y = 0;
 			if (TextVerticalAlignment::VERTICAL_BOTTOM == m_valignment)
@@ -136,12 +138,12 @@ namespace GPU
 		}
 
 
-		bool TextSurface::Save(std::ostream& stream) const
+        bool TextSurface::Save(std::ostream&) const
 		{
 			return true;
 		}
 
-		bool TextSurface::Load(std::istream& stream)
+        bool TextSurface::Load(std::istream&)
 		{
 			return true;
 		}

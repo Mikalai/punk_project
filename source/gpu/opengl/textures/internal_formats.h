@@ -8,7 +8,7 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		int PUNK_ENGINE ImageFormatToOpenGL(ImageModule::ImageFormat format);
+		int ImageFormatToOpenGL(ImageModule::ImageFormat format);
 	}
 }
 

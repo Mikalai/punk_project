@@ -16,17 +16,22 @@ namespace GPU
 {
 	using namespace OpenGL;
 
-	Texture2D::Texture2D()
-		: impl(new Texture2DImpl())
+    Texture2D::Texture2D(VideoDriver* driver)
+        : impl(new Texture2DImpl(driver))
 	{}
 
-	Texture2D::Texture2D(const ImageModule::Image& image)
-		: impl(new Texture2DImpl(image))
+    Texture2D::Texture2D(const ImageModule::Image& image, bool use_mipmaps, VideoDriver* driver)
+        : impl(new Texture2DImpl(image, use_mipmaps, driver))
 	{}
 
 	Texture2D::Texture2D(const Texture2D& texture)
 		: impl(new Texture2DImpl(*texture.impl))
 	{}
+
+
+    Texture2D::Texture2D(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver)
+        : impl(new Texture2DImpl(width, height, format, data, use_mipmaps, driver))
+    {}
 
 	Texture2D& Texture2D::operator = (const Texture2D& t)
 	{
@@ -35,16 +40,14 @@ namespace GPU
 		return *this;
 	}
 
-	void Texture2D::Bind() const
+    void Texture2D::Bind(int slot) const
 	{
-		glBindTexture(GL_TEXTURE_2D, impl->m_texture_id);
-		ValidateOpenGL(L"Unable to bind texture");
+        impl->Bind(slot);
 	}
 
 	void Texture2D::Unbind() const
 	{
-		glBindTexture(GL_TEXTURE_2D, 0);
-		ValidateOpenGL(L"Unable to unbind texture");
+        impl->Unbind();
 	}
 
 	Texture2D::~Texture2D()
@@ -66,22 +69,6 @@ namespace GPU
 	void Texture2D::Resize(int width, int height)
 	{
 		impl->Resize(width, height);
-	}
-
-	bool Texture2D::Create(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps)
-	{
-		if (impl)
-			delete impl;
-		impl = new Texture2DImpl;
-		return impl->Create(width, height, ImageFormatToOpenGL(format), data, use_mipmaps);
-	}
-
-	void Texture2D::Create(const ImageModule::Image& image, bool use_mipmaps)
-	{
-		if (impl)
-			delete impl;
-		impl = new Texture2DImpl;
-		impl->CreateFromImage(image, false);
 	}
 
 	void Texture2D::Fill(unsigned char byte)
@@ -142,40 +129,5 @@ namespace GPU
 	void Texture2D::Clear()
 	{
 		impl->Clear();
-	}
-
-	bool Texture2D::Load(std::istream& stream)
-	{
-		ImageModule::Image image;
-		image.Load(stream);
-		Create(image, false);
-		return true;
-	}
-
-	bool Texture2D::Save(std::ostream& stream) const
-	{
-		return false;
-	}
-
-	Texture2D* Texture2D::CreateFromFile(const System::string& path, bool use_mip_maps)
-	{
-		ImageModule::Importer importer;
-		std::unique_ptr<ImageModule::Image> image(importer.LoadAnyImage(path));
-
-		if (image.get())
-		{
-			std::unique_ptr<Texture2D> result(new Texture2D);//(*image));
-			result->Create(*image, use_mip_maps);
-			return result.release();
-		}
-		else
-			throw OpenGLException(L"Can't create texture from " + path);
-	}
-
-	Texture2D* Texture2D::CreateFromStream(std::istream& stream, bool use_mip_maps)
-	{
-		std::unique_ptr<Texture2D> result(new Texture2D);//(*image));
-		result->Load(stream);
-		return result.release();
 	}
 }

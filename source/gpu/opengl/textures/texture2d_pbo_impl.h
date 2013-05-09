@@ -5,6 +5,7 @@
 #include "../driver/module.h"
 #include "../buffers/module.h"
 #include "../error/module.h"
+#include "internal_formats.h"
 
 namespace GPU
 {
@@ -12,21 +13,23 @@ namespace GPU
 
 	struct Texture2D::Texture2DImpl
 	{
+        VideoDriverImpl* m_driver;
+        int m_bind_slot;
+        GLuint m_texture_id;
 		int m_index;
-		System::string m_location;
-
-		bool m_use_mip_maps;
+		System::string m_location;		
 		int m_width;
 		int m_height;
+        GLenum m_format;
 		int m_pixel_size;
-		GLenum m_format;
+        bool m_use_mip_maps;
 		GLenum m_internal_format;
 		GLenum m_internal_type;
-		GLuint m_texture_id;
-		OpenGL::PixelBufferObject* m_pbo;
+        OpenGL::PixelBufferObject* m_pbo;
 
-		Texture2DImpl()
-			: m_texture_id(0)
+        Texture2DImpl(VideoDriver* driver)
+            : m_driver(driver->impl)
+            , m_texture_id(0)
 			, m_use_mip_maps(false)
 			, m_width(0)
 			, m_height(0)
@@ -38,14 +41,23 @@ namespace GPU
 			//Create(64, 64, GL_RED, 0);
 		}
 
-		explicit Texture2DImpl(const ImageModule::Image& image)
-			: m_texture_id(0)
+        Texture2DImpl(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver)
+            : m_driver(driver->impl)
+        {
+            Create(width, height, ImageFormatToOpenGL(format), data, use_mipmaps);
+        }
+
+        Texture2DImpl(const ImageModule::Image& image, bool use_mipmaps, VideoDriver* driver)
+            : m_driver(driver->impl)
+            , m_texture_id(0)
+            , m_use_mip_maps(use_mipmaps)
 		{
-			CreateFromImage(image, false);
+			CreateFromImage(image, m_use_mip_maps);
 		}
 
 		Texture2DImpl(const Texture2DImpl& impl)
-			: m_width(impl.m_width)
+            : m_driver(impl.m_driver)
+            , m_width(impl.m_width)
 			, m_height(impl.m_height)
 			, m_format(impl.m_format)
 			, m_texture_id(impl.m_texture_id)
@@ -55,6 +67,21 @@ namespace GPU
 		{
 			Clear();
 		}
+
+        void Bind(int slot)
+        {
+            m_bind_slot = slot;
+            glActiveTexture(GL_TEXTURE0 + slot);
+            glBindTexture(GL_TEXTURE_2D, m_texture_id);
+            ValidateOpenGL(L"Unable to bind texture");
+        }
+
+        void Unbind()
+        {
+            glActiveTexture(GL_TEXTURE0 + m_bind_slot);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            ValidateOpenGL(L"Unable to unbind texture");
+        }
 
 		void SetSourceFile(const System::string& filename)
 		{
@@ -85,7 +112,7 @@ namespace GPU
 
 		void Clear()
 		{
-			VideoMemory::Instance()->FreePixelBuffer(m_pbo);
+            m_driver->GetVideoMemory()->FreePixelBuffer(m_pbo);
 
 			if (m_texture_id)
 			{
@@ -381,7 +408,7 @@ namespace GPU
 			glBindTexture(GL_TEXTURE_2D, 0);
 			ValidateOpenGL(L"Can't unbind texture");
 
-			m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);
+            m_pbo = m_driver->GetVideoMemory()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);
 			//m_pbo->Bind();
 
 			//	if data available than copy them

@@ -7,6 +7,7 @@
 namespace GPU
 {
 	class Texture2D;
+    class VideoDriver;
 
 	namespace OpenGL
 	{	
@@ -17,12 +18,12 @@ namespace GPU
 			enum TextVerticalAlignment { VERTICAL_TOP, VERTICAL_BOTTOM, VERTICAL_CENTER };
 			enum TextDirection { DIRECTION_HORIZONTAL, DIRECTION_VERTICAL };
 
-			TextSurface();
+            TextSurface(VideoDriver* driver);
 			virtual ~TextSurface();
 
 			void SetSize(int width, int height);
 			void SetAutoWrapFlag(bool value) { m_auto_wrap = value; }
-			bool GetAutoWrapFlag(bool value) { return m_auto_wrap; }
+            bool GetAutoWrapFlag() const { return m_auto_wrap; }
 			bool SetText(const System::string& text);
 			const System::string& GetText() const { return m_text; }
 			Texture2D* GetTexture() { return m_texture; }
@@ -53,6 +54,8 @@ namespace GPU
 
 			//	should be destroyed in destructor
 			Texture2D* m_texture;
+
+            VideoDriver* m_video_driver;
 
 			int CalculateTextXOffset(const System::string& text);
 			int CalculateTextYOffset(const System::string& text);
