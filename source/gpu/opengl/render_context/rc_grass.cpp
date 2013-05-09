@@ -1,3 +1,5 @@
+#ifdef USE_GRASS_RC
+
 #include "rc_grass.h"
 
 #include "gl_render_context.h"
@@ -66,3 +68,5 @@ namespace GPU
 		}			
 	}
 }
+
+#endif  //  USE_GRASS_RC

@@ -1,3 +1,5 @@
+#ifdef USE_BUMP_MAPPING_RC
+
 #include "rc_bump_mapping.h"
 
 namespace GPU
@@ -117,3 +119,5 @@ namespace GPU
 		}	
 	}
 }
+
+#endif  //  USE_BUMP_MAPPING_RC

@@ -1,5 +1,5 @@
-#ifndef _H_PUNK_OPENGL_SHADER_FRAGMENT_TERRAIN
-#define _H_PUNK_OPENGL_SHADER_FRAGMENT_TERRAIN
+#ifndef _H_PUNK_OPENGL_ShaderType_Fragment_TERRAIN
+#define _H_PUNK_OPENGL_ShaderType_Fragment_TERRAIN
 
 #include "..\shader.h"
 

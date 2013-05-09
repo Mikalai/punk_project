@@ -1,3 +1,5 @@
+#ifdef USE_SKINNING_RC
+
 #ifndef _H_PUNK_OPENGL_RENDER_CONTEXT_SKINNING
 #define _H_PUNK_OPENGL_RENDER_CONTEXT_SKINNING
 
@@ -9,9 +11,9 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		/**********************************************************************************************/
-		/*			SKINNING 3D
-		/**********************************************************************************************/
+        /**********************************************************************************************
+        *			SKINNING 3D
+        **********************************************************************************************/
 		template<> class RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> : public OpenGLRenderContext
 		{	
 		public:
@@ -50,3 +52,5 @@ namespace GPU
 }
 
 #endif	//	_H_PUNK_OPENGL_RENDER_CONTEXT_SKINNING
+
+#endif  //  USE_SKINNING_RC

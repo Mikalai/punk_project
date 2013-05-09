@@ -1,3 +1,5 @@
+#ifdef USE_GUI_RC
+
 #include "rc_gui.h"
 
 namespace GPU
@@ -81,3 +83,5 @@ namespace GPU
 		}		
 	}
 }
+
+#endif  //  USE_GUI_RC

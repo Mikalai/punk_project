@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		VertexShaderTerrain::VertexShaderTerrain()
-			: Shader(SHADER_VERTEX)
+			: Shader(ShaderType::Vertex)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"terrain_330.vert");
 		}

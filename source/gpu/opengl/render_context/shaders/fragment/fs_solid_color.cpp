@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		FragmentShaderSolid::FragmentShaderSolid()
-			: Shader(SHADER_FRAGMENT)
+			: Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"solid_color_3d_330.frag");
 		}

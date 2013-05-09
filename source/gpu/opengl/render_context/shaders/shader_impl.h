@@ -14,18 +14,18 @@ namespace GPU
 			GLuint m_shader_index;
 			GLenum m_type;
 
-			explicit ShaderImpl(Shader::ShaderType type) 
+            explicit ShaderImpl(ShaderType type)
 				: m_shader_index(0)
 			{
 				switch (type)
 				{
-				case Shader::SHADER_VERTEX:
+                case ShaderType::Vertex:
 					m_type = GL_VERTEX_SHADER;
 					break;
-				case Shader::SHADER_FRAGMENT:
+                case ShaderType::Fragment:
 					m_type = GL_FRAGMENT_SHADER;
 					break;
-				case Shader::SHADER_GEOMETRY:
+                case ShaderType::Geometry:
 					m_type = GL_GEOMETRY_SHADER;
 					break;
 				default:
@@ -38,7 +38,7 @@ namespace GPU
 				, m_type(impl.m_type)
 			{}
 
-			const wchar_t* ShaderType()
+            const wchar_t* GetShaderType()
 			{
 				switch (m_type)
 				{

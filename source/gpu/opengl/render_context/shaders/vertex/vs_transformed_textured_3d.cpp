@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		VertexShaderTransformTextured3D::VertexShaderTransformTextured3D()
-			: Shader(SHADER_VERTEX)
+			: Shader(ShaderType::Vertex)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"textured_2d_330.vert");
 		}

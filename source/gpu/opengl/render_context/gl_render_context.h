@@ -1,22 +1,25 @@
 #ifndef _H_PUNK_OPENGL_DUMMY_RENDER_CONTEXT
 #define _H_PUNK_OPENGL_DUMMY_RENDER_CONTEXT
 
-#include "../../common/module.h"
-#include "../gl/module.h"
-#include "shaders/shader.h"
-#include "../../../virtual/module.h"
+#include "../../common/abstract_render_context_policy.h"
+#include "shaders/shader_type.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
-		class PUNK_ENGINE OpenGLRenderContext : public AbstractRenderPolicy
+        class Shader;
+
+        class OpenGLRenderContext : public AbstractRenderPolicy
 		{
 		public:
-			OpenGLRenderContext();
+            OpenGLRenderContext(ShaderCollection VS, ShaderCollection FS, ShaderCollection GS);
 			virtual void Begin() override;
 			virtual void End() override;
 			virtual void Init() override;
+			virtual ~OpenGLRenderContext();
+
+		protected:
 			bool SetUniformVector4f(const char * name, const float* value);
 			bool SetUniformVector4f( int loc, const float* value );
 			bool SetUniformVector3f(const char * name, const float* value );
@@ -43,18 +46,18 @@ namespace GPU
 			bool SetAttribute(int index, const float* value);
 			int IndexForAttrName(const char * name);
 			void GetAttribute(const char * name, float* out);
-			void GetAttribute(int index, float* out);
-			virtual ~OpenGLRenderContext();
+			void GetAttribute(int index, float* out);			
+			void SetUpOpenGL(const CoreState& state);
 
 		protected:
-			std::unique_ptr<Shader> m_vertex_shader;
-			std::unique_ptr<Shader> m_fragment_shader;
-			std::unique_ptr<Shader> m_geometry_shader;
+            std::unique_ptr<Shader> m_vertex_shader;
+            std::unique_ptr<Shader> m_fragment_shader;
+            std::unique_ptr<Shader> m_geometry_shader;
 
 			unsigned m_program;
 		};
 
-		template<class VertexShader, class FragmentShader, class GeometryShader> class RenderContextPolicy;
+        template<ShaderCollection VS, ShaderCollection FS, ShaderCollection GS> class RenderContextPolicy;
 	}
 }
 

@@ -1,22 +1,38 @@
+#ifdef USE_SOLID_TEXTURE_3D_RC
+
 #include "rc_solid_textured_3d.h"
+#include "gl_render_context.h"
+#include "../gl/module.h"
+#include "../../common/vertex.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
 
-		RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader>::RenderContextPolicy()
+		RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>::RenderContextPolicy()
+			: OpenGLRenderContext(ShaderCollection::VertexSolidTextured,
+									ShaderCollection::FragmentSolidTextured,
+									ShaderCollection::No)
+
 		{
-			m_vertex_shader.reset(new VertexShaderTransformTextured3D);
-			m_fragment_shader.reset(new FragmentShaderSolidTextured);
 			Init();
 		}
 
-		RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader>::~RenderContextPolicy()
+		RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>::~RenderContextPolicy()
 		{
 		}
 
-		void RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader>::Init()
+		void RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>::Init()
 		{
 			if (m_was_modified || !m_program)
 			{
@@ -25,19 +41,23 @@ namespace GPU
 			}
 		}
 
-		void RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader>::InitUniforms()
+		void RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>::InitUniforms()
 		{
 			uProjViewWorld = GetUniformLocation("uProjViewWorld");
-			uDiffuseColor = GetUniformLocation("uDiffuseColor");
 			uDiffuseMap = GetUniformLocation("uDiffuseMap");
 			uTextureMatrix = GetUniformLocation("uTextureMatrix");
 		}
 
-		void RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader>::BindParameters(const CoreState& params)
+		void RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>::BindParameters(const CoreState& params)
 		{									
 			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_world;
 			SetUniformMatrix4f(uProjViewWorld, &(proj_view_world[0]));
-			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
 			SetUniformInt(uDiffuseMap, 0);
 			SetUniformMatrix4f(uTextureMatrix, &params.m_texture_matrix[0]);
 
@@ -62,12 +82,18 @@ namespace GPU
 			}
 		}
 
-		int64_t RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader>::GetRequiredAttributesSet() const 
+		int64_t RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>::GetRequiredAttributesSet() const
 		{
 			return Vertex<VertexComponent::Position, VertexComponent::Texture0>::Value();
 		}
 
-		void RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader>::Begin()
+		void RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>::Begin()
 		{
 			/*
 			Begin();
@@ -84,9 +110,14 @@ namespace GPU
 			OpenGLRenderContext::Begin();
 		}
 
-		void RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader>::End()
+		void RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>::End()
 		{
 			OpenGLRenderContext::End();			
 		}		
 	}
 }
+
+#endif  //    USE_SOLID_TEXTURE_RC

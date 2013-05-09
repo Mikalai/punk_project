@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		VertexShaderGrass::VertexShaderGrass()
-			: Shader(SHADER_VERTEX)
+			: Shader(ShaderType::Vertex)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"grass_330.vert");
 		}

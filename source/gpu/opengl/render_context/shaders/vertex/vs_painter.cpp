@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		VertexShaderPainter::VertexShaderPainter()
-			: Shader(SHADER_VERTEX)
+			: Shader(ShaderType::Vertex)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"painter_330.vert");
 		}

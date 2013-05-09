@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		VertexShaderSolid::VertexShaderSolid()
-			: Shader(SHADER_VERTEX)
+			: Shader(ShaderType::Vertex)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"solid_color_3d_330.vert");
 		}

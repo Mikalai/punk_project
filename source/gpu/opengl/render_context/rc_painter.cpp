@@ -1,12 +1,13 @@
+#ifdef USE_PAINTER_RC
 #include "rc_painter.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
-		/**********************************************************************************************/
-		/*			PAINTER RENDER 
-		/**********************************************************************************************/		
+        /**********************************************************************************************
+        *			PAINTER RENDER
+        **********************************************************************************************/
 		RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader>::RenderContextPolicy()
 		{
 			m_vertex_shader.reset(new VertexShaderPainter);
@@ -93,3 +94,4 @@ namespace GPU
 		}		
 	};
 }
+#endif  //  USE_PAINTER_RC

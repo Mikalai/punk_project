@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		VertexShaderBump::VertexShaderBump()
-			: Shader(SHADER_VERTEX)
+            : Shader(ShaderType::Vertex)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"bump_330.vert");
 		}

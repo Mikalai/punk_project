@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		FragmentShaderGrass::FragmentShaderGrass()
-			: Shader(SHADER_FRAGMENT)
+            : Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"grass_330.frag");
 		}

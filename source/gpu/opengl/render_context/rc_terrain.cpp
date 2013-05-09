@@ -1,17 +1,19 @@
+#ifdef USE_TERRAIN_RC
+
 #include "rc_terrain.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
-		RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::RenderContextPolicy()
+        RenderContextPolicy<TerrainVertexShader, TerrainFragmentShader, TerrainGeometryShader>::RenderContextPolicy()
 		{
 			m_vertex_shader.reset(new VertexShaderTerrain);
 			m_fragment_shader.reset(new FragmentShaderTerrain);
 			Init();
 		}
 
-		void RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::Init()
+        void RenderContextPolicy<TerrainVertexShader, TerrainFragmentShader, TerrainGeometryShader>::Init()
 		{
 			if (m_was_modified || !m_program)
 			{
@@ -20,7 +22,7 @@ namespace GPU
 			}
 		}
 
-		void RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::InitUniforms()
+        void RenderContextPolicy<TerrainVertexShader, TerrainFragmentShader, TerrainGeometryShader>::InitUniforms()
 		{
 			uTextureMatrix = GetUniformLocation("uTextureMatrix");
 			uWorld = GetUniformLocation("uWorld");
@@ -38,7 +40,7 @@ namespace GPU
 			uViewSize = GetUniformLocation("uViewSize");
 		}
 
-		void RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::BindParameters(const CoreState& pparams)
+        void RenderContextPolicy<TerrainVertexShader, TerrainFragmentShader, TerrainGeometryShader>::BindParameters(const CoreState& pparams)
 		{										
 			Math::mat4 proj_view_world = pparams.m_projection * pparams.m_view * pparams.m_world;
 			Math::mat3 normal_matrix = (pparams.m_view * pparams.m_world).Inversed().Transposed().RotationPart();
@@ -92,20 +94,22 @@ namespace GPU
 			}
 		}
 
-		int64_t RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::GetRequiredAttributesSet() const 
+        int64_t RenderContextPolicy<TerrainVertexShader, TerrainFragmentShader, TerrainGeometryShader>::GetRequiredAttributesSet() const
 		{
 			return Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0, VertexComponent::Flag>::Value();
 		}
 
-		void RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::Begin()
+        void RenderContextPolicy<TerrainVertexShader, TerrainFragmentShader, TerrainGeometryShader>::Begin()
 		{
 			Init();
 			OpenGLRenderContext::Begin();
 		}
 
-		void RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader>::End()
+        void RenderContextPolicy<TerrainVertexShader, TerrainFragmentShader, TerrainGeometryShader>::End()
 		{
 			OpenGLRenderContext::End();			
 		}	
 	}
 }
+
+#endif  //  USE_TERRAIN_RC

@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		FragmentShaderSkinning::FragmentShaderSkinning()
-			: Shader(SHADER_FRAGMENT)
+			: Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"skinning_330.frag");
 		}

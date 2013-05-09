@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		FragmentShaderSolidTextured::FragmentShaderSolidTextured()
-			: Shader(SHADER_FRAGMENT)
+			: Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"textured_2d_330.frag");
 		}

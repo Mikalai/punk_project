@@ -1,3 +1,5 @@
+#ifdef USE_SKINNIGN_RC
+
 #include "rc_skinning.h"
 
 namespace GPU
@@ -126,3 +128,5 @@ namespace GPU
 		}
 	}
 }
+
+#endif  //  USE_SKINNING_RC

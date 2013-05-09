@@ -1,3 +1,5 @@
+#ifdef USE_PAINTER_RC
+
 #ifndef _H_PUNK_OPENGL_RENDER_CONTEXT_PAINTER
 #define _H_PUNK_OPENGL_RENDER_CONTEXT_PAINTER
 
@@ -9,9 +11,9 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		/**********************************************************************************************/
-		/*			PAINTER RENDER 
-		/**********************************************************************************************/
+        /**********************************************************************************************
+        *			PAINTER RENDER
+        **********************************************************************************************/
 		template<> class RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> : public OpenGLRenderContext
 		{	
 		public:
@@ -36,3 +38,5 @@ namespace GPU
 	}
 }
 #endif
+
+#endif  //  USE_PAINTER_RC

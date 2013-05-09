@@ -2,6 +2,7 @@
 #define _H_PUNK_OPENGL_DRIVER_SHADER
 
 #include <memory>
+#include "shader_type.h"
 
 namespace System
 {
@@ -17,8 +18,6 @@ namespace GPU
 
 		class Shader
 		{
-		public:
-			enum ShaderType { SHADER_BAD, SHADER_VERTEX, SHADER_FRAGMENT, SHADER_GEOMETRY };
 		protected:
 			std::unique_ptr<ShaderImpl> impl_shader;
 		public:

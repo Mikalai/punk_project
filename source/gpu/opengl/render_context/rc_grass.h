@@ -1,3 +1,5 @@
+#ifdef USE_GRASS_RC
+
 #ifndef _H_PUNK_OPENGL_RENDER_CONTEXT_GRASS
 #define _H_PUNK_OPENGL_RENDER_CONTEXT_GRASS
 
@@ -9,9 +11,9 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		/**********************************************************************************************/
-		/*			GRASS RENDER 3D
-		/**********************************************************************************************/
+        /**********************************************************************************************
+        *			GRASS RENDER 3D
+        **********************************************************************************************/
 		template<> class RenderContextPolicy<VertexShaderGrass, FragmentShaderGrass, NoShader> : public OpenGLRenderContext
 		{	
 			unsigned uProjView;
@@ -37,3 +39,5 @@ namespace GPU
 }
 
 #endif
+
+#endif  //  USE_GRASS_RC

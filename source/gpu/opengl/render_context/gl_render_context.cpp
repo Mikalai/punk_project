@@ -1,4 +1,6 @@
+#include "../../../system/environment.h"
 #include "gl_render_context.h"
+#include "shaders/shader.h"
 #include "../error/module.h"
 #include "../gl/module.h"
 
@@ -6,12 +8,27 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		OpenGLRenderContext::OpenGLRenderContext()
+        OpenGLRenderContext::OpenGLRenderContext(ShaderCollection VS, ShaderCollection FS, ShaderCollection GS)
 			: m_program(0)
-		{}
+        {
+            auto path = System::Environment::Instance()->GetShaderFolder();
+            m_vertex_shader.reset(new Shader(ShaderType::Vertex));
+            m_vertex_shader->CookFromFile(path + GetShaderFile(VS));
+
+            m_fragment_shader.reset(new Shader(ShaderType::Fragment));
+            m_fragment_shader->CookFromFile(path + GetShaderFile(FS));
+
+            if (GS != ShaderCollection::No)
+            {
+                m_geometry_shader.reset(new Shader(ShaderType::Geometry));
+                m_geometry_shader->CookFromFile(path + GetShaderFile(GS));
+            }
+
+        }
 
 		void OpenGLRenderContext::Begin()
 		{
+			Init();
 			glUseProgram(m_program);
 		}
 
@@ -86,6 +103,8 @@ namespace GPU
 						return;
 					}
 					m_was_modified = false;
+
+					InitUniforms();
 				}
 			}
 			catch(...)
@@ -316,6 +335,33 @@ namespace GPU
 				ValidateOpenGL(L"Unable to delete shader program");
 			}
 			m_program = 0;
+		}
+
+		void OpenGLRenderContext::SetUpOpenGL(const CoreState &state)
+		{
+			if (state.m_enable_wireframe)
+			{
+				glLineWidth(state.m_line_width);
+				ValidateOpenGL(L"Can't line width");
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				ValidateOpenGL(L"Can't change polygon mode");
+			}
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				ValidateOpenGL(L"Can't change polygon mode");
+			}
+
+			if (state.m_depth_test)
+			{
+				glEnable(GL_DEPTH_TEST);
+				ValidateOpenGL(L"Can't enable depth test");
+			}
+			else
+			{
+				glDisable(GL_DEPTH_TEST);
+				ValidateOpenGL(L"Can't disable depth test");
+			}
 		}
 	}
 }

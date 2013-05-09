@@ -6,7 +6,7 @@ namespace GPU
 	namespace OpenGL
 	{
 		FragmentShaderPainter::FragmentShaderPainter()
-			: Shader(SHADER_FRAGMENT)
+            : Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"painter_330.frag");
 		}

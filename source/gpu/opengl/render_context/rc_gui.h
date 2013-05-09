@@ -1,3 +1,5 @@
+#ifdef USE_GUI_RC
+
 #ifndef _H_PUNK_OPENGL_RENDER_CONTEXT_GUI
 #define _H_PUNK_OPENGL_RENDER_CONTEXT_GUI
 
@@ -9,9 +11,9 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		/**********************************************************************************************/
-		/*			GUI RENDER 2D
-		/**********************************************************************************************/
+        /**********************************************************************************************
+        *			GUI RENDER 2D
+        **********************************************************************************************/
 		template<> class RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> : public OpenGLRenderContext
 		{	
 			unsigned uProjViewWorld;
@@ -35,3 +37,5 @@ namespace GPU
 	}
 }
 #endif
+
+#endif  //  USE_GUI_RC

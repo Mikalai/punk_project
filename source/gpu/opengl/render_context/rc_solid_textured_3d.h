@@ -1,19 +1,21 @@
+#ifdef USE_SOLID_TEXTURE_3D_RC
+
 #ifndef _H_PUNK_OPENGL_RC_SOLID_TEXTURED_3D
 #define _H_PUNK_OPENGL_RC_SOLID_TEXTURED_3D
 
 #include "gl_render_context.h"
-#include "shaders/vertex/vs_transformed_textured_3d.h"
-#include "shaders/fragment/fs_solid_textured.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
 
-		template<> class RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader> : public OpenGLRenderContext
+		template<> class RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>: public OpenGLRenderContext
 		{	
 			unsigned uProjViewWorld;
-			unsigned uDiffuseColor;
 			unsigned uDiffuseMap;
 			unsigned uTextureMatrix;
 
@@ -32,3 +34,5 @@ namespace GPU
 }
 
 #endif	//	_H_PUNK_OPENGL_RC_SOLID_TEXTURED_3D
+
+#endif  //  USE_SOLID_TEXTURE_3D_RC
