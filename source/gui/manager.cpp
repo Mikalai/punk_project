@@ -80,7 +80,7 @@ namespace GUI
 		rootWidgets.push_back(widget);
 	}
 
-	void Manager::OnMouseHoover(System::Event* event)
+    void Manager::OnMouseHoover(System::Event*)
 	{
 	}
 
@@ -267,7 +267,7 @@ namespace GUI
 			m_focusWidget->OnKeyDown(e);
 	}
 
-	void Manager::OnKeyUpHandler(System::Event* event)
+    void Manager::OnKeyUpHandler(System::Event*)
 	{
 	}
 }

@@ -37,8 +37,8 @@ namespace GUI
 
 		void SetVerticalTextAlign(VerticalAlign v) { m_vertical_align = v; }
 		void SetHorizontalTextAlign(HorizontalAlign v) { m_horizontal_align = v; }
-		VerticalAlign SetVerticalTextAlign(VerticalAlign v) const { return m_vertical_align; }
-		HorizontalAlign SetHorizontalTextAlign(HorizontalAlign v) const { return m_horizontal_align; }
+        VerticalAlign GetVerticalTextAlign() const { return m_vertical_align; }
+        HorizontalAlign GetHorizontalTextAlign() const { return m_horizontal_align; }
 
 		void SetParent(Widget* w) { m_parent = w; }
 		Widget* GetParent() { return m_parent; }
@@ -84,8 +84,8 @@ namespace GUI
 		Widget* GetFocused(float x, float y);
 		bool IsCursorIn() const;
 
-		void Store(System::Buffer& buffer) {}
-		void Restore(System::Buffer& buffer) {}
+        void Store(System::Buffer&) {}
+        void Restore(System::Buffer&) {}
 
 		const GPU::Texture2D* GetTextTexture() const;
 		void SetBackgroundTexture(GPU::Texture2D* texture);
@@ -109,9 +109,9 @@ namespace GUI
 		const Math::vec4& TextColor() const;
 		const Math::vec4& BackColor() const;
 
-		/*********************************************************************/
-		/*	Handlers
-		/*********************************************************************/
+        /*********************************************************************
+        *	Handlers
+        *********************************************************************/
 
 		void SetMouseLeftClickHandler(System::Handler onLeftClick);
 		void SetMouseRightClickHandler(System::Handler onRightClick);
@@ -140,52 +140,56 @@ namespace GUI
 
 	protected:
 
+        float m_x;
+        float m_y;
+        float m_width;
+        float m_height;
+        bool m_isVisible;
+        bool m_isEnabled;
+        bool m_isCursorIn;
+        bool m_leftButtonDown;
+        bool m_rightButtonDown;
+        bool m_middleButtonDown;
+        bool m_moveable;
+        bool m_isFocused;
+        System::string m_text;
+        int m_fontSize;
+
+        Math::vec4 m_back_color_0;
+        Math::vec4 m_back_color_1;
+        Math::vec4 m_text_color_0;
+        Math::vec4 m_text_color_1;
+        Math::vec4 m_back_color;
+        Math::vec4 m_text_color;
+
+        float m_animation;
+        float m_animation_duration;
+        float m_animation_speed;
+
+        Widget* m_next_widget;
+        Widget* m_prev_widget;
+
+        Manager* m_manager;
+
 		VerticalAlign m_vertical_align;
 		HorizontalAlign m_horizontal_align;
 
-		float m_width;
-		float m_height;
-		float m_x, m_y;
+        Widget* m_parent;
 
-		int m_fontSize;
-
-		Math::vec4 m_back_color_0;
-		Math::vec4 m_back_color_1;
-		Math::vec4 m_text_color_0;
-		Math::vec4 m_text_color_1;
-		Math::vec4 m_back_color;
-		Math::vec4 m_text_color;
-		float m_animation;
-		float m_animation_duration;
-		float m_animation_speed;
-
-		bool m_isVisible;
-		bool m_isEnabled;
-		bool m_isCursorIn;
-		bool m_leftButtonDown;
-		bool m_rightButtonDown;
-		bool m_middleButtonDown;
-		bool m_moveable;
-		bool m_isFocused;
-
-		System::string m_text;
 		System::string m_font;
 
+        //	should be deleted outside widget
+        GPU::Texture2D* m_background_texture;
+
+        void* m_any_data;
 
 		//	should be deleted in destructor
 		GPU::OpenGL::TextSurface* m_text_texture;
 
-		//	should be deleted outside widget
-		GPU::Texture2D* m_background_texture;
-		void* m_any_data;
-		Widget* m_parent;
-		Manager* m_manager;
-		Widget* m_next_widget;	
-		Widget* m_prev_widget;
 
-		/******************************************************************/
-		/*			LIST OF HANDLERS
-		/******************************************************************/
+        /******************************************************************
+        *			LIST OF HANDLERS
+        ******************************************************************/
 	protected:
 
 		System::Handler m_OnLeftClick;
