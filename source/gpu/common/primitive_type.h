@@ -1,6 +1,9 @@
 #ifndef _H_PUNK_GPU_PRIMITIVE_TYPE
 #define _H_PUNK_GPU_PRIMITIVE_TYPE
 
+#include "../../config.h"
+#include "../../string/string.h"
+
 namespace GPU
 {
 	enum class PrimitiveType { 
@@ -14,8 +17,11 @@ namespace GPU
 		TRIANGLE_FAN,
 		TRIANGLES,
 		TRIANGLE_STRIP_ADJANCECY,
-		TRIANGLES_ADJANCECY
+		TRIANGLES_ADJANCECY,
+		QUADS
 	};
+
+	extern PUNK_ENGINE const System::string AsString(const PrimitiveType& value);
 }
 
 #endif	//	_H_PUNK_GPU_PRIMITIVE_TYPE
