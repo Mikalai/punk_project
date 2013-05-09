@@ -26,12 +26,11 @@ namespace Raytracer
 		struct Light
 		{
 			enum Type { DIRECTION, OMNI, SPOT };
-			Type m_type;
-
-			Math::vec3 m_position;
+            Math::vec3 m_position;
 			Math::vec3 m_direction;
 			Math::vec3 m_color;
 			float m_angle;
+            Type m_type;
 
 			Light()
 				: m_position(0,0,0)
@@ -118,7 +117,7 @@ namespace Raytracer
 			float s = normal.Dot(light_dir);
 
 			Math::vec3 spec(1,1,1);
-			auto h = (light_dir + Math::vec3(0,0,1)).Normalized();
+            //auto h = (light_dir + Math::vec3(0,0,1)).Normalized();
 			auto spec_s = CookTorrenceFunction(view_dir, light_dir, normal, 1.333f, m);
 
 			if (s > 0)
@@ -140,7 +139,7 @@ namespace Raytracer
 			return s1*s2*light.m_color*diffuse + spec_s*spec;
 		}
 
-		const Math::vec3 CalclLightDir(const Light& light, const Math::vec3& point, const Math::vec3& normal, const Math::vec3& diffuse)
+        const Math::vec3 CalclLightDir(const Light& light, const Math::vec3& /*point*/, const Math::vec3& normal, const Math::vec3& diffuse)
 		{
 			auto light_dir = light.m_direction.Negated();
 			float s = normal.Dot(light_dir);

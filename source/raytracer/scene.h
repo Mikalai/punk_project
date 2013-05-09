@@ -26,4 +26,4 @@ namespace Raytracer
 	};
 }
 
-#endif	_H_PUNK_RAYTRACER_SCENE
+#endif	//  _H_PUNK_RAYTRACER_SCENE
