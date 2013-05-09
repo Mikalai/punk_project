@@ -10,6 +10,11 @@
 #include "../gpu_config.h"
 #include "frame.h"
 #include "video_driver.h"
+#include "renderable_builder.h"
+#include "primitive_type.h"
+#include "texture_context.h"
+#include "render_batch.h"
+#include "render_pass.h"
 
 namespace GPU
 {

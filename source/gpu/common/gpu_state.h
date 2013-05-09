@@ -8,6 +8,9 @@
 #include "../../system/state_manager.h"
 #include "../../system/poolable.h"
 #include "../../virtual/interface.h"
+#include "render_target.h"
+#include "lighting/module.h"
+#include "config.h"
 
 namespace GPU
 {
@@ -45,6 +48,11 @@ namespace GPU
 		int m_terrain_j;
 		int m_terrain_slices;
 
+		LightModel m_light_model;
+		LightAttenuation m_light_attenuation;
+		float m_light_constant_attenuation;
+		float m_light_linear_attenuation;
+		float m_light_quadric_attenuation;
 		BlendOperation m_blend_operation;
 		bool m_depth_test;
 		bool m_blending;
@@ -56,17 +64,17 @@ namespace GPU
 		bool m_use_text_texture;
 		bool m_enable_shadows;
 		bool m_enable_lighting;
-		bool m_enable_diffuse_shading;
-		bool m_enable_specular_shading;
-		bool m_enable_bump_mapping;
+		bool m_enable_diffuse_shading;		
 		bool m_enable_skinning;
 		bool m_enable_terrain;
 		bool m_enable_water;
 		bool m_enable_texture;
 		bool m_enable_font_rendering;
+        bool m_enable_vertex_color;
 		bool m_cast_shadows;
 		bool m_receive_shadows;
 		bool m_enable_text_rendering;
+		float m_clear_depth;
 
 		Math::mat4 m_bone_matrix[256];
 		float m_line_width;
@@ -84,8 +92,13 @@ namespace GPU
 		const Texture2D* m_specular_map;
 		const Texture2D* m_text_map;
 
+        //  added on 01.05.2013        
+		Texture2D* m_color_buffer;
+		Texture2D* m_depth_buffer;
+        Math::vec4 m_clear_color;
+
 		//	this pointers should not be deleted in destructor
-		std::vector<Virtual::Light*> m_lights;
+		LightParameters m_lights[MAX_LIGHTS];
 		//	this pointers should not be deleted in destructor
 
 		CoreState* Clone();

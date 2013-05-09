@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_OPENGL_RENDERABLE
 #define _H_PUNK_OPENGL_RENDERABLE
 
+#include <cstdint>
 #include "../../system/smart_pointers/module.h"
 #include "../error/module.h"
 #include "vertex_component.h"
@@ -15,7 +16,7 @@ namespace GPU
 
 		virtual ~Renderable() {}
 
-		virtual void Bind(int64_t supported_by_context)
+        virtual void Bind(int64_t)
 		{
 			throw GPUException(L"Bind() not implemented");
 		}

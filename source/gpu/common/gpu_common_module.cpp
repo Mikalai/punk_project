@@ -2,7 +2,7 @@
 
 namespace GPU
 {
-	bool GPU_COMMON_INIT(const Config& data)
+    bool GPU_COMMON_INIT(const Config&)
 	{
 		return true;
 	}

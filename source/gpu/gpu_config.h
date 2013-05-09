@@ -1,6 +1,10 @@
 #ifndef _H_PUNK_GPU_CONFIG
 #define _H_PUNK_GPU_CONFIG
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include "../config.h"
 
 #define PUNK_GPU_USE_OPENGL
@@ -16,6 +20,10 @@ namespace GPU
 		bool fullscreen;
 		int refresh_rate;
 		int bits_per_pixel;
+
+#ifdef _WIN32
+        HWND m_hwnd;
+#endif
 		
 		Config();			
 	};
