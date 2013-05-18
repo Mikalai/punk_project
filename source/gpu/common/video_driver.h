@@ -45,9 +45,19 @@ namespace GPU
 		void SwapBuffers();
 
         Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);
+        Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);
         Texture2D* CreateTexture2D(const ImageModule::Image& image, bool use_mipmaps);
         Texture2D* CreateTexture2D(const System::string& path, bool use_mipmaps);
 		Texture2D* CreateTexture2D(std::istream& stream, bool use_mip_maps);
+
+		/**
+		 * @brief CreateTexture2D
+		 * @param image Source for the texture
+		 * @param internal_format Type of the texture, that should be used in low level graphics API
+		 * @param use_mipmaps Flag indicating if mip maps are required
+		 * @return Pointer to the created texture.
+		 */
+		Texture2D* CreateTexture2D(const ImageModule::Image& image, ImageModule::ImageFormat internal_format, bool use_mipmaps);
 
 		VideoDriverImpl* impl;
 
