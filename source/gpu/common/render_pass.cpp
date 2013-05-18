@@ -34,13 +34,13 @@ namespace GPU
 			{
 				tc.SetTexture(0, state->m_text_map);
 				tc.SetTexture(1, state->m_diffuse_map_0);
-				policy = AbstractRenderPolicy::find(RC_GUI);
+				policy = AbstractRenderPolicy::find(RenderPolicySet::GUI);
 			}
 			else if (state->m_enable_skinning)
 			{
 				tc.SetTexture(0, state->m_diffuse_map_0);
 				tc.SetTexture(1, state->m_normal_map);
-				policy = AbstractRenderPolicy::find(RC_SKINNING);
+				policy = AbstractRenderPolicy::find(RenderPolicySet::Skinning);
 			}
 			else if (state->m_enable_terrain)
 			{
@@ -48,7 +48,7 @@ namespace GPU
 				tc.SetTexture(1, state->m_diffuse_map_1);
 				tc.SetTexture(2, state->m_height_map);
 				tc.SetTexture(3, state->m_normal_map);
-				policy = AbstractRenderPolicy::find(RC_TERRAIN);
+				policy = AbstractRenderPolicy::find(RenderPolicySet::Terrain);
 			}
 			else if (state->m_enable_lighting)
 			{
@@ -60,17 +60,17 @@ namespace GPU
 						{
 							tc.SetTexture(0, state->m_diffuse_map_0);
 							tc.SetTexture(1, state->m_normal_map);
-							policy = AbstractRenderPolicy::find(RC_BUMP_MAPING);
+							policy = AbstractRenderPolicy::find(RenderPolicySet::BumpMapping);
 						}
 						else if (state->m_light_model == LightModel::PerFragmentDiffuse)
 						{
 							tc.SetTexture(0, state->m_diffuse_map_0);
-							policy = nullptr; //AbstractRenderPolicy::find(RC_LIGHT_PER_PIXEL_DIFFUSE);	//	should be selected policy with diffuse and specular lighting plus diffuse texture
+							policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerFragmentTextureDiffuse);
 						}
-						else
+						else if (state->m_light_model == LightModel::PerVertexDiffuse)
 						{
-							//	skinning-lighting-texture-diffuse
-							policy;	//	should be selected policy with diffuse color, diffuse texture, with lighting, but without specular color
+							tc.SetTexture(0, state->m_diffuse_map_0);
+							policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerVertexTextureDiffuse);
 						}
 					}
 				}
@@ -79,12 +79,12 @@ namespace GPU
 					if (state->m_light_model == LightModel::PerVertexDiffuse)
 					{
 						//	LIGHT-DIFFUSE-COLOR per Vertex
-						policy = AbstractRenderPolicy::find(RC_LIGHT_PER_VERTEX_DIFFUSE);
+						policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerVertexDiffuse);
 					}
 					else if (state->m_light_model == LightModel::PerFragmentDiffuse)
 					{
 						//	LIGHT-DIFFUSE-COLOR per Fragment
-						policy = AbstractRenderPolicy::find(RC_LIGHT_PER_FRAGMENT_DIFFUSE);
+						policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerFragmentDiffuse);
 					}
 				}
 			}
@@ -94,7 +94,7 @@ namespace GPU
 				{
 					if (state->m_enable_diffuse_shading)
 					{
-						policy = AbstractRenderPolicy::find(RC_SOLID_TEXTURED_3D);
+						policy = AbstractRenderPolicy::find(RenderPolicySet::SolidTextured3D);
 						tc.SetTexture(0, state->m_diffuse_map_0);
 					}
 				}
@@ -104,12 +104,12 @@ namespace GPU
 					{
 						if (state->m_enable_vertex_color)
 						{
-							policy = AbstractRenderPolicy::find(RC_SOLID_VERTEX_COLOR);
+							policy = AbstractRenderPolicy::find(RenderPolicySet::SolidVertexColor);
 						}
 						else
 						{
 							//	diffuse only
-							policy = AbstractRenderPolicy::find(RC_SOLID_3D);
+							policy = AbstractRenderPolicy::find(RenderPolicySet::Solid3D);
 						}
 					}
 				}

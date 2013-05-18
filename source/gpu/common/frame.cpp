@@ -35,6 +35,11 @@ namespace GPU
         Top()->m_clear_color = value;
     }
 
+	void Frame::SetClearColor(float r, float g, float b, float a)
+	{
+		Top()->m_clear_color.Set(r, g, b, a);
+	}
+
 	void Frame::SetClearDepth(float value)
 	{
 		Top()->m_clear_depth = value;
@@ -103,6 +108,11 @@ namespace GPU
 	void Frame::SetDiffuseColor(const Math::vec4& value)
 	{
 		Top()->m_diffuse_color = value;
+	}
+
+	void Frame::SetDiffuseColor(float r, float g, float b, float a)
+	{
+		Top()->m_diffuse_color.Set(r, g, b, a);
 	}
 
 	void Frame::SetDiffuseMap0(const Texture2D* value)
@@ -225,7 +235,7 @@ namespace GPU
 
 	void Frame::EnableBlending(bool value)
 	{
-		Top()->m_blending = value;
+		Top()->m_enable_blending = value;
 	}
 
 	void Frame::EnableDepthTest(bool value)
@@ -233,6 +243,21 @@ namespace GPU
 		Top()->m_depth_test = value;
 	}
 
+	void Frame::SetBlendColor(const Math::vec4& value)
+	{
+		Top()->m_blend_color = value;
+	}
+
+	void Frame::SetBlendColor(float r, float g, float b, float a)
+	{
+		Top()->m_blend_color.Set(r, g, b, a);
+	}
+
+	void Frame::SetBlendFunc(BlendFunction src, BlendFunction dst)
+	{
+		Top()->m_blend_src = src;
+		Top()->m_blend_dst = dst;
+	}
 	
 	//void Frame::EnableSpecularShading(bool value)
 	//{
@@ -362,5 +387,15 @@ namespace GPU
 		Renderable* r(b.ToRenderable());
 		Render(r, true);
 		PopState();
+	}
+
+	FogDescription& Frame::Fog()
+	{
+		return Top()->m_fog;
+	}
+
+	const FogDescription& Frame::Fog() const
+	{
+		return Top()->m_fog;
 	}
 }

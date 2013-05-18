@@ -33,6 +33,7 @@ namespace GPU
 		void SetViewMatrix(const Math::mat4& value);
 		void SetProjectionMatrix(const Math::mat4& value);
 		void SetDiffuseColor(const Math::vec4& value);
+		void SetDiffuseColor(float r, float g, float b, float a);
 		void SetDiffuseMap0(const Texture2D* value);
 		void SetDiffuseMap1(const Texture2D* value);
 		void SetTextColor(const Math::vec4& value);
@@ -81,6 +82,7 @@ namespace GPU
         //  added on 01.05.2013
 		void SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer);
         void SetClearColor(const Math::vec4& value);
+		void SetClearColor(float r, float g, float b, float a);
 		void SetClearDepth(float value);
 
         const Math::vec4 GetClearColor() const;
@@ -94,6 +96,14 @@ namespace GPU
 		LightParameters& Light(int slot);
 
 		void DrawLine(const Math::vec3& start, const Math::vec3& end);
+
+
+		void SetBlendColor(const Math::vec4& value);
+		void SetBlendColor(float r, float g, float b, float a);
+		void SetBlendFunc(BlendFunction src, BlendFunction dst);
+
+		FogDescription& Fog();
+		const FogDescription& Fog() const;
 
 	private:
 

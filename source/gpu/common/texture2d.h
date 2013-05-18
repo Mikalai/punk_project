@@ -47,12 +47,11 @@ namespace GPU
 		Texture2DImpl* impl;
 
     private:
-
         Texture2D(VideoDriver* driver);
-        Texture2D(const ImageModule::Image& image, bool use_mipmaps, VideoDriver* driver);
-        Texture2D(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver);
-        Texture2D(const Texture2D& texture);
-        Texture2D& operator = (const Texture2D& texture);
+        Texture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver);
+
+        Texture2D(const Texture2D& texture) = delete;
+        Texture2D& operator = (const Texture2D& texture) = delete;
 
         friend class VideoDriver;
 	};

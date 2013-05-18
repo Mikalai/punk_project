@@ -7,17 +7,17 @@
 namespace GPU
 {
 
-class CoreState;
-class Renderable;
+    class CoreState;
+    class Renderable;
 
-class Batch: public System::Poolable<Batch>
-{
-public:
-    ~Batch();
-    CoreState* m_state;
-    Renderable* m_renderable;
-	bool m_destroy;
-};
+    class Batch: public System::Poolable<Batch>
+    {
+    public:
+        ~Batch();
+        CoreState* m_state;
+        Renderable* m_renderable;
+        bool m_destroy;
+    };
 
 }
 

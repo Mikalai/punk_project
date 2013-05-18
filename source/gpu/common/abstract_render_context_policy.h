@@ -8,36 +8,38 @@
 
 namespace GPU
 {
-enum RenderPolicySet {
-    RC_SOLID_3D,
-	RC_SOLID_TEXTURED_3D,
-    RC_GUI,
-    RC_TERRAIN,
-    RC_SKINNING,
-    RC_BUMP_MAPING,
-    RC_PAINTER,
-	RC_SOLID_VERTEX_COLOR,
-	RC_LIGHT_PER_FRAGMENT_DIFFUSE,
-	RC_LIGHT_PER_VERTEX_DIFFUSE,
-	RC_LIGHT_PER_FRAGMENT_DIFFUSE_SPECULAR,
-	RC_LIGHT_PER_VERTEX_DIFFUSE_SPECULAR
-};
+	enum class RenderPolicySet {
+		Solid3D,
+		SolidTextured3D,
+		GUI,
+		Terrain,
+		Skinning,
+		BumpMapping,
+		Painter,
+		SolidVertexColor,
+		LightPerFragmentDiffuse,
+		LightPerFragmentTextureDiffuse,
+		LightPerVertexDiffuse,
+		LightPerVertexTextureDiffuse,
+		LightPerFragmentDiffuseSpecular,
+		LightPerVertexDiffuseSpecular
+	};
 
-class PUNK_ENGINE AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
-{
-public:
-    AbstractRenderPolicy();
-    virtual void InitUniforms() = 0;
-    virtual void BindParameters(const CoreState& params) = 0;
-    virtual int64_t GetRequiredAttributesSet() const = 0;
-    virtual void Begin() = 0;
-    virtual void End() = 0;
-    virtual void Init() = 0;
-    virtual ~AbstractRenderPolicy();
-protected:
-    bool m_was_modified;
-    int64_t  m_vertex_attributes;
-};
+	class PUNK_ENGINE AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
+	{
+	public:
+		AbstractRenderPolicy();
+		virtual void InitUniforms() = 0;
+		virtual void BindParameters(const CoreState& params) = 0;
+		virtual int64_t GetRequiredAttributesSet() const = 0;
+		virtual void Begin() = 0;
+		virtual void End() = 0;
+		virtual void Init() = 0;
+		virtual ~AbstractRenderPolicy();
+	protected:
+		bool m_was_modified;
+		int64_t  m_vertex_attributes;
+	};
 }
 
 #endif	//	_H_PUNK_GPU_ABSTRACT_RENDER_CONTEXT

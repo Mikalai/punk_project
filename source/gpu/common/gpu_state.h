@@ -10,6 +10,8 @@
 #include "../../virtual/interface.h"
 #include "render_target.h"
 #include "lighting/module.h"
+#include "blending/module.h"
+#include "fog/module.h"
 #include "config.h"
 
 namespace GPU
@@ -20,7 +22,6 @@ namespace GPU
 	class PUNK_ENGINE CoreState : public System::Poolable<CoreState>
 	{
 	public:
-		enum BlendOperation { BLEND_SRC_ONE_MINUS_ALPHA };
 
 		CoreState();
 		~CoreState();
@@ -53,9 +54,8 @@ namespace GPU
 		float m_light_constant_attenuation;
 		float m_light_linear_attenuation;
 		float m_light_quadric_attenuation;
-		BlendOperation m_blend_operation;
 		bool m_depth_test;
-		bool m_blending;
+		bool m_enable_blending;
 		bool m_line_smooth;
 		bool m_multisample;
 		bool m_polygon_smooth;
@@ -85,6 +85,10 @@ namespace GPU
 		int m_text_slot;
 		int m_height_map_slot;
 
+		BlendFunction m_blend_src;
+		BlendFunction m_blend_dst;
+		Math::vec4 m_blend_color;
+
 		const Texture2D* m_diffuse_map_1;
 		const Texture2D* m_diffuse_map_0;
 		const Texture2D* m_normal_map;
@@ -96,6 +100,9 @@ namespace GPU
 		Texture2D* m_color_buffer;
 		Texture2D* m_depth_buffer;
         Math::vec4 m_clear_color;
+
+		//	added on 15.05.2013
+		FogDescription m_fog;
 
 		//	this pointers should not be deleted in destructor
 		LightParameters m_lights[MAX_LIGHTS];
