@@ -163,6 +163,7 @@ namespace Punk
 
 	void Application::WndOnKeyUpEvent(System::KeyUpEvent* event)
 	{
+		KeyUp(event);
 		m_event_manager->FixEvent(event);
 	}
 
@@ -276,6 +277,9 @@ namespace Punk
 	void Application::OnKeyDown(System::KeyDownEvent *event)
 	{}
 
+	void Application::OnKeyUp(System::KeyUpEvent *event)
+	{}
+
 	void Application::OnMouseWheel(System::MouseWheelEvent *event)
 	{}
 
@@ -299,6 +303,11 @@ namespace Punk
 	void Application::KeyDown(System::KeyDownEvent *event)
 	{
 		OnKeyDown(event);
+	}
+
+	void Application::KeyUp(System::KeyUpEvent *event)
+	{
+		OnKeyUp(event);
 	}
 
 	void Application::MouseWheel(System::MouseWheelEvent *event)

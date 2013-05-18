@@ -19,6 +19,9 @@ DEFINES += USE_SOLID_VERTEX_COLOR_RC
 DEFINES += USE_SOLID_TEXTURE_3D_RC
 DEFINES += USE_LIGHT_PER_VERTEX_DIFFUSE
 DEFINES += USE_LIGHT_PER_FRAGMENT_DIFFUSE
+DEFINES += USE_RC_PVRTDL    # Render context per vertex texture diffuse lighting
+DEFINES += USE_RC_PFRTDL    # Render context per fragment texture diffuse lighting
+
 }
 
 contains(DEFINES, USE_PNG)
@@ -127,7 +130,11 @@ HEADERS +=   ../../source/3rd/zlib/zutil.h \
     ../../source/3rd/zlib/gzguts.h \
     ../../source/3rd/zlib/deflate.h \
     ../../source/3rd/zlib/crc32.h \
-    ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.h
+    ../../source/gpu/common/blending/blend_function.h \
+    ../../source/gpu/common/blending/module.h \   
+    ../../source/gpu/common/fog/fog.h \
+    ../../source/gpu/common/fog/fog_mode.h \
+    ../../source/gpu/common/fog/module.h \       
 
 SOURCES += ../../source/3rd/zlib/zutil.c \
     ../../source/3rd/zlib/uncompr.c \
@@ -143,9 +150,11 @@ SOURCES += ../../source/3rd/zlib/zutil.c \
     ../../source/3rd/zlib/deflate.c \
     ../../source/3rd/zlib/crc32.c \
     ../../source/3rd/zlib/compress.c \
-    ../../source/3rd/zlib/adler32.c \
-    ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp \
-    ../../source/gpu/common/frame.cpp
+    ../../source/3rd/zlib/adler32.c \   
+    ../../source/gpu/common/frame.cpp \    
+    ../../source/gpu/common/blending/blend_function.cpp \    
+    ../../source/gpu/common/fog/fog.cpp \
+    ../../source/gpu/common/fog/fog_mode.cpp \    
 }
 
 contains(DEFINES, USE_NEVER) {
@@ -377,8 +386,7 @@ contains(DEFINES, USE_OPENGL) {
            ../../source/gpu/opengl/render_context/rc_gui.h \
            ../../source/gpu/opengl/render_context/rc_painter.h \
            ../../source/gpu/opengl/render_context/rc_particle_system.h \
-           ../../source/gpu/opengl/render_context/rc_skinning.h \
-           ../../source/gpu/opengl/render_context/rc_solid_color_3d.h \
+           ../../source/gpu/opengl/render_context/rc_skinning.h \           
            ../../source/gpu/opengl/render_context/rc_solid_textured_3d.h \
            ../../source/gpu/opengl/render_context/rc_terrain.h \
            ../../source/gpu/opengl/render_context/render_contexts.h \
@@ -396,7 +404,6 @@ contains(DEFINES, USE_OPENGL) {
            ../../source/gpu/opengl/textures/texture_2d_manager.h \
            ../../source/gpu/opengl/gl/win32/extensions_win32.h \
            ../../source/gpu/opengl/render_context/shaders/shader.h \
-           ../../source/gpu/opengl/render_context/shaders/shader_impl.h \
            ../../source/gpu/opengl/render_context/shaders/shaders.h \
            ../../source/gpu/opengl/renderable/primitives/vertex_array_object.h \
            ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump.h \
@@ -420,7 +427,94 @@ contains(DEFINES, USE_OPENGL) {
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_color.h \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_terrain.h \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_transform_3d.h \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_transformed_textured_3d.h
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_transformed_textured_3d.h \
+	    ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.h \
+	    ../../source/gpu/opengl/render_context/rc_pvtdl.h \
+	    ../../source/gpu/opengl/render_context/rc_pftdl.h \
+	    ../../source/gpu/opengl/gl/gl_blending.h \
+	    ../../source/gpu/opengl/render_context/rc_dynamic.h \
+	   ../../source/gpu/opengl/attribute_configer.h \
+	   ../../source/gpu/opengl/module.h    \
+	    ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_vertex_color.h \
+            ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_vertex_color.h \
+            ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting.h \
+            ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_diffuse.h \
+            ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_vertex_lighting_diffuse.h \
+            ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_vertex_lighting_tex_diffuse.h \
+            ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_tex_diffuse.h
+
+
+SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp \
+	    ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_vertex_color.cpp \
+	    ../../source/gpu/opengl/render_context/rc_pvtdl.cpp \
+	    ../../source/gpu/opengl/render_context/rc_pftdl.cpp \
+	    ../../source/gpu/opengl/gl/gl_blending.cpp \
+	    ../../source/gpu/opengl/render_context/rc_dynamic.cpp \	    
+	    ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_vertex_color.cpp \
+	    ../../source/gpu/opengl/render_context/shaders/shader_type.cpp \
+	   ../../source/gpu/opengl/attribute_configer.cpp \
+	   ../../source/gpu/opengl/gpu_opengl_module.cpp \
+	   ../../source/gpu/opengl/module.cpp \
+	   ../../source/tests/test_create_opengl_window/test_create_opengl_window.cpp \
+	   ../../source/gpu/opengl/buffers/ibo.cpp \
+	   ../../source/gpu/opengl/buffers/pbo.cpp \
+	   ../../source/gpu/opengl/buffers/vbo.cpp \
+	   ../../source/gpu/opengl/driver/gl_driver.cpp \
+	   ../../source/gpu/opengl/driver/video_memory.cpp \
+	   ../../source/gpu/opengl/error/gl_error_check.cpp \
+	   ../../source/gpu/opengl/error/gl_exceptions.cpp \
+	   ../../source/gpu/opengl/nvtristrip/nv_tri_strip.cpp \
+	   ../../source/gpu/opengl/nvtristrip/nv_tri_strip_objects.cpp \
+	   ../../source/gpu/opengl/nvtristrip/vertex_cache.cpp \
+	   ../../source/gpu/opengl/painter/gl_paint_engine.cpp \
+	   ../../source/gpu/opengl/render_context/gl_render_context.cpp \
+	   ../../source/gpu/opengl/render_context/rc_bump_mapping.cpp \
+	   ../../source/gpu/opengl/render_context/rc_grass.cpp \
+	   ../../source/gpu/opengl/render_context/rc_gui.cpp \
+	   ../../source/gpu/opengl/render_context/rc_painter.cpp \
+	   ../../source/gpu/opengl/render_context/rc_particle_system.cpp \
+	   ../../source/gpu/opengl/render_context/rc_skinning.cpp \	   
+	   ../../source/gpu/opengl/render_context/rc_solid_textured_3d.cpp \
+	   ../../source/gpu/opengl/render_context/rc_terrain.cpp \
+	   ../../source/gpu/opengl/render_context/rc_per_vertex_lighting.cpp \
+	   ../../source/gpu/opengl/render_context/render_contexts.cpp \
+	   ../../source/gpu/opengl/render_targets/gl_render_target.cpp \
+	   ../../source/gpu/opengl/render_targets/render_target_back_buffer.cpp \
+	   ../../source/gpu/opengl/render_targets/render_target_texture.cpp \
+	   ../../source/gpu/opengl/renderable/gl_primitive_type.cpp \
+	   ../../source/gpu/opengl/textures/internal_formats.cpp \
+	   ../../source/gpu/opengl/textures/text_surface.cpp \
+	   ../../source/gpu/opengl/textures/texture2d.cpp \
+	   ../../source/gpu/opengl/gl/win32/extensions_win32.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/shader.cpp \
+	   ../../source/gpu/opengl/renderable/primitives/vertex_array_object.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_grass.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_gui.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_light.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_painter.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_particle.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_skinning.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_color.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_textured.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_terrain.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_grass.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_gui.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_light.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_painter.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_particle.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_particle_system.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_color.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_terrain.cpp \
+	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_transform_3d.cpp \
+           ../../source/gpu/opengl/render_context/shaders/vertex/vs_transformed_textured_3d.cpp \
+           ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting.cpp \
+           ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_diffuse.cpp \
+            ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_vertex_lighting_diffuse.cpp \
+            ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_tex_diffuse.cpp \
+            ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_vertex_lighting_tex_diffuse.cpp
 }
 
 contains(DEFINES, USE_JPEG) {
@@ -795,10 +889,7 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/gpu/opencl/cl_device.cpp \
 	   ../../source/gpu/opencl/cl_kernel.cpp \
 	   ../../source/gpu/opencl/cl_platform.cpp \
-	   ../../source/gpu/opencl/cl_program.cpp \
-	   ../../source/gpu/opengl/attribute_configer.cpp \
-	   ../../source/gpu/opengl/gpu_opengl_module.cpp \
-	   ../../source/gpu/opengl/module.cpp \
+	   ../../source/gpu/opencl/cl_program.cpp \	   
 	   ../../source/gpu/painter/brush.cpp \
 	   ../../source/gpu/painter/paint_device.cpp \
 	   ../../source/gpu/painter/paint_engine.cpp \
@@ -867,8 +958,7 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/system/input/mouse.cpp \
 	   ../../source/system/streaming/async_loader.cpp \
 	   ../../source/system/types/list.cpp \
-	   ../../source/system/window/window.cpp \
-	   ../../source/tests/test_create_opengl_window/test_create_opengl_window.cpp \
+	   ../../source/system/window/window.cpp \	   
 	   ../../source/translator/echo_module/echo_module.cpp \
 	   ../../source/utility/descriptors/action_desc.cpp \
 	   ../../source/utility/descriptors/animation_desc.cpp \
@@ -924,70 +1014,12 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/virtual/terrain/terrain_view.cpp \
 	   ../../source/virtual/terrain/terrain_view_loader.cpp \
 	   ../../source/virtual/terrain/terrain_view_processor.cpp \
-	   ../../source/gpu/opencl/errors/cl_exceptions.cpp \
-	   ../../source/gpu/opengl/buffers/ibo.cpp \
-	   ../../source/gpu/opengl/buffers/pbo.cpp \
-	   ../../source/gpu/opengl/buffers/vbo.cpp \
-	   ../../source/gpu/opengl/driver/gl_driver.cpp \
-	   ../../source/gpu/opengl/driver/video_memory.cpp \
-	   ../../source/gpu/opengl/error/gl_error_check.cpp \
-	   ../../source/gpu/opengl/error/gl_exceptions.cpp \
-	   ../../source/gpu/opengl/nvtristrip/nv_tri_strip.cpp \
-	   ../../source/gpu/opengl/nvtristrip/nv_tri_strip_objects.cpp \
-	   ../../source/gpu/opengl/nvtristrip/vertex_cache.cpp \
-	   ../../source/gpu/opengl/painter/gl_paint_engine.cpp \	   
-	   ../../source/gpu/opengl/render_context/gl_render_context.cpp \
-	   ../../source/gpu/opengl/render_context/rc_bump_mapping.cpp \
-	   ../../source/gpu/opengl/render_context/rc_grass.cpp \
-	   ../../source/gpu/opengl/render_context/rc_gui.cpp \
-	   ../../source/gpu/opengl/render_context/rc_painter.cpp \
-	   ../../source/gpu/opengl/render_context/rc_particle_system.cpp \
-	   ../../source/gpu/opengl/render_context/rc_skinning.cpp \
-	   ../../source/gpu/opengl/render_context/rc_solid_color_3d.cpp \
-	   ../../source/gpu/opengl/render_context/rc_solid_textured_3d.cpp \
-	   ../../source/gpu/opengl/render_context/rc_terrain.cpp \
-	   ../../source/gpu/opengl/render_context/rc_per_vertex_lighting.cpp \
-	   ../../source/gpu/opengl/render_context/render_contexts.cpp \
-	   ../../source/gpu/opengl/render_targets/gl_render_target.cpp \
-	   ../../source/gpu/opengl/render_targets/render_target_back_buffer.cpp \
-	   ../../source/gpu/opengl/render_targets/render_target_texture.cpp \
-	   ../../source/gpu/opengl/renderable/gl_primitive_type.cpp \
-	   ../../source/gpu/opengl/textures/internal_formats.cpp \
-	   ../../source/gpu/opengl/textures/text_surface.cpp \
-	   ../../source/gpu/opengl/textures/texture2d.cpp \
+	   ../../source/gpu/opencl/errors/cl_exceptions.cpp \	   
 	   ../../source/virtual/data/lights/point_light.cpp \
 	   ../../source/virtual/objects/characters/human.cpp \
 	   ../../source/virtual/objects/characters/male_human.cpp \
-	   ../../source/virtual/objects/simple/solid_cube.cpp \
-	   ../../source/gpu/opengl/gl/win32/extensions_win32.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/shader.cpp \
-	   ../../source/gpu/opengl/renderable/primitives/vertex_array_object.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_grass.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_gui.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_light.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_painter.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_particle.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_skinning.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_color.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_textured.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_terrain.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_grass.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_gui.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_light.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_painter.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_particle.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_particle_system.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_color.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_terrain.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_transform_3d.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_transformed_textured_3d.cpp \
-	../../source/system/handler.cpp \
-	../../source/gpu/opengl/render_context/rc_solid_vertex_color.cpp \
-	../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_vertex_color.cpp \
-	../../source/gpu/opengl/render_context/shaders/shader_type.cpp \
+	   ../../source/virtual/objects/simple/solid_cube.cpp \	   
+	../../source/system/handler.cpp \	
 	../../source/gpu/common/render_batch.cpp	\
 	../../source/gpu/common/render_pass.cpp \
 	../../source/gpu/common/texture_context.cpp \
@@ -1219,8 +1251,6 @@ HEADERS += ../../source/config.h \
 	   ../../source/gpu/opencl/cl_program.h \
 	   ../../source/gpu/opencl/cl_program_impl.h \
 	   ../../source/gpu/opencl/module.h \
-	   ../../source/gpu/opengl/attribute_configer.h \
-	   ../../source/gpu/opengl/module.h \
 	   ../../source/gpu/painter/brush.h \
 	   ../../source/gpu/painter/module.h \
 	   ../../source/gpu/painter/paint_device.h \
@@ -1412,11 +1442,6 @@ HEADERS += ../../source/config.h \
 	   ../../source/virtual/terrain/terrain_view.h \
 	   ../../source/virtual/terrain/terrain_view_loader.h \
 	   ../../source/virtual/terrain/terrain_view_processor.h \
-    ../../source/gpu/opengl/render_context/rc_solid_vertex_color.h \
-    ../../source/gpu/opengl/render_context/rc_per_vertex_lighting.h\
-    ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_vertex_color.h \
-    ../../source/gpu/opengl/render_context/shaders/shader_template.h \
-    ../../source/gpu/opengl/render_context/shaders/shader_type.h \
     ../../source/gpu/common/render_pass.h \
     ../../source/gpu/common/render_batch.h \
     ../../source/gpu/common/texture_context.h \
@@ -1435,6 +1460,5 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/primitives/triangles.h \
     ../../source/gpu/common/lighting/light_model.h \
     ../../source/gpu/common/lighting/module.h \
-    ../../source/gpu/common/lighting/light_parameters.h \
-    ../../source/gpu/opengl/render_context/rc_per_vertex_lighting.h \
+    ../../source/gpu/common/lighting/light_parameters.h \    
     ../../source/gpu/common/config.h

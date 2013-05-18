@@ -59,6 +59,7 @@ namespace Punk
 		virtual void OnInit(const Config& value);
 		virtual void OnResize(System::WindowResizeEvent* event);
 		virtual void OnKeyDown(System::KeyDownEvent* event);
+		virtual void OnKeyUp(System::KeyUpEvent* event);
 		virtual void OnMouseWheel(System::MouseWheelEvent* event);
 
 		void Init(const Config& value);
@@ -76,7 +77,8 @@ namespace Punk
 		void Render();		
 		void Resize(System::WindowResizeEvent* event);
 		void KeyDown(System::KeyDownEvent* event);
-		void MouseWheel(System::MouseWheelEvent* event);
+		void KeyUp(System::KeyUpEvent* event);
+		void MouseWheel(System::MouseWheelEvent* event);		
 
 		//
 		//	to perform speed up and slow down
