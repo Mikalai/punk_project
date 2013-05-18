@@ -72,26 +72,7 @@ namespace GPU
 			SetUniformInt(uDiffuseMapUniform2, 1);
 			SetUniformFloat(uScale, 1);		
 
-			if (pparams.m_enable_wireframe)
-			{
-				glLineWidth(pparams.m_line_width);
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				ValidateOpenGL(L"Can't change polygon mode");
-			}			
-			else
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				ValidateOpenGL(L"Can't change polygon mode");
-			}
-
-			if (pparams.m_depth_test)
-			{
-				glEnable(GL_DEPTH_TEST);
-			}
-			else
-			{
-				glDisable(GL_DEPTH_TEST);
-			}
+			SetUpOpenGL(params);
 		}
 
         int64_t RenderContextPolicy<TerrainVertexShader, TerrainFragmentShader, TerrainGeometryShader>::GetRequiredAttributesSet() const

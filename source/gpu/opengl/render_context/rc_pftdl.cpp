@@ -1,6 +1,8 @@
-#ifdef USE_LIGHT_PER_VERTEX_DIFFUSE
+#ifdef USE_RC_PFRTDL
 
-#include "rc_per_vertex_lighting.h"
+#include "rc_pftdl.h"
+
+
 #include "../gl/module.h"
 #include "../../common/vertex.h"
 
@@ -9,19 +11,19 @@ namespace GPU
 	namespace OpenGL
 	{
 		RenderContextPolicy<
-				ShaderCollection::VertexLightPerVertexDiffuse,
-				ShaderCollection::FragmentLightPerVertexDiffuse,
+				ShaderCollection::VertexLightPerFragmentTextureDiffuse,
+				ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
 				ShaderCollection::No>::RenderContextPolicy()
-			: OpenGLRenderContext(ShaderCollection::VertexLightPerVertexDiffuse,
-								  ShaderCollection::FragmentLightPerVertexDiffuse,
+			: OpenGLRenderContext(ShaderCollection::VertexLightPerFragmentTextureDiffuse,
+								  ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
 								  ShaderCollection::No)
 		{
 			Init();
 		}
 
 		void RenderContextPolicy<
-		ShaderCollection::VertexLightPerVertexDiffuse,
-		ShaderCollection::FragmentLightPerVertexDiffuse,
+		ShaderCollection::VertexLightPerFragmentTextureDiffuse,
+		ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
 		ShaderCollection::No>::InitUniforms()
 		{
 			uProjViewWorld = GetUniformLocation("uProjViewWorld");
@@ -29,6 +31,8 @@ namespace GPU
 			uViewWorld = GetUniformLocation("uViewWorld");
 			uView = GetUniformLocation("uView");
 			uDiffuseColor = GetUniformLocation("uDiffuseColor");
+			uTextureMatrix = GetUniformLocation("uTextureMatrix");
+			uDiffuseMap = GetUniformLocation("uDiffuseMap");
 
 			for (int i = 0; i != MAX_LIGHTS; ++i)
 			{
@@ -81,8 +85,8 @@ namespace GPU
 		}
 
 		void RenderContextPolicy<
-		ShaderCollection::VertexLightPerVertexDiffuse,
-		ShaderCollection::FragmentLightPerVertexDiffuse,
+		ShaderCollection::VertexLightPerFragmentTextureDiffuse,
+		ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
 		ShaderCollection::No>::BindParameters(const CoreState& params)
 		{
 			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_world;
@@ -93,6 +97,8 @@ namespace GPU
 			SetUniformMatrix4f(uViewWorld, &view_world[0]);
 			SetUniformMatrix4f(uView, &params.m_view[0]);
 			SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
+			SetUniformMatrix4f(uTextureMatrix, &params.m_texture_matrix[0]);
+			SetUniformInt(uDiffuseMap, 0);
 
 			for (int i = 0; i != MAX_LIGHTS; ++i)
 			{
@@ -131,13 +137,13 @@ namespace GPU
 		}
 
 		int64_t RenderContextPolicy<
-		ShaderCollection::VertexLightPerVertexDiffuse,
-		ShaderCollection::FragmentLightPerVertexDiffuse,
+		ShaderCollection::VertexLightPerFragmentTextureDiffuse,
+		ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
 		ShaderCollection::No>::GetRequiredAttributesSet() const
 		{
-			return Vertex<VertexComponent::Position, VertexComponent::Normal>::Value();
+			return Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0>::Value();
 		}
 	}
 }
 
-#endif	//	USE_LIGHT_PER_VERTEX_DIFFUSE
+#endif

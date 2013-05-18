@@ -11,6 +11,9 @@
 #include "vertex\vs_transform_3d.h"
 #include "vertex\vs_transformed_textured_3d.h"
 #include "vertex\vs_solid_color.h"
+#include "vertex/vs_solid_vertex_color.h"
+#include "vertex/vs_per_vertex_lighting_diffuse.h"
+#include "vertex/vs_per_vertex_lighting_tex_diffuse.h"
 
 #include "fragment\fs_bump.h"
 #include "fragment\fs_grass.h"
@@ -21,5 +24,8 @@
 #include "fragment\fs_solid_color.h"
 #include "fragment\fs_solid_textured.h"
 #include "fragment\fs_terrain.h"
+#include "fragment/fs_solid_vertex_color.h"
+#include "fragment/fs_per_vertex_lighting_diffuse.h"
+#include "fragment/fs_per_vertex_lighting_tex_diffuse.h"
 
 #endif	//	_H_PUNK_OPENGL_SHADERS

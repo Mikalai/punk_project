@@ -32,23 +32,12 @@ namespace GPU
 		void RenderContextPolicy<
 				ShaderCollection::VertexSolidTextured,
 				ShaderCollection::FragmentSolidTextured,
-				ShaderCollection::No>::Init()
-		{
-			if (m_was_modified || !m_program)
-			{
-				OpenGLRenderContext::Init();
-				InitUniforms();
-			}
-		}
-
-		void RenderContextPolicy<
-				ShaderCollection::VertexSolidTextured,
-				ShaderCollection::FragmentSolidTextured,
 				ShaderCollection::No>::InitUniforms()
 		{
 			uProjViewWorld = GetUniformLocation("uProjViewWorld");
 			uDiffuseMap = GetUniformLocation("uDiffuseMap");
 			uTextureMatrix = GetUniformLocation("uTextureMatrix");
+			uDiffuseColor = GetUniformLocation("uDiffuseColor");
 		}
 
 		void RenderContextPolicy<
@@ -60,26 +49,9 @@ namespace GPU
 			SetUniformMatrix4f(uProjViewWorld, &(proj_view_world[0]));
 			SetUniformInt(uDiffuseMap, 0);
 			SetUniformMatrix4f(uTextureMatrix, &params.m_texture_matrix[0]);
+			SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
 
-			if (params.m_enable_wireframe)
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				ValidateOpenGL(L"Can't change polygon mode");
-			}			
-			else
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				ValidateOpenGL(L"Can't change polygon mode");
-			}
-
-			if (params.m_depth_test)
-			{
-				glEnable(GL_DEPTH_TEST);
-			}
-			else
-			{
-				glDisable(GL_DEPTH_TEST);
-			}
+			SetUpOpenGL(params);
 		}
 
 		int64_t RenderContextPolicy<
@@ -88,35 +60,7 @@ namespace GPU
 				ShaderCollection::No>::GetRequiredAttributesSet() const
 		{
 			return Vertex<VertexComponent::Position, VertexComponent::Texture0>::Value();
-		}
-
-		void RenderContextPolicy<
-				ShaderCollection::VertexSolidTextured,
-				ShaderCollection::FragmentSolidTextured,
-				ShaderCollection::No>::Begin()
-		{
-			/*
-			Begin();
-			BindParameters()
-			***
-			render();
-			***
-			BindParameters()
-			render();
-			End();
-			*/
-
-			Init();
-			OpenGLRenderContext::Begin();
-		}
-
-		void RenderContextPolicy<
-				ShaderCollection::VertexSolidTextured,
-				ShaderCollection::FragmentSolidTextured,
-				ShaderCollection::No>::End()
-		{
-			OpenGLRenderContext::End();			
-		}		
+		}	
 	}
 }
 

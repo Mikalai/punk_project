@@ -17,18 +17,16 @@ namespace GPU
 		{	
 			unsigned uProjViewWorld;
 			unsigned uDiffuseMap;
+			unsigned uDiffuseColor;
 			unsigned uTextureMatrix;
 
 		public:
 
 			RenderContextPolicy();
 			virtual ~RenderContextPolicy();
-			void Init() override;
 			void InitUniforms() override;
 			void BindParameters(const CoreState& params) override;
 			int64_t GetRequiredAttributesSet() const override;
-			void Begin() override;
-			void End() override;
 		};
 	}
 }

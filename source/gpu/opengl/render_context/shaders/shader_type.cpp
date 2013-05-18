@@ -21,6 +21,10 @@ static const ShaderFile g_shaders[] = {
 	ShaderFile(ShaderCollection::FragmentLightPerVertexDiffuse, L"per_vertex_lighting_diffuse_330.frag"),
 	ShaderFile(ShaderCollection::VertexLightPerFragmentDiffuse, L"per_fragment_lighting_diffuse_330.vert"),
 	ShaderFile(ShaderCollection::FragmentLightPerFragmentDiffuse, L"per_fragment_lighting_diffuse_330.frag"),
+	ShaderFile(ShaderCollection::VertexLightPerVertexTextureDiffuse, L"per_vertex_lighting_tex_diffuse_330.vert"),
+	ShaderFile(ShaderCollection::FragmentLightPerVertexTextureDiffuse, L"per_vertex_lighting_tex_diffuse_330.frag"),
+	ShaderFile(ShaderCollection::VertexLightPerFragmentTextureDiffuse, L"per_fragment_lighting_tex_diffuse_330.vert"),
+	ShaderFile(ShaderCollection::FragmentLightPerFragmentTextureDiffuse, L"per_fragment_lighting_tex_diffuse_330.frag"),
     ShaderFile(ShaderCollection::No, L"")
 };
 

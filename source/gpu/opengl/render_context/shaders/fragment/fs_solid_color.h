@@ -11,6 +11,12 @@ namespace GPU
 		{
 		public:
 			FragmentShaderSolid();
+
+			virtual void InitUniforms() override;
+			virtual void BindParameters(const CoreState& params) override;
+			virtual int64_t GetRequiredAttributesSet() const override;
+		private:
+			unsigned uDiffuseColor;
 		};
 	}
 }

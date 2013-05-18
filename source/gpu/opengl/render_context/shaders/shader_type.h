@@ -21,7 +21,11 @@ enum class ShaderCollection {
 	VertexLightPerVertexDiffuse,
 	FragmentLightPerVertexDiffuse,
 	VertexLightPerFragmentDiffuse,
-	FragmentLightPerFragmentDiffuse
+	FragmentLightPerFragmentDiffuse,
+	VertexLightPerVertexTextureDiffuse,
+	FragmentLightPerVertexTextureDiffuse,
+	VertexLightPerFragmentTextureDiffuse,
+	FragmentLightPerFragmentTextureDiffuse
 };
 
 extern const wchar_t* GetShaderFile(ShaderCollection shader);

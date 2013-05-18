@@ -41,30 +41,7 @@ namespace GPU
 			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_world;
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
 			SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
-
-			if (params.m_enable_wireframe)
-			{
-				glLineWidth(params.m_line_width);
-				ValidateOpenGL(L"Can't line width");
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				ValidateOpenGL(L"Can't change polygon mode");
-			}			
-			else
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				ValidateOpenGL(L"Can't change polygon mode");
-			}
-
-			if (params.m_depth_test)
-			{
-				glEnable(GL_DEPTH_TEST);
-				ValidateOpenGL(L"Can't enable depth test");
-			}
-			else
-			{
-				glDisable(GL_DEPTH_TEST);
-				ValidateOpenGL(L"Can't disable depth test");
-			}
+			SetUpOpenGL(params);
 		}
 
         int64_t RenderContextPolicy<ShaderCollection::VertexSolidColor, ShaderCollection::FragmentSolidColor, ShaderCollection::No>::GetRequiredAttributesSet() const

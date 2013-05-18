@@ -1,5 +1,5 @@
-#ifndef VS_SOLID_VERTEX_COLOR_H
-#define VS_SOLID_VERTEX_COLOR_H
+#ifndef _H_PUNK_OPENGL_SHADER_SOLID_VERTEX_COLOR
+#define _H_PUNK_OPENGL_SHADER_SOLID_VERTEX_COLOR
 
 #include "..\shader.h"
 
@@ -7,20 +7,18 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class VertexShaderSolidVertexColor : public Shader
+		class FragmentShaderSolidVertexColor : public Shader
 		{
 		public:
-			VertexShaderSolidVertexColor();
+			FragmentShaderSolidVertexColor();
 
 			virtual void InitUniforms() override;
 			virtual void BindParameters(const CoreState& params) override;
 			virtual int64_t GetRequiredAttributesSet() const override;
-
 		private:
-			unsigned uProjViewWorld;
+
 		};
 	}
 }
 
-
-#endif // VS_SOLID_VERTEX_COLOR_H
+#endif
