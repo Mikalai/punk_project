@@ -33,7 +33,7 @@ namespace ImageModule
 	RGBAImage* Importer::LoadRGBA(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_image->m_components != 4)
+        if (impl_image->m_channels != 4)
 			throw ImageException((filename + L" is not an RGBA image").Data());
 		RGBAImage* rgba_image = new RGBAImage;
 		std::swap(rgba_image->impl_image, impl_image);
@@ -43,7 +43,7 @@ namespace ImageModule
 	RGBImage* Importer::LoadRGB(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_image->m_components != 3)
+        if (impl_image->m_channels != 3)
 			throw ImageException((filename + L" is not an RGB image").Data());
 		RGBImage* rgb_image = new RGBImage;
 		std::swap(rgb_image->impl_image, impl_image);
@@ -53,7 +53,7 @@ namespace ImageModule
 	GrayImage* Importer::LoadGray(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_image->m_components != 1)
+        if (impl_image->m_channels != 1)
 			throw ImageException((filename + L" is not an RGB image").Data());
 		GrayImage* gray_image = new GrayImage;
 		std::swap(gray_image->impl_image, impl_image);

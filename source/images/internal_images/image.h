@@ -22,6 +22,7 @@ namespace ImageModule
 	public:
 
 		Image();
+        Image(size_t width, size_t height, int channels, ComponentType type, ImageFormat format);
 		Image(const Image& image);
 		Image& operator = (const Image& image);
 		~Image();
@@ -33,19 +34,22 @@ namespace ImageModule
 		unsigned GetWidth() const;
 		unsigned GetHeight() const;
 		unsigned GetBitDepth() const;
-		void Create(int width, int height, int channels);
-		void SetFormat(int format);
-		void SetNumChannels(int channels);
-		void SetDepth(int bpp);
-		void SetSize(unsigned width, unsigned height);
+        ComponentType GetComponentType() const;
+        void Create(int width, int height, int channels, ComponentType type, ImageFormat format);
+        void SetSize(unsigned width, unsigned height);
 		void SetSubImage(unsigned x, unsigned y, const Image& image);
-		const Component* GetPixelComponent(unsigned x, unsigned y, unsigned component) const;
-		Component* GetPixelComponent(unsigned x, unsigned y, unsigned component);
-		void SetPixelComponent(unsigned x, unsigned y, unsigned component, Component value);
-		const Component* GetData() const;
-		Component* GetData();
+        const void* GetPixelComponent(unsigned x, unsigned y, unsigned component) const;
+        void* GetPixelComponent(unsigned x, unsigned y, unsigned component);
+        void SetPixelComponent(unsigned x, unsigned y, unsigned component, const void* value);
+        const void* GetData() const;
+        void* GetData();
 		ImageFormat GetImageFormat() const;
 		std::unique_ptr<ImageImpl> impl_image;
+
+        const Image ToAlpha() const;
+        const Image ToRGB() const;
+        const Image ToRGBA() const;
+
 	};
 }
 

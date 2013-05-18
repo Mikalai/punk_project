@@ -324,17 +324,14 @@ namespace ImageModule
 			return (out_error() << "Bad image format" << std::endl, false);
 		}
 
-		image->Create(output_width, output_height, output_components);
-		image->SetFormat(format);
-		image->SetNumChannels(output_components);
-		image->SetDepth(output_components*8);
+        image->Create(output_width, output_height, output_components, ComponentType::UnsignedByte, format);
 
 		int row_stride = cinfo.output_width * cinfo.output_components;
 		/* Make a one-row-high sample array that will go away when done with image */
 		JSAMPARRAY buffer = (*cinfo.mem->alloc_sarray)
 		((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
 
-		unsigned char* dst = image->GetData() + row_stride * (cinfo.output_height - 1);
+        unsigned char* dst = (unsigned char*)image->GetData() + row_stride * (cinfo.output_height - 1);
 		while (cinfo.output_scanline < cinfo.output_height)
 		{
 			jpeg_read_scanlines(&cinfo, (JSAMPARRAY)buffer, 1);

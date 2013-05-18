@@ -79,7 +79,6 @@ namespace ImageModule
 		int	rowBytes = png_get_rowbytes(png_ptr, info_ptr);
 		unsigned channels = png_get_channels(png_ptr, info_ptr);
 		ImageFormat format = IMAGE_FORMAT_ALPHA;
-		image->SetDepth(bpp);
 
 		switch ( colorType )
 		{
@@ -123,10 +122,7 @@ namespace ImageModule
 			throw ImageException(L"Can't load file: ");
 		}
 
-		image->Create(width, height, channels);
-		image->SetFormat(format);
-		image->SetNumChannels(channels);
-		image->SetDepth(bpp);
+        image->Create(width, height, channels, ComponentType::UnsignedByte, format);
 
 		png_bytep * rowPtr  = new png_bytep[height];
 		unsigned long     * lineBuf = new unsigned long[width];
@@ -136,7 +132,7 @@ namespace ImageModule
 
 		png_read_image ( png_ptr, rowPtr );
 
-		Component* offset = image->GetData();
+        unsigned char* offset = (unsigned char*)image->GetData();
 
 		// now rebuild the ImageFile
 		for (int i = 0; i < (int)height; i++ )
@@ -200,7 +196,7 @@ namespace ImageModule
 			}
 
 			unsigned char* src = (unsigned char*)lineBuf;
-			unsigned char* offset = image->GetData() + height*width*channels - (i+1)*width*channels;	//alligned
+            unsigned char* offset = (unsigned char*)image->GetData() + height*width*channels - (i+1)*width*channels;	//alligned
 			for (int k = 0; k < (int)width; k++, src += 4)
 			{
 				if (channels == 1)

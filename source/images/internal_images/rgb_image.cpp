@@ -6,9 +6,9 @@ namespace ImageModule
 	RGBImage::RGBImage()
 		: Image()
 	{
-		impl_image->m_components = 3;
+        impl_image->m_channels = 3;
 		impl_image->m_format = IMAGE_FORMAT_RGB;
-		impl_image->m_bit_depth = 8;
+        impl_image->m_component_type = ComponentType::UnsignedByte;
 	}
 
 	RGBImage::RGBImage(const RGBImage& image)

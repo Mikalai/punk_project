@@ -9,8 +9,12 @@
 namespace ImageModule
 {
 	Image::Image()
-		: impl_image(new ImageImpl())
+        : impl_image(nullptr)
 	{}
+
+    Image::Image(size_t width, size_t height, int channels, ComponentType type, ImageFormat format)
+        : impl_image(new ImageImpl(width, height, channels, type, format))
+    {}
 
 	Image::Image(const Image& image)
 		: impl_image(new ImageImpl(*image.impl_image))
@@ -57,24 +61,9 @@ namespace ImageModule
 		}
 	}
 		
-	void Image::Create(int width, int height, int channels)
+    void Image::Create(int width, int height, int channels, ComponentType type, ImageFormat format)
 	{
-		impl_image->Create(width, height, channels);
-	}
-
-	void Image::SetFormat(int format)
-	{
-		impl_image->SetFormat(format);
-	}
-
-	void Image::SetNumChannels(int channels)
-	{
-		impl_image->SetNumChannels(channels);
-	}
-
-	void Image::SetDepth(int bpp)
-	{
-		impl_image->SetDepth(bpp);
+        impl_image.reset(new ImageImpl(width, height, channels, type, format));
 	}
 
 	unsigned Image::GetSizeInBytes() const
@@ -84,7 +73,7 @@ namespace ImageModule
 
 	unsigned Image::GetComponentsCount() const
 	{
-		return impl_image->m_components;
+        return impl_image->m_channels;
 	}
 
 	unsigned Image::GetWidth() const
@@ -97,14 +86,12 @@ namespace ImageModule
 		return impl_image->m_height;
 	}
 
-	unsigned Image::GetBitDepth() const
-	{
-		return impl_image->m_bit_depth;
-	}
-
 	void Image::SetSize(unsigned width, unsigned height)
 	{
-		impl_image->Create(width, height, impl_image->m_components);
+        auto component_type = GetComponentType();
+        auto format = GetImageFormat();
+        auto channels = GetComponentsCount();
+        impl_image.reset(new ImageImpl(width, height, channels, component_type, format));
 	}
 
 	void Image::SetSubImage(unsigned x, unsigned y, const Image& image)
@@ -112,27 +99,27 @@ namespace ImageModule
 		impl_image->SetSubImage(x, y, *image.impl_image);
 	}
 
-	const Component* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component) const
+    const void* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component) const
 	{			
 		return impl_image->At(x, y, component);
 	}
 
-	Component* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component)
+    void* Image::GetPixelComponent(unsigned x, unsigned y, unsigned component)
 	{
 		return impl_image->At(x, y, component);
 	}
 
-	void Image::SetPixelComponent(unsigned x, unsigned y, unsigned component, Component value)
+    void Image::SetPixelComponent(unsigned x, unsigned y, unsigned component, const void* value)
 	{
-		*impl_image->At(x, y, component) = value;
+        impl_image->Copy(x, y, component, value);
 	}
 
-	const Component* Image::GetData() const
+    const void* Image::GetData() const
 	{
 		return impl_image->At(0,0,0);
 	}
 
-	Component* Image::GetData()
+    void* Image::GetData()
 	{
 		return impl_image->At(0,0,0);
 	}
@@ -141,4 +128,66 @@ namespace ImageModule
 	{
 		return impl_image->m_format;
 	}
+
+    void ConvertRGBAtoAlpha(const Image& src, Image& dst)
+    {
+        for (int y = 0; y != src.GetHeight(); ++y)
+        {
+            for (int x = 0; x != src.GetWidth(); ++x)
+            {
+                dst.SetPixelComponent(x, y, 0, src.GetPixelComponent(x, y, 3));
+            }
+        }
+    }
+
+    void ConvertAlphaToRGBA(const Image& src, Image& dst)
+    {
+        for (int y = 0; y != src.GetHeight(); ++y)
+        {
+            for (int x = 0; x != src.GetWidth(); ++x)
+            {
+                const void* c = src.GetPixelComponent(x, y, 0);
+                dst.SetPixelComponent(x, y, 0, c);
+                dst.SetPixelComponent(x, y, 1, c);
+                dst.SetPixelComponent(x, y, 2, c);
+                dst.SetPixelComponent(x, y, 3, c);
+            }
+        }
+    }
+
+    const Image Image::ToAlpha() const
+    {
+        if (GetImageFormat() == IMAGE_FORMAT_ALPHA)
+            return *this;
+        if (GetImageFormat() == IMAGE_FORMAT_RED)
+            return *this;
+        if (GetImageFormat() == IMAGE_FORMAT_RGBA)
+        {
+            Image result(GetWidth(), GetHeight(), 1, GetComponentType(), IMAGE_FORMAT_ALPHA);
+            ConvertRGBAtoAlpha(*this, result);
+            return result;
+        }
+    }
+
+    const Image Image::ToRGBA() const
+    {
+        if (GetImageFormat() == IMAGE_FORMAT_RGBA)
+            return *this;
+        if (GetImageFormat() == IMAGE_FORMAT_RED || GetImageFormat() == IMAGE_FORMAT_ALPHA)
+        {
+            Image result(GetWidth(), GetHeight(), 4, GetComponentType(), IMAGE_FORMAT_RGBA);
+            ConvertAlphaToRGBA(*this, result);
+            return result;
+        }
+    }
+
+    unsigned Image::GetBitDepth() const
+    {
+        return impl_image->GetBitDepth();
+    }
+
+    ComponentType Image::GetComponentType() const
+    {
+        return impl_image->m_component_type;
+    }
 }

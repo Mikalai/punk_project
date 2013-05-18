@@ -6,9 +6,9 @@ namespace ImageModule
 	RGBAImage::RGBAImage()
 		: Image()
 	{
-		impl_image->m_components = 4;
+        impl_image->m_channels = 4;
 		impl_image->m_format = IMAGE_FORMAT_RGBA;
-		impl_image->m_bit_depth = 8;
+        impl_image->m_component_type = ComponentType::UnsignedByte;
 	}
 
 	RGBAImage::RGBAImage(const RGBAImage& image)

@@ -3,7 +3,21 @@
 
 namespace ImageModule
 {
-	typedef unsigned char Component;
+    enum class ComponentType { UnsignedByte, SignedByte, Float };
+
+    inline size_t GetComponentSize(ComponentType type)
+    {
+        switch (type) {
+        case ComponentType::UnsignedByte:
+            return 1;
+        case ComponentType::SignedByte:
+            return 1;
+        case ComponentType::Float:
+            return 4;
+        default:
+            break;
+        }
+    }
 }
 
 #endif
