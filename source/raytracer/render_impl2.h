@@ -30,9 +30,7 @@ namespace Raytracer
 
 		bool Run(const Scene& scene, ImageModule::Image& image)
 		{			
-			image.Create(m_width, m_height, 3);			
-			image.SetFormat(ImageModule::IMAGE_FORMAT_RGB);
-			image.SetDepth(8);
+            image.Create(m_width, m_height, 3, ImageModule::ComponentType::UnsignedByte, ImageModule::IMAGE_FORMAT_RGB);
 
 			Math::vec3 origin(0,0,0);
 			float z = -1/tan(m_fov/2.0f);
@@ -48,9 +46,12 @@ namespace Raytracer
 
 					const Point p = scene.Intersect(ray);
 
-					image.SetPixelComponent(x, m_height-y-1, 0, ImageModule::Component(Math::Min(255.0*p.r, 255.0)));
-					image.SetPixelComponent(x, m_height-y-1, 1, ImageModule::Component(Math::Min(255.0*p.g, 255.0)));
-					image.SetPixelComponent(x, m_height-y-1, 2, ImageModule::Component(Math::Min(255.0*p.b, 255.0)));
+                    unsigned char value = (unsigned char)Math::Min(255.0*p.r, 255.0);
+                    image.SetPixelComponent(x, m_height-y-1, 0, (void*)&value);
+                    value = (unsigned char)Math::Min(255.0*p.g, 255.0);
+                    image.SetPixelComponent(x, m_height-y-1, 1, (void*)&value);
+                    value = (unsigned char)Math::Min(255.0*p.b, 255.0);
+                    image.SetPixelComponent(x, m_height-y-1, 2, (void*)&value);
 				/*	image.SetPixelComponent(x, m_height-y-1, 0, 255.0*p.r);
 					image.SetPixelComponent(x, m_height-y-1, 1, 255.0*p.g);
 					image.SetPixelComponent(x, m_height-y-1, 2, 255.0*p.b);*/

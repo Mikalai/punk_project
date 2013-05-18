@@ -38,7 +38,7 @@ namespace GPU
             , m_points_vao(driver)
             , m_lines_vao(driver)
 		{
-			m_rc = AbstractRenderPolicy::find(RC_PAINTER);
+			m_rc = AbstractRenderPolicy::find(RenderPolicySet::Painter);
             m_tc = new TextureContext();
 		}
 
@@ -61,7 +61,7 @@ namespace GPU
 			m_states.CurrentState()->Get().m_use_diffuse_texture = false;
 			m_states.CurrentState()->Get().m_use_text_texture = false;
 			m_states.CurrentState()->Get().m_enable_wireframe = false;
-			m_states.CurrentState()->Get().m_blending = true;
+			m_states.CurrentState()->Get().m_enable_blending = true;
 			m_states.CurrentState()->Get().m_line_width = 5;
 			m_states.CurrentState()->Get().m_diffuse_color.Set(1,0,0,1);
 

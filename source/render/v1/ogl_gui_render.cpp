@@ -9,7 +9,7 @@ namespace Render
 		: m_selection_color_delta(0.1f, 0.1f, 0.1f, 0.1f)
 		, m_quad(driver)
 	{
-		m_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
+		m_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::GUI);
         m_tc = new GPU::TextureContext();
 	}
 
@@ -49,8 +49,7 @@ namespace Render
 		m_states.CurrentState()->Get().m_text_slot = 0;
 		m_states.CurrentState()->Get().m_no_diffuse_texture_color = widget->GetBackColor();
 		m_states.CurrentState()->Get().m_texture_matrix = Math::mat4::CreateReflectX();
-		m_states.CurrentState()->Get().m_blending = true;
-		m_states.CurrentState()->Get().m_blend_operation = GPU::CoreState::BLEND_SRC_ONE_MINUS_ALPHA;
+		m_states.CurrentState()->Get().m_enable_blending = true;
 		m_tc->Bind();
 
 		m_rc->Begin();

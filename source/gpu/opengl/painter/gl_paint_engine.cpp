@@ -18,13 +18,13 @@ namespace GPU
 		{
 			typedef Vertex<VertexComponent::Position, VertexComponent::Texture0, VertexComponent::Flag, VertexComponent::Color> VertexType;
 
-            VideoDriver* m_driver;
+			VideoDriver* m_driver;
 			RenderTargetTexture* m_rt;
 			System::StateManager<GPU::CoreState> m_states;
 			GPU::AbstractRenderPolicy* m_solid_rc;
 			Math::vec4 m_color;
 			Math::vec4 m_fill_color;
-            GPU::TextureContext* m_tc;
+			GPU::TextureContext* m_tc;
 			GPU::AbstractRenderPolicy* m_gui_rc;
 			GPU::AbstractRenderPolicy* m_painter_rc;
 			Utility::FontBuilder m_font_builder;
@@ -41,37 +41,37 @@ namespace GPU
 
 			std::vector<VertexType> m_lines;
 
-            OpenGLPaintEngineImpl(VideoDriver* driver)
-                : m_driver(driver)
-                , m_rt(nullptr)
-                , m_lines_vao(driver)
+			OpenGLPaintEngineImpl(VideoDriver* driver)
+				: m_driver(driver)
+				, m_rt(nullptr)
+				, m_lines_vao(driver)
 				, m_quad(driver)
 			{
-                try
-                {
-                //auto props = GPU::OpenGL::RenderTargetTexture::RenderTargetTextureProperties();
+				try
+				{
+					//auto props = GPU::OpenGL::RenderTargetTexture::RenderTargetTextureProperties();
 
-                //m_rt->Init(&props);
-                //m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);
+					//m_rt->Init(&props);
+					//m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);
 
-				m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_3D);
-				m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
-				m_painter_rc = GPU::AbstractRenderPolicy::find(GPU::RC_PAINTER);
+					m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Solid3D);
+					m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::GUI);
+					m_painter_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Painter);
 
-				m_tc = new TextureContext;
+					m_tc = new TextureContext;
 
-				m_use_fill = true;
-				m_use_border = true;
+					m_use_fill = true;
+					m_use_border = true;
 
-				m_color.Set(0,0,1,0.5f);
-				m_fill_color.Set(1,1,1,0.5f);
-				m_font_size = 14;
-				m_font_name = L"times.ttf";
-                }
-                catch(System::PunkException& e)
-                {
-                    out_error() << e.ToString() << std::endl;
-                }
+					m_color.Set(0,0,1,0.5f);
+					m_fill_color.Set(1,1,1,0.5f);
+					m_font_size = 14;
+					m_font_name = L"times.ttf";
+				}
+				catch(System::PunkException& e)
+				{
+					out_error() << e.ToString() << std::endl;
+				}
 			}
 
 			~OpenGLPaintEngineImpl()
@@ -88,14 +88,14 @@ namespace GPU
 				return m_rt;
 			}
 
-            void SetSurfaceSize(int, int)
+			void SetSurfaceSize(int, int)
 			{
-            //	m_rt->SetViewport(Math::Rect(0, 0, (float)width, (float)height));
+				//	m_rt->SetViewport(Math::Rect(0, 0, (float)width, (float)height));
 			}
 
-            bool Begin(PaintDevice*)
+			bool Begin(PaintDevice*)
 			{
-            //	m_rt->Activate();
+				//	m_rt->Activate();
 				return true;
 			}
 
@@ -145,7 +145,7 @@ namespace GPU
 				m_states.CurrentState()->Get().m_use_diffuse_texture = false;
 				m_states.CurrentState()->Get().m_use_text_texture = false;
 				m_states.CurrentState()->Get().m_enable_wireframe = false;
-				m_states.CurrentState()->Get().m_blending = true;
+				m_states.CurrentState()->Get().m_enable_blending = true;
 				m_states.CurrentState()->Get().m_diffuse_color = m_color;
 
 				m_tc->Bind();
@@ -164,28 +164,28 @@ namespace GPU
 				m_tc->Unbind();
 			}
 
-            void DrawRects(const Math::Rect*, size_t)
+			void DrawRects(const Math::Rect*, size_t)
 			{}
 
 			void DrawArc(float xc, float yc, float width, float height, float start_angle, float span_angle)
-            {
-                (void)xc; (void)yc; (void)width; (void)height; (void)start_angle; (void)span_angle;
-            }
+			{
+				(void)xc; (void)yc; (void)width; (void)height; (void)start_angle; (void)span_angle;
+			}
 
 			void DrawChord(float xc, float yc, float width, float height, float start_angle, float span_angle)
-            {
-                (void)xc; (void)yc; (void)width; (void)height; (void)start_angle; (void)span_angle;
-            }
+			{
+				(void)xc; (void)yc; (void)width; (void)height; (void)start_angle; (void)span_angle;
+			}
 
 			void DrawPoint(float x, float y)
-            {
-                (void)x; (void)y;
-            }
+			{
+				(void)x; (void)y;
+			}
 
 			void DrawEllipse(float xc, float yc, float major_axis, float minor_axis)
-            {
-                (void)xc; (void)yc; (void)major_axis; (void)minor_axis;
-            }
+			{
+				(void)xc; (void)yc; (void)major_axis; (void)minor_axis;
+			}
 
 			void RenderQuad(float x, float y, float width, float height, const Math::vec4& color)
 			{
@@ -196,7 +196,7 @@ namespace GPU
 				STATE.m_view = Math::mat4::CreateIdentity();
 				STATE.m_diffuse_color = color;
 				STATE.m_depth_test = false;
-				STATE.m_blending = true;
+				STATE.m_enable_blending = true;
 				m_solid_rc->Begin();
 				m_solid_rc->BindParameters(STATE);
 				m_quad.Bind(m_solid_rc->GetRequiredAttributesSet());
@@ -214,20 +214,20 @@ namespace GPU
 				if (m_use_fill)
 				{
 					RenderQuad(rect.GetX() / max_width, rect.GetY() / max_height,
-						rect.GetWidth() / max_width, rect.GetHeight() / max_height, m_fill_color);
+							   rect.GetWidth() / max_width, rect.GetHeight() / max_height, m_fill_color);
 				}
 
 				if (m_use_border)
 				{
 					std::vector<Math::Line2D> lines;
 					lines.push_back(Math::Line2D(Math::vec2(rect.GetX(), rect.GetY()),
-						Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY())));
+												 Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY())));
 					lines.push_back(Math::Line2D(Math::vec2(rect.GetX()+rect.GetWidth(), rect.GetY()),
-						Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY() + rect.GetHeight())));
+												 Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY() + rect.GetHeight())));
 					lines.push_back(Math::Line2D(Math::vec2(rect.GetX() + rect.GetWidth(), rect.GetY() + rect.GetHeight()),
-						Math::vec2(rect.GetX(), rect.GetY() + rect.GetHeight())));
+												 Math::vec2(rect.GetX(), rect.GetY() + rect.GetHeight())));
 					lines.push_back(Math::Line2D(Math::vec2(rect.GetX(), rect.GetY() + rect.GetHeight()),
-						Math::vec2(rect.GetX(), rect.GetY())));
+												 Math::vec2(rect.GetX(), rect.GetY())));
 					DrawLines(&lines[0], lines.size());
 				}
 			}
@@ -282,7 +282,7 @@ namespace GPU
 				m_font_builder.SetCharSize(m_font_size, m_font_size);
 				int len = m_font_builder.CalculateLength(text.Data());
 				int h = m_font_builder.CalculateHeight(text.Data());
-                GPU::OpenGL::TextSurface s(m_driver);
+				GPU::OpenGL::TextSurface s(m_driver);
 				s.SetTextSize(m_font_size);
 				s.SetSize(len, h);
 				s.SetText(text);
@@ -340,8 +340,8 @@ namespace GPU
 
 		};
 
-        OpenGLPaintEngine::OpenGLPaintEngine(VideoDriver* driver)
-            : impl(new OpenGLPaintEngineImpl(driver))
+		OpenGLPaintEngine::OpenGLPaintEngine(VideoDriver* driver)
+			: impl(new OpenGLPaintEngineImpl(driver))
 		{
 		}
 

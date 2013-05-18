@@ -424,12 +424,12 @@ namespace Render
 		m_scene = scene;
 		if (m_scene)
 			m_scene->GetRootNode()->Apply(&m_cooker);
-		m_context = GPU::AbstractRenderPolicy::find(GPU::RC_BUMP_MAPING);
-		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_3D);
-		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLID_TEXTURED_3D);
-		m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
-		m_skin_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SKINNING);
-		m_terrain_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TERRAIN);
+		m_context = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::BumpMapping);
+		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Solid3D);
+		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::SolidTextured3D);
+		m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::GUI);
+		m_skin_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Skinning);
+		m_terrain_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Terrain);
         m_text = new GPU::OpenGL::TextSurface(m_driver);
 		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
 		m_gui_render = new GUIRender(m_driver);

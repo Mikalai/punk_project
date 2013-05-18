@@ -53,7 +53,7 @@ namespace System
 		typename Collection::iterator it = m_items.find(key);
 		if (it != m_items.end())
 			return it->second; 
-		throw PunkInvalidArgumentException(L"Can't find object with key" + key);
+		throw PunkInvalidArgumentException(L"Can't find object");
 	}		
 	
 	template<class T, typename Key>	
