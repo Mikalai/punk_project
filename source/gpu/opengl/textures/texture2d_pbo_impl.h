@@ -14,54 +14,36 @@ namespace GPU
 	struct Texture2D::Texture2DImpl
 	{
         VideoDriverImpl* m_driver;
-        int m_bind_slot;
         GLuint m_texture_id;
-		int m_index;
-		System::string m_location;		
 		int m_width;
-		int m_height;
-        GLenum m_format;
+		int m_height;        
 		int m_pixel_size;
-        bool m_use_mip_maps;
+		int m_bind_slot;
+        bool m_use_mip_maps;		
+        GLenum m_format;
 		GLenum m_internal_format;
 		GLenum m_internal_type;
+
         OpenGL::PixelBufferObject* m_pbo;
 
         Texture2DImpl(VideoDriver* driver)
             : m_driver(driver->impl)
             , m_texture_id(0)
+			, m_bind_slot(0)
 			, m_use_mip_maps(false)
 			, m_width(0)
 			, m_height(0)
 			, m_format(0)
-			, m_index(-1)
-			, m_location(L"/")
-			, m_pbo(nullptr)
+			, m_pbo(nullptr)			
 		{
 			//Create(64, 64, GL_RED, 0);
 		}
 
-        Texture2DImpl(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver)
+        Texture2DImpl(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver)
             : m_driver(driver->impl)
         {
-            Create(width, height, ImageFormatToOpenGL(format), data, use_mipmaps);
+            Create(width, height, ImageFormatToOpenGL(internal_format), ImageFormatToOpenGL(format), data, use_mipmaps);
         }
-
-        Texture2DImpl(const ImageModule::Image& image, bool use_mipmaps, VideoDriver* driver)
-            : m_driver(driver->impl)
-            , m_texture_id(0)
-            , m_use_mip_maps(use_mipmaps)
-		{
-			CreateFromImage(image, m_use_mip_maps);
-		}
-
-		Texture2DImpl(const Texture2DImpl& impl)
-            : m_driver(impl.m_driver)
-            , m_width(impl.m_width)
-			, m_height(impl.m_height)
-			, m_format(impl.m_format)
-			, m_texture_id(impl.m_texture_id)
-		{}
 
 		~Texture2DImpl()
 		{
@@ -83,31 +65,11 @@ namespace GPU
             ValidateOpenGL(L"Unable to unbind texture");
         }
 
-		void SetSourceFile(const System::string& filename)
-		{
-			m_location = filename;
-		}
-
-		const System::string& GetSourceFile() const
-		{
-			return m_location;
-		}
-
-		void SetIndex(int index)
-		{
-			m_index = index;
-		}
-
-		int GetIndex() const
-		{
-			return m_index;
-		}
-
 		void Init()
 		{
-			ImageModule::Importer import;
-			std::unique_ptr<ImageModule::Image> image(import.LoadAnyImage(m_location));
-			CreateFromImage(*image, true);
+//			ImageModule::Importer import;
+//			std::unique_ptr<ImageModule::Image> image(import.LoadAnyImage(m_location));
+//			CreateFromImage(*image, true);
 		}
 
 		void Clear()
@@ -122,114 +84,60 @@ namespace GPU
 			}
 		}
 
-		void CreateFromImage(const ImageModule::Image& image, bool use_mipmaps)
-		{
-			Create(image.GetWidth(), image.GetHeight(), ToInternalFormat(image.GetImageFormat()), image.GetData(), use_mipmaps);
-			//m_use_mip_maps = use_mipmaps;
+//		void CreateFromImage(const ImageModule::Image& image, ImageModule::ImageFormat internal_format, bool use_mipmaps)
+//		{
+//			GLenum internalFormat = ToInternalFormat(internal_format);
+//			if (internalFormat == GL_ALPHA)
+//				internalFormat = GL_RED;
+//			GLenum f =  ToInternalFormat(image.GetImageFormat());
+//			if (f == GL_ALPHA)
+//				f = GL_RED;
 
-			//if (!image.GetData())
-			//{
-			//	out_error() << L"Not data in the image" << std::endl;
-			//	return;
-			//}
+//			m_pixel_size = 1;
+//			m_internal_type = GL_UNSIGNED_BYTE;
 
+//			if (GL_RED ==  m_internal_format || m_internal_format == GL_ALPHA)
+//			{
+//				m_pixel_size = 1;
+//				m_internal_type = GL_UNSIGNED_BYTE;
+//				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//				ValidateOpenGL(L"Can't pixel store i");
+//			}
+//			else if (GL_R32F == m_internal_format || GL_RGBA == m_internal_format)
+//			{
+//				m_pixel_size = 4;
+//				if (GL_R32F == m_internal_format)
+//				{
+//					m_internal_type = GL_FLOAT;
+//				}
+//				else if (GL_RGBA == m_internal_format)
+//				{
+//					m_internal_type = GL_UNSIGNED_BYTE;
+//				}
+//				glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+//				ValidateOpenGL(L"Can't pixel store i");
+//			}
+//			else if (GL_RGB == m_internal_format)
+//			{
+//				m_pixel_size = 3;
+//				m_internal_type = GL_UNSIGNED_BYTE;
+//				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//				ValidateOpenGL(L"Can't pixel store i");
+//			}
+//			else if (GL_RGBA8 == m_internal_format)
+//			{
+//				m_pixel_size = 4;
+//				m_internal_type = GL_UNSIGNED_BYTE;
+//				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//				ValidateOpenGL(L"Can't pixel store i");
+//			}
+//			Create(image.GetWidth(), image.GetHeight(), internalFormat, f, image.GetData(), use_mipmaps);
+//		}
 
-			//if (m_texture_id != 0)
-			//{
-			//	glDeleteTextures(1, &m_texture_id);
-			//	ValidateOpenGL(L"Can't delete texture");
-			//}
-
-			//m_width = image.GetWidth();
-			//m_height = image.GetHeight();
-			//m_format = ToInternalFormat(image.GetImageFormat());
-			//m_pixel_size = 1;
-			//m_internal_format = GL_RED;
-			//m_internal_type = GL_UNSIGNED_BYTE;
-
-			//if (GL_RED ==  m_format)
-			//{
-			//	m_pixel_size = 1;
-			//	m_internal_format = GL_RED;
-			//	m_internal_type = GL_UNSIGNED_BYTE;
-			//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-			//	ValidateOpenGL(L"Can't pixel store i");
-			//}
-			//else if (GL_R32F == m_format || GL_RGBA == m_format)
-			//{
-			//	m_pixel_size = 4;
-			//	if (GL_R32F == m_format)
-			//	{
-			//		m_internal_format = GL_RED;
-			//		m_internal_type = GL_FLOAT;
-			//	}
-			//	else if (GL_RGBA == m_format)
-			//	{
-			//		m_internal_format = GL_RGBA;
-			//		m_internal_type = GL_UNSIGNED_BYTE;
-			//	}
-			//	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-			//	ValidateOpenGL(L"Can't pixel store i");
-			//}
-			//else if (GL_RGB == m_format)
-			//{
-			//	m_pixel_size = 3;
-			//	m_internal_format = GL_RGB;
-			//	m_internal_type = GL_UNSIGNED_BYTE;
-			//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-			//	ValidateOpenGL(L"Can't pixel store i");
-			//}
-
-			//glGenTextures(1, &m_texture_id);
-			//ValidateOpenGL(L"Can't generate texture");
-			//glBindTexture(GL_TEXTURE_2D, m_texture_id);
-			//ValidateOpenGL(L"Can't bind texture");
-
-			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			//ValidateOpenGL(L"Can't set up texture min filter");
-			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			//ValidateOpenGL(L"Can't set up mag filter");
-			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			//ValidateOpenGL(L"Can't set up wrap s");
-			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-			//ValidateOpenGL(L"Can't set up wrap r");
-
-			//glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
-			//ValidateOpenGL(L"Can't copy data from PBO to texture");
-
-			//glBindTexture(GL_TEXTURE_2D, 0);
-			//ValidateOpenGL(L"Can't unbind texture");
-
-			//m_pbo = VideoMemory::Instance()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);
-			////m_pbo->Bind();
-
-
-			//void* data = Map();
-			//ValidateOpenGL(L"Can't map buffer");
-			//if (data)
-			//{
-			//	memcpy(data, image.GetData(), image.GetSizeInBytes());
-			//	Unmap(0);
-			//	ValidateOpenGL(L"Can't unmap buffer");
-			//}
-
-			////glBindTexture(GL_TEXTURE_2D, m_texture_id);
-			////ValidateOpenGL(L"Can't bind texture");
-			////m_pbo->Bind();
-			////glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, m_format, m_internal_type, 0);
-			////ValidateOpenGL(L"Can't copy data from PBO to texture object");
-			////m_pbo->Unbind();
-
-			//if (m_use_mip_maps)
-			//{
-			//	glBindTexture(GL_TEXTURE_2D, m_texture_id);
-			//	ValidateOpenGL(L"Can't bind texture");
-			//	glGenerateMipmap(GL_TEXTURE_2D);
-			//	ValidateOpenGL(L"Can't generate mip map levels for texture");
-			//	glBindTexture(GL_TEXTURE_2D, 0);
-			//	ValidateOpenGL(L"Can't ubind texture");
-			//}
-		}
+//		void CreateFromImage(const ImageModule::Image& image, bool use_mipmaps)
+//		{
+//			Create(image.GetWidth(), image.GetHeight(), ToInternalFormat(image.GetImageFormat()), image.GetData(), use_mipmaps);
+//		}
 
 		bool CopyFromCPU(int x, int y, int width, int height, const void* data)
 		{
@@ -321,63 +229,124 @@ namespace GPU
 			Fill(0);
 		}
 
-		bool Create(int width, int height, GLenum format, const void* source, bool use_mipmaps)
+//		bool Create(int width, int height, GLenum internal_format, const void* source, bool use_mipmaps)
+//		{
+//			m_use_mip_maps = use_mipmaps;
+//			if (m_texture_id != 0)
+//			{
+//				glDeleteTextures(1, &m_texture_id);
+//				ValidateOpenGL(L"Can't delete texture");
+//			}
+
+//			m_width = width;
+//			m_height = height;
+//			m_internal_format = internal_format;
+//			m_pixel_size = 1;
+//			m_format = GL_RED;
+//			m_internal_type = GL_UNSIGNED_BYTE;
+
+//			if (GL_RED ==  m_internal_format || m_internal_format == GL_ALPHA)
+//			{
+//				m_pixel_size = 1;
+//				m_format = GL_RED;
+//				m_internal_format = GL_RED;
+//				m_internal_type = GL_UNSIGNED_BYTE;
+//				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//				ValidateOpenGL(L"Can't pixel store i");
+//			}
+//			else if (GL_R32F == m_internal_format || GL_RGBA == m_internal_format)
+//			{
+//				m_pixel_size = 4;
+//				if (GL_R32F == m_internal_format)
+//				{
+//					m_internal_type = GL_FLOAT;
+//					m_format = GL_RED;
+//				}
+//				else if (GL_RGBA == m_internal_format)
+//				{
+//					m_format = GL_RGBA;
+//					m_internal_type = GL_UNSIGNED_BYTE;
+//				}
+//				glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+//				ValidateOpenGL(L"Can't pixel store i");
+//			}
+//			else if (GL_RGB == m_internal_format)
+//			{
+//				m_pixel_size = 3;
+//				m_format = GL_RGB;
+//				m_internal_type = GL_UNSIGNED_BYTE;
+//				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//				ValidateOpenGL(L"Can't pixel store i");
+//			}
+//			else if (GL_RGBA8 == m_internal_format)
+//			{
+//				m_pixel_size = 4;
+//				m_format = GL_RGBA;
+//				m_internal_type = GL_UNSIGNED_BYTE;
+//				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+//				ValidateOpenGL(L"Can't pixel store i");
+//			}
+//			return Create(width, height, m_internal_format, m_format, source, use_mipmaps);
+//		}
+
+        size_t GetPixelSize(GLenum format)
+        {
+            switch(format)
+            {
+            case GL_RED:
+                return 1;
+            case GL_RGB:
+                return 3;
+            case GL_RGBA:
+            case GL_R32F:
+                return 4;
+            default:
+                throw System::PunkException(L"Can't find size of the pixel for specified format");
+            }
+        }
+
+        GLenum GetPixelType(GLenum format)
+        {
+            switch(format)
+            {
+            case GL_RGB:
+            case GL_RGBA:
+            case GL_RED:
+            case GL_ALPHA:
+                return GL_UNSIGNED_BYTE;
+            case GL_R32F:
+                return GL_FLOAT;
+            default:
+                throw System::PunkException(L"Can't find suitable pixel type");
+            }
+        }
+
+        GLenum GetInternalFormat(GLenum format)
+        {
+            switch(format)
+            {
+            case GL_RED:
+            case GL_ALPHA:
+            case GL_R32F:
+                return GL_RED;
+            case GL_RGB:
+                return GL_RGB;
+            case GL_RGBA:
+                return GL_RGBA;
+            default:
+                throw System::PunkException(L"Can't find suitable internal format");
+            }
+        }
+
+		bool Create(int width, int height, GLenum internal_format, GLenum format, const void* source, bool use_mipmaps)
 		{
-			m_use_mip_maps = use_mipmaps;
-			if (m_texture_id != 0)
-			{
-				glDeleteTextures(1, &m_texture_id);
-				ValidateOpenGL(L"Can't delete texture");
-			}
-
-
 			m_width = width;
 			m_height = height;
-			m_internal_format = format;
-			m_pixel_size = 1;
-			m_format = GL_RED;
-			m_internal_type = GL_UNSIGNED_BYTE;
-
-			if (GL_RED ==  m_internal_format)
-			{
-				m_pixel_size = 1;
-				m_format = GL_RED;
-				m_internal_type = GL_UNSIGNED_BYTE;
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-				ValidateOpenGL(L"Can't pixel store i");
-			}
-			else if (GL_R32F == m_internal_format || GL_RGBA == m_internal_format)
-			{
-				m_pixel_size = 4;
-				if (GL_R32F == m_internal_format)
-				{
-					m_internal_type = GL_FLOAT;
-					m_format = GL_RED;
-				}
-				else if (GL_RGBA == m_internal_format)
-				{
-					m_format = GL_RGBA;
-					m_internal_type = GL_UNSIGNED_BYTE;
-				}
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-				ValidateOpenGL(L"Can't pixel store i");
-			}
-			else if (GL_RGB == m_internal_format)
-			{
-				m_pixel_size = 3;
-				m_format = GL_RGB;
-				m_internal_type = GL_UNSIGNED_BYTE;
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-				ValidateOpenGL(L"Can't pixel store i");
-			}
-			else if (GL_RGBA8 == m_internal_format)
-			{
-				m_pixel_size = 4;
-				m_format = GL_RGBA;
-				m_internal_type = GL_UNSIGNED_BYTE;
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-				ValidateOpenGL(L"Can't pixel store i");
-			}
+			m_internal_format = internal_format;
+			m_format = format;
+			m_use_mip_maps = use_mipmaps;
+            m_pixel_size = GetPixelSize(internal_format);
+            m_internal_type = GetPixelType(format);
 
 			glGenTextures(1, &m_texture_id);
 			ValidateOpenGL(L"Can't generate texture");

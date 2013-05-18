@@ -20,25 +20,10 @@ namespace GPU
         : impl(new Texture2DImpl(driver))
 	{}
 
-    Texture2D::Texture2D(const ImageModule::Image& image, bool use_mipmaps, VideoDriver* driver)
-        : impl(new Texture2DImpl(image, use_mipmaps, driver))
-	{}
 
-	Texture2D::Texture2D(const Texture2D& texture)
-		: impl(new Texture2DImpl(*texture.impl))
-	{}
-
-
-    Texture2D::Texture2D(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver)
-        : impl(new Texture2DImpl(width, height, format, data, use_mipmaps, driver))
+    Texture2D::Texture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver)
+        : impl(new Texture2DImpl(width, height, internal_format, format, data, use_mipmaps, driver))
     {}
-
-	Texture2D& Texture2D::operator = (const Texture2D& t)
-	{
-		Texture2D temp(t);
-		std::swap(impl, temp.impl);
-		return *this;
-	}
 
     void Texture2D::Bind(int slot) const
 	{
@@ -99,26 +84,6 @@ namespace GPU
 	void Texture2D::Unmap(void* data)
 	{
 		impl->Unmap(data);
-	}
-
-	void Texture2D::SetSourceFile(const System::string& filename)
-	{
-		impl->SetSourceFile(filename);
-	}
-
-	const System::string& Texture2D::GetSourceFile() const
-	{
-		return impl->GetSourceFile();
-	}
-
-	void Texture2D::SetIndex(int index)
-	{
-		impl->SetIndex(index);
-	}
-
-	int Texture2D::GetIndex() const
-	{
-		return impl->GetIndex();
 	}
 
 	void Texture2D::Init()
