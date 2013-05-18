@@ -8,5 +8,5 @@ out vec4 color;
 
 void main()
 {
-	color = vertex_color;
+	color = vertex_color * uDiffuseColor;
 }	

@@ -49,16 +49,17 @@ void main()
 	for (i = 0; i != MAX_LIGHTS; ++i)
 	{
 		vec3 light_position = (uView * uLightPosition[i]).xyz;
-		vec3 light_direction = (normalize(uView * uLightDirection[i])).xyz;
-		vec3 dir = normalize(light_position - position);
+		vec3 object_to_light = normalize(light_position - position);			
 		
 		float dst = length(light_position - position);
-		
-		float p = uSpotExponent[i];
-		
+				
 		float sc = 1;
 		if (uType[i] == 1)
-			sc = SpotAttenuation(light_direction, dir, p);
+		{		
+			float p = uSpotExponent[i];
+			vec3 light_direction = normalize((uView * uLightDirection[i]).xyz);		
+			sc = SpotAttenuation(light_direction, object_to_light, p);
+		}
 		
 		float k0 = uConstantAttenuation[i];
 		float k1 = uLinearAttenuation[i];
@@ -73,7 +74,7 @@ void main()
 		else if (mode == 2)
 			c = AttenuationQuadric(k0, k1, k2, dst);
 			
-		light_color += sc * c * uLightDiffuse[i] * max(0.0, dot(dir, normal));
+		light_color += sc * c * uLightDiffuse[i] * max(0.0, dot(object_to_light, normalize(normal)));		
 	}	
 	color = light_color * uDiffuseColor;
 }	
