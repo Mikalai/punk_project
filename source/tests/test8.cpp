@@ -18,6 +18,11 @@ namespace Test8
 		GPU::LightAttenuation m_attenuation[3];
 		unsigned m_cur_attent;
 		float m_specular;
+		bool m_use_texture;
+		bool m_use_transparency;
+		std::unique_ptr<GPU::Texture2D> m_opaque_texture;
+		std::unique_ptr<GPU::Texture2D> m_transparent_texture;
+		GPU::Texture2D* m_texture;
 	public:
 		TestApp()
 		{
@@ -33,6 +38,11 @@ namespace Test8
 			m_x = 0;
 			m_y = 0;
 			m_z = 0;
+
+			m_use_texture = false;
+			m_use_transparency = false;
+
+			m_specular = 32;
 		}
 
 		virtual void OnInit(const Punk::Config&) override
@@ -75,6 +85,10 @@ namespace Test8
 
 			m_renderable.reset(b.ToRenderable());
 
+			m_opaque_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"wood_floor.png", true));
+			m_transparent_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"Glass.png", true));
+
+			m_texture = m_opaque_texture.get();
 		}
 
 		virtual void OnMouseWheel(System::MouseWheelEvent *event)
@@ -103,34 +117,65 @@ namespace Test8
 			{
 				m_cur_model = (m_cur_model - 1) % max_model;
 			}
+			else if (event->key == System::PUNK_KEY_T)
+			{
+				m_use_texture = !m_use_texture;
+			}
+			else if (event->key == System::PUNK_KEY_B)
+			{
+				m_use_transparency = !m_use_transparency;
+			}
 		}
 
 
 		virtual void OnRender(GPU::Frame* frame) override
 		{
-			frame->SetClearColor(Math::vec4(0.7, .7, .7, 1));
+			if (m_use_transparency)
+			{
+				m_texture = m_transparent_texture.get();
+				frame->EnableBlending(true);
+				frame->EnableDepthTest(false);
+				frame->SetBlendColor(1,1,1,1);
+			}
+			else
+			{
+				m_texture = m_opaque_texture.get();
+				frame->EnableBlending(false);
+				frame->EnableDepthTest(true);
+			}
+
+			frame->SetClearColor(Math::vec4(0, 0, 0, 1));
 			frame->EnableDiffuseShading(true);
+			frame->EnableTexturing(m_use_texture);
+			frame->SetDiffuseMap0(m_texture);
+
+			frame->SetTextureMatrix(Math::mat4::CreateIdentity());
 			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
 			frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(-1, -2, 0), Math::vec3(0, 0, -7), Math::vec3(0, 1, 0)));
 
 			frame->PushState();
 			frame->EnableLighting(true);
+
+			if (m_use_texture)
+				frame->SetDiffuseColor(Math::vec4(1,1,1,0.5));
+			else
+				frame->SetDiffuseColor(Math::vec4(1,0,0,0.5));
+
+
 			frame->Light(0).SetPosition(2, 2, 0);
 			frame->Light(0).SetDirection(Math::vec3(-2,-2,-7).Normalize());
-			frame->Light(0).SetDiffuseColor(1, 0, 0, 1);			
+			frame->Light(0).SetDiffuseColor(1, 1, 1, 1);
 			frame->Light(0).SetLightAttenuation(m_attenuation[m_cur_attent]);
 			frame->Light(0).SetLightLinearAttenuation(0.1);
 			frame->Light(0).SetLightQuadricAttenuation(0.05);
-			frame->Light(0).SetType(GPU::LightType::Spot);			
+			frame->Light(0).SetType(GPU::LightType::Spot);
 			frame->Light(0).SetSpotExponent(m_specular);
-
-			frame->SetDiffuseColor(Math::vec4(1,1,1,1));
 
 			frame->SetLightModel(m_model[m_cur_model]);
 
 
 			frame->BeginRendering();
-			frame->Clear(true, true, true);			
+			frame->Clear(true, true, true);
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(0, 0, -7));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_x));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_y));
@@ -138,10 +183,10 @@ namespace Test8
 			frame->Render(m_renderable.get());
 			frame->PopState();
 
-			frame->SetDiffuseColor(Math::vec4(1,1,1,1));
-			frame->SetWorldMatrix(Math::mat4::CreateIdentity());
+			//frame->SetDiffuseColor(Math::vec4(1,1,1,1));
+			//frame->SetWorldMatrix(Math::mat4::CreateIdentity());
 
-			frame->DrawLine(Math::vec3(1, 1, -2), Math::vec3(0, 0, -7));
+			//frame->DrawLine(Math::vec3(1, 1, -2), Math::vec3(0, 0, -7));
 
 			frame->EndRendering();
 

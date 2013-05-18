@@ -1,6 +1,6 @@
-#include "rotate_triangle.h"
+#include "test2.h"
 
-namespace Test4
+namespace Test2
 {
 	class TestApp : public Punk::Application
 	{
@@ -18,22 +18,17 @@ namespace Test4
 		{
 			frame->SetClearColor(Math::vec4(0.7, .7, .7, 1));
 			frame->EnableDiffuseShading(true);
-			frame->EnablePerVertexColor(true);
 			frame->SetDiffuseColor(Math::vec4(1,1,1,1));
 
 			frame->BeginRendering();
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(-1.5, 0, -6));
-			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_tr));
 			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
 
 			frame->SetDiffuseColor(Math::vec4(1,1,1,1));
 			GPU::RenderableBuilder builder(GetVideoDriver());
 			builder.Begin(GPU::PrimitiveType::TRIANGLES);
-			builder.Color3f(1, 0, 0);
 			builder.Vertex3f(0, 1, 0);
-			builder.Color3f(0, 1, 0);
 			builder.Vertex3f(-1, -1, 0);
-			builder.Color3f(0, 0, 1);
 			builder.Vertex3f(1, -1, 0);
 			builder.End();
 
@@ -41,21 +36,14 @@ namespace Test4
 			frame->Render(r.get());
 
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(1.5, 0, -6));
-			frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_quad));
 			GPU::RenderableBuilder b(GetVideoDriver());
 			b.Begin(GPU::PrimitiveType::TRIANGLES);
-			b.Color3f(0.5, 0.5, 1.0);
 			b.Vertex3f(-1, 1, 0);
-			b.Color3f(0.5, 0.5, 1.0);
 			b.Vertex3f(-1, -1, 0);
-			b.Color3f(0.5, 0.5, 1.0);
 			b.Vertex3f(1, -1, 0);
 
-			b.Color3f(0.5, 0.5, 1.0);
 			b.Vertex3f(1, -1, 0);
-			b.Color3f(0.5, 0.5, 1.0);
 			b.Vertex3f(1, 1, 0);
-			b.Color3f(0.5, 0.5, 1.0);
 			b.Vertex3f(-1, 1, 0);
 			b.End();
 
@@ -63,9 +51,6 @@ namespace Test4
 			frame->Render(r2.get());
 
 			frame->EndRendering();
-
-			m_tr += 0.02f;
-			m_quad -= 0.015f;
 
 		}
 
