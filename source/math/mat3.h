@@ -192,7 +192,7 @@ namespace Math
 			if (d == T(0))
 				throw MathDevisionByZero();
 
-			return inversedMatrix * d;
+			return inversedMatrix / d;
 		}
 
 		Matrix3x3<T>& Inverse()
@@ -215,7 +215,7 @@ namespace Math
 			if (d == T(0))
 				throw MathDevisionByZero();
 			
-			return *this *= d;
+			return *this /= d;
 		}
 
 		/******************************************************
