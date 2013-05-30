@@ -31,37 +31,37 @@ namespace Virtual
 		virtual const Normals& GetNormalArray() const = 0;
 		virtual const Faces& GetFaceArray() const = 0;
 
-		void DropGPUCache();
-		bool IsGPUCacheValid();
-		void SetGPUBufferCache(GPU::Renderable* value);
-		GPU::Renderable* GetGPUBufferCache();
+//		void DropGPUCache();
+//		bool IsGPUCacheValid();
+//		void SetGPUBufferCache(GPU::Renderable* value);
+//		GPU::Renderable* GetGPUBufferCache();
 
-		void DropPhysicsCache();
-		bool IsPhysicsCacheValid();
-		void SetPhysicsCache(System::Object* value);
-		System::Object* GetPhysicsCache();
+//		void DropPhysicsCache();
+//		bool IsPhysicsCacheValid();
+//		void SetPhysicsCache(System::Object* value);
+//		System::Object* GetPhysicsCache();
 
-	private:
+//	private:
 
-		/**
-		*	When cache is dropped data should be completely deleted
-		*	It means that cache is the only storage of runtime data,
-		*	thus when geometry is destroyed it means no one will try
-		*	to use data stored here
-		*	Should be deleted in destructor
-		*/
-		struct Cache
-		{
-			GPU::Renderable* m_gpu_buffer;
-			System::Object* m_physics_buffer;
+//		/**
+//		*	When cache is dropped data should be completely deleted
+//		*	It means that cache is the only storage of runtime data,
+//		*	thus when geometry is destroyed it means no one will try
+//		*	to use data stored here
+//		*	Should be deleted in destructor
+//		*/
+//		struct Cache
+//		{
+//			GPU::Renderable* m_gpu_buffer;
+//			System::Object* m_physics_buffer;
 
-			Cache()
-				: m_gpu_buffer(nullptr)
-				, m_physics_buffer(nullptr)
-			{}
-		};
+//			Cache()
+//				: m_gpu_buffer(nullptr)
+//				, m_physics_buffer(nullptr)
+//			{}
+//		};
 
-		Cache m_cache;
+//		Cache m_cache;
 	};
 }
 

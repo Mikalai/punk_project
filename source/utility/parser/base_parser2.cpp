@@ -1762,7 +1762,9 @@ namespace Utility
 					System::string word = buffer.ReadWord();
 					std::unique_ptr<Virtual::StaticGeometry> mesh(new Virtual::StaticGeometry);
 					ParseStaticMesh(buffer, mesh.get());
-					Virtual::StaticGeometry::add(word, mesh.get());
+					Virtual::StaticGeometry::add(word, mesh.get());					
+					mesh->SetName(word);
+					mesh->SetStorageName(word);
 					return mesh.release();
 				}
 				break;
