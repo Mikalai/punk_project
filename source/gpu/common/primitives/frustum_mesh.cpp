@@ -127,69 +127,26 @@ namespace GPU
 						Math::Line3D line;
 						if (Math::CrossPlanePlane(a, b, line) != Math::Relation::INTERSECT)
 							continue;
-
 						{
-							auto p1 = line.PointAt(-100);
-							auto p2 = line.PointAt(100);
-							line.SetOriginDestination(p1, p2);
+							auto org = line.GetOrigin() - line.GetDirection() * 1000.0f;
+							auto dst = line.GetOrigin() + line.GetDirection() * 1000.0f;
+							line.SetOriginDestination(org, dst);
 						}
 
-						bool was_start = false;
-						bool was_end = false;
-						bool skip = false;
-						float t0 = 0;
-						float t1 = 1;
 						for (size_t k = 0; k != value.size(); ++k)
 						{
 							if (k == i || k == j)
 								continue;
-
-							float t;
-							auto test = Math::CrossLinePlane(line, value[k], t);
-
-							if (test != Math::Relation::INTERSECT)
-							{
-								if (test == Math::Relation::BACK)
-								{
-									skip = true;
-									break;
-								}
-								continue;
-							}
-
-							{
-								auto pp = line.PointAt(t);
-								if (Math::ClassifyPoint(pp, value) == Math::Relation::OUTSIDE)
-								{
-									std::cout << "Wow" << std::endl;
-									continue;
-								}
-							}
-
-							if (!was_start)
-							{
-								was_start = true;
-								t0 = t;
-								line.SetOrigin(line.PointAt(t0));
-							}
-							else if (!was_end)
-							{
-								was_end = true;
-								t1 = t;
-								line.SetDestination(line.PointAt(t1));
-							}
-							else
-							{
-								if (t < 0 || t > 1)
-									continue;
-								if (t > 0.5)
-									line.SetDestination(line.PointAt(t));
-								else
-									line.SetOrigin(line.PointAt(t));
-							}
+							Math::Line3D ray;
+							if (Math::ClipExteriorLine(line, value[k], ray) == Math::INTERSECT)
+								line = ray;
 						}
-						if (!skip && was_start && was_end && line.SegmentLength() > 1e-3)
+
+						//if (!skip && was_start && was_end && line.SegmentLength() > 1e-3)
 						{
+							if (Math::ClassifyPoint(line.GetOrigin(), value) == Math::OUTSIDE ||
+									Math::ClassifyPoint(line.GetDestination(), value) == Math::OUTSIDE)
+								continue;
 							r.Color3f(1,1,1);
 							r.Vertex3fv(line.GetOrigin());
 							r.Color3f(1,1,1);
@@ -230,15 +187,8 @@ namespace GPU
 		return r.ToRenderable();
 	}
 
-	GPU::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver);
+	GPU::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver)
 	{
-		RenderableBuilder r(driver);
-		r.Begin(PrimitiveType::QUADS);
-		for (size_t i = 0; i != count; ++i)
-		{
-
-		}
-		r.End();
-		return r.ToRenderable();
+		return nullptr;
 	}
 }
