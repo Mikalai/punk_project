@@ -17,6 +17,7 @@ namespace Math
 	class Vector3
 	{
 		static const int Size_c = 3;
+		static constexpr float Eps = 1e-3;
 		T m_v[Size_c];
 	public:
 
@@ -24,9 +25,12 @@ namespace Math
 
 		Vector3<T>(const Vector3<T>& vec)
 		{
-			m_v[0] = vec.m_v[0];
-			m_v[1] = vec.m_v[1];
-			m_v[2] = vec.m_v[2];
+			auto x = vec.m_v[0];
+			auto y = vec.m_v[1];
+			auto z = vec.m_v[2];
+			m_v[0] = fabs(x) < Eps ? 0 : x;
+			m_v[1] = fabs(y) < Eps ? 0 : y;
+			m_v[2] = fabs(z) < Eps ? 0 : z;
 		}
 
 		Vector3<T>()
@@ -36,9 +40,9 @@ namespace Math
 
 		Vector3<T>(T x, T y, T z)
 		{
-			m_v[0] = x;
-			m_v[1] = y;
-			m_v[2] = z;
+			m_v[0] = fabs(x) < Eps ? 0 : x;
+			m_v[1] = fabs(y) < Eps ? 0 : y;
+			m_v[2] = fabs(z) < Eps ? 0 : z;
 		}
 
 		Vector3<T>(const Vector3<T>& origin, const Vector3<T>& destination)
@@ -209,16 +213,16 @@ namespace Math
 			return m_v[i];
 		}
 
-		operator T* ()
-		{
-			return m_v;
-		}
+//		operator T* ()
+//		{
+//			return m_v;
+//		}
 
 
-		operator const T* () const
-		{
-			return m_v;
-		}
+//		operator const T* () const
+//		{
+//			return m_v;
+//		}
 
 		const T& operator [] (int i) const
 		{
@@ -252,9 +256,9 @@ namespace Math
 
 		void Set(T x, T y, T z)
 		{
-			m_v[0] = x;
-			m_v[1] = y;
-			m_v[2] = z;
+			m_v[0] = fabs(x) < Eps ? 0 : x;
+			m_v[1] = fabs(y) < Eps ? 0 : y;
+			m_v[2] = fabs(z) < Eps ? 0 : z;
 		}
 
 		T Dot(const Vector3<T>& a) const

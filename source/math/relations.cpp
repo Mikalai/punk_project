@@ -21,9 +21,9 @@ namespace Math
 {
 	Relation ClassifyPoint(const Line3D& line, const vec3& point)
 	{
-		const vec3& org = line.GetOrigin();
-		const vec3& dst = line.GetDestination();
-		const vec3& p = point;
+		const vec3 org = line.GetOrigin();
+		const vec3 dst = line.GetDestination();
+		const vec3 p = point;
 
 		float cosa = (p-org).Dot(dst);
 		if (Math::Abs(1.0f - Math::Abs(cosa)) < EPS)
@@ -44,11 +44,7 @@ namespace Math
 
 	Relation ClassifyPoint(const vec3& p, const Plane& plane)
 	{
-		const vec3& n = plane.GetNormal();
-		float dst = plane.GetDistance();
-
-		auto s = n.Dot(p) + dst;
-
+		auto s = plane * p;
 		if (s < -EPS)
 			return Relation::BACK;
 		if (s > EPS)
@@ -58,7 +54,7 @@ namespace Math
 
 	Relation ClassifyPoint(const vec3& p, const Triangle3D& triangle)
 	{
-		const vec3& n = triangle.GetNormal();
+		const vec3 n = triangle.GetNormal();
 		float org_dst = triangle.GetDistance();
 
 		float dst = p.Dot(n) + org_dst;
@@ -96,7 +92,7 @@ namespace Math
 	{
 		for (int i = 0; i < 6; ++i)
 		{
-			const Plane& p = bbox.GetPlane(i);
+			const Plane p = bbox.GetPlane(i);
 			Relation relation = ClassifyPoint(point, p);
 			if (relation == Relation::BACK)
 				return Relation::OUTSIDE;
@@ -111,6 +107,29 @@ namespace Math
 		if (sqr_dst > r*r)
 			return Relation::OUTSIDE;
 		return Relation::INSIDE;
+	}
+
+	Relation ClassifyPoint(const vec3& point, const Frustum& frustum)
+	{
+		for (int i = 0; i != 6; ++i)
+		{
+			Frustum::FrustumPlane plane = (Frustum::FrustumPlane)i;
+			if (ClassifyPoint(point, frustum.GetPlane(plane)) == Relation::BACK)
+				return Relation::OUTSIDE;
+		}
+		return Relation::INSIDE;
+	}
+
+	Relation ClassifyPoint(const vec3& point, const ClipSpace& space)
+	{
+		for (size_t i = 0; i != space.size(); ++i)
+		{
+			auto r = ClassifyPoint(point, space[i]);
+			if (r == BACK)
+				return OUTSIDE;
+
+		}
+		return INSIDE;
 	}
 
 	Relation ClassifyPoint(const vec3& point, const ConvexShapeMesh& mesh)
@@ -139,9 +158,9 @@ namespace Math
 
 	Relation ClassifyLine(const Line3D& line, const Plane& p)
 	{
-		const vec3& n = p.GetNormal();
+		const vec3 n = p.GetNormal();
 		float org_dst = p.GetDistance();
-		const vec3& dir = line.GetDirection();
+		const vec3 dir = line.GetDirection();
 		float v = n.Dot(dir);
 
 		if (Math::Abs(v) < EPS)
@@ -158,12 +177,17 @@ namespace Math
 		return Relation::INTERSECT;
 	}
 
+	Relation ClassifyLine(const Line3D& line, const ClipSpace& space)
+	{
+
+	}
+
 	Relation ClassifyLine(const Line3D& line, const Triangle3D& triangle)
 	{
-		const vec3& org = line.GetOrigin();
-		const vec3& n = triangle.GetNormal();
+		const vec3 org = line.GetOrigin();
+		const vec3 n = triangle.GetNormal();
 		float org_dst = triangle.GetDistance();
-		const vec3& dir = line.GetDirection();
+		const vec3 dir = line.GetDirection();
 		float v = n.Dot(dir);
 
 		if (Math::Abs(v) < EPS)
@@ -197,7 +221,7 @@ namespace Math
 
 			for (const auto& plane : clipper)
 			{
-				const vec3& n = plane.GetNormal();
+				const vec3 n = plane.GetNormal();
 				float r_eff = 0.5f * ( Abs(n.Dot(bbox.GetS())) + Abs(n.Dot(bbox.GetT())));
 
 				float r1 = plane * q1;
@@ -224,7 +248,7 @@ namespace Math
 		{
 			for (const auto& plane : clipper)
 			{
-				const vec3& n = plane.GetNormal();
+				const vec3 n = plane.GetNormal();
 				float r_eff = 0.5f * (Abs(n.Dot(bbox.GetR())) + Abs(n.Dot(bbox.GetS())) + Abs(n.Dot(bbox.GetT())));
 
 				float value = plane * bbox.GetCenter();
@@ -237,7 +261,7 @@ namespace Math
 
 	Relation ClassifyBoudingSphere(const Sphere& sphere, const ClipSpace& clipper)
 	{
-		const vec3& q = sphere.GetCenter();
+		const vec3 q = sphere.GetCenter();
 		for (const auto& plane : clipper)
 		{
 			float r = plane * q;
@@ -247,27 +271,80 @@ namespace Math
 		return Relation::VISIBLE;
 	}
 
+	Relation CrossLineLine(const Line3D& line1, const Line3D& line2, float& t1, float& t2, float& dst)
+	{
+		auto s1 = line1.GetOrigin();
+		auto v1 = line1.GetDestination() - line1.GetOrigin();
+		auto s2 = line2.GetOrigin();
+		auto v2 = line2.GetDestination() - line2.GetOrigin();
+
+		float k = powf(v1.Dot(v2), 2.0f) - v1.SquareLength()*v2.SquareLength();
+		if (fabs(k) < 1e-6)
+			return Relation::PARALLEL;
+		k = 1.0f / k;
+
+		float minus_v2_v2 = -v2.Dot(v2);
+		float v1_v2 = v1.Dot(v2);
+		float minus_v1_v2 = -v1.Dot(v2);
+		float v1_v1 = v1.Dot(v1);
+		mat2 m;
+		m[0] = minus_v2_v2;
+		m[1] = minus_v1_v2;
+		m[2] = v1_v2;
+		m[3] = v1_v1;
+
+		m = mat2(-v2.SquareLength(), v1.Dot(v2), -v1.Dot(v2), v1.SquareLength());
+		m *= k;
+
+		vec2 v((s2 - s1).Dot(v1), (s2 - s1).Dot(v2));
+		vec2 res =  m * v;
+		t1 = res[0];
+		t2 = res[1];
+
+		auto p1 = line1.PointAt(t1);
+		auto p2 = line2.PointAt(t2);
+
+		dst = (p1 - p2).Length();
+
+		if (dst < 1e-6)
+			return Relation::INTERSECT;
+
+		return Relation::NOT_INTERSECT;
+	}
+
+	Relation CrossLineLine(const Line3D& line1, const Line3D& line2, vec3& p)
+	{
+		float t1;
+		float t2;
+		float dst;
+		auto res = CrossLineLine(line1, line2, t1, t2, dst);
+		if (res == INTERSECT)
+		{
+			auto p1 = line1.PointAt(t1);
+			auto p2 = line2.PointAt(t2);
+			p = 0.5f * (p1 + p2);
+		}
+		return res;
+	}
+
 	Relation CrossLinePlane(const Line3D& line, const Plane& p, float& t)
 	{
-		const vec3& org = line.GetOrigin();
-		const vec3& dst = line.GetDestination();
-		const vec3& n = p.GetNormal();
-		float org_dst = p.GetDistance();
+		const vec3 org = line.GetOrigin();
+		const vec3 dst = line.GetDestination();
 		const vec3 dir = dst - org;
-		float v = n.Dot(dir);
+		float v = p * vec4(dir, 0);
+		float distance = p * org;
 
 		if (Math::Abs(v) < EPS)
 		{
-			float dst = n.Dot(line.GetOrigin()) + org_dst;
-			if (Math::Abs(dst) < EPS)
+			if (Math::Abs(distance) < EPS)
 				return Relation::ON;
-			if (dst < 0)
+			if (distance < 0)
 				return Relation::BACK;
-			if (dst > 0)
+			if (distance > 0)
 				return Relation::FRONT;
 		}
-
-		t = - (n.Dot(org) + org_dst) / v;
+		t = - distance / v;
 		return Relation::INTERSECT;
 	}
 
@@ -281,10 +358,10 @@ namespace Math
 
 	Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, float& t)
 	{
-		const vec3& org = line.GetOrigin();
-		const vec3& n = triangle.GetNormal();
+		const vec3 org = line.GetOrigin();
+		const vec3 n = triangle.GetNormal();
 		float org_dst = triangle.GetDistance();
-		const vec3& dir = line.GetDirection();
+		const vec3 dir = line.GetDirection();
 		float v = n.Dot(dir);
 
 		if (Math::Abs(v) < EPS)
@@ -469,9 +546,23 @@ namespace Math
 
 	Relation CrossThreePlane(const Plane& a, const Plane& b, const Plane& c, vec3& vec)
 	{
-		const vec3& n1 = a.GetNormal();
-		const vec3& n2 = b.GetNormal();
-		const vec3& n3 = c.GetNormal();
+		Line3D line;
+		if (CrossPlanePlane(a, b, line) != Relation::INTERSECT)
+			return Relation::NOT_INTERSECT;
+
+		return CrossLinePlane(line, c, vec);
+	}
+
+	Relation CrossPlanePlane(const Plane& a, const Plane& b, Line3D& line)
+	{
+		const vec3 n1 = a.GetNormal();
+		const vec3 n2 = b.GetNormal();
+
+		vec3 dir = n1.Cross(n2).Normalized();
+
+		Plane c(dir, 0);
+
+		const vec3 n3 = c.GetNormal();
 
 		mat3 m;
 		m.SetRow(0, n1);
@@ -484,23 +575,7 @@ namespace Math
 			return Relation::NOT_INTERSECT;
 
 		vec3 p(-a.GetDistance(), -b.GetDistance(), -c.GetDistance());
-		vec = m.Inversed()*p;
-
-		return Relation::INTERSECT;
-	}
-
-	Relation CrossPlanePlane(const Plane& a, const Plane& b, Line3D& line)
-	{
-		const vec3& n1 = a.GetNormal();
-		const vec3& n2 = b.GetNormal();
-
-		vec3 dir = n1.Cross(n2);
-
-		Plane c(dir, 0);
-
-		vec3 org;
-		if (CrossThreePlane(a, b, c, org) == NOT_INTERSECT)
-			return Relation::NOT_INTERSECT;
+		vec3 org = m.Inversed()*p;
 
 		line.SetOriginDirection(org, dir);
 
@@ -528,7 +603,7 @@ namespace Math
 
 		res = CrossLinePlane(ca, plane, t);
 		if (res == Relation::INTERSECT && t >= 0.0f && t <= 1.0f)
-            (*cur = ca.PointAt(t), ++cur);
+			(*cur = ca.PointAt(t), ++cur);
 
 		if (cur == p+1)	//	we got two points
 		{
@@ -538,7 +613,7 @@ namespace Math
 		return Relation::NOT_INTERSECT;
 	}
 
-    Relation CrossTriangleTriangle(const Triangle3D& a, const Triangle3D& b, Line3D& /*line*/)
+	Relation CrossTriangleTriangle(const Triangle3D& a, const Triangle3D& b, Line3D& /*line*/)
 	{
 		Line3D ab(a[0], a[1]);
 		Line3D bc(a[1], a[2]);
@@ -579,8 +654,8 @@ namespace Math
 
 	Relation CrossPlanePolygon(const Plane& plane, const Polygon3D& polygon, const Polygon3D& front, const Polygon3D& back)
 	{
-        (void)plane; (void)polygon; (void)front; (void)back;
-        throw MathError(L"Not implemented");
+		(void)plane; (void)polygon; (void)front; (void)back;
+		throw MathError(L"Not implemented");
 	}
 
 	Relation SplitTriangle(const Plane& splitter, const Triangle3D& t, Triangle3D front[2], Triangle3D back[2])
@@ -686,21 +761,21 @@ namespace Math
 		Relation result = Relation::SPLIT_1_FRONT_2_BACK;
 
 		//	common case
-        if ((s1 < 0 && s2 < 0) || (s1 > 0 && s2 > 0))
+		if ((s1 < 0 && s2 < 0) || (s1 > 0 && s2 > 0))
 		{
 			a = &t[0];
 			b = &t[1];
 			c = &t[2];
 		}
 
-        if ((s2 < 0 && s0 < 0) || (s2 > 0 && s0 > 0))
+		if ((s2 < 0 && s0 < 0) || (s2 > 0 && s0 > 0))
 		{
 			a = &t[1];
 			b = &t[2];
 			c = &t[0];
 		}
 
-        if ((s0 < 0 && s1 < 0) || (s0 > 0 && s1 > 0))
+		if ((s0 < 0 && s1 < 0) || (s0 > 0 && s1 > 0))
 		{
 			a = &t[2];
 			b = &t[0];
@@ -778,19 +853,19 @@ namespace Math
 			//	if no points inside than portal is invisible
 			if (in_points.empty() && !out_points.empty())
 			{
-			//	out_message() << "PORTAL NOT VISIBLE" << std::endl;
+				//	out_message() << "PORTAL NOT VISIBLE" << std::endl;
 				return Relation::NOT_VISIBLE;
 			}
 
 			//	if no points outside than portal is visible
 			if (out_points.empty())
 			{
-			//	out_message() << "PORTAL VISIBLE" << std::endl;
+				//	out_message() << "PORTAL VISIBLE" << std::endl;
 				continue;
 			}
 
 			// otherwise portal should be clipped
-		//	out_message() << "PORTAL PARTIALLY VISIBLE" << std::endl;
+			//	out_message() << "PORTAL PARTIALLY VISIBLE" << std::endl;
 			int mod = temp.size();
 			Portal::PointsCollection new_points;
 			for (int i = 0; i < (int)temp.size(); ++i)
@@ -821,8 +896,8 @@ namespace Math
 		int mod = (int)temp.size();
 		for (int i = 0; i < (int)temp.size(); ++i)
 		{
-			const vec3& p0 = temp[i];
-			const vec3& p1 = temp[(i+1) % mod];
+			const vec3 p0 = temp[i];
+			const vec3 p1 = temp[(i+1) % mod];
 
 			const vec3 normal = p0.Cross(p1).Normalized();
 			Plane p(normal, 0);
@@ -833,7 +908,7 @@ namespace Math
 		if (partial_visible)
 			return Relation::PARTIALLY_VISIBLE;
 
-        clipped_portal = temp;  //  TODO: Check this statement
+		clipped_portal = temp;  //  TODO: Check this statement
 
 		return Relation::VISIBLE;
 	}
@@ -865,6 +940,21 @@ namespace Math
 		return Relation::NOT_INTERSECT;
 	}
 
+	Relation Distance(const Line3D& line, const Math::vec3& point, float& dst)
+	{
+		const Math::vec3 q = point;
+		const Math::vec3 s = line.GetOrigin();
+		const Math::vec3 v = line.GetDestination() - line.GetOrigin();
+
+		auto qs = q - s;
+		auto qs_dot_v = qs.Dot(v);
+		dst = sqrt(qs.Dot(qs) - qs_dot_v * qs_dot_v / v.SquareLength());
+
+		if (dst < 1e-6)
+			return Relation::INSIDE;
+		return Relation::OUTSIDE;
+	}
+
 	Relation CrossSphereSphere(const Sphere& a, const Sphere& b)
 	{
 		float dst = a.GetRadius() + b.GetRadius();
@@ -874,4 +964,106 @@ namespace Math
 			return Relation::INTERSECT;
 		return Relation::NOT_INTERSECT;
 	}
+
+	Relation CrossLines(const std::vector<Line3D>& lines, std::vector<vec3>& points)
+	{
+		points.clear();
+		size_t count = lines.size();
+		for (size_t i = 0; i != count-1; ++i)
+		{
+			for (size_t j = i+1; j != count; ++j)
+			{
+				vec3 point;
+				if (INTERSECT == CrossLineLine(lines[i], lines[j], point))
+				{
+					points.push_back(point);
+				}
+			}
+		}
+		if (points.empty())
+			return Relation::NOT_INTERSECT;
+		return Relation::INTERSECT;
+	}
+
+	PUNK_ENGINE Relation CrossPlanes(const std::vector<Plane>& planes, std::vector<Line3D>& lines)
+	{
+		size_t size = planes.size();
+		for (int i = 0; i != size; ++i)
+		{
+			for (int j = i+1; j != size; ++j)
+			{
+				Math::Line3D line;
+				auto res = Math::CrossPlanePlane(planes[i], planes[j], line);
+				if (res == Math::INTERSECT)
+					lines.push_back(line);
+			}
+		}
+		if (lines.empty())
+			return NOT_INTERSECT;
+		return INTERSECT;
+	}
+
+	PUNK_ENGINE Relation ClipExteriorLine(const Line3D& line, const Plane& plane, Line3D& ray)
+	{
+		auto org = line.GetOrigin();
+		auto dst = line.GetDestination();
+		auto dir = line.GetDirection();
+		auto normal = plane.GetNormal();
+		auto s = dir.Dot(normal);
+		auto org_relative = ClassifyPoint(org, plane);
+		auto dst_relative = ClassifyPoint(dst, plane);
+
+		//	find intersection point
+		float t;
+		if (CrossLinePlane(line, plane, t) != INTERSECT)
+			return NOT_INTERSECT;
+
+		if (t < 0 || t > 1)
+			return NOT_INTERSECT;
+
+		//	line segment on negative halfplane (1)
+		if (s <= 0 &&  org_relative == BACK)
+			return NOT_INTERSECT;
+
+		//	line segment on negative halfplane (2)
+		if (s >= 0 && dst_relative == BACK)
+			return NOT_INTERSECT;
+
+		//	clip line segment to put dst on the plane (3)
+		if (s <= 0 && dst_relative == FRONT)
+		{
+			auto new_dst = line.PointAt(t);
+			ray.SetOriginDestination(org, new_dst);
+			return INTERSECT;
+		}
+
+		// clip line segment to put origin on the plane (4)
+		if (s >= 0 && org_relative == FRONT)
+		{
+			auto new_org = line.PointAt(t);
+			ray.SetOriginDestination(new_org, dst);
+			return INTERSECT;
+		}
+
+		//	(5)
+		if (org_relative == FRONT && dst_relative == BACK)
+		{
+			auto new_dst = line.PointAt(t);
+			ray.SetOriginDestination(org, new_dst);
+			return INTERSECT;
+		}
+
+		//	(6)
+		if (org_relative == BACK && dst_relative == FRONT)
+		{
+			auto new_org = line.PointAt(t);
+			ray.SetOriginDestination(new_org, dst);
+			return INTERSECT;
+		}
+
+		ray = line;
+
+		return INTERSECT;
+	}
 }
+

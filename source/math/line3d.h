@@ -28,6 +28,8 @@ namespace Math
 
 		Line3D& SetOriginDirection(const vec3& org, const vec3& dir);
 		Line3D& SetOriginDestination(const vec3& org, const vec3& dst);
+
+        const System::string ToString() const;
 	};
 }
 #endif // LINE_H

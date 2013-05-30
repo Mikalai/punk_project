@@ -27,5 +27,6 @@
 #include "rect.h"
 #include "bounding_box.h"
 #include "bounding_shere.h"
+#include "graph/module.h"
 
 #endif

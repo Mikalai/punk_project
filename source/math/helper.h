@@ -129,10 +129,22 @@ namespace Math
 		return (x == T(0) ? 0 : ((x < 0) ? -1 : 1));
 	}
 
-	template<class T>
-	inline T Abs(T x)
+	inline float Abs(float x)
 	{
-		return abs(x);
+		float res = fabsf(x);
+		return res;
+	}
+
+	inline float Abs(double x)
+	{
+		double res = fabs(x);
+		return res;
+	}
+
+	inline int Abs(int x)
+	{
+		int res = abs(x);
+		return res;
 	}
 
 	template<class T>

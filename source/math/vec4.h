@@ -18,8 +18,9 @@ namespace Math
 {
 	template<class T>
 	class  Vector4
-	{
+	{		
 		static const int Size_c = 4;
+		static constexpr float Eps = 1e-3;
 		T m_v[Size_c];
 	public:
 
@@ -35,34 +36,39 @@ namespace Math
 
 		Vector4<T>(T x, T y, T z, T w)
 		{
-			m_v[0] = x;
-			m_v[1] = y;
-			m_v[2] = z;
-			m_v[3] = w;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(y) < Eps) ? 0 : y;
+			m_v[2] = (fabs(z) < Eps) ? 0 : z;
+			m_v[3] = (fabs(w) < Eps) ? 0 : w;
 		}
 
 		Vector4<T>(T x)
 		{
-			m_v[0] = x;
-			m_v[1] = x;
-			m_v[2] = x;
-			m_v[3] = x;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(x) < Eps) ? 0 : x;
+			m_v[2] = (fabs(x) < Eps) ? 0 : x;
+			m_v[3] = (fabs(x) < Eps) ? 0 : x;
 		}
 
 		Vector4<T>(const Vector4<T>& origin, const Vector4<T>& destination)
 		{
 			for (int i = 0; i < Size_c; i++)
 			{
-				m_v[i] = destination[i] - origin[i];
+				float v = destination[i] - origin[i];
+				m_v[i] = (fabs(v) < Eps) ? 0 : v;
 			}
 		}
 
 		Vector4<T>(const Vector3<T>& vec, T d)
 		{
-			m_v[0] = vec.X();
-			m_v[1] = vec.Y();
-			m_v[2] = vec.Z();
-			m_v[3] = d;
+			float x = vec.X();
+			float y = vec.Y();
+			float z = vec.Z();
+			float w = d;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(y) < Eps) ? 0 : y;
+			m_v[2] = (fabs(z) < Eps) ? 0 : z;
+			m_v[3] = (fabs(w) < Eps) ? 0 : w;
 		}
 
 		T& operator[] (int i)
@@ -129,9 +135,22 @@ namespace Math
 		Vector4<T>& operator /= (const T& v)
 		{
 			for (int i = 0; i < Size_c; i++)
-				m_v[i] /= v;
+			{
+                float t = m_v[i] / v;
+                m_v[i] = (fabs(v) < Eps) ? 0 : t;
+			}
 			return *this;
 		}
+
+        Vector4<T>& operator *= (const T& v)
+        {
+            for (int i = 0; i < Size_c; i++)
+            {
+                float t = m_v[i] * v;
+                m_v[i] = (fabs(v) < Eps) ? 0 : t;
+            }
+            return *this;
+        }
 
 		T Length()
 		{
@@ -151,25 +170,25 @@ namespace Math
 			return *this;
 		}
 
-		T Dot(const Vector4<T>& vec)
+		const T Dot(const Vector4<T>& vec) const
 		{
 			return m_v[0] * vec.m_v[0] + m_v[1] * vec.m_v[1] + m_v[2] * vec.m_v[2] + m_v[3] * vec.m_v[3];
 		}
 
 		void Set(T x)
 		{
-			m_v[0] = x;
-			m_v[1] = x;
-			m_v[2] = x;
-			m_v[3] = x;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(x) < Eps) ? 0 : x;
+			m_v[2] = (fabs(x) < Eps) ? 0 : x;
+			m_v[3] = (fabs(x) < Eps) ? 0 : x;
 		}
 
 		void Set(T x, T y, T z, T w)
 		{
-			m_v[0] = x;
-			m_v[1] = y;
-			m_v[2] = z;
-			m_v[3] = w;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(y) < Eps) ? 0 : y;
+			m_v[2] = (fabs(z) < Eps) ? 0 : z;
+			m_v[3] = (fabs(w) < Eps) ? 0 : w;
 		}
 
         const Vector4<T> ComponentMul(const Vector4<T>& v)

@@ -31,7 +31,8 @@ namespace Math
 
 	float Line3D::SegmentLength() const
 	{
-		return (m_destination - m_origin).Length();
+		auto res = (m_destination - m_origin).Length();
+		return res;
 	}
 
 	Line3D& Line3D::SetOriginDirection(const vec3& org, const vec3& dir)
@@ -49,4 +50,10 @@ namespace Math
 		m_direction = (m_destination - m_origin).Normalized();
 		return *this;
 	}
+
+    const System::string Line3D::ToString() const
+    {
+        System::string result = L"{Org: " + m_origin.ToString() + L"; Dst: "  + m_destination.ToString() + L" Dir: " + m_direction.ToString();
+        return result;
+    }
 }

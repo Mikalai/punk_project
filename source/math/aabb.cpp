@@ -260,9 +260,9 @@ namespace Math
 		//
 		//  the simpliest test
 		//
-		if (IsPointIn(pp1) ||
-			IsPointIn(pp2) ||
-			IsPointIn(pp3))
+        if (IsPointIn(&pp1[0]) ||
+                IsPointIn(&pp2[0]) ||
+                IsPointIn(&pp3[0]))
 			return true;
 
 		if (ClipSegment3D(pp1, pp2, m_min, m_max))

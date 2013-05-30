@@ -60,6 +60,15 @@ namespace Math
 			m[0] = m[3] = T(1);
 		}
 
+        Matrix2x2<T>(float a00, float a01, float a10, float a11)
+        {
+            m[0] = a00;
+            m[1] = a10;
+            m[2] = a01;
+            m[3] = a11;
+        }
+
+
 		const T& operator [] (int i) const
 		{
 			if (i < 0 || i > 3)
@@ -172,6 +181,15 @@ namespace Math
 			memcpy(m, tm, sizeof(m));
 			return *this;
 		}
+
+		Matrix2x2<T>& operator *= (float k)
+		{
+			for (int i = 0; i != 4; ++i)
+			{
+				m[i] *= k;
+			}
+			return *this;
+		}
 	};
 
 	//  mult two matrix
@@ -192,7 +210,7 @@ namespace Math
 	{
 		Vector2<T> r;
 		r[0] = a[0]*v[0] + a[2]*v[1];
-		r[1] = a[1]*v[0] + a[3]*v[2];
+        r[1] = a[1]*v[0] + a[3]*v[1];
 		return r;
 	}
 	//
@@ -201,12 +219,27 @@ namespace Math
 	template<class T>
 	static Matrix2x2<T> operator * (const Matrix2x2<T>& a, T b)
 	{
-		Matrix2x2<T> c;
+        Matrix2x2<T> c(a);
 		c[0] *= b;
 		c[1] *= b;
 		c[2] *= b;
 		c[3] *= b;
+        return c;
 	}
+
+    //
+    //	mult matrix on scalar
+    //
+    template<class T>
+    static Matrix2x2<T> operator * (T b, const Matrix2x2<T>& a)
+    {
+        Matrix2x2<T> c(a);
+        c[0] *= b;
+        c[1] *= b;
+        c[2] *= b;
+        c[3] *= b;
+        return c;
+    }
 
 	//
 	//	divide matrix on scalar
@@ -239,6 +272,7 @@ namespace Math
 		mat2() : Matrix2x2<float> () {}
 		mat2(const mat2& m) : Matrix2x2<float>(m) {}
 		mat2(const Matrix2x2<float>& m) : Matrix2x2<float>(m) {}
+        mat2(float a00, float a01, float a10, float a11) : Matrix2x2<float>(a00, a01, a10, a11) {}
 	};
 
 }
