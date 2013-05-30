@@ -61,8 +61,11 @@ namespace Punk
 		virtual void OnKeyDown(System::KeyDownEvent* event);
 		virtual void OnKeyUp(System::KeyUpEvent* event);
 		virtual void OnMouseWheel(System::MouseWheelEvent* event);
+		virtual void OnMouseMove(System::MouseMoveEvent* event);
 
 		void Init(const Config& value);
+	private:
+		void Clear();
 	private:
 
 		GPU::PaintEngine* m_paint_engine;
@@ -79,6 +82,7 @@ namespace Punk
 		void KeyDown(System::KeyDownEvent* event);
 		void KeyUp(System::KeyUpEvent* event);
 		void MouseWheel(System::MouseWheelEvent* event);		
+		void MouseMove(System::MouseMoveEvent* event);
 
 		//
 		//	to perform speed up and slow down

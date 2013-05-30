@@ -13,13 +13,21 @@
 namespace Punk
 {
 
-	Application::Application() : m_time_scale_nominator(1), m_time_scale_denomiator(1)
+	Application::Application()
+		: m_time_scale_nominator(1)
+		, m_time_scale_denomiator(1)
+		, m_video_driver(nullptr)
 	{
 		m_paint_engine = nullptr;
 	}
 
 	Application::~Application()
+	{		
+	}
+
+	void Application::Clear()
 	{
+		GPU::GPU_DESTROY();
 		Virtual::StaticGeometry::clear();
 		Virtual::SkinGeometry::clear();
 		Virtual::Armature::clear();
@@ -28,7 +36,6 @@ namespace Punk
 		GUI::Manager::Destroy();
 		safe_delete(m_terrain_manager);
 		safe_delete(m_simulator);
-		GPU::GPU_DESTROY();
 		safe_delete(m_video_driver);
 		safe_delete(m_window);
 		safe_delete(m_event_manager);
@@ -136,6 +143,7 @@ namespace Punk
 
 	void Application::WndOnMouseMoveEvent(System::MouseMoveEvent* event)
 	{
+		MouseMove(event);
 		m_event_manager->FixEvent(event);
 	}
 
@@ -178,6 +186,7 @@ namespace Punk
 
 	void Application::WndOnDestroyEvent()
 	{
+		Clear();
 	}
 
 	void Application::OnSetFocusedEvent(GUI::SetFocusedEvent* event)
@@ -283,6 +292,9 @@ namespace Punk
 	void Application::OnMouseWheel(System::MouseWheelEvent *event)
 	{}
 
+	void Application::OnMouseMove(System::MouseMoveEvent *event)
+	{}
+
 	void Application::Resize(System::WindowResizeEvent *event)
 	{
 		m_event_manager->FixEvent(event);
@@ -295,9 +307,8 @@ namespace Punk
 		if (driver)
 		{
 			driver->SetViewport(0, 0, event->width, event->height);
-		}
-
-		OnResize(event);
+			OnResize(event);
+		}		
 	}
 
 	void Application::KeyDown(System::KeyDownEvent *event)
@@ -313,5 +324,10 @@ namespace Punk
 	void Application::MouseWheel(System::MouseWheelEvent *event)
 	{
 		OnMouseWheel(event);
+	}
+
+	void Application::MouseMove(System::MouseMoveEvent *event)
+	{
+		OnMouseMove(event);
 	}
 }
