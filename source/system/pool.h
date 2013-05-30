@@ -54,7 +54,7 @@ namespace System
             std::cout << "Clear pool of " << typeid(T).name() << std::endl;
             for (typename std::deque<T*>::iterator it = m_free.begin(); it != m_free.end(); ++it)
 			{
-				delete *it;
+				operator delete ((void*)*it);
 			}
 			m_free.clear();
 		}
