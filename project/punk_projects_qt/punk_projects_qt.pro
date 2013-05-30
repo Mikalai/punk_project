@@ -1033,10 +1033,15 @@ SOURCES += ../../source/main.cpp \
 	../../source/gpu/common/primitives/lines.cpp \
 	../../source/gpu/common/primitives/grid_object.cpp \
 	../../source/gpu/common/primitives/cube_mesh.cpp \
+        ../../source/gpu/common/primitives/frustum_mesh.cpp \
 	../../source/gpu/common/primitive_type.cpp \
 	../../source/gpu/common/video_driver.cpp \
 	../../source/gpu/common/lighting/light_model.cpp \
-	../../source/gpu/common/lighting/light_parameters.cpp
+	../../source/gpu/common/lighting/light_parameters.cpp \
+	../../source/gpu/common/material/gpu_material.cpp \
+	../../source/math/graph/graph.cpp \
+	../../source/math/graph/graph_vertex.cpp \
+	../../source/math/graph/graph_edge.cpp \
 
 # Input
 HEADERS += ../../source/config.h \
@@ -1456,9 +1461,16 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/primitives/lines.h \
     ../../source/gpu/common/primitives/grid_object.h \
     ../../source/gpu/common/primitives/cube_mesh.h \
+    ../../source/gpu/common/primitives/frustum_mesh.h \
     ../../source/gpu/common/primitives/module.h \
     ../../source/gpu/common/primitives/triangles.h \
     ../../source/gpu/common/lighting/light_model.h \
     ../../source/gpu/common/lighting/module.h \
     ../../source/gpu/common/lighting/light_parameters.h \    
-    ../../source/gpu/common/config.h
+    ../../source/gpu/common/config.h \
+    ../../source/gpu/common/material/module.h \
+    ../../source/gpu/common/material/gpu_material.h \
+    ../../source/math/graph/graph.h \
+    ../../source/math/graph/graph_vertex.h \
+    ../../source/math/graph/graph_edge.h \
+    ../../source/math/graph/module.h
