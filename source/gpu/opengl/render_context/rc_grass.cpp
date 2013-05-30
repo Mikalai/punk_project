@@ -42,7 +42,7 @@ namespace GPU
 		{	
 			//const PolicyParameters& params = static_cast<const PolicyParameters&>(pparams);
 			//SetUniformMatrix4f(uProjView, &params.m_proj_view[0]);
-			//SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
+			//SetUniformVector4f(uDiffuseColor, &params.batch_state->m_material.m_diffuse_color[0]);
 			//SetUniformVector3f(uPosition, &params.m_position[0]);
 			//SetUniformFloat(uTime, params.m_time);
 			//SetUniformFloat(uWindStrength, params.m_wind_strength);

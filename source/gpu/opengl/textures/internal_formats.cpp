@@ -21,11 +21,11 @@ namespace GPU
 			case ImageModule::IMAGE_FORMAT_ALPHA16:
 				break;
 			case ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT16:
-				break;
+                return GL_DEPTH_COMPONENT16;
 			case ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT24:
-				break;
+                return GL_DEPTH_COMPONENT24;
 			case ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT32:
-				break;
+                return GL_DEPTH_COMPONENT32;
 			case ImageModule::IMAGE_FORMAT_LUMINANCE4:
 				break;
 			case ImageModule::IMAGE_FORMAT_LUMINANCE8:

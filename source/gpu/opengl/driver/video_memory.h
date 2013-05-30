@@ -20,11 +20,12 @@ namespace GPU
 		*	textures and buffers.
 		*	This is a singletone class
 		*/
-		class VideoMemory
+		class VideoMemory final
 		{
 		public:
 
 			VideoMemory();
+			~VideoMemory();
 
 			void SetMaxMemoryUsage(size_t value);
 			size_t GetMaxMemoryUsage() const;

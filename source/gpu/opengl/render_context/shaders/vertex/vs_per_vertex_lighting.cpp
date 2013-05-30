@@ -26,13 +26,13 @@ namespace GPU
 
         void VsPerVertexLighting::BindParameters(const CoreState& params)
 		{
-            auto m = (params.m_view * params.m_world).Inversed().Transposed().RotationPart();
+            auto m = (params.view_state->m_view * params.batch_state->m_world).Inversed().Transposed().RotationPart();
             m_rc->SetUniformMatrix4f(uNormalMatrix, m);
-            m_rc->SetUniformMatrix4f(uView, params.m_view);
-            m_rc->SetUniformMatrix4f(uWorld, params.m_world);
-            m_rc->SetUniformMatrix4f(uProj, params.m_projection);
-            m_rc->SetUniformVector4f(uLightPosition, params.m_lights[0].GetPosition());
-            m_rc->SetUniformVector4f(uDiffuse, params.m_lights[0].GetDiffuseColor());
+            m_rc->SetUniformMatrix4f(uView, params.view_state->m_view);
+            m_rc->SetUniformMatrix4f(uWorld, params.batch_state->m_world);
+            m_rc->SetUniformMatrix4f(uProj, params.view_state->m_projection);
+            m_rc->SetUniformVector4f(uLightPosition, params.light_state->m_lights[0].GetPosition());
+            m_rc->SetUniformVector4f(uDiffuse, params.light_state->m_lights[0].GetDiffuseColor());
 		}
 
         int64_t VsPerVertexLighting::GetRequiredAttributesSet() const

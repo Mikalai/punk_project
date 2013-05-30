@@ -238,6 +238,7 @@ namespace GPU
 
 	void VideoDriverImpl::Shutdown()
 	{
+		out_message() << L"Clear video memory" << std::endl;
         delete m_memory;
 		out_message() << L"Destroying video driver..." << std::endl;
 		ChangeDisplaySettings(NULL, 0);
@@ -335,6 +336,10 @@ namespace GPU
 		: impl(new VideoDriverImpl(this))
 	{}
 
+    const Config& VideoDriverImpl::GetConfig() const
+    {
+        return m_desc.config;
+    }
 
 	VideoDriver::~VideoDriver()
 	{
@@ -407,6 +412,11 @@ namespace GPU
 	{
 		impl->SwapBuffers();
 	}
+
+    const Config& VideoDriver::GetConfig() const
+    {
+        return impl->GetConfig();
+    }
 }
 
 #endif	//	_WIN32

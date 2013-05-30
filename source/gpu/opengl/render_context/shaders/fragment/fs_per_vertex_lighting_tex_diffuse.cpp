@@ -22,7 +22,7 @@ namespace GPU
 
         void FsPerVertexLightingTextureDiffuse::BindParameters(const CoreState& params)
         {         
-            m_rc->SetUniformVector4f(uDiffuseColor, params.m_diffuse_color);
+            m_rc->SetUniformVector4f(uDiffuseColor, params.batch_state->m_material.m_diffuse_color);
             m_rc->SetUniformInt(uDiffuseMap, 0);
         }
 

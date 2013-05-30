@@ -20,7 +20,7 @@ namespace GPU
 
 			VideoDriver* m_driver;
 			RenderTargetTexture* m_rt;
-			System::StateManager<GPU::CoreState> m_states;
+			//System::StateManager<GPU::CoreState> m_states;
 			GPU::AbstractRenderPolicy* m_solid_rc;
 			Math::vec4 m_color;
 			Math::vec4 m_fill_color;
@@ -142,15 +142,15 @@ namespace GPU
 				CookCPULineBuffer(lines, count);
 				CookGPULinesBuffer();
 
-				m_states.CurrentState()->Get().m_use_diffuse_texture = false;
-				m_states.CurrentState()->Get().m_use_text_texture = false;
-				m_states.CurrentState()->Get().m_enable_wireframe = false;
-				m_states.CurrentState()->Get().m_enable_blending = true;
-				m_states.CurrentState()->Get().m_diffuse_color = m_color;
+//				m_states.CurrentState()->Get().m_use_diffuse_texture = false;
+//				m_states.CurrentState()->Get().m_use_text_texture = false;
+//				m_states.CurrentState()->Get().render_state->m_enable_wireframe = false;
+//				m_states.CurrentState()->Get().m_enable_blending = true;
+//				m_states.CurrentState()->Get().m_diffuse_color = m_color;
 
 				m_tc->Bind();
 				m_painter_rc->Begin();
-				m_painter_rc->BindParameters(STATE);
+//				m_painter_rc->BindParameters(STATE);
 
 				if (m_lines_vao.HasData())
 				{
@@ -189,21 +189,21 @@ namespace GPU
 
 			void RenderQuad(float x, float y, float width, float height, const Math::vec4& color)
 			{
-				m_states.Push();
+//				m_states.Push();
 				//	shift quadSTATE
-				STATE.m_world = Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1);
-				STATE.m_projection = Math::mat4::CreateIdentity();
-				STATE.m_view = Math::mat4::CreateIdentity();
-				STATE.m_diffuse_color = color;
-				STATE.m_depth_test = false;
-				STATE.m_enable_blending = true;
+//				STATE.m_world = Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1);
+//				STATE.m_projection = Math::mat4::CreateIdentity();
+//				STATE.m_view = Math::mat4::CreateIdentity();
+//				STATE.m_diffuse_color = color;
+//				STATE.m_depth_test = false;
+//				STATE.m_enable_blending = true;
 				m_solid_rc->Begin();
-				m_solid_rc->BindParameters(STATE);
+//				m_solid_rc->BindParameters(STATE);
 				m_quad.Bind(m_solid_rc->GetRequiredAttributesSet());
 				m_quad.Render();
 				m_quad.Unbind();
 				m_solid_rc->End();
-				m_states.Pop();
+//				m_states.Pop();
 			}
 
 			void DrawRect(const Math::Rect& rect)
@@ -265,12 +265,12 @@ namespace GPU
 
 			void SetLineWidth(float value)
 			{
-				STATE.m_line_width = value;
+//				STATE.m_line_width = value;
 			}
 
 			void SetPointSize(float value)
 			{
-				STATE.m_point_size = value;
+//				STATE.m_point_size = value;
 			}
 
 			void RenderText(float x, float y, const System::string& text, const Math::vec4& color)
@@ -287,30 +287,30 @@ namespace GPU
 				s.SetSize(len, h);
 				s.SetText(text);
 
-				m_states.Push();
+//				m_states.Push();
 				float width = 2.0f * len / max_width;
 				float height = 2.0f * h / max_height;
 				//	shift quad
-				STATE.m_world = Math::mat4::CreateTranslate( 2.0f * x / max_width - 1.0f, 2.0f * y / max_height - 1.0f, 0) * Math::mat4::CreateScaling(width, height, 1.0f);
-				STATE.m_projection = Math::mat4::CreateIdentity();
-				STATE.m_view = Math::mat4::CreateIdentity();
-				STATE.m_diffuse_slot_0 = 0;
-				STATE.m_diffuse_color = color;
-				STATE.m_no_diffuse_texture_color.Set(1,1,1,0);
-				//STATE.m_texture_matrix = Math::mat2::CreateMirrorX();
-				STATE.m_text_slot = 0;
+//				STATE.m_world = Math::mat4::CreateTranslate( 2.0f * x / max_width - 1.0f, 2.0f * y / max_height - 1.0f, 0) * Math::mat4::CreateScaling(width, height, 1.0f);
+//				STATE.m_projection = Math::mat4::CreateIdentity();
+//				STATE.m_view = Math::mat4::CreateIdentity();
+//				STATE.m_diffuse_slot_0 = 0;
+//				STATE.m_diffuse_color = color;
+//				STATE.m_no_diffuse_texture_color.Set(1,1,1,0);
+//				//STATE.m_texture_matrix = Math::mat2::CreateMirrorX();
+//				STATE.m_text_slot = 0;
 
 				m_tc->SetTexture(0, s.GetTexture());
 				m_tc->SetTexture(1, nullptr);
 				m_tc->Bind();
 				m_gui_rc->Begin();
-				m_gui_rc->BindParameters(STATE);
+//				m_gui_rc->BindParameters(STATE);
 				m_quad.Bind(m_gui_rc->GetRequiredAttributesSet());
 				m_quad.Render();
 				m_quad.Unbind();
 				m_gui_rc->End();
 				m_tc->Unbind();
-				m_states.Pop();
+//				m_states.Pop();
 			}
 
 			void DrawString(float x, float y, const System::string& text)

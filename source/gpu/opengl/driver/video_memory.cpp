@@ -2,6 +2,7 @@
 #include "../gl/module.h"
 #include "../buffers/module.h"
 #include "../error/module.h"
+#include "../system/logger.h"
 
 namespace GPU
 {
@@ -32,6 +33,30 @@ namespace GPU
 			glGetIntegerv(GPU_MEMORY_INFO_EVICTION_COUNT_NVX, &mem[3]);
 			glGetIntegerv(GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, &mem[4]);
 			m_core.m_max_mem_usage = (m_core.m_max_mem_available << 1) / 3;
+		}
+
+		VideoMemory::~VideoMemory()
+		{
+			out_message() << m_pbo_list.size() << " pixel buffers left." << std::endl;
+			while (!m_pbo_list.empty())
+			{
+				delete m_pbo_list.back();
+				m_pbo_list.pop_back();
+			}
+
+			out_message() << m_vbo_list.size() << " vertex buffers left." << std::endl;
+			while (!m_vbo_list.empty())
+			{
+				delete m_vbo_list.back();
+				m_vbo_list.pop_back();
+			}
+
+			out_message() << m_ibo_list.size() << " index buffers left." << std::endl;
+			while (!m_ibo_list.empty())
+			{
+				delete m_ibo_list.back();
+				m_ibo_list.pop_back();
+			}
 		}
 
 		void VideoMemory::SetMaxMemoryUsage(size_t value)

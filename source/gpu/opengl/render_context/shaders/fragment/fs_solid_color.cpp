@@ -21,7 +21,7 @@ namespace GPU
 
 		void FragmentShaderSolid::BindParameters(const CoreState& params)
 		{
-			m_rc->SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
+			m_rc->SetUniformVector4f(uDiffuseColor, &params.batch_state->m_material.m_diffuse_color[0]);
 		}
 
 		int64_t FragmentShaderSolid::GetRequiredAttributesSet() const

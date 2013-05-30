@@ -20,7 +20,7 @@ namespace GPU
 			, VertexComponent::Flag
 			, VertexComponent::Color> VertexType;
 
-		System::StateManager<GPU::CoreState> m_states;
+		std::stack<GPU::CoreState*> m_states;
 		std::vector<VertexType> m_points;
 		bool m_points_modified;
 		std::vector<VertexType> m_lines;
@@ -42,6 +42,22 @@ namespace GPU
             m_tc = new TextureContext();
 		}
 
+		GPU::CoreState* Top()
+		{
+			return m_states.top();
+		}
+
+		void Push()
+		{
+			m_states.push(m_states.top()->Clone(GPU::CoreState::ALL_STATES));
+		}
+
+		void Pop()
+		{
+			delete m_states.top();
+			m_states.pop();
+		}
+
 		~PainterImpl()
 		{
 			safe_delete(m_tc);
@@ -58,16 +74,16 @@ namespace GPU
 		{
 			CookBuffers();
 									
-			m_states.CurrentState()->Get().m_use_diffuse_texture = false;
-			m_states.CurrentState()->Get().m_use_text_texture = false;
-			m_states.CurrentState()->Get().m_enable_wireframe = false;
-			m_states.CurrentState()->Get().m_enable_blending = true;
-			m_states.CurrentState()->Get().m_line_width = 5;
-			m_states.CurrentState()->Get().m_diffuse_color.Set(1,0,0,1);
+//			m_states.CurrentState()->Get().m_use_diffuse_texture = false;
+//			m_states.CurrentState()->Get().m_use_text_texture = false;
+//			m_states.CurrentState()->Get().render_state->m_enable_wireframe = false;
+//			m_states.CurrentState()->Get().m_enable_blending = true;
+//			m_states.CurrentState()->Get().m_line_width = 5;
+//			m_states.CurrentState()->Get().m_diffuse_color.Set(1,0,0,1);
 
 			m_tc->Bind();
 			m_rc->Begin();
-			m_rc->BindParameters(m_states.CurrentState()->Get());
+			m_rc->BindParameters(*Top());
 			if (m_points_vao.HasData())
 			{
 			m_points_vao.Bind(m_rc->GetRequiredAttributesSet());
@@ -112,7 +128,7 @@ namespace GPU
 			va.m_position.Set(a.X(), a.Y(), 0, 1.0f);
 			va.m_flag.Set(0,0,0,0);
 			va.m_texture0.Set(0,0,0,0);
-			va.m_color = m_states.CurrentState()->Get().m_diffuse_color;
+//			va.m_color = m_states.CurrentState()->Get().m_diffuse_color;
 
 			m_lines.push_back(va);
 
@@ -120,9 +136,9 @@ namespace GPU
 			vb.m_position.Set(b.X(), b.Y(), 0, 1.0f);
 			vb.m_flag.Set(0,0,0,0);
 			vb.m_texture0.Set((a-b).Dot(Math::vec2(1, 0)), (a-b).Dot(Math::vec2(0, 1)), 0, 0);
-			vb.m_color = m_states.CurrentState()->Get().m_diffuse_color;
+//			vb.m_color = m_states.CurrentState()->Get().m_diffuse_color;
 
-			m_lines.push_back(vb);
+//			m_lines.push_back(vb);
 		}
 
 		void DrawLine(const Math::Line2D& value)
@@ -137,7 +153,7 @@ namespace GPU
 			va.m_position.Set(point.X(), point.Y(), 0, 1.0f);
 			va.m_flag.Set(0,0,0,0);
 			va.m_texture0.Set(0,0,0,0);
-			va.m_color = m_states.CurrentState()->Get().m_diffuse_color;
+	//		va.m_color = m_states.CurrentState()->Get().m_diffuse_color;
 		}
 	};
 }

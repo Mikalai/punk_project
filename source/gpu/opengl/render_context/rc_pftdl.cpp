@@ -89,28 +89,28 @@ namespace GPU
 		ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
 		ShaderCollection::No>::BindParameters(const CoreState& params)
 		{
-			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_world;
-			const Math::mat3 normal_matrix = (params.m_view * params.m_world).RotationPart().Transposed().Inversed();
-			const Math::mat4 view_world = params.m_view * params.m_world;
+			const Math::mat4 proj_view_world = params.view_state->m_projection * params.view_state->m_view * params.batch_state->m_world;
+			const Math::mat3 normal_matrix = (params.view_state->m_view * params.batch_state->m_world).RotationPart().Transposed().Inversed();
+			const Math::mat4 view_world = params.view_state->m_view * params.batch_state->m_world;
 			SetUniformMatrix4f(uProjViewWorld, &proj_view_world[0]);
 			SetUniformMatrix3f(uNormalMatrix, &normal_matrix[0]);
 			SetUniformMatrix4f(uViewWorld, &view_world[0]);
-			SetUniformMatrix4f(uView, &params.m_view[0]);
-			SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
-			SetUniformMatrix4f(uTextureMatrix, &params.m_texture_matrix[0]);
+			SetUniformMatrix4f(uView, &params.view_state->m_view[0]);
+			SetUniformVector4f(uDiffuseColor, &params.batch_state->m_material.m_diffuse_color[0]);
+			SetUniformMatrix4f(uTextureMatrix, &params.batch_state->m_texture_matrix[0]);
 			SetUniformInt(uDiffuseMap, 0);
 
 			for (int i = 0; i != MAX_LIGHTS; ++i)
 			{
-				SetUniformVector4f(uLightPosition[i], &params.m_lights[i].GetPosition()[0]);
-				SetUniformVector4f(uLightDiffuse[i], &params.m_lights[i].GetDiffuseColor()[0]);
-				SetUniformVector4f(uLightDirection[i], &params.m_lights[i].GetDirection()[0]);
-				SetUniformFloat(uConstantAttenuation[i], params.m_lights[i].GetLightConstantAttenuation());
-				SetUniformFloat(uLinearAttenuation[i], params.m_lights[i].GetLightLinearAttenuation());
-				SetUniformFloat(uQuadricAttenuation[i], params.m_lights[i].GetLightQuadricAttenuation());
-				SetUniformFloat(uSpotExponent[i], params.m_lights[i].GetSpotExponent());
+				SetUniformVector4f(uLightPosition[i], &params.light_state->m_lights[i].GetPosition()[0]);
+				SetUniformVector4f(uLightDiffuse[i], &params.light_state->m_lights[i].GetDiffuseColor()[0]);
+				SetUniformVector4f(uLightDirection[i], &params.light_state->m_lights[i].GetDirection()[0]);
+				SetUniformFloat(uConstantAttenuation[i], params.light_state->m_lights[i].GetLightConstantAttenuation());
+				SetUniformFloat(uLinearAttenuation[i], params.light_state->m_lights[i].GetLightLinearAttenuation());
+				SetUniformFloat(uQuadricAttenuation[i], params.light_state->m_lights[i].GetLightQuadricAttenuation());
+				SetUniformFloat(uSpotExponent[i], params.light_state->m_lights[i].GetSpotExponent());
 
-				switch (params.m_lights[i].GetLightAttenuation())
+				switch (params.light_state->m_lights[i].GetLightAttenuation())
 				{
 				case LightAttenuation::Constant:
 					SetUniformInt(uMode[i], 0);
@@ -123,7 +123,7 @@ namespace GPU
 					break;
 				}
 
-				switch (params.m_lights[i].GetType())
+				switch (params.light_state->m_lights[i].GetType())
 				{
 				case LightType::Point:
 					SetUniformInt(uType[i], 0);

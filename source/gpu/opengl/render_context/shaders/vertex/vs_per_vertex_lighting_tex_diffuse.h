@@ -21,6 +21,7 @@ namespace GPU
             unsigned uViewWorld;
             unsigned uProjViewWorld;
             unsigned uView;
+			unsigned uTextureMatrix;
 
             unsigned uLightPosition[MAX_LIGHTS];
             unsigned uLightDirection[MAX_LIGHTS];

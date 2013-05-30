@@ -45,11 +45,11 @@ namespace GPU
 				ShaderCollection::FragmentSolidTextured,
 				ShaderCollection::No>::BindParameters(const CoreState& params)
 		{									
-			const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_world;
+			const Math::mat4 proj_view_world = params.view_state->m_projection * params.view_state->m_view * params.batch_state->m_world;
 			SetUniformMatrix4f(uProjViewWorld, &(proj_view_world[0]));
 			SetUniformInt(uDiffuseMap, 0);
-			SetUniformMatrix4f(uTextureMatrix, &params.m_texture_matrix[0]);
-			SetUniformVector4f(uDiffuseColor, &params.m_diffuse_color[0]);
+			SetUniformMatrix4f(uTextureMatrix, &params.batch_state->m_texture_matrix[0]);
+			SetUniformVector4f(uDiffuseColor, &params.batch_state->m_material.m_diffuse_color[0]);
 
 			SetUpOpenGL(params);
 		}

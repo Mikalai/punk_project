@@ -21,7 +21,7 @@ namespace GPU
 
 		void VertexShaderSolid::BindParameters(const CoreState& params)
 		{
-			auto m = params.m_projection * params.m_view * params.m_world;
+			auto m = params.view_state->m_projection * params.view_state->m_view * params.batch_state->m_world;
 			m_rc->SetUniformMatrix4f(uProjViewWorld, &m[0]);
 		}
 

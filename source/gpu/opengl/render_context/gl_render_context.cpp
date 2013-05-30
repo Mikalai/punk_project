@@ -471,10 +471,13 @@ namespace GPU
 
 		void OpenGLRenderContext::SetUpOpenGL(const CoreState &state)
 		{
-			if (state.m_enable_wireframe)
-			{
-				glLineWidth(state.m_line_width);
-				ValidateOpenGL(L"Can't line width");
+            glLineWidth(state.render_state->m_line_width);
+            ValidateOpenGL(L"Can't set line width");
+            glPointSize(state.render_state->m_point_size);
+            ValidateOpenGL(L"Can't set point size");
+
+			if (state.render_state->m_enable_wireframe)
+			{				
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				ValidateOpenGL(L"Can't change polygon mode");
 			}
@@ -484,7 +487,7 @@ namespace GPU
 				ValidateOpenGL(L"Can't change polygon mode");
 			}
 
-			if (state.m_depth_test)
+			if (state.render_state->m_depth_test)
 			{
 				glEnable(GL_DEPTH_TEST);
 				ValidateOpenGL(L"Can't enable depth test");
@@ -495,12 +498,12 @@ namespace GPU
 				ValidateOpenGL(L"Can't disable depth test");
 			}
 
-			if (state.m_enable_blending)
+			if (state.render_state->m_enable_blending)
 			{
 				glEnable(GL_BLEND);
-				auto src = BlendFunctionToOpenGL(state.m_blend_src);
-				auto dst = BlendFunctionToOpenGL(state.m_blend_dst);
-				auto color = state.m_blend_color;
+				auto src = BlendFunctionToOpenGL(state.render_state->m_blend_src);
+				auto dst = BlendFunctionToOpenGL(state.render_state->m_blend_dst);
+				auto color = state.render_state->m_blend_color;
 				glBlendFunc(src, dst);
 				glBlendColor(color[0], color[1], color[2], color[3]);
 			}

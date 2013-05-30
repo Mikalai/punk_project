@@ -24,6 +24,7 @@ namespace GPU
 		void SetClearColor(const Math::vec4& color);
 		void SetClearDepth(float value);
 		void Clear(bool color, bool depth, bool stencil);
+        const Config& GetConfig() const;
 
 		//	constructoion part
 		VideoDriverImpl(VideoDriver* driver);
