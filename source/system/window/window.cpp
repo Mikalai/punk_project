@@ -460,13 +460,13 @@ namespace System
 			event->y_prev = y_prev;
 			x_prev = event->x;
 			y_prev = event->y;
-			event->controlKey = (wParam & MK_CONTROL) == 0;
-			event->leftButton = (wParam & MK_LBUTTON) == 0;
-			event->middleButton = (wParam & MK_MBUTTON) == 0;
-			event->rightButton = (wParam & MK_RBUTTON) == 0;
-			event->shiftButton = (wParam & MK_SHIFT) == 0;
-			event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
-			event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+			event->controlKey = (wParam & MK_CONTROL) != 0;
+			event->leftButton = (wParam & MK_LBUTTON) != 0;
+			event->middleButton = (wParam & MK_MBUTTON) != 0;
+			event->rightButton = (wParam & MK_RBUTTON) != 0;
+			event->shiftButton = (wParam & MK_SHIFT) != 0;
+			event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
+			event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
 			Mouse::Instance()->SetButtonState(Mouse::MIDDLE_BUTTON, false);
 			adapter->WndOnMouseMiddleButtonUpEvent(event);
 		}
@@ -480,13 +480,13 @@ namespace System
 			event->y_prev = y_prev;
 			x_prev = event->x;
 			y_prev = event->y;
-			event->controlKey = (wParam & MK_CONTROL) == 0;
-			event->leftButton = (wParam & MK_LBUTTON) == 0;
-			event->middleButton = (wParam & MK_MBUTTON) == 0;
-			event->rightButton = (wParam & MK_RBUTTON) == 0;
-			event->shiftButton = (wParam & MK_SHIFT) == 0;
-			event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
-			event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+			event->controlKey = (wParam & MK_CONTROL) != 0;
+			event->leftButton = (wParam & MK_LBUTTON) != 0;
+			event->middleButton = (wParam & MK_MBUTTON) != 0;
+			event->rightButton = (wParam & MK_RBUTTON) != 0;
+			event->shiftButton = (wParam & MK_SHIFT) != 0;
+			event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
+			event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
 			Mouse::Instance()->SetButtonState(Mouse::MIDDLE_BUTTON, true);
 			adapter->WndOnMouseMiddleButtonDownEvent(event);
 		}
@@ -500,13 +500,13 @@ namespace System
 			event->y_prev = y_prev;
 			x_prev = event->x;
 			y_prev = event->y;
-			event->controlKey = (wParam & MK_CONTROL) == 0;
-			event->leftButton = (wParam & MK_LBUTTON) == 0;
-			event->middleButton = (wParam & MK_MBUTTON) == 0;
-			event->rightButton = (wParam & MK_RBUTTON) == 0;
-			event->shiftButton = (wParam & MK_SHIFT) == 0;
-			event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
-			event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+			event->controlKey = (wParam & MK_CONTROL) != 0;
+			event->leftButton = (wParam & MK_LBUTTON) != 0;
+			event->middleButton = (wParam & MK_MBUTTON) != 0;
+			event->rightButton = (wParam & MK_RBUTTON) != 0;
+			event->shiftButton = (wParam & MK_SHIFT) != 0;
+			event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
+			event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
 			Mouse::Instance()->SetButtonState(Mouse::RIGHT_BUTTON, false);
 			adapter->WndOnMouseRightButtonUpEvent(event);
 		}
@@ -520,13 +520,13 @@ namespace System
 			event->y_prev = y_prev;
 			x_prev = event->x;
 			y_prev = event->y;
-			event->controlKey = (wParam & MK_CONTROL) == 0;
-			event->leftButton = (wParam & MK_LBUTTON) == 0;
-			event->middleButton = (wParam & MK_MBUTTON) == 0;
-			event->rightButton = (wParam & MK_RBUTTON) == 0;
-			event->shiftButton = (wParam & MK_SHIFT) == 0;
-			event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
-			event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+			event->controlKey = (wParam & MK_CONTROL) != 0;
+			event->leftButton = (wParam & MK_LBUTTON) != 0;
+			event->middleButton = (wParam & MK_MBUTTON) != 0;
+			event->rightButton = (wParam & MK_RBUTTON) != 0;
+			event->shiftButton = (wParam & MK_SHIFT) != 0;
+			event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
+			event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
 			Mouse::Instance()->SetButtonState(Mouse::RIGHT_BUTTON, true);
 			adapter->WndOnMouseRightButtonDownEvent(event);
 		}
@@ -540,13 +540,13 @@ namespace System
 			event->y_prev = y_prev;
 			x_prev = event->x;
 			y_prev = event->y;
-			event->controlKey = (wParam & MK_CONTROL) == 0;
-			event->leftButton = (wParam & MK_LBUTTON) == 0;
-			event->middleButton = (wParam & MK_MBUTTON) == 0;
-			event->rightButton = (wParam & MK_RBUTTON) == 0;
-			event->shiftButton = (wParam & MK_SHIFT) == 0;
-			event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
-			event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+			event->controlKey = (wParam & MK_CONTROL) != 0;
+			event->leftButton = (wParam & MK_LBUTTON) != 0;
+			event->middleButton = (wParam & MK_MBUTTON) != 0;
+			event->rightButton = (wParam & MK_RBUTTON) != 0;
+			event->shiftButton = (wParam & MK_SHIFT) != 0;
+			event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
+			event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
 			Mouse::Instance()->SetButtonState(Mouse::LEFT_BUTTON, false);
 			adapter->WndOnMouseLeftButtonUpEvent(event);
 		}
@@ -560,13 +560,13 @@ namespace System
 			event->y_prev = y_prev;
 			x_prev = event->x;
 			y_prev = event->y;
-			event->controlKey = (wParam & MK_CONTROL) == 0;
-			event->leftButton = (wParam & MK_LBUTTON) == 0;
-			event->middleButton = (wParam & MK_MBUTTON) == 0;
-			event->rightButton = (wParam & MK_RBUTTON) == 0;
-			event->shiftButton = (wParam & MK_SHIFT) == 0;
-			event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
-			event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+			event->controlKey = (wParam & MK_CONTROL) != 0;
+			event->leftButton = (wParam & MK_LBUTTON) != 0;
+			event->middleButton = (wParam & MK_MBUTTON) != 0;
+			event->rightButton = (wParam & MK_RBUTTON) != 0;
+			event->shiftButton = (wParam & MK_SHIFT) != 0;
+			event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
+			event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
 			Mouse::Instance()->SetButtonState(Mouse::LEFT_BUTTON, true);
 			adapter->WndOnMouseLeftButtonDownEvent(event);
 		}
@@ -594,13 +594,13 @@ namespace System
 			event->y = GetHeight(hwnd) - y;
 			event->x_prev = x_prev;
 			event->y_prev = GetHeight(hwnd) - y_prev;
-			event->controlKey = (wParam & MK_CONTROL) == 0;
-			event->leftButton = (wParam & MK_LBUTTON) == 0;
-			event->middleButton = (wParam & MK_MBUTTON) == 0;
-			event->rightButton = (wParam & MK_RBUTTON) == 0;
-			event->shiftButton = (wParam & MK_SHIFT) == 0;
-			event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
-			event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+			event->controlKey = (wParam & MK_CONTROL) != 0;
+			event->leftButton = (wParam & MK_LBUTTON) != 0;
+			event->middleButton = (wParam & MK_MBUTTON) != 0;
+			event->rightButton = (wParam & MK_RBUTTON) != 0;
+			event->shiftButton = (wParam & MK_SHIFT) != 0;
+			event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
+			event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
 
 			if (Mouse::Instance()->IsLocked())
 			{
@@ -641,13 +641,13 @@ namespace System
 			x_prev = event->x;
 			y_prev = event->y;
 			event->delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-			event->controlKey = (wParam & MK_CONTROL) == 0;
-			event->leftButton = (wParam & MK_LBUTTON) == 0;
-			event->middleButton = (wParam & MK_MBUTTON) == 0;
-			event->rightButton = (wParam & MK_RBUTTON) == 0;
-			event->shiftButton = (wParam & MK_SHIFT) == 0;
-			event->xbutton1 = (wParam & MK_XBUTTON1) == 0;
-			event->xbutton2 = (wParam & MK_XBUTTON2) == 0;
+			event->controlKey = (wParam & MK_CONTROL) != 0;
+			event->leftButton = (wParam & MK_LBUTTON) != 0;
+			event->middleButton = (wParam & MK_MBUTTON) != 0;
+			event->rightButton = (wParam & MK_RBUTTON) != 0;
+			event->shiftButton = (wParam & MK_SHIFT) != 0;
+			event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
+			event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
 			adapter->WndOnMouseWheelEvent(event);
 		}
 			break;
@@ -655,12 +655,12 @@ namespace System
 		{
 			KeyCharEvent* event = new KeyCharEvent;
 			event->key = (int)wParam;
-			event->repeat_count = (lParam & 0xFFFF) == 0;
-			event->scan_code = (lParam & 0xFF0000) == 0;
-			event->isExtended = (lParam & 0x1000000) == 0;
-			event->isAltPressed = (lParam & 0x20000000) == 0;
-			event->prevState = (lParam & 0x40000000) == 0;
-			event->transitionState = (lParam & 0x80000000) == 0;
+			event->repeat_count = (lParam & 0xFFFF) != 0;
+			event->scan_code = (lParam & 0xFF0000) != 0;
+			event->isExtended = (lParam & 0x1000000) != 0;
+			event->isAltPressed = (lParam & 0x20000000) != 0;
+			event->prevState = (lParam & 0x40000000) != 0;
+			event->transitionState = (lParam & 0x80000000) != 0;
 			adapter->WndOnCharEvent(event);
 		}
 			break;
@@ -668,12 +668,12 @@ namespace System
 		{
 			KeyWCharEvent* event = new KeyWCharEvent;
 			event->key = (int)wParam;
-			event->repeat_count = (lParam & 0xFFFF) == 0;
-			event->scan_code = (lParam & 0xFF0000) == 0;
-			event->isExtended = (lParam & 0x1000000) == 0;
-			event->isAltPressed = (lParam & 0x20000000) == 0;
-			event->prevState = (lParam & 0x40000000) == 0;
-			event->transitionState = (lParam & 0x80000000) == 0;
+			event->repeat_count = (lParam & 0xFFFF) != 0;
+			event->scan_code = (lParam & 0xFF0000) != 0;
+			event->isExtended = (lParam & 0x1000000) != 0;
+			event->isAltPressed = (lParam & 0x20000000) != 0;
+			event->prevState = (lParam & 0x40000000) != 0;
+			event->transitionState = (lParam & 0x80000000) != 0;
 			adapter->WndOnWideCharEvent(event);
 		}
 			break;
@@ -682,11 +682,11 @@ namespace System
 		{
 			KeyDownEvent* event = new KeyDownEvent;
 			event->key = (int)wParam;
-			event->repeat_count = (lParam & 0xFFFF) == 0;
-			event->scan_code = (lParam & 0xFF0000) == 0;
-			event->isExtended = (lParam & 0x1000000) == 0;
-			event->prevState = (lParam & 0x40000000) == 0;
-			event->transitionState = (lParam & 0x80000000) == 0;
+			event->repeat_count = (lParam & 0xFFFF) != 0;
+			event->scan_code = (lParam & 0xFF0000) != 0;
+			event->isExtended = (lParam & 0x1000000) != 0;
+			event->prevState = (lParam & 0x40000000) != 0;
+			event->transitionState = (lParam & 0x80000000) != 0;
 			Keyboard::Instance()->SetKeyState(wParam, true);
 			adapter->WndOnKeyDownEvent(event);
 			break;
@@ -703,8 +703,8 @@ namespace System
 		case WM_SIZE:
 		{
 			WindowResizeEvent* event = new WindowResizeEvent;
-			event->minimized = (wParam & SIZE_MINIMIZED) == 0;
-			event->restored = (wParam & SIZE_RESTORED) == 0;
+			event->minimized = (wParam & SIZE_MINIMIZED) != 0;
+			event->restored = (wParam & SIZE_RESTORED) != 0;
 			event->width = LOWORD(lParam);
 			event->height = HIWORD(lParam);
 			adapter->WndOnResizeEvent(event);
@@ -730,8 +730,8 @@ namespace System
 		}
 			break;
 		case WM_DESTROY:
-			PostQuitMessage(0);
 			adapter->WndOnDestroyEvent();
+			PostQuitMessage(0);			
 			break;
 		}
 
