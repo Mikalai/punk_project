@@ -11,7 +11,10 @@ namespace GPU
 	}
 
 	bool GPU_DESTROY()
-	{
+	{		
+		Frame::ClearPool();
+		TextureContext::ClearPool();
+		CoreState::ClearPool();
 		OpenGL::GPU_OPENGL_DESTROY();
 		return true;
 	}

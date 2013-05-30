@@ -13,5 +13,6 @@
 #include "triangle_fans.h"
 #include "triangle_strip.h"
 #include "triangles.h"
+#include "frustum_mesh.h"
 
 #endif // MODULE_H

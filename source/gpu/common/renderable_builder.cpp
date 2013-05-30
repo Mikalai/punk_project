@@ -85,6 +85,15 @@ namespace GPU
 	}
 
 	template<typename Vertex>
+	void ModifyVertexInput(std::vector<Vertex>& inout, PrimitiveType src_type)
+	{
+		if (src_type == PrimitiveType::QUADS)
+			QuadsToTriangles(inout, src_type);
+		else if (src_type == PrimitiveType::POLYGON)
+			PolygonToTriangles(inout, src_type);
+	}
+
+	template<typename Vertex>
 	void QuadsToTriangles(std::vector<Vertex>& inout, PrimitiveType src_type)
 	{
 		std::vector<Vertex> in = inout;
@@ -113,6 +122,25 @@ namespace GPU
 		}
 	}
 
+	template<typename Vertex>
+	void PolygonToTriangles(std::vector<Vertex>& inout, PrimitiveType src_type)
+	{
+		std::vector<Vertex> in = inout;
+		if (src_type == PrimitiveType::POLYGON)
+		{
+			if (in.size() < 3)
+				throw System::PunkException(L"Invalid vertex buffer. Not enough points");
+			inout.clear();
+
+			for (size_t i = 1; i != in.size() - 1; ++i)
+			{
+				inout.push_back(in[0]);
+				inout.push_back(in[i]);
+				inout.push_back(in[i+1]);
+			}
+		}
+	}
+
 	Renderable* RenderableBuilderImpl::BuildVertexBufferP(const std::vector<Math::vec4>& position)
 	{
 		typedef Vertex<VertexComponent::Position> VertexType;
@@ -125,7 +153,7 @@ namespace GPU
 			vb.push_back(v);
 		}
 
-		QuadsToTriangles(vb, m_high_level_type);
+		ModifyVertexInput(vb, m_high_level_type);
 		return Cook<VertexType>(m_primitive_type, vb, m_driver);
 	}
 
@@ -135,7 +163,8 @@ namespace GPU
 			throw System::PunkException(L"Position and color buffer has different size");
 
 		typedef Vertex<VertexComponent::Position, VertexComponent::Color> VertexType;
-		std::vector<VertexType> vb(position.size());
+		std::vector<VertexType> vb;
+		vb.reserve(position.size());
 		auto p_it = position.begin();
 		auto c_it = color.begin();
 		while (p_it != position.end() && c_it != color.end())
@@ -149,7 +178,7 @@ namespace GPU
 			++c_it;
 		}
 
-		QuadsToTriangles(vb, m_high_level_type);
+		ModifyVertexInput(vb, m_high_level_type);
 		return Cook<VertexType>(m_primitive_type, vb, m_driver);
 	}
 
@@ -159,7 +188,8 @@ namespace GPU
 			throw System::PunkException(L"Position and texture buffer has different size");
 
 		typedef Vertex<VertexComponent::Position, VertexComponent::Texture0> VertexType;
-		std::vector<VertexType> vb(position.size());
+		std::vector<VertexType> vb;
+		vb.reserve(position.size());
 		auto p_it = position.begin();
 		auto t_it = texcoord.begin();
 		while (p_it != position.end() && t_it != texcoord.end())
@@ -173,7 +203,7 @@ namespace GPU
 			++t_it;
 		}
 
-		QuadsToTriangles(vb, m_high_level_type);
+		ModifyVertexInput(vb, m_high_level_type);
 		return Cook<VertexType>(m_primitive_type, vb, m_driver);
 	}
 
@@ -183,7 +213,8 @@ namespace GPU
 			throw System::PunkException(L"Position, texture or color buffer has different size");
 
 		typedef Vertex<VertexComponent::Position, VertexComponent::Color, VertexComponent::Texture0> VertexType;
-		std::vector<VertexType> vb(position.size());
+		std::vector<VertexType> vb;
+		vb.reserve(position.size());
 		auto p_it = position.begin();
 		auto t_it = texcoord.begin();
 		auto c_it = color.begin();
@@ -200,7 +231,7 @@ namespace GPU
 			++c_it;
 		}
 
-		QuadsToTriangles(vb, m_high_level_type);
+		ModifyVertexInput(vb, m_high_level_type);
 		return Cook<VertexType>(m_primitive_type, vb, m_driver);
 	}
 
@@ -210,7 +241,8 @@ namespace GPU
 			throw System::PunkException(L"Position and normal buffer has different size");
 
 		typedef Vertex<VertexComponent::Position, VertexComponent::Normal> VertexType;
-		std::vector<VertexType> vb(position.size());
+		std::vector<VertexType> vb;
+		vb.reserve(position.size());
 		auto p_it = position.begin();
 		auto n_it = normal.begin();
 		while (p_it != position.end() && n_it != normal.end())
@@ -224,7 +256,7 @@ namespace GPU
 			++n_it;
 		}
 
-		QuadsToTriangles(vb, m_high_level_type);
+		ModifyVertexInput(vb, m_high_level_type);
 		return Cook<VertexType>(m_primitive_type, vb, m_driver);
 	}
 
@@ -234,7 +266,8 @@ namespace GPU
 			throw System::PunkException(L"Position, texture or normal buffer has different size");
 
 		typedef Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0> VertexType;
-		std::vector<VertexType> vb(position.size());
+		std::vector<VertexType> vb;
+		vb.reserve(position.size());
 		auto p_it = position.begin();
 		auto t_it = texcoord.begin();
 		auto n_it = normal.begin();
@@ -251,7 +284,7 @@ namespace GPU
 			++n_it;
 		}
 
-		QuadsToTriangles(vb, m_high_level_type);
+		ModifyVertexInput(vb, m_high_level_type);
 		return Cook<VertexType>(m_primitive_type, vb, m_driver);
 	}
 

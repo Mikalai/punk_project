@@ -26,8 +26,6 @@ namespace GPU
 
 		void BeginRendering();
 		void Render(Renderable* value, bool destroy = false);
-		void PushState();
-		void PopState();
 		void MultWorldMatrix(const Math::mat4& value);		
 		void SetWorldMatrix(const Math::mat4& value);		
 		void SetViewMatrix(const Math::mat4& value);
@@ -50,8 +48,7 @@ namespace GPU
 		void SetLocalMatrix(const Math::mat4& value);
 
 		void SetSpecularMap(const Texture2D* value);		
-		void SetBumpMap(const Texture2D* value);		
-		void CastShadows(bool value);		
+		void SetBumpMap(const Texture2D* value);				
 
 		const Math::mat4& GetWorldMatrix() const;		
 		const Math::mat4& GetLocalMatrix() const;
@@ -66,6 +63,7 @@ namespace GPU
 		const Texture2D* GetBumpMap() const;		
 		const Math::ClipSpace& GetClipSpace() const;
 		
+        void CastShadows(bool value);
 		void ReceiveShadow(bool value);
 		void EndRendering();
 
@@ -81,7 +79,7 @@ namespace GPU
 
         //  added on 01.05.2013
 		void SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer);
-        void SetClearColor(const Math::vec4& value);
+		void SetClearColor(const Math::vec4& value);
 		void SetClearColor(float r, float g, float b, float a);
 		void SetClearDepth(float value);
 
@@ -105,14 +103,28 @@ namespace GPU
 		FogDescription& Fog();
 		const FogDescription& Fog() const;
 
+		void PushAllState();
+		void PopAllState();
+
+		void PushViewState();
+		void PopViewState();
+
+		void PushLightState();
+		void PopLightState();
+
+		void PushRenderState();
+		void PopRenderState();
+
+		void PushBatchState();
+		void PopBatchState();
+
+		void PushTextureState();
+		void PopTextureState();
+
 	private:
 
 		CoreState* Top();
 		const CoreState* Top() const;
-
-		//  true if rendering is active. Some operations
-		//  are not supported while rendering is active
-		bool m_rendering;
 
 		//	next should be delete in destructor
 		std::stack<CoreState*> m_state;

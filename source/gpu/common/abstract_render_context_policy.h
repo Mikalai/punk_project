@@ -15,6 +15,7 @@ namespace GPU
 		Terrain,
 		Skinning,
 		BumpMapping,
+        BumpMappingShadowing,
 		Painter,
 		SolidVertexColor,
 		LightPerFragmentDiffuse,
@@ -22,7 +23,14 @@ namespace GPU
 		LightPerVertexDiffuse,
 		LightPerVertexTextureDiffuse,
 		LightPerFragmentDiffuseSpecular,
-		LightPerVertexDiffuseSpecular
+        LightPerVertexDiffuseSpecular,
+        LightPerFragmentDiffuseShadowing,
+        LightPerFragmentTextureDiffuseShadowing,
+        LightPerVertexDiffuseShadowing,
+        LightPerVertexTextureDiffuseShadowing,
+        LightPerFragmentDiffuseSpecularShadowing,
+		LightPerVertexDiffuseSpecularShadowing,
+		DepthRender
 	};
 
 	class PUNK_ENGINE AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>

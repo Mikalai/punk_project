@@ -18,7 +18,8 @@ namespace GPU
 		TRIANGLES,
 		TRIANGLE_STRIP_ADJANCECY,
 		TRIANGLES_ADJANCECY,
-		QUADS
+		QUADS,
+		POLYGON
 	};
 
 	extern PUNK_ENGINE const System::string AsString(const PrimitiveType& value);

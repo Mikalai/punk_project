@@ -43,6 +43,7 @@ namespace GPU
 		void SetClearDepth(float value);
 		void Clear(bool color, bool depth, bool stencil);
 		void SwapBuffers();
+        const Config& GetConfig() const;
 
         Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);
         Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);

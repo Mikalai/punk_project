@@ -10,5 +10,7 @@ namespace GPU
 		, fullscreen(false)
 		, refresh_rate(60)
 		, bits_per_pixel(32)
+        , shadow_map_width(1024)
+        , shadow_map_height(1024)
 	{}
 }

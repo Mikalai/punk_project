@@ -7,19 +7,28 @@
 
 namespace GPU
 {
-class Batch;
+	class Batch;    
+	class VideoDriver;
+	class Texture2D;
+	class Renderable;
+	class CoreState;
 
-class RenderPass
-{
-public:
+	class RenderPass
+	{
+	public:
+		RenderPass(VideoDriver* driver, std::vector<Batch*> batches);
+		~RenderPass();
+		void Run();
 
-    RenderPass(std::vector<Batch*> batches);
-    ~RenderPass();
-    void Run();
+	private:
+		VideoDriver* m_driver;
+		std::vector<Batch*> m_batches;
+		Texture2D* m_shadow_map;
 
-private:
-    std::vector<Batch*> m_batches;
-};
+		void SetUpShadowMap();
+		void GenerateShadowMap(std::vector<Batch*>& batches);
+		void OnePass(Renderable* renderable, CoreState* state);
+	};
 
 }
 

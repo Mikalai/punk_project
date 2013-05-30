@@ -20,6 +20,8 @@ namespace GPU
 		bool fullscreen;
 		int refresh_rate;
 		int bits_per_pixel;
+        int shadow_map_width;
+        int shadow_map_height;
 
 #ifdef _WIN32
         HWND m_hwnd;
