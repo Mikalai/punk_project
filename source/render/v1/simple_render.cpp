@@ -77,12 +77,12 @@ namespace Render
 	bool SimpleRender::Visit(Scene::CameraNode* node)
 	{
 		bool result = true;
-		m_frame->PushState();
+		m_frame->PushAllState();
 		m_frame->SetViewMatrix(node->GetCamera()->GetViewMatrix());
 		m_frame->SetProjectionMatrix(node->GetCamera()->GetProjectionMatrix());
 		m_frame->SetClipSpace(node->GetCamera()->ToClipSpace());
 		result = ApplyToChildren(node);
-		m_frame->PopState();
+		m_frame->PopAllState();
 		return result;
 	}
 
@@ -95,29 +95,29 @@ namespace Render
 
 	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
 	{
-		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
-		m_frame->PushState();
-		GPU::Renderable* mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
-		if (!mesh)
-		{
-			GPU::StaticMesh* m = nullptr;//	new GPU::OpenGL::StaticMesh();
-			m->Cook(node->GetStaticGeometry());
-			node->GetStaticGeometry()->SetGPUBufferCache(m);
-			mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
-		}
+//		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
+//		m_frame->PushAllState();
+//		GPU::Renderable* mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
+//		if (!mesh)
+//		{
+//			GPU::StaticMesh* m = nullptr;//	new GPU::OpenGL::StaticMesh();
+//			m->Cook(node->GetStaticGeometry());
+//			node->GetStaticGeometry()->SetGPUBufferCache(m);
+//			mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
+//		}
 
-		m_frame->Render(mesh);
-		m_frame->PopState();
+//		m_frame->Render(mesh);
+//		m_frame->PopAllState();
 		return true;
 	}
 
 	bool SimpleRender::Visit(Scene::SkinMeshNode* node)
 	{
-		m_frame->PushState();
+		m_frame->PushAllState();
 		m_frame->EnableSkinning(true);
 		GPU::SkinMesh* mesh = nullptr;	// Cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
 		m_frame->Render(mesh);
-		m_frame->PopState();
+		m_frame->PopAllState();
 		return true;
 	}
 
@@ -125,7 +125,7 @@ namespace Render
 	{
 		bool result = true;
 		Virtual::Action::validate();
-		m_frame->PushState();
+		m_frame->PushAllState();
 
 		//	should be moved in update visitor
 		Virtual::Armature* armature = Virtual::Armature::find(node->GetStorageName());
@@ -142,7 +142,7 @@ namespace Render
 
 		result = ApplyToChildren(node);
 
-		m_frame->PopState();
+		m_frame->PopAllState();
 		return result;
 	}
 
@@ -150,7 +150,7 @@ namespace Render
 	{
 		bool result = true;
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(1, 1, 0, 1));
-		m_frame->PushState();
+		m_frame->PushAllState();
 
 		Virtual::Bone* bone = node->GetBone();
 		m_frame->MultWorldMatrix(bone->GetAnimatedGlobalMatrix());
@@ -158,7 +158,7 @@ namespace Render
 
 		result = ApplyToChildren(node);
 
-		m_frame->PopState();
+		m_frame->PopAllState();
 		return result;
 	}
 
@@ -171,7 +171,7 @@ namespace Render
 	{
 		bool result = true;
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0, 0, 1, 1));
-		m_frame->PushState();
+		m_frame->PushAllState();
 		auto material = node->GetMaterial();
 		m_frame->SetDiffuseColor(material->GetDiffuseColor());
 
@@ -190,7 +190,7 @@ namespace Render
 
 		result = ApplyToChildren(node);
 
-		m_frame->PopState();
+		m_frame->PopAllState();
 		return result;
 	}
 
@@ -206,12 +206,12 @@ namespace Render
 		if (Math::Relation::VISIBLE != Math::ClassifyBoudingSphere(view * node->GetBoundingSphere(), clip_space))
 			return true;
 		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0, 0, 0, 1));
-		m_frame->PushState();
+		m_frame->PushAllState();
 		m_frame->SetLocalMatrix(node->GetLocalMatrix());
 		m_frame->MultWorldMatrix(node->GetLocalMatrix());
 
 		result = ApplyToChildren(node);
-		m_frame->PopState();
+		m_frame->PopAllState();
 
 		return result;
 	}
@@ -219,7 +219,7 @@ namespace Render
 	bool SimpleRender::Visit(Scene::LocationIndoorNode* node)
 	{
 		bool result = true;
-		m_frame->PushState();
+		m_frame->PushAllState();
 		m_frame->MultWorldMatrix(node->GetLocalMatrix());
 
 		auto pos = m_frame->GetViewMatrix().TranslationPart();
@@ -253,7 +253,7 @@ namespace Render
 			out_message() << "INSIDE" << std::endl;
 			result = ApplyToChildren(node);
 		}
-		m_frame->PopState();
+		m_frame->PopAllState();
 		return result;
 	}
 
@@ -269,7 +269,7 @@ namespace Render
 	bool SimpleRender::Visit(Scene::TerrainNode* node)
 	{
 		bool result = true;
-		m_frame->PushState();
+		m_frame->PushAllState();
 
 		auto camera_position = m_frame->GetViewMatrix().Inversed().TranslationPart();
 		Math::vec2 terrain_position = node->GetTerrainObserver()->GetTerrainView()->GetPosition();
@@ -298,24 +298,24 @@ namespace Render
 			m_frame->EnableTerrainRendering(true);
 			m_frame->Render(&m_grid);
 		}
-		m_frame->PopState();
+		m_frame->PopAllState();
 		return result;
 	}
 
 	void SimpleRender::RenderCube(float width, float height, float depth)
 	{
-		m_frame->PushState();
+		m_frame->PushAllState();
 		//	shift quad
 		m_frame->MultWorldMatrix(Math::mat4::CreateScaling(width, height, depth));
 		m_frame->SetDiffuseColor(Math::vec4(0,1,0,1));
 		m_frame->EnableWireframe(true);
 		m_frame->Render(&m_cube);
-		m_frame->PopState();
+		m_frame->PopAllState();
 	}
 
 	void SimpleRender::RenderSphere(const Math::vec3& position, float radius, const Math::vec4& color)
 	{
-		m_frame->PushState();
+		m_frame->PushAllState();
 		//	shift quad
 		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(position) * Math::mat4::CreateScaling(radius, radius, radius));
 		m_frame->SetDiffuseColor(color);
@@ -324,24 +324,24 @@ namespace Render
 		m_frame->EnableDiffuseShading(true);
 		m_frame->SetLineWidth(5.0f);
 		m_frame->Render(&m_sphere);
-		m_frame->PopState();
+		m_frame->PopAllState();
 	}
 
 	void SimpleRender::RenderQuad(float x, float y, float width, float height, const Math::vec4& color)
 	{
-		m_frame->PushState();
+		m_frame->PushAllState();
 		//	shift quadSTATE
 		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1));
 		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
 		m_frame->SetDiffuseColor(color);
 		m_frame->Render(&m_quad);
-		m_frame->PopState();
+		m_frame->PopAllState();
 	}
 
 	void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, GPU::Texture2D* texture)
 	{
-		m_frame->PushState();
+		m_frame->PushAllState();
 		//	shift quad
 		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1));
 		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
@@ -354,7 +354,7 @@ namespace Render
 		m_frame->EnableTexturing(true);
 		m_frame->EnableDiffuseShading(true);
 		m_frame->Render(&m_quad);
-		m_frame->PopState();
+		m_frame->PopAllState();
 	}
 
     void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4&)
@@ -365,7 +365,7 @@ namespace Render
 		s.SetSize(len, h);
 		s.SetText(text);
 
-		m_frame->PushState();
+		m_frame->PushAllState();
 		float width = 2.0f * len / (float)m_driver->GetWindow()->GetWidth();
 		float height = 2.0f * h / (float)m_driver->GetWindow()->GetHeight();
 		//	shift quad
@@ -378,7 +378,7 @@ namespace Render
 		m_frame->SetFontMap(s.GetTexture());
 		m_frame->EnableFontRendering(true);
 		m_frame->Render(&m_quad);
-		m_frame->PopState();
+		m_frame->PopAllState();
 	}
 
 	bool SimpleRender::Render()

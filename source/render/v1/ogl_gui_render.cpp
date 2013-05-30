@@ -26,50 +26,50 @@ namespace Render
 
 	void GUIRender::RenderWidget(const GUI::Widget* widget)
 	{
-		if (!widget)
-			return;
+//		if (!widget)
+//			return;
 
-		m_states.Push();
-		m_states.CurrentState()->Get().m_projection = Math::mat4::CreateIdentity();
-		float x = -1 + 2*widget->GetX();
-		float y = -1 + 2*widget->GetY();
-		float w = widget->GetWidth();
-		float h = widget->GetHeight();
-		m_states.CurrentState()->Get().m_local = Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1);
-		if (widget->GetManager()->GetFocusedWidget() == widget)
-			m_states.CurrentState()->Get().m_diffuse_color = widget->BackColor() + m_selection_color_delta;
-		else
-			m_states.CurrentState()->Get().m_diffuse_color = widget->BackColor();
+////		m_states.Push();
+//		m_states.CurrentState()->Get().m_projection = Math::mat4::CreateIdentity();
+//		float x = -1 + 2*widget->GetX();
+//		float y = -1 + 2*widget->GetY();
+//		float w = widget->GetWidth();
+//		float h = widget->GetHeight();
+//		m_states.CurrentState()->Get().m_local = Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1);
+//		if (widget->GetManager()->GetFocusedWidget() == widget)
+//			m_states.CurrentState()->Get().m_diffuse_color = widget->BackColor() + m_selection_color_delta;
+//		else
+//			m_states.CurrentState()->Get().m_diffuse_color = widget->BackColor();
 
-		m_states.CurrentState()->Get().m_text_color = widget->TextColor();
-		m_states.CurrentState()->Get().m_use_diffuse_texture = widget->GetBackgroundTexture() != nullptr;
-		m_tc->SetTexture(1, widget->GetBackgroundTexture());
-		m_tc->SetTexture(0, widget->GetTextTexture());
-		m_states.CurrentState()->Get().m_diffuse_slot_0 = 1;
-		m_states.CurrentState()->Get().m_text_slot = 0;
-		m_states.CurrentState()->Get().m_no_diffuse_texture_color = widget->GetBackColor();
-		m_states.CurrentState()->Get().m_texture_matrix = Math::mat4::CreateReflectX();
-		m_states.CurrentState()->Get().m_enable_blending = true;
-		m_tc->Bind();
+//		m_states.CurrentState()->Get().m_text_color = widget->TextColor();
+//		m_states.CurrentState()->Get().m_use_diffuse_texture = widget->GetBackgroundTexture() != nullptr;
+//		m_tc->SetTexture(1, widget->GetBackgroundTexture());
+//		m_tc->SetTexture(0, widget->GetTextTexture());
+//		m_states.CurrentState()->Get().m_diffuse_slot_0 = 1;
+//		m_states.CurrentState()->Get().m_text_slot = 0;
+//		m_states.CurrentState()->Get().m_no_diffuse_texture_color = widget->GetBackColor();
+//		m_states.CurrentState()->Get().m_texture_matrix = Math::mat4::CreateReflectX();
+//		m_states.CurrentState()->Get().m_enable_blending = true;
+//		m_tc->Bind();
 
-		m_rc->Begin();
-		m_rc->BindParameters(m_states.CurrentState()->Get());
+//		m_rc->Begin();
+//		m_rc->BindParameters(m_states.CurrentState()->Get());
 
-		m_quad.Bind(m_rc->GetRequiredAttributesSet());
-		m_quad.Render();
-		m_quad.Unbind();
+//		m_quad.Bind(m_rc->GetRequiredAttributesSet());
+//		m_quad.Render();
+//		m_quad.Unbind();
 
-		m_tc->Unbind();
-		m_rc->End();
+//		m_tc->Unbind();
+//		m_rc->End();
 
-		for (auto o : *widget)
-		{
-			GUI::Widget* child = As<GUI::Widget*>(o);
-			if (child)
-				if (child->IsVisible())
-					child->Render(this);
-		}
-		m_states.Pop();
+//		for (auto o : *widget)
+//		{
+//			GUI::Widget* child = As<GUI::Widget*>(o);
+//			if (child)
+//				if (child->IsVisible())
+//					child->Render(this);
+//		}
+//		m_states.Pop();
 	}
 
     void GUIRender::Begin(int, int, int, int)

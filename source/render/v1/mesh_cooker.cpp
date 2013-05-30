@@ -78,22 +78,22 @@ namespace Render
 			Virtual::StaticGeometry* geom = Virtual::StaticGeometry::find(node->GetStorageName());
 
 			GPU::StaticMesh* mesh = 0;
-			if (geom->IsGPUCacheValid())
-				mesh = nullptr;	//	Cast<GPU::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
-			else
-			{
-				mesh = nullptr;	//new GPU::OpenGL::StaticMesh;
-				try
-				{
-					mesh->Cook(geom);
-					geom->SetGPUBufferCache(nullptr);
-				}
-				catch (...)
-				{
-					delete mesh;
-					throw;
-				}
-			}
+//			if (geom->IsGPUCacheValid())
+//				mesh = nullptr;	//	Cast<GPU::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
+//			else
+//			{
+//				mesh = nullptr;	//new GPU::OpenGL::StaticMesh;
+//				try
+//				{
+//					mesh->Cook(geom);
+//					geom->SetGPUBufferCache(nullptr);
+//				}
+//				catch (...)
+//				{
+//					delete mesh;
+//					throw;
+//				}
+//			}
 			node->SetGeometry(geom);
 		}
 		return true;
