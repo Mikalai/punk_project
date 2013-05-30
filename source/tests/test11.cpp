@@ -1,16 +1,13 @@
-#include "test8.h"
+#include "test11.h"
 
-//
-//	Per fragment lighting
-//
-namespace Test8
+namespace Test11
 {
 	class TestApp : public Punk::Application
 	{
 		float m_x;
 		float m_y;
 		float m_z;
-		std::unique_ptr<GPU::Renderable> m_renderable;
+		GPU::Renderable* m_renderable;
 		static const unsigned max_model = 2;
 		static const unsigned max_atten = 3;
 		GPU::LightModel m_model[2];
@@ -20,8 +17,8 @@ namespace Test8
 		float m_specular;
 		bool m_use_texture;
 		bool m_use_transparency;
-		std::unique_ptr<GPU::Texture2D> m_opaque_texture;
-		std::unique_ptr<GPU::Texture2D> m_transparent_texture;
+		GPU::Texture2D* m_opaque_texture;
+		GPU::Texture2D* m_transparent_texture;
 		GPU::Texture2D* m_texture;
 	public:
 		TestApp()
@@ -47,48 +44,18 @@ namespace Test8
 
 		virtual void OnInit(const Punk::Config&) override
 		{
-			GPU::RenderableBuilder b(GetVideoDriver());
-			b.Begin(GPU::PrimitiveType::QUADS);
-			{
-				// Front Face
-				b.Normal3f( 0.0f, 0.0f, 1.0f); b.TexCoord2f(0.0f, 0.0f); b.Vertex3f(-1.0f, -1.0f,  1.0f);  // Point 1 (Front)
-				b.Normal3f( 0.0f, 0.0f, 1.0f); b.TexCoord2f(1.0f, 0.0f); b.Vertex3f( 1.0f, -1.0f,  1.0f);  // Point 2 (Front)
-				b.Normal3f( 0.0f, 0.0f, 1.0f); b.TexCoord2f(1.0f, 1.0f); b.Vertex3f( 1.0f,  1.0f,  1.0f);  // Point 3 (Front)
-				b.Normal3f( 0.0f, 0.0f, 1.0f); b.TexCoord2f(0.0f, 1.0f); b.Vertex3f(-1.0f,  1.0f,  1.0f);  // Point 4 (Front)
-				// Back Face
-				b.Normal3f( 0.0f, 0.0f,-1.0f); b.TexCoord2f(1.0f, 0.0f); b.Vertex3f(-1.0f, -1.0f, -1.0f);  // Point 1 (Back)
-				b.Normal3f( 0.0f, 0.0f,-1.0f); b.TexCoord2f(1.0f, 1.0f); b.Vertex3f(-1.0f,  1.0f, -1.0f);  // Point 2 (Back)
-				b.Normal3f( 0.0f, 0.0f,-1.0f); b.TexCoord2f(0.0f, 1.0f); b.Vertex3f( 1.0f,  1.0f, -1.0f);  // Point 3 (Back)
-				b.Normal3f( 0.0f, 0.0f,-1.0f); b.TexCoord2f(0.0f, 0.0f); b.Vertex3f( 1.0f, -1.0f, -1.0f);  // Point 4 (Back)
-				// Top Face
-				b.Normal3f( 0.0f, 1.0f, 0.0f); b.TexCoord2f(0.0f, 1.0f); b.Vertex3f(-1.0f,  1.0f, -1.0f);  // Point 1 (Top)
-				b.Normal3f( 0.0f, 1.0f, 0.0f); b.TexCoord2f(0.0f, 0.0f); b.Vertex3f(-1.0f,  1.0f,  1.0f);  // Point 2 (Top)
-				b.Normal3f( 0.0f, 1.0f, 0.0f); b.TexCoord2f(1.0f, 0.0f); b.Vertex3f( 1.0f,  1.0f,  1.0f);  // Point 3 (Top)
-				b.Normal3f( 0.0f, 1.0f, 0.0f); b.TexCoord2f(1.0f, 1.0f); b.Vertex3f( 1.0f,  1.0f, -1.0f);  // Point 4 (Top)
-				// Bottom Face
-				b.Normal3f( 0.0f,-1.0f, 0.0f); b.TexCoord2f(1.0f, 1.0f); b.Vertex3f(-1.0f, -1.0f, -1.0f);  // Point 1 (Bottom)
-				b.Normal3f( 0.0f,-1.0f, 0.0f); b.TexCoord2f(0.0f, 1.0f); b.Vertex3f( 1.0f, -1.0f, -1.0f);  // Point 2 (Bottom)
-				b.Normal3f( 0.0f,-1.0f, 0.0f); b.TexCoord2f(0.0f, 0.0f); b.Vertex3f( 1.0f, -1.0f,  1.0f);  // Point 3 (Bottom)
-				b.Normal3f( 0.0f,-1.0f, 0.0f); b.TexCoord2f(1.0f, 0.0f); b.Vertex3f(-1.0f, -1.0f,  1.0f);  // Point 4 (Bottom)
-				// Right face
-				b.Normal3f( 1.0f, 0.0f, 0.0f); b.TexCoord2f(1.0f, 0.0f); b.Vertex3f( 1.0f, -1.0f, -1.0f);  // Point 1 (Right)
-				b.Normal3f( 1.0f, 0.0f, 0.0f); b.TexCoord2f(1.0f, 1.0f); b.Vertex3f( 1.0f,  1.0f, -1.0f);  // Point 2 (Right)
-				b.Normal3f( 1.0f, 0.0f, 0.0f); b.TexCoord2f(0.0f, 1.0f); b.Vertex3f( 1.0f,  1.0f,  1.0f);  // Point 3 (Right)
-				b.Normal3f( 1.0f, 0.0f, 0.0f); b.TexCoord2f(0.0f, 0.0f); b.Vertex3f( 1.0f, -1.0f,  1.0f);  // Point 4 (Right)
-				// Left Face
-				b.Normal3f(-1.0f, 0.0f, 0.0f); b.TexCoord2f(0.0f, 0.0f); b.Vertex3f(-1.0f, -1.0f, -1.0f);  // Point 1 (Left)
-				b.Normal3f(-1.0f, 0.0f, 0.0f); b.TexCoord2f(1.0f, 0.0f); b.Vertex3f(-1.0f, -1.0f,  1.0f);  // Point 2 (Left)
-				b.Normal3f(-1.0f, 0.0f, 0.0f); b.TexCoord2f(1.0f, 1.0f); b.Vertex3f(-1.0f,  1.0f,  1.0f);  // Point 3 (Left)
-				b.Normal3f(-1.0f, 0.0f, 0.0f); b.TexCoord2f(0.0f, 1.0f); b.Vertex3f(-1.0f,  1.0f, -1.0f);  // Point 4 (Left)
-			}
-			b.End();
+			Virtual::StaticGeometry* g = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"Cube.001.static"));
 
-			m_renderable.reset(b.ToRenderable());
+			GPU::StaticMesh* mesh(new GPU::StaticMesh(GetVideoDriver()));
+			mesh->Cook(g);
+			delete g;
 
-			m_opaque_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"wood_floor.png", true));
-			m_transparent_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"Glass.png", true));
+			m_renderable = mesh;
 
-			m_texture = m_opaque_texture.get();
+			m_opaque_texture = GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"wood_floor.png", true);
+			m_transparent_texture = GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"Glass.png", true);
+
+			m_texture = m_opaque_texture;
 		}
 
 		virtual void OnMouseWheel(System::MouseWheelEvent *event)
@@ -132,14 +99,14 @@ namespace Test8
 		{
 			if (m_use_transparency)
 			{
-				m_texture = m_transparent_texture.get();
+				m_texture = m_transparent_texture;
 				frame->EnableBlending(true);
 				frame->EnableDepthTest(false);
 				frame->SetBlendColor(1,1,1,1);
 			}
 			else
 			{
-				m_texture = m_opaque_texture.get();
+				m_texture = m_opaque_texture;
 				frame->EnableBlending(false);
 				frame->EnableDepthTest(true);
 			}
@@ -156,11 +123,20 @@ namespace Test8
 			frame->PushAllState();
 			frame->EnableLighting(true);
 
-			if (m_use_texture)
-				frame->SetDiffuseColor(Math::vec4(1,1,1,0.5));
+			if (m_use_transparency)
+			{
+				if (m_use_texture)
+					frame->SetDiffuseColor(Math::vec4(1,1,1,0.5));
+				else
+					frame->SetDiffuseColor(Math::vec4(1,0,0,0.5));
+			}
 			else
-				frame->SetDiffuseColor(Math::vec4(1,0,0,0.5));
-
+			{
+				if (m_use_texture)
+					frame->SetDiffuseColor(Math::vec4(1,1,1,1));
+				else
+					frame->SetDiffuseColor(Math::vec4(1,0,0,1));
+			}
 
 			frame->Light(0).SetPosition(2, 2, 0);
 			frame->Light(0).SetDirection(Math::vec3(-2,-2,-7).Normalize());
@@ -180,7 +156,7 @@ namespace Test8
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_x));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_y));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 0, 1, m_z));
-			frame->Render(m_renderable.get());
+			frame->Render(m_renderable);
 			frame->PopAllState();
 
 			//frame->SetDiffuseColor(Math::vec4(1,1,1,1));

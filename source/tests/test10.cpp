@@ -2,25 +2,29 @@
 
 namespace Test10
 {
-	class TestApp : public Punk::Application
+	class TestApp
 	{
-		System::Object* m_map;
+		Math::Graph m_graph;
 	public:
+
 		TestApp()
 		{
 		}
 
-		virtual void OnInit(const Punk::Config &value)
+		void Run()
 		{
+			Math::GraphVertex* vertex = new Math::GraphVertex(&m_graph, (void*)10);
+			vertex->AddVertex(new Math::GraphVertex(&m_graph, (void*)20));
+			vertex->AddVertex(new Math::GraphVertex(&m_graph, (void*)30));
 
+			std::cout << "Vertex count: " << m_graph.GetVertexCount() << std::endl;
+			std::cout << "Edge count: " << m_graph.GetEdgeCount() << std::endl;
+
+			m_graph.Clear();
+
+			std::cout << "Vertex count: " << m_graph.GetVertexCount() << std::endl;
+			std::cout << "Edge count: " << m_graph.GetEdgeCount() << std::endl;
 		}
-
-		virtual void OnRender(GPU::Frame* frame) override
-		{
-
-
-		}
-
 	};
 
 	void Test::Run()
@@ -28,8 +32,6 @@ namespace Test10
 		TestApp app;
 		try
 		{
-			app.Init(Punk::Config());
-			System::Mouse::Instance()->LockInWindow(false);
 			app.Run();
 		}
 		catch(System::PunkException& e)
