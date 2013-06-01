@@ -31,6 +31,6 @@ namespace GUI
 */
 	System::string SetFocusedEvent::ToString()
 	{
-		return System::string::Format(L"Code: %d; Type: FOCUSED", eventCode);
+        return System::string("Code: {0}; Type: FOCUSED").arg(eventCode);
 	}
 }

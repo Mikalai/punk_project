@@ -9,7 +9,7 @@ namespace System
 
 	string MouseMiddleButtonUpEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: MOUSE_MBTNUP; x: %d; y: %d; x_prev: %d; y_prev: %d;",
+		return string("Code: %d; Type: MOUSE_MBTNUP; x: %d; y: %d; x_prev: %d; y_prev: %d;",
 							   eventCode, x, y, x_prev, y_prev);
 	}
 

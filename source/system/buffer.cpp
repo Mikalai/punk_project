@@ -77,10 +77,10 @@ namespace System
 		return (const void*)m_buffer;
 	}
 
-    unsigned int64_t Buffer::ReadUnsigned64()
+    uint64_t Buffer::ReadUnsigned64()
 	{
-        unsigned int64_t res = *(unsigned int64_t*)(m_current);
-        m_current += sizeof(unsigned int64_t);
+        uint64_t res = *(uint64_t*)(m_current);
+        m_current += sizeof(uint64_t);
 		return res;
 	}
 
@@ -185,12 +185,12 @@ namespace System
 		m_current += size;
 	}
 
-	void Buffer::WriteUnsigned64(unsigned __int64 value)
+    void Buffer::WriteUnsigned64(uint64_t value)
 	{
 		WriteData(&value, sizeof(value));
 	}
 
-	void Buffer::WriteSigned64(__int64 value)
+    void Buffer::WriteSigned64(int64_t value)
 	{
 		WriteData(&value, sizeof(value));
 	}

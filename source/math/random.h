@@ -14,11 +14,11 @@ namespace Math
 		uint64_t m_b;
 	public:
 		Random();
-		Random(unsigned __int64 seed);
+		Random(uint64_t seed);
 
-		void SetSeed(unsigned __int64 value);
+		void SetSeed(uint64_t value);
 
-		unsigned __int64 Uniformi();
+		uint64_t Uniformi();
 
 		/**
 		*	Returns a random number in the range [0; 1]

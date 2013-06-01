@@ -9,12 +9,18 @@ namespace System
 	class PUNK_ENGINE_PUBLIC Thread : public OsHandle
 	{
 	public:
-		bool Create(unsigned (__stdcall *thread_func)(void*), void* data = 0, unsigned stack = 4096); 
+#ifdef _WIN32
+        bool Create(unsigned (PUNK_STDCALL *thread_func)(void*), void* data = 0, unsigned stack = 4096);
+#elif defined __gnu_linux__
+        bool Create(void* (PUNK_STDCALL *thread_func)(void*), void* data = 0, unsigned stack = 4096);
+#endif
 		bool Join();
 		bool Resume();
 		bool Destroy();
 		//bool Terminate();
 		~Thread();
+
+        static Thread GetOwnThread();
 	};
 }
 

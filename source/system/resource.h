@@ -11,8 +11,8 @@
 //	template<class T>
 //	class Resource
 //	{
-//		__int64 m_code;
-//		__int64 m_last_access;
+//		int64_t m_code;
+//		int64_t m_last_access;
 //		bool m_unloaded;
 //		T* m_resource;
 //	public:
@@ -50,8 +50,8 @@
 //		}
 //
 //		virtual bool WasAccessedLately() { return Timer::GetGlobalTimer()->GetCurrentSystemTimeUS() - m_last_access < 60000; }
-//		virtual void SetCode(__int64 code) { m_code = code; }
-//		virtual __int64 GetCode() { return m_code; }
+//		virtual void SetCode(int64_t code) { m_code = code; }
+//		virtual int64_t GetCode() { return m_code; }
 //
 //		operator T* ()
 //		{

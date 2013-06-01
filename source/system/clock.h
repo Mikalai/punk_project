@@ -51,7 +51,11 @@ namespace System
 
         static const int timeSize = 64;
         wchar_t the_time[timeSize];
-        int64_t m_time;
+#ifdef _WIN32
+        __time64_t m_time;
+#elif defined __linux__
+        time_t m_time;
+#endif
         int64_t m_us;
 		tm m_date;
     };

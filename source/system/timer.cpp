@@ -6,22 +6,65 @@
 #define NOMINMAX
 #endif
 #include <Windows.h>
+#elif defined __gnu_linux__
+#include <sys/time.h>
 #endif
 
 namespace System
 {
 	struct Timer::Impl
 	{
-#ifdef _WIN32		
-		LARGE_INTEGER m_frequency;
-		LARGE_INTEGER m_last_check;
+        double m_last_check;
+
+        uint64_t GetTickCount() const
+        {
+#ifdef _WIN32
+            LARGE_INTEGER li;
+            QueryPerformanceCounter(&li);
+            return li.QuadPart;
+#elif defined __gnu_linux__
+            union {
+                unsigned long dw[2];
+                unsigned long long counter;
+            } tc;
+
+            __asm__ __volatile__ (
+                        ".byte 0x0f, 0x31\n"
+                        :"d=" (tc.dw[1]), "a=" (tc.dw[0]):
+                :"%eax", "%edx"
+                );
+            return tc.counter;
 #endif
+        }
+
+        //  returns time in seconds
+        double GetCurrentTime() const
+        {
+#ifdef _WIN32
+            auto current = GetTickCount()/(double)GetFrequency();
+            return current - m_last_check;
+#elif defined __gnu_linux__
+            timeval cur_time;
+            gettimeofday(&cur_time, nullptr);
+            double res = cur_time.tv_sec + (double)cur_time.tv_usec / 1000000.0;
+            return res;
+#endif
+        }
+
+        uint64_t GetFrequency() const
+        {
+#ifdef _WIN32
+            LARG_INTEGER li;
+            QueryPerformanceFrequency(&li);
+            return li.QuadPart;
+#elif defined __gnu_linux__
+            return 0;
+#endif
+        }
 
 		double GetElapsedSeconds() const
 		{
-			LARGE_INTEGER li;
-			QueryPerformanceCounter(&li);
-			return (double)(li.QuadPart - m_last_check.QuadPart)/(double)m_frequency.QuadPart;
+            return GetCurrentTime() - m_last_check;
 		}
 
 		double GetElapsedMiliseconds() const
@@ -29,35 +72,17 @@ namespace System
 			return GetElapsedSeconds() * 1000.0;
 		}
 
-		long long GetElapsedTicks() const
+        double Reset()
 		{
-			LARGE_INTEGER li;
-			QueryPerformanceCounter(&li);
-			return li.QuadPart - m_last_check.QuadPart;
-		}
-
-		long long GetFrequency() const
-		{
-			return m_frequency.QuadPart;
-		}
-
-		long long Reset()
-		{
-			QueryPerformanceCounter(&m_last_check);
-			return m_last_check.QuadPart;
+            m_last_check = GetCurrentTime();
+            return m_last_check;
 		}
 
 		Impl()
-		{
-			LARGE_INTEGER li;
-			QueryPerformanceFrequency(&li);
-			m_frequency = li;
-			QueryPerformanceCounter(&m_last_check);
-		}
+        {}
 
 		Impl(const Impl& v)
-			: m_frequency(v.m_frequency)
-			, m_last_check(v.m_last_check)
+            : m_last_check(v.m_last_check)
 		{}
 	};
 
@@ -82,18 +107,13 @@ namespace System
 		return impl->GetElapsedMiliseconds();
 	}
 		
-	long long Timer::GetElapsedTicks() const
-	{
-		return impl->GetElapsedTicks();
-	}
-
-	long long Timer::GetFrequency() const
-	{
-		return impl->GetFrequency();
-	}
-
-	long long Timer::Reset()
+    double Timer::Reset()
     {
 		return impl->Reset();
+    }
+
+    double Timer::GetCurrentTime() const
+    {
+        return impl->GetCurrentTime();
     }
 }

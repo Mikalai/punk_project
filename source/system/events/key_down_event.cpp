@@ -9,7 +9,7 @@ namespace System
 
 	string KeyDownEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: KEY_DOWN; Key: %d; Repeat: %d; Scancode: %d \
+		return string("Code: %d; Type: KEY_DOWN; Key: %d; Repeat: %d; Scancode: %d \
 IsExtended: %s; PrevState: %s; TransitionState: %s", eventCode, key,
 							   repeat_count, scan_code, isExtended ? L"TRUE" : L"FALSE",
 							   prevState ? L"TRUE" : L"FALSE",

@@ -6,6 +6,7 @@
 #include <ostream>
 #include <fstream>
 #include <sstream>
+#include <cstdint>
 
 #include "../config.h"
 //#include "stack_trace.h"
@@ -20,7 +21,7 @@ namespace System
 	struct PUNK_ENGINE_PUBLIC Streamer
 	{
 	private:
-		typedef std::basic_ostream<wchar_t, std::char_traits<wchar_t>> _Myt;
+        typedef std::basic_ostream<wchar_t, std::char_traits<wchar_t>> _Myt;
 		typedef std::basic_ios<wchar_t, std::char_traits<wchar_t>> _Myios;
 	public:
 		Streamer();
@@ -31,20 +32,18 @@ namespace System
 		Streamer& operator << (char v);
 		Streamer& operator << (wchar_t v);
 		Streamer& operator << (unsigned char v);
-		Streamer& operator << (short v);
-		Streamer& operator << (unsigned short v);
-		Streamer& operator << (long v);
-		Streamer& operator << (unsigned long v);
-		Streamer& operator << (int v);
-		Streamer& operator << (unsigned int v);
-		Streamer& operator << (__int64 v);
-		Streamer& operator << (unsigned __int64 v);
+        Streamer& operator << (int16_t v);
+        Streamer& operator << (uint16_t v);
+        Streamer& operator << (int32_t v);
+        Streamer& operator << (uint32_t v);
+        Streamer& operator << (int64_t v);
+        Streamer& operator << (uint64_t v);
 		Streamer& operator << (float v);
 		Streamer& operator << (double v);
         Streamer& operator << (long double v);
-		Streamer& operator << (_Myt& (__cdecl *_Pfn)(_Myt&));
-		Streamer& operator << (_Myios& (__cdecl *_Pfn)(_Myios&));
-		Streamer& operator << (std::ios_base& (__cdecl *_Pfn)(std::ios_base&));
+        Streamer& operator << (_Myt& (*_Pfn)(_Myt&));
+        Streamer& operator << (_Myios& (*_Pfn)(_Myios&));
+        Streamer& operator << (std::ios_base& (*_Pfn)(std::ios_base&));
 		static Streamer& Instance();
 		static void Destroy();
 

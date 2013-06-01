@@ -691,9 +691,12 @@ namespace Math
 
 		System::string ToString() const
 		{
-			return System::string::Format(L"\n(%7.3f %7.3f %7.3f %7.3f)\n(%7.3f %7.3f %7.3f %7.3f)\n(%7.3f %7.3f %7.3f %7.3f)\n(%7.3f %7.3f %7.3f %7.3f)\n",
-				m[0], m[4], m[8], m[12], m[1], m[5], m[9], m[13], m[2], m[6], m[10], m[14], m[3], m[7], m[11], m[15]);
+            return System::string("\n({0:7.3} {1:7.3} {2:7.3} {3:7.3})\n({4:7.3} {5:7.3} {6:7.3} {7:7.3})\n({8:7.3} {9:7.3} {10:7.3} {11:7.3})\n({12:7.3} {13:7.3} {14:7.3} {15:7.3})\n")
+                    .arg(m[0]).arg(m[4]).arg(m[8]).arg(m[12]).arg(m[1]).arg(m[5])
+                    .arg(m[9]).arg(m[13]).arg(m[2]).arg(m[6]).arg(m[10]).arg(m[14])
+                    .arg(m[3]).arg(m[7]).arg(m[11]).arg(m[15]);
 		}
+
 
 		bool Save(std::ostream& stream) const
 		{

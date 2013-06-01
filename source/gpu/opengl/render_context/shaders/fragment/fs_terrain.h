@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_OPENGL_ShaderType_Fragment_TERRAIN
 #define _H_PUNK_OPENGL_ShaderType_Fragment_TERRAIN
 
-#include "..\shader.h"
+#include "../shader.h"
 
 namespace GPU
 {

@@ -2666,8 +2666,8 @@ typedef unsigned long long int uint64_t;
 #include <stdint.h>
 #elif defined(_WIN32)
 typedef __int32 int32_t;
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
+typedef int64_t int64_t;
+typedef uint64_t uint64_t;
 #else
 /* Fallback if nothing above works */
 #include <inttypes.h>

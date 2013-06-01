@@ -183,16 +183,16 @@ namespace GPU
 
 		GLint t;
 
-		out_message() << System::string::Format(L"\tRenderer: %s ", System::string((const char*)glGetString(GL_RENDERER)).Data()) << std::endl;
+		out_message() << System::string("\tRenderer: %s ", System::string((const char*)glGetString(GL_RENDERER)).Data()) << std::endl;
 		out_message() << L"\tVendor: " + System::string((const char*)glGetString(GL_VENDOR)) << std::endl;
 		out_message() << L"\tVersion: " + System::string((const char*)glGetString(GL_VERSION)) << std::endl;
 		out_message() << L"\tGLSL version: " + System::string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION)) << std::endl;
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &t);
-		out_message() << System::string::Format(L"\tMax vertex attribs: %d", t) << std::endl;
+		out_message() << System::string("\tMax vertex attribs: %d", t) << std::endl;
 		glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &t);
-		out_message() << System::string::Format(L"\tMax vertex uniform components: %d", t) << std::endl;
+		out_message() << System::string("\tMax vertex uniform components: %d", t) << std::endl;
 		glGetIntegerv(GL_MAX_VARYING_FLOATS, &t);
-		out_message() << System::string::Format(L"\tMax varying floats: %d", t) << std::endl;
+		out_message() << System::string("\tMax varying floats: %d", t) << std::endl;
 		glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &t);
 		out_message() << L"\tMax 3D texture size: " << t << std::endl;
 		glGetIntegerv(GL_MAX_CLIP_DISTANCES, &t);

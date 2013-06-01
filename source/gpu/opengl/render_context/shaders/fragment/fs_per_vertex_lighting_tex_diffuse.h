@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_OPENGL_FRAGMENT_PER_VERTEX_LIGHTING_TEXTURE_DIFFUSE
 #define _H_PUNK_OPENGL_FRAGMENT_PER_VERTEX_LIGHTING_TEXTURE_DIFFUSE
 
-#include "..\shader.h"
+#include "../shader.h"
 
 namespace GPU
 {

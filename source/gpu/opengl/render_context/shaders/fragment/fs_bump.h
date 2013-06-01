@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_OPENGL_FRAGMENT_SHADER_BUMP
 #define _H_PUNK_OPENGL_FRAGMENT_SHADER_BUMP
 
-#include "..\shader.h"
+#include "../shader.h"
 
 namespace GPU
 {

@@ -10,6 +10,6 @@ namespace System
 
 	string KeyCharEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: KEY_CHAR", eventCode);
+		return string("Code: %d; Type: KEY_CHAR", eventCode);
 	}
 }

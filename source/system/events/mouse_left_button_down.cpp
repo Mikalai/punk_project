@@ -9,7 +9,7 @@ namespace System
 
 	string MouseLeftButtonDownEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: MOUSE_LBTNDOWN; x: %d; y: %d; x_prev: %d; y_prev: %d;",
+		return string("Code: %d; Type: MOUSE_LBTNDOWN; x: %d; y: %d; x_prev: %d; y_prev: %d;",
 							   eventCode, x, y, x_prev, y_prev);
 	}
 }

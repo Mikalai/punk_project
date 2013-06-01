@@ -27,16 +27,28 @@ namespace System
 	Clock::Clock()
 	{
 		m_time = 0;
-		m_us = 0;
-		_localtime64_s(&m_date, &m_time);
+		m_us = 0;        
+
+#ifdef __linux__
+        m_date = *localtime(&m_time);
+#elif defined _WIN32
+        _localtime64_s(m_date, &m_time);
+#endif
+
 	}
 
 	const string Clock::ToString() const
 	{
+#ifdef _WIN32
 		wchar_t buffer[256];
 		_wasctime_s(buffer, 256, &m_date);
 		buffer[24] = 0;
 		return string(buffer);
+#elif defined __linux__
+        string str(asctime(&m_date));
+        str[24] = 0;
+        return str;
+#endif
 	}
 
 	int Clock::Hour() const
@@ -89,7 +101,11 @@ namespace System
 		m_us += dt;
 		m_time += m_us / 1000000;
 		m_us %= 1000000;
+#ifdef _WIN32
 		_gmtime64_s(&m_date, &m_time);
+#elif defined __linux__
+        m_date = *gmtime(&m_time);
+#endif
 	}
 
 	int64_t Clock::SysTimeAsSecondsFromJanuary_1970_1()
@@ -101,6 +117,7 @@ namespace System
 
 	const string Clock::SysTimeAsUTC()
 	{
+#ifdef _WIN32
 		char buffer[32];
 		__time32_t t;
 		time(&t);
@@ -110,10 +127,20 @@ namespace System
 		// replace new line in the time string. 24 because total length 26 and it is STANDARD
 		buffer[24] = '\0';
 		return string(buffer);
+#elif defined __linux__
+        time_t t;
+        time(&t);
+        tm _tm = *gmtime(&t);
+        string str(asctime(&_tm));
+        // replace new line in the time string. 24 because total length 26 and it is STANDARD
+        str[24] = '\0';
+        return str;
+#endif
 	}
 
 	const string Clock::SysTimeNowAsLocal()
 	{
+#ifdef _WIN32
 		char buffer[32];
 		time_t t;
 		time(&t);
@@ -123,6 +150,15 @@ namespace System
 		// replace new line in the time string. 24 because total length 26 and it is STANDARD
 		buffer[24] = '\0';
 		return string(buffer);
+#elif defined __linux__
+        time_t t;
+        time(&t);
+        tm _tm = *localtime(&t);
+        string str(asctime(&_tm));
+        // replace new line in the time string. 24 because total length 26 and it is STANDARD
+        str[24] = '\0';
+        return str;
+#endif
 	}
 
 	void Clock::Set(int Year, int Month, int Day, int Hour, int Min, int Sec)
@@ -135,8 +171,13 @@ namespace System
 		m_date.tm_min = Min;
 		m_date.tm_sec = Sec;
 
+#ifdef _WIN32
 		m_time = _mktime64(&m_date);
 		_gmtime64_s(&m_date, &m_time);
+#elif defined __linux__
+        m_time = mktime(&m_date);
+        m_date = *gmtime(&m_time);
+#endif
 	}
 /*
 	void Clock::Store(Buffer& buffer)

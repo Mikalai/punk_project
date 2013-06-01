@@ -15,11 +15,10 @@ namespace System
         Timer();
 		~Timer();
 
+        double GetCurrentTime() const;
         double GetElapsedSeconds() const;
 		double GetElapsedMiliseconds() const;
-		long long GetElapsedTicks() const;
-		long long GetFrequency() const;
-        long long Reset();		
+        double Reset();
 
 	private:
 		Timer(const Timer&);

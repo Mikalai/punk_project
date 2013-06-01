@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_OPENGL_VERTEX_SHADER_SKINNING
 #define _H_PUNK_OPENGL_VERTEX_SHADER_SKINNING
 
-#include "..\shader.h"
+#include "../shader.h"
 
 namespace GPU
 {

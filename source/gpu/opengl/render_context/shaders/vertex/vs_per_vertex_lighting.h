@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_OPENGL_VERTEX_PER_VERTEX_LIGHTING
 #define _H_PUNK_OPENGL_VERTEX_PER_VERTEX_LIGHTING
 
-#include "..\shader.h"
+#include "../shader.h"
 
 namespace GPU
 {

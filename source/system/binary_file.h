@@ -12,6 +12,7 @@ namespace System
 	class PUNK_ENGINE_PUBLIC BinaryFile
 	{
 	public:
+
 		static bool Load(const string& filename, Buffer& buffer);
 		static bool Load(std::istream& stream, Buffer& buffer);
 		static bool Save(const string& filename, const Buffer& buffer);

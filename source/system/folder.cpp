@@ -4,7 +4,9 @@
 #define NOMINMAX
 #endif // NOMINMAX
 #include <Windows.h>
-#endif // _WIN32
+#elif defined __gnu_linux__
+#include <unistd.h>
+#endif
 
 #include "logger.h"
 #include "../string/string.h"
@@ -142,13 +144,32 @@ namespace System
 
 	const string Folder::GetCurrentFolder()
 	{
+#ifdef _WIN32
 		wchar_t buf[MAX_PATH];
 		GetCurrentDirectory(MAX_PATH, buf);
 		return string(buf);
+#elif defined __gnu_linux__
+        char* res = getcwd(nullptr, 0);
+        try
+        {
+            System::string str(res);
+            free(res);
+            return str;
+        }
+        catch(...)
+        {
+            free(res);
+            throw;
+        }
+#endif
 	}
 
 	void Folder::SetCurrentFolder(const string& value)
 	{
+#ifdef _WIN32
 		SetCurrentDirectory(value.Data());
+#elif defined __gnu_linux__
+        chdir(value.Data());
+#endif
 	}
 }

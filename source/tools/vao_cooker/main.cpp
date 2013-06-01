@@ -228,7 +228,7 @@ int main(int argc, char** argv)
 //	_CrtSetBreakAlloc(372);
 	if (argc == 1)
 	{
-		out_error() << System::string::Format(L"Not enough parameters. Should be provided a list of pmd files. They will be converted to vao. vao_cooker.exe --skinned|--static file.pmd") << std::endl;
+		out_error() << System::string("Not enough parameters. Should be provided a list of pmd files. They will be converted to vao. vao_cooker.exe --skinned|--static file.pmd") << std::endl;
 		return 0;
 	}
 

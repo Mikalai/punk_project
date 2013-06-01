@@ -78,7 +78,7 @@ namespace Math
 
 		Vector2<T>& operator = (const Vector2<T>& vec)
 		{
-			memcpy_s(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
+            punk_memcpy(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
 			return *this;
 		}
 
@@ -94,11 +94,7 @@ namespace Math
 
 		Vector2<T>(const Vector2<T>& vec)
 		{
-#ifdef _WIN32
-			memcpy_s(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
-#else
-            memcpy(m_v, vec.m_v, sizeof(m_v));
-#endif
+            punk_memcpy(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
 		}
 
 		Vector2<T>(const Vector2<T>& origin, const Vector2<T>& destination)
@@ -151,7 +147,7 @@ namespace Math
 
 		System::string ToString() const
 		{
-			return System::string::Format(L"(%.3f; %.3f)", m_v[0], m_v[1]);
+			return System::string("(%.3f; %.3f)", m_v[0], m_v[1]);
 		}
 
 		Relation Classify(const Vector2<T>& p0, const Vector2<T> p1)

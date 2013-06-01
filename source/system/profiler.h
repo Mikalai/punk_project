@@ -16,6 +16,8 @@ namespace System
 		Timer m_timer;		
 		// Text descritpion of current profiler
 		string m_description;
+        double m_start_time;
+        double m_end_time;
 		// No copy
 		Profiler(const Profiler&);
 		// No copy
@@ -31,7 +33,7 @@ namespace System
 		*	Stops profiling
 		*	@returns Tick count elapsed from start
 		*/
-		long long End();
+        double End();
 		/*
 		*	Converts ticks to milliseconds
 		*	@return Elapsed time ib milliseconds

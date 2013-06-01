@@ -7,6 +7,10 @@
 #include <cstdint>
 #include "../config.h"
 
+#ifdef __linux__
+#include <iconv.h>
+#endif
+
 //
 //	to do list:
 //		memory monitoring
@@ -27,19 +31,13 @@ namespace System
 
     class PUNK_ENGINE_PUBLIC string
 	{
-	protected:
-
-		struct Representation;
-		Representation* m_rep;
-		mutable wchar_t* m_cstring_cache;
-
 	public:
-		typedef wchar_t* iterator;
-		typedef const wchar_t* const_iterator;
+        typedef std::vector<char>::iterator iterator;
+        typedef std::vector<char>::const_iterator const_iterator;
 
 	public:
 		string();
-		explicit string(const char* s);
+        string(const char* s);
 		string(const wchar_t* s);
         string(const char* s, size_t length);
         string(const wchar_t* s, size_t length);
@@ -51,8 +49,8 @@ namespace System
 		string& operator = (const char* s);
 		~string();
 
-		wchar_t operator [] (int i) const;
-		wchar_t& operator [] (int i);
+        char operator [] (int i) const;
+        char& operator [] (int i);
 
         const std::string ToStdString() const;
         const std::wstring ToStdWString() const;
@@ -60,34 +58,27 @@ namespace System
         size_t Length() const;
         size_t Size() const;
 		string& Erase(int start, int len);
-		string& Insert(wchar_t chr, int pos);
+        string& Insert(char chr, int pos);
 		const string Replace(const string& what, const string& with) const;
 		const string SubString(int start, int end) const;
-		const string Trim(const wchar_t* delimiters) const;
-		const std::vector<string> Split(const wchar_t *delimiters) const;
+        const string Trim(const char* delimiters) const;
+        const std::vector<string> Split(const char *delimiters) const;
 
-		const wchar_t* Data() const;
+        const char* Data() const;
 
 		string& operator += (const string& s);
-		string& operator += (const wchar_t* s);
+        string& operator += (const char* s);
 
         void ToANSI(char*& buffer, size_t& length) const;
         void ToANSI(char* buffer, size_t size) const;
+
+        const std::vector<char> ToAscii() const;
+        const std::vector<char> ToUtf8() const;
 
 		int ToInt32() const;
 		int ToInt32FromHex() const;
 		float ToFloat() const;
 		double ToDouble() const;
-
-		wchar_t* I_know_what_I_do_just_give_me_the_pointer();
-
-        friend PUNK_ENGINE_PUBLIC bool operator == (const string& s1, const string& s2);
-        friend PUNK_ENGINE_PUBLIC bool operator == (const string& s1, const wchar_t* s2);
-        friend PUNK_ENGINE_PUBLIC bool operator != (const string& s1, const string& s2);
-        friend PUNK_ENGINE_PUBLIC bool operator != (const string& s1, const wchar_t* s2);
-        friend PUNK_ENGINE_PUBLIC bool operator < (const string& s1, const string& s2);
-        friend PUNK_ENGINE_PUBLIC bool operator < (const string& s1, const wchar_t* s2);
-
 
 		static const string Convert(int32_t value, int radix = 10);
 		static const string Convert(uint32_t value, int radix = 10);
@@ -106,7 +97,7 @@ namespace System
 		static const string Convert(bool value);
 		static const string Convert(void* value);
 
-		static const string Format(const wchar_t* fmt, ...);
+        static const string Format(const char* fmt, ...);
 
 		void* operator new (size_t size);
 		void operator delete (void* pointer, size_t size);
@@ -119,36 +110,48 @@ namespace System
 		iterator end();
 		const_iterator end() const;
 
-		//
-		//	debugging info
-		//
-	public:
-		static unsigned GetTotalMemoryUsed() throw();
-		static unsigned GetMemoryUsage() throw();
-		static unsigned GetAllocationsCount() throw();
-		static unsigned GetFreeingCount() throw();
-	private:
-		static unsigned int m_total_memory_used;
-		static unsigned int m_memory_used;
-		static unsigned int m_allocs_count;
-		static unsigned int m_frees_count;
+        string& arg(int8_t value) { return *this; }
+        string& arg(uint8_t value) { return *this; }
+        string& arg(int16_t value) { return *this; }
+        string& arg(uint16_t value) { return *this; }
+        string& arg(int32_t value) { return *this; }
+        string& arg(uint32_t value) { return *this; }
+        string& arg(int64_t value) { return *this; }
+        string& arg(uint64_t value) { return *this; }
+        string& arg(float value) { return *this; }
+        string& arg(double value) { return *this; }
+        string& arg(const string& value) { return *this; }
+        string& arg(bool value) { return *this; }
+        bool EndWith(const string& value) const { return false; }
+        bool StartWith(const string& value) const { return false; }
+
+        const string AsLower() const { return *this; }
+        string& ToLower() { return *this; }
+
+    private:
+        //  UTF8
+        std::vector<char> m_buffer;
+
+        friend bool operator == (const string& s1, const string& s2);
+        friend  bool operator == (const string& s1, const char* s2);
+        friend  bool operator != (const string& s1, const string& s2);
+        friend  bool operator != (const string& s1, const char* s2);
+        friend  bool operator < (const string& s1, const string& s2);
+        friend  bool operator < (const string& s1, const char* s2);
+        friend  const string operator + (const string& s1, const string& s2);
+        friend  const string operator + (const string& s1, const char* s2);
+        friend  const string operator + (const char* s1, const string& s2);
 	};
 
     PUNK_ENGINE_PUBLIC bool operator == (const string& s1, const string& s2);
-    PUNK_ENGINE_PUBLIC bool operator == (const string& s1, const wchar_t* s2);
+    PUNK_ENGINE_PUBLIC bool operator == (const string& s1, const char* s2);
     PUNK_ENGINE_PUBLIC bool operator != (const string& s1, const string& s2);
-    PUNK_ENGINE_PUBLIC bool operator != (const string& s1, const wchar_t* s2);
+    PUNK_ENGINE_PUBLIC bool operator != (const string& s1, const char* s2);
     PUNK_ENGINE_PUBLIC bool operator < (const string& s1, const string& s2);
-    PUNK_ENGINE_PUBLIC bool operator < (const string& s1, const wchar_t* s2);
+    PUNK_ENGINE_PUBLIC bool operator < (const string& s1, const char* s2);
     PUNK_ENGINE_PUBLIC const string operator + (const string& s1, const string& s2);
-    PUNK_ENGINE_PUBLIC const string operator + (const string& s1, const wchar_t* s2);
-    PUNK_ENGINE_PUBLIC const string operator + (const wchar_t* s1, const string& s2);
-
-
-	/** \class string
-	\brief This is a description of the string class
-	So simple class
-	*/
+    PUNK_ENGINE_PUBLIC const string operator + (const string& s1, const char* s2);
+    PUNK_ENGINE_PUBLIC const string operator + (const char* s1, const string& s2);
 
 }
 

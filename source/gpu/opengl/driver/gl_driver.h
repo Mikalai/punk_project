@@ -1,7 +1,6 @@
 #ifndef _H_PUNK_OPENGL_DRIVER_WIN32
 #define _H_PUNK_OPENGL_DRIVER_WIN32
 
-#ifdef _WIN32
 #include <map>
 #include <list>
 
@@ -44,7 +43,11 @@ namespace GPU
 
 		int m_shader_version;
 		int m_opengl_version;
+
+#ifdef _WIN32
 		HGLRC m_opengl_context;
+#endif
+
 		VideoDriverDesc m_desc;
         VideoDriver* m_driver;
         OpenGL::VideoMemory* m_memory;
@@ -61,5 +64,4 @@ namespace GPU
 	};
 }
 
-#endif	//	_WIN32
 #endif	//	_H_PUNK_OPENGL_DRIVER_WIN32

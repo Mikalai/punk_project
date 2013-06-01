@@ -21,7 +21,7 @@ namespace System
 				0, id, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), (PTSTR)&hLocal, 0, 0))
 			{
 				LPVOID p = LocalLock(hLocal);
-                error = msg + L" " + string((wchar_t*)p) + string::Format(L"(Code: 0x%X) (MS Windows)", id);
+                error = msg + L" " + string((wchar_t*)p) + string("(Code: 0x%X) (MS Windows)", id);
 				LocalFree(hLocal);
 			}
 			else
@@ -44,7 +44,7 @@ namespace System
 				0, code, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), (PTSTR)&hLocal, 0, 0))
 			{
 				LPVOID p = LocalLock(hLocal);
-                error = msg + L" " +string((wchar_t*)p) + string::Format(L"(Code: 0x%X) (MS Windows)", code);
+                error = msg + L" " +string((wchar_t*)p) + string("(Code: 0x%X) (MS Windows)", code);
 				LocalFree(hLocal);
 			}
 			else

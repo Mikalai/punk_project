@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include "../../math/vec3.h"
 #include "../../math/quat.h"
-#include "animation_Mixer.h"
+#include "animation_mixer.h"
 #include <map>
 #include <memory>
 

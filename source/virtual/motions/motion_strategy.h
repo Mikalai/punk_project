@@ -26,7 +26,7 @@ namespace Virtual
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
-		virtual bool Update(__int64 current_time_us, __int64 delta_us) = 0;
+		virtual bool Update(int64_t current_time_us, int64_t delta_us) = 0;
 		virtual ~MotionStrategy();
 
 	protected:

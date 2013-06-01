@@ -16,26 +16,10 @@
 #include "binary_file.h"
 #include "string.h"
 #include "buffer.h"
-#include "process.h"
 #include "environment.h"
 #include "logger.h"
 #include "config_file.h"
 #include "resource.h"
 #include "profiler.h"
-
-#include "types\list.h"
-#include "types\priority_list.h"
-
-
-namespace System
-{
-	class Module
-	{
-	public:
-		virtual void Init() = 0;
-		virtual void Destroy() = 0;
-		virtual ~Module() {};
-	};
-};
 
 #endif	//	_H_PUNK_SYSTEM_MODULE

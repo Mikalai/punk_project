@@ -190,7 +190,7 @@ namespace Math
 
 		const System::string ToString() const
 		{
-			return System::string::Format(L"[%f, (%f; %f, %f)]", m_scalar, m_vec[0], m_vec[1], m_vec[2]);
+			return System::string("[%f, (%f; %f, %f)]", m_scalar, m_vec[0], m_vec[1], m_vec[2]);
 		}
 
 		Vector3<T> Rotate(const Vector3<T>& v) const

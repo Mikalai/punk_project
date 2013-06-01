@@ -1,7 +1,7 @@
 #ifndef VS_SOLID_VERTEX_COLOR_H
 #define VS_SOLID_VERTEX_COLOR_H
 
-#include "..\shader.h"
+#include "../shader.h"
 
 namespace GPU
 {

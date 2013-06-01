@@ -9,7 +9,7 @@ namespace System
 
 	string KeyWCharEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: KEY_WCHAR; Key: %d; Repeat: %d; Scancode: %d; IsExtended: %d; \
+		return string("Code: %d; Type: KEY_WCHAR; Key: %d; Repeat: %d; Scancode: %d; IsExtended: %d; \
 							   IsAltPressed: %s; PrevState: %s; TransitionState: %s",
 							   eventCode, key, repeat_count, scan_code,
 							   isExtended ? L"TRUE" : L"FALSE",

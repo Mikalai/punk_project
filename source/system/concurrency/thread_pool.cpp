@@ -13,16 +13,10 @@ namespace System
 
 	ThreadPool::~ThreadPool()
 	{
-#ifdef _WIN32
-		for (HANDLE thread : m_threads)
-		{
-			CloseHandle(thread);
-		}
-		DeleteCriticalSection(&m_cs);
-#endif	//	_WIN32
 	}
 
-	unsigned __stdcall ThreadPool::ThreadFunc(void* data)
+#ifdef _WIN32
+	unsigned PUNK_STDCALL ThreadPool::ThreadFunc(void* data)
 	{
 		ThreadPool* pool = reinterpret_cast<ThreadPool*>(data);
 		try
@@ -44,12 +38,34 @@ namespace System
 		}
 		return 0;
 	}
+#elif defined __gnu_linux__
+    void* ThreadPool::ThreadFunc(void* data)
+    {
+        ThreadPool* pool = reinterpret_cast<ThreadPool*>(data);
+        try
+        {
+            while (1)
+            {
+                if (!pool->HasJobs() && pool->IsFinish())
+                    return 0;
+                ThreadJob* job = pool->GetThreadJob();
+                if (!job)
+                    return 0;
+                job->Run();
+                job->m_complete = true;
+            }
+        }
+        catch (...)
+        {
+            return (void*)-1;
+        }
+        return nullptr;
+    }
+#endif
 
 	void ThreadPool::Init(int thread_count)
 	{
-#ifdef _WIN32
-		InitializeConditionVariable(&m_cond);
-		InitializeCriticalSection(&m_cs);
+        Monitor.Init();
 		m_finish = 0;
 
 		m_threads.resize(thread_count);
@@ -63,43 +79,35 @@ namespace System
 
 	ThreadJob* ThreadPool::GetThreadJob()
 	{
-#ifdef _WIN32
-		EnterCriticalSection(&m_cs);
+        m_monitor.Lock();
 		if (m_jobs.empty())
-			SleepConditionVariableCS(&m_cond, &m_cs, INFINITE);
+            m_monitor.Wait();
 
 		if (m_jobs.empty())
 			return 0;
 
 		ThreadJob* job = m_jobs.front();
 		m_jobs.pop();
-		LeaveCriticalSection(&m_cs);
-#endif	//	_WIN32
+        m_monitor.Unlock();
 		return job;
 	}
 
 	void ThreadPool::ExecuteJob(ThreadJob* job)
 	{
-#ifdef _WIN32
-		EnterCriticalSection(&m_cs);
+        m_monitor.Lock();
 		m_jobs.push(job);
-		WakeConditionVariable(&m_cond);
-		LeaveCriticalSection(&m_cs);
-#endif	//	_WIN32
+        m_monitor.Pulse();
+        m_monitor.Unlock();
 	}
 
 	void ThreadPool::Lock()
 	{
-#ifdef _WIN32
-		EnterCriticalSection(&m_cs);
-#endif	//	_WIN32
+        m_monitor.Lock();
 	}
 
 	void ThreadPool::Unlock()
 	{
-#ifdef _WIN32
-		LeaveCriticalSection(&m_cs);
-#endif	//	_WIN32
+        m_monitor.Unlock();
 	}
 
 	void ThreadPool::Join()

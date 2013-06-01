@@ -407,8 +407,7 @@ contains(DEFINES, USE_OPENGL) {
            ../../source/gpu/opengl/textures/module.h \           
            ../../source/gpu/opengl/textures/texture2d_impl.h \
            ../../source/gpu/opengl/textures/texture2d_pbo_impl.h \
-           ../../source/gpu/opengl/textures/texture_2d_manager.h \
-           ../../source/gpu/opengl/gl/win32/extensions_win32.h \
+           ../../source/gpu/opengl/textures/texture_2d_manager.h \           
            ../../source/gpu/opengl/render_context/shaders/shader.h \
            ../../source/gpu/opengl/render_context/shaders/shaders.h \
            ../../source/gpu/opengl/renderable/primitives/vertex_array_object.h \
@@ -489,8 +488,7 @@ SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp 
 	   ../../source/gpu/opengl/render_targets/render_target_texture.cpp \
 	   ../../source/gpu/opengl/renderable/gl_primitive_type.cpp \
 	   ../../source/gpu/opengl/textures/internal_formats.cpp \	   
-	   ../../source/gpu/opengl/textures/texture2d.cpp \
-	   ../../source/gpu/opengl/gl/win32/extensions_win32.cpp \
+	   ../../source/gpu/opengl/textures/texture2d.cpp \	   
 	   ../../source/gpu/opengl/render_context/shaders/shader.cpp \
 	   ../../source/gpu/opengl/renderable/primitives/vertex_array_object.cpp \
 	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump.cpp \
@@ -983,6 +981,7 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/system/concurrency/process.cpp \
 	   ../../source/system/concurrency/semaphore.cpp \
 	   ../../source/system/concurrency/thread.cpp \
+           ../../source/system/concurrency/monitor.cpp \
 	   ../../source/system/concurrency/thread_job.cpp \
 	   ../../source/system/concurrency/thread_mutex.cpp \
 	   ../../source/system/concurrency/thread_pool.cpp \

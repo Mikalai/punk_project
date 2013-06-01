@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_OPENGL_VERTEX_SHADER_SOLID_3D
 #define _H_PUNK_OPENGL_VERTEX_SHADER_SOLID_3D
 
-#include "..\shader.h"
+#include "../shader.h"
 
 namespace GPU
 {

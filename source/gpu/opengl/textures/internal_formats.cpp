@@ -1,8 +1,9 @@
 #include "internal_formats.h"
 #ifdef _WIN32
 #include <Windows.h>
+#endif  //  _WIN32
+
 #include "../gl/glcorearb.h"
-#endif
 
 namespace GPU
 {

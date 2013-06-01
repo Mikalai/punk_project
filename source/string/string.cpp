@@ -7,6 +7,7 @@
 #endif
 
 #include <vector>
+#include <algorithm>
 #include <wchar.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -19,66 +20,19 @@
 
 namespace System
 {
-	struct string::Representation
+    string& string::Erase(int start, int len)
 	{
-		wchar_t* m_data;
-		int m_length;
-		int m_useCount;
-		Representation(const wchar_t* data, int length);
-		Representation(const char* data, int length);
-		Representation(int length);
-		~Representation();
-
-		Representation* GetOwnCopy();
-		void Assign(const wchar_t* data, int length);
-		void Assign(const char* data, int length);
-		void Append(const wchar_t* data, int length);
-		void Erase(int start, int len);
-		void Insert(wchar_t chr, int pos);
-
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
-
-	private:
-		Representation(const Representation&);
-		Representation& operator = (const Representation&);
-	};
-
-
-	//StringError::StringError() : std::exception(), m_w_what(0)
-	//{
-	//}
-
-	//StringError::StringError(const wchar_t* message) : std::exception(), m_w_what(message) {}
-
-	//StringError::~StringError()
-	//{
-	//}
-
-	//const wchar_t * StringError::w_what() const
-	//{
-	//	return m_w_what;
-	//}
-
-	unsigned string::m_allocs_count = 0;
-	unsigned string::m_frees_count = 0;
-	unsigned string::m_memory_used = 0;
-	unsigned string::m_total_memory_used = 0;
-
-	string& string::Erase(int start, int len)
-	{
-		m_rep = m_rep->GetOwnCopy();
-		m_rep->Erase(start, len);
+        m_buffer.erase(m_buffer.begin() + start, m_buffer.end() + len);
 		return *this;
 	}
 
-	const string operator + (const wchar_t* s1, const string& s2)
+    const string operator + (const char* s1, const string& s2)
 	{
 		string s3(s1);
 		return s3 += s2;
 	}
 
-	const string operator + (const string& s1, const wchar_t* s2)
+    const string operator + (const string& s1, const char* s2)
 	{
 		string s3(s1);
 		s3 += s2;
@@ -92,7 +46,7 @@ namespace System
 		return s3;
 	}
 
-	bool operator != (const string& s1, const wchar_t* s2)
+    bool operator != (const string& s1, const char* s2)
 	{
 		return !(s1 == s2);
 	}
@@ -106,363 +60,210 @@ namespace System
 	{
 		if (s1.Length() != s2.Length())
 			return false;
-		return wmemcmp(s1.m_rep->m_data, s2.m_rep->m_data, s1.Length()) == 0;
+        return s1.m_buffer == s2.m_buffer;
 	}
 
-	bool operator == (const string& s1, const wchar_t* s2)
-	{
-		if (s1.Length() != wcslen(s2))
+    bool operator == (const string& s1, const char* s2)
+	{        
+        if (s1.Length() != strlen(s2))
 			return false;
-		return wmemcmp(s1.m_rep->m_data, s2, s1.m_rep->m_length) == 0;
+        string temp(s2);
+        return s1.m_buffer == temp.m_buffer;
 	}
 
 	bool operator < (const string& s1, const string& s2)
 	{
-		return wcscmp(s1.Data(), s2.Data()) < 0;
+        return strncmp(s1.Data(), s2.Data(), s1.Length()) < 0;
 	}
 
-	bool operator < (const string& s1, const wchar_t* s2)
-	{
-		return wcscmp(s1.Data(), s2) < 0;
+    bool operator < (const string& s1, const char* s2)
+    {
+        return false;
+        //return strncmp(s1.Data(), s2, s1.Length()) < 0;
 	}
 
     void string::ToANSI(char*& buffer, size_t& size) const
 	{
-		size = m_rep->m_length + 1;
+        size = m_buffer.size()+1;
 		buffer = new char[size];
 		memset(buffer, 0, sizeof(char)*size);
-		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0);
+#ifdef _WIN32
+        WideCharToMultiByte(CP_ACP, 0, m_buffer, m_buffer.size(), buffer, size, 0, 0);
+#elif defined __linux__
+        size_t in_size = (m_buffer.size() + 1) * sizeof(char);
+        size_t out_size = size;
+        auto handle = iconv_open("WCHAR_T", "ANSI");
+        iconv(handle, (char**)&m_buffer, &in_size, (char**)&buffer, &out_size);
+        iconv_close(handle);
+#endif
 	}
 
     void string::ToANSI(char* buffer, size_t size) const
 	{
+#ifdef _WIN32
 		memset(buffer, 0, sizeof(char)*size);
-		WideCharToMultiByte(CP_ACP, 0, m_rep->m_data, m_rep->m_length, buffer, size, 0, 0);
+        WideCharToMultiByte(CP_ACP, 0, m_buffer, m_buffer.size(), buffer, size, 0, 0);
+#elif defined __linux__
+        size_t in_size = (m_buffer.size() + 1) * sizeof(char);
+        size_t out_size = size;
+        auto handle = iconv_open("WCHAR_T", "ANSI");
+        iconv(handle, (char**)&m_buffer, &in_size, (char**)&buffer, &out_size);
+        iconv_close(handle);
+#endif
 	}
 
-	string& string::operator+= (const wchar_t* s)
-	{
-		m_rep = m_rep->GetOwnCopy();
-		m_rep->Append(s, wcslen(s));
+    const std::vector<char> string::ToAscii() const
+    {
+        std::vector<char> result(m_buffer.size()*sizeof(char));
+        size_t in_size = (m_buffer.size() + 1) * sizeof(char);
+        size_t out_size = result.size();
+        auto handle = iconv_open("WCHAR_T", "ANSI");
+        char** in = (char**)&m_buffer;
+        char** out = (char**)&result[0];
+        iconv(handle, in, &in_size, out, &out_size);
+        iconv_close(handle);
+        return result;
+    }
+
+    const std::vector<char> string::ToUtf8() const
+    {
+        std::vector<char> result(m_buffer.size()*sizeof(char));
+        size_t in_size = (m_buffer.size() + 1) * sizeof(char);
+        size_t out_size = result.size();
+        auto handle = iconv_open("WCHAR_T", "UTF8");
+        char** in = (char**)&m_buffer;
+        char** out = (char**)&result[0];
+        iconv(handle, in, &in_size, out, &out_size);
+        iconv_close(handle);
+        return result;
+    }
+
+    string& string::operator+= (const char* s)
+    {
 		return *this;
 	}
 
 	string& string::operator+= (const string& s)
 	{
-		m_rep = m_rep->GetOwnCopy();
-		m_rep->Append(s.m_rep->m_data, s.m_rep->m_length);
+        m_buffer.insert(m_buffer.end(), s.begin(), s.end());
 		return *this;
 	}
 
-	string& string::Insert(wchar_t chr, int pos)
+    string& string::Insert(char chr, int pos)
 	{
-		if (pos > m_rep->m_length)
-			out_error() << L"Index out of range in string::insert" << std::endl;
 
-		m_rep = m_rep->GetOwnCopy();
-		m_rep->Insert(chr, pos);
 		return *this;
 	}
 
 	const string string::Replace(const string& what, const string& with) const
-	{
+    {
+        string res;
 		if (what.Length() == 0)
 			return *this;
 
-		int offset = 0;
-		const wchar_t* start = m_rep->m_data;
-		string s1(*this);
+        auto start_it = m_buffer.begin();
+        auto cur_it = start_it;
+        auto end_it = m_buffer.end();
+        while ((cur_it = std::search(start_it, end_it, what.m_buffer.begin(), what.m_buffer.end())) != end_it)
+        {
+            res.m_buffer.insert(res.m_buffer.end(), start_it, cur_it);
+            res.m_buffer.insert(res.m_buffer.end(), with.begin(), with.end());
 
-		do
-		{
-			start = s1.m_rep->m_data;
-			const wchar_t* next = wcsstr(s1.m_rep->m_data + offset, what.m_rep->m_data);
+            start_it = cur_it;
+        }
 
-			if (!next)
-				return s1;
-			string s2(s1.m_rep->m_data + (next - start) + what.Length());
-			s1 = string(s1.m_rep->m_data, next - start) + with + s2;
-
-			offset = next - start + with.Length();
-		}
-		while (1);
+        return res;
 	}
 
 	const string string::SubString(int start, int end) const
 	{
-		return string(m_rep->m_data + start, end - start);
+        return string(&m_buffer[0] + start, end - start);
 	}
 
     size_t string::Size() const
 	{
-        return (size_t)(m_rep->m_length*sizeof(wchar_t) + sizeof(int));
+        return (size_t)(m_buffer.size()*sizeof(char) + sizeof(int));
 	}
 
     size_t string::Length() const
 	{
-		return m_rep->m_length;
+        return m_buffer.size();
 	}
 
-	wchar_t string::operator[] (int i) const
+    char string::operator[] (int i) const
 	{
-		return m_rep->m_data[i];
+        return m_buffer[i];
 	}
 
-	wchar_t& string::operator [] (int i)
+    char& string::operator [] (int i)
 	{
-		m_rep = m_rep->GetOwnCopy();
-		return m_rep->m_data[i];
-	}
 
-	string& string::operator = (const wchar_t* s)
-	{
-		if (m_rep->m_useCount == 1)
-			m_rep->Assign(s, wcslen(s));
-		else
-		{
-			m_rep->m_useCount--;
-			m_rep = new Representation(s, wcslen(s));
-		}
-		return *this;
+        return m_buffer[i];
 	}
 
 	string& string::operator = (const char* s)
 	{
-		if (m_rep->m_useCount == 1)
-			m_rep->Assign(s, strlen(s));
-		else
-		{
-			m_rep->m_useCount--;
-			m_rep = new Representation(s, strlen(s));
-		}
+        m_buffer.clear();
+        m_buffer.insert(m_buffer.end(), s, s+strlen(s));
 		return *this;
 	}
 
 	string::~string()
 	{
-		if (--m_rep->m_useCount == 0)
-		{
-			delete m_rep;
-			m_rep = 0;
-		}
 	}
 
 	string::string()
 	{
-		m_rep = new Representation(L"", 0);
-		m_cstring_cache = 0;
 	}
 
     string::string(size_t length)
-	{
-		m_rep = new Representation(length);
+	{		
 	}
 
 	string::string(const char* s)
 	{
-		if (s != 0)
-		{
-			m_rep = new Representation(s, strlen(s));
-		}
-		else
-		{
-			const char* tmp = "NULL";
-			m_rep = new Representation(tmp, strlen(tmp));
-		}
-		m_cstring_cache = 0;
-	}
-
-	string::string(const wchar_t* s)
-	{
-		if (s != 0)
-		{
-			m_rep = new Representation(s, wcslen(s));
-			m_cstring_cache = 0;
-		}
-		else
-		{
-			const wchar_t* tmp = L"NULL";
-			m_rep = new Representation(tmp, wcslen(tmp));
-		}
+        m_buffer.insert(m_buffer.begin(), s, s+strlen(s));
 	}
 
     string::string(const char* s, size_t length)
 	{
-		m_rep = new Representation(s, length);
-		m_cstring_cache = 0;
-	}
-
-    string::string(const wchar_t* s, size_t length)
-	{
-		m_rep = new Representation(s, length);
-		m_cstring_cache = 0;
+        m_buffer.insert(m_buffer.begin(), s, s + length);
 	}
 
 	string::string(const string& s)
 	{
-		s.m_rep->m_useCount++;
-		m_rep = s.m_rep;
-		m_cstring_cache = 0;
+        m_buffer = s.m_buffer;
 	}
 
 	string& string::operator = (const string& s)
 	{
 		if (this != &s)
 		{
-			if (--m_rep->m_useCount == 0)
-				delete m_rep;
-			s.m_rep->m_useCount++;
-			m_rep = s.m_rep;
+            m_buffer = s.m_buffer;
 		}
 		return *this;
 	}
 
-	string::Representation* string::Representation::GetOwnCopy()
+    const char* string::Data() const
 	{
-		if (m_useCount == 1)
-			return this;
-		m_useCount--;
-		return new Representation(m_data, m_length);
-	}
-
-	string::Representation::Representation(const wchar_t* data, int length)
-	{
-		m_length = length;
-		m_data = new wchar_t[m_length+1];
-		CopyMemory(m_data, data, m_length*sizeof(wchar_t));
-		m_data[m_length] = 0;
-		m_useCount = 1;
-	}
-
-	string::Representation::Representation(int length)
-	{
-		m_length = length;
-		m_data = new wchar_t[m_length+1];
-		memset(m_data, 0, sizeof(wchar_t)*m_length);
-		m_data[m_length] = 0;
-		m_useCount = 1;
-	}
-
-	string::Representation::Representation(const char* data, int length)
-	{
-		m_length = length;
-		m_data = new wchar_t[m_length+1];
-		MultiByteToWideChar(CP_ACP, 0, data, m_length, m_data, m_length);
-		m_data[m_length] = 0;
-		m_useCount = 1;
-	}
-
-	string::Representation::~Representation()
-	{
-		delete[] m_data;
-	}
-
-	void string::Representation::Assign(const wchar_t* data, int length)
-	{
-		if (m_length != length+1)
-		{
-			delete[] m_data;
-			m_length = length;
-			m_data = new wchar_t[m_length+1];
-		}
-		CopyMemory(m_data, data, sizeof(wchar_t)*m_length);
-		m_data[m_length] = 0;
-	}
-
-	void string::Representation::Assign(const char* data, int length)
-	{
-		if (m_length != length+1)
-		{
-			delete[] m_data;
-			m_length = length;
-			m_data = new wchar_t[m_length+1];
-		}
-		MultiByteToWideChar(CP_ACP, 0, data, m_length, m_data, m_length);
-		m_data[m_length] = 0;
-	}
-
-	void string::Representation::Append(const wchar_t* data, int length)
-	{
-		wchar_t * new_data = new wchar_t[m_length + length+1];
-		CopyMemory(new_data, m_data, m_length*sizeof(wchar_t));
-		CopyMemory(new_data+m_length, data, length*sizeof(wchar_t));
-		delete[] m_data;
-		m_data = new_data;
-		m_length = m_length + length;
-		m_data[m_length] = 0;
-	}
-
-	void string::Representation::Erase(int start, int len)
-	{
-		for (int i = 0; i < len; i++)
-		{
-			for (int j = start; j < m_length; j++)
-			{
-				m_data[j+i] = m_data[j+i+1];
-			}
-		}
-		m_length--;
-	}
-
-	void string::Representation::Insert(wchar_t chr, int pos)
-	{
-		wchar_t * new_data = new wchar_t[m_length + 2];
-		CopyMemory(new_data, m_data, m_length*sizeof(wchar_t));
-		delete[] m_data;
-		for (int i = m_length; i > pos; i--)
-		{
-			new_data[i] = new_data[i-1];
-		}
-		new_data[pos] = chr;
-		m_data = new_data;
-		m_length = m_length + 1;
-		m_data[m_length] = 0;
-	}
-
-	bool string::Representation::Save(std::ostream& stream) const
-	{
-		stream.write(reinterpret_cast<const char*>(&m_length), sizeof(m_length));
-		if (m_length)
-			stream.write(reinterpret_cast<const char*>(m_data), m_length*sizeof(wchar_t));
-		return true;
-	}
-
-	bool string::Representation::Load(std::istream& stream)
-	{
-		stream.read(reinterpret_cast<char*>(&m_length), sizeof(m_length));
-		if (m_length)
-		{
-			std::vector<wchar_t> data(m_length);
-			stream.read(reinterpret_cast<char*>(&data[0]), m_length*sizeof(wchar_t));
-			Assign(&data[0], m_length);
-		}
-		else
-		{
-			Assign(L"", 0);
-		}
-		return true;
-	}
-
-	const wchar_t* string::Data() const
-	{
-		return m_rep->m_data;
+        return &m_buffer[0];
 	}
 
 	int string::ToInt32() const
 	{
-		return _wtoi(m_rep->m_data);
+        return atoi(&m_buffer[0]);
 	}
 
 	int string::ToInt32FromHex() const
 	{
-		wchar_t allowed_symbols[] = {L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9', L'A', L'a', L'B', L'b', L'C', L'c', L'D', L'd', L'E', L'e', L'F', L'f', L'x', L'X' };
-		int allowd_symbols_count = sizeof(allowed_symbols) / sizeof(wchar_t);
-		for (int i = 0; i < m_rep->m_length; i++)
+        char allowed_symbols[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'x', 'X' };
+        int allowd_symbols_count = sizeof(allowed_symbols) / sizeof(char);
+        for (int i = 0; i < m_buffer.size(); i++)
 		{
 			bool ok = false;
 			for (int j = 0; j < allowd_symbols_count; j++)
 			{
-				if (m_rep->m_data[i] == allowed_symbols[j])
+                if (m_buffer[i] == allowed_symbols[j])
 				{
 					ok = true;
 					break;
@@ -471,9 +272,9 @@ namespace System
 			if (!ok)
 				return 0;
 		}
-		const wchar_t *end = m_rep->m_data;
-		const wchar_t *start = m_rep->m_data + m_rep->m_length-1;
-		if (end[0] == L'0' && (end[1] == L'x' || end[1] == L'X'))
+        const char *end = &m_buffer[0];
+        const char *start = &m_buffer[0] + m_buffer.size()-1;
+        if (end[0] == '0' && (end[1] == 'x' || end[1] == 'X'))
 			end += 2;
 		int res = 0;
 
@@ -484,25 +285,25 @@ namespace System
 		{
 			switch(*start)
 			{
-			case L'0': case L'1': case L'2': case L'3': case L'4': case L'5': case L'6': case L'7': case L'8': case L'9':
-				res += base*(*start - L'0');
+            case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+                res += base*(*start - '0');
 				break;
-			case L'a': case L'A':
+            case 'a': case 'A':
 				res += base*10;
 				break;
-			case L'b': case L'B':
+            case 'b': case 'B':
 				res += base*11;
 				break;
-			case L'c': case L'C':
+            case 'c': case 'C':
 				res += base*12;
 				break;
-			case L'd': case L'D':
+            case 'd': case 'D':
 				res += base*13;
 				break;
-			case L'e': case L'E':
+            case 'e': case 'E':
 				res += base*14;
 				break;
-			case L'f': case L'F':
+            case 'f': case 'F':
 				res += base*15;
 				break;
 			}
@@ -517,31 +318,31 @@ namespace System
 
 	float string::ToFloat() const
 	{
-		return (float)_wtof(m_rep->m_data);
+        return (float)atof(&m_buffer[0]);
 	}
 
 	double string::ToDouble() const
 	{
-		return _wtof(m_rep->m_data);
+        return atof(&m_buffer[0]);
 	}
 
 	const string string::Convert(int32_t value, int radix)
 	{
-		char buf[128];
-		itoa(value, buf, radix);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(uint32_t value, int radix)
 	{
-		char buf[128];
-		_ultoa(value, buf, radix);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(signed char value)
 	{
-		wchar_t buf[16];
+        char buf[16];
 		buf[0] = value;
 		buf[1] = 0;
 		return string(buf);
@@ -549,7 +350,7 @@ namespace System
 
 	const string string::Convert(unsigned char value)
 	{
-		wchar_t buf[16];
+        char buf[16];
 		buf[0] = value;
 		buf[1] = 0;
 		return string(buf);
@@ -557,66 +358,58 @@ namespace System
 
 	const string string::Convert(int16_t value, int radix)
 	{
-		char buf[128];
-		itoa(value, buf, radix);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(uint16_t value, int radix)
 	{
-		char buf[128];
-		_ultoa(value, buf, radix);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(int8_t value, int radix)
 	{
-		char buf[128];
-		itoa(value, buf, radix);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(uint8_t value, int radix)
 	{
-		char buf[128];
-		itoa(value, buf, radix);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(int64_t value, int radix)
 	{
-		char buf[128];
-		_i64toa_s(value, buf, 128, radix);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(uint64_t value, int radix)
 	{
-		wchar_t buf[128];
-		_ui64tow_s(value, buf, 128, radix);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(float value, int precision)
 	{
-		char buf[128];
-		gcvt(value, precision, buf);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(double value, int precision)
 	{
-		char buf[128];
-		gcvt(value, precision, buf);
-		return string(buf);
-	}
-
-	const string string::Convert(wchar_t value)
-	{
-		wchar_t buf[2];
-		buf[0] = value;
-		buf[1] = 0;
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 	}
 
 	const string string::Convert(bool value)
@@ -629,32 +422,33 @@ namespace System
 	const string string::Convert(void* value)
 	{
 #ifdef _WIN64
-		wchar_t buf[128];
-		_ui64tow_s((__int64)value, buf, 128, 16);
+        char buf[128];
+		_ui64tow_s((int64_t)value, buf, 128, 16);
 		return string(buf);
 #else
-		wchar_t buf[128];
-		_ultow_s((unsigned)value, buf, 128, 16);
-		return string(buf);
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
 #endif
 	}
 
-	const string string::Format(const wchar_t* fmt, ...)
+    const string string::Format(const char* fmt, ...)
 	{
-#define FORMAT_MAX_LENGTH 8192
-		wchar_t buffer[FORMAT_MAX_LENGTH];
-		memset(buffer, 0, sizeof(buffer[0])*FORMAT_MAX_LENGTH);
-		va_list argumentPointer;
-		va_start(argumentPointer, fmt);
-		vswprintf_s<FORMAT_MAX_LENGTH>(buffer, fmt, argumentPointer);
-		va_end(argumentPointer);
-#undef	FORMAT_MAX_LENGTH
-		return string(buffer);
+//#define FORMAT_MAX_LENGTH 8192
+//		char buffer[FORMAT_MAX_LENGTH];
+//		memset(buffer, 0, sizeof(buffer[0])*FORMAT_MAX_LENGTH);
+//		va_list argumentPointer;
+//		va_start(argumentPointer, fmt);
+//        swprintf(
+//        snprintf(buffer, fmt, argumentPointer);
+//		va_end(argumentPointer);
+//#undef	FORMAT_MAX_LENGTH
+        return string();
 	}
 
-	const string string::Trim(const wchar_t* delimiters) const
+    const string string::Trim(const char* delimiters) const
 	{
-		unsigned delLength = (unsigned)wcslen(delimiters);
+        unsigned delLength = (unsigned)strlen(delimiters);
 		unsigned strLength = Length();
 		unsigned start = 0;
 		unsigned end = strLength;
@@ -690,10 +484,10 @@ namespace System
 				break;
 		}
 
-		return string(m_rep->m_data + start, end - start);
+        return string(&m_buffer[0] + start, end - start);
 	}
 
-	const std::vector<string> string::Split(const wchar_t *delimiters) const
+    const std::vector<string> string::Split(const char *delimiters) const
 	{
 		unsigned start = 0;
 		unsigned end = Length();
@@ -701,9 +495,9 @@ namespace System
 		for (unsigned i = 0; i < (unsigned)Length(); i++)
 		{
 			bool finish = false;
-			for (unsigned j = 0; j < wcslen(delimiters); j++)
+            for (unsigned j = 0; j < strlen(delimiters); j++)
 			{
-				if (m_rep->m_data[i] == delimiters[j])
+                if (m_buffer[i] == delimiters[j])
 				{
 					end = i;
 					finish = true;
@@ -712,28 +506,19 @@ namespace System
 
 			if (finish)
 			{
-				res.push_back(string(m_rep->m_data + start, end - start).Trim(delimiters));
+                res.push_back(string(&m_buffer[0] + start, end - start).Trim(delimiters));
 				start = end+1;
 			}
 		}
 		if (start < (unsigned)Length())
 		{
-			res.push_back(string(m_rep->m_data + start, Length() - start).Trim(delimiters));
+            res.push_back(string(&m_buffer[0] + start, Length() - start).Trim(delimiters));
 		}/**/
 		return res;
 	}
 
-	wchar_t* string::I_know_what_I_do_just_give_me_the_pointer()
-	{
-		m_rep = m_rep->GetOwnCopy();
-		return m_rep->m_data;
-	}
-
 	void* string::operator new(size_t size)
 	{
-		m_total_memory_used += size;
-		m_memory_used += size;
-		m_allocs_count++;
 		return malloc(size);
 	}
 
@@ -741,75 +526,46 @@ namespace System
 	{
 		if (pointer)
 			free(pointer);
-		m_memory_used -= size;
-		m_frees_count--;
 	}
 
-	unsigned string::GetTotalMemoryUsed() throw()
+    bool string::Save(std::ostream& stream) const
 	{
-		return m_total_memory_used;
-	}
-
-	unsigned string::GetMemoryUsage() throw()
-	{
-		return m_memory_used;
-	}
-
-	unsigned string::GetAllocationsCount() throw()
-	{
-		return m_allocs_count;
-	}
-
-	unsigned string::GetFreeingCount() throw()
-	{
-		return m_frees_count;
-	}
-
-	bool string::Save(std::ostream& stream) const
-	{
-		return m_rep->Save(stream);
 	}
 
 	bool string::Load(std::istream& stream)
 	{
-		m_rep = m_rep->GetOwnCopy();
-		return m_rep->Load(stream);
+
 	}
 
     const std::string string::ToStdString() const
     {
-        std::vector<char> buffer(Length());
-
-        ToANSI(&buffer[0], buffer.size());
-
-        return std::string(&buffer[0], buffer.size());
+        return std::string(&m_buffer[0], m_buffer.size());
     }
 
     const std::wstring string::ToStdWString() const
     {
-        return std::wstring(m_rep->m_data);
+        return std::wstring();
     }
 
 	string::iterator string::begin()
 	{
-		m_rep = m_rep->GetOwnCopy();
-		return m_rep->m_data;
+        return m_buffer.begin();
 	}
 
 	string::const_iterator string::begin() const
 	{
-		return m_rep->m_data;
+        return m_buffer.begin();
 	}
 
 	string::iterator string::end()
 	{
-		m_rep = m_rep->GetOwnCopy();
-		return m_rep->m_data + m_rep->m_length;
+
+        return m_buffer.end();
 	}
 
 	string::const_iterator string::end() const
 	{
-		return m_rep->m_data + m_rep->m_length;
+        return m_buffer.end();
 	}
 
 }/**/

@@ -14,8 +14,8 @@ namespace System
 	typedef unsigned int UInt32;
 
 #ifdef _WIN32
-	typedef signed __int64 int64_t;
-	typedef unsigned __int64 UInt64;
+	typedef signed int64_t int64_t;
+	typedef uint64_t UInt64;
 #endif	//	_WIN32
 }
 

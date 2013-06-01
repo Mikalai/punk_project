@@ -9,7 +9,7 @@
 #include "../../math/quat.h"
 #include "../../math/mat4.h"
 #include "../../string/string.h"
-#include "animation_Mixer.h"
+#include "animation_mixer.h"
 
 namespace Virtual
 {

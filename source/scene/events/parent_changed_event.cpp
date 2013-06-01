@@ -31,7 +31,7 @@
 //
 //	System::string ParentChangedEvent::ToString()
 //	{
-//		return System::string::Format(L"ParentChangedEvent: Old parent: (%d, %d); New parent: (%d, %d); Instance: (%d, %d)",
+//		return System::string("ParentChangedEvent: Old parent: (%d, %d); New parent: (%d, %d); Instance: (%d, %d)",
 //			old_parent.Type(), old_parent.Number(), new_parent.Type(), old_parent.Number(), instance.Type(), instance.Number());
 //	}
 //}

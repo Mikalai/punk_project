@@ -6,7 +6,10 @@
 #define NOMINMAX
 #endif
 #include <Windows.h>
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+#include <pthread.h>
+#include <errno.h>
+#endif
 
 #include "../../config.h"
 
@@ -28,7 +31,9 @@ namespace System
 	private:
 #ifdef _WIN32
 		CRITICAL_SECTION m_mutex;
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+        pthread_mutex_t m_mutex;
+#endif
 	};
 }
 

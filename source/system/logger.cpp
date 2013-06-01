@@ -23,9 +23,9 @@ namespace System
 			string cur_time = System::Clock::SysTimeAsUTC();
 			// cook a nice name for the log file
 			cur_time[3] = cur_time[7] = cur_time[10] = cur_time[19] = 0;		//	split string into several strings
-			const wchar_t* buf = cur_time.Data();
+            const char* buf = cur_time.Data();
 			//	makefile name according to the current date
-			string filename(L"log_" + string(&buf[20]) + L"_" + string(&buf[4]) + L"_" + string(&buf[8]));
+            string filename("log_" + string(&buf[20]) + "_" + string(&buf[4]) + "_" + string(&buf[8]));
 			m_stream.open(filename.ToStdString().c_str(), std::ios_base::app);
 		}
 
@@ -101,22 +101,6 @@ namespace System
 			return *this;
 		}
 
-		Streamer& Streamer::operator << (long v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
-		Streamer& Streamer::operator << (unsigned long v)
-		{
-			std::cout << v;
-			if (m_stream.is_open())
-				m_stream << v;
-			return *this;
-		}
-
 		Streamer& Streamer::operator << (int v)
 		{
 			std::cout << v;
@@ -125,7 +109,7 @@ namespace System
 			return *this;
 		}
 
-		Streamer& Streamer::operator << (unsigned int v)
+        Streamer& Streamer::operator << (uint32_t v)
 		{
 			std::cout << v;
 			if (m_stream.is_open())
@@ -133,7 +117,7 @@ namespace System
 			return *this;
 		}
 
-		Streamer& Streamer::operator << (__int64 v)
+		Streamer& Streamer::operator << (int64_t v)
 		{
 			std::cout << v;
 			if (m_stream.is_open())
@@ -141,7 +125,7 @@ namespace System
 			return *this;
 		}
 
-		Streamer& Streamer::operator << (unsigned __int64 v)
+		Streamer& Streamer::operator << (uint64_t v)
 		{
 			std::cout << v;
 			if (m_stream.is_open())
@@ -173,7 +157,7 @@ namespace System
 			return *this;
 		}
 
-		Streamer& Streamer::operator << (_Myt& (__cdecl *_Pfn)(_Myt&))
+        Streamer& Streamer::operator << (_Myt& (PUNK_CDECL *_Pfn)(_Myt&))
 		{
 			std::wcout << _Pfn;
 			if (m_stream.is_open())
@@ -181,7 +165,7 @@ namespace System
 			return *this;
 		}
 
-		Streamer& Streamer::operator << (_Myios& (__cdecl *_Pfn)(_Myios&))
+        Streamer& Streamer::operator << (_Myios& (PUNK_CDECL *_Pfn)(_Myios&))
 		{
 			std::wcout << _Pfn;
 			if (m_stream.is_open())
@@ -189,7 +173,7 @@ namespace System
 			return *this;
 		}
 
-		Streamer& Streamer::operator << (std::ios_base& (__cdecl *_Pfn)(std::ios_base&))
+        Streamer& Streamer::operator << (std::ios_base& (PUNK_CDECL *_Pfn)(std::ios_base&))
 		{
 			std::wcout << _Pfn;
 			if (m_stream.is_open())

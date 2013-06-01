@@ -13,13 +13,13 @@ namespace Virtual
 	class KeyBasedMotionStrategy : public MotionStrategy
 	{
 		std::unique_ptr<AnimationMixer> m_Mixer;
-		__int64 m_current_time_us;
+		int64_t m_current_time_us;
 	public:
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual bool GetLocalTransform(Math::Matrix4x4<float>& value);
 		virtual bool SetLocalTransform(const Math::Matrix4x4<float>& value);
-		virtual bool Update(__int64 current_time_us, __int64 delta_us);
+		virtual bool Update(int64_t current_time_us, int64_t delta_us);
 		virtual ~KeyBasedMotionStrategy();
 	};
 }

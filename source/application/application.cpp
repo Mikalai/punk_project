@@ -1,7 +1,3 @@
-#ifndef _WIN32
-#include <windows.h>
-#endif
-
 #include "application.h"
 #include "../system/module.h"
 #include "../gpu/module.h"
@@ -48,11 +44,6 @@ namespace Punk
 
 		m_event_manager = new System::EventManager();
         System::WindowDesc wnd_desc;
-        if (data.gpu_config.m_hwnd)
-        {
-            wnd_desc.m_use_parent_window = true;
-            wnd_desc.m_hwnd = data.gpu_config.m_hwnd;
-        }
         m_window = new System::Window(this, wnd_desc);
 		System::Mouse::Instance()->LockInWindow(true);
 		m_video_driver = new GPU::VideoDriver;
@@ -243,7 +234,7 @@ namespace Punk
 		return m_terrain_manager;
 	}
 
-	void Application::SetTimeScale(__int64 nominator, __int64 denominator)
+	void Application::SetTimeScale(int64_t nominator, int64_t denominator)
 	{
 		m_time_scale_nominator = nominator;
 		m_time_scale_denomiator = denominator;

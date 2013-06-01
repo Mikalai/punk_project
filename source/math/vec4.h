@@ -202,7 +202,7 @@ namespace Math
 
         const System::string ToString() const
 		{
-			return System::string::Format(L"(%.3f; %.3f; %.3f; %.3f)", m_v[0], m_v[1], m_v[2], m_v[3]);
+            return System::string("({0:.3}; {1:.3}; {2:.3}; {3:.3})").arg(m_v[0]).arg(m_v[1]).arg(m_v[2]).arg(m_v[3]);
 		}
 
         const Vector2<T> XY() const

@@ -10,13 +10,10 @@ namespace Math
 		m_mod = 2147483647;
 		m_a = 524287;
 		m_b = 131071;
-
-		__time64_t t;
-		_time64(&t);
-		m_x = t;
+        m_x = 1;
 	};
 
-	Random::Random(unsigned __int64 seed)
+	Random::Random(uint64_t seed)
 	{
 		m_mod = 2147483647;
 		m_a = 524287;
@@ -25,7 +22,7 @@ namespace Math
 		m_x = seed;
 	}
 
-	unsigned __int64 Random::Uniformi()
+	uint64_t Random::Uniformi()
 	{
 		m_x = (m_a * m_x + m_b) % m_mod;
 		return m_x;
@@ -43,7 +40,7 @@ namespace Math
 		return a + v * (b - a);
 	}
 
-	void Random::SetSeed(unsigned __int64 value)
+	void Random::SetSeed(uint64_t value)
 	{
 		m_x = value;
 	}

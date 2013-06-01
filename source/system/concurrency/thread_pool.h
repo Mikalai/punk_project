@@ -6,7 +6,11 @@
 #define NOMINMAX
 #endif
 #include <Windows.h>
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#endif
 
 #include <vector>
 #include <stack>
@@ -14,6 +18,8 @@
 
 #include "../../config.h"
 #include "thread_job.h"
+#include "thread.h"
+#include "monitor.h"
 
 namespace System
 {
@@ -23,12 +29,10 @@ namespace System
 		ThreadPool(const ThreadPool& pool);
 		ThreadPool& operator = (const ThreadPool&);
 
-#ifdef _WIN32
-		std::vector<HANDLE> m_threads;
-		HANDLE m_own_thread;
-		CONDITION_VARIABLE m_cond;
-		CRITICAL_SECTION m_cs;
-#endif	//	_WIN32
+        std::vector<Thread> m_threads;
+        Thread m_own_thread;
+        Monitor m_monitor;
+
 		unsigned long m_finish;
 
 	public:
@@ -50,8 +54,8 @@ namespace System
 
 		ThreadJob* GetThreadJob();
 
-		static unsigned __stdcall ThreadFunc(void* data);
-		static unsigned __stdcall OwnFun(void* data);
+        static unsigned PUNK_STDCALL ThreadFunc(void* data);
+        static unsigned PUNK_STDCALL OwnFun(void* data);
 	};
 }
 

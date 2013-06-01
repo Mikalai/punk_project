@@ -12,7 +12,7 @@ namespace System
 		bool Create(long max_count);
 		bool Destroy();
 		bool Release(long count = 1);
-		bool Wait(long time = INFINITE);
+        bool Wait(long time = PUNK_INFINITE);
 		~Semaphore();
 	};
 }

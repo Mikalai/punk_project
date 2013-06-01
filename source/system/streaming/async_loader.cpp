@@ -21,14 +21,14 @@ namespace System
 		m_instance.reset(0);
 	}
 
-	unsigned __stdcall IOThread(void* data)
+	unsigned PUNK_STDCALL IOThread(void* data)
 	{
 		if (data == nullptr)
 			return 0;
 		return reinterpret_cast<AsyncLoader*>(data)->FileIOThreadProc();
 	}
 
-	unsigned __stdcall ProcessThread(void* data)
+	unsigned PUNK_STDCALL ProcessThread(void* data)
 	{
 		if (data == nullptr)
 			return 0;

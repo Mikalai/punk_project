@@ -10,30 +10,48 @@ namespace System
 		Destroy();
 	}
 
-	bool Thread::Create(unsigned (__stdcall *thread_func)(void*), void* data, unsigned stack)
-	{
 #ifdef _WIN32
+    bool Thread::Create(unsigned (PUNK_STDCALL *thread_func)(void*), void* data, unsigned stack)
+	{
 		if (Handle() != NULL)
 			return false;
 		Handle() = (HANDLE)_beginthreadex(0, stack, thread_func, data, CREATE_SUSPENDED, 0);
 		if (Handle() != INVALID_HANDLE_VALUE)
 			return true;
 		return false;
-#endif	//	_WIN32
 	}
+#endif	//	_WIN32
+
+#ifdef __gnu_linux__
+    bool Thread::Create(void *(*thread_func)(void *), void *data, unsigned stack)
+    {
+        bool result = false;
+        pthread_attr_t attr;
+        pthread_attr_init(&attr);
+        pthread_attr_setstacksize(&attr, stack);
+        result = pthread_create(ThreadHandle(), &attr, thread_func, data) != 0;
+        pthread_attr_destroy(&attr);
+        return result;
+   }
+#endif
 
 	bool Thread::Join()
 	{
 #ifdef _WIN32
 		return WaitForSingleObject(Handle(), INFINITE) != WAIT_FAILED;
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+        void* result;
+        return pthread_join(&m_thread, &result) == 0;
+#endif
 	}
 
 	bool Thread::Resume()
 	{
 #ifdef _WIN32
 		return ResumeThread(Handle()) != (DWORD)-1;
-#endif	//	_WIN32
+#elif   defined __gnu_linux__
+        return false;
+#endif
 	}
 
 	bool Thread::Destroy()
@@ -45,6 +63,15 @@ namespace System
 			Handle() = NULL;
 		}
 		return true;
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+        //  TODO: seems nothing should be placed here
+#endif
 	}
+
+    Thread Thread::GetOwnThread()
+    {
+        Thread result;
+        *result.ThreadHandle() = pthread_self();
+        return result;
+    }
 }

@@ -1,3 +1,4 @@
+#ifdef _WIN32
 #include "camera_capture.h"
 #include "../window/module.h"
 #include "../logger.h"
@@ -216,8 +217,8 @@ namespace System
 			exit(-1);
 	}
 
-	HRESULT ( __stdcall * Receive_ ) ( void* inst, IMediaSample *smp ) ; 
-	HRESULT   __stdcall   Receive    ( void* inst, IMediaSample *smp ) {     
+    HRESULT ( PUNK_STDCALL * Receive_ ) ( void* inst, IMediaSample *smp ) ;
+    HRESULT   PUNK_STDCALL   Receive    ( void* inst, IMediaSample *smp ) {
 		BYTE*     buf;    smp->GetPointer(&buf); DWORD len = smp->GetActualDataLength();
 		//if (g_timer.GetElapsedTime() > 0.01)
 		{
@@ -670,3 +671,5 @@ namespace System
 //	return pbmi; //return BITMAPINFO
 //}
 //}
+
+#endif

@@ -119,7 +119,7 @@ namespace Utility
 			}
 
 			out_message() << L"Font style: " + System::string(face->style_name) << std::endl;
-			out_message() << System::string::Format(L"Num glyphs: %d", face->num_glyphs) << std::endl;
+			out_message() << System::string("Num glyphs: %d", face->num_glyphs) << std::endl;
 
 			curFace = face;
 			fontFace[name] = face;

@@ -27,7 +27,7 @@ namespace Punk
         System::Mouse* GetMouse();
 
 		int Run();
-		void SetTimeScale(__int64 nominator, __int64 denominator);
+		void SetTimeScale(int64_t nominator, int64_t denominator);
 
 		virtual void WndOnIdleEvent(System::IdleEvent* event) override;
 		virtual void WndOnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event) override;
@@ -88,8 +88,8 @@ namespace Punk
 		//
 		//	to perform speed up and slow down
 		//
-		__int64 m_time_scale_nominator;
-		__int64 m_time_scale_denomiator;
+		int64_t m_time_scale_nominator;
+		int64_t m_time_scale_denomiator;
 
 	};
 }

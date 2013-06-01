@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_BUFFER
 #define _H_PUNK_BUFFER
 
-#include <cstddef>
+#include <cstdint>
 #include "../string/string.h"
 #include "../config.h"
 
@@ -34,7 +34,7 @@ namespace System
 		signed char ReadSigned8();
 		unsigned char ReadUnsigned8();
         int64_t ReadSigned64();
-        unsigned int64_t ReadUnsigned64();
+        uint64_t ReadUnsigned64();
 		string ReadString();
 		string ReadLine();
 		string ReadWord();
@@ -42,8 +42,8 @@ namespace System
 		double ReadReal64();
 		void ReadBuffer(void* buffer, int size);
 
-        void WriteSigned64(unsigned int64_t value);
-        void WriteUnsigned64(unsigned int64_t value);
+        void WriteSigned64(int64_t value);
+        void WriteUnsigned64(uint64_t value);
 		void WriteSigned32(int value);
 		void WriteUnsigned32(unsigned value);
 		void WriteSigned16(short value);

@@ -1,10 +1,12 @@
+#include <fstream>
+#include <string.h>
+#include <vector>
+#include <algorithm>
+
 #include "image.h"
 #include "image_impl.h"
 
-#include <fstream>
 #include "../error/module.h"
-#include <vector>
-#include <algorithm>
 
 namespace ImageModule
 {
@@ -43,7 +45,7 @@ namespace ImageModule
 		stream.read(header, 16);
 		{
 			unsigned char png[] = { 137, 80, 78, 71, 13, 10, 26, 10 };
-			if (!memcmp(header, png, 8))
+            if (!memcmp(header, png, 8))
 			{					
 				stream.seekg(0, std::ios_base::beg);
 				PngImporter importer;

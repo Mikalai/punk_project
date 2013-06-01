@@ -1,3 +1,4 @@
+#ifdef _WIN32
 
 // ATTENTION: under construction
 
@@ -41,3 +42,5 @@ namespace System
 }
 
 #endif	//	_H_PUNK_SYSTEM_CAMERA_CAPTURE_WIN32
+
+#endif

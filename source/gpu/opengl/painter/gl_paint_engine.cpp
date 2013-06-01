@@ -280,8 +280,8 @@ namespace GPU
 
 				m_font_builder.SetCurrentFace(m_font_name);
 				m_font_builder.SetCharSize(m_font_size, m_font_size);
-				int len = m_font_builder.CalculateLength(text.Data());
-				int h = m_font_builder.CalculateHeight(text.Data());
+                int len = m_font_builder.CalculateLength(text);
+                int h = m_font_builder.CalculateHeight(text);
                 GPU::TextSurface s(len, h,  m_driver);
 				s.SetTextSize(m_font_size);
 				s.SetSize(len, h);

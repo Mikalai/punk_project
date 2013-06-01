@@ -23,7 +23,7 @@ namespace System
 
 		virtual string ToString()
 		{
-			return string::Format(L"Code: %d; NO_DESCRIPTION", eventCode);
+            return string("Code: {0}; NO_DESCRIPTION").arg(eventCode);
 		}
     };
 }

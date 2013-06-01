@@ -289,7 +289,7 @@ namespace Math
 
 		System::string ToString() const
 		{
-			return System::string::Format(L"(%.3f; %.3f; %.3f)", m_v[0], m_v[1], m_v[2]);
+            return System::string("({0}; {1}; {2})").arg(m_v[0]).arg(m_v[1]).arg(m_v[2]);
 		}
 
 		bool Save(std::ostream& stream) const

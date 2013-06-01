@@ -41,7 +41,16 @@ namespace System
         bool m_use_parent_window;
         HWND m_hwnd;
 #endif
-        WindowDesc() : m_x(100), m_y(100), m_width(1024), m_height(768), m_use_parent_window(false), m_hwnd(0) {}
+        WindowDesc()
+            : m_x(100)
+            , m_y(100)
+            , m_width(1024)
+            , m_height(768)            
+    #ifdef _WIN32
+            , m_use_parent_window(false)
+            , m_hwnd(0)
+    #endif  //  _WIN32
+        {}
 	};
 
 	class WindowAdapter

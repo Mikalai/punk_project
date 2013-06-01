@@ -3,7 +3,9 @@
 
 #ifdef _WIN32
 #include <Windows.h>
-#endif //	_WIN32
+#elif defined __gnu_linux__
+#include <pthread.h>
+#endif
 
 #include "../../config.h"
 
@@ -21,6 +23,22 @@ namespace System
 		HANDLE m_handle;
 	};
 #endif	//	_WIN32
+
+#ifdef __linux__
+    class PUNK_ENGINE_PUBLIC OsHandle
+    {
+    public:
+        OsHandle() {}
+        const pthread_t* ThreadHandle() const { return &m_thread; }
+        pthread_t* ThreadHandle() { return &m_thread; }
+    private:
+        union
+        {
+            pthread_t m_thread;
+        };
+
+    };
+#endif  //  __linux__
 
 }
 
