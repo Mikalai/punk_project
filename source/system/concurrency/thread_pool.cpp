@@ -1,6 +1,4 @@
-#ifdef _WIN32
-#include <process.h>
-#endif	//	_WIN32
+#include "atomic.h"
 #include "thread_pool.h"
 
 namespace System
@@ -66,7 +64,7 @@ namespace System
 	void ThreadPool::Init(int thread_count)
 	{
         Monitor.Init();
-		m_finish = 0;
+        m_finish.Store(0);
 
 		m_threads.resize(thread_count);
 		for(auto it = m_threads.begin(); it != m_threads.end(); ++it)
@@ -112,24 +110,21 @@ namespace System
 
 	void ThreadPool::Join()
 	{
-#ifdef _WIN32
-		InterlockedIncrement(&m_finish);
-		WaitForMultipleObjects(m_threads.size(), &m_threads[0], TRUE, INFINITE);
-#endif	//	_WIN32
+        m_finish.FetchAndAddOrdered(1);
+        for (size_t i = 0; i != m_threads.size(); ++i)
+            m_threads[i].Join();
 	}
 
 	bool ThreadPool::IsFinish()
 	{
-		return m_finish == 1;
+        return m_finish == 1;
 	}
 
 	int ThreadPool::HasJobs()
 	{
-#ifdef _WIN32
-		EnterCriticalSection(&m_cs);
+        m_monitor.Lock();
 		int tasks = m_jobs.size();
-		LeaveCriticalSection(&m_cs);
-#endif	//	_WIN32
+        m_monitor.Unlock();
 		return tasks;
 	}
 

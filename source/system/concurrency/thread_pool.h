@@ -20,6 +20,7 @@
 #include "thread_job.h"
 #include "thread.h"
 #include "monitor.h"
+#include "atomicint.h"
 
 namespace System
 {
@@ -33,7 +34,7 @@ namespace System
         Thread m_own_thread;
         Monitor m_monitor;
 
-		unsigned long m_finish;
+        AtomicInt m_finish;
 
 	public:
 		ThreadPool(int threads_count = 4);

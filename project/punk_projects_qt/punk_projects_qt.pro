@@ -1225,8 +1225,7 @@ HEADERS += ../../source/config.h \
 	   ../../source/scene/transform_node.h \
 	   ../../source/scene/visitor.h \
 	   ../../source/string/string.h \
-	   ../../source/system/allocator.h \
-	   ../../source/system/atomicint.h \
+	   ../../source/system/allocator.h \           
 	   ../../source/system/binary_file.h \
 	   ../../source/system/buffer.h \
 	   ../../source/system/clock.h \
@@ -1251,8 +1250,7 @@ HEADERS += ../../source/config.h \
 	   ../../source/system/serializable.h \
 	   ../../source/system/state_manager.h \
 	   ../../source/system/storable_data.h \
-	   ../../source/system/timer.h \
-	   ../../source/system/types.h \
+	   ../../source/system/timer.h \	   
 	   ../../source/tests/test_interface.h \
 	   ../../source/translator/console_interpretator.h \
 	   ../../source/translator/module.h \
@@ -1365,6 +1363,7 @@ HEADERS += ../../source/config.h \
 	   ../../source/string/win32/string_win32.h \
 	   ../../source/system/aop/aop.h \
 	   ../../source/system/concurrency/atomic.h \
+           ../../source/system/concurrency/atomicint.h \
 	   ../../source/system/concurrency/module.h \
 	   ../../source/system/concurrency/monitor.h \
 	   ../../source/system/concurrency/monitor_scope.h \

@@ -3,6 +3,8 @@
 
 #ifdef _WIN32
 #include <intrin.h>
+#elif defined __gnu_linux__
+#include <pthread.h>
 #endif
 
 #include "../types.h"
@@ -13,7 +15,10 @@ namespace System
 	{
 #ifdef _WIN32
 		return _InterlockedCompareExchange((volatile long*)value, (long)exchange, (long)compare);
+#elif defined __gnu_linux__
+        pthread_
 #endif
+
 	}
 
 	inline long AtomicIncrement32(volatile Int32* value)
