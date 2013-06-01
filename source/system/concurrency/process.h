@@ -13,7 +13,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Process
+	class PUNK_ENGINE_PUBLIC Process
 	{
 
 #ifdef _WIN32

@@ -15,7 +15,7 @@
 //	class CameraDesc;
 //	class LightDesc;
 //
-//	class PUNK_ENGINE ObjectDesc
+//	class PUNK_ENGINE_PUBLIC ObjectDesc
 //	{
 //	public:
 //		System::string m_type;

@@ -11,7 +11,7 @@ namespace GPU
 
 	namespace OpenGL
 	{
-        class PUNK_ENGINE RenderTargetTexture : public RenderTarget
+        class PUNK_ENGINE_PUBLIC RenderTargetTexture : public RenderTarget
 		{			
 		public:
             RenderTargetTexture(Texture2D* color_buffer, Texture2D* depth_buffer);

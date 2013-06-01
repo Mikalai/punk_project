@@ -15,7 +15,7 @@
 //
 //namespace System
 //{
-//	template<> class PUNK_ENGINE Policy<Virtual::Camera>
+//	template<> class PUNK_ENGINE_PUBLIC Policy<Virtual::Camera>
 //	{
 //	public:
 //		static const System::string GetResourceFile() { return L"resource"; }
@@ -29,7 +29,7 @@
 //
 //namespace Virtual
 //{
-//	class PUNK_ENGINE CameraManager : public System::ResourceManager2<Cameras::Camera, System::Policy>
+//	class PUNK_ENGINE_PUBLIC CameraManager : public System::ResourceManager2<Cameras::Camera, System::Policy>
 //	{
 //		CameraManager(const CameraManager&);
 //		CameraManager& operator = (const CameraManager&);		

@@ -12,7 +12,7 @@
 namespace Punk
 {
 
-	class PUNK_ENGINE Application : public System::WindowAdapter, public GUI::Adapter
+	class PUNK_ENGINE_PUBLIC Application : public System::WindowAdapter, public GUI::Adapter
 	{
 	public:
 		Application();
@@ -68,6 +68,7 @@ namespace Punk
 		void Clear();
 	private:
 
+        Utility::FontBuilder* m_font_builder;
 		GPU::PaintEngine* m_paint_engine;
 		System::Window* m_window;
 		System::EventManager* m_event_manager;

@@ -15,8 +15,9 @@
 #include "test11.h"
 #include "test12.h"
 #include "test13.h"
+#include "test14.h"
 
-static const int TestNumber = 13;
+static const int TestNumber = 14;
 
 int main()
 {
@@ -105,5 +106,11 @@ int main()
         test.Run();
         std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
     }
+	else if (TestNumber == 14)
+	{
+		Test14::Test test;
+		test.Run();
+		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+	}
 	return 0;
 }

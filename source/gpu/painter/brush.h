@@ -14,7 +14,7 @@ namespace GPU
 {
 	class Texture2D;
 
-	class PUNK_ENGINE Brush final
+	class PUNK_ENGINE_PUBLIC Brush final
 	{
 	public:
 		Brush();

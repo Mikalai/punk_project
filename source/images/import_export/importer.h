@@ -15,7 +15,7 @@ namespace ImageModule
 	class RGBImage;
 	class GrayImage;
 
-	class PUNK_ENGINE Importer : public Image
+	class PUNK_ENGINE_PUBLIC Importer : public Image
 	{
 	//protected:
 		//struct ImporterImpl;

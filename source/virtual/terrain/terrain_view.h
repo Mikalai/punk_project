@@ -46,7 +46,7 @@ namespace Virtual
 		float threshold;
 	};
 
-	class PUNK_ENGINE TerrainView
+	class PUNK_ENGINE_PUBLIC TerrainView
 	{
 	public:
 		/**

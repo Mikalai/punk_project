@@ -15,7 +15,7 @@ namespace Virtual
 
 	enum MotionStrategyType : char { MOTION_STRATEGY_TYPE_NONE, MOTION_STRATEGY_TYPE_STATIC };
 
-	class PUNK_ENGINE MotionStrategy : public System::Object
+	class PUNK_ENGINE_PUBLIC MotionStrategy : public System::Object
 	{
 	public:
 		MotionStrategy();

@@ -10,7 +10,7 @@ namespace Utility { class MeshDesc; }
 
 namespace AI
 {
-	class PUNK_ENGINE NaviMesh
+	class PUNK_ENGINE_PUBLIC NaviMesh
 	{
 	public:
 

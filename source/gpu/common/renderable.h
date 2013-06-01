@@ -8,7 +8,7 @@
 
 namespace GPU
 {
-	class PUNK_ENGINE Renderable 
+	class PUNK_ENGINE_PUBLIC Renderable 
 	{
 	public:
 

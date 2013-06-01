@@ -4,7 +4,7 @@ namespace GPU
 {
     namespace OpenGL
     {
-        bool PUNK_ENGINE GPU_OPENGL_INIT(const Config& data)
+        bool PUNK_ENGINE_PUBLIC GPU_OPENGL_INIT(const Config& data)
         {
             (void)data;
 
@@ -76,7 +76,7 @@ namespace GPU
             return true;
         }
 
-        bool PUNK_ENGINE GPU_OPENGL_DESTROY()
+        bool PUNK_ENGINE_PUBLIC GPU_OPENGL_DESTROY()
         {
             for (auto it = AbstractRenderPolicy::_begin(); it != AbstractRenderPolicy::_end(); ++it)
                 safe_delete(it->second);

@@ -11,7 +11,7 @@ namespace Math
 	class Triangle2D;
 	class Line3D;
 
-	class PUNK_ENGINE Triangle3D
+	class PUNK_ENGINE_PUBLIC Triangle3D
 	{
 		vec3 m_v[3];
 		vec3 m_normal;

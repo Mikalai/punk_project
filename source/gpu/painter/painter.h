@@ -32,7 +32,7 @@ namespace GPU
 	class Brush;
 	class Pen;
 
-	class PUNK_ENGINE Painter final
+	class PUNK_ENGINE_PUBLIC Painter final
 	{
 	public:
 		Painter();

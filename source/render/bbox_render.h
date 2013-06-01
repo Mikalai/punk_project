@@ -7,7 +7,7 @@
 //
 //namespace Render
 //{
-//	class PUNK_ENGINE BBoxRender
+//	class PUNK_ENGINE_PUBLIC BBoxRender
 //	{
 ////		OpenGL::Line line;
 //	public:

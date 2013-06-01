@@ -10,7 +10,7 @@ namespace GPU
 		class Context;
 		class CommandQueue;
 
-		class PUNK_ENGINE Buffer
+		class PUNK_ENGINE_PUBLIC Buffer
 		{
 		public:
 

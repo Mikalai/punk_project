@@ -128,7 +128,11 @@ namespace Math
 
 		Vector4<T>& operator = (const Vector4<T>& vec)
 		{
+#ifdef _WIN32
 			memcpy_s(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
+#else
+            memcpy(m_v, vec.m_v, sizeof(m_v));
+#endif
 			return *this;
 		}
 
@@ -518,7 +522,7 @@ namespace Math
 		return !(a == b);
 	}
 
-	class PUNK_ENGINE vec4 : public Vector4<float> 
+	class PUNK_ENGINE_PUBLIC vec4 : public Vector4<float> 
 	{
 	public:
 		vec4() : Vector4<float>() {}
@@ -530,7 +534,7 @@ namespace Math
 		vec4(const Vector4<float>& vec) : Vector4<float>(vec) {}
 	};
 
-	class PUNK_ENGINE ivec4 : public Vector4<int> 
+	class PUNK_ENGINE_PUBLIC ivec4 : public Vector4<int> 
 	{
 	public:
 		ivec4() : Vector4<int>() {}

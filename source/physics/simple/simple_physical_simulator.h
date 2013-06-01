@@ -28,7 +28,7 @@
 //{
 //	class BulletRigidBody;
 //
-//	class PUNK_ENGINE BulletSimulator
+//	class PUNK_ENGINE_PUBLIC BulletSimulator
 //	{
 //	public:
 //		virtual void Init();

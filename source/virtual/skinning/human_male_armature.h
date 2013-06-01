@@ -5,7 +5,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE HumanMaleArmature final : public HumanArmature
+	class PUNK_ENGINE_PUBLIC HumanMaleArmature final : public HumanArmature
 	{
 	public:
 	};

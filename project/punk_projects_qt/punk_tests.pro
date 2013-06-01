@@ -49,7 +49,8 @@ HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_windo
     ../../source/tests/test11.cpp \
     ../../source/tests/test2.h \
     ../../source/tests/test12.h \
-    ../../source/tests/test13.h
+    ../../source/tests/test13.h \
+    ../../source/tests/test14.h
 
 SOURCES += ../../source/tests/main.cpp \
            ../../source/tests/test_create_opengl_window/test_create_opengl_window.cpp \
@@ -67,5 +68,6 @@ SOURCES += ../../source/tests/main.cpp \
     ../../source/tests/test11.cpp \
     ../../source/tests/test2.cpp \
     ../../source/tests/test12.cpp \
-    ../../source/tests/test13.cpp
+    ../../source/tests/test13.cpp \
+    ../../source/tests/test14.cpp
 

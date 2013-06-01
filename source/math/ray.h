@@ -6,7 +6,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE Ray
+	class PUNK_ENGINE_PUBLIC Ray
 	{
 		vec3 m_start;
 		vec3 m_dir;

@@ -18,7 +18,7 @@ namespace GPU
 #else
 #endif	//	USE_OPENGL
 
-	class PUNK_ENGINE SphereObject : public SphereObjectBase
+	class PUNK_ENGINE_PUBLIC SphereObject : public SphereObjectBase
 	{
 		using Base = SphereObjectBase;
 

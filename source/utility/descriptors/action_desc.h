@@ -9,7 +9,7 @@ namespace Utility
 {
 	class AnimationDesc;
 
-	class PUNK_ENGINE ActionDesc
+	class PUNK_ENGINE_PUBLIC ActionDesc
 	{
 	public:
 		System::string m_name;

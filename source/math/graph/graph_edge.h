@@ -9,7 +9,7 @@ namespace Math
 	class Graph;
 	class GraphVertex;
 
-	class PUNK_ENGINE GraphEdge
+	class PUNK_ENGINE_PUBLIC GraphEdge
 	{
 	public:
 		GraphEdge(GraphVertex* v1, GraphVertex* v2);

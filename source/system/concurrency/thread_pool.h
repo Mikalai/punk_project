@@ -17,7 +17,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE ThreadPool
+	class PUNK_ENGINE_PUBLIC ThreadPool
 	{		
 		std::queue<ThreadJob*> m_jobs;
 		ThreadPool(const ThreadPool& pool);

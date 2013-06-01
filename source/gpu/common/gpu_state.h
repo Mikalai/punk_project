@@ -27,7 +27,7 @@ namespace GPU
 	 * of the instance of the render state. It is guaranteed if during
 	 * next state created from previous state.
 	 */
-	class PUNK_ENGINE BaseState
+	class PUNK_ENGINE_PUBLIC BaseState
 	{
 	public:
 		BaseState() : m_count(1), m_total(0) {}
@@ -56,7 +56,7 @@ namespace GPU
 
 	};
 
-	class PUNK_ENGINE ViewState final : private BaseState, public System::Poolable<ViewState>
+	class PUNK_ENGINE_PUBLIC ViewState final : private BaseState, public System::Poolable<ViewState>
 	{
 	public:
 		Math::mat4 m_projection;
@@ -67,7 +67,7 @@ namespace GPU
 		friend class CoreState;
 	};
 
-	class PUNK_ENGINE LightState final : private BaseState, public System::Poolable<LightState>
+	class PUNK_ENGINE_PUBLIC LightState final : private BaseState, public System::Poolable<LightState>
 	{
 	public:
 		LightModel m_light_model;
@@ -77,7 +77,7 @@ namespace GPU
 		friend class CoreState;
 	};
 
-	class PUNK_ENGINE RenderState final : private BaseState, public System::Poolable<RenderState>
+	class PUNK_ENGINE_PUBLIC RenderState final : private BaseState, public System::Poolable<RenderState>
 	{
 	public:
 		RenderState();
@@ -117,7 +117,7 @@ namespace GPU
 		friend class CoreState;
 	};
 
-	class PUNK_ENGINE BatchState final : private BaseState, public System::Poolable<BatchState>
+	class PUNK_ENGINE_PUBLIC BatchState final : private BaseState, public System::Poolable<BatchState>
 	{
 	public:
 		Math::mat4 m_world;
@@ -143,7 +143,7 @@ namespace GPU
 		friend class CoreState;
 	};
 
-	class PUNK_ENGINE TextureState final : private BaseState, public System::Poolable<TextureState>
+	class PUNK_ENGINE_PUBLIC TextureState final : private BaseState, public System::Poolable<TextureState>
 	{
 	public:
 		TextureState();
@@ -166,7 +166,7 @@ namespace GPU
 
 	};
 
-	class PUNK_ENGINE CoreState final : private BaseState, public System::Poolable<CoreState>
+	class PUNK_ENGINE_PUBLIC CoreState final : private BaseState, public System::Poolable<CoreState>
 	{
 	public:		
 		static const unsigned VIEW_STATE	= 0x0000001;

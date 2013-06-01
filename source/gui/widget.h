@@ -9,7 +9,7 @@
 #include "../config.h"
 //#include "../opengl/driver.h"
 #include "../math/math.h"
-#include "../gpu/opengl/textures/text_surface.h"
+#include "../gpu/common/text_surface.h"
 #include "events/interface.h"
 #include "../system/events/interface.h"
 
@@ -19,7 +19,7 @@ namespace GUI
 
 	class Manager;
 
-	class PUNK_ENGINE Widget : public System::CompoundObject
+	class PUNK_ENGINE_PUBLIC Widget : public System::CompoundObject
 	{
 	public:
 
@@ -184,7 +184,7 @@ namespace GUI
         void* m_any_data;
 
 		//	should be deleted in destructor
-		GPU::OpenGL::TextSurface* m_text_texture;
+        GPU::TextSurface* m_text_texture;
 
 
         /******************************************************************

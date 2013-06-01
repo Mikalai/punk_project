@@ -17,7 +17,7 @@ namespace GPU
 {
     class VideoDriver;
 
-	class PUNK_ENGINE Texture2D final
+	class PUNK_ENGINE_PUBLIC Texture2D final
 	{
 	public:		
 		virtual ~Texture2D();

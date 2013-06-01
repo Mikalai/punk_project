@@ -12,7 +12,7 @@ namespace Math
 {
 	class Line3D;
 
-	class PUNK_ENGINE OctTree
+	class PUNK_ENGINE_PUBLIC OctTree
 	{
 	public:
 		typedef std::vector<ivec3> FaceList;

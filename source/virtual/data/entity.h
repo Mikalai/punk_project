@@ -9,7 +9,7 @@
 
 namespace Virtual
 {	
-	class PUNK_ENGINE Entity : public System::Object
+	class PUNK_ENGINE_PUBLIC Entity : public System::Object
 	{
 	public:
 		

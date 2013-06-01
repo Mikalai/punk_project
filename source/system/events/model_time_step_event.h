@@ -5,7 +5,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE ModelTimeStepEvent : public Event, public Poolable<ModelTimeStepEvent>
+	class PUNK_ENGINE_PUBLIC ModelTimeStepEvent : public Event, public Poolable<ModelTimeStepEvent>
     {        
         ModelTimeStepEvent(ModelTimeStepEvent&);
     public:

@@ -8,7 +8,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Factory
+	class PUNK_ENGINE_PUBLIC Factory
 	{
 	public:
 		
@@ -32,7 +32,7 @@ namespace System
 		std::map<ObjectType, ResourceCreator*> m_creator;
 	};
 
-	PUNK_ENGINE Factory* GetFactory();
+	PUNK_ENGINE_PUBLIC Factory* GetFactory();
 }
 
 #endif	//	_H_PUNK_SYSTEM_FACTORY

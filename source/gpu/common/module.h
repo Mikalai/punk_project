@@ -15,10 +15,11 @@
 #include "texture_context.h"
 #include "render_batch.h"
 #include "render_pass.h"
+#include "text_surface.h"
 
 namespace GPU
 {
-	extern bool PUNK_ENGINE GPU_COMMON_INIT(const Config& data);
+	extern bool PUNK_ENGINE_PUBLIC GPU_COMMON_INIT(const Config& data);
 }
 
 #endif	//	_H_PUNK_GPU_COMMON_MODULE

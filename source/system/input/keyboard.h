@@ -5,7 +5,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Keyboard
+	class PUNK_ENGINE_PUBLIC Keyboard
 	{	
 	public:
 

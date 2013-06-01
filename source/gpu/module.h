@@ -9,8 +9,8 @@
 
 namespace GPU
 {
-	extern bool PUNK_ENGINE GPU_INIT(const Config& data);	
-	extern bool PUNK_ENGINE GPU_DESTROY();	
+	extern bool PUNK_ENGINE_PUBLIC GPU_INIT(const Config& data);	
+	extern bool PUNK_ENGINE_PUBLIC GPU_DESTROY();	
 }
 
 #endif	//	_H_GPU_H

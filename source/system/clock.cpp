@@ -79,12 +79,12 @@ namespace System
 		return (int)m_us;
 	}
 
-	Int64 Clock::Now()
+	int64_t Clock::Now()
 	{
 		return m_time;
 	}
 
-	void Clock::Advance(Int64 dt)
+	void Clock::Advance(int64_t dt)
 	{
 		m_us += dt;
 		m_time += m_us / 1000000;
@@ -92,7 +92,7 @@ namespace System
 		_gmtime64_s(&m_date, &m_time);
 	}
 
-	Int64 Clock::SysTimeAsSecondsFromJanuary_1970_1()
+	int64_t Clock::SysTimeAsSecondsFromJanuary_1970_1()
 	{
 		time_t t;
 		time(&t);

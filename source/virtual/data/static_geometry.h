@@ -10,7 +10,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE StaticGeometry : public Geometry, public System::Aspect<StaticGeometry*, System::string>
+	class PUNK_ENGINE_PUBLIC StaticGeometry : public Geometry, public System::Aspect<StaticGeometry*, System::string>
 	{
 	public:
 		typedef std::map<System::string, std::vector<Math::Vector4<Math::vec2>>> TextureMeshes;

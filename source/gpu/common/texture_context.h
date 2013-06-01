@@ -11,7 +11,7 @@ namespace GPU
 class Texture2D;
 
 
-class PUNK_ENGINE TextureContext : public System::Poolable<TextureContext>
+class PUNK_ENGINE_PUBLIC TextureContext : public System::Poolable<TextureContext>
 {
 public:
     TextureContext();

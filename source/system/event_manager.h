@@ -15,7 +15,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE EventManager
+	class PUNK_ENGINE_PUBLIC EventManager
     {	
 	private:
 		bool m_events_mask[MAX_EVENTS_COUNT];

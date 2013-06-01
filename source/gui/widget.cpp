@@ -43,11 +43,11 @@ namespace GUI
 		, m_background_texture(nullptr)
 		, m_any_data(nullptr)
 	{
-        m_text_texture = new GPU::OpenGL::TextSurface(nullptr);
-		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
-		m_text_texture->SetVerticalAlignment(GPU::OpenGL::TextSurface::VERTICAL_CENTER);
-		m_text_texture->SetHorizontalAlignment(GPU::OpenGL::TextSurface::HORIZONTAL_CENTER);
-		m_text_texture->SetText(m_text);
+//        m_text_texture = new GPU::OpenGL::TextSurface(nullptr);
+//		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
+//		m_text_texture->SetVerticalAlignment(GPU::OpenGL::TextSurface::VERTICAL_CENTER);
+//		m_text_texture->SetHorizontalAlignment(GPU::OpenGL::TextSurface::HORIZONTAL_CENTER);
+//		m_text_texture->SetText(m_text);
 		SetManager(GUI::Manager::Instance());
 	}
 

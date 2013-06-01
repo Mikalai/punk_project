@@ -8,7 +8,7 @@
 namespace Utility { class LightDesc; }
 namespace Virtual
 {
-	class PUNK_ENGINE PointLight : public Light
+	class PUNK_ENGINE_PUBLIC PointLight : public Light
 	{
 		Math::vec3 m_position;
 		Math::vec3 m_color;

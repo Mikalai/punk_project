@@ -5,7 +5,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE InteriorLocation : public Location
+	class PUNK_ENGINE_PUBLIC InteriorLocation : public Location
 	{
 	public:
 	};

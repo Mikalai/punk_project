@@ -1,5 +1,5 @@
-#ifndef _H_PUNK_ENGINE
-#define _H_PUNK_ENGINE
+#ifndef _H_PUNK_ENGINE_PUBLIC
+#define _H_PUNK_ENGINE_PUBLIC
 
 #include "math\module.h"
 #include "gpu\module.h"

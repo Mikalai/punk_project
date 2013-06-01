@@ -58,60 +58,60 @@ namespace Math
 					VISIBLE, NOT_VISIBLE,
 					PARTIALLY_VISIBLE };
 		
-	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const Line3D& line);
-	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const Plane& plane);
-	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const Triangle3D& triangle);
-	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const ConvexShapeMesh& mesh);
-	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const BoundingBox& mesh);
-	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const BoundingSphere& mesh);
-	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const Frustum& frustum);
-	PUNK_ENGINE Relation ClassifyPoint(const vec3& point, const ClipSpace& frustum);
-	PUNK_ENGINE Relation ClassifyPoint(const vec2& point, const Rect& rect);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec3& point, const Line3D& line);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec3& point, const Plane& plane);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec3& point, const Triangle3D& triangle);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec3& point, const ConvexShapeMesh& mesh);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec3& point, const BoundingBox& mesh);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec3& point, const BoundingSphere& mesh);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec3& point, const Frustum& frustum);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec3& point, const ClipSpace& frustum);
+	PUNK_ENGINE_PUBLIC Relation ClassifyPoint(const vec2& point, const Rect& rect);
 	
-	PUNK_ENGINE Relation ClassifyLine(const Line3D& line, const Plane& plane);
-	PUNK_ENGINE Relation ClassifyLine(const Line3D& line, const Triangle3D& triangle);
-	PUNK_ENGINE Relation ClassifyLine(const Line3D& line, const ClipSpace& space);
-	PUNK_ENGINE Relation ClassifyBoudingBox(const BoundingBox& bbox, const ClipSpace& plane);
-	PUNK_ENGINE Relation ClassifyBoudingSphere(const Sphere& bbox, const ClipSpace& plane);
+	PUNK_ENGINE_PUBLIC Relation ClassifyLine(const Line3D& line, const Plane& plane);
+	PUNK_ENGINE_PUBLIC Relation ClassifyLine(const Line3D& line, const Triangle3D& triangle);
+	PUNK_ENGINE_PUBLIC Relation ClassifyLine(const Line3D& line, const ClipSpace& space);
+	PUNK_ENGINE_PUBLIC Relation ClassifyBoudingBox(const BoundingBox& bbox, const ClipSpace& plane);
+	PUNK_ENGINE_PUBLIC Relation ClassifyBoudingSphere(const Sphere& bbox, const ClipSpace& plane);
 	
 
-    PUNK_ENGINE Relation CrossLineLine(const Line3D& line1, const Line3D& line2, float& t1, float& t2, float& dst);
-    PUNK_ENGINE Relation CrossLineLine(const Line3D& line1, const Line3D& line2, vec3& p);
-    PUNK_ENGINE Relation CrossLinePlane(const Line3D& line, const Plane& p, float& t);
-	PUNK_ENGINE Relation CrossLinePlane(const Line3D& line, const Plane& p, vec3& point);
-	PUNK_ENGINE Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, float& t);
-	PUNK_ENGINE Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, vec3& vec);
-	PUNK_ENGINE Relation CrossLineSphere(const Line3D& line, const Sphere& sphere, float& t1, float& t2);
-	PUNK_ENGINE Relation CrossLineSphere(const Line3D& line, const Sphere& sphere, vec3& p1, vec3& p2);
-	PUNK_ENGINE Relation CrossLineEllipsoid(const Line3D& line, const Ellipsoid& ellipsoid, float& t1, float& t2);
-	PUNK_ENGINE Relation CrossLineEllipsoid(const Line3D& line, const Ellipsoid& ellipsoid, vec3& p1, vec3& p2);
-	PUNK_ENGINE Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, float& t1, float& t2, int& face_index1, int& face_index2);
-	PUNK_ENGINE Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, vec3& p1, vec3& p2, int& face_index1, int& face_index2);
-	PUNK_ENGINE Relation CrossSphereSphere(const Sphere& a, const Sphere& b);
+    PUNK_ENGINE_PUBLIC Relation CrossLineLine(const Line3D& line1, const Line3D& line2, float& t1, float& t2, float& dst);
+    PUNK_ENGINE_PUBLIC Relation CrossLineLine(const Line3D& line1, const Line3D& line2, vec3& p);
+    PUNK_ENGINE_PUBLIC Relation CrossLinePlane(const Line3D& line, const Plane& p, float& t);
+	PUNK_ENGINE_PUBLIC Relation CrossLinePlane(const Line3D& line, const Plane& p, vec3& point);
+	PUNK_ENGINE_PUBLIC Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, float& t);
+	PUNK_ENGINE_PUBLIC Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, vec3& vec);
+	PUNK_ENGINE_PUBLIC Relation CrossLineSphere(const Line3D& line, const Sphere& sphere, float& t1, float& t2);
+	PUNK_ENGINE_PUBLIC Relation CrossLineSphere(const Line3D& line, const Sphere& sphere, vec3& p1, vec3& p2);
+	PUNK_ENGINE_PUBLIC Relation CrossLineEllipsoid(const Line3D& line, const Ellipsoid& ellipsoid, float& t1, float& t2);
+	PUNK_ENGINE_PUBLIC Relation CrossLineEllipsoid(const Line3D& line, const Ellipsoid& ellipsoid, vec3& p1, vec3& p2);
+	PUNK_ENGINE_PUBLIC Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, float& t1, float& t2, int& face_index1, int& face_index2);
+	PUNK_ENGINE_PUBLIC Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, vec3& p1, vec3& p2, int& face_index1, int& face_index2);
+	PUNK_ENGINE_PUBLIC Relation CrossSphereSphere(const Sphere& a, const Sphere& b);
 
-	PUNK_ENGINE Relation CrossThreePlane(const Plane& a, const Plane& b, const Plane& c, vec3& point);
-	PUNK_ENGINE Relation CrossPlanePlane(const Plane& a, const Plane& b, Line3D& line);	
-	PUNK_ENGINE Relation CrossPlaneTriangle(const Plane& plane, const Triangle3D& t, Line3D& line);
-	PUNK_ENGINE Relation CrossTriangleTriangle(const Triangle3D& a, const Triangle3D& b, Line3D& line);	
+	PUNK_ENGINE_PUBLIC Relation CrossThreePlane(const Plane& a, const Plane& b, const Plane& c, vec3& point);
+	PUNK_ENGINE_PUBLIC Relation CrossPlanePlane(const Plane& a, const Plane& b, Line3D& line);	
+	PUNK_ENGINE_PUBLIC Relation CrossPlaneTriangle(const Plane& plane, const Triangle3D& t, Line3D& line);
+	PUNK_ENGINE_PUBLIC Relation CrossTriangleTriangle(const Triangle3D& a, const Triangle3D& b, Line3D& line);	
 
-	PUNK_ENGINE Relation CrossPlanePolygon(const Plane& plane, const Polygon3D& polygon, Polygon3D& front, Polygon3D& back);
+	PUNK_ENGINE_PUBLIC Relation CrossPlanePolygon(const Plane& plane, const Polygon3D& polygon, Polygon3D& front, Polygon3D& back);
 
-	PUNK_ENGINE Relation SplitTriangle(const Plane& splitter, const Triangle3D& t, Triangle3D front[2], Triangle3D back[2]);
+	PUNK_ENGINE_PUBLIC Relation SplitTriangle(const Plane& splitter, const Triangle3D& t, Triangle3D front[2], Triangle3D back[2]);
 
-	PUNK_ENGINE Relation ClipPortal(const ClipSpace& clipper, const Portal& portal, Portal& clipped_portal, ClipSpace& reduced_frustum);
+	PUNK_ENGINE_PUBLIC Relation ClipPortal(const ClipSpace& clipper, const Portal& portal, Portal& clipped_portal, ClipSpace& reduced_frustum);
 
-	PUNK_ENGINE Relation Distance(const Line3D& line1, const Line3D& line2, float& dst, float& t1, float& t2);
-    PUNK_ENGINE Relation Distance(const Line3D& line, const Math::vec3& point, float& dst);
+	PUNK_ENGINE_PUBLIC Relation Distance(const Line3D& line1, const Line3D& line2, float& dst, float& t1, float& t2);
+    PUNK_ENGINE_PUBLIC Relation Distance(const Line3D& line, const Math::vec3& point, float& dst);
 
 	//	returns internal part of the line
-	PUNK_ENGINE Relation ClipExteriorLine(const Line2D& line, const Rect& rect, Line2D& result);
+	PUNK_ENGINE_PUBLIC Relation ClipExteriorLine(const Line2D& line, const Rect& rect, Line2D& result);
 	//	returns external part of the line
-	PUNK_ENGINE Relation ClipInteriorLine(const Line2D& line, const Rect& rect, Line2D& first, Line2D& second);        
+	PUNK_ENGINE_PUBLIC Relation ClipInteriorLine(const Line2D& line, const Rect& rect, Line2D& first, Line2D& second);        
 
-	PUNK_ENGINE Relation ClipExteriorLine(const Line3D& line, const Plane& plane, Line3D& ray);
+	PUNK_ENGINE_PUBLIC Relation ClipExteriorLine(const Line3D& line, const Plane& plane, Line3D& ray);
 
-    PUNK_ENGINE Relation CrossLines(const std::vector<Line3D>& lines, std::vector<vec3>& points);
-	PUNK_ENGINE Relation CrossPlanes(const std::vector<Plane>& planes, std::vector<Line3D>& lines);
+    PUNK_ENGINE_PUBLIC Relation CrossLines(const std::vector<Line3D>& lines, std::vector<vec3>& points);
+	PUNK_ENGINE_PUBLIC Relation CrossPlanes(const std::vector<Plane>& planes, std::vector<Line3D>& lines);
 }
 
 #endif

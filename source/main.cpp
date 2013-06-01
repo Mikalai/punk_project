@@ -56,11 +56,11 @@ BOOL WINAPI DllMain(HINSTANCE, DWORD fdwReason, LPVOID)
 	switch(fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
-		//out_message() << "punk_engine.dll (" __DATE__" at "__TIME__") attached..." << std::endl;
+		//out_message() << "PUNK_ENGINE_PUBLIC.dll (" __DATE__" at "__TIME__") attached..." << std::endl;
 		Init();
 		break;
 	case DLL_PROCESS_DETACH:
-		//out_message() << "punk_engine.dll (" __DATE__" at "__TIME__") detached..." << std::endl;
+		//out_message() << "PUNK_ENGINE_PUBLIC.dll (" __DATE__" at "__TIME__") detached..." << std::endl;
 	//	Release();
 		break;
 	}

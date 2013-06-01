@@ -14,7 +14,7 @@ namespace GPU
 	*
 	*
 	*/
-	class PUNK_ENGINE PaintDevice
+	class PUNK_ENGINE_PUBLIC PaintDevice
 	{
 	public:
 		PaintDevice();

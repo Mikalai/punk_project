@@ -25,9 +25,9 @@ namespace GPU
 		Spot
 	};
 
-	extern PUNK_ENGINE const System::string AsString(LightModel value);
-	extern PUNK_ENGINE const System::string AsString(LightAttenuation  value);
-	extern PUNK_ENGINE const System::string AsString(LightType value);
+	extern PUNK_ENGINE_PUBLIC const System::string AsString(LightModel value);
+	extern PUNK_ENGINE_PUBLIC const System::string AsString(LightAttenuation  value);
+	extern PUNK_ENGINE_PUBLIC const System::string AsString(LightType value);
 }
 
 #endif // LIGHT_MODEL_H

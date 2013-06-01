@@ -34,7 +34,7 @@ namespace GPU
 
 			void Connect(DynamicRenderContext* rc);
 			virtual void InitUniforms() {}
-			virtual void BindParameters(const CoreState& params) {}
+            virtual void BindParameters(const CoreState&) {}
 			virtual int64_t GetRequiredAttributesSet() const { return 0; }
 
 		protected:

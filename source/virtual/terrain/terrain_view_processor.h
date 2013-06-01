@@ -19,7 +19,7 @@ namespace Virtual
 		void* m_on_end_data;
 	};
 
-	class PUNK_ENGINE TerrainViewProcessor : public System::AbstractDataProcessor
+	class PUNK_ENGINE_PUBLIC TerrainViewProcessor : public System::AbstractDataProcessor
 	{
 	public:
 		/**

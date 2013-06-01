@@ -6,7 +6,7 @@
 
 namespace GPU
 {
-	class PUNK_ENGINE FogDescription
+	class PUNK_ENGINE_PUBLIC FogDescription
 	{
 	public:
 		FogDescription();
@@ -20,7 +20,7 @@ namespace GPU
 		void SetEnd(float value);
 
 		bool IsEnabled() const;
-		const FogMode GetMode() const;
+        FogMode GetMode() const;
 		const Math::vec4& GetColor() const;
 		float GetDensity() const;
 		float GetStart() const;

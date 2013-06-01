@@ -7,7 +7,7 @@
 namespace Scene
 {
 
-	class PUNK_ENGINE PortalNode : public TransformNode
+	class PUNK_ENGINE_PUBLIC PortalNode : public TransformNode
 	{
 	public:
 

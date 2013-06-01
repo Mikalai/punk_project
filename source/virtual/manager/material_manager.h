@@ -11,7 +11,7 @@
 //
 //namespace System
 //{
-//	template<> class PUNK_ENGINE Policy<Virtual::Material>
+//	template<> class PUNK_ENGINE_PUBLIC Policy<Virtual::Material>
 //	{
 //	public:
 //		static const System::string GetResourceFile() { return L"resource"; }
@@ -25,7 +25,7 @@
 //
 //namespace Virtual
 //{
-//	class PUNK_ENGINE MaterialManager : public System::ResourceManager2<Material, System::Policy>
+//	class PUNK_ENGINE_PUBLIC MaterialManager : public System::ResourceManager2<Material, System::Policy>
 //	{
 //		MaterialManager(const MaterialManager&);
 //		MaterialManager& operator = (const MaterialManager&);		

@@ -6,7 +6,7 @@
 
 namespace GPU
 {
-	class PUNK_ENGINE LightParameters
+	class PUNK_ENGINE_PUBLIC LightParameters
 	{
 	public:
 		LightParameters();

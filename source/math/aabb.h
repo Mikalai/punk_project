@@ -16,7 +16,7 @@ namespace Math
 {
 	class Line3D;
 
-	class PUNK_ENGINE AxisAlignedBox
+	class PUNK_ENGINE_PUBLIC AxisAlignedBox
 	{
 		mutable vec3 m_transformed_points[8];
 
@@ -46,12 +46,12 @@ namespace Math
 		bool Save(std::ostream& stream) const;
 		bool Load(std::istream& stream);
 
-		friend PUNK_ENGINE AxisAlignedBox Merge(const AxisAlignedBox* b1, const AxisAlignedBox* b2);
+		friend PUNK_ENGINE_PUBLIC AxisAlignedBox Merge(const AxisAlignedBox* b1, const AxisAlignedBox* b2);
 
 		std::wostream& out_formatted(std::wostream& stream);
 	};
 
-	PUNK_ENGINE AxisAlignedBox Merge(const AxisAlignedBox* b1, const AxisAlignedBox* b2);
+	PUNK_ENGINE_PUBLIC AxisAlignedBox Merge(const AxisAlignedBox* b1, const AxisAlignedBox* b2);
 
 }
 

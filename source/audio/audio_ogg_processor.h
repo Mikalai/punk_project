@@ -11,7 +11,7 @@ namespace Audio
 	/**
 	*	This processor does nothing. Exist only for compatibility with async loading
 	*/
-	class PUNK_ENGINE OggProcessor : public System::AbstractDataProcessor
+	class PUNK_ENGINE_PUBLIC OggProcessor : public System::AbstractDataProcessor
 	{
 	public:
 		/**

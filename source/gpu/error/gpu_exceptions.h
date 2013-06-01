@@ -5,14 +5,14 @@
 
 namespace GPU
 {
-	class PUNK_ENGINE GPUException : public System::PunkException
+	class PUNK_ENGINE_PUBLIC GPUException : public System::PunkException
 	{
 	public:
 		GPUException();
 		GPUException(const System::string& msg);
 	};
 
-	class PUNK_ENGINE GPUNotImplementedException : public System::PunkException
+	class PUNK_ENGINE_PUBLIC GPUNotImplementedException : public System::PunkException
 	{
 	public:
 		GPUNotImplementedException() {}

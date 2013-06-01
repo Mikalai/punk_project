@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Environment
+	class PUNK_ENGINE_PUBLIC Environment
 	{
 	public:		
 		Environment();

@@ -8,7 +8,7 @@
 namespace Scene
 {
 
-	class PUNK_ENGINE StaticMeshNode : public GeometryNode
+	class PUNK_ENGINE_PUBLIC StaticMeshNode : public GeometryNode
 	{
 	public:
 

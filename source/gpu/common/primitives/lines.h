@@ -16,7 +16,7 @@ namespace GPU
 #endif	//	USE_OPENGL
 
 	template<typename VertexType>
-	class PUNK_ENGINE Lines : public LinesBase<VertexType>
+	class PUNK_ENGINE_PUBLIC Lines : public LinesBase<VertexType>
 	{
 		using Base = LinesBase<VertexType>;
 

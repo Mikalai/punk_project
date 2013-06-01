@@ -16,7 +16,7 @@ namespace GPU
 #else
 #endif	//	USE_OPENGL
 
-	class PUNK_ENGINE ScaledGridObject : public ScaledGridObjectBase
+	class PUNK_ENGINE_PUBLIC ScaledGridObject : public ScaledGridObjectBase
 	{
 		using Base = ScaledGridObjectBase;
 

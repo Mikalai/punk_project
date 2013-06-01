@@ -8,6 +8,7 @@
 #include "../../images/module.h"
 
 namespace Math { class vec4; }
+namespace Utility { class FontBuilder; }
 
 namespace GPU
 {
@@ -23,13 +24,15 @@ namespace GPU
 
 	struct VideoDriverImpl;
 
-	class PUNK_ENGINE VideoDriver
+	class PUNK_ENGINE_PUBLIC VideoDriver
 	{
 	public:
 
 		VideoDriver();
 		~VideoDriver();
 
+        Utility::FontBuilder* GetFontBuilder();
+        void SetFontBuilder(Utility::FontBuilder* value);
 		void SetFullScreen(bool flag);
 		bool Start(const VideoDriverDesc& desc);
 		void Restart();

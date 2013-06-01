@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 
-#include "../../punk_engine.h"
+#include "../../PUNK_ENGINE_PUBLIC.h"
 
 #define STATIC_VAO 1
 #define SKINNED_VAO 2

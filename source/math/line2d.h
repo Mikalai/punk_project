@@ -7,7 +7,7 @@
 
 namespace Math
 {
-    class PUNK_ENGINE Line2D
+    class PUNK_ENGINE_PUBLIC Line2D
     {
         vec2 m_origin;
         vec2 m_destination;

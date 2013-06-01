@@ -10,7 +10,7 @@ namespace Virtual
 {
 	class Location;
 
-	class PUNK_ENGINE Door : public System::Object
+	class PUNK_ENGINE_PUBLIC Door : public System::Object
 	{
 	public:
 		enum State { CLOSED, OPENED };

@@ -16,7 +16,7 @@ namespace GPU
 #endif	//	USE_OPENGL
 
 	template<typename VertexType>
-	class PUNK_ENGINE TriangleFan: public TriangleFanBase<VertexType>
+	class PUNK_ENGINE_PUBLIC TriangleFan: public TriangleFanBase<VertexType>
 	{
 		using Base = TriangleFanBase<VertexType>;
 	public:

@@ -6,7 +6,7 @@
 
 namespace GPU
 {
-	class PUNK_ENGINE Material
+	class PUNK_ENGINE_PUBLIC Material
 	{	
 	public:		
 

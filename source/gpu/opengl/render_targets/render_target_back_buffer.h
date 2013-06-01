@@ -7,7 +7,7 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-        class PUNK_ENGINE RenderTargetBackBuffer : public RenderTarget
+        class PUNK_ENGINE_PUBLIC RenderTargetBackBuffer : public RenderTarget
 		{
 		public:		
 		};

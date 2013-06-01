@@ -5,6 +5,7 @@
 #include FT_FREETYPE_H
 #endif //   USE_FREETYPE
 
+#include "../../string/string.h"
 #include "../../system/module.h"
 #include "font_builder.h"
 
@@ -35,16 +36,16 @@ namespace Utility
         std::map<int, std::map<void*, std::map<wchar_t, CacheData*> > > wcache;
 
         FontBuilderImpl();
-        void SetCurrentFace(const System::string& fontName);
-
+        ~FontBuilderImpl();
         void CacheSymbol(wchar_t symb);
         void Init();
+        void Clear();
 		void SetCurrentFace(const System::string& fontName);
 		void RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer);
 		void SetCharSize(int width, int height);
 		void RenderChar(wchar_t symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer);
-		int CalculateLength(const wchar_t* text);
-		int CalculateHeight(const wchar_t* text);
+		int CalculateLength(const System::string& text);
+		int CalculateHeight(const System::string& text);
 		int GetHeight(wchar_t s);
 		int GetWidth(wchar_t s);
 		int GetMaxOffset(const System::string& s);
@@ -56,6 +57,17 @@ namespace Utility
     FontBuilder::FontBuilderImpl::FontBuilderImpl()
     {
         Init();
+    }
+
+    FontBuilder::FontBuilderImpl::~FontBuilderImpl()
+    {
+        Clear();
+    }
+
+    void FontBuilder::FontBuilderImpl::Clear()
+    {
+        if (!FT_Done_FreeType(library))
+            out_error() << L"Can't destroy font builder" << std::endl;
     }
 
     void FontBuilder::FontBuilderImpl::Init()
@@ -121,14 +133,6 @@ namespace Utility
 			curFace = f;
 	}
 
-	void FontBuilder::FontBuilderImpl::SetCharSize(int width, int height)
-	{
-		curSize = width * 1000 + height;
-		FT_Error error = FT_Set_Char_Size(curFace, width*64, height*64, 96, 96);
-		if (error)
-			out_error() << L"Can't set new char size" << std::endl;
-	}
-
     void FontBuilder::FontBuilderImpl::SetCharSize(int width, int height)
 	{
 		curSize = width * 1000 + height;
@@ -173,45 +177,41 @@ namespace Utility
 		}
 	}
 
-    int FontBuilder::FontBuilderImpl::CalculateLength(const wchar_t* text)
+	int FontBuilder::FontBuilderImpl::CalculateLength(const System::string& text)
 	{
-		int res = 0;
-		const wchar_t* cur = text;
-		while (*cur)
+		int res = 0;		
+		for (auto it = text.begin(); it != text.end(); ++it)
 		{
-			CacheData* data = wcache[curSize][curFace][*cur];
+			CacheData* data = wcache[curSize][curFace][*it];
 
 			if (!data)
-				CacheSymbol(*cur);
+				CacheSymbol(*it);
 
-			data = wcache[curSize][curFace][*cur];
+			data = wcache[curSize][curFace][*it];
 			if (res != 0)
 				res += data->x_offset;
 			res += data->x_advance;
-			cur++;
 		}
 		return res;
 	}
 
-    int FontBuilder::FontBuilderImpl::CalculateHeight(const wchar_t* text)
+	int FontBuilder::FontBuilderImpl::CalculateHeight(const System::string& text)
 	{
 		int res = 0;
 		int min_h = 0;
-		int max_h = 0;
-		const wchar_t* cur = text;
-		while (*cur)
+		int max_h = 0;		
+		for (auto it = text.begin(); it != text.end(); ++it)
 		{
-			CacheData* data = wcache[curSize][curFace][*cur];
+			CacheData* data = wcache[curSize][curFace][*it];
 
 			if (!data)
-				CacheSymbol(*cur);
+				CacheSymbol(*it);
 
-			data = wcache[curSize][curFace][*cur];
+			data = wcache[curSize][curFace][*it];
 			if (max_h < data->y_offset)
 				max_h = data->y_offset;
 			if (min_h > data->y_offset - data->height)
 				min_h = data->y_offset - data->height;
-			cur++;
 		}
 		return max_h - min_h;
 	}
@@ -383,7 +383,7 @@ namespace Utility
 	    #endif // USE_FREETYPE
 	}
 
-	int FontBuilder::CalculateLength(const wchar_t* text)
+	int FontBuilder::CalculateLength(const System::string& text)
 	{
         #ifdef USE_FREETYPE
 	    impl->CalculateLength(text);
@@ -393,7 +393,7 @@ namespace Utility
 	    #endif // USE_FREETYPE
 	}
 
-	int FontBuilder::CalculateHeight(const wchar_t* text)
+	int FontBuilder::CalculateHeight(const System::string& text)
 	{
         #ifdef USE_FREETYPE
 	    impl->CalculateHeight(text);

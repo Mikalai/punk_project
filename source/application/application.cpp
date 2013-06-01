@@ -27,6 +27,7 @@ namespace Punk
 
 	void Application::Clear()
 	{
+		safe_delete(m_font_builder);
 		GPU::GPU_DESTROY();
 		Virtual::StaticGeometry::clear();
 		Virtual::SkinGeometry::clear();
@@ -43,6 +44,8 @@ namespace Punk
 
 	void Application::Init(const Config& data)
 	{
+        m_font_builder = new Utility::FontBuilder;
+
 		m_event_manager = new System::EventManager();
         System::WindowDesc wnd_desc;
         if (data.gpu_config.m_hwnd)
@@ -60,6 +63,7 @@ namespace Punk
 			desc.event_manager = m_event_manager;
 			desc.window = m_window;
 			m_video_driver->Start(desc);
+			m_video_driver->SetFontBuilder(m_font_builder);
 		}
 
 		{

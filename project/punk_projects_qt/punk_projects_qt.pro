@@ -6,7 +6,11 @@ QMAKE_CXXFLAGS += -std=c++11 -pipe
 
 CONFIG -= QT
 
-DEFINES += _WIN32 USE_OPENGL PUNK_ENGINE_EXPORTS USE_JPEG USE_PNG USE_ZLIB
+win32 {
+    DEFINES += _WIN32
+}
+
+DEFINES += PUNK_ENGINE_PUBLIC_EXPORTS USE_OPENGL #USE_JPEG USE_PNG USE_ZLIB USE_FREETYPE
 
 contains(DEFINES, USE_OPENGL) {
 #   USE_BUMP_MAPPING_RC
@@ -35,7 +39,7 @@ win32 {
 
 CONFIG += dll
 TEMPLATE = lib
-TARGET = punk_engine
+TARGET = PUNK_ENGINE_PUBLIC
 
 Release:DESTDIR = ./../../bin/release
 Release:OBJECTS_DIR = release/.obj
@@ -86,7 +90,10 @@ DEPENDPATH += ..\..\source\3rd\cl
 }
 
 contains(DEFINES, USE_FREETYPE) {
+    INCLUDEPATH += ..\..\source\3rd\freetype
     DEPENDPATH += ..\..\source\3rd\freetype
+    Release:DEFINES += FT2_BUILD_LIBRARY FT_DEBUG_LEVEL_ERROR FT_DEBUG_LEVEL_TRACE
+    Debug:DEFINES += FT2_BUILD_LIBRARY
 }
 
 contains(DEFINES, USE_JPEG) {
@@ -397,8 +404,7 @@ contains(DEFINES, USE_OPENGL) {
            ../../source/gpu/opengl/renderable/gl_primitive_type.h \
            ../../source/gpu/opengl/renderable/module.h \
            ../../source/gpu/opengl/textures/internal_formats.h \
-           ../../source/gpu/opengl/textures/module.h \
-           ../../source/gpu/opengl/textures/text_surface.h \
+           ../../source/gpu/opengl/textures/module.h \           
            ../../source/gpu/opengl/textures/texture2d_impl.h \
            ../../source/gpu/opengl/textures/texture2d_pbo_impl.h \
            ../../source/gpu/opengl/textures/texture_2d_manager.h \
@@ -482,8 +488,7 @@ SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp 
 	   ../../source/gpu/opengl/render_targets/render_target_back_buffer.cpp \
 	   ../../source/gpu/opengl/render_targets/render_target_texture.cpp \
 	   ../../source/gpu/opengl/renderable/gl_primitive_type.cpp \
-	   ../../source/gpu/opengl/textures/internal_formats.cpp \
-	   ../../source/gpu/opengl/textures/text_surface.cpp \
+	   ../../source/gpu/opengl/textures/internal_formats.cpp \	   
 	   ../../source/gpu/opengl/textures/texture2d.cpp \
 	   ../../source/gpu/opengl/gl/win32/extensions_win32.cpp \
 	   ../../source/gpu/opengl/render_context/shaders/shader.cpp \
@@ -780,6 +785,57 @@ SOURCES += ../../source/3rd/openal/aldlist.cpp \
            ../../source/3rd/openal/LoadOAL.cpp
 }
 
+contains(DEFINES, USE_FREETYPE) {
+
+win32 {
+SOURCES += ../../source/3rd/freetype/autofit/autofit.c\
+../../source/3rd/freetype/bdf/bdf.c\
+../../source/3rd/freetype/cff/cff.c\
+../../source/3rd/freetype/base/ftbase.c\
+../../source/3rd/freetype/base/ftbitmap.c\
+../../source/3rd/freetype/cache/ftcache.c\
+../../source/3rd/freetype/base/ftdebug.c\
+../../source/3rd/freetype/base/ftfstype.c\
+../../source/3rd/freetype/base/ftgasp.c\
+../../source/3rd/freetype/base/ftglyph.c\
+../../source/3rd/freetype/gzip/ftgzip.c\
+../../source/3rd/freetype/base/ftinit.c\
+../../source/3rd/freetype/lzw/ftlzw.c\
+../../source/3rd/freetype/base/ftstroke.c\
+../../source/3rd/freetype/base/ftsystem.c\
+../../source/3rd/freetype/smooth/smooth.c\
+../../source/3rd/freetype/base/ftbbox.c\
+../../source/3rd/freetype/base/ftgxval.c\
+../../source/3rd/freetype/base/ftlcdfil.c\
+../../source/3rd/freetype/base/ftmm.c\
+../../source/3rd/freetype/base/ftotval.c\
+../../source/3rd/freetype/base/ftpatent.c\
+../../source/3rd/freetype/base/ftpfr.c\
+../../source/3rd/freetype/base/ftsynth.c\
+../../source/3rd/freetype/base/fttype1.c\
+../../source/3rd/freetype/base/ftwinfnt.c\
+../../source/3rd/freetype/pcf/pcf.c\
+../../source/3rd/freetype/pfr/pfr.c\
+../../source/3rd/freetype/psaux/psaux.c\
+../../source/3rd/freetype/pshinter/pshinter.c\
+../../source/3rd/freetype/psnames/psmodule.c\
+../../source/3rd/freetype/raster/raster.c\
+../../source/3rd/freetype/sfnt/sfnt.c\
+../../source/3rd/freetype/truetype/truetype.c\
+../../source/3rd/freetype/type1/type1.c\
+../../source/3rd/freetype/cid/type1cid.c\
+../../source/3rd/freetype/type42/type42.c\
+../../source/3rd/freetype/winfonts/winfnt.c
+
+HEADERS += ../../source/3rd/freetype/ft2build.h\
+../../source/3rd/freetype/freetype/config/ftconfig.h\
+../../source/3rd/freetype/freetype/config/ftheader.h\
+../../source/3rd/freetype/freetype/config/ftmodule.h\
+../../source/3rd/freetype/freetype/config/ftoption.h\
+../../source/3rd/freetype/freetype/config/ftstdlib.h
+}
+}
+
 SOURCES += ../../source/main.cpp \
 	   ../../source/application/application.cpp \
 	   ../../source/audio/audio_buffer.cpp \
@@ -923,8 +979,7 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/render/v1/ogl_gui_render.cpp \
 	   ../../source/render/v1/simple_render.cpp \
 	   ../../source/scene/events/new_instance_appeared_event.cpp \
-	   ../../source/scene/events/parent_changed_event.cpp \
-	   ../../source/string/win32/string_win32.cpp \
+	   ../../source/scene/events/parent_changed_event.cpp \	   
 	   ../../source/system/concurrency/process.cpp \
 	   ../../source/system/concurrency/semaphore.cpp \
 	   ../../source/system/concurrency/thread.cpp \
@@ -1039,13 +1094,14 @@ SOURCES += ../../source/main.cpp \
 	../../source/gpu/common/lighting/light_model.cpp \
 	../../source/gpu/common/lighting/light_parameters.cpp \
 	../../source/gpu/common/material/gpu_material.cpp \
+        ../../source/gpu/common/text_surface.cpp \
 	../../source/math/graph/graph.cpp \
 	../../source/math/graph/graph_vertex.cpp \
 	../../source/math/graph/graph_edge.cpp \
 
 # Input
 HEADERS += ../../source/config.h \
-	   ../../source/punk_engine.h \
+           ../../source/PUNK_ENGINE_PUBLIC.h \
 	   ../../source/ai/navi_mesh.h \
 	   ../../source/ai/navi_triangle.h \
 	   ../../source/application/application.h \
@@ -1470,7 +1526,10 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/config.h \
     ../../source/gpu/common/material/module.h \
     ../../source/gpu/common/material/gpu_material.h \
+    ../../source/gpu/common/text_surface.h \
     ../../source/math/graph/graph.h \
     ../../source/math/graph/graph_vertex.h \
     ../../source/math/graph/graph_edge.h \
     ../../source/math/graph/module.h
+
+

@@ -9,7 +9,7 @@ namespace Utility
 {
 	class BoneDesc;
 
-	class PUNK_ENGINE ArmatureDesc
+	class PUNK_ENGINE_PUBLIC ArmatureDesc
 	{
 	public:
 		System::string m_name;

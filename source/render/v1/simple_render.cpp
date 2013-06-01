@@ -430,7 +430,7 @@ namespace Render
 		m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::GUI);
 		m_skin_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Skinning);
 		m_terrain_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Terrain);
-        m_text = new GPU::OpenGL::TextSurface(m_driver);
+        m_text = new GPU::TextSurface(m_driver);
 		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
 		m_gui_render = new GUIRender(m_driver);
 		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 2);

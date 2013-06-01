@@ -176,7 +176,7 @@ namespace GPU
 		extern PFNGLDRAWELEMENTSPROC glDrawElements;
 		extern PFNGLDRAWELEMENTSINDIRECTPROC glDrawElementsIndirect;
 		extern PFNGLDRAWELEMENTSINSTANCEDPROC glDrawElementsInstanced;
-		extern PUNK_ENGINE PFNGLCLEARPROC glClear;
+		extern PUNK_ENGINE_PUBLIC PFNGLCLEARPROC glClear;
 		extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
 		extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 

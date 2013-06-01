@@ -14,7 +14,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Window
+	class PUNK_ENGINE_PUBLIC Window
 	{	
 	public:
 		Window(WindowAdapter* adapter, const WindowDesc& desc = WindowDesc());

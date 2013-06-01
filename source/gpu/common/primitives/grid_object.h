@@ -17,7 +17,7 @@ namespace GPU
 #else
 #endif
 
-	class PUNK_ENGINE GridObject : public GridObjectBase
+	class PUNK_ENGINE_PUBLIC GridObject : public GridObjectBase
 	{
 		using Base = GridObjectBase;
 	public:

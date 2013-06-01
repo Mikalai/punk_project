@@ -7,7 +7,7 @@ namespace Virtual
 {
 	class Armature;
 
-	class PUNK_ENGINE Human
+	class PUNK_ENGINE_PUBLIC Human
 	{
 	public:
 		Human();

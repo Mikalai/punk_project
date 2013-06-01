@@ -77,17 +77,17 @@ namespace System
 		return (const void*)m_buffer;
 	}
 
-	unsigned __int64 Buffer::ReadUnsigned64()
+    unsigned int64_t Buffer::ReadUnsigned64()
 	{
-		unsigned __int64 res = *(unsigned __int64*)(m_current);
-		m_current += sizeof(unsigned __int64);
+        unsigned int64_t res = *(unsigned int64_t*)(m_current);
+        m_current += sizeof(unsigned int64_t);
 		return res;
 	}
 
-	__int64 Buffer::ReadSigned64()
+    int64_t Buffer::ReadSigned64()
 	{
-		__int64 res = *(__int64*)(m_current);
-		m_current += sizeof(__int64);
+        int64_t res = *(int64_t*)(m_current);
+        m_current += sizeof(int64_t);
 		return res;
 	}
 

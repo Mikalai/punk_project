@@ -10,7 +10,7 @@ namespace System
 
 namespace Utility
 {
-	class PUNK_ENGINE ObjectTypeDesc
+	class PUNK_ENGINE_PUBLIC ObjectTypeDesc
 	{
 	public:
 		bool BuildFromString(const System::string& value);

@@ -12,7 +12,7 @@
 //	class Texture2D;
 //	class TextSurface;
 //
-//	class PUNK_ENGINE MeshCooker : public Scene::AbstractVisitor
+//	class PUNK_ENGINE_PUBLIC MeshCooker : public Scene::AbstractVisitor
 //	{
 //	public:
 //		MeshCooker();
@@ -34,7 +34,7 @@
 //		System::Proxy<Virtual::Armature> m_current_armature;
 //	};
 //
-//	class PUNK_ENGINE SimpleRender : public Scene::AbstractVisitor
+//	class PUNK_ENGINE_PUBLIC SimpleRender : public Scene::AbstractVisitor
 //	{
 //	public:
 //		

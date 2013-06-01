@@ -30,7 +30,7 @@ namespace GUI
 		Adapter* adapter;
 	};
 
-	class PUNK_ENGINE Manager
+	class PUNK_ENGINE_PUBLIC Manager
 	{
 	public:
 		void Render();

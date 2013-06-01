@@ -13,7 +13,7 @@ namespace Scene { class SceneGraph; }
 
 namespace Render
 {
-	class PUNK_ENGINE SimpleRender : public Scene::AbstractVisitor
+	class PUNK_ENGINE_PUBLIC SimpleRender : public Scene::AbstractVisitor
 	{
 	public:
 		SimpleRender(GPU::VideoDriver* driver);
@@ -57,7 +57,7 @@ namespace Render
 
 		//	next pointers should be destroyed in destructor
 		GPU::RenderTarget* m_rt;				
-		GPU::OpenGL::TextSurface* m_text;
+        GPU::TextSurface* m_text;
         GPU::TextureContext* m_tc;
 		GUIRender* m_gui_render;
 		GPU::PaintEngine* m_paint_engine;
@@ -75,7 +75,7 @@ namespace Render
 		GPU::AbstractRenderPolicy* m_terrain_rc;
 		Virtual::Armature* m_armature;
 		Virtual::Material* m_material;
-		GPU::OpenGL::TextSurface s;
+        GPU::TextSurface s;
 		GPU::CubeObject m_cube;
 		GPU::SphereObject m_sphere;
 		GPU::QuadObject m_quad;

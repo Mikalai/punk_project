@@ -10,7 +10,7 @@ namespace GPU
 	{
 		class Buffer;
 
-		class PUNK_ENGINE Kernel
+		class PUNK_ENGINE_PUBLIC Kernel
 		{
 		public:
 			Kernel();

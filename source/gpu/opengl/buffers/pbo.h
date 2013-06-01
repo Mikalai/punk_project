@@ -9,7 +9,7 @@ namespace GPU
 	{
 		class VideoMemory;
 
-		class PUNK_ENGINE PixelBufferObject
+		class PUNK_ENGINE_PUBLIC PixelBufferObject
 		{
 		public:
 			

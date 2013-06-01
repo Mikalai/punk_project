@@ -25,7 +25,7 @@
 //
 //	};
 //
-//	class PUNK_ENGINE BulletRigidBody
+//	class PUNK_ENGINE_PUBLIC BulletRigidBody
 //	{
 //	public:
 //		BulletRigidBody();

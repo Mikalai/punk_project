@@ -11,7 +11,7 @@ namespace Scene { class NodeVisitor; }
 
 namespace Virtual
 {
-	class PUNK_ENGINE World : public System::Object
+	class PUNK_ENGINE_PUBLIC World : public System::Object
 	{		
 	public:
 		World();

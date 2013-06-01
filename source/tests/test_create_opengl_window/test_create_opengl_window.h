@@ -1,7 +1,7 @@
 #ifndef _H_CREATE_OPENGL_WINDOW_TEST
 #define _H_CREATE_OPENGL_WINDOW_TEST
 
-#include "../../punk_engine.h"
+#include "../../PUNK_ENGINE_PUBLIC.h"
 #include "../test_interface.h"
 
 class CreateOpenGLWindow : public TestInterface

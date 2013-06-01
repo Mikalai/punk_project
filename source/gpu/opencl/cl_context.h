@@ -11,7 +11,7 @@ namespace GPU
 
 		struct ContextImpl;
 
-		class PUNK_ENGINE Context
+		class PUNK_ENGINE_PUBLIC Context
 		{
 		public:
 			Context();

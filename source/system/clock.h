@@ -9,7 +9,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Clock
+	class PUNK_ENGINE_PUBLIC Clock
     {	
     public:
 		Clock();
@@ -18,13 +18,13 @@ namespace System
 		*	Used to retrieve current virtual time value
 		*	\returns Current virtual time
 		*/
-		Int64 Now();
+        int64_t Now();
 		
 		/**
 		*	Used to increment time of the clock
 		*	\param us Time in microseconds
 		*/
-		void Advance(Int64 us);
+        void Advance(int64_t us);
 
         const string ToString() const;
 		int Year() const;
@@ -42,7 +42,7 @@ namespace System
 		static Clock* Instance();
 		static void Destroy();
 
-		static Int64 SysTimeAsSecondsFromJanuary_1970_1();
+        static int64_t SysTimeAsSecondsFromJanuary_1970_1();
 		static const string SysTimeAsUTC();
 		static const string SysTimeNowAsLocal();
 
@@ -51,8 +51,8 @@ namespace System
 
         static const int timeSize = 64;
         wchar_t the_time[timeSize];
-		Int64 m_time;
-		Int64 m_us;
+        int64_t m_time;
+        int64_t m_us;
 		tm m_date;
     };
 }

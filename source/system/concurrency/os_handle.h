@@ -11,7 +11,7 @@ namespace System
 {
 
 #ifdef _WIN32
-	class PUNK_ENGINE OsHandle
+	class PUNK_ENGINE_PUBLIC OsHandle
 	{
 	public:
 		OsHandle() : m_handle(0) {}		

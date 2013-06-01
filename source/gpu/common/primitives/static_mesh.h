@@ -20,7 +20,7 @@ namespace GPU
 #else
 #endif
 
-	class PUNK_ENGINE StaticMesh : public StaticMeshBase
+	class PUNK_ENGINE_PUBLIC StaticMesh : public StaticMeshBase
 	{
 		using Base = StaticMeshBase;
 

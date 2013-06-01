@@ -8,7 +8,7 @@ namespace System
 {
 	class Window;
 
-	class PUNK_ENGINE Mouse
+	class PUNK_ENGINE_PUBLIC Mouse
 	{
 	public:
 		enum MouseButtons { LEFT_BUTTON, RIGHT_BUTTON, MIDDLE_BUTTON };

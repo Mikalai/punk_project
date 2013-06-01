@@ -16,7 +16,7 @@ namespace GPU
 #endif
 
 	template<typename VertexType>
-	class PUNK_ENGINE Triangles: public TrianglesBase<VertexType>
+	class PUNK_ENGINE_PUBLIC Triangles: public TrianglesBase<VertexType>
 	{
 		using Base = TrianglesBase<VertexType>;
 

@@ -12,7 +12,7 @@ namespace Audio
 	
 	struct SourceImpl;
 
-	class PUNK_ENGINE Source
+	class PUNK_ENGINE_PUBLIC Source
 	{
 	public:
 		Source();

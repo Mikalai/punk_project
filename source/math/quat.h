@@ -271,7 +271,7 @@ namespace Math
 	}
 
 
-	class PUNK_ENGINE quat : public Quaternion<float>
+	class PUNK_ENGINE_PUBLIC quat : public Quaternion<float>
 	{
 	public:
 		quat() : Quaternion<float>() {}

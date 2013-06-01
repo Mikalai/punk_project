@@ -10,7 +10,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Object
+	class PUNK_ENGINE_PUBLIC Object
 	{
 	public:
 		Object() {}

@@ -47,6 +47,16 @@ namespace GPU
 		}
 	}
 
+    void VideoDriverImpl::SetFontBuilder(Utility::FontBuilder *value)
+    {
+        m_font_builder = value;
+    }
+
+    Utility::FontBuilder* VideoDriverImpl::GetFontBuilder()
+    {
+        return m_font_builder;
+    }
+
 	void VideoDriverImpl::SetFullScreen(bool flag)
 	{
 		m_desc.config.fullscreen = flag;
@@ -346,6 +356,16 @@ namespace GPU
 		delete impl;
 		impl = nullptr;
 	}
+
+    void VideoDriver::SetFontBuilder(Utility::FontBuilder *value)
+    {
+        impl->SetFontBuilder(value);
+    }
+
+    Utility::FontBuilder* VideoDriver::GetFontBuilder()
+    {
+        return impl->GetFontBuilder();
+    }
 
 	void VideoDriver::SetFullScreen(bool flag)
 	{

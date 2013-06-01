@@ -10,7 +10,7 @@ namespace Math
 	//	math exceptions
 	//
 
-	class PUNK_ENGINE MathError
+	class PUNK_ENGINE_PUBLIC MathError
 	{
 	public:
 		MathError();

@@ -266,7 +266,7 @@ namespace Math
 		return m;
 	}
 
-	class PUNK_ENGINE mat2 : public Matrix2x2<float>
+	class PUNK_ENGINE_PUBLIC mat2 : public Matrix2x2<float>
 	{
 	public:
 		mat2() : Matrix2x2<float> () {}

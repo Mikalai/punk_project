@@ -6,7 +6,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE TerrainData
+	class PUNK_ENGINE_PUBLIC TerrainData
 	{
 	public:
 		TerrainData() : m_data(nullptr) {}

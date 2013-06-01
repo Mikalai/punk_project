@@ -25,7 +25,7 @@ namespace GPU
 #else
 #endif
 
-	class PUNK_ENGINE SkinMesh : public SkinMeshBase
+	class PUNK_ENGINE_PUBLIC SkinMesh : public SkinMeshBase
 	{
 		using Base = SkinMeshBase;
 

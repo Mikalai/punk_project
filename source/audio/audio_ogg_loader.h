@@ -10,7 +10,7 @@ namespace Audio
 	struct OggLoaderImpl;
 	class Buffer;
 	
-	class PUNK_ENGINE OggLoader : public Loader
+	class PUNK_ENGINE_PUBLIC OggLoader : public Loader
 	{
 	public:
 		

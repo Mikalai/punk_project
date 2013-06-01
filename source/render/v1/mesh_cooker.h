@@ -14,7 +14,7 @@ namespace GPU
 
 namespace Render
 {
-	class PUNK_ENGINE MeshCooker : public Scene::AbstractVisitor
+	class PUNK_ENGINE_PUBLIC MeshCooker : public Scene::AbstractVisitor
 	{
 	public:
         MeshCooker(GPU::VideoDriver* driver);

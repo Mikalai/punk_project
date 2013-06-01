@@ -7,7 +7,7 @@ namespace GPU
 {
 	namespace OpenCL
 	{
-		class PUNK_ENGINE Platform
+		class PUNK_ENGINE_PUBLIC Platform
 		{
 		public:
 			Platform();

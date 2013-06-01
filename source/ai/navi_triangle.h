@@ -11,7 +11,7 @@ namespace AI
 {
 	class NaviMesh;
 
-	class PUNK_ENGINE NaviTriangle
+	class PUNK_ENGINE_PUBLIC NaviTriangle
 	{		
 	public:
 		typedef std::vector<System::Object*> ObjectsCollection;

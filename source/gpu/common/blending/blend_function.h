@@ -12,7 +12,7 @@ namespace GPU
 		OneMinusSrcAlpha
 	};
 
-	extern PUNK_ENGINE const System::string AsString(BlendFunction value);
+	extern PUNK_ENGINE_PUBLIC const System::string AsString(BlendFunction value);
 }
 
 #endif // BLEND_FUNCTION_H

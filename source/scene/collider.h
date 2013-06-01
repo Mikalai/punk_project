@@ -11,7 +11,7 @@ namespace Scene
 {
 	class SceneGraph;
 
-	class PUNK_ENGINE Collider: public AbstractVisitor
+	class PUNK_ENGINE_PUBLIC Collider: public AbstractVisitor
 	{
 	public:
 		

@@ -791,8 +791,8 @@ const Matrix<T> PerElementMultiplication(const Matrix<T>& m1, const Matrix<T>& m
 }
 
 
-/*	template class PUNK_ENGINE Matrix<float>;
- template class PUNK_ENGINE Matrix<int>;
+/*	template class PUNK_ENGINE_PUBLIC Matrix<float>;
+ template class PUNK_ENGINE_PUBLIC Matrix<int>;
 
  typedef Matrix<float> matrix;
  typedef Matrix<int> imatrix;*/

@@ -10,7 +10,7 @@ namespace GPU
 	{
 		class Platform;
 
-		class PUNK_ENGINE Device
+		class PUNK_ENGINE_PUBLIC Device
 		{
 		public:
 			Device();

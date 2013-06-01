@@ -8,7 +8,7 @@ namespace Audio
 {
 	struct SoundSystemImpl;
 
-	class PUNK_ENGINE SoundSystem final
+	class PUNK_ENGINE_PUBLIC SoundSystem final
 	{
 	public:
 		SoundSystem();

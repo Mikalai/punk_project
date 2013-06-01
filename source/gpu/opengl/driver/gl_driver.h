@@ -14,6 +14,8 @@ namespace GPU
 	struct VideoDriverImpl
 	{
 		//	video driver interface
+        void SetFontBuilder(Utility::FontBuilder* value);
+        Utility::FontBuilder* GetFontBuilder();
 		void SetFullScreen(bool flag);
 		bool Start(const VideoDriverDesc& desc);
 		void Restart();
@@ -47,6 +49,7 @@ namespace GPU
         VideoDriver* m_driver;
         OpenGL::VideoMemory* m_memory;
 		std::unique_ptr<OpenGL::RenderTarget> m_rt;
+        Utility::FontBuilder* m_font_builder;
 
 	private:
 		void Init();

@@ -1,4 +1,4 @@
-#include "../../punk_engine.h"
+#include "../../PUNK_ENGINE_PUBLIC.h"
 #include <algorithm>
 
 void GenerateHeightMap(int argc, char* argv[])

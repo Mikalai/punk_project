@@ -27,7 +27,7 @@ namespace GUI
 
 namespace Scene
 {
-	class PUNK_ENGINE SceneGraph : public System::Object
+	class PUNK_ENGINE_PUBLIC SceneGraph : public System::Object
 	{
 	public:
 		SceneGraph();

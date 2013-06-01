@@ -11,7 +11,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE SkinGeometry : public Geometry, public System::Aspect<SkinGeometry*, System::string>
+	class PUNK_ENGINE_PUBLIC SkinGeometry : public Geometry, public System::Aspect<SkinGeometry*, System::string>
 	{
 	public:
 		typedef int FaceIndex;

@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE AbstractDataLoader
+	class PUNK_ENGINE_PUBLIC AbstractDataLoader
 	{
 	public:
 		virtual ~AbstractDataLoader() {}

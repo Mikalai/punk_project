@@ -11,7 +11,7 @@ namespace System
 
 namespace Utility
 {
-	class PUNK_ENGINE FontBuilder final
+	class PUNK_ENGINE_PUBLIC FontBuilder final
 	{
 	public:
 		FontBuilder();
@@ -21,8 +21,8 @@ namespace Utility
 		void RenderChar(char symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer);
 		void SetCharSize(int width, int height);
 		void RenderChar(wchar_t symbol, int* width, int* height, int* x_offset, int* y_offset, int* x_advance, int* y_advance, unsigned char** buffer);
-		int CalculateLength(const wchar_t* text);
-		int CalculateHeight(const wchar_t* text);
+		int CalculateLength(const System::string& text);
+		int CalculateHeight(const System::string& text);
 		int GetHeight(wchar_t s);
 		int GetWidth(wchar_t s);
 		int GetMaxOffset(const System::string& s);

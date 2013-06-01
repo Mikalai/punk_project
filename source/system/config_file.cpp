@@ -11,7 +11,7 @@
 
 namespace System
 {
-	ConfigFile::ConfigFile() : m_filename(L"punk_engine")
+	ConfigFile::ConfigFile() : m_filename(L"PUNK_ENGINE_PUBLIC")
 	{
 	}
 

@@ -12,7 +12,7 @@ namespace ImageModule
 {
 	class Image;
 
-	class PUNK_ENGINE Exporter
+	class PUNK_ENGINE_PUBLIC Exporter
 	{
 	public:
 		virtual void Export(const System::string& filename, const Image& image);

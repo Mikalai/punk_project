@@ -12,7 +12,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE AsyncLoader
+	class PUNK_ENGINE_PUBLIC AsyncLoader
 	{
 	public:
 		bool InitAsyncLoading(int num_process_threads);

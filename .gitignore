@@ -28,9 +28,9 @@ _UpgradeReport_Files
 *.opensdf
 project-build-*
 3rd
-data
-!data\shaders\*
-!source\virtual\data
+./data
+!./data/shaders/*
 old
 log*
-project
+./project
+!./project/punk_projects_qt

@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Folder
+	class PUNK_ENGINE_PUBLIC Folder
 	{    
 		Folder(const Folder&);
 		Folder& operator = (const Folder&);

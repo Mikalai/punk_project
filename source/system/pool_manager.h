@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE PoolManager
+	class PUNK_ENGINE_PUBLIC PoolManager
 	{
 	public:
 		typedef void (*CleanFunc)(void);

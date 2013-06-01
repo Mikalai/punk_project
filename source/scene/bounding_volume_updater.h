@@ -13,7 +13,7 @@ namespace Scene
 {	
 	class SceneGraph;
 
-	class PUNK_ENGINE BoundingVolumeUpdater : public AbstractVisitor
+	class PUNK_ENGINE_PUBLIC BoundingVolumeUpdater : public AbstractVisitor
 	{
 	public:
 		BoundingVolumeUpdater();

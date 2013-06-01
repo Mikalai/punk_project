@@ -94,7 +94,11 @@ namespace Math
 
 		Vector2<T>(const Vector2<T>& vec)
 		{
+#ifdef _WIN32
 			memcpy_s(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
+#else
+            memcpy(m_v, vec.m_v, sizeof(m_v));
+#endif
 		}
 
 		Vector2<T>(const Vector2<T>& origin, const Vector2<T>& destination)
@@ -214,7 +218,7 @@ namespace Math
 		return !(a == b);
 	}
 
-	class PUNK_ENGINE vec2 : public Vector2<float>
+	class PUNK_ENGINE_PUBLIC vec2 : public Vector2<float>
 	{
 	public:
 		vec2() : Vector2<float>() {}
@@ -223,7 +227,7 @@ namespace Math
 		vec2(const Vector2<float>& vec) : Vector2<float>(vec) {}
 	};
 
-	class PUNK_ENGINE ivec2 : public Vector2<int>
+	class PUNK_ENGINE_PUBLIC ivec2 : public Vector2<int>
 	{
 	public:
 		ivec2() : Vector2<int>() {}

@@ -7,7 +7,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE BoundingBox
+	class PUNK_ENGINE_PUBLIC BoundingBox
 	{
 	public:
 

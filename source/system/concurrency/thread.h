@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Thread : public OsHandle
+	class PUNK_ENGINE_PUBLIC Thread : public OsHandle
 	{
 	public:
 		bool Create(unsigned (__stdcall *thread_func)(void*), void* data = 0, unsigned stack = 4096); 

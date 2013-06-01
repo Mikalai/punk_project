@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE Semaphore : public OsHandle
+	class PUNK_ENGINE_PUBLIC Semaphore : public OsHandle
 	{
 	public:		
 		bool Create(long max_count);

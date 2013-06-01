@@ -5,7 +5,7 @@
 
 namespace ImageModule
 {
-	class PUNK_ENGINE PngFile : public ImageFile
+	class PUNK_ENGINE_PUBLIC PngFile : public ImageFile
 	{
 
 	public:

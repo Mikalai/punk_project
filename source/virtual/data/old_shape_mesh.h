@@ -5,7 +5,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE ShapeMesh
+	class PUNK_ENGINE_PUBLIC ShapeMesh
 	{
 
 	};

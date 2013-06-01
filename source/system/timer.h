@@ -9,7 +9,7 @@ namespace System
 	/**
 	*	Timer is used for strict time count
 	*/
-	class PUNK_ENGINE Timer final
+	class PUNK_ENGINE_PUBLIC Timer final
     {
     public:
         Timer();

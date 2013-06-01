@@ -16,7 +16,7 @@ namespace Virtual
 	class Armature;
 	class BoneAnimation;
 
-	class PUNK_ENGINE ArmatureAnimationMixer : public AnimationMixer
+	class PUNK_ENGINE_PUBLIC ArmatureAnimationMixer : public AnimationMixer
 	{
 	public:
 		ArmatureAnimationMixer();		
@@ -37,7 +37,7 @@ namespace Virtual
 	private:
 		
 		/**	Contains info about track */
-		struct PUNK_ENGINE TrackOption
+		struct PUNK_ENGINE_PUBLIC TrackOption
 		{
 			float m_weight;
 			float m_max_time;	
@@ -53,7 +53,7 @@ namespace Virtual
 		};
 
 		/** Interpolated data for each bone */
-		struct PUNK_ENGINE InterpolatedData
+		struct PUNK_ENGINE_PUBLIC InterpolatedData
 		{
 			Math::vec3 m_position;
 			Math::quat m_rotation;

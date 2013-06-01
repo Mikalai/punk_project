@@ -18,7 +18,7 @@ namespace GPU
 	class Batch;
     enum class RenderTarget;
 
-	class PUNK_ENGINE Frame : public System::Poolable<Frame>
+	class PUNK_ENGINE_PUBLIC Frame : public System::Poolable<Frame>
 	{
 	public:
 		

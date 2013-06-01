@@ -15,7 +15,7 @@ namespace GPU
 		class Device;
 		class CommandQueue;
 
-		class PUNK_ENGINE Program
+		class PUNK_ENGINE_PUBLIC Program
 		{
 		public:
 			Program();

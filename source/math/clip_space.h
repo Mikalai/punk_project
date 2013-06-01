@@ -7,7 +7,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE ClipSpace
+	class PUNK_ENGINE_PUBLIC ClipSpace
 	{
 	public:
 		typedef std::vector<Plane> PlanesCollection;

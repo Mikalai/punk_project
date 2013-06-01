@@ -5,7 +5,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE MouseWheelEvent : public Event, public Poolable<MouseWheelEvent>
+	class PUNK_ENGINE_PUBLIC MouseWheelEvent : public Event, public Poolable<MouseWheelEvent>
     {        
         MouseWheelEvent(const MouseWheelEvent&);
     public:       

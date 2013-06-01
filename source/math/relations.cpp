@@ -985,7 +985,7 @@ namespace Math
 		return Relation::INTERSECT;
 	}
 
-	PUNK_ENGINE Relation CrossPlanes(const std::vector<Plane>& planes, std::vector<Line3D>& lines)
+	PUNK_ENGINE_PUBLIC Relation CrossPlanes(const std::vector<Plane>& planes, std::vector<Line3D>& lines)
 	{
 		size_t size = planes.size();
 		for (int i = 0; i != size; ++i)
@@ -1003,7 +1003,7 @@ namespace Math
 		return INTERSECT;
 	}
 
-	PUNK_ENGINE Relation ClipExteriorLine(const Line3D& line, const Plane& plane, Line3D& ray)
+	PUNK_ENGINE_PUBLIC Relation ClipExteriorLine(const Line3D& line, const Plane& plane, Line3D& ray)
 	{
 		auto org = line.GetOrigin();
 		auto dst = line.GetDestination();

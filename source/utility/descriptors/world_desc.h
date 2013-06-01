@@ -15,7 +15,7 @@ namespace Utility
 	class ArmatureDesc;
 	class ActionDesc;
 
-	class PUNK_ENGINE WorldDesc
+	class PUNK_ENGINE_PUBLIC WorldDesc
 	{
 	public:
 		std::vector<ObjectDesc*> m_children;

@@ -18,11 +18,11 @@ namespace Math
 
 namespace Render
 {
-	class PUNK_ENGINE CharacterRender
+	class PUNK_ENGINE_PUBLIC CharacterRender
 	{
 	public:
 
-		struct PUNK_ENGINE Parameters
+		struct PUNK_ENGINE_PUBLIC Parameters
 		{
 			Utility::Entity* m_object;
 			Utility::Camera* m_camera;

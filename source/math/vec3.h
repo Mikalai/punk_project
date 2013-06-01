@@ -359,7 +359,7 @@ namespace Math
 		return !(a == b);
 	}
 
-	class PUNK_ENGINE vec3 : public Vector3<float> 
+	class PUNK_ENGINE_PUBLIC vec3 : public Vector3<float> 
 	{
 	public:
 		vec3() : Vector3<float>() {}
@@ -368,7 +368,7 @@ namespace Math
 		vec3(const Vector3<float>& vec) : Vector3<float>(vec) {}
 	};
 
-	class PUNK_ENGINE ivec3 : public Vector3<int> 
+	class PUNK_ENGINE_PUBLIC ivec3 : public Vector3<int> 
 	{
 	public:
 		ivec3() : Vector3<int>() {}

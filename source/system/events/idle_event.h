@@ -7,7 +7,7 @@
 namespace System
 {
 
-    class PUNK_ENGINE IdleEvent : public Event, public Poolable<IdleEvent>
+    class PUNK_ENGINE_PUBLIC IdleEvent : public Event, public Poolable<IdleEvent>
     {        
         IdleEvent(IdleEvent&);
     public:

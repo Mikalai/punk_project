@@ -9,7 +9,7 @@ namespace Utility { class ObjectDesc; }
 
 namespace Virtual
 {
-	class PUNK_ENGINE TransformNode : public System::CompoundObject
+	class PUNK_ENGINE_PUBLIC TransformNode : public System::CompoundObject
 	{
 	public:
 

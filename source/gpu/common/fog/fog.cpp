@@ -52,7 +52,7 @@ namespace GPU
 		return m_enable;
 	}
 
-	const FogMode FogDescription::GetMode() const
+    FogMode FogDescription::GetMode() const
 	{
 		return m_mode;
 	}

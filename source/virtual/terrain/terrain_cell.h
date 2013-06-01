@@ -9,7 +9,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE TerrainRawDataSource
+	class PUNK_ENGINE_PUBLIC TerrainRawDataSource
 	{
 	public:
 		void SetRawFile(const System::string& filename) { m_raw_file = filename; }
@@ -22,7 +22,7 @@ namespace Virtual
 		System::string m_raw_file;
 	};
 
-	class PUNK_ENGINE TerrainCell
+	class PUNK_ENGINE_PUBLIC TerrainCell
 	{
 	public:
 		TerrainCell();

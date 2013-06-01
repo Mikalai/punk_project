@@ -9,7 +9,7 @@ namespace GPU
 	{
 		class VideoMemory;
 
-		class PUNK_ENGINE VertexBufferObject
+		class PUNK_ENGINE_PUBLIC VertexBufferObject
 		{
 		public:
 			
