@@ -8,7 +8,7 @@ namespace Physics
 {
     class Simulator;
 
-    class PUNK_ENGINE_PUBLIC Terrain
+    class PUNK_ENGINE_API Terrain
     {
     public:
         virtual ~Terrain();

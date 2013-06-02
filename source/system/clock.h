@@ -5,11 +5,10 @@
 #include "../config.h"
 #include "../string/string.h"
 #include "buffer.h"
-#include "types.h"
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC Clock
+	class PUNK_ENGINE_API Clock
     {	
     public:
 		Clock();

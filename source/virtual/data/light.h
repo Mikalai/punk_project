@@ -7,7 +7,7 @@
 namespace Utility { class LightDesc; }
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC Light : public System::Object
+	class PUNK_ENGINE_API Light : public System::Object
 	{
 	public:
 		virtual const Math::vec3 GetPosition() const = 0;

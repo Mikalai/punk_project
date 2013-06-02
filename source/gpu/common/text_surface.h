@@ -10,7 +10,7 @@ namespace GPU
     class Texture2D;
     class VideoDriver;
 
-    class PUNK_ENGINE_PUBLIC TextSurface final
+    class PUNK_ENGINE_API TextSurface final
     {
     public:
         enum TextHorizontalAlignment { HORIZONTAL_LEFT, HORIZONTAL_RIGHT, HORIZONTAL_CENTER, HORIZONTAL_WIDTH };

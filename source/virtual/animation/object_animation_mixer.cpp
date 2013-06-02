@@ -1,6 +1,6 @@
 #include <ostream>
 #include <istream>
-#include "object_animation_Mixer.h"
+#include "object_animation_mixer.h"
 #include "animation.h"
 
 namespace Virtual

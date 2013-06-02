@@ -8,7 +8,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC Stack
+	class PUNK_ENGINE_API Stack
 	{
 	public:
 		Stack();

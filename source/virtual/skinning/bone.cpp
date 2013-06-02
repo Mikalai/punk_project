@@ -8,7 +8,7 @@
 #include "../../math/mat4.h"
 #include "../../math/vec3.h"
 #include "../../math/helper.h"
-#include "../animation/armature_animation_Mixer.h"
+#include "../animation/armature_animation_mixer.h"
 #include "../../utility/descriptors/bone_desc.h"
 
 namespace Virtual

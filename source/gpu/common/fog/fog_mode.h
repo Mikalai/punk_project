@@ -8,7 +8,7 @@ namespace GPU
 {
 	enum class FogMode { Linear, Exponent, Exponent2 };
 
-	extern const System::string PUNK_ENGINE_PUBLIC AsString(FogMode mode);
+	extern const System::string PUNK_ENGINE_API AsString(FogMode mode);
 }
 
 #endif // FOG_MODE_H

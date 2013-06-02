@@ -1,30 +1,30 @@
 #ifndef _H_PUNK_OPENGL_CUBE_MESH
 #define _H_PUNK_OPENGL_CUBE_MESH
 
-#ifdef USE_OPENGL
-#include "../../opengl/renderable/module.h"
-#else
-#endif	//	USE_OPENGL
+#include "../renderable.h"
 
 namespace GPU
 {
-#ifdef USE_OPENGL
-	using CubeObjectBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,
-	Vertex<VertexComponent::Position,
-	VertexComponent::Normal,
-	VertexComponent::Tangent,
-	VertexComponent::Bitangent,
-	VertexComponent::Texture0>>;
-#else
-#endif	//	USE_OPENGL
-
-	class CubeObject : public CubeObjectBase
-	{
-		using Base = CubeObjectBase;
+    class VideoDriver;
+    class PUNK_ENGINE_API CubeObject : public Renderable
+	{		
 	public:
-		CubeObject(GPU::VideoDriver* driver);
+        CubeObject(VideoDriver* driver);
+        virtual ~CubeObject();
+
 		void Cook(float width, float height, float depth);
 
+        virtual void Bind(int64_t) override;
+        virtual void Unbind() override;
+        virtual void Render() override;
+
+    private:
+        CubeObject(const CubeObject&) = delete;
+        CubeObject& operator = (const CubeObject&) = delete;
+
+    private:
+        class CubeObjectImpl;
+        CubeObjectImpl* impl;
 	};
 }
 

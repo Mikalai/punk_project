@@ -7,7 +7,7 @@ namespace Math { class vec4; }
 
 namespace GPU
 {
-	class PUNK_ENGINE_PUBLIC Pen final
+	class PUNK_ENGINE_API Pen final
 	{
 	public:
 		Pen();

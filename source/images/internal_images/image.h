@@ -17,7 +17,7 @@ namespace ImageModule
 {
 	struct ImageImpl;
 
-	class PUNK_ENGINE_PUBLIC Image
+	class PUNK_ENGINE_API Image
 	{
 	public:
 

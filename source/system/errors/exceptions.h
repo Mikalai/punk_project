@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC PunkException
+	class PUNK_ENGINE_API PunkException
 	{
 	public:
 		PunkException();
@@ -19,35 +19,35 @@ namespace System
 		System::string m_data;
 	};
 
-	class PUNK_ENGINE_PUBLIC PunkInvalidArgumentException : public PunkException
+	class PUNK_ENGINE_API PunkInvalidArgumentException : public PunkException
 	{
 	public:
 		PunkInvalidArgumentException() : PunkException(L"PunkInvalidArgumentException") {}
 		PunkInvalidArgumentException(const string& msg) : PunkException(L"PunkInvalidArgumentException: " + msg) {}
 	};
 
-	class PUNK_ENGINE_PUBLIC PunkInvalidCastException : public PunkException
+	class PUNK_ENGINE_API PunkInvalidCastException : public PunkException
 	{
 	public:
 		PunkInvalidCastException() : PunkException(L"PunkInvalidCastException") {}
 		PunkInvalidCastException(const string& msg) : PunkException(L"PunkInvalidCastException: " + msg) {}
 	};
 
-	class PUNK_ENGINE_PUBLIC PunkNotInitializedException : public PunkException
+	class PUNK_ENGINE_API PunkNotInitializedException : public PunkException
 	{
 	public:
 		PunkNotInitializedException() : PunkException(L"PunkNotInitializedException") {}
 		PunkNotInitializedException(const string& msg) : PunkException(L"PunkNotInitializedException: " + msg) {}
 	};
 
-	class PUNK_ENGINE_PUBLIC PunkNotImplemented : public PunkException
+	class PUNK_ENGINE_API PunkNotImplemented : public PunkException
 	{
     public:
 		PunkNotImplemented() : PunkException(L"PunkNotImplemented") {}
 		PunkNotImplemented(const string& msg) : PunkException(L"PunkNotImplemented: " + msg) {}
 	};
 
-	class PUNK_ENGINE_PUBLIC OSException : public PunkException
+	class PUNK_ENGINE_API OSException : public PunkException
 	{
 	public:
 		OSException() : PunkException(L"OSException") {}

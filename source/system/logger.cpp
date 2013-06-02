@@ -182,6 +182,6 @@ namespace System
 		}
 }
 
-PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Message> out_message;
-PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Warning> out_warning;
-PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Error> out_error;
+PUNK_ENGINE_API System::Logger<System::LoggerType::Message> out_message;
+PUNK_ENGINE_API System::Logger<System::LoggerType::Warning> out_warning;
+PUNK_ENGINE_API System::Logger<System::LoggerType::Error> out_error;

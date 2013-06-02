@@ -6,7 +6,7 @@
 
 namespace GUI
 {
-	class PUNK_ENGINE_PUBLIC MouseLeaveEvent : public System::Event, public System::Poolable<MouseLeaveEvent>
+	class PUNK_ENGINE_API MouseLeaveEvent : public System::Event, public System::Poolable<MouseLeaveEvent>
     {        
         MouseLeaveEvent(const MouseLeaveEvent&);
 		MouseLeaveEvent& operator = (const MouseLeaveEvent&);

@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC CompoundObject : public Object
+	class PUNK_ENGINE_API CompoundObject : public Object
 	{
 	public:
 		virtual ~CompoundObject();

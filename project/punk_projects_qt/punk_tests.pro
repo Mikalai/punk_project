@@ -6,7 +6,11 @@ QMAKE_CXXFLAGS += -std=c++11
 
 CONFIG -= QT
 
-DEFINES += _WIN32 USE_OPENGL
+win32 {
+DEFINES += _WIN32
+}
+
+DEFINES += USE_OPENGL
 
 TEMPLATE = app
 TARGET = punk_tests
@@ -14,29 +18,32 @@ TARGET = punk_tests
 DEPENDPATH += . ..\..\source\tests\test_create_opengl_window
 DEPENDPATH += . ..\..\source\tests\test_create_opengl_window
 
-Release:LIBPATH += ./../../bin/release
-Debug:LIBPATH += ./../../bin/debug
+release:LIBPATH += ./../../bin/release
+debug:LIBPATH += ./../../bin/debug
 
 LIBS += -lpunk_engine
 
-Release:DESTDIR = ./../../bin/release
-Release:OBJECTS_DIR = release/.obj
-Release:MOC_DIR = release/.moc
-Release:RCC_DIR = release/.rcc
-Release:UI_DIR = release/.ui
+LIBS += -lX11
 
-Debug:DESTDIR = ./../../bin/debug
-Debug:OBJECTS_DIR = debug/.obj
-Debug:MOC_DIR = debug/.moc
-Debug:RCC_DIR = debug/.rcc
-Debug:UI_DIR = debug/.ui
+release:DESTDIR = ./../../bin/release
+release:OBJECTS_DIR = release/.obj
+release:MOC_DIR = release/.moc
+release:RCC_DIR = release/.rcc
+release:UI_DIR = release/.ui
+
+debug:DESTDIR = ./../../bin/debug
+debug:OBJECTS_DIR = debug/.obj
+debug:MOC_DIR = debug/.moc
+debug:RCC_DIR = debug/.rcc
+debug:UI_DIR = debug/.ui
+
+*g++* : QMAKE_LFLAGS += -Wl,-z,origin \'-Wl,-rpath,\$\$ORIGIN/\'
 
 # Input
 HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_window.h \
            ../../source/tests/test_interface.h \
     ../../source/tests/test_clear_window/test_clear_buffer.h \
-    ../../source/tests/test_first_triangle/firsttriangleandquad.h \
-    rotate_triangle.h \
+    ../../source/tests/test_first_triangle/firsttriangleandquad.h \    
     ../../source/tests/rotate_triangle.h \
     ../../source/tests/colored_triangle_test.h \
     ../../source/tests/test5.h \

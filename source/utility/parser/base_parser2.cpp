@@ -68,7 +68,7 @@ namespace Utility
 			if (word == Keyword[i].word)
 				return Keyword[i].code;
 		}	
-		throw System::PunkInvalidArgumentException(System::string("Unknown keyword %s", word.Data()));		
+        throw System::PunkInvalidArgumentException(System::string("Unknown keyword {0}").arg(word));
 		return WORD_BAD_KEYWORD;
 	}
 
@@ -748,7 +748,7 @@ namespace Utility
 				}
 				break;
 			default:
-				throw System::PunkInvalidArgumentException(System::string("Unexpected keyword %s", Keyword[index]));
+                throw System::PunkInvalidArgumentException(System::string("Unexpected keyword {0}").arg(Keyword[index].word));
 			}
 		}
 		return true;

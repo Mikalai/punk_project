@@ -152,7 +152,7 @@ namespace GPU
 				m_painter_rc->Begin();
 //				m_painter_rc->BindParameters(STATE);
 
-				if (m_lines_vao.HasData())
+                //if (m_lines_vao.HasData())
 				{
 					m_lines_vao.Bind(m_painter_rc->GetRequiredAttributesSet());
 					m_lines_vao.Render();

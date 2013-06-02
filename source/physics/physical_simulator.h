@@ -17,7 +17,7 @@ namespace Physics
 	class Object;
 	class Terrain;
 
-	class PUNK_ENGINE_PUBLIC Simulator
+	class PUNK_ENGINE_API Simulator
 	{
 	public:
 		void Init();

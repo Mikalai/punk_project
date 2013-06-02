@@ -9,7 +9,7 @@ namespace Math
 {
 	struct NoiseImpl;
 
-	class PUNK_ENGINE_PUBLIC Noise
+	class PUNK_ENGINE_API Noise
 	{
 	public:
 

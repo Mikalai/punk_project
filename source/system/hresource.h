@@ -49,7 +49,7 @@ namespace System
 		TERRAIN_NODE
 	};
 
-	PUNK_ENGINE_PUBLIC const System::string AsString(ObjectType type);
+	PUNK_ENGINE_API const System::string AsString(ObjectType type);
 
 }
 

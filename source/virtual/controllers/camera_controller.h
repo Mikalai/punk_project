@@ -6,7 +6,7 @@
 namespace Virtual
 {
 	class Camera;
-	class PUNK_ENGINE_PUBLIC CameraController
+	class PUNK_ENGINE_API CameraController
 	{
 	public:
 		CameraController(Camera* camera);

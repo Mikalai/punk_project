@@ -6,12 +6,17 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC Semaphore : public OsHandle
+	class PUNK_ENGINE_API Semaphore : public OsHandle
 	{
 	public:		
 		bool Create(long max_count);
 		bool Destroy();
 		bool Release(long count = 1);
+        /**
+         * @brief Wait
+         * @param time - time to wait in milliseconds.
+         * @return true if all ok, false otherwise.
+         */
         bool Wait(long time = PUNK_INFINITE);
 		~Semaphore();
 	};

@@ -23,13 +23,30 @@ void Handler::operator() (Event* params)
         if (reciever)
             params->reciever = reciever;
 
+#ifdef _WIN32 && __GNUC__
         asm volatile (
             "push %0;"
-            "movl %1, %%ecx;"
+            "mov %1, %%ecx;"
             "call %2;"
             :
             : "r" (params), "r" (o), "r" (m)
         );
+#elif defined __gnu_linux__ && __amd64__
+        asm volatile (
+            "push %0;"
+            "mov %1, %%rcx;"
+            "call %2;"
+            :
+            : "r" (params), "r" (o), "r" (m)
+        );
+#elif defined __gnu_linux__ && __i386__
+        asm ("mov %0, 0x4(%%esp)\n"\
+             "mov %1, %%eax\n"\
+             "mov %%eax, (%%esp)\n"\
+             "call %2"\
+              : \
+              : "r" (params), "g" (o), "g" (m) );
+#endif
 
         //(o->*m)(params);
     }

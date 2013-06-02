@@ -13,7 +13,7 @@ namespace System
 
 	string WindowResizeEvent::ToString()
 	{
-		return string("Code: %d; Type: RESIZE; Width: %d; Height: %d; Minimized: %s; Restored: %s",
-			eventCode, width, height, minimized ? L"TRUE" : L"FALSE", restored ? L"TRUE" : L"FALSE");
+        return string("Code: {0}; Type: RESIZE; Width: {1}; Height: {2}; Minimized: {3}; Restored: {4}")
+                .arg(eventCode).arg(width).arg(height).arg(minimized ? L"TRUE" : L"FALSE").arg(restored ? L"TRUE" : L"FALSE");
 	}
 }

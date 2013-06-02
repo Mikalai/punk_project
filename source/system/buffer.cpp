@@ -6,6 +6,7 @@
 #include <Windows.h>
 #endif	//	_WIN32
 
+#include <memory.h>
 #include "logger.h"
 #include "buffer.h"
 

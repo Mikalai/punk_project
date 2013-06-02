@@ -593,7 +593,7 @@ namespace Math
 		return true;;
 	}
 
-	class PUNK_ENGINE_PUBLIC mat3 : public Matrix3x3<float>
+	class PUNK_ENGINE_API mat3 : public Matrix3x3<float>
 	{		
 	public:
 		typedef float T;

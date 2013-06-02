@@ -8,7 +8,7 @@ namespace GPU
 {
     enum class RenderTarget
     {
-        None,
+        NoTarget,
         BackBuffer,
         Texture2D
     };

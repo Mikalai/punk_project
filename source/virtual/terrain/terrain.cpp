@@ -11,7 +11,11 @@ namespace Virtual
 		, m_height_scale(1000)
 		, m_origin(0,0)
 	{
-		strcpy_s<16>(m_head, "MAPDESCBIN");
+#ifdef _WIN32
+        strcpy_s<16>(m_head, "MAPDESCBIN");
+#elif defined __gnu_linux__
+        strcpy(m_head, "MAPDESCBIN");
+#endif
 	}
 
 	Terrain::Terrain()		

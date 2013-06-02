@@ -14,7 +14,7 @@ namespace Virtual { class Entity; }
 namespace Scene
 {
 
-	class PUNK_ENGINE_PUBLIC Node : public System::CompoundObject
+	class PUNK_ENGINE_API Node : public System::CompoundObject
 	{
 
 	public:

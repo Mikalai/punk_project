@@ -16,10 +16,12 @@
 #include "render_batch.h"
 #include "render_pass.h"
 #include "text_surface.h"
+#include "primitives/module.h"
+#include "texture2d.h"
 
 namespace GPU
 {
-	extern bool PUNK_ENGINE_PUBLIC GPU_COMMON_INIT(const Config& data);
+    extern bool PUNK_ENGINE_API GPU_COMMON_INIT(const Config& data);
 }
 
 #endif	//	_H_PUNK_GPU_COMMON_MODULE

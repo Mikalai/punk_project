@@ -16,8 +16,8 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		extern bool PUNK_ENGINE_PUBLIC GPU_OPENGL_INIT(const Config& data);
-		extern bool PUNK_ENGINE_PUBLIC GPU_OPENGL_DESTROY();	
+		extern bool PUNK_ENGINE_API GPU_OPENGL_INIT(const Config& data);
+		extern bool PUNK_ENGINE_API GPU_OPENGL_DESTROY();	
 	}
 }
 

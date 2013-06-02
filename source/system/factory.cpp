@@ -18,7 +18,7 @@ namespace System
 {
 	Factory* m_instance;
 
-	PUNK_ENGINE_PUBLIC Factory* GetFactory()
+	PUNK_ENGINE_API Factory* GetFactory()
 	{
 		if (!m_instance)
 			m_instance = new Factory();

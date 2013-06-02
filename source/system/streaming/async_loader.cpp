@@ -1,3 +1,7 @@
+#ifdef __gnu_linux__
+#include <limits.h>
+#endif
+
 #include "async_loader.h"
 #include "data_loader.h"
 #include "data_processor.h"
@@ -21,12 +25,13 @@ namespace System
 		m_instance.reset(0);
 	}
 
-	unsigned PUNK_STDCALL IOThread(void* data)
-	{
-		if (data == nullptr)
-			return 0;
-		return reinterpret_cast<AsyncLoader*>(data)->FileIOThreadProc();
-	}
+#ifdef _WIN32
+    unsigned PUNK_STDCALL IOThread(void* data)
+    {
+        if (data == nullptr)
+            return 0;
+        return reinterpret_cast<AsyncLoader*>(data)->FileIOThreadProc();
+    }
 
 	unsigned PUNK_STDCALL ProcessThread(void* data)
 	{
@@ -34,11 +39,27 @@ namespace System
 			return 0;
 		return reinterpret_cast<AsyncLoader*>(data)->ProcessingThreadProc();
 	}
+#elif defined __gnu_linux__
+    void* ProcessThread(void* data)
+    {
+        if (data == nullptr)
+            return 0;
+        return (void*)reinterpret_cast<AsyncLoader*>(data)->ProcessingThreadProc();
+    }
+
+    void* IOThread(void* data)
+    {
+        if (data == nullptr)
+            return 0;
+        return (void*)reinterpret_cast<AsyncLoader*>(data)->FileIOThreadProc();
+    }
+
+#endif
 
 	bool AsyncLoader::InitAsyncLoading(int num_process_threads)
 	{
 		m_global_done_flag = false;
-		m_io_thread_semaphore.Create(LONG_MAX);
+        m_io_thread_semaphore.Create(LONG_MAX);
 		m_process_thread_semaphore.Create(LONG_MAX);
 
 		m_process_threads.resize(num_process_threads);
@@ -368,7 +389,7 @@ namespace System
 		while (!m_io_done_flag || !m_process_done_flag)
 		{
 			//	Confusing a bit, but still should work
-			Sleep(100);
+            System::Thread::Sleep(100);
 		}
 
 		//	destroy all semaphores

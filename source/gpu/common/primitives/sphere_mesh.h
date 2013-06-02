@@ -1,31 +1,26 @@
-#ifndef _H_PUNK_OPENGL_SPHERE_MESH
-#define _H_PUNK_OPENGL_SPHERE_MESH
+#ifndef _H_PUNK_SPHERE_MESH
+#define _H_PUNK_SPHERE_MESH
 
-#ifdef USE_OPENGL
-#include "../../opengl/renderable/module.h"
-#else
-#endif
+#include "../renderable.h"
 
 namespace GPU
 {
-#ifdef USE_OPENGL
-	using SphereObjectBase = OpenGL::VertexArrayObject2<PrimitiveType::LINE_LOOP,
-	Vertex<VertexComponent::Position,
-	VertexComponent::Normal,
-	VertexComponent::Tangent,
-	VertexComponent::Bitangent,
-	VertexComponent::Texture0>>;
-#else
-#endif	//	USE_OPENGL
+    class VideoDriver;
 
-	class PUNK_ENGINE_PUBLIC SphereObject : public SphereObjectBase
+    class PUNK_ENGINE_API SphereObject : public Renderable
 	{
-		using Base = SphereObjectBase;
-
 	public:
 		SphereObject(VideoDriver* driver);
+        virtual ~SphereObject();
 		void Cook(float radius);
+        virtual void Bind(int64_t value) override;
+        virtual void Unbind() override;
+        virtual void Render() override;
+
+    private:
+        class SphereObjectImpl;
+        SphereObjectImpl* impl;
 	};
 }
 
-#endif	//	_H_PUNK_OPENGL_SPHERE_MESH
+#endif	//	_H_PUNK_SPHERE_MESH

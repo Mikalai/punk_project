@@ -7,7 +7,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE_PUBLIC Line3D
+	class PUNK_ENGINE_API Line3D
 	{
 		vec3 m_origin;
 		vec3 m_destination;

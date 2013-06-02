@@ -14,7 +14,7 @@ namespace Physics
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC Geometry : public System::Object
+	class PUNK_ENGINE_API Geometry : public System::Object
 	{
 	public:
 		typedef int FaceIndex;

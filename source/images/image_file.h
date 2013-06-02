@@ -13,7 +13,7 @@
 
 namespace ImageModule
 {
-	class PUNK_ENGINE_PUBLIC ImageFile
+	class PUNK_ENGINE_API ImageFile
 	{
 	protected:
 		struct Rep

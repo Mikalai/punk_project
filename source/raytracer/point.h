@@ -6,7 +6,7 @@
 namespace Raytracer
 {
 	// stores surface properties
-	class PUNK_ENGINE_PUBLIC Point
+	class PUNK_ENGINE_API Point
 	{
 	public:
 		Point(float _r, float _g, float _b) 

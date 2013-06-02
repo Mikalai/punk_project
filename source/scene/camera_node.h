@@ -6,7 +6,7 @@
 
 namespace Scene
 {
-	class PUNK_ENGINE_PUBLIC CameraNode : public TransformNode
+	class PUNK_ENGINE_API CameraNode : public TransformNode
 	{
 	public:
 		

@@ -9,7 +9,7 @@ namespace Math { class Line3D; }
 
 namespace Raytracer
 {
-	class PUNK_ENGINE_PUBLIC Scene
+	class PUNK_ENGINE_API Scene
 	{
 	public:
 		Scene();

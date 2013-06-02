@@ -5,7 +5,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC ActionMaleWalk final : public Action
+	class PUNK_ENGINE_API ActionMaleWalk final : public Action
 	{
 	public:
 		static ActionMaleWalk* CreateFromFile(const System::string& path);

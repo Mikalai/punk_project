@@ -13,7 +13,7 @@ namespace Scene { class SceneGraph; }
 
 namespace Render
 {
-	class PUNK_ENGINE_PUBLIC SimpleRender : public Scene::AbstractVisitor
+    class PUNK_ENGINE_API SimpleRender : public Scene::AbstractVisitor
 	{
 	public:
 		SimpleRender(GPU::VideoDriver* driver);

@@ -6,7 +6,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE_PUBLIC Ellipsoid
+	class PUNK_ENGINE_API Ellipsoid
 	{
 	public:
 		Ellipsoid(float rx, float ry, float rz);

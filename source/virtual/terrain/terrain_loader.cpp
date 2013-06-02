@@ -13,7 +13,8 @@ namespace Virtual
 
 	System::StreamingStepResult TerrainLoader::Load()
 	{
-		System::string filename = System::Environment::Instance()->GetMapFolder() + m_map_name + L"\\" + System::string("%d_%d.raw", m_block.X(), m_block.Y());
+        System::string filename = System::Environment::Instance()->GetMapFolder() + m_map_name + "\\" + System::string("{0}_{1}.raw")
+                .arg(m_block.X()).arg(m_block.Y());
 		
 		System::Buffer buffer;
 		if (!System::BinaryFile::Load(filename, buffer))

@@ -6,7 +6,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE_PUBLIC Random
+	class PUNK_ENGINE_API Random
 	{
 		uint64_t m_x;
 		uint64_t m_mod;

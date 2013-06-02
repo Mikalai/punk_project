@@ -1,40 +1,56 @@
-#ifndef _H_PUNK_OPENGL_LINES
-#define _H_PUNK_OPENGL_LINES
+#ifndef _H_PUNK_LINES
+#define _H_PUNK_LINES
 
-#include <vector>
-#ifdef USE_OPENGL
-#include "../../opengl/renderable/module.h"
-#else
-#endif
+#include "../renderable.h"
+#include "../vertex.h"
+
+#define CreateLineInterface(VertexType)\
+template<>\
+class PUNK_ENGINE_API Lines<VertexType> : public Renderable {\
+public:\
+    Lines<VertexType>(VideoDriver* driver);\
+    virtual ~Lines<VertexType>();\
+    void Cook(const std::vector<VertexType>& value);\
+    virtual void Bind(int64_t) override;\
+    virtual void Unbind() override;\
+    virtual void Render() override;\
+private:\
+    Renderable* impl;\
+}
 
 namespace GPU
 {
-#ifdef USE_OPENGL
-	template<typename VertexType>
-	using LinesBase = OpenGL::VertexArrayObject2<PrimitiveType::LINES, VertexType>;
-#else
-#endif	//	USE_OPENGL
+    class VideoDriver;
 
-	template<typename VertexType>
-	class PUNK_ENGINE_PUBLIC Lines : public LinesBase<VertexType>
-	{
-		using Base = LinesBase<VertexType>;
+    template<class VertexType> class Lines;
 
-	public:
+#define VERTEX_1 Vertex<VertexComponent::Position>
+    CreateLineInterface(VERTEX_1);
+#undef VERTEX_1
 
-		Lines(VideoDriver* driver) : Base(driver) {}
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Texture0, VertexComponent::Flag, VertexComponent::Color>
+    CreateLineInterface(VERTEX_1);
+#undef VERTEX_1
 
-		void Cook(const std::vector<VertexType>& value)
-		{
-			Base::Clear();
-			std::vector<unsigned> ib(value.size());
-			for (unsigned i = 0; i < ib.size(); ++i)
-				ib[i] = i;
-			Base::SetVertexBuffer(value);
-			Base::SetIndexBuffer(ib);
-			Base::Cook();
-		}
-	};
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Color>
+    CreateLineInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Texture0>
+    CreateLineInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Color, VertexComponent::Texture0>
+    CreateLineInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Normal>
+    CreateLineInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0>
+    CreateLineInterface(VERTEX_1);
+#undef VERTEX_1
 }
 
-#endif	//	_H_PUNK_OPENGL_LINES
+#endif	//	_H_PUNK_LINES

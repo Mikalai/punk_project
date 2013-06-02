@@ -1,4 +1,5 @@
 #include "module.h"
+#include "opengl/module.h"
 
 namespace GPU
 {

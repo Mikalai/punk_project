@@ -11,7 +11,7 @@
 
 namespace GPU
 {
-	struct PUNK_ENGINE_PUBLIC Config
+	struct PUNK_ENGINE_API Config
 	{
 		int view_width;
 		int view_height;

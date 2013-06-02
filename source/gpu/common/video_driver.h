@@ -24,7 +24,7 @@ namespace GPU
 
 	struct VideoDriverImpl;
 
-	class PUNK_ENGINE_PUBLIC VideoDriver
+	class PUNK_ENGINE_API VideoDriver
 	{
 	public:
 

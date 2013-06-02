@@ -25,7 +25,7 @@ namespace GPU
 	*	using OpenGL or other low level api
 	*	Paint engine performs its rendering into PaintDevice
 	*/
-	class PUNK_ENGINE_PUBLIC PaintEngine
+	class PUNK_ENGINE_API PaintEngine
 	{
 	public:
 

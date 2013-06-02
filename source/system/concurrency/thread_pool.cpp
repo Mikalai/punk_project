@@ -63,16 +63,15 @@ namespace System
 
 	void ThreadPool::Init(int thread_count)
 	{
-        Monitor.Init();
+        m_monitor.Init();
         m_finish.Store(0);
 
 		m_threads.resize(thread_count);
 		for(auto it = m_threads.begin(); it != m_threads.end(); ++it)
 		{
-			HANDLE& thread = *it;
-			thread = (HANDLE)_beginthreadex(0, 100, ThreadFunc, this, 0, 0);
+            Thread& thread = *it;
+            thread.Create(ThreadFunc, (void*)this);
 		}
-#endif	//	_WIN32
 	}
 
 	ThreadJob* ThreadPool::GetThreadJob()
@@ -116,8 +115,8 @@ namespace System
 	}
 
 	bool ThreadPool::IsFinish()
-	{
-        return m_finish == 1;
+	{        
+        return m_finish.TestAndSetOrdered(1, 1);
 	}
 
 	int ThreadPool::HasJobs()

@@ -280,9 +280,9 @@ namespace Math
 		}
 	};
 
-	template class PUNK_ENGINE_PUBLIC MatrixNxM<float>;
-	template class PUNK_ENGINE_PUBLIC MatrixNxM<int>;
-	template class PUNK_ENGINE_PUBLIC MatrixNxM<bool>;
+	template class PUNK_ENGINE_API MatrixNxM<float>;
+	template class PUNK_ENGINE_API MatrixNxM<int>;
+	template class PUNK_ENGINE_API MatrixNxM<bool>;
 
 	typedef MatrixNxM<float> matNxM;
 	typedef MatrixNxM<int> imatNxM;

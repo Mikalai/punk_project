@@ -15,7 +15,7 @@ namespace Utility
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC Animation : public System::Object, public System::Aspect<Animation*, System::string>
+	class PUNK_ENGINE_API Animation : public System::Object, public System::Aspect<Animation*, System::string>
 	{
 		AnimationTrack<Math::vec3> m_pos_track;
 		AnimationTrack<Math::quat> m_rot_track;

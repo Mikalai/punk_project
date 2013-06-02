@@ -30,7 +30,7 @@ namespace Punk
 		Virtual::Armature::clear();
 		Virtual::Material::clear();
 		safe_delete(m_paint_engine);
-		GUI::Manager::Destroy();
+//		GUI::Manager::Destroy();
 		safe_delete(m_terrain_manager);
 		safe_delete(m_simulator);
 		safe_delete(m_video_driver);
@@ -61,13 +61,13 @@ namespace Punk
 			GPU::GPU_INIT(data.gpu_config);
 		}
 
-		{
-			GUI::ManagerDesc man_desc;
-			man_desc.adapter = this;
-			man_desc.event_manager = m_event_manager;
-			man_desc.window = m_window;
-			GUI::Manager::Create(man_desc);
-		}
+//		{
+//			GUI::ManagerDesc man_desc;
+//			man_desc.adapter = this;
+//			man_desc.event_manager = m_event_manager;
+//			man_desc.window = m_window;
+//			GUI::Manager::Create(man_desc);
+//		}
 
 		{
 		    m_simulator =  nullptr;

@@ -7,7 +7,7 @@
 
 namespace Utility
 {
-	class PUNK_ENGINE_PUBLIC MaterialDesc 
+	class PUNK_ENGINE_API MaterialDesc 
 	{
 	public:
 		System::string m_diffuse_map;

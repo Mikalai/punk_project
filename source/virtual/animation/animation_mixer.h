@@ -8,7 +8,7 @@ namespace System { class string; }
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC AnimationMixer : public System::Object
+	class PUNK_ENGINE_API AnimationMixer : public System::Object
 	{
 	public:
 		virtual ~AnimationMixer();

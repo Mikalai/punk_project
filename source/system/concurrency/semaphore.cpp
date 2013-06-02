@@ -1,3 +1,7 @@
+#ifdef __gnu_linux__
+#include <semaphore.h>
+#endif
+
 #include "semaphore.h"
 
 namespace System
@@ -16,7 +20,9 @@ namespace System
 			Destroy();
 		Handle() = CreateSemaphore(0, 0, max_count, nullptr);
 		return NULL != Handle();
-#endif	//  _WIN32
+#elif defined __gnu_linux__
+        sem_init(SemaphoreHandle(), 0, max_count);
+#endif
 	}
 
 	bool Semaphore::Destroy()
@@ -25,7 +31,9 @@ namespace System
 		if (Handle())
 			CloseHandle(Handle());
 		return true;
-#endif	//  _WIN32
+#elif defined __gnu_linux__
+        return sem_destroy(SemaphoreHandle()) == 0;
+#endif
 	}
 
 	bool Semaphore::Release(long count)
@@ -33,7 +41,12 @@ namespace System
 #ifdef _WIN32
 		auto res = ReleaseSemaphore(Handle(), count, 0);
 		return res == TRUE;
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+        bool result = true;
+        while (count--)
+            result &= sem_post(SemaphoreHandle()) == 0;
+        return result;
+#endif
 	}
 
 	bool Semaphore::Wait(long time)
@@ -42,7 +55,18 @@ namespace System
 		if (Handle())
 			return WaitForSingleObject(Handle(), time) == TRUE;
 		return false;
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+        if (time == PUNK_INFINITE)
+            return sem_wait(SemaphoreHandle()) == 0;
+        else
+        {
+            timespec t;
+            //  convert milliseconds time to timespec
+            t.tv_sec = time / 1000; //    seconds
+            t.tv_nsec = (time % 1000) * 1000000;    //  nanosecs
+            return sem_timedwait(SemaphoreHandle(), &t) == 0;
+        }
+#endif
 	}
 }
 

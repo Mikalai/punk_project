@@ -22,7 +22,7 @@ namespace GPU
 
 	struct VertexComponent
 	{
-		struct None
+        struct NoComponent
 		{
 			static constexpr int64_t Value() { return 0; }
 			static constexpr unsigned Slot() { return -1; }

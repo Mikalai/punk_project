@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC Thread : public OsHandle
+	class PUNK_ENGINE_API Thread : public OsHandle
 	{
 	public:
 #ifdef _WIN32
@@ -21,6 +21,11 @@ namespace System
 		~Thread();
 
         static Thread GetOwnThread();
+        /**
+         * @brief Sleep. Force to sleep current thread for time milliseconds.
+         * @param time
+         */
+        static void Sleep(unsigned time);
 	};
 }
 

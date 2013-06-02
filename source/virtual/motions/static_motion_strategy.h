@@ -8,7 +8,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC StaticMotionStrategy : public MotionStrategy
+	class PUNK_ENGINE_API StaticMotionStrategy : public MotionStrategy
 	{
 	public:
 		StaticMotionStrategy();

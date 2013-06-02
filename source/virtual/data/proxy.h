@@ -8,7 +8,7 @@
 namespace Virtual
 {
 
-	/*class PUNK_ENGINE_PUBLIC Proxy : public System::Object
+	/*class PUNK_ENGINE_API Proxy : public System::Object
 	{
 	public:
 		Proxy();

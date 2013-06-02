@@ -63,7 +63,7 @@ namespace Virtual
 		HUMAN_END
 	};
 
-	class PUNK_ENGINE_PUBLIC HumanArmature : public Armature
+	class PUNK_ENGINE_API HumanArmature : public Armature
 	{
 	public:
 		virtual void UpdateHierarchy() override;

@@ -16,7 +16,7 @@ namespace Virtual
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC Bone
+	class PUNK_ENGINE_API Bone
 	{
 	public:
 

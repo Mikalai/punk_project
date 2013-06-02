@@ -11,7 +11,7 @@ namespace Audio
 {
 	struct BufferImpl;
 
-	class PUNK_ENGINE_PUBLIC Buffer
+	class PUNK_ENGINE_API Buffer
 	{		
 	public:
 		

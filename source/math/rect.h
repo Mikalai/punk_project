@@ -7,7 +7,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE_PUBLIC Rect
+	class PUNK_ENGINE_API Rect
 	{
 	public:
 		Rect();

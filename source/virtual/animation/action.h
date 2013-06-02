@@ -14,7 +14,7 @@ namespace Virtual
 namespace Virtual
 {
 	//	Animation is a child of Action
-	class PUNK_ENGINE_PUBLIC Action : public System::CompoundObject, public System::Aspect<Action*, System::string>
+	class PUNK_ENGINE_API Action : public System::CompoundObject, public System::Aspect<Action*, System::string>
 	{
 	public:
 		Action();

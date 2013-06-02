@@ -5,7 +5,7 @@
 
 namespace Audio
 {
-	struct PUNK_ENGINE_PUBLIC Config
+	struct PUNK_ENGINE_API Config
 	{
 		int ambient_volume;
 		int music_volume;

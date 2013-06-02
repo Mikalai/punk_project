@@ -23,11 +23,11 @@ namespace Math
 
 namespace Render
 {
-	class PUNK_ENGINE_PUBLIC SolidObjectRender
+	class PUNK_ENGINE_API SolidObjectRender
 	{
 	public:
 
-		struct PUNK_ENGINE_PUBLIC Parameters
+		struct PUNK_ENGINE_API Parameters
 		{
 			Utility::Entity* m_object;
 			Utility::Camera* m_camera;

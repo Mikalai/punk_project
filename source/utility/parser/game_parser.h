@@ -40,7 +40,7 @@ namespace Virtual
 
 	//extern SceneObjectIterator* operator ++ (int i, SceneObjectIterator&);
 
-	//class PUNK_ENGINE_PUBLIC Scene : public System::Object
+	//class PUNK_ENGINE_API Scene : public System::Object
 	//{
 	//	struct SceneImpl;
 	//	std::auto_ptr<SceneImpl> impl_scene;

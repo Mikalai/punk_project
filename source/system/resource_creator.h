@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC ResourceCreator
+	class PUNK_ENGINE_API ResourceCreator
 	{
 	public:
 		virtual Object* Create() = 0;

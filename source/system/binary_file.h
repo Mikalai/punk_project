@@ -9,7 +9,7 @@ namespace System
 {
 	class Buffer;
 
-	class PUNK_ENGINE_PUBLIC BinaryFile
+	class PUNK_ENGINE_API BinaryFile
 	{
 	public:
 

@@ -22,7 +22,7 @@ namespace GPU
 		POLYGON
 	};
 
-	extern PUNK_ENGINE_PUBLIC const System::string AsString(const PrimitiveType& value);
+	extern PUNK_ENGINE_API const System::string AsString(const PrimitiveType& value);
 }
 
 #endif	//	_H_PUNK_GPU_PRIMITIVE_TYPE

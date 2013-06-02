@@ -12,7 +12,7 @@ namespace Virtual { class Bone; }
 namespace Scene
 {
 
-	class PUNK_ENGINE_PUBLIC BoneNode : public Node
+	class PUNK_ENGINE_API BoneNode : public Node
 	{
 
 	public:

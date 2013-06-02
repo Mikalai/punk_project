@@ -10,12 +10,12 @@
 #include <queue>
 #include <map>
 #include "events/events.h"
+#include "handler.h"
 //#include "monitor.h"
-#include "types.h"
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC EventManager
+	class PUNK_ENGINE_API EventManager
     {	
 	private:
 		bool m_events_mask[MAX_EVENTS_COUNT];

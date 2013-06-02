@@ -10,7 +10,7 @@ namespace Virtual
 {
 	class Geometry;
 
-	class PUNK_ENGINE_PUBLIC Cube : public System::Object, public Scene::SceneGraphAdapter, public Physics::Adapter
+	class PUNK_ENGINE_API Cube : public System::Object, public Scene::SceneGraphAdapter, public Physics::Adapter
 	{
 	public:
 		Cube();

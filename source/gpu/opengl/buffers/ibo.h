@@ -9,37 +9,37 @@ namespace GPU
 	{
 		class VideoMemory;
 
-		class PUNK_ENGINE_PUBLIC IndexBufferObject
+        class PUNK_ENGINE_LOCAL IndexBufferObject
 		{
 		public:
 			
-			void Create(const void* data, size_t m_size);
-			void Destroy();			
+            void PUNK_ENGINE_LOCAL Create(const void* data, size_t m_size);
+            void PUNK_ENGINE_LOCAL Destroy();
 
-			void Bind() const;
-			void Unbind() const;
+            void PUNK_ENGINE_LOCAL Bind() const;
+            void PUNK_ENGINE_LOCAL Unbind() const;
 
-			void* Map();
-			const void* Map() const;
-			void Unmap() const;
+            void* PUNK_ENGINE_LOCAL Map();
+            const void* PUNK_ENGINE_LOCAL Map() const;
+            void PUNK_ENGINE_LOCAL Unmap() const;
 
-			void CopyData(const void* data, size_t size);
+            void PUNK_ENGINE_LOCAL CopyData(const void* data, size_t size);
 
-			bool IsValid() const;
+            bool PUNK_ENGINE_LOCAL IsValid() const;
 
-			size_t GetSize() const { return m_size; }
+            size_t PUNK_ENGINE_LOCAL GetSize() const { return m_size; }
 
 		private:		
 
 			//	Only VideoMemory can create it
-			IndexBufferObject();
-			~IndexBufferObject();
+            PUNK_ENGINE_LOCAL IndexBufferObject();
+            PUNK_ENGINE_LOCAL ~IndexBufferObject();
 
-			IndexBufferObject(const IndexBufferObject&);
-			IndexBufferObject& operator = (const IndexBufferObject&);
+            PUNK_ENGINE_LOCAL IndexBufferObject(const IndexBufferObject&);
+            PUNK_ENGINE_LOCAL IndexBufferObject& operator = (const IndexBufferObject&);
 			
-			GLuint m_index;
-			size_t m_size;
+            PUNK_ENGINE_LOCAL GLuint m_index;
+            PUNK_ENGINE_LOCAL size_t m_size;
 
 			friend class VideoMemory;
 		};

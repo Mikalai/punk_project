@@ -12,7 +12,6 @@
 #include "event_manager.h"
 #include "folder.h"
 #include "timer.h"
-#include "types.h"
 #include "binary_file.h"
 #include "string.h"
 #include "buffer.h"

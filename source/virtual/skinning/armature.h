@@ -17,7 +17,7 @@ namespace Virtual
 {
 	class Entity;
 	
-	class  PUNK_ENGINE_PUBLIC Armature : public System::Object, public System::Aspect<Armature*, System::string>
+	class  PUNK_ENGINE_API Armature : public System::Object, public System::Aspect<Armature*, System::string>
 	{
 	public:
 		Armature();

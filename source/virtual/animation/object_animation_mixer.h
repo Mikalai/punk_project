@@ -15,7 +15,7 @@ namespace Virtual
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC ObjectAnimationMixer : public AnimationMixer
+	class PUNK_ENGINE_API ObjectAnimationMixer : public AnimationMixer
 	{
 		typedef std::map<System::string, std::shared_ptr<Animation>> Type;
 		typedef std::map<System::string, bool> ActiveTracks;

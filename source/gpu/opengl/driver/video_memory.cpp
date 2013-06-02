@@ -1,3 +1,4 @@
+#include <string.h>
 #include "video_memory.h"
 #include "../gl/module.h"
 #include "../buffers/module.h"

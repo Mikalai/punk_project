@@ -9,7 +9,7 @@ namespace Audio
 {
 	struct ListenerImpl;
 
-	class PUNK_ENGINE_PUBLIC Listener
+	class PUNK_ENGINE_API Listener
 	{
 	public:
 		Listener();

@@ -9,7 +9,7 @@ namespace Raytracer
 {
 	class Scene;
 
-	class PUNK_ENGINE_PUBLIC Render
+	class PUNK_ENGINE_API Render
 	{
 		Render(const Render&);
 		Render& operator = (const Render&);

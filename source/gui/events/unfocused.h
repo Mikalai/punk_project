@@ -6,7 +6,7 @@
 
 namespace GUI
 {
-	class PUNK_ENGINE_PUBLIC SetUnFocusedEvent : public System::Event, public System::Poolable<SetUnFocusedEvent>
+	class PUNK_ENGINE_API SetUnFocusedEvent : public System::Event, public System::Poolable<SetUnFocusedEvent>
     {        
         SetUnFocusedEvent(const SetUnFocusedEvent&);
 		SetUnFocusedEvent& operator = (const SetUnFocusedEvent&);

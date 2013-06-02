@@ -1,7 +1,7 @@
-#include "../PUNK_ENGINE_PUBLIC/images/images.h"
-#include "../PUNK_ENGINE_PUBLIC/system/string.h"
-#include "../PUNK_ENGINE_PUBLIC/system/system.h"
-#include "../PUNK_ENGINE_PUBLIC/math/math.h"
+#include "../PUNK_ENGINE_API/images/images.h"
+#include "../PUNK_ENGINE_API/system/string.h"
+#include "../PUNK_ENGINE_API/system/system.h"
+#include "../PUNK_ENGINE_API/math/math.h"
 #include "noise.h"
 
 void CreateDefaultNoise(int argc, char* argv[])

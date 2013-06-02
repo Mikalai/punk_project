@@ -1,6 +1,9 @@
 #ifndef _H_PUNK_OPENGL_DRIVER_WIN32
 #define _H_PUNK_OPENGL_DRIVER_WIN32
 
+#ifdef __gnu_linux__
+#include "../gl/module.h"
+#endif
 #include <map>
 #include <list>
 
@@ -46,6 +49,8 @@ namespace GPU
 
 #ifdef _WIN32
 		HGLRC m_opengl_context;
+#elif defined __gnu_linux__
+        __GLXcontextRec* ctx;
 #endif
 
 		VideoDriverDesc m_desc;

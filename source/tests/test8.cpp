@@ -194,6 +194,8 @@ namespace Test8
 			m_y += 0.0002f;
 			m_z += 0.0004f;
 
+            auto fan = new GPU::TriangleFan<GPU::Vertex<GPU::VertexComponent::Position>>(GetVideoDriver());
+            fan->Bind(0);
 		}
 	};
 

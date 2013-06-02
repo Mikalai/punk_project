@@ -19,7 +19,7 @@ namespace GPU
 
 	class VideoDriver;
 
-	class PUNK_ENGINE_PUBLIC RenderableBuilder final
+	class PUNK_ENGINE_API RenderableBuilder final
 	{
 	public:
 		RenderableBuilder(VideoDriver* driver);

@@ -4,118 +4,141 @@
 
 #include "skin_mesh.h"
 
+#ifdef USE_OPENGL
+#include "../../opengl/renderable/module.h"
+#else
+#endif	//	USE_OPENGL
+
+
 namespace GPU
 {
-	bool CookOneVertexWithBone(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature, int index, Math::vec4& bone, Math::vec4& weight);
+#ifdef USE_OPENGL
+    using SkinMeshBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,
+    Vertex<VertexComponent::Position,
+    VertexComponent::Normal,
+    VertexComponent::Tangent,
+    VertexComponent::Bitangent,
+    VertexComponent::Texture0,
+    VertexComponent::BoneID,
+    VertexComponent::BoneWeight>>;
+#else
+#endif
 
-	SkinMesh::SkinMesh(VideoDriver* driver) : Base(driver)
-	{}
+    bool CookOneVertexWithBone(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature, int index, Math::vec4& bone, Math::vec4& weight);
 
-	bool SkinMesh::Cook(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature)
-	{
-		if (!mesh)
-			throw System::PunkInvalidArgumentException(L"Can't created skinned mesh from NULL mesh descriptor");
-		if (mesh->GetVertices().empty())
-			throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from empty vertex list in mesh descriptor");
-		if (mesh->GetTextureMeshes().empty())
-			throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty texture coordinates list");
-		if (mesh->GetNormals().empty())
-			throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty normals list");
-		if (mesh->GetBoneWeights().empty())
-			throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty bones weights list");
+    class SkinMesh::SkinMeshImpl : public SkinMeshBase
+    {
+        using Base = SkinMeshBase;
 
-		std::vector<unsigned> ib(mesh->GetFaces().size()*3);
+    public:
+        SkinMeshImpl(VideoDriver* driver) : Base(driver) {}
 
-		for (unsigned i = 0; i < ib.size(); i++)
-			ib[i] = i;
+        bool Cook(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature)
+        {
+            if (!mesh)
+                throw System::PunkInvalidArgumentException(L"Can't created skinned mesh from NULL mesh descriptor");
+            if (mesh->GetVertices().empty())
+                throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from empty vertex list in mesh descriptor");
+            if (mesh->GetTextureMeshes().empty())
+                throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty texture coordinates list");
+            if (mesh->GetNormals().empty())
+                throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty normals list");
+            if (mesh->GetBoneWeights().empty())
+                throw System::PunkInvalidArgumentException(L"Can't create skinned mesh from mesh descriptor with empty bones weights list");
 
-		std::vector<CurrentVertex> vb(mesh->GetFaces().size()*3);
+            std::vector<unsigned> ib(mesh->GetFaces().size()*3);
 
-		std::vector<int> base_index;		/// contains vertex index in the source array
-		int index = 0;
-		for (unsigned i = 0, max_i = mesh->GetTextureMeshes().begin()->second.size(); i < max_i; i++)
-		{
-			const Math::ivec3& f = mesh->GetFaces()[i];
-			const Math::vec3 position[3] = { mesh->GetVertices()[f[0]], mesh->GetVertices()[f[1]], mesh->GetVertices()[f[2]] };
-			const Math::vec2 texture[3] = { mesh->GetTextureMeshes().begin()->second[i][0], mesh->GetTextureMeshes().begin()->second[i][1], mesh->GetTextureMeshes().begin()->second[i][2] };
-			const Math::vec3 normal[3] = { mesh->GetNormals()[f[0]], mesh->GetNormals()[f[1]], mesh->GetNormals()[f[2]] };
+            for (unsigned i = 0; i < ib.size(); i++)
+                ib[i] = i;
 
-			Math::vec3 tgn;
-			Math::vec3 nrm;
-			Math::vec3 btn;
-			float det;
+            std::vector<CurrentVertex> vb(mesh->GetFaces().size()*3);
 
-			//	for each vertex in the triangle
-			for (int j = 0; j < 3; ++j)
-			{
-				int index_0 = j;
-				int index_1 = (j+1)%3;
-				int index_2 = (j+2)%3;
+            std::vector<int> base_index;		/// contains vertex index in the source array
+            int index = 0;
+            for (unsigned i = 0, max_i = mesh->GetTextureMeshes().begin()->second.size(); i < max_i; i++)
+            {
+                const Math::ivec3& f = mesh->GetFaces()[i];
+                const Math::vec3 position[3] = { mesh->GetVertices()[f[0]], mesh->GetVertices()[f[1]], mesh->GetVertices()[f[2]] };
+                const Math::vec2 texture[3] = { mesh->GetTextureMeshes().begin()->second[i][0], mesh->GetTextureMeshes().begin()->second[i][1], mesh->GetTextureMeshes().begin()->second[i][2] };
+                const Math::vec3 normal[3] = { mesh->GetNormals()[f[0]], mesh->GetNormals()[f[1]], mesh->GetNormals()[f[2]] };
 
-				Math::CalculateTBN(position[index_0], position[index_1], position[index_2], texture[index_0], texture[index_1], texture[index_2], tgn, btn, nrm, det);
-				det = (det < 0) ? -1.0f : 1.0f;
+                Math::vec3 tgn;
+                Math::vec3 nrm;
+                Math::vec3 btn;
+                float det;
 
-				vb[index].m_position = position[index_0];
-				vb[index].m_normal = normal[index_0];
-				vb[index].m_texture0.Set(texture[index_0][0], texture[index_0][1], 0, 0);
-				vb[index].m_tangent.Set(tgn[0], tgn[1], tgn[2], det);
-				vb[index].m_bitangent.Set(btn[0], btn[1], btn[2], 0);
+                //	for each vertex in the triangle
+                for (int j = 0; j < 3; ++j)
+                {
+                    int index_0 = j;
+                    int index_1 = (j+1)%3;
+                    int index_2 = (j+2)%3;
 
-				if (!CookOneVertexWithBone(mesh, armature, f[j], vb[index].m_bones_id, vb[index].m_bone_weights))
-					return (out_error() << "Can't cook skinned mesh, because error occured in cooking skinned vertex" << std::endl, false);
+                    Math::CalculateTBN(position[index_0], position[index_1], position[index_2], texture[index_0], texture[index_1], texture[index_2], tgn, btn, nrm, det);
+                    det = (det < 0) ? -1.0f : 1.0f;
 
-				base_index.push_back(f[j]);
-				index++;
-			}
-		}
+                    vb[index].m_position = position[index_0];
+                    vb[index].m_normal = normal[index_0];
+                    vb[index].m_texture0.Set(texture[index_0][0], texture[index_0][1], 0, 0);
+                    vb[index].m_tangent.Set(tgn[0], tgn[1], tgn[2], det);
+                    vb[index].m_bitangent.Set(btn[0], btn[1], btn[2], 0);
 
-		/// Smooth TBN
-		std::vector<int> mask(vb.size());
-		for (int i = 0; i < (int)vb.size(); i++)
-		{
-			Math::vec3 norm;
-			Math::vec3 tang;
-			Math::vec3 btan;
-			for (int j = 0; j < (int)vb.size(); j++)
-			{
-				CurrentVertex* v = &vb[j];
-				if (base_index[j] == i)
-				{
-					norm += v->m_normal.XYZ();
-					tang += v->m_tangent.XYZ();
-					btan += v->m_bitangent.XYZ();
-				}
-			}
+                    if (!CookOneVertexWithBone(mesh, armature, f[j], vb[index].m_bones_id, vb[index].m_bone_weights))
+                        return (out_error() << "Can't cook skinned mesh, because error occured in cooking skinned vertex" << std::endl, false);
 
-			norm.Normalize();
-			tang.Normalize();
-			btan.Normalize();
-			tang = (tang - norm.Dot(tang)*norm).Normalized();
-			btan = (btan - norm.Dot(btan)*norm - tang.Dot(btan)*tang).Normalized();
+                    base_index.push_back(f[j]);
+                    index++;
+                }
+            }
 
-			Math::Matrix<float> m(3,3);
-			m.At(0,0) = tang[0]; m.At(0,1) = tang[1]; m.At(0,2) = tang[2];
-			m.At(1,0) = btan[0]; m.At(1,1) = btan[1]; m.At(1,2) = btan[2];
-			m.At(2,0) = norm[0]; m.At(2,1) = norm[1]; m.At(2,2) = norm[2];
-			float w = m.Determinant();
+            /// Smooth TBN
+            std::vector<int> mask(vb.size());
+            for (int i = 0; i < (int)vb.size(); i++)
+            {
+                Math::vec3 norm;
+                Math::vec3 tang;
+                Math::vec3 btan;
+                for (int j = 0; j < (int)vb.size(); j++)
+                {
+                    CurrentVertex* v = &vb[j];
+                    if (base_index[j] == i)
+                    {
+                        norm += v->m_normal.XYZ();
+                        tang += v->m_tangent.XYZ();
+                        btan += v->m_bitangent.XYZ();
+                    }
+                }
 
-			for (int j = 0; j < (int)vb.size(); j++)
-			{
-				CurrentVertex* v = &vb[j];
-				if (base_index[j] == i)
-				{
-					v->m_normal = norm;
-					v->m_tangent.Set(tang[0], tang[1], tang[2], w);
-					v->m_bitangent = btan;
-				}
-			}
-		}
-		SetVertexBuffer(vb);
-		SetIndexBuffer(ib);
+                norm.Normalize();
+                tang.Normalize();
+                btan.Normalize();
+                tang = (tang - norm.Dot(tang)*norm).Normalized();
+                btan = (btan - norm.Dot(btan)*norm - tang.Dot(btan)*tang).Normalized();
 
-		Base::Cook();
-		return true;
-	}
+                Math::Matrix<float> m(3,3);
+                m.At(0,0) = tang[0]; m.At(0,1) = tang[1]; m.At(0,2) = tang[2];
+                m.At(1,0) = btan[0]; m.At(1,1) = btan[1]; m.At(1,2) = btan[2];
+                m.At(2,0) = norm[0]; m.At(2,1) = norm[1]; m.At(2,2) = norm[2];
+                float w = m.Determinant();
+
+                for (int j = 0; j < (int)vb.size(); j++)
+                {
+                    CurrentVertex* v = &vb[j];
+                    if (base_index[j] == i)
+                    {
+                        v->m_normal = norm;
+                        v->m_tangent.Set(tang[0], tang[1], tang[2], w);
+                        v->m_bitangent = btan;
+                    }
+                }
+            }
+            SetVertexBuffer(vb);
+            SetIndexBuffer(ib);
+
+            Base::Cook();
+            return true;
+        }
+    };
 
 	bool CookOneVertexWithBone(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature, int index, Math::vec4& bone, Math::vec4& weight)
 	{
@@ -157,4 +180,59 @@ namespace GPU
 		bone.Set((float)b_id[0], (float)b_id[1], (float)b_id[2], (float)b_id[3]);
 		return true;
 	}
+
+    SkinMesh::SkinMesh(VideoDriver* driver)
+        : impl(new SkinMeshImpl(driver))
+    {}
+
+    SkinMesh::~SkinMesh()
+    {
+        delete impl;
+        impl = nullptr;
+    }
+
+    bool SkinMesh::Cook(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature)
+    {
+        impl->Cook(mesh, armature);
+    }
+
+    void SkinMesh::Bind(int64_t value)
+    {
+        impl->Bind(value);
+    }
+
+    void SkinMesh::Unbind()
+    {
+        impl->Unbind();
+    }
+
+    void SkinMesh::Render()
+    {
+        impl->Render();
+    }
+
+    bool SkinMesh::HasData()
+    {
+        return impl->HasData();
+    }
+
+    Math::BoundingBox& SkinMesh::GetBoundingBox()
+    {
+        return impl->GetBoundingBox();
+    }
+
+    const Math::BoundingBox& SkinMesh::GetBoundingBox() const
+    {
+        return impl->GetBoundingBox();
+    }
+
+    Math::BoundingSphere& SkinMesh::GetBoundingSphere()
+    {
+        return impl->GetBoundingSphere();
+    }
+
+    const Math::BoundingSphere& SkinMesh::GetBoundingSphere() const
+    {
+        return impl->GetBoundingSphere();
+    }
 }

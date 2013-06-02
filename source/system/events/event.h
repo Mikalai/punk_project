@@ -10,7 +10,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC Event
+	class PUNK_ENGINE_API Event
     {
     public:
         int eventCode;        

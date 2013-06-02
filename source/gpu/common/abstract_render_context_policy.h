@@ -33,7 +33,7 @@ namespace GPU
 		DepthRender
 	};
 
-	class PUNK_ENGINE_PUBLIC AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
+	class PUNK_ENGINE_API AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
 	{
 	public:
 		AbstractRenderPolicy();

@@ -3,7 +3,11 @@
 #define NOMINMAX
 #endif	//	NOMINMAX
 #include <Windows.h>
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+#include <sys/ioctl.h>
+#include <unistd.h>
+#include <stdio.h>
+#endif
 
 #include <iostream>
 #include <cstdio>
@@ -12,10 +16,9 @@
 
 namespace System
 {
-#ifdef _WIN32
-
 	struct Console::Impl
 	{
+#ifdef _WIN32
 		//	handle of the console object
 		HANDLE m_console_handle;
 		//	current cursor position
@@ -26,6 +29,9 @@ namespace System
 		WORD m_back_color;
 		//	information of the console screen buffer
 		CONSOLE_SCREEN_BUFFER_INFO m_screen_info;
+#elif defined __gnu_linux__
+        int m_x, m_y;
+#endif
 
 		Impl();
 		void SetPosition(int x, int y);
@@ -42,6 +48,7 @@ namespace System
 
 	Console::Impl::Impl()
 	{
+#ifdef _WIN32
 		m_console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
 		if (m_console_handle)
 		{
@@ -52,21 +59,28 @@ namespace System
 			SetBackColor(COLOR_BLACK);
 			Clear();
 		}
+#elif defined __gnu_linux__
+#endif
 	}
 
 	//	set new cursor position in console
 	void Console::Impl::SetPosition(int x, int y)
-	{
+    {
+#ifdef _WIN32
 		if (m_console_handle)
 		{
 			m_cursor_position.X = x;
 			m_cursor_position.Y = y;
 			SetConsoleCursorPosition(m_console_handle, m_cursor_position);
 		}
+#elif defined __gnu_linux__
+        std::cout << "\33[" << x << ":" << y << "H";
+#endif
 	}
 	//	set new text color
 	void Console::Impl::SetTextColor(Color col)
 	{
+#ifdef _WIN32
 		if (m_console_handle)
 		{
 			switch(col)
@@ -123,11 +137,66 @@ namespace System
 			}
 			SetConsoleTextAttribute(m_console_handle, m_text_color|m_back_color);
 		}
+#elif defined __gnu_linux__
+        switch(col)
+        {
+        case COLOR_BLACK:
+            std::cout << "\033[0;30m";
+            break;
+        case COLOR_BLUE:
+            std::cout << "\033[0;34m";
+            break;
+        case COLOR_GREEN:
+            std::cout << "\033[0;32m";
+            break;
+        case COLOR_CYAN:
+            std::cout << "\033[0;36m";
+            break;
+        case COLOR_RED:
+            std::cout << "\033[0;31m";
+            break;
+        case COLOR_MAGENTA:
+            std::cout << "\033[0;35m";
+            break;
+        case COLOR_BROWN:
+            std::cout << "\033[0;33m";
+            break;
+        case COLOR_LIGHTGRAY:
+            std::cout << "\033[0;37m";
+            break;
+        case COLOR_DARKGRAY:
+            std::cout << "\033[0m";
+            break;
+        case COLOR_LIGHTBLUE:
+            std::cout << "\033[0m";
+            break;
+        case COLOR_LIGHTGREEN:
+            std::cout << "\033[0m";
+            break;
+        case COLOR_LIGHTCYAN:
+            std::cout << "\033[0m";
+            break;
+        case COLOR_LIGHTRED:
+            std::cout << "\033[0m";
+            break;
+        case COLOR_LIGHTMAGENTA:
+            std::cout << "\033[0m";
+            break;
+        case COLOR_WHITE:
+            std::cout << "\033[0m";
+            break;
+        case COLOR_YELLOW:
+            std::cout << "\033[0m";
+            break;
+        }
+#endif
+
 	}
 
 	//	set new back color
 	void Console::Impl::SetBackColor(Color col)
 	{
+#ifdef _WIN32
 		if (m_console_handle)
 		{
 			switch(col)
@@ -183,35 +252,113 @@ namespace System
 			}
 			SetConsoleTextAttribute(m_console_handle, m_text_color|m_back_color);
 		}
+#elif defined __gnu_linux__
+        switch(col)
+        {
+        case COLOR_BLACK:
+            std::cout << "\033[7;30m";
+            break;
+        case COLOR_BLUE:
+            std::cout << "\033[7;34m";
+            break;
+        case COLOR_GREEN:
+            std::cout << "\033[7;32m";
+            break;
+        case COLOR_CYAN:
+            std::cout << "\033[7;36m";
+            break;
+        case COLOR_RED:
+            std::cout << "\033[7;31m";
+            break;
+        case COLOR_MAGENTA:
+            std::cout << "\033[7;35m";
+            break;
+        case COLOR_BROWN:
+            std::cout << "\033[7;33m";
+            break;
+        case COLOR_LIGHTGRAY:
+            std::cout << "\033[7;37m";
+            break;
+        case COLOR_DARKGRAY:
+            std::cout << "\033[7m";
+            break;
+        case COLOR_LIGHTBLUE:
+            std::cout << "\033[7m";
+            break;
+        case COLOR_LIGHTGREEN:
+            std::cout << "\033[7m";
+            break;
+        case COLOR_LIGHTCYAN:
+            std::cout << "\033[7m";
+            break;
+        case COLOR_LIGHTRED:
+            std::cout << "\033[7m";
+            break;
+        case COLOR_LIGHTMAGENTA:
+            std::cout << "\033[7m";
+            break;
+        case COLOR_WHITE:
+            std::cout << "\033[7m";
+            break;
+        case COLOR_YELLOW:
+            std::cout << "\033[7m";
+            break;
+        }
+#endif
 	}
 
 	//	retreive console screen buffer width
 	int Console::Impl::GetScreenBufferWidth() const
 	{
+#ifdef _WIN32
 		return m_screen_info.dwSize.X;
+#elif defined __gnu_linux__
+        winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        return w.ws_col;
+#endif
 	}
 	//	retrieve console screen buffer height
 	int Console::Impl::GetScreenBufferHeight() const
 	{
+#ifdef _WIN32
 		return m_screen_info.dwSize.Y;
+#elif defined __gnu_linux__
+        winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        return w.ws_row;
+#endif
 	}
 	//	retrieve visible width of the console screen
 	int Console::Impl::GetViewportWidth()
 	{
+#ifdef _WIN32
 		GetConsoleScreenBufferInfo(m_console_handle, &m_screen_info);
 		return m_screen_info.srWindow.Right - m_screen_info.srWindow.Left;
 		//return m_screen_info.dwMaximumWindowSize.X;
+#elif defined __gnu_linux__
+        winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        return w.ws_col;
+#endif
 	}
 	//	retrieve visisble height of the console screen
 	int Console::Impl::GetViewportHeight()
 	{
+#ifdef _WIN32
 		GetConsoleScreenBufferInfo(m_console_handle, &m_screen_info);
 		return m_screen_info.srWindow.Bottom - m_screen_info.srWindow.Top;
 		//return m_screen_info.dwMaximumWindowSize.Y;
+#elif defined __gnu_linux__
+        winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        return w.ws_row;
+#endif
 	}
 	//	fills console with back color
 	void Console::Impl::Clear()
 	{
+#ifdef _WIN32
 		if (m_console_handle)
 		{
 			static const int SIZE = 32768;
@@ -230,6 +377,9 @@ namespace System
 			}
 			SetPosition(0,0);
 		}
+#elif defined __gnu_linux__
+        std::cout << "\033[2j";
+#endif
 	}
 
 	std::ostream& Console::Impl::Write()
@@ -242,7 +392,6 @@ namespace System
 		return std::cin;
 	}
 
-#endif	//	_WIN32
 
 	//
 	//	Console implementation goes here

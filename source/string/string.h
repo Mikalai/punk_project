@@ -18,7 +18,7 @@
 
 namespace System
 {
-    //class PUNK_ENGINE_PUBLIC StringError : public std::exception
+    //class  StringError : public std::exception
 	//{
 	//public:
 	//	StringError();
@@ -29,108 +29,109 @@ namespace System
 	//	const wchar_t* m_w_what;
 	//};
 
-    class PUNK_ENGINE_PUBLIC string
+    class PUNK_ENGINE_API string
 	{
 	public:
         typedef std::vector<char>::iterator iterator;
         typedef std::vector<char>::const_iterator const_iterator;
 
 	public:
-		string();
-        string(const char* s);
-		string(const wchar_t* s);
-        string(const char* s, size_t length);
-        string(const wchar_t* s, size_t length);
-		string(const string& s);
-        explicit string(size_t length);
+         string();
+         string(const char* s);
+         string(const wchar_t* s);
+         string(const char* s, size_t length);
+         string(const wchar_t* s, size_t length);
+         string(const string& s);
+         explicit string(size_t length);
 
-		string& operator = (const string& s);
-		string& operator = (const wchar_t* s);
-		string& operator = (const char* s);
-		~string();
+         string& operator = (const string& s);
+         string& operator = (const wchar_t* s) { return *this; }
+         string& operator = (const char* s);
+         ~string();
 
-        char operator [] (int i) const;
-        char& operator [] (int i);
+         char operator [] (int i) const;
+         char& operator [] (int i);
 
-        const std::string ToStdString() const;
-        const std::wstring ToStdWString() const;
+         const std::string ToStdString() const;
+         const std::wstring ToStdWString() const;
 
-        size_t Length() const;
-        size_t Size() const;
-		string& Erase(int start, int len);
-        string& Insert(char chr, int pos);
-		const string Replace(const string& what, const string& with) const;
-		const string SubString(int start, int end) const;
-        const string Trim(const char* delimiters) const;
-        const std::vector<string> Split(const char *delimiters) const;
+         size_t Length() const;
+         size_t Size() const;
+         string& Erase(int start, int len);
+         string& Insert(char chr, int pos);
+         const string Replace(const string& what, const string& with) const;
+         const string SubString(int start, int end) const;
+         const string Trim(const char* delimiters) const;
+         const std::vector<string> Split(const char *delimiters) const;
 
-        const char* Data() const;
+         const char* Data() const;
 
-		string& operator += (const string& s);
-        string& operator += (const char* s);
+         string& operator += (const string& s);
+         string& operator += (const char* s);
 
-        void ToANSI(char*& buffer, size_t& length) const;
-        void ToANSI(char* buffer, size_t size) const;
+         void ToANSI(char*& buffer, size_t& length) const;
+         void ToANSI(char* buffer, size_t size) const;
 
-        const std::vector<char> ToAscii() const;
-        const std::vector<char> ToUtf8() const;
+         const std::vector<char> ToAscii() const;
+         const std::vector<char> ToUtf8() const;
 
-		int ToInt32() const;
-		int ToInt32FromHex() const;
-		float ToFloat() const;
-		double ToDouble() const;
+         int ToInt32() const;
+         int ToInt32FromHex() const;
+         float ToFloat() const;
+         double ToDouble() const;
 
-		static const string Convert(int32_t value, int radix = 10);
-		static const string Convert(uint32_t value, int radix = 10);
-		static const string Convert(int64_t value, int radix = 10);
-		static const string Convert(uint64_t value, int radix = 10);
-		static const string Convert(int16_t value, int radix = 10);
-		static const string Convert(uint16_t value, int radix = 10);
-		static const string Convert(int8_t value, int radix = 10);
-		static const string Convert(uint8_t value, int radix = 10);
-		static const string Convert(signed char value);
-		static const string Convert(unsigned char value);
-		static const string Convert(float value, int precision = 5);
-		static const string Convert(double value, int precision = 5);
-		static const string Convert(long double value, int precision = 5);
-		static const string Convert(wchar_t value);
-		static const string Convert(bool value);
-		static const string Convert(void* value);
+         static const string Convert(int32_t value, int radix = 10);
+         static const string Convert(uint32_t value, int radix = 10);
+         static const string Convert(int64_t value, int radix = 10);
+         static const string Convert(uint64_t value, int radix = 10);
+         static const string Convert(int16_t value, int radix = 10);
+         static const string Convert(uint16_t value, int radix = 10);
+         static const string Convert(int8_t value, int radix = 10);
+         static const string Convert(uint8_t value, int radix = 10);
+         static const string Convert(signed char value);
+         static const string Convert(unsigned char value);
+         static const string Convert(float value, int precision = 5);
+         static const string Convert(double value, int precision = 5);
+         static const string Convert(long double value, int precision = 5);
+         static const string Convert(wchar_t value);
+         static const string Convert(bool value);
+         static const string Convert(void* value);
 
-        static const string Format(const char* fmt, ...);
+         static const string Format(const char* fmt, ...);
 
-		void* operator new (size_t size);
-		void operator delete (void* pointer, size_t size);
+         void* operator new (size_t size);
+         void operator delete (void* pointer, size_t size);
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+         bool Save(std::ostream& stream) const;
+         bool Load(std::istream& stream);
 
-		iterator begin();
-		const_iterator begin() const;
-		iterator end();
-		const_iterator end() const;
+         iterator begin();
+         const_iterator begin() const;
+         iterator end();
+         const_iterator end() const;
 
-        string& arg(int8_t value) { return *this; }
-        string& arg(uint8_t value) { return *this; }
-        string& arg(int16_t value) { return *this; }
-        string& arg(uint16_t value) { return *this; }
-        string& arg(int32_t value) { return *this; }
-        string& arg(uint32_t value) { return *this; }
-        string& arg(int64_t value) { return *this; }
-        string& arg(uint64_t value) { return *this; }
-        string& arg(float value) { return *this; }
-        string& arg(double value) { return *this; }
-        string& arg(const string& value) { return *this; }
-        string& arg(bool value) { return *this; }
-        bool EndWith(const string& value) const { return false; }
-        bool StartWith(const string& value) const { return false; }
+         string& arg(int8_t value) { return *this; }
+         string& arg(uint8_t value) { return *this; }
+         string& arg(int16_t value) { return *this; }
+         string& arg(uint16_t value) { return *this; }
+         string& arg(int32_t value) { return *this; }
+         string& arg(uint32_t value) { return *this; }
+         string& arg(int64_t value) { return *this; }
+         string& arg(uint64_t value) { return *this; }
+         string& arg(float value) { return *this; }
+         string& arg(double value) { return *this; }
+         string& arg(const string& value) { return *this; }
+         string& arg(bool value) { return *this; }
+         string& arg(const char* value) { return *this; }
+         bool EndWith(const string& value) const { return false; }
+         bool StartWith(const string& value) const { return false; }
 
-        const string AsLower() const { return *this; }
-        string& ToLower() { return *this; }
+         const string AsLower() const { return *this; }
+         string& ToLower() { return *this; }
 
     private:
         //  UTF8
-        std::vector<char> m_buffer;
+         std::vector<char> m_buffer;
 
         friend bool operator == (const string& s1, const string& s2);
         friend  bool operator == (const string& s1, const char* s2);
@@ -143,15 +144,15 @@ namespace System
         friend  const string operator + (const char* s1, const string& s2);
 	};
 
-    PUNK_ENGINE_PUBLIC bool operator == (const string& s1, const string& s2);
-    PUNK_ENGINE_PUBLIC bool operator == (const string& s1, const char* s2);
-    PUNK_ENGINE_PUBLIC bool operator != (const string& s1, const string& s2);
-    PUNK_ENGINE_PUBLIC bool operator != (const string& s1, const char* s2);
-    PUNK_ENGINE_PUBLIC bool operator < (const string& s1, const string& s2);
-    PUNK_ENGINE_PUBLIC bool operator < (const string& s1, const char* s2);
-    PUNK_ENGINE_PUBLIC const string operator + (const string& s1, const string& s2);
-    PUNK_ENGINE_PUBLIC const string operator + (const string& s1, const char* s2);
-    PUNK_ENGINE_PUBLIC const string operator + (const char* s1, const string& s2);
+     bool operator == (const string& s1, const string& s2);
+     bool operator == (const string& s1, const char* s2);
+     bool operator != (const string& s1, const string& s2);
+     bool operator != (const string& s1, const char* s2);
+     bool operator < (const string& s1, const string& s2);
+     bool operator < (const string& s1, const char* s2);
+     const string operator + (const string& s1, const string& s2);
+     const string operator + (const string& s1, const char* s2);
+     const string operator + (const char* s1, const string& s2);
 
 }
 

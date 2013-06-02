@@ -10,7 +10,7 @@ namespace System
 	/*
 	*	Used to measure small pieces of time
 	*/
-	class PUNK_ENGINE_PUBLIC Profiler
+	class PUNK_ENGINE_API Profiler
 	{
 		//	High definition timer
 		Timer m_timer;		

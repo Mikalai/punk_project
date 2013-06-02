@@ -7,7 +7,7 @@ namespace System
 {
 	class ThreadPool;
 
-	class PUNK_ENGINE_PUBLIC ThreadJob
+	class PUNK_ENGINE_API ThreadJob
 	{
 	public:	
 		ThreadJob();	

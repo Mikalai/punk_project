@@ -1,39 +1,55 @@
-#ifndef _H_PUNK_OPENGL_TRIANGLE_FAN
-#define _H_PUNK_OPENGL_TRIANGLE_FAN
+#ifndef _H_PUNK_TRIANGLE_FAN
+#define _H_PUNK_TRIANGLE_FAN
 
-#include <vector>
-#ifdef USE_OPENGL
-#include "../../opengl/renderable/module.h"
-#else
-#endif
+#include "../renderable.h"
+#include "../vertex.h"
+
+#define CreateTriangleFansInterface(VertexType)\
+template<>\
+class PUNK_ENGINE_API TriangleFan<VertexType> : public Renderable {\
+public:\
+    TriangleFan<VertexType>(VideoDriver* driver);\
+    virtual ~TriangleFan<VertexType>();\
+    void Cook(const std::vector<VertexType>& value);\
+    virtual void Bind(int64_t) override;\
+    virtual void Unbind() override;\
+    virtual void Render() override;\
+private:\
+    Renderable* impl;\
+}
 
 namespace GPU
 {
-#ifdef USE_OPENGL
-	template<typename VertexType>
-	using TriangleFanBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLE_FAN, VertexType>;
-#else
-#endif	//	USE_OPENGL
+    class VideoDriver;
+    template<typename VertexType> class TriangleFan;
 
-	template<typename VertexType>
-	class PUNK_ENGINE_PUBLIC TriangleFan: public TriangleFanBase<VertexType>
-	{
-		using Base = TriangleFanBase<VertexType>;
-	public:
+#define VERTEX_1 Vertex<VertexComponent::Position>
+    CreateTriangleFansInterface(VERTEX_1);
+#undef VERTEX_1
 
-		TriangleFan(VideoDriver* driver) : Base(driver) {}
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Texture0, VertexComponent::Flag, VertexComponent::Color>
+    CreateTriangleFansInterface(VERTEX_1);
+#undef VERTEX_1
 
-		void Cook(const std::vector<Vertex<VertexType>>& value)
-		{
-			Base::Clear();
-			std::vector<unsigned> ib(value.size());
-			for (unsigned i = 0; i < ib.size(); ++i)
-				ib[i] = i;
-			Base::SetVertexBuffer(value);
-			Base::SetIndexBuffer(ib);
-			Base::Cook();
-		}
-	};
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Color>
+    CreateTriangleFansInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Texture0>
+    CreateTriangleFansInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Color, VertexComponent::Texture0>
+    CreateTriangleFansInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Normal>
+    CreateTriangleFansInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0>
+    CreateTriangleFansInterface(VERTEX_1);
+#undef VERTEX_1
 }
 
-#endif	//	_H_PUNK_OPENGL_TRIANGLE_FAN
+#endif	//	_H_PUNK_TRIANGLE_FAN

@@ -15,7 +15,7 @@ namespace Math
 {    
     class Line3D;
 
-    class PUNK_ENGINE_PUBLIC Plane
+    class PUNK_ENGINE_API Plane
     {        
     public:
 

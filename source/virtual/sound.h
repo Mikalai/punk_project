@@ -10,7 +10,7 @@
 
 namespace Utility
 {
-	class PUNK_ENGINE_PUBLIC Sound
+	class PUNK_ENGINE_API Sound
 	{
 	public:
 		PROPERTY(System::string, Name, m_name);

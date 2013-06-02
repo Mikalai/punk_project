@@ -5,7 +5,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC KeyDownEvent : public Event, public Poolable<KeyDownEvent>
+	class PUNK_ENGINE_API KeyDownEvent : public Event, public Poolable<KeyDownEvent>
     {        
         KeyDownEvent(const KeyDownEvent&);
     public:        

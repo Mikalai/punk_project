@@ -1,34 +1,35 @@
 #ifndef _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 #define _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 
-#ifdef USE_OPENGL
-#include "../../opengl/renderable/module.h"
-#else
-#endif	//	USE_OPENGL
+#include "../renderable.h"
 
 namespace Virtual { class StaticGeometry; }
 
 namespace GPU
 {
-#ifdef USE_OPENGL
-	using StaticMeshBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,
-	Vertex<VertexComponent::Position,
-	VertexComponent::Normal,
-	VertexComponent::Tangent,
-	VertexComponent::Bitangent,
-	VertexComponent::Texture0>>;
-#else
-#endif
+    class VideoDriver;
 
-	class PUNK_ENGINE_PUBLIC StaticMesh : public StaticMeshBase
+    class PUNK_ENGINE_API StaticMesh : public Renderable
 	{
-		using Base = StaticMeshBase;
-
 	public:
 
 		StaticMesh(VideoDriver* driver);
+        virtual ~StaticMesh();
+        virtual void Bind(int64_t value) override;
+        virtual void Unbind() override;
+        virtual void Render() override;
+        bool Cook(Virtual::StaticGeometry* desc);
+        bool HasData();
+        Math::BoundingBox& GetBoundingBox();
+        const Math::BoundingBox& GetBoundingBox() const;
+        Math::BoundingSphere& GetBoundingSphere();
+        const Math::BoundingSphere& GetBoundingSphere() const;
+    private:
+        StaticMesh(const StaticMesh&) = delete;
+        StaticMesh& operator = (const StaticMesh&) = delete;
 
-		bool Cook(Virtual::StaticGeometry* desc);
+        class StaticMeshImpl;
+        StaticMeshImpl* impl;
 	};
 }
 

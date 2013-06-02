@@ -15,7 +15,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC ThreadMutex
+	class PUNK_ENGINE_API ThreadMutex
 	{
 	public:
 		

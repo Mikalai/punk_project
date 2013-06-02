@@ -16,7 +16,6 @@
 
 #include "../../config.h"
 #include "../../system/smart_pointers/proxy.h"
-#include "../../system/types.h"
 #include "../../math/vec2.h"
 
 namespace GPU { class Texture2D; }
@@ -46,7 +45,7 @@ namespace Virtual
 		float threshold;
 	};
 
-	class PUNK_ENGINE_PUBLIC TerrainView
+    class PUNK_ENGINE_API TerrainView
 	{
 	public:
 		/**

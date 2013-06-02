@@ -13,7 +13,7 @@ namespace Utility { class CameraDesc; }
 
 namespace Virtual
 {
-	struct PUNK_ENGINE_PUBLIC CameraOptions 
+	struct PUNK_ENGINE_API CameraOptions 
 	{
 		float m_near;
 		float m_far;
@@ -28,7 +28,7 @@ namespace Virtual
 		{}
 	};
 
-	class PUNK_ENGINE_PUBLIC Camera : public System::Object
+	class PUNK_ENGINE_API Camera : public System::Object
 	{
 	public:
 		Camera();

@@ -24,19 +24,19 @@ namespace GPU
 	{
 
 #ifdef USE_BUMP_MAPPNG_RC
-		class PUNK_ENGINE_PUBLIC RenderContextBumpMapping final : public RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader> {};
+		class PUNK_ENGINE_API RenderContextBumpMapping final : public RenderContextPolicy<VertexShaderBump, FragmentShaderBump, NoShader> {};
 #endif
 
 #ifdef USE_TERRAIN_RC
-		class PUNK_ENGINE_PUBLIC RenderContextTerrain final : public RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader> {};
+		class PUNK_ENGINE_API RenderContextTerrain final : public RenderContextPolicy<VertexShaderTerrain, FragmentShaderTerrain, NoShader> {};
 #endif
 
 #ifdef USE_GUI_RC
-		class PUNK_ENGINE_PUBLIC RenderContextGUI final : public RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> {};
+		class PUNK_ENGINE_API RenderContextGUI final : public RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> {};
 #endif
 
 #ifdef USE_SOLID_TEXTURE_3D_RC
-		class PUNK_ENGINE_PUBLIC RenderContextSolidTexture3D final
+		class PUNK_ENGINE_API RenderContextSolidTexture3D final
 				: public RenderContextPolicy<
 				ShaderCollection::VertexSolidTextured,
 				ShaderCollection::FragmentSolidTextured,
@@ -44,7 +44,7 @@ namespace GPU
 #endif	//	USE_SOLID_TEXTURE_3D_RC
 
 //#ifdef USE_LIGHT_PER_VERTEX_DIFFUSE
-//		class PUNK_ENGINE_PUBLIC RenderContextPerVertexDiffuseLight final
+//		class PUNK_ENGINE_API RenderContextPerVertexDiffuseLight final
 //				: public RenderContextPolicy<
 //				ShaderCollection::VertexLightPerVertexDiffuse,
 //				ShaderCollection::FragmentLightPerVertexDiffuse,
@@ -52,7 +52,7 @@ namespace GPU
 //#endif	//	USE_LIGHT_PER_VERTEX_DIFFUSE
 
 //#ifdef USE_RC_PVRTDL
-//		class PUNK_ENGINE_PUBLIC RenderContextPerVertexTextureDiffuseLight final
+//		class PUNK_ENGINE_API RenderContextPerVertexTextureDiffuseLight final
 //				: public RenderContextPolicy<
 //				ShaderCollection::VertexLightPerVertexTextureDiffuse,
 //				ShaderCollection::FragmentLightPerVertexTextureDiffuse,
@@ -60,7 +60,7 @@ namespace GPU
 //#endif	//
 
 #ifdef USE_RC_PFRTDL
-		class PUNK_ENGINE_PUBLIC RenderContextPerFragmentTextureDiffuseLight final
+		class PUNK_ENGINE_API RenderContextPerFragmentTextureDiffuseLight final
 				: public RenderContextPolicy<
 				ShaderCollection::VertexLightPerFragmentTextureDiffuse,
 				ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
@@ -68,7 +68,7 @@ namespace GPU
 #endif	//
 
 #ifdef USE_LIGHT_PER_FRAGMENT_DIFFUSE
-		class PUNK_ENGINE_PUBLIC RenderContextPerFragmentDiffuseLight final
+		class PUNK_ENGINE_API RenderContextPerFragmentDiffuseLight final
 				: public RenderContextPolicy<
 				ShaderCollection::VertexLightPerFragmentDiffuse,
 				ShaderCollection::FragmentLightPerFragmentDiffuse,
@@ -76,11 +76,11 @@ namespace GPU
 #endif	//	USE_LIGHT_PER_VERTEX_DIFFUSE
 
 #ifdef USE_SKINNING_RC
-		class PUNK_ENGINE_PUBLIC RenderContextSkinning final : public RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> {};
+		class PUNK_ENGINE_API RenderContextSkinning final : public RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> {};
 #endif
 
 #ifdef USE_PAINTER_RC
-		class PUNK_ENGINE_PUBLIC RenderContextPainter final : public RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> {};
+		class PUNK_ENGINE_API RenderContextPainter final : public RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> {};
 #endif
 
 	}

@@ -9,6 +9,6 @@ namespace System
 
 	string ModelTimeStepEvent::ToString()
 	{
-		return string("Code: %d; Type: MODEL_TIME_STEP; Step: %d", eventCode, elapsed_time_ms);
+        return string("Code: {0}; Type: MODEL_TIME_STEP; Step: {1}").arg(eventCode).arg(elapsed_time_ms);
 	}
 }

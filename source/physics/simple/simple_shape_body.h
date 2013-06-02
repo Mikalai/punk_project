@@ -11,7 +11,7 @@
 //
 //namespace Physics
 //{
-//	class PUNK_ENGINE_PUBLIC BulletShapeBody : public System::Object
+//	class PUNK_ENGINE_API BulletShapeBody : public System::Object
 //	{
 //		btCollisionShape* m_shape;
 //	public:

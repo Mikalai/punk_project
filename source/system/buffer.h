@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC Buffer
+	class PUNK_ENGINE_API Buffer
 	{
         int m_size;
 		unsigned char* m_buffer;		

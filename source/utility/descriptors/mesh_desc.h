@@ -19,7 +19,7 @@ namespace Utility
 	typedef Math::BoundingBox BoundingBox;		
 	typedef std::map<System::string, std::vector<Math::Vector4<Math::vec2>>> TextureMeshes;
 
-	class PUNK_ENGINE_PUBLIC MeshDesc
+	class PUNK_ENGINE_API MeshDesc
 	{		
 	public:
 		Vertices m_vertices;

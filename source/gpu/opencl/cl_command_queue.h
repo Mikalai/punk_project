@@ -10,7 +10,7 @@ namespace GPU
 		class Context;
 		class Device;
 
-		class PUNK_ENGINE_PUBLIC CommandQueue
+		class PUNK_ENGINE_API CommandQueue
 		{
 		public:
 			CommandQueue();

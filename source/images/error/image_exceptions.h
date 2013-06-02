@@ -5,7 +5,7 @@
 
 namespace ImageModule
 {
-	class PUNK_ENGINE_PUBLIC ImageException : public System::PunkException
+	class PUNK_ENGINE_API ImageException : public System::PunkException
 	{
 	public:
 		ImageException() : System::PunkException(L"ImageException") {}

@@ -10,7 +10,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE_PUBLIC ConvexShapeMesh
+	class PUNK_ENGINE_API ConvexShapeMesh
 	{
 	public:
 		typedef std::vector<Math::vec3> PointsCollection;

@@ -9,7 +9,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE_PUBLIC Frustum
+	class PUNK_ENGINE_API Frustum
 	{
 	public:
 
@@ -80,7 +80,7 @@ namespace Math
     /**
       * Creates a clip space from current frustum and point.
       */
-	PUNK_ENGINE_PUBLIC const ClipSpace BuildClipSpaceFromPoint(const Frustum& f, const Math::vec3& p);
+	PUNK_ENGINE_API const ClipSpace BuildClipSpaceFromPoint(const Frustum& f, const Math::vec3& p);
 }
 
 #endif

@@ -28,7 +28,7 @@ namespace Virtual
 		{}
 	};
 
-	class PUNK_ENGINE_PUBLIC TerrainManager
+	class PUNK_ENGINE_API TerrainManager
 	{
 	public:
 		/**

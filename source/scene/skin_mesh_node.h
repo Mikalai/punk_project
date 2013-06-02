@@ -10,7 +10,7 @@ namespace Virtual { class SkinGeometry; }
 namespace Scene
 {
 
-	class PUNK_ENGINE_PUBLIC SkinMeshNode : public GeometryNode
+	class PUNK_ENGINE_API SkinMeshNode : public GeometryNode
 	{
 	public:
 

@@ -1,6 +1,9 @@
 #ifdef _WIN32
 #include <process.h>
+#elif defined __gnu_linux__
+#include <time.h>
 #endif
+
 #include "thread.h"
 
 namespace System
@@ -41,7 +44,7 @@ namespace System
 		return WaitForSingleObject(Handle(), INFINITE) != WAIT_FAILED;
 #elif defined __gnu_linux__
         void* result;
-        return pthread_join(&m_thread, &result) == 0;
+        return pthread_join(*ThreadHandle(), &result) == 0;
 #endif
 	}
 
@@ -73,5 +76,17 @@ namespace System
         Thread result;
         *result.ThreadHandle() = pthread_self();
         return result;
+    }
+
+    void Thread::Sleep(unsigned time)
+    {
+#ifdef _WIN32
+        ::Sleep(time);
+#elif defined __gnu_linux__
+        timespec t, rem;
+        t.tv_sec = time / 1000;
+        t.tv_nsec = (time % 1000) * 1000000;
+        nanosleep(&t, &rem);
+#endif
     }
 }

@@ -7,7 +7,7 @@
 
 namespace Scene
 {
-	class PUNK_ENGINE_PUBLIC GeometryNode : public Node
+	class PUNK_ENGINE_API GeometryNode : public Node
 	{
 	public:
 

@@ -7,7 +7,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC Console
+	class PUNK_ENGINE_API Console
 	{
 	public:
 

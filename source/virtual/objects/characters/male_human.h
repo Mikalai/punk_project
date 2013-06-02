@@ -5,7 +5,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC MaleHuman : public Human
+	class PUNK_ENGINE_API MaleHuman : public Human
 	{
 	public:
 		MaleHuman();

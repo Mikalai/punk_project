@@ -24,7 +24,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC ThreadPool
+	class PUNK_ENGINE_API ThreadPool
 	{		
 		std::queue<ThreadJob*> m_jobs;
 		ThreadPool(const ThreadPool& pool);
@@ -55,8 +55,11 @@ namespace System
 
 		ThreadJob* GetThreadJob();
 
+#ifdef _WIN32
         static unsigned PUNK_STDCALL ThreadFunc(void* data);
-        static unsigned PUNK_STDCALL OwnFun(void* data);
+#elif defined __gnu_linux__
+        static void* ThreadFunc(void* data);
+#endif
 	};
 }
 

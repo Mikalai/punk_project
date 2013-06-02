@@ -2,7 +2,6 @@
 #define _H_PUNK_OPENGL_CONFIGER
 
 //	Common utility stuff
-#include "../common/module.h"
 #include "error/module.h"
 #include "gl/module.h"
 //	Math

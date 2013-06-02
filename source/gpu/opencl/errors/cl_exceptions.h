@@ -8,7 +8,7 @@
 #include "../../../system/errors/module.h"
 
 #define CreateOpenCLException(X) \
-		class PUNK_ENGINE_PUBLIC OpenCL_##X##_Exception : public OpenCLException \
+		class PUNK_ENGINE_API OpenCL_##X##_Exception : public OpenCLException \
 		{ \
 		public: \
 		OpenCL_##X##_Exception() : OpenCLException(System::string(#X)) {} \
@@ -19,7 +19,7 @@ namespace GPU
 {
 	namespace OpenCL
 	{
-		class PUNK_ENGINE_PUBLIC OpenCLException : public System::PunkException
+		class PUNK_ENGINE_API OpenCLException : public System::PunkException
 		{
 		public:
 			OpenCLException() : System::PunkException(L"OpenCLException") {}

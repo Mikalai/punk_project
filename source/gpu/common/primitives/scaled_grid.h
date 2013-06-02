@@ -1,41 +1,31 @@
 #ifndef _H_PUNK_OPENGL_SCALED_GRID
 #define _H_PUNK_OPENGL_SCALED_GRID
 
-#ifdef USE_OPENGL
-#include "../../opengl/renderable/module.h"
-#else
-#endif	//	USE_OPENGL
+#include "../renderable.h"
 
 namespace GPU
 {
-#ifdef USE_OPENGL
-	using ScaledGridObjectBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,
-	Vertex<VertexComponent::Position,
-	VertexComponent::Normal,
-	VertexComponent::Texture0>>;
-#else
-#endif	//	USE_OPENGL
+    class VideoDriver;
 
-	class PUNK_ENGINE_PUBLIC ScaledGridObject : public ScaledGridObjectBase
+    class PUNK_ENGINE_API ScaledGridObject : public Renderable
 	{
-		using Base = ScaledGridObjectBase;
-
 	public:
+        ScaledGridObject(VideoDriver* driver);
+        virtual ~ScaledGridObject();
+        virtual void Bind(int64_t) override;
+        virtual void Unbind() override;
+        virtual void Render() override;
 
-		ScaledGridObject(VideoDriver* driver) : Base(driver) {}
-
-		virtual void Cook(float width, float height, unsigned hor_slices, unsigned vert_slices, int levels);
-
+        void Cook(float width, float height, unsigned hor_slices, unsigned vert_slices, int levels);
 		float GetTotalWidth() const;
 		float GetTotalHeight() const;
 
 	private:
-
 		ScaledGridObject(const ScaledGridObject& quad) = delete;
 		ScaledGridObject& operator = (const ScaledGridObject& quad) = delete;
 
-		float m_total_width;
-		float m_total_height;
+        class ScaledGridObjectImpl;
+        ScaledGridObjectImpl* impl;
 	};
 }
 

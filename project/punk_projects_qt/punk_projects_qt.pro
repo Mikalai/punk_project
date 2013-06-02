@@ -10,7 +10,7 @@ win32 {
     DEFINES += _WIN32
 }
 
-DEFINES += PUNK_ENGINE_PUBLIC_EXPORTS USE_OPENGL #USE_JPEG USE_PNG USE_ZLIB USE_FREETYPE
+DEFINES += PUNK_ENGINE_EXPORTS USE_OPENGL #USE_JPEG USE_PNG USE_ZLIB USE_FREETYPE
 
 contains(DEFINES, USE_OPENGL) {
 #   USE_BUMP_MAPPING_RC
@@ -39,22 +39,24 @@ win32 {
 
 CONFIG += dll
 TEMPLATE = lib
-TARGET = PUNK_ENGINE_PUBLIC
+TARGET = punk_engine
 
-Release:DESTDIR = ./../../bin/release
-Release:OBJECTS_DIR = release/.obj
-Release:MOC_DIR = release/.moc
-Release:RCC_DIR = release/.rcc
-Release:UI_DIR = release/.ui
+release:DESTDIR = ../../bin/release
+release:OBJECTS_DIR = release/.obj
+release:MOC_DIR = release/.moc
+release:RCC_DIR = release/.rcc
+release:UI_DIR = release/.ui
 
-Debug:DESTDIR = ./../../bin/debug
-Debug:OBJECTS_DIR = debug/.obj
-Debug:MOC_DIR = debug/.moc
-Debug:RCC_DIR = debug/.rcc
-Debug:UI_DIR = debug/.ui
+#DESTDIR = ../../bin/debug
 
-Debug:DEFINES += _DEBUG
-Release:DEFINES += _NDEBUG
+debug:DESTDIR = ../../bin/debug
+debug:OBJECTS_DIR = debug/.obj
+debug:MOC_DIR = debug/.moc
+debug:RCC_DIR = debug/.rcc
+debug:UI_DIR = debug/.ui
+
+debug:DEFINES += _DEBUG
+release:DEFINES += _NDEBUG
 
 
 DEPENDPATH += . \
@@ -454,6 +456,7 @@ SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp 
 	    ../../source/gpu/opengl/render_context/rc_pvtdl.cpp \
 	    ../../source/gpu/opengl/render_context/rc_pftdl.cpp \
 	    ../../source/gpu/opengl/gl/gl_blending.cpp \
+            ../../source/gpu/opengl/gl/extensions.cpp \
 	    ../../source/gpu/opengl/render_context/rc_dynamic.cpp \	    
 	    ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_vertex_color.cpp \
 	    ../../source/gpu/opengl/render_context/shaders/shader_type.cpp \
@@ -1078,6 +1081,8 @@ SOURCES += ../../source/main.cpp \
 	../../source/gpu/common/render_pass.cpp \
 	../../source/gpu/common/texture_context.cpp \
 	../../source/gpu/common/primitives/triangles.cpp \
+        ../../source/gpu/common/primitives/triangle_strip.cpp \
+        ../../source/gpu/common/primitives/triangle_fans.cpp \
 	../../source/gpu/common/primitives/static_mesh.cpp \
 	../../source/gpu/common/primitives/sphere_mesh.cpp \
 	../../source/gpu/common/primitives/skin_mesh.cpp \
@@ -1100,7 +1105,7 @@ SOURCES += ../../source/main.cpp \
 
 # Input
 HEADERS += ../../source/config.h \
-           ../../source/PUNK_ENGINE_PUBLIC.h \
+           ../../source/punk_engine.h \
 	   ../../source/ai/navi_mesh.h \
 	   ../../source/ai/navi_triangle.h \
 	   ../../source/application/application.h \
@@ -1359,8 +1364,7 @@ HEADERS += ../../source/config.h \
 	   ../../source/render/v1/ogl_gui_render.h \
 	   ../../source/render/v1/simple_render.h \
 	   ../../source/scene/events/new_instance_appeared_event.h \
-	   ../../source/scene/events/parent_changed_event.h \
-	   ../../source/string/win32/string_win32.h \
+	   ../../source/scene/events/parent_changed_event.h \	   
 	   ../../source/system/aop/aop.h \
 	   ../../source/system/concurrency/atomic.h \
            ../../source/system/concurrency/atomicint.h \

@@ -13,8 +13,8 @@
 namespace System
 {
 #ifdef _DEBUG
-	extern PUNK_ENGINE_PUBLIC void CheckOSError(const System::string& msg);
-	extern PUNK_ENGINE_PUBLIC void CheckOSError(LONG code, const System::string& msg);
+	extern PUNK_ENGINE_API void CheckOSError(const System::string& msg);
+	extern PUNK_ENGINE_API void CheckOSError(LONG code, const System::string& msg);
 #define CHECK_SYS_ERROR(X) CheckOSError(X);
 #define CHECK_SYS_ERROR_CODE(CODE, X) CheckOSError(CODE, X)
 #else

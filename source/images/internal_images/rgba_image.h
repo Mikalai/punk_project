@@ -12,7 +12,7 @@ namespace System
 
 namespace ImageModule
 {
-	class PUNK_ENGINE_PUBLIC RGBAImage : public Image
+	class PUNK_ENGINE_API RGBAImage : public Image
 	{
 	public:
 		RGBAImage();

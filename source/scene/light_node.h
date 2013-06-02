@@ -6,7 +6,7 @@
 
 namespace Scene
 {
-	class PUNK_ENGINE_PUBLIC LightNode : public Node
+	class PUNK_ENGINE_API LightNode : public Node
 	{
 	public:
 

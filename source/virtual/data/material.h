@@ -18,7 +18,7 @@ namespace Utility
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC Material : public System::Object, public System::Aspect<Material*, System::string>
+	class PUNK_ENGINE_API Material : public System::Object, public System::Aspect<Material*, System::string>
 	{
 	public:		
 		/**

@@ -24,7 +24,7 @@
 //
 //namespace OpenGL
 //{
-//	class PUNK_ENGINE_PUBLIC Texture2DManager : public System::ResourceManager2<Texture2D, System::Policy>
+//	class PUNK_ENGINE_API Texture2DManager : public System::ResourceManager2<Texture2D, System::Policy>
 //	{
 //		Texture2DManager(const Texture2DManager&);
 //		Texture2DManager& operator = (const Texture2DManager&);

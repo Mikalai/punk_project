@@ -844,7 +844,7 @@ namespace Math
 	}
 
 
-	class PUNK_ENGINE_PUBLIC mat4 : public Matrix4x4<float>
+	class PUNK_ENGINE_API mat4 : public Matrix4x4<float>
 	{
 	public:
 		mat4() : Matrix4x4<float> () {}

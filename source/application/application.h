@@ -12,7 +12,7 @@
 namespace Punk
 {
 
-	class PUNK_ENGINE_PUBLIC Application : public System::WindowAdapter, public GUI::Adapter
+	class PUNK_ENGINE_API Application : public System::WindowAdapter, public GUI::Adapter
 	{
 	public:
 		Application();

@@ -159,7 +159,7 @@ namespace GPU
 				return r.ToRenderable();
 	}
 
-	GPU::Renderable* PUNK_ENGINE_PUBLIC AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver)
+	GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver)
 	{
 		RenderableBuilder r(driver);
 		r.Begin(PrimitiveType::LINES);

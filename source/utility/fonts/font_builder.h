@@ -11,7 +11,7 @@ namespace System
 
 namespace Utility
 {
-	class PUNK_ENGINE_PUBLIC FontBuilder final
+	class PUNK_ENGINE_API FontBuilder final
 	{
 	public:
 		FontBuilder();

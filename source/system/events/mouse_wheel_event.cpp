@@ -9,8 +9,8 @@ namespace System
 
     string MouseWheelEvent::ToString()
 	{
-		return string("Code: %d; Type: MOUSE_WHEEL; delta: %d; x: %d; y: %d; x_prev: %d; y_prev: %d;",
-							   eventCode, delta, x, y, x_prev, y_prev);
+        return string("Code: {0}; Type: MOUSE_WHEEL; delta: {1}; x: {2}; y: {3}; x_prev: {4}; y_prev: {5};")
+                .arg(eventCode).arg(delta).arg(x).arg(y).arg(x_prev).arg(y_prev);
 	}
 
 }

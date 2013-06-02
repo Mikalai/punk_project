@@ -190,7 +190,7 @@ namespace Math
 
 		const System::string ToString() const
 		{
-			return System::string("[%f, (%f; %f, %f)]", m_scalar, m_vec[0], m_vec[1], m_vec[2]);
+            return System::string("[{0}, ({1}; {2}, {3}})]").arg(m_scalar).arg(m_vec[0]).arg(m_vec[1]).arg(m_vec[2]);
 		}
 
 		Vector3<T> Rotate(const Vector3<T>& v) const
@@ -271,7 +271,7 @@ namespace Math
 	}
 
 
-	class PUNK_ENGINE_PUBLIC quat : public Quaternion<float>
+	class PUNK_ENGINE_API quat : public Quaternion<float>
 	{
 	public:
 		quat() : Quaternion<float>() {}

@@ -10,7 +10,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC Terrain : public System::Object
+	class PUNK_ENGINE_API Terrain : public System::Object
 	{
 	public:
 		Terrain();

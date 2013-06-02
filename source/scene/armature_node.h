@@ -8,7 +8,7 @@ namespace Virtual { class Armature; }
 namespace Scene
 {
 
-	class PUNK_ENGINE_PUBLIC ArmatureNode : public Node
+	class PUNK_ENGINE_API ArmatureNode : public Node
 	{
 
 	public:

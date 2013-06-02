@@ -60,7 +60,7 @@ namespace GPU
 
     int TextSurface::CalculateTextYOffset(const System::string& text)
     {
-        const wchar_t* cur = text.Data();
+        const char* cur = text.Data();
 		int length = m_video_driver->GetFontBuilder()->CalculateLength(cur);
         if (length == 0)
             return 1;
@@ -105,7 +105,7 @@ namespace GPU
         int x = start_x = CalculateTextXOffset(m_text);
         int y = start_y = CalculateTextYOffset(m_text);
 
-        for (const wchar_t* a = m_text.Data(); *a; a++)
+        for (const char* a = m_text.Data(); *a; a++)
         {
             int width;
             int height;

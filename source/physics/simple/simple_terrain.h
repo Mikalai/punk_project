@@ -17,7 +17,7 @@
 //{
 //	class BulletRigidBody;
 //
-//	class PUNK_ENGINE_PUBLIC BulletTerrain
+//	class PUNK_ENGINE_API BulletTerrain
 //	{
 //	public:
 //		BulletTerrain();

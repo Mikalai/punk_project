@@ -8,7 +8,7 @@ namespace System
 {
 	//	Redefinition of assertion function with smart stack tracer
 #ifdef _DEBUG
-	PUNK_ENGINE_PUBLIC int CustomAssertFunction(bool exp, const string&, char* func, int line, char* file);
+	PUNK_ENGINE_API int CustomAssertFunction(bool exp, const string&, char* func, int line, char* file);
 
 #define Assert(exp, description) \
 	{	static bool ignore_other = false;	\

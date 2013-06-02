@@ -18,7 +18,7 @@ namespace System
 {
 	enum class LoggerType { No, Message, Warning, Error };
 
-	struct PUNK_ENGINE_PUBLIC Streamer
+	struct PUNK_ENGINE_API Streamer
 	{
 	private:
         typedef std::basic_ostream<wchar_t, std::char_traits<wchar_t>> _Myt;
@@ -141,13 +141,13 @@ inline std::wostream& operator << (std::wostream& stream, const Tab&)
 //	global staff fro printing messages, warnings and errors to console and to log file
 //
 #ifdef _DEBUG
-extern PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Message> out_message;
-extern PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Warning> out_warning;
-extern PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Error> out_error;
+extern PUNK_ENGINE_API System::Logger<System::LoggerType::Message> out_message;
+extern PUNK_ENGINE_API System::Logger<System::LoggerType::Warning> out_warning;
+extern PUNK_ENGINE_API System::Logger<System::LoggerType::Error> out_error;
 #else
-extern PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Message> out_message;
-extern PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Warning> out_warning;
-extern PUNK_ENGINE_PUBLIC System::Logger<System::LoggerType::Error> out_error;
+extern PUNK_ENGINE_API System::Logger<System::LoggerType::Message> out_message;
+extern PUNK_ENGINE_API System::Logger<System::LoggerType::Warning> out_warning;
+extern PUNK_ENGINE_API System::Logger<System::LoggerType::Error> out_error;
 #endif	//	_DEBUG
 
 #endif	//	_H_PUNK_SYSTEM_LOGGER

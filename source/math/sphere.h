@@ -7,7 +7,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE_PUBLIC Sphere
+	class PUNK_ENGINE_API Sphere
 	{		
 	public:
 		Sphere() : m_center(), m_radius(0) {}

@@ -3,11 +3,11 @@
 
 #include <vector>
 #include "../../../common/module.h"
-#include "../../attribute_configer.h"
 #include "../../../../math/bounding_box.h"
 #include "../../../../math/bounding_shere.h"
 #include "../../buffers/module.h"
 #include "../../driver/module.h"
+#include "../../attribute_configer.h"
 #include "../gl_primitive_type.h"
 
 namespace GPU
@@ -58,12 +58,7 @@ namespace GPU
 			~VertexArrayObject2()
 			{
 				Clear();
-			}
-
-			bool HasData()
-			{
-				return m_index_buffer != nullptr && m_vertex_buffer != nullptr;
-			}
+			}		
 
 			void Bind(int64_t supported_by_context) 
 			{
@@ -287,6 +282,11 @@ namespace GPU
 
 				return true;
 			}
+
+            bool HasData()
+            {
+                return m_index_buffer != nullptr && m_vertex_buffer != nullptr;
+            }
 
 			Math::BoundingBox& GetBoundingBox()
 			{

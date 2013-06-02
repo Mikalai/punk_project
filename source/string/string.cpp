@@ -17,6 +17,7 @@
 #include <ostream>
 #include "../system/logger.h"
 #include "string.h"
+#include <string.h>
 
 namespace System
 {

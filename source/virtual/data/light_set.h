@@ -8,7 +8,7 @@ namespace Virtual
 {
 	class Light;
 
-	class PUNK_ENGINE_PUBLIC LightSet : public System::CompoundObject
+	class PUNK_ENGINE_API LightSet : public System::CompoundObject
 	{
 	public:
 		Light* GetLight(int index);

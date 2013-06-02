@@ -181,12 +181,12 @@ namespace Render
 		if (m->GetCache().m_normal_texture_cache == nullptr)
 			m->GetCache().m_normal_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetNormalMap(), true);
 
-		m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(m->GetCache().m_diffuse_texture_cache));
-		m_frame->SetBumpMap(Cast<GPU::Texture2D*>(m->GetCache().m_normal_texture_cache));
-		m_frame->SetSpecularColor(material->GetSpecularColor());
-		m_frame->SetSpecularMap(Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_specular_texture_cache));
-		m_frame->SetAmbientColor(material->GetAmbient());
-		m_frame->SetSpecularFactor(material->GetSpecularFactor());
+//		m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(m->GetCache().m_diffuse_texture_cache));
+//		m_frame->SetBumpMap(Cast<GPU::Texture2D*>(m->GetCache().m_normal_texture_cache));
+//		m_frame->SetSpecularColor(material->GetSpecularColor());
+//		m_frame->SetSpecularMap(Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_specular_texture_cache));
+//		m_frame->SetAmbientColor(material->GetAmbient());
+//		m_frame->SetSpecularFactor(material->GetSpecularFactor());
 
 		result = ApplyToChildren(node);
 
@@ -282,21 +282,21 @@ namespace Render
 //		static float angle = 0;
 
 		Virtual::TerrainView* view = node->GetTerrainObserver()->GetTerrainView();
-		if (view && view->GetHeightMap()->IsValid())
+        if (view && view->GetHeightMap())
 		{
 			//m_tc = m_tc;
 			//m_frame->SetTextureMatrix(Math::mat4::CreateIdentity());
 			m_frame->SetTextureMatrix(Math::mat4::CreateTranslate(terrain_position.X() / m_grid.GetTotalWidth()
 				, terrain_position.Y() / m_grid.GetTotalHeight(), 0));
-			m_frame->SetHeightMap(view->GetHeightMap());
-			m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
-			m_frame->SetDiffuseMap1(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
-			m_frame->SetBumpMap(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
-			m_frame->EnableWireframe(false);
-			m_frame->EnableDepthTest(true);
-			m_frame->SetLineWidth(1);
-			m_frame->EnableTerrainRendering(true);
-			m_frame->Render(&m_grid);
+//			m_frame->SetHeightMap(view->GetHeightMap());
+//			m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
+//			m_frame->SetDiffuseMap1(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
+//			m_frame->SetBumpMap(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
+//			m_frame->EnableWireframe(false);
+//			m_frame->EnableDepthTest(true);
+//			m_frame->SetLineWidth(1);
+//			m_frame->EnableTerrainRendering(true);
+//			m_frame->Render(&m_grid);
 		}
 		m_frame->PopAllState();
 		return result;

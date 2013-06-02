@@ -8,7 +8,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC StorableData
+	class PUNK_ENGINE_API StorableData
 	{
 		System::string m_storage_name;
 	public:

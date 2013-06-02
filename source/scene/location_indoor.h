@@ -6,7 +6,7 @@
 
 namespace Scene
 {
-	class PUNK_ENGINE_PUBLIC LocationIndoorNode : public TransformNode
+	class PUNK_ENGINE_API LocationIndoorNode : public TransformNode
 	{
 	public:
 			

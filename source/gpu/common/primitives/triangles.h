@@ -1,40 +1,56 @@
-#ifndef _H_PUNK_OPENGL_TRIANGLES
-#define _H_PUNK_OPENGL_TRIANGLES
+#ifndef _H_PUNK_TRIANGLES
+#define _H_PUNK_TRIANGLES
 
-#include <vector>
-#ifdef USE_OPENGL
-#include "../../opengl/renderable/module.h"
-#else
-#endif
+#include "../renderable.h"
+#include "../vertex.h"
+
+#define CreateTrianglesInterface(VertexType)\
+template<>\
+class PUNK_ENGINE_API Triangles<VertexType> : public Renderable {\
+public:\
+    Triangles<VertexType>(VideoDriver* driver);\
+    virtual ~Triangles<VertexType>();\
+    void Cook(const std::vector<VertexType>& value);\
+    virtual void Bind(int64_t) override;\
+    virtual void Unbind() override;\
+    virtual void Render() override;\
+private:\
+    Renderable* impl;\
+}
 
 namespace GPU
 {
-#ifdef USE_OPENGL
-	template<typename VertexType>
-	using TrianglesBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES, VertexType>;
-#else
-#endif
+    class VideoDriver;
 
-	template<typename VertexType>
-	class PUNK_ENGINE_PUBLIC Triangles: public TrianglesBase<VertexType>
-	{
-		using Base = TrianglesBase<VertexType>;
+    template<typename VertexType>class PUNK_ENGINE_API Triangles;
 
-	public:
+#define VERTEX_1 Vertex<VertexComponent::Position>
+    CreateTrianglesInterface(VERTEX_1);
+#undef VERTEX_1
 
-		Triangles(VideoDriver* driver) : Base(driver) {}
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Texture0, VertexComponent::Flag, VertexComponent::Color>
+    CreateTrianglesInterface(VERTEX_1);
+#undef VERTEX_1
 
-		void Cook(const std::vector<VertexType>& value)
-		{
-			Base::Clear();
-			std::vector<unsigned> ib(value.size());
-			for (unsigned i = 0; i < ib.size(); ++i)
-				ib[i] = i;
-			Base::SetVertexBuffer(value);
-			Base::SetIndexBuffer(ib);
-			Base::Cook();
-		}
-	};
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Color>
+    CreateTrianglesInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Texture0>
+    CreateTrianglesInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Color, VertexComponent::Texture0>
+    CreateTrianglesInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Normal>
+    CreateTrianglesInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0>
+    CreateTrianglesInterface(VERTEX_1);
+#undef VERTEX_1
 }
 
 #endif	//	_H_PUNK_OPENGL_TRIANGLES

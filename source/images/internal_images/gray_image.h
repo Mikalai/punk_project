@@ -6,7 +6,7 @@
 
 namespace ImageModule
 {
-	class PUNK_ENGINE_PUBLIC GrayImage : public Image
+	class PUNK_ENGINE_API GrayImage : public Image
 	{
 	public:
 		GrayImage();

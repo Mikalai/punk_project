@@ -5,7 +5,7 @@ namespace GPU
 {
 	AbstractRenderPolicy::AbstractRenderPolicy()
 		: m_was_modified(false)
-		, m_vertex_attributes(VertexComponent::None::Value())
+        , m_vertex_attributes(VertexComponent::NoComponent::Value())
 	{}
 
 	AbstractRenderPolicy::~AbstractRenderPolicy()

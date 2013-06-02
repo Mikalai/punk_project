@@ -6,7 +6,7 @@
 
 namespace GPU
 {
-	class PUNK_ENGINE_PUBLIC FogDescription
+	class PUNK_ENGINE_API FogDescription
 	{
 	public:
 		FogDescription();

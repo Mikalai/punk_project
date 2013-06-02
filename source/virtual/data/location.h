@@ -7,7 +7,7 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE_PUBLIC Location : public TransformNode
+	class PUNK_ENGINE_API Location : public TransformNode
 	{
 	public:
 

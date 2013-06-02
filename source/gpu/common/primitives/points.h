@@ -1,42 +1,57 @@
 #ifndef _H_PUNK_OPENGL_POINTS_VAO
 #define _H_PUNK_OPENGL_POINTS_VAO
 
-#include <vector>
-#ifdef USE_OPENGL
-#include "../../opengl/renderable/module.h"
-#else
-#endif	//	USE_OPENGL
+#include "../renderable.h"
+#include "../vertex.h"
+
+#define CreatePointInterface(VertexType) \
+template<>\
+class PUNK_ENGINE_API Points<VertexType> : public Renderable {\
+public:\
+    Points<VertexType>(VideoDriver* driver);\
+    virtual ~Points<VertexType>();\
+    void Cook(const std::vector<VertexType>& value);\
+    virtual void Bind(int64_t) override;\
+    virtual void Unbind() override;\
+    virtual void Render() override;\
+private:\
+    Renderable* impl;\
+}
 
 namespace GPU
 {
-#ifdef USE_OPENGL
-	template<typename VertexType>
-	using PointsBase = OpenGL::VertexArrayObject2<PrimitiveType::POINTS, VertexType>;
-#else
-#endif
+    class VideoDriver;
 
-	template<typename VertexType>
-	class PUNK_ENGINE_PUBLIC Points : public PointsBase<VertexType>
-	{
-		using Base = PointsBase<VertexType>;
+    template<typename VertexType> class Points;
 
-	public:
+#define VERTEX_1 Vertex<VertexComponent::Position>
+    CreatePointInterface(VERTEX_1);
+#undef VERTEX_1
 
-		Points(VideoDriver* driver) : Base(driver) {}
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Texture0, VertexComponent::Flag, VertexComponent::Color>
+    CreatePointInterface(VERTEX_1);
+#undef VERTEX_1
 
-		void Cook(const std::vector<VertexType>& value)
-		{
-			Base::Clear();
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Color>
+    CreatePointInterface(VERTEX_1);
+#undef VERTEX_1
 
-			std::vector<unsigned> ib(value.size());
-			for (unsigned i = 0; i < ib.size(); ++i)
-				ib[i] = i;
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Texture0>
+    CreatePointInterface(VERTEX_1);
+#undef VERTEX_1
 
-			Base::SetVertexBuffer(value);
-			Base::SetIndexBuffer(ib);
-			Base::Cook();
-		}
-	};
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Color, VertexComponent::Texture0>
+    CreatePointInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Normal>
+    CreatePointInterface(VERTEX_1);
+#undef VERTEX_1
+
+#define VERTEX_1 Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0>
+    CreatePointInterface(VERTEX_1);
+#undef VERTEX_1
+
 }
 
 #endif	//	_H_PUNK_OPENGL_POINTS_VAO

@@ -6,7 +6,7 @@
 
 namespace Scene
 {
-	class PUNK_ENGINE_PUBLIC DefaultVisitor : public AbstractVisitor
+	class PUNK_ENGINE_API DefaultVisitor : public AbstractVisitor
 	{
 	public:
 		DefaultVisitor();

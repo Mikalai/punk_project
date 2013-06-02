@@ -6,7 +6,14 @@
 #define NOMINMAX
 #endif	//	NOMINMAX
 #include <Windows.h>
-#endif	//	_WIN32
+#elif defined __gnu_linux__
+#include <X11/X.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xutil.h>
+#endif
+
+#include <map>
 
 #include "window_adapter.h"
 #include "../../config.h"
@@ -14,7 +21,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE_PUBLIC Window
+    class PUNK_ENGINE_API Window
 	{	
 	public:
 		Window(WindowAdapter* adapter, const WindowDesc& desc = WindowDesc());
@@ -41,6 +48,11 @@ namespace System
 #ifdef _WIN32
         LRESULT CustomDefWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		operator HWND ();
+#elif defined __gnu_linux__
+        Display* GetDisplay();
+        void SetDisplay(Display* display);
+        ::Window GetWindow();
+        void SetWindow(::Window value);
 #endif
 		struct Impl;
 		Impl* impl;		

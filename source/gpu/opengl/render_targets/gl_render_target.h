@@ -8,7 +8,7 @@ namespace GPU
 namespace OpenGL
 {
 
-class PUNK_ENGINE_PUBLIC RenderTarget
+class PUNK_ENGINE_API RenderTarget
 {
 public:
     RenderTarget();

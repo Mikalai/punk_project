@@ -5,7 +5,7 @@
 
 namespace Physics
 {
-	class PUNK_ENGINE_PUBLIC PunkPhysicsException : public System::PunkException
+	class PUNK_ENGINE_API PunkPhysicsException : public System::PunkException
 	{
 	public:
 		PunkPhysicsException() : PunkException(L"PunkPhysicsException") {}

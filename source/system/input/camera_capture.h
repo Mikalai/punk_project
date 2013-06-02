@@ -19,26 +19,26 @@ namespace GPU
 
 namespace System
 {
-	void PUNK_ENGINE_PUBLIC SetCriticalSection(CRITICAL_SECTION* cs);
-	void PUNK_ENGINE_PUBLIC SetTexture(void* buffer, int* len);
+	void PUNK_ENGINE_API SetCriticalSection(CRITICAL_SECTION* cs);
+	void PUNK_ENGINE_API SetTexture(void* buffer, int* len);
 
-	void PUNK_ENGINE_PUBLIC TestCamera();
+	void PUNK_ENGINE_API TestCamera();
 
-	HRESULT PUNK_ENGINE_PUBLIC InitCaptureGraphBuilder(
+	HRESULT PUNK_ENGINE_API InitCaptureGraphBuilder(
 		IGraphBuilder **ppGraph,  // Receives the pointer.
 		ICaptureGraphBuilder2 **ppBuild  // Receives the pointer.
 		);
 
-	HRESULT PUNK_ENGINE_PUBLIC EnumerateDevices(REFGUID category, IEnumMoniker **ppEnum);
-	void PUNK_ENGINE_PUBLIC DisplayDeviceInformation(IEnumMoniker *pEnum);
+	HRESULT PUNK_ENGINE_API EnumerateDevices(REFGUID category, IEnumMoniker **ppEnum);
+	void PUNK_ENGINE_API DisplayDeviceInformation(IEnumMoniker *pEnum);
 
-	//void PUNK_ENGINE_PUBLIC PreviewStart();
-	//void PUNK_ENGINE_PUBLIC PreviewStop();
-	//void PUNK_ENGINE_PUBLIC DisplaySettings();
-	//void PUNK_ENGINE_PUBLIC Update();
-	//void PUNK_ENGINE_PUBLIC CreateCaptureWindow(int width, int height);
-	//void PUNK_ENGINE_PUBLIC CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
-	//void PUNK_ENGINE_PUBLIC EnumerateCaptureDevices();
+	//void PUNK_ENGINE_API PreviewStart();
+	//void PUNK_ENGINE_API PreviewStop();
+	//void PUNK_ENGINE_API DisplaySettings();
+	//void PUNK_ENGINE_API Update();
+	//void PUNK_ENGINE_API CreateCaptureWindow(int width, int height);
+	//void PUNK_ENGINE_API CreateBMPFile(HWND hwnd, LPTSTR pszFile, PBITMAPINFO pbi, HBITMAP hBMP, HDC hDC);
+	//void PUNK_ENGINE_API EnumerateCaptureDevices();
 }
 
 #endif	//	_H_PUNK_SYSTEM_CAMERA_CAPTURE_WIN32

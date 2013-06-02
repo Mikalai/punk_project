@@ -10,8 +10,6 @@
 #include <windows.h>
 #endif
 
-#include "../types.h"
-
 namespace System
 {
 	class WindowResizeEvent;

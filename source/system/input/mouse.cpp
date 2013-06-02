@@ -1,3 +1,4 @@
+#include <memory.h>
 #include "mouse.h"
 #include "../window/module.h"
 

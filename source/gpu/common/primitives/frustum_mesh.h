@@ -10,11 +10,11 @@ namespace GPU
 	class VideoDriver;
 	class Renderable;
 
-	GPU::Renderable* PUNK_ENGINE_PUBLIC AsRenderable(const Math::Frustum& value, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_PUBLIC AsRenderable(const Math::ClipSpace& value, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_PUBLIC AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_PUBLIC AsRenderable(const Math::vec3* value, size_t count, VideoDriver* driver);
-	GPU::Renderable* PUNK_ENGINE_PUBLIC AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver);
+	GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Frustum& value, VideoDriver* driver);
+    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::ClipSpace& value, VideoDriver* driver);
+    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver);
+    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::vec3* value, size_t count, VideoDriver* driver);
+	GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver);
 }
 
 #endif	//	_H_PUNK_FRUSTUM_MESH

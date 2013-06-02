@@ -9,7 +9,7 @@ namespace Virtual
 {
 	class TerrainCell;
 
-	class PUNK_ENGINE_PUBLIC TerrainProcessor : public System::AbstractDataProcessor
+	class PUNK_ENGINE_API TerrainProcessor : public System::AbstractDataProcessor
 	{
 	public:
 

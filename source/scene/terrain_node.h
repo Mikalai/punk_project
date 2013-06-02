@@ -8,7 +8,7 @@ namespace Virtual { class TerrainObserver; }
 
 namespace Scene
 {
-	class PUNK_ENGINE_PUBLIC TerrainNode : public Node
+	class PUNK_ENGINE_API TerrainNode : public Node
 	{
 	public:
 

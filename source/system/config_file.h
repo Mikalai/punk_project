@@ -6,7 +6,7 @@
 
 //namespace System
 //{
-//	class PUNK_ENGINE_PUBLIC ConfigFile
+//	class PUNK_ENGINE_API ConfigFile
 //	{
 //		ConfigFile(const ConfigFile&);
 //		ConfigFile& operator = (const ConfigFile&);

@@ -5,7 +5,7 @@
 
 namespace Physics
 {
-	struct PUNK_ENGINE_PUBLIC Config
+	struct PUNK_ENGINE_API Config
 	{
 		Config();
 	};

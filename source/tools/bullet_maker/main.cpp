@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "../PUNK_ENGINE_PUBLIC/system/string.h"
-#include "../PUNK_ENGINE_PUBLIC/system/system.h"
-#include "../PUNK_ENGINE_PUBLIC/math/math.h"
-#include "../PUNK_ENGINE_PUBLIC/images/images.h"
-#include "../PUNK_ENGINE_PUBLIC/utility/utility.h"
-#include "../PUNK_ENGINE_PUBLIC/system/driver/video/driver.h"
-#include "../PUNK_ENGINE_PUBLIC/gui/gui.h"
+#include "../PUNK_ENGINE_API/system/string.h"
+#include "../PUNK_ENGINE_API/system/system.h"
+#include "../PUNK_ENGINE_API/math/math.h"
+#include "../PUNK_ENGINE_API/images/images.h"
+#include "../PUNK_ENGINE_API/utility/utility.h"
+#include "../PUNK_ENGINE_API/system/driver/video/driver.h"
+#include "../PUNK_ENGINE_API/gui/gui.h"
 
 class Viewer
 {
