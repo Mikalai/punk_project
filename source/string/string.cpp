@@ -4,6 +4,8 @@
 
 #ifdef _WIN32
 #include <Windows.h>
+#elif defined __gnu_linux__
+#include "wchar.h"
 #endif
 
 #include <vector>
@@ -84,12 +86,12 @@ namespace System
 	}
 
     void string::ToANSI(char*& buffer, size_t& size) const
-	{
-        size = m_buffer.size()+1;
-		buffer = new char[size];
-		memset(buffer, 0, sizeof(char)*size);
+	{        
 #ifdef _WIN32
-        WideCharToMultiByte(CP_ACP, 0, m_buffer, m_buffer.size(), buffer, size, 0, 0);
+        size = WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), 0, 0, 0, 0);
+        buffer = new char[size];
+        memset(buffer, 0, sizeof(char)*size);
+        WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), buffer, size, 0, 0);
 #elif defined __linux__
         size_t in_size = (m_buffer.size() + 1) * sizeof(char);
         size_t out_size = size;
@@ -103,7 +105,7 @@ namespace System
 	{
 #ifdef _WIN32
 		memset(buffer, 0, sizeof(char)*size);
-        WideCharToMultiByte(CP_ACP, 0, m_buffer, m_buffer.size(), buffer, size, 0, 0);
+        WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), buffer, size, 0, 0);
 #elif defined __linux__
         size_t in_size = (m_buffer.size() + 1) * sizeof(char);
         size_t out_size = size;
@@ -115,6 +117,11 @@ namespace System
 
     const std::vector<char> string::ToAscii() const
     {
+#ifdef _WIN32
+        int size = WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), 0, 0, 0, 0);
+        std::vector<char> buffer(size);
+        WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), &buffer[0], size, 0, 0);
+#elif defined __gnu_linux__
         std::vector<char> result(m_buffer.size()*sizeof(char));
         size_t in_size = (m_buffer.size() + 1) * sizeof(char);
         size_t out_size = result.size();
@@ -124,10 +131,16 @@ namespace System
         iconv(handle, in, &in_size, out, &out_size);
         iconv_close(handle);
         return result;
+#endif
     }
 
     const std::vector<char> string::ToUtf8() const
     {
+#ifdef _WIN32
+        int size = WideCharToMultiByte(CP_UTF8, 0, &m_buffer[0], m_buffer.size(), 0, 0, 0, 0);
+        std::vector<char> buffer(size);
+        WideCharToMultiByte(CP_UTF8, 0, &m_buffer[0], m_buffer.size(), &buffer[0], size, 0, 0);
+#elif defined __gnu_linux__
         std::vector<char> result(m_buffer.size()*sizeof(char));
         size_t in_size = (m_buffer.size() + 1) * sizeof(char);
         size_t out_size = result.size();
@@ -137,6 +150,7 @@ namespace System
         iconv(handle, in, &in_size, out, &out_size);
         iconv_close(handle);
         return result;
+#endif
     }
 
     string& string::operator+= (const char* s)
@@ -191,14 +205,13 @@ namespace System
         return m_buffer.size();
 	}
 
-    char string::operator[] (int i) const
+    wchar_t string::operator[] (int i) const
 	{
         return m_buffer[i];
 	}
 
-    char& string::operator [] (int i)
+    wchar_t& string::operator [] (int i)
 	{
-
         return m_buffer[i];
 	}
 
@@ -216,6 +229,16 @@ namespace System
 	string::string()
 	{
 	}
+
+    string::string(const wchar_t *s)
+    {
+        m_buffer.insert(m_buffer.end(), s, s + wcslen(s));
+    }
+
+    string::string(const wchar_t *s, size_t length)
+    {
+        m_buffer.insert(m_buffer.end(), s, s+length);
+    }
 
     string::string(size_t length)
 	{		
@@ -247,18 +270,24 @@ namespace System
 
     const char* string::Data() const
 	{
-        return &m_buffer[0];
+        return (const char*)&m_buffer[0];
 	}
 
 	int string::ToInt32() const
 	{
-        return atoi(&m_buffer[0]);
+#ifdef _WIN32
+        return _wtoi(&m_buffer[0]);
+#elif defined __gnu_linux__
+        return (int)wcstol(nullptr, nullptr, 10);
+#endif
 	}
 
 	int string::ToInt32FromHex() const
 	{
-        char allowed_symbols[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'x', 'X' };
-        int allowd_symbols_count = sizeof(allowed_symbols) / sizeof(char);
+        char allowed_symbols[] = {L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7',
+                                  L'8', L'9', L'A', L'a', L'B', L'b', L'C', L'c',
+                                  L'D', L'd', L'E', L'e', L'F', L'f', L'x', L'X' };
+        int allowd_symbols_count = std::extent<decltype(allowed_symbols)>::value;
         for (int i = 0; i < m_buffer.size(); i++)
 		{
 			bool ok = false;
@@ -273,9 +302,9 @@ namespace System
 			if (!ok)
 				return 0;
 		}
-        const char *end = &m_buffer[0];
-        const char *start = &m_buffer[0] + m_buffer.size()-1;
-        if (end[0] == '0' && (end[1] == 'x' || end[1] == 'X'))
+        const auto *end = &m_buffer[0];
+        const auto *start = &m_buffer[0] + m_buffer.size()-1;
+        if (end[0] == L'0' && (end[1] == L'x' || end[1] == L'X'))
 			end += 2;
 		int res = 0;
 
@@ -319,12 +348,20 @@ namespace System
 
 	float string::ToFloat() const
 	{
-        return (float)atof(&m_buffer[0]);
+#ifdef _WIN32
+        return (float)_wtof(&m_buffer[0]);
+#elif defined __gnu_linux__
+        wcstof(&m_buffer[0], nullptr);
+#endif
 	}
 
 	double string::ToDouble() const
 	{
-        return atof(&m_buffer[0]);
+#ifdef _WIN32
+        return _wtof(&m_buffer[0]);
+#elif defined __gnu_linux__
+        return wcstod(&m_buffer[0], nullptr);
+#endif
 	}
 
 	const string string::Convert(int32_t value, int radix)
@@ -540,7 +577,8 @@ namespace System
 
     const std::string string::ToStdString() const
     {
-        return std::string(&m_buffer[0], m_buffer.size());
+        std::vector<char> buf = ToAscii();
+        return std::string(&buf[0], buf.size());
     }
 
     const std::wstring string::ToStdWString() const

@@ -30,15 +30,15 @@ namespace System
 		wchar_t buf[2048];
 		GetCurrentDirectory(2048, buf);
 		m_prev_folder_name = buf;
-		if (SetCurrentDirectory(name.Data()) == TRUE)
+        if (SetCurrentDirectory(name.ToStdWString().c_str()) == TRUE)
 		{
 			return true;
 		}
 
 		//	try to create
-		if (CreateDirectory(name.Data(), 0) != 0)
+        if (CreateDirectory(name.ToStdWString().c_str(), 0) != 0)
 		{
-			if (SetCurrentDirectory(name.Data()) == TRUE)
+            if (SetCurrentDirectory(name.ToStdWString().c_str()) == TRUE)
 			{
 				return true;
 			}
@@ -72,7 +72,7 @@ namespace System
 	void Folder::Close()
 	{
 #ifdef _WIN32
-		SetCurrentDirectory(m_prev_folder_name.Data());
+        SetCurrentDirectory(m_prev_folder_name.ToStdWString().c_str());
 #endif	//	_WIN32
 	}
 
@@ -110,7 +110,7 @@ namespace System
 	void Folder::DeleteFile(const System::string& path)
 	{
 #ifdef _WIN32
-		::DeleteFile(path.Data());
+        ::DeleteFile(path.ToStdWString().c_str());
 #endif	//	_WIN32
 
 	}
@@ -123,7 +123,7 @@ namespace System
 		WIN32_FIND_DATA dir;
 		wchar_t dirName[256];
 		GetCurrentDirectory(256, dirName);
-		HANDLE file = FindFirstFile(name.Data(), &dir);
+        HANDLE file = FindFirstFile(name.ToStdWString().c_str(), &dir);
 
 		if (file != INVALID_HANDLE_VALUE)
 		{
@@ -167,7 +167,7 @@ namespace System
 	void Folder::SetCurrentFolder(const string& value)
 	{
 #ifdef _WIN32
-		SetCurrentDirectory(value.Data());
+        SetCurrentDirectory(value.ToStdWString().c_str());
 #elif defined __gnu_linux__
         chdir(value.Data());
 #endif

@@ -40,6 +40,9 @@ namespace System
         Streamer& operator << (uint64_t v);
 		Streamer& operator << (float v);
 		Streamer& operator << (double v);
+#ifdef _WIN32
+        Streamer& operator << (long v);
+#endif
         Streamer& operator << (long double v);
         Streamer& operator << (_Myt& (*_Pfn)(_Myt&));
         Streamer& operator << (_Myios& (*_Pfn)(_Myios&));

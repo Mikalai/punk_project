@@ -16,7 +16,7 @@ Description: Contains declarations of OpenGL extension functions
 #define NOMINMAX
 #endif
 #include <windows.h>
-#include "../wglext.h"
+#include "wglext.h"
 #elif defined __gnu_linux__
 #include <X11/X.h>
 #include <X11/Xlib.h>
@@ -379,10 +379,6 @@ namespace GPU
 
 		extern PFNGLTEXTURESTORAGE1DEXTPROC glTextureStorage1DEXT;
 		extern PFNGLTEXTURESTORAGE2DEXTPROC glTextureStorage2DEXT;
-
-        //  windows specific
-        extern PUNK_ENGINE_LOCAL void InitExtensions(void* (*GetGPUProcAddres)(const char*));
-        //extern PUNK_ENGINE_LOCAL bool IsSupported(const char* name, VideoDriver* driver);
 	}
 }
 

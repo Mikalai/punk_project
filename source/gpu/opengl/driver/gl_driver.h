@@ -13,7 +13,7 @@
 
 namespace GPU
 {
-	struct VideoDriverImpl
+    struct PUNK_ENGINE_LOCAL VideoDriverImpl
 	{
 		//	video driver interface
         void SetFontBuilder(Utility::FontBuilder* value);
@@ -28,7 +28,12 @@ namespace GPU
 		void SetClearColor(const Math::vec4& color);
 		void SetClearDepth(float value);
 		void Clear(bool color, bool depth, bool stencil);
-        const Config& GetConfig() const;
+        const Config& GetConfig() const;        
+        bool IsSupported(const char* extension);
+        void InitExtensions();
+#ifdef __gnu_linux__
+        void InitGlxFunctions();
+#endif
 
 		//	constructoion part
 		VideoDriverImpl(VideoDriver* driver);

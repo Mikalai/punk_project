@@ -1,5 +1,6 @@
 
 #include "timer.h"
+#include <stdint.h>
 
 #ifdef _WIN32
 #ifndef NOMINMAX
@@ -54,7 +55,7 @@ namespace System
         uint64_t GetFrequency() const
         {
 #ifdef _WIN32
-            LARG_INTEGER li;
+            LARGE_INTEGER li;
             QueryPerformanceFrequency(&li);
             return li.QuadPart;
 #elif defined __gnu_linux__

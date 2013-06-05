@@ -338,6 +338,7 @@ namespace System
 #endif
     }
 
+#ifdef __gnu_linux__
     int Window::Impl::DecodeKey(KeySym keysym, int& charKey, bool press)
     {
         int key;
@@ -758,6 +759,7 @@ namespace System
             }
         }
     }
+#endif
 
     int Window::Impl::Loop()
     {
@@ -1023,7 +1025,7 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
     void Window::Impl::SetTitle(const string& text)
     {
 #ifdef _WIN32
-        SetWindowText(m_hwindow, text.Data());
+        SetWindowText(m_hwindow, text.ToStdWString().c_str());
 #elif defined __gnu_linux__
 #endif
     }
@@ -1262,7 +1264,7 @@ throw PunkInvalidArgumentException(L"Can't get window adapter interface");*/
                 event->shiftButton = (wParam & MK_SHIFT) != 0;
                 event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
-                Mouse::Instance()->Setm_buttonstate(Mouse::MIDDLE_BUTTON, false);
+                Mouse::Instance()->SetButtonState(Mouse::MIDDLE_BUTTON, false);
                 adapter->WndOnMouseMiddleButtonUpEvent(event);
             }
                 break;
@@ -1282,7 +1284,7 @@ throw PunkInvalidArgumentException(L"Can't get window adapter interface");*/
                 event->shiftButton = (wParam & MK_SHIFT) != 0;
                 event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
-                Mouse::Instance()->Setm_buttonstate(Mouse::MIDDLE_BUTTON, true);
+                Mouse::Instance()->SetButtonState(Mouse::MIDDLE_BUTTON, true);
                 adapter->WndOnMouseMiddleButtonDownEvent(event);
             }
                 break;
@@ -1302,7 +1304,7 @@ throw PunkInvalidArgumentException(L"Can't get window adapter interface");*/
                 event->shiftButton = (wParam & MK_SHIFT) != 0;
                 event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
-                Mouse::Instance()->Setm_buttonstate(Mouse::RIGHT_BUTTON, false);
+                Mouse::Instance()->SetButtonState(Mouse::RIGHT_BUTTON, false);
                 adapter->WndOnMouseRightButtonUpEvent(event);
             }
                 break;
@@ -1322,7 +1324,7 @@ throw PunkInvalidArgumentException(L"Can't get window adapter interface");*/
                 event->shiftButton = (wParam & MK_SHIFT) != 0;
                 event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
-                Mouse::Instance()->Setm_buttonstate(Mouse::RIGHT_BUTTON, true);
+                Mouse::Instance()->SetButtonState(Mouse::RIGHT_BUTTON, true);
                 adapter->WndOnMouseRightButtonDownEvent(event);
             }
                 break;
@@ -1342,7 +1344,7 @@ throw PunkInvalidArgumentException(L"Can't get window adapter interface");*/
                 event->shiftButton = (wParam & MK_SHIFT) != 0;
                 event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
-                Mouse::Instance()->Setm_buttonstate(Mouse::LEFT_BUTTON, false);
+                Mouse::Instance()->SetButtonState(Mouse::LEFT_BUTTON, false);
                 adapter->WndOnMouseLeftButtonUpEvent(event);
             }
                 break;
@@ -1362,7 +1364,7 @@ throw PunkInvalidArgumentException(L"Can't get window adapter interface");*/
                 event->shiftButton = (wParam & MK_SHIFT) != 0;
                 event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
-                Mouse::Instance()->Setm_buttonstate(Mouse::LEFT_BUTTON, true);
+                Mouse::Instance()->SetButtonState(Mouse::LEFT_BUTTON, true);
                 adapter->WndOnMouseLeftButtonDownEvent(event);
             }
                 break;

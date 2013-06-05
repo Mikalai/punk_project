@@ -85,6 +85,16 @@ namespace System
 			return *this;
 		}
 
+#ifdef _WIN32
+        Streamer& Streamer::operator << (long v)
+        {
+            std::cout << v;
+            if (m_stream.is_open())
+                m_stream << v;
+            return *this;
+        }
+#endif
+
 		Streamer& Streamer::operator << (short v)
 		{
 			std::cout << v;

@@ -73,9 +73,15 @@ namespace System
 
     Thread Thread::GetOwnThread()
     {
+#ifdef _WIN32
+        Thread result;
+        result.Handle() = GetCurrentThread();
+        return result;
+#elif defined __gnu_linux__
         Thread result;
         *result.ThreadHandle() = pthread_self();
         return result;
+#endif
     }
 
     void Thread::Sleep(unsigned time)

@@ -20,29 +20,37 @@ namespace System
 #ifdef _WIN32
     size_t GetFileSize(HANDLE hFile)
     {
-        return (size_t)::GetFileSize(hFile);
+        DWORD high;
+        DWORD low = ::GetFileSize(hFile, &high);
+#ifdef _WIN64
+        size_t result = (size_t)hight << 32 || low;
+        return result;
+#elif defined _WIN32
+        return low;
+#endif
     }
 
     HANDLE OpenReadFile(const System::string& filename)
     {
-        HANDLE hFile = CreateFile(filename.Data(), GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+        HANDLE hFile = CreateFile(filename.ToStdWString().c_str(), GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
         CHECK_SYS_ERROR(L"Error in binary file, can't load it " + filename);
         return hFile;
     }
 
-    void CloseFile(HANDLE handle)
+    void CloseFile(HANDLE hFile)
     {
         CloseHandle(hFile);
-        CHECK_SYS_ERROR(L"Binary file load failed " + filename);
+        CHECK_SYS_ERROR(string("Binary file close failed"));
     }
 
     void ReadFile(HANDLE hFile, void* ptr, size_t size)
     {
-        ReadFile(hFile, buffer.StartPointer(), size, &read, 0);
-        CHECK_SYS_ERROR(L"Error in binary file, can't read data " + filename);
+        DWORD read;
+        ::ReadFile(hFile, ptr, size, &read, 0);
+        CHECK_SYS_ERROR(string("Error in binary file, can't read data"));
 
         if (read != (DWORD)size)
-            throw OSException(L"Error in binary file, read data less than file contains, possible bad staff happenes " + filename);
+            throw OSException(string("Error in binary file, read data less than file contains, possible bad staff happenes"));
     }
 
 #elif defined __linux__
@@ -94,7 +102,7 @@ namespace System
 	{
 #ifdef _WIN32
 
-		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0,CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        HANDLE hFile = CreateFile(filename.ToStdWString().c_str(), GENERIC_WRITE, 0, 0,CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		CHECK_SYS_ERROR(L"Error in binary file, open file for saving " + filename);
 
 		DWORD read;
@@ -113,10 +121,10 @@ namespace System
 	bool BinaryFile::Append(const string& filename, const Buffer& buffer)
 	{
 #ifdef _WIN32
-		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        HANDLE hFile = CreateFile(filename.ToStdWString().c_str(), GENERIC_WRITE, 0, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		CHECK_SYS_ERROR(L"Error in binary file, can't open file for appending it " + filename);
 
-		DWORD offset = GetFileSize(hFile, 0);
+        DWORD offset = GetFileSize(hFile);
 		SetFilePointer(hFile, offset, 0, FILE_BEGIN);
 
 		DWORD read;
@@ -138,7 +146,7 @@ namespace System
 #ifdef _WIN32
 		DWORD error = GetLastError();
 
-		HANDLE hFile = CreateFile(filename.Data(), GENERIC_WRITE, 0, 0, TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);		
+        HANDLE hFile = CreateFile(filename.ToStdWString().c_str(), GENERIC_WRITE, 0, 0, TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		error = GetLastError();
 		if (error == ERROR_FILE_NOT_FOUND || error == ERROR_SUCCESS)
 			return true;				

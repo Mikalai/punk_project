@@ -23,7 +23,9 @@ namespace System
 	bool Process::Start(string& cmd_line)
 	{
 #ifdef _WIN32
-		return m_is_launched = (TRUE == CreateProcessW(NULL, cmd_line.I_know_what_I_do_just_give_me_the_pointer(), NULL, NULL, TRUE, 0, 0, 0, &m_startup_info.StartupInfo, &m_process_info));
+        wchar_t buf[MAX_PATH];
+        wcscpy_s(buf, MAX_PATH, cmd_line.ToStdWString().c_str());
+        return m_is_launched = (TRUE == CreateProcessW(NULL, buf, NULL, NULL, TRUE, 0, 0, 0, &m_startup_info.StartupInfo, &m_process_info));
 #endif	//	_WIN32
 	}
 

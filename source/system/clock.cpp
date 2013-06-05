@@ -32,7 +32,7 @@ namespace System
 #ifdef __linux__
         m_date = *localtime(&m_time);
 #elif defined _WIN32
-        _localtime64_s(m_date, &m_time);
+        _localtime64_s(&m_date, &m_time);
 #endif
 
 	}

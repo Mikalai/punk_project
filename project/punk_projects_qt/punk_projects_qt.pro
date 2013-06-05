@@ -41,7 +41,6 @@ CONFIG += dll
 TEMPLATE = lib
 TARGET = punk_engine
 
-release:DESTDIR = ../../bin/release
 release:OBJECTS_DIR = release/.obj
 release:MOC_DIR = release/.moc
 release:RCC_DIR = release/.rcc
@@ -49,7 +48,6 @@ release:UI_DIR = release/.ui
 
 #DESTDIR = ../../bin/debug
 
-debug:DESTDIR = ../../bin/debug
 debug:OBJECTS_DIR = debug/.obj
 debug:MOC_DIR = debug/.moc
 debug:RCC_DIR = debug/.rcc
@@ -1534,4 +1532,20 @@ HEADERS += ../../source/config.h \
     ../../source/math/graph/graph_edge.h \
     ../../source/math/graph/module.h
 
+
+release:MYDLLDIR = $IN_PWD/../../../bin/release
+debug:MYDLLDIR = $IN_PWD/../../../bin/debug
+
+DESTDIR = \"$$MYDLLDIR\"
+
+DDIR = \"$$MYDLLDIR/\"
+SDIR = \"$$IN_PWD/\"
+
+win32:file ~= s,/,\\,g
+win32:DDIR ~= s,/,\\,g
+win32:SDIR ~= s,/,\\,g
+
+for(file, HEADERS) {
+    QMAKE_POST_LINK += $$QMAKE_COPY $$quote($${SDIR}$${file}) $$quote($$DDIR) $$escape_expand(\\n\\t)
+}
 

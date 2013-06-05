@@ -17,10 +17,11 @@
 #include "test13.h"
 #include "test14.h"
 
-static const int TestNumber = 14;
+static const int TestNumber = 1;
 
 int main()
 {
+    std::cout << "Hello world" << std::endl;
 	std::cout << "Welcome to the test interface" << std::endl;
 	if (TestNumber == 1)
 	{

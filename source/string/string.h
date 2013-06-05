@@ -32,8 +32,8 @@ namespace System
     class PUNK_ENGINE_API string
 	{
 	public:
-        typedef std::vector<char>::iterator iterator;
-        typedef std::vector<char>::const_iterator const_iterator;
+        typedef std::vector<wchar_t>::iterator iterator;
+        typedef std::vector<wchar_t>::const_iterator const_iterator;
 
 	public:
          string();
@@ -49,8 +49,8 @@ namespace System
          string& operator = (const char* s);
          ~string();
 
-         char operator [] (int i) const;
-         char& operator [] (int i);
+         wchar_t operator [] (int i) const;
+         wchar_t& operator [] (int i);
 
          const std::string ToStdString() const;
          const std::wstring ToStdWString() const;
@@ -115,14 +115,17 @@ namespace System
          string& arg(int16_t value) { return *this; }
          string& arg(uint16_t value) { return *this; }
          string& arg(int32_t value) { return *this; }
-         string& arg(uint32_t value) { return *this; }
-         string& arg(int64_t value) { return *this; }
+         string& arg(uint32_t value) { return *this; }         
          string& arg(uint64_t value) { return *this; }
+         string& arg(int64_t value) { return *this; }
          string& arg(float value) { return *this; }
          string& arg(double value) { return *this; }
          string& arg(const string& value) { return *this; }
          string& arg(bool value) { return *this; }
          string& arg(const char* value) { return *this; }
+#ifdef _WIN32
+         string& arg(long value) { return *this; }         
+#endif
          bool EndWith(const string& value) const { return false; }
          bool StartWith(const string& value) const { return false; }
 
@@ -131,7 +134,7 @@ namespace System
 
     private:
         //  UTF8
-         std::vector<char> m_buffer;
+         std::vector<wchar_t> m_buffer;
 
         friend bool operator == (const string& s1, const string& s2);
         friend  bool operator == (const string& s1, const char* s2);
