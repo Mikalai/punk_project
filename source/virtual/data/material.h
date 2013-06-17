@@ -10,6 +10,7 @@
 #include "../../system/smart_pointers/module.h"
 #include "../../math/vec4.h"
 #include "../../string/string.h"
+#include "../../gpu/common/module.h"
 
 namespace Utility
 {
@@ -27,11 +28,11 @@ namespace Virtual
 		*/
 		struct Cache
 		{
-			System::Object* m_diffuse_texture_cache;
-			System::Object* m_normal_texture_cache;
-			System::Object* m_diffuse_texture_cache_2;
-			System::Object* m_height_texture_cache;
-			System::Object* m_specular_texture_cache;
+            GPU::Texture2D* m_diffuse_texture_cache;
+            GPU::Texture2D* m_normal_texture_cache;
+            GPU::Texture2D* m_diffuse_texture_cache_2;
+            GPU::Texture2D* m_height_texture_cache;
+            GPU::Texture2D* m_specular_texture_cache;
 
 			Cache();
 		};
@@ -41,8 +42,9 @@ namespace Virtual
 		Material();
 		Material(const Utility::MaterialDesc& desc);
 
-		void SetTexture0(const System::string& map);
-		void SetTexture1(const System::string& map);
+		void SetDiffuseMap(const System::string& map);
+		void SetNormalMap(const System::string& map);
+        void SetSpecularMap(const System::string& map);
 		void SetDiffuseColor(const Math::vec4& color);
 		void SetSpecularColor(const Math::vec4& color);
 		void SetSpecularFactor(float value);
@@ -108,10 +110,10 @@ namespace Virtual
 
 		void DropCache();
 		
-		void SetDiffuseTextureCache(System::Object* value) { m_cache.m_diffuse_texture_cache = value; }
-		void SetNormalTextureCache(System::Object* value) { m_cache.m_normal_texture_cache = value; }
-		void SetDiffuseTexture2Cache(System::Object* value) { m_cache.m_diffuse_texture_cache_2 = value; }
-		void SetHeightTextureCache(System::Object* value) { m_cache.m_height_texture_cache = value; }
+        void SetDiffuseTextureCache(GPU::Texture2D* value) { m_cache.m_diffuse_texture_cache = value; }
+        void SetNormalTextureCache(GPU::Texture2D* value) { m_cache.m_normal_texture_cache = value; }
+        void SetDiffuseTexture2Cache(GPU::Texture2D* value) { m_cache.m_diffuse_texture_cache_2 = value; }
+        void SetHeightTextureCache(GPU::Texture2D* value) { m_cache.m_height_texture_cache = value; }
 
 		Cache& GetCache() { return m_cache; }
 		//System::Proxy<System::Object> GetDiffuseTextureCache() { return m_cache.m_diffuse_texture_cache; }
@@ -123,6 +125,7 @@ namespace Virtual
 		
 		System::string m_diffuse_map;
 		System::string m_normal_map;
+        System::string m_specular_map;
 		Math::vec4 m_diffuse_color;
 		Math::vec4 m_specular_color;
 		float m_specular_factor;

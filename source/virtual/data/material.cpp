@@ -64,15 +64,20 @@ namespace Virtual
 	}
 
 
-	void Material::SetTexture0(const System::string& map)
+    void Material::SetDiffuseMap(const System::string& map)
 	{
 		m_diffuse_map = map;
 	}
 
-	void Material::SetTexture1(const System::string& map)
+    void Material::SetNormalMap(const System::string& map)
 	{
 		m_normal_map = map;
 	}
+
+    void Material::SetSpecularMap(const System::string &map)
+    {
+        m_specular_map = map;
+    }
 
 	void Material::SetDiffuseColor(const Math::vec4& color)
 	{
