@@ -10,7 +10,7 @@ win32 {
     DEFINES += _WIN32
 }
 
-DEFINES += PUNK_ENGINE_EXPORTS USE_OPENGL #USE_JPEG USE_PNG USE_ZLIB USE_FREETYPE
+DEFINES += PUNK_ENGINE_EXPORTS USE_OPENGL USE_PNG USE_ZLIB USE_OPENEXR # USE_JPEG  USE_FREETYPE
 
 contains(DEFINES, USE_OPENGL) {
 #   USE_BUMP_MAPPING_RC
@@ -37,6 +37,41 @@ win32 {
     LIBS += -lgdi32 -lopengl32 -lOle32 -lstrmiids -lDbgHelp -lOleAut32 -lvfw32 -lcomdlg32
 }
 
+unix {
+    LIBS += -lGL
+
+contains (DEFINES, USE_PNG)
+{
+    LIBS += -lpng
+}
+
+contains (DEFINES, USE_JPEG)
+{
+    LIBS += -ljpeg
+}
+
+contains (DEFINES, USE_ZLIB)
+{
+    #LIBS += -lzip2
+}
+
+contains (DEFINES, USE_FREETYPE)
+{
+    LIBS += -lfreetype
+}
+
+contains (DEFINES, USE_OPENEXR)
+{
+    #LIBS += -lopenexr
+}
+
+contains (DEFINES, USE_NOISE)
+{
+    LIBS += -lnoise
+}
+
+}
+
 CONFIG += dll
 TEMPLATE = lib
 TARGET = punk_engine
@@ -57,113 +92,6 @@ debug:DEFINES += _DEBUG
 release:DEFINES += _NDEBUG
 
 
-DEPENDPATH += . \
-              ..\..\source \
-              ..\..\source\ai \
-              ..\..\source\application \
-              ..\..\source\audio \
-              ..\..\source\common \
-              ..\..\source\generator \
-              ..\..\source\gpu \
-              ..\..\source\gui \
-              ..\..\source\images \
-              ..\..\source\logic \
-              ..\..\source\math \
-              ..\..\source\physics \
-              ..\..\source\raytracer \
-              ..\..\source\render \
-              ..\..\source\scene \
-              ..\..\source\string \
-              ..\..\source\system \
-              ..\..\source\tests \
-              ..\..\source\translator \
-              ..\..\source\types \
-              ..\..\source\utility \
-              ..\..\source\virtual \
-
-contains(DEFINES, USE_BULLET) {
-DEPENDPATH += ..\..\source\3rd\bullet
-}
-
-contains(DEFINES, USE_OPENCL) {
-DEPENDPATH += ..\..\source\3rd\cl
-}
-
-contains(DEFINES, USE_FREETYPE) {
-    INCLUDEPATH += ..\..\source\3rd\freetype
-    DEPENDPATH += ..\..\source\3rd\freetype
-    Release:DEFINES += FT2_BUILD_LIBRARY FT_DEBUG_LEVEL_ERROR FT_DEBUG_LEVEL_TRACE
-    Debug:DEFINES += FT2_BUILD_LIBRARY
-}
-
-contains(DEFINES, USE_JPEG) {
-    INCLUDEPATH += ..\..\source\3rd\
-    DEPENDPATH +=  ..\..\source\3rd\
-}
-
-contains(DEFINES, USE_VORBIS) {
-    DEPENDPATH += ..\..\source\3rd\libvorbis
-              ..\..\source\3rd\vorbis
-}
-
-contains(DEFINES, USE_NOISE) {
-    DEPENDPATH += ..\..\source\3rd\noise
-}
-
-contains(DEFINES, USE_OGG) {
-    DEPENDPATH += ..\..\source\3rd\ogg
-}
-
-contains(DEFINES, USE_OPENAL) {
-    DEPENDPATH += ..\..\source\3rd\openal
-}
-
-contains(DEFINES, USE_PNG) {
-    DEPENDPATH += ..\..\source\3rd\png
-    INCLUDEPATH += ..\..\source\3rd\png
-    INCLUDEPATH += ..\..\source\3rd\zlib
-}
-
-contains(DEFINES, USE_ZLIB)
-{
-HEADERS +=   ../../source/3rd/zlib/zutil.h \
-    ../../source/3rd/zlib/zlib.h \
-    ../../source/3rd/zlib/zconf.h \
-    ../../source/3rd/zlib/trees.h \
-    ../../source/3rd/zlib/inftrees.h \
-    ../../source/3rd/zlib/inflate.h \
-    ../../source/3rd/zlib/inffixed.h \
-    ../../source/3rd/zlib/inffast.h \
-    ../../source/3rd/zlib/gzguts.h \
-    ../../source/3rd/zlib/deflate.h \
-    ../../source/3rd/zlib/crc32.h \
-    ../../source/gpu/common/blending/blend_function.h \
-    ../../source/gpu/common/blending/module.h \   
-    ../../source/gpu/common/fog/fog.h \
-    ../../source/gpu/common/fog/fog_mode.h \
-    ../../source/gpu/common/fog/module.h \       
-
-SOURCES += ../../source/3rd/zlib/zutil.c \
-    ../../source/3rd/zlib/uncompr.c \
-    ../../source/3rd/zlib/trees.c \
-    ../../source/3rd/zlib/inftrees.c \
-    ../../source/3rd/zlib/inflate.c \
-    ../../source/3rd/zlib/inffast.c \
-    ../../source/3rd/zlib/infback.c \
-    ../../source/3rd/zlib/gzwrite.c \
-    ../../source/3rd/zlib/gzread.c \
-    ../../source/3rd/zlib/gzlib.c \
-    ../../source/3rd/zlib/gzclose.c \
-    ../../source/3rd/zlib/deflate.c \
-    ../../source/3rd/zlib/crc32.c \
-    ../../source/3rd/zlib/compress.c \
-    ../../source/3rd/zlib/adler32.c \   
-    ../../source/gpu/common/frame.cpp \    
-    ../../source/gpu/common/blending/blend_function.cpp \    
-    ../../source/gpu/common/fog/fog.cpp \
-    ../../source/gpu/common/fog/fog_mode.cpp \    
-}
-
 contains(DEFINES, USE_NEVER) {
 HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_window.h \
            ../../source/tools/texture_generator/checker.h \
@@ -183,181 +111,6 @@ HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_windo
            ../../source/tools/weapon_maker/main.cpp \
            ../../source/tests/main.cpp \
            ../../source/translator/console_interpretator.cpp
-}
-
-contains(DEFINES, OPEN_CL) {
-    HEADERS += ../../source/3rd/cl/cl.h \
-           ../../source/3rd/cl/cl_d3d10.h \
-           ../../source/3rd/cl/cl_d3d10_ext.h \
-           ../../source/3rd/cl/cl_d3d11_ext.h \
-           ../../source/3rd/cl/cl_d3d9_ext.h \
-           ../../source/3rd/cl/cl_ext.h \
-           ../../source/3rd/cl/cl_gl.h \
-           ../../source/3rd/cl/cl_gl_ext.h \
-           ../../source/3rd/cl/cl_platform.h \
-           ../../source/3rd/cl/opencl.h \
-}
-
-contains(DEFINES, USE_OGG) {
-    HEADERS += ../../source/3rd/ogg/config_types.h \
-           ../../source/3rd/ogg/ogg.h \
-           ../../source/3rd/ogg/os_types.h
-}
-
-contains(DEFINES, USE_OPENAL) {
-SOURCES += ../../source/3rd/openal/al.h \
-           ../../source/3rd/openal/alc.h \
-           ../../source/3rd/openal/aldlist.h \
-           ../../source/3rd/openal/CWaves.h \
-           ../../source/3rd/openal/efx-creative.h \
-           ../../source/3rd/openal/EFX-Util.h \
-           ../../source/3rd/openal/efx.h \
-           ../../source/3rd/openal/Framework.h \
-           ../../source/3rd/openal/LoadOAL.h \
-           ../../source/3rd/openal/xram.h
-}
-
-contains(DEFINES, USE_VORBIS) {
-    HEADERS +=  ../../source/3rd/libvorbis/modes/floor_all.h \
-           ../../source/3rd/libvorbis/modes/psych_11.h \
-           ../../source/3rd/libvorbis/modes/psych_16.h \
-           ../../source/3rd/libvorbis/modes/psych_44.h \
-           ../../source/3rd/libvorbis/modes/psych_8.h \
-           ../../source/3rd/libvorbis/modes/residue_16.h \
-           ../../source/3rd/libvorbis/modes/residue_44.h \
-           ../../source/3rd/libvorbis/modes/residue_44p51.h \
-           ../../source/3rd/libvorbis/modes/residue_44u.h \
-           ../../source/3rd/libvorbis/modes/residue_8.h \
-           ../../source/3rd/libvorbis/modes/setup_11.h \
-           ../../source/3rd/libvorbis/modes/setup_16.h \
-           ../../source/3rd/libvorbis/modes/setup_22.h \
-           ../../source/3rd/libvorbis/modes/setup_32.h \
-           ../../source/3rd/libvorbis/modes/setup_44.h \
-           ../../source/3rd/libvorbis/modes/setup_44p51.h \
-           ../../source/3rd/libvorbis/modes/setup_44u.h \
-           ../../source/3rd/libvorbis/modes/setup_8.h \
-           ../../source/3rd/libvorbis/modes/setup_X.h \
-           ../../source/3rd/libvorbis/books/coupled/res_books_51.h \
-           ../../source/3rd/libvorbis/books/coupled/res_books_stereo.h \
-           ../../source/3rd/libvorbis/books/floor/floor_books.h \
-           ../../source/3rd/libvorbis/books/uncoupled/res_books_uncoupled.h \
-           ../../source/3rd/libvorbis/backends.h \
-           ../../source/3rd/libvorbis/bitrate.h \
-           ../../source/3rd/libvorbis/codebook.h \
-           ../../source/3rd/libvorbis/codec_internal.h \
-           ../../source/3rd/libvorbis/envelope.h \
-           ../../source/3rd/libvorbis/highlevel.h \
-           ../../source/3rd/libvorbis/lookup.h \
-           ../../source/3rd/libvorbis/lookup_data.h \
-           ../../source/3rd/libvorbis/lpc.h \
-           ../../source/3rd/libvorbis/lsp.h \
-           ../../source/3rd/libvorbis/masking.h \
-           ../../source/3rd/libvorbis/mdct.h \
-           ../../source/3rd/libvorbis/misc.h \
-           ../../source/3rd/libvorbis/os.h \
-           ../../source/3rd/libvorbis/psy.h \
-           ../../source/3rd/libvorbis/registry.h \
-           ../../source/3rd/libvorbis/scales.h \
-           ../../source/3rd/libvorbis/smallft.h \
-           ../../source/3rd/libvorbis/window.h \
-           ../../source/3rd/vorbis/codec.h \
-           ../../source/3rd/vorbis/vorbisenc.h \
-           ../../source/3rd/vorbis/vorbisfile.h
-}
-
-contains(DEFINES, USE_NOISE) {
-    HEADERS += ../../source/3rd/noise/model/cylinder.h \
-           ../../source/3rd/noise/model/line.h \
-           ../../source/3rd/noise/model/model.h \
-           ../../source/3rd/noise/model/plane.h \
-           ../../source/3rd/noise/model/sphere.h \
-           ../../source/3rd/noise/module/abs.h \
-           ../../source/3rd/noise/module/add.h \
-           ../../source/3rd/noise/module/billow.h \
-           ../../source/3rd/noise/module/blend.h \
-           ../../source/3rd/noise/module/cache.h \
-           ../../source/3rd/noise/module/checkerboard.h \
-           ../../source/3rd/noise/module/clamp.h \
-           ../../source/3rd/noise/module/const.h \
-           ../../source/3rd/noise/module/curve.h \
-           ../../source/3rd/noise/module/cylinders.h \
-           ../../source/3rd/noise/module/displace.h \
-           ../../source/3rd/noise/module/exponent.h \
-           ../../source/3rd/noise/module/invert.h \
-           ../../source/3rd/noise/module/max.h \
-           ../../source/3rd/noise/module/min.h \
-           ../../source/3rd/noise/module/module.h \
-           ../../source/3rd/noise/module/modulebase.h \
-           ../../source/3rd/noise/module/multiply.h \
-           ../../source/3rd/noise/module/perlin.h \
-           ../../source/3rd/noise/module/power.h \
-           ../../source/3rd/noise/module/ridgedmulti.h \
-           ../../source/3rd/noise/module/rotatepoint.h \
-           ../../source/3rd/noise/module/scalebias.h \
-           ../../source/3rd/noise/module/scalepoint.h \
-           ../../source/3rd/noise/module/select.h \
-           ../../source/3rd/noise/module/spheres.h \
-           ../../source/3rd/noise/module/terrace.h \
-           ../../source/3rd/noise/module/translatepoint.h \
-           ../../source/3rd/noise/module/turbulence.h \
-           ../../source/3rd/noise/module/voronoi.h \
-           ../../source/3rd/noise/win32/resource.h \
-           ../../source/3rd/noise/basictypes.h \
-           ../../source/3rd/noise/exception.h \
-           ../../source/3rd/noise/interp.h \
-           ../../source/3rd/noise/latlon.h \
-           ../../source/3rd/noise/mathconsts.h \
-           ../../source/3rd/noise/misc.h \
-           ../../source/3rd/noise/noise.h \
-           ../../source/3rd/noise/noisegen.h \
-           ../../source/3rd/noise/vectortable.h
-
-SOURCES += ../../source/3rd/noise/latlon.cpp \
-	   ../../source/3rd/noise/noisegen.cpp \
-	   ../../source/3rd/noise/model/cylinder.cpp \
-	   ../../source/3rd/noise/model/line.cpp \
-	   ../../source/3rd/noise/model/plane.cpp \
-	   ../../source/3rd/noise/model/sphere.cpp \
-	   ../../source/3rd/noise/module/abs.cpp \
-	   ../../source/3rd/noise/module/add.cpp \
-	   ../../source/3rd/noise/module/billow.cpp \
-	   ../../source/3rd/noise/module/blend.cpp \
-	   ../../source/3rd/noise/module/cache.cpp \
-	   ../../source/3rd/noise/module/checkerboard.cpp \
-	   ../../source/3rd/noise/module/clamp.cpp \
-	   ../../source/3rd/noise/module/const.cpp \
-	   ../../source/3rd/noise/module/curve.cpp \
-	   ../../source/3rd/noise/module/cylinders.cpp \
-	   ../../source/3rd/noise/module/displace.cpp \
-	   ../../source/3rd/noise/module/exponent.cpp \
-	   ../../source/3rd/noise/module/invert.cpp \
-	   ../../source/3rd/noise/module/max.cpp \
-	   ../../source/3rd/noise/module/min.cpp \
-	   ../../source/3rd/noise/module/modulebase.cpp \
-	   ../../source/3rd/noise/module/multiply.cpp \
-	   ../../source/3rd/noise/module/perlin.cpp \
-	   ../../source/3rd/noise/module/power.cpp \
-	   ../../source/3rd/noise/module/ridgedmulti.cpp \
-	   ../../source/3rd/noise/module/rotatepoint.cpp \
-	   ../../source/3rd/noise/module/scalebias.cpp \
-	   ../../source/3rd/noise/module/scalepoint.cpp \
-	   ../../source/3rd/noise/module/select.cpp \
-	   ../../source/3rd/noise/module/spheres.cpp \
-	   ../../source/3rd/noise/module/terrace.cpp \
-	   ../../source/3rd/noise/module/translatepoint.cpp \
-	   ../../source/3rd/noise/module/turbulence.cpp \
-	   ../../source/3rd/noise/module/voronoi.cpp
-
-contains(DEFINES, USE_NEVER) {
-SOURCES += ../../source/3rd/noise/win32/dllmain.cpp
-}
-
-}
-
-contains(DEFINES, USE_OPENCL) {
-    HEADERS += ../../source/gpu/opencl/errors/cl_error_check.h \
-           ../../source/gpu/opencl/errors/cl_exceptions.h \
-           ../../source/gpu/opencl/errors/module.h \
 }
 
 contains(DEFINES, USE_OPENGL) {
@@ -519,320 +272,6 @@ SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp 
             ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_vertex_lighting_diffuse.cpp \
             ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_tex_diffuse.cpp \
             ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_vertex_lighting_tex_diffuse.cpp
-}
-
-contains(DEFINES, USE_JPEG) {
-
-HEADERS += ../../source/3rd/jpeg/cderror.h \
-	   ../../source/3rd/jpeg/cdjpeg.h \
-	   ../../source/3rd/jpeg/jconfig.h \
-	   ../../source/3rd/jpeg/jdct.h \
-	   ../../source/3rd/jpeg/jerror.h \
-	   ../../source/3rd/jpeg/jinclude.h \
-	   ../../source/3rd/jpeg/jmemsys.h \
-	   ../../source/3rd/jpeg/jmorecfg.h \
-	   ../../source/3rd/jpeg/jpegint.h \
-	   ../../source/3rd/jpeg/jpeglib.h \
-	   ../../source/3rd/jpeg/jversion.h \
-	   ../../source/3rd/jpeg/transupp.h
-
-
-SOURCES += ../../source/3rd/jpeg/cdjpeg.c \
-#../../source/3rd/jpeg/ansi2knr.c \
-	   #../../source/3rd/jpeg/cjpeg.c \
-	   #../../source/3rd/jpeg/ckconfig.c \
-	   #../../source/3rd/jpeg/djpeg.c \
-	   #../../source/3rd/jpeg/example.c \
-           ../../source/3rd/jpeg/jaricom.c \
-	   ../../source/3rd/jpeg/jcapimin.c \
-	   #../../source/3rd/jpeg/jcapistd.c \
-           ../../source/3rd/jpeg/jcarith.c \
-           ../../source/3rd/jpeg/jccoefct.c \
-           ../../source/3rd/jpeg/jccolor.c \
-           ../../source/3rd/jpeg/jcdctmgr.c \
-           ../../source/3rd/jpeg/jchuff.c \
-           ../../source/3rd/jpeg/jcinit.c \
-           ../../source/3rd/jpeg/jcmainct.c \
-           ../../source/3rd/jpeg/jcmarker.c \
-           ../../source/3rd/jpeg/jcmaster.c \
-           ../../source/3rd/jpeg/jcomapi.c \
-           ../../source/3rd/jpeg/jcparam.c \
-           ../../source/3rd/jpeg/jcprepct.c \
-           ../../source/3rd/jpeg/jcsample.c \
-	   #../../source/3rd/jpeg/jctrans.c \
-	   ../../source/3rd/jpeg/jdapimin.c \
-           ../../source/3rd/jpeg/jdapistd.c \
-           ../../source/3rd/jpeg/jdarith.c \
-           ../../source/3rd/jpeg/jdatadst.c \
-           ../../source/3rd/jpeg/jdatasrc.c \
-           ../../source/3rd/jpeg/jdcoefct.c \
-           ../../source/3rd/jpeg/jdcolor.c \
-           ../../source/3rd/jpeg/jddctmgr.c \
-           ../../source/3rd/jpeg/jdhuff.c \
-           ../../source/3rd/jpeg/jdinput.c \
-           ../../source/3rd/jpeg/jdmainct.c \
-           ../../source/3rd/jpeg/jdmarker.c \
-           ../../source/3rd/jpeg/jdmaster.c \
-           ../../source/3rd/jpeg/jdmerge.c \
-           ../../source/3rd/jpeg/jdpostct.c \
-           ../../source/3rd/jpeg/jdsample.c \
-           ../../source/3rd/jpeg/jdtrans.c \
-           ../../source/3rd/jpeg/jerror.c \
-           ../../source/3rd/jpeg/jfdctflt.c \
-           ../../source/3rd/jpeg/jfdctfst.c \
-           ../../source/3rd/jpeg/jfdctint.c \
-           ../../source/3rd/jpeg/jidctflt.c \
-           ../../source/3rd/jpeg/jidctfst.c \
-           ../../source/3rd/jpeg/jidctint.c \
-	   #../../source/3rd/jpeg/jmemansi.c \
-	   #../../source/3rd/jpeg/jmemdos.c \
-	   #../../source/3rd/jpeg/jmemmac.c \
-	   ../../source/3rd/jpeg/jmemmgr.c \
-	   ../../source/3rd/jpeg/jmemname.c \
-	   #../../source/3rd/jpeg/jmemnobs.c \
-	   #../../source/3rd/jpeg/jpegtran.c \
-           ../../source/3rd/jpeg/jquant1.c \
-           ../../source/3rd/jpeg/jquant2.c \
-           ../../source/3rd/jpeg/jutils.c \
-           ../../source/3rd/jpeg/rdbmp.c \
-           ../../source/3rd/jpeg/rdcolmap.c \
-           ../../source/3rd/jpeg/rdgif.c \
-	   #../../source/3rd/jpeg/rdjpgcom.c \
-           ../../source/3rd/jpeg/rdppm.c \
-           ../../source/3rd/jpeg/rdrle.c \
-           ../../source/3rd/jpeg/rdswitch.c \
-           ../../source/3rd/jpeg/rdtarga.c \
-           ../../source/3rd/jpeg/transupp.c \
-           ../../source/3rd/jpeg/wrbmp.c \
-           ../../source/3rd/jpeg/wrgif.c \
-           ../../source/3rd/jpeg/wrjpgcom.c \
-           ../../source/3rd/jpeg/wrppm.c \
-           ../../source/3rd/jpeg/wrrle.c \
-           ../../source/3rd/jpeg/wrtarga.c
-}
-
-contains(DEFINES, USE_VORBIS) {
-SOURCES += ../../source/3rd/libvorbis/lookup.c \
-           ../../source/3rd/libvorbis/analysis.c \
-           ../../source/3rd/libvorbis/barkmel.c \
-           ../../source/3rd/libvorbis/bitrate.c \
-           ../../source/3rd/libvorbis/block.c \
-           ../../source/3rd/libvorbis/codebook.c \
-           ../../source/3rd/libvorbis/envelope.c \
-           ../../source/3rd/libvorbis/floor0.c \
-           ../../source/3rd/libvorbis/floor1.c \
-           ../../source/3rd/libvorbis/info.c \
-           ../../source/3rd/libvorbis/lookup.c \
-           ../../source/3rd/libvorbis/lpc.c \
-           ../../source/3rd/libvorbis/lsp.c \
-           ../../source/3rd/libvorbis/mapping0.c \
-           ../../source/3rd/libvorbis/mdct.c \
-           ../../source/3rd/libvorbis/psy.c \
-           ../../source/3rd/libvorbis/psytune.c \
-           ../../source/3rd/libvorbis/registry.c \
-           ../../source/3rd/libvorbis/res0.c \
-           ../../source/3rd/libvorbis/sharedbook.c \
-           ../../source/3rd/libvorbis/smallft.c \
-           ../../source/3rd/libvorbis/synthesis.c \
-           ../../source/3rd/libvorbis/tone.c \
-           ../../source/3rd/libvorbis/vorbisenc.c \
-           ../../source/3rd/libvorbis/vorbisfile.c \
-           ../../source/3rd/libvorbis/window.c
-}
-
-contains(DEFINES, USE_OGG) {
-SOURCES += ../../source/3rd/ogg/bitwise.c \
-           ../../source/3rd/ogg/framing.c
-}
-
-contains(DEFINES, USE_OPENAL) {
-SOURCES += ../../source/3rd/openal/aldlist.cpp \
-           ../../source/3rd/openal/CWaves.cpp \
-           ../../source/3rd/openal/Framework.cpp \
-           ../../source/3rd/openal/LoadOAL.cpp
-}
-
-contains(DEFINES, USE_PNG) {
-SOURCES += ../../source/3rd/png/png.c \
-	   #../../source/3rd/png/example.c \
-           ../../source/3rd/png/pngerror.c \
-           ../../source/3rd/png/pngget.c \
-           ../../source/3rd/png/pngmem.c \
-           ../../source/3rd/png/pngpread.c \
-           ../../source/3rd/png/pngread.c \
-           ../../source/3rd/png/pngrio.c \
-           ../../source/3rd/png/pngrtran.c \
-           ../../source/3rd/png/pngrutil.c \
-           ../../source/3rd/png/pngset.c \
-	   #../../source/3rd/png/pngtest.c \
-           ../../source/3rd/png/pngtrans.c \
-	   #../../source/3rd/png/pngvalid.c \
-           ../../source/3rd/png/pngwio.c \
-           ../../source/3rd/png/pngwrite.c \
-           ../../source/3rd/png/pngwtran.c \
-           ../../source/3rd/png/pngwutil.c \
-           ../../source/3rd/png/contrib/visupng/PngFile.c \
-	   ../../source/3rd/png/contrib/visupng/VisualPng.c
-
-
-HEADERS += ../../source/3rd/png/contrib/visupng/cexcept.h \
-	   ../../source/3rd/png/contrib/visupng/PngFile.h \
-	   ../../source/3rd/png/contrib/visupng/resource.h \
-	   ../../source/3rd/png/png.h \
-	   ../../source/3rd/png/pngconf.h \
-	   ../../source/3rd/png/pngdebug.h \
-	   ../../source/3rd/png/pnginfo.h \
-	   ../../source/3rd/png/pnglibconf.h \
-	   ../../source/3rd/png/pngpriv.h \
-	   ../../source/3rd/png/pngstruct.h
-
-}
-
-contains(DEFINES, USE_VORBIS) {
-    HEADERS +=  ../../source/3rd/libvorbis/modes/floor_all.h \
-           ../../source/3rd/libvorbis/modes/psych_11.h \
-           ../../source/3rd/libvorbis/modes/psych_16.h \
-           ../../source/3rd/libvorbis/modes/psych_44.h \
-           ../../source/3rd/libvorbis/modes/psych_8.h \
-           ../../source/3rd/libvorbis/modes/residue_16.h \
-           ../../source/3rd/libvorbis/modes/residue_44.h \
-           ../../source/3rd/libvorbis/modes/residue_44p51.h \
-           ../../source/3rd/libvorbis/modes/residue_44u.h \
-           ../../source/3rd/libvorbis/modes/residue_8.h \
-           ../../source/3rd/libvorbis/modes/setup_11.h \
-           ../../source/3rd/libvorbis/modes/setup_16.h \
-           ../../source/3rd/libvorbis/modes/setup_22.h \
-           ../../source/3rd/libvorbis/modes/setup_32.h \
-           ../../source/3rd/libvorbis/modes/setup_44.h \
-           ../../source/3rd/libvorbis/modes/setup_44p51.h \
-           ../../source/3rd/libvorbis/modes/setup_44u.h \
-           ../../source/3rd/libvorbis/modes/setup_8.h \
-           ../../source/3rd/libvorbis/modes/setup_X.h \
-           ../../source/3rd/libvorbis/books/coupled/res_books_51.h \
-           ../../source/3rd/libvorbis/books/coupled/res_books_stereo.h \
-           ../../source/3rd/libvorbis/books/floor/floor_books.h \
-           ../../source/3rd/libvorbis/books/uncoupled/res_books_uncoupled.h \
-           ../../source/3rd/libvorbis/backends.h \
-           ../../source/3rd/libvorbis/bitrate.h \
-           ../../source/3rd/libvorbis/codebook.h \
-           ../../source/3rd/libvorbis/codec_internal.h \
-           ../../source/3rd/libvorbis/envelope.h \
-           ../../source/3rd/libvorbis/highlevel.h \
-           ../../source/3rd/libvorbis/lookup.h \
-           ../../source/3rd/libvorbis/lookup_data.h \
-           ../../source/3rd/libvorbis/lpc.h \
-           ../../source/3rd/libvorbis/lsp.h \
-           ../../source/3rd/libvorbis/masking.h \
-           ../../source/3rd/libvorbis/mdct.h \
-           ../../source/3rd/libvorbis/misc.h \
-           ../../source/3rd/libvorbis/os.h \
-           ../../source/3rd/libvorbis/psy.h \
-           ../../source/3rd/libvorbis/registry.h \
-           ../../source/3rd/libvorbis/scales.h \
-           ../../source/3rd/libvorbis/smallft.h \
-           ../../source/3rd/libvorbis/window.h \
-           ../../source/3rd/vorbis/codec.h \
-           ../../source/3rd/vorbis/vorbisenc.h \
-           ../../source/3rd/vorbis/vorbisfile.h
-}
-
-contains(DEFINES, USE_OPENCL) {
-    HEADERS += ../../source/gpu/opencl/errors/cl_error_check.h \
-           ../../source/gpu/opencl/errors/cl_exceptions.h \
-	   ../../source/gpu/opencl/errors/module.h
-}
-
-contains(DEFINES, USE_VORBIS) {
-SOURCES += ../../source/3rd/libvorbis/lookup.c \
-           ../../source/3rd/libvorbis/analysis.c \
-           ../../source/3rd/libvorbis/barkmel.c \
-           ../../source/3rd/libvorbis/bitrate.c \
-           ../../source/3rd/libvorbis/block.c \
-           ../../source/3rd/libvorbis/codebook.c \
-           ../../source/3rd/libvorbis/envelope.c \
-           ../../source/3rd/libvorbis/floor0.c \
-           ../../source/3rd/libvorbis/floor1.c \
-           ../../source/3rd/libvorbis/info.c \
-           ../../source/3rd/libvorbis/lookup.c \
-           ../../source/3rd/libvorbis/lpc.c \
-           ../../source/3rd/libvorbis/lsp.c \
-           ../../source/3rd/libvorbis/mapping0.c \
-           ../../source/3rd/libvorbis/mdct.c \
-           ../../source/3rd/libvorbis/psy.c \
-           ../../source/3rd/libvorbis/psytune.c \
-           ../../source/3rd/libvorbis/registry.c \
-           ../../source/3rd/libvorbis/res0.c \
-           ../../source/3rd/libvorbis/sharedbook.c \
-           ../../source/3rd/libvorbis/smallft.c \
-           ../../source/3rd/libvorbis/synthesis.c \
-           ../../source/3rd/libvorbis/tone.c \
-           ../../source/3rd/libvorbis/vorbisenc.c \
-           ../../source/3rd/libvorbis/vorbisfile.c \
-           ../../source/3rd/libvorbis/window.c
-}
-
-
-contains(DEFINES, USE_OGG) {
-SOURCES += ../../source/3rd/ogg/bitwise.c \
-           ../../source/3rd/ogg/framing.c
-}
-
-contains(DEFINES, USE_OPENAL) {
-SOURCES += ../../source/3rd/openal/aldlist.cpp \
-           ../../source/3rd/openal/CWaves.cpp \
-           ../../source/3rd/openal/Framework.cpp \
-           ../../source/3rd/openal/LoadOAL.cpp
-}
-
-contains(DEFINES, USE_FREETYPE) {
-
-win32 {
-SOURCES += ../../source/3rd/freetype/autofit/autofit.c\
-../../source/3rd/freetype/bdf/bdf.c\
-../../source/3rd/freetype/cff/cff.c\
-../../source/3rd/freetype/base/ftbase.c\
-../../source/3rd/freetype/base/ftbitmap.c\
-../../source/3rd/freetype/cache/ftcache.c\
-../../source/3rd/freetype/base/ftdebug.c\
-../../source/3rd/freetype/base/ftfstype.c\
-../../source/3rd/freetype/base/ftgasp.c\
-../../source/3rd/freetype/base/ftglyph.c\
-../../source/3rd/freetype/gzip/ftgzip.c\
-../../source/3rd/freetype/base/ftinit.c\
-../../source/3rd/freetype/lzw/ftlzw.c\
-../../source/3rd/freetype/base/ftstroke.c\
-../../source/3rd/freetype/base/ftsystem.c\
-../../source/3rd/freetype/smooth/smooth.c\
-../../source/3rd/freetype/base/ftbbox.c\
-../../source/3rd/freetype/base/ftgxval.c\
-../../source/3rd/freetype/base/ftlcdfil.c\
-../../source/3rd/freetype/base/ftmm.c\
-../../source/3rd/freetype/base/ftotval.c\
-../../source/3rd/freetype/base/ftpatent.c\
-../../source/3rd/freetype/base/ftpfr.c\
-../../source/3rd/freetype/base/ftsynth.c\
-../../source/3rd/freetype/base/fttype1.c\
-../../source/3rd/freetype/base/ftwinfnt.c\
-../../source/3rd/freetype/pcf/pcf.c\
-../../source/3rd/freetype/pfr/pfr.c\
-../../source/3rd/freetype/psaux/psaux.c\
-../../source/3rd/freetype/pshinter/pshinter.c\
-../../source/3rd/freetype/psnames/psmodule.c\
-../../source/3rd/freetype/raster/raster.c\
-../../source/3rd/freetype/sfnt/sfnt.c\
-../../source/3rd/freetype/truetype/truetype.c\
-../../source/3rd/freetype/type1/type1.c\
-../../source/3rd/freetype/cid/type1cid.c\
-../../source/3rd/freetype/type42/type42.c\
-../../source/3rd/freetype/winfonts/winfnt.c
-
-HEADERS += ../../source/3rd/freetype/ft2build.h\
-../../source/3rd/freetype/freetype/config/ftconfig.h\
-../../source/3rd/freetype/freetype/config/ftheader.h\
-../../source/3rd/freetype/freetype/config/ftmodule.h\
-../../source/3rd/freetype/freetype/config/ftoption.h\
-../../source/3rd/freetype/freetype/config/ftstdlib.h
-}
 }
 
 SOURCES += ../../source/main.cpp \
@@ -1097,9 +536,58 @@ SOURCES += ../../source/main.cpp \
 	../../source/gpu/common/lighting/light_parameters.cpp \
 	../../source/gpu/common/material/gpu_material.cpp \
         ../../source/gpu/common/text_surface.cpp \
+        ../../source/gpu/common/fog/fog.cpp \
+        ../../source/gpu/common/fog/fog_mode.cpp \
 	../../source/math/graph/graph.cpp \
 	../../source/math/graph/graph_vertex.cpp \
-	../../source/math/graph/graph_edge.cpp \
+        ../../source/math/graph/graph_edge.cpp \
+        ../../source/gpu/common/frame.cpp \
+    ../../source/images/import_export/openexr_importer.cpp \
+    ../../source/virtual/terrain/terrain_mesh.cpp \
+    ../../source/math/curve.cpp \
+    ../../source/math/spline.cpp \
+    ../../source/math/weighted_point.cpp \
+    ../../source/utility/parser/parse_texture.cpp \
+    ../../source/utility/parser/parse_simple.cpp \
+    ../../source/utility/parser/parse_bbox.cpp \
+    ../../source/utility/parser/parse_convex_mesh.cpp \
+    ../../source/utility/parser/parse_bone_weights.cpp \
+    ../../source/utility/parser/parse_position_track.cpp \
+    ../../source/utility/parser/parse_rotation_track.cpp \
+    ../../source/utility/parser/parse_animation.cpp \
+    ../../source/utility/parser/parse_action.cpp \
+    ../../source/utility/parser/parse_static_meshes.cpp \
+    ../../source/utility/parser/parse_bone.cpp \
+    ../../source/utility/parser/parse_armature.cpp \
+    ../../source/utility/parser/parse_textures.cpp \
+    ../../source/utility/parser/parse_static_mesh.cpp \
+    ../../source/utility/parser/parse_skin_mesh.cpp \
+    ../../source/utility/parser/parse_skin_meshes.cpp \
+    ../../source/utility/parser/parse_material.cpp \
+    ../../source/utility/parser/parse_materials.cpp \
+    ../../source/utility/parser/parse_point_light_node.cpp \
+    ../../source/utility/parser/parse_static_mesh_node.cpp \
+    ../../source/utility/parser/parse_bone_node.cpp \
+    ../../source/utility/parser/parse_skin_mesh_node.cpp \
+    ../../source/utility/parser/parse_material_node.cpp \
+    ../../source/utility/parser/parse_armature_node.cpp \
+    ../../source/utility/parser/parse_transform_node.cpp \
+    ../../source/utility/parser/parse_portal_node.cpp \
+    ../../source/utility/parser/parse_location_indoor.cpp \
+    ../../source/utility/parser/parse_world.cpp \
+    ../../source/utility/parser/parse_terrain_raw_data_source.cpp \
+    ../../source/utility/parser/parse_terrain_cell.cpp \
+    ../../source/utility/parser/parse_map_description.cpp \
+    ../../source/utility/parser/parse_anything.cpp \
+    ../../source/utility/parser/parse_punk_file.cpp \
+    ../../source/utility/parser/load_world.cpp \
+    ../../source/utility/parser/parse_navi_mesh.cpp \
+    ../../source/ai/curvepath.cpp \
+    ../../source/utility/parser/parse_curve_path.cpp \
+    ../../source/utility/parser/parse_spline.cpp \
+    ../../source/utility/parser/parse_weighted_point.cpp \
+    ../../source/ai/navi_mesh.cpp
+
 
 # Input
 HEADERS += ../../source/config.h \
@@ -1527,10 +1015,21 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/material/module.h \
     ../../source/gpu/common/material/gpu_material.h \
     ../../source/gpu/common/text_surface.h \
+    ../../source/gpu/common/fog/fog.h \
+    ../../source/gpu/common/fog/fog_mode.h \
+    ../../source/gpu/common/fog/module.h \
     ../../source/math/graph/graph.h \
     ../../source/math/graph/graph_vertex.h \
     ../../source/math/graph/graph_edge.h \
-    ../../source/math/graph/module.h
+    ../../source/math/graph/module.h \
+    ../../source/images/import_export/openexr_importer.h \
+    ../../source/virtual/terrain/terrain_mesh.h \
+    ../../source/math/curve.h \
+    ../../source/math/spline.h \
+    ../../source/math/weighted_point.h \
+    ../../source/utility/parser/parse_functions.h \
+    ../../source/ai/module.h \
+    ../../source/ai/curvepath.h
 
 
 release:MYDLLDIR = $IN_PWD/../../../bin/release
