@@ -36,59 +36,61 @@ namespace Punk
 		safe_delete(m_video_driver);
 		safe_delete(m_window);
 		safe_delete(m_event_manager);
-	}
+    }
 
-	void Application::Init(const Config& data)
-	{
+    void Application::Init(const Config& data)
+    {
         m_font_builder = new Utility::FontBuilder;
 
-		m_event_manager = new System::EventManager();
+        m_event_manager = new System::EventManager();
         System::WindowDesc wnd_desc;
         m_window = new System::Window(this, wnd_desc);
-		System::Mouse::Instance()->LockInWindow(true);
-		m_video_driver = new GPU::VideoDriver;
+        if (!data.gpu_config.disable_3d_graphics)
+        {
+            System::Mouse::Instance()->LockInWindow(true);
+            m_video_driver = new GPU::VideoDriver;
 
-		{
-			GPU::VideoDriverDesc desc;
-			desc.config = data.gpu_config;
-			desc.event_manager = m_event_manager;
-			desc.window = m_window;
-			m_video_driver->Start(desc);
-			m_video_driver->SetFontBuilder(m_font_builder);
-		}
+            {
+                GPU::VideoDriverDesc desc;
+                desc.config = data.gpu_config;
+                desc.event_manager = m_event_manager;
+                desc.window = m_window;
+                m_video_driver->Start(desc);
+                m_video_driver->SetFontBuilder(m_font_builder);
+            }
 
-		{
-			GPU::GPU_INIT(data.gpu_config);
-		}
+            {
+                GPU::GPU_INIT(data.gpu_config);
+            }
 
-//		{
-//			GUI::ManagerDesc man_desc;
-//			man_desc.adapter = this;
-//			man_desc.event_manager = m_event_manager;
-//			man_desc.window = m_window;
-//			GUI::Manager::Create(man_desc);
-//		}
+            //		{
+            //			GUI::ManagerDesc man_desc;
+            //			man_desc.adapter = this;
+            //			man_desc.event_manager = m_event_manager;
+            //			man_desc.window = m_window;
+            //			GUI::Manager::Create(man_desc);
+            //		}
 
-		{
-		    m_simulator =  nullptr;
-		//	m_simulator = new Physics::Simulator;
-		//	m_simulator->Init();
-		}
+            {
+                m_simulator =  nullptr;
+                //	m_simulator = new Physics::Simulator;
+                //	m_simulator->Init();
+            }
 
-		{
-			Virtual::TerrainManagerDesc desc;
-			desc.memory_usage = 1024*1024*1024;
-			desc.threshold = 32.0f;
-			desc.view_size = 1024;
-			desc.simulator = m_simulator;
-			m_terrain_manager = new Virtual::TerrainManager(desc);
-		}
+            {
+                Virtual::TerrainManagerDesc desc;
+                desc.memory_usage = 1024*1024*1024;
+                desc.threshold = 32.0f;
+                desc.view_size = 1024;
+                desc.simulator = m_simulator;
+                m_terrain_manager = new Virtual::TerrainManager(desc);
+            }
 
-		{
-//			m_paint_engine = new GPU::OpenGL::OpenGLPaintEngine;
-//			m_paint_engine->SetSurfaceSize(GetWindow()->GetWidth(), GetWindow()->GetHeight());
-		}
-
+            {
+                //			m_paint_engine = new GPU::OpenGL::OpenGLPaintEngine;
+                //			m_paint_engine->SetSurfaceSize(GetWindow()->GetWidth(), GetWindow()->GetHeight());
+            }
+        }
 		OnInit(data);
 	}
 
@@ -98,7 +100,8 @@ namespace Punk
 		m_event_manager->FixEvent(event);
 		m_event_manager->Process();
 
-        Render();
+        if (GetVideoDriver())
+            Render();
 	}
 
 	void Application::WndOnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event)
@@ -263,7 +266,13 @@ namespace Punk
     void Application::Render()
     {
         GPU::VideoDriver* driver = GetVideoDriver();
+        if (!driver)
+            return;
+
         GPU::Frame* frame = driver->BeginFrame();        
+        if (!frame)
+            return;
+
         OnRender(frame);        
         driver->EndFrame(frame);
     }
