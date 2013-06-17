@@ -20,5 +20,6 @@
 #include "config_file.h"
 #include "resource.h"
 #include "profiler.h"
+#include "object.h"
 
 #endif	//	_H_PUNK_SYSTEM_MODULE

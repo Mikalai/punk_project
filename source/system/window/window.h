@@ -43,8 +43,6 @@ namespace System
 		void Quite();
 		void DrawPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 		void DrawLine(int x1, int y1, int x2, int y2);
-		void SwapBuffer();		       
-
 #ifdef _WIN32
         LRESULT CustomDefWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		operator HWND ();

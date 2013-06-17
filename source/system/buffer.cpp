@@ -64,8 +64,9 @@ namespace System
 	{
 		m_size = size;
 		if (m_buffer)
-			delete[] m_buffer;
+			delete[] m_buffer;        
 		m_current = m_buffer = new unsigned char[m_size];
+        memset(m_buffer, 0, size);
 	}
 
 	void* Buffer::StartPointer()

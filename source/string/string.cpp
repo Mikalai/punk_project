@@ -8,6 +8,8 @@
 #include "wchar.h"
 #endif
 
+#include <clocale>
+#include <cctype>
 #include <vector>
 #include <algorithm>
 #include <wchar.h>
@@ -23,254 +25,171 @@
 
 namespace System
 {
-    string& string::Erase(int start, int len)
-	{
-        m_buffer.erase(m_buffer.begin() + start, m_buffer.end() + len);
-		return *this;
-	}
-
-    const string operator + (const char* s1, const string& s2)
-	{
-		string s3(s1);
-		return s3 += s2;
-	}
-
-    const string operator + (const string& s1, const char* s2)
-	{
-		string s3(s1);
-		s3 += s2;
-		return s3;
-	}
-
-	const string operator + (const string& s1, const string& s2)
-	{
-		string s3(s1);
-		s3 += s2;
-		return s3;
-	}
-
-    bool operator != (const string& s1, const char* s2)
-	{
-		return !(s1 == s2);
-	}
-
-	bool operator != (const string& s1, const string& s2)
-	{
-		return !(s1 == s2);
-	}
-
-	bool operator == (const string& s1, const string& s2)
-	{
-		if (s1.Length() != s2.Length())
-			return false;
-        return s1.m_buffer == s2.m_buffer;
-	}
-
-    bool operator == (const string& s1, const char* s2)
-	{        
-        if (s1.Length() != strlen(s2))
-			return false;
-        string temp(s2);
-        return s1.m_buffer == temp.m_buffer;
-	}
-
-	bool operator < (const string& s1, const string& s2)
-	{
-        return strncmp(s1.Data(), s2.Data(), s1.Length()) < 0;
-	}
-
-    bool operator < (const string& s1, const char* s2)
-    {
-        return false;
-        //return strncmp(s1.Data(), s2, s1.Length()) < 0;
-	}
-
-    void string::ToANSI(char*& buffer, size_t& size) const
-	{        
-#ifdef _WIN32
-        size = WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), 0, 0, 0, 0);
-        buffer = new char[size];
-        memset(buffer, 0, sizeof(char)*size);
-        WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), buffer, size, 0, 0);
-#elif defined __linux__
-        size_t in_size = (m_buffer.size() + 1) * sizeof(char);
-        size_t out_size = size;
-        auto handle = iconv_open("WCHAR_T", "ANSI");
-        iconv(handle, (char**)&m_buffer, &in_size, (char**)&buffer, &out_size);
-        iconv_close(handle);
-#endif
-	}
-
-    void string::ToANSI(char* buffer, size_t size) const
-	{
-#ifdef _WIN32
-		memset(buffer, 0, sizeof(char)*size);
-        WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), buffer, size, 0, 0);
-#elif defined __linux__
-        size_t in_size = (m_buffer.size() + 1) * sizeof(char);
-        size_t out_size = size;
-        auto handle = iconv_open("WCHAR_T", "ANSI");
-        iconv(handle, (char**)&m_buffer, &in_size, (char**)&buffer, &out_size);
-        iconv_close(handle);
-#endif
-	}
-
-    const std::vector<char> string::ToAscii() const
-    {
-#ifdef _WIN32
-        int size = WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), 0, 0, 0, 0);
-        std::vector<char> buffer(size);
-        WideCharToMultiByte(CP_ACP, 0, &m_buffer[0], m_buffer.size(), &buffer[0], size, 0, 0);
-#elif defined __gnu_linux__
-        std::vector<char> result(m_buffer.size()*sizeof(char));
-        size_t in_size = (m_buffer.size() + 1) * sizeof(char);
-        size_t out_size = result.size();
-        auto handle = iconv_open("WCHAR_T", "ANSI");
-        char** in = (char**)&m_buffer;
-        char** out = (char**)&result[0];
-        iconv(handle, in, &in_size, out, &out_size);
-        iconv_close(handle);
-        return result;
-#endif
-    }
-
-    const std::vector<char> string::ToUtf8() const
+    bool ConvertByteArray(const char* from, const char* to, void* inp, size_t inp_size, void* outp, size_t* outp_size)
     {
 #ifdef _WIN32
         int size = WideCharToMultiByte(CP_UTF8, 0, &m_buffer[0], m_buffer.size(), 0, 0, 0, 0);
         std::vector<char> buffer(size);
         WideCharToMultiByte(CP_UTF8, 0, &m_buffer[0], m_buffer.size(), &buffer[0], size, 0, 0);
 #elif defined __gnu_linux__
-        std::vector<char> result(m_buffer.size()*sizeof(char));
-        size_t in_size = (m_buffer.size() + 1) * sizeof(char);
-        size_t out_size = result.size();
-        auto handle = iconv_open("WCHAR_T", "UTF8");
-        char** in = (char**)&m_buffer;
-        char** out = (char**)&result[0];
-        iconv(handle, in, &in_size, out, &out_size);
-        iconv_close(handle);
-        return result;
+        if (!outp)
+        {
+            std::vector<char> result(inp_size*8);
+            *outp_size = result.size();
+            iconv_t handle = iconv_open(to, from);
+            if (handle == (iconv_t)-1)
+            {
+                *outp_size = 0;
+                return false;
+            }
+            size_t initial_size = *outp_size;
+            char* out = (char*)&result[0];
+            if (iconv(handle, (char**)&inp, &inp_size, (char**)&out, outp_size) == -1)
+            {
+                *outp_size = 0;
+                return false;
+            }
+            size_t actual_size = initial_size - *outp_size;
+            *outp_size = actual_size;
+            iconv_close(handle);
+        }
+        else
+        {
+            auto handle = iconv_open(to, from);
+            iconv(handle, (char**)&inp, &inp_size, (char**)&outp, outp_size);
+            iconv_close(handle);
+        }
+        return true;
 #endif
     }
 
-    string& string::operator+= (const char* s)
+    string& string::Erase(int start, int len)
+	{
+        erase(begin() + start, begin() + start + len);
+		return *this;
+	}
+
+    const std::vector<char> string::ToAscii() const
     {
-		return *this;
-	}
+        size_t inp_size = size() * sizeof(std::wstring::value_type);
+        size_t outp_size;        
+        void* inp = (void*)c_str();
+        if (!ConvertByteArray("WCHAR_T", "ASCII", inp, inp_size, nullptr, &outp_size))
+            return std::vector<char>();
+        std::vector<char> buffer(outp_size);
+        if (!ConvertByteArray("WCHAR_T", "ASCII", inp, inp_size, (void*)&buffer[0], &outp_size))
+            return std::vector<char>();
+        return buffer;
+    }
 
-	string& string::operator+= (const string& s)
-	{
-        m_buffer.insert(m_buffer.end(), s.begin(), s.end());
-		return *this;
-	}
-
-    string& string::Insert(char chr, int pos)
-	{
-
-		return *this;
-	}
+    const std::vector<char> string::ToUtf8() const
+    {
+        size_t inp_size = size() * sizeof(std::wstring::value_type);
+        size_t outp_size;        
+        void* inp = (void*)c_str();
+        if (!ConvertByteArray("WCHAR_T", "UTF8", inp, inp_size, nullptr, &outp_size))
+            return std::vector<char>();
+        std::vector<char> buffer(outp_size);
+        if (!ConvertByteArray("WCHAR_T", "UTF8", inp, inp_size, (void*)&buffer[0], &outp_size))
+            return std::vector<char>();
+        return buffer;
+    }
 
 	const string string::Replace(const string& what, const string& with) const
     {
-        string res;
-		if (what.Length() == 0)
-			return *this;
-
-        auto start_it = m_buffer.begin();
-        auto cur_it = start_it;
-        auto end_it = m_buffer.end();
-        while ((cur_it = std::search(start_it, end_it, what.m_buffer.begin(), what.m_buffer.end())) != end_it)
+        string res = *this;
+        size_t pos = 0;
+        while ((pos = res.find(what, pos)) != npos)
         {
-            res.m_buffer.insert(res.m_buffer.end(), start_it, cur_it);
-            res.m_buffer.insert(res.m_buffer.end(), with.begin(), with.end());
-
-            start_it = cur_it;
+            res = res.replace(pos, what.size(), with);
         }
-
         return res;
 	}
 
 	const string string::SubString(int start, int end) const
-	{
-        return string(&m_buffer[0] + start, end - start);
+	{        
+        return substr(start, end);
 	}
 
     size_t string::Size() const
 	{
-        return (size_t)(m_buffer.size()*sizeof(char) + sizeof(int));
+        return size()*sizeof(wchar_t);
 	}
 
     size_t string::Length() const
 	{
-        return m_buffer.size();
+        return size();
 	}
 
     wchar_t string::operator[] (int i) const
 	{
-        return m_buffer[i];
+        return std::wstring::operator [](i);
 	}
 
     wchar_t& string::operator [] (int i)
 	{
-        return m_buffer[i];
-	}
-
-	string& string::operator = (const char* s)
-	{
-        m_buffer.clear();
-        m_buffer.insert(m_buffer.end(), s, s+strlen(s));
-		return *this;
+        return std::wstring::operator [](i);
 	}
 
 	string::~string()
-	{
-	}
+    {}
 
-	string::string()
-	{
-	}
+    string::string() : std::wstring()
+    {}
 
-    string::string(const wchar_t *s)
-    {
-        m_buffer.insert(m_buffer.end(), s, s + wcslen(s));
-    }
+    string::string(const std::wstring& s) : std::wstring(s)
+    {}
 
-    string::string(const wchar_t *s, size_t length)
-    {
-        m_buffer.insert(m_buffer.end(), s, s+length);
-    }
+    string::string(const wchar_t *s) : std::wstring(s)
+    {}
 
-    string::string(size_t length)
-	{		
-	}
+    string::string(const wchar_t *s, size_t length) : std::wstring(s, length)
+    {}
+
+    string::string(size_t length) : std::wstring(length, L' ')
+    {}
 
 	string::string(const char* s)
-	{
-        m_buffer.insert(m_buffer.begin(), s, s+strlen(s));
+	{        
+        size_t inp_size = strlen(s);
+        if (inp_size == 0)
+            return;
+        size_t outp_size;
+        void* inp = (void*)s;
+        if (!ConvertByteArray("ASCII", "WCHAR_T", inp, inp_size, nullptr, &outp_size))
+            return;
+        resize(outp_size / sizeof(wchar_t));
+        if (!ConvertByteArray("ASCII", "WCHAR_T", inp, inp_size, (void*)&at(0), &outp_size))
+            return;
 	}
 
     string::string(const char* s, size_t length)
 	{
-        m_buffer.insert(m_buffer.begin(), s, s + length);
+        if (length == 0)
+            return;
+        size_t inp_size = length;
+        size_t outp_size;
+        void* inp = (void*)s;
+        if (!ConvertByteArray("ASCII", "WCHAR_T", inp, inp_size, nullptr, &outp_size))
+            return;
+        resize(outp_size / sizeof(wchar_t));
+        if (!ConvertByteArray("ASCII", "WCHAR_T", inp, inp_size, (void*)&at(0), &outp_size))
+            return;
 	}
 
 	string::string(const string& s)
-	{
-        m_buffer = s.m_buffer;
+        : std::wstring(s)
+	{        
 	}
 
 	string& string::operator = (const string& s)
 	{
-		if (this != &s)
-		{
-            m_buffer = s.m_buffer;
-		}
-		return *this;
+        std::wstring::operator =(s);
 	}
 
     const char* string::Data() const
 	{
-        return (const char*)&m_buffer[0];
+        return (const char*)c_str();
 	}
 
 	int string::ToInt32() const
@@ -278,72 +197,19 @@ namespace System
 #ifdef _WIN32
         return _wtoi(&m_buffer[0]);
 #elif defined __gnu_linux__
-        return (int)wcstol(nullptr, nullptr, 10);
+        std::wistringstream stream(*this);
+        int result;
+        stream >> result;
+        return result;
 #endif
 	}
 
 	int string::ToInt32FromHex() const
 	{
-        char allowed_symbols[] = {L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7',
-                                  L'8', L'9', L'A', L'a', L'B', L'b', L'C', L'c',
-                                  L'D', L'd', L'E', L'e', L'F', L'f', L'x', L'X' };
-        int allowd_symbols_count = std::extent<decltype(allowed_symbols)>::value;
-        for (int i = 0; i < m_buffer.size(); i++)
-		{
-			bool ok = false;
-			for (int j = 0; j < allowd_symbols_count; j++)
-			{
-                if (m_buffer[i] == allowed_symbols[j])
-				{
-					ok = true;
-					break;
-				}
-			}
-			if (!ok)
-				return 0;
-		}
-        const auto *end = &m_buffer[0];
-        const auto *start = &m_buffer[0] + m_buffer.size()-1;
-        if (end[0] == L'0' && (end[1] == L'x' || end[1] == L'X'))
-			end += 2;
-		int res = 0;
-
-
-		int base = 1;
-
-		while (1)
-		{
-			switch(*start)
-			{
-            case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
-                res += base*(*start - '0');
-				break;
-            case 'a': case 'A':
-				res += base*10;
-				break;
-            case 'b': case 'B':
-				res += base*11;
-				break;
-            case 'c': case 'C':
-				res += base*12;
-				break;
-            case 'd': case 'D':
-				res += base*13;
-				break;
-            case 'e': case 'E':
-				res += base*14;
-				break;
-            case 'f': case 'F':
-				res += base*15;
-				break;
-			}
-
-			base *= 16;
-
-			if (start-- == end)
-				break;
-		}
-		return res;
+        std::wistringstream stream(*this);
+        int result;
+        stream >> result;
+        return result;
 	}
 
 	float string::ToFloat() const
@@ -351,7 +217,10 @@ namespace System
 #ifdef _WIN32
         return (float)_wtof(&m_buffer[0]);
 #elif defined __gnu_linux__
-        wcstof(&m_buffer[0], nullptr);
+        std::wistringstream stream(*this);
+        float result;
+        stream >> result;
+        return result;
 #endif
 	}
 
@@ -360,7 +229,10 @@ namespace System
 #ifdef _WIN32
         return _wtof(&m_buffer[0]);
 #elif defined __gnu_linux__
-        return wcstod(&m_buffer[0], nullptr);
+        std::wistringstream stream(*this);
+        double result;
+        stream >> result;
+        return result;
 #endif
 	}
 
@@ -450,6 +322,20 @@ namespace System
         return string(stream.str().c_str());
 	}
 
+    const string string::Convert(long double value, int precision)
+    {
+        std::stringstream stream;
+        stream << value;
+        return string(stream.str().c_str());
+    }
+
+    const string string::Convert(wchar_t value)
+    {
+        std::wstringstream str;
+        str << value;
+        return string(str.str().c_str());
+    }
+
 	const string string::Convert(bool value)
 	{
 		if (value)
@@ -522,7 +408,7 @@ namespace System
 				break;
 		}
 
-        return string(&m_buffer[0] + start, end - start);
+        return string(c_str() + start, end - start);
 	}
 
     const std::vector<string> string::Split(const char *delimiters) const
@@ -535,7 +421,7 @@ namespace System
 			bool finish = false;
             for (unsigned j = 0; j < strlen(delimiters); j++)
 			{
-                if (m_buffer[i] == delimiters[j])
+                if (at(i) == delimiters[j])
 				{
 					end = i;
 					finish = true;
@@ -544,13 +430,13 @@ namespace System
 
 			if (finish)
 			{
-                res.push_back(string(&m_buffer[0] + start, end - start).Trim(delimiters));
+                res.push_back(string(c_str() + start, end - start).Trim(delimiters));
 				start = end+1;
 			}
 		}
 		if (start < (unsigned)Length())
 		{
-            res.push_back(string(&m_buffer[0] + start, Length() - start).Trim(delimiters));
+            res.push_back(string(c_str() + start, Length() - start).Trim(delimiters));
 		}/**/
 		return res;
 	}
@@ -586,25 +472,66 @@ namespace System
         return std::wstring();
     }
 
-	string::iterator string::begin()
-	{
-        return m_buffer.begin();
-	}
+    bool operator == (const string& l, const string& r)
+    {
+        return operator == ((std::wstring&)l, (std::wstring&)r);
+    }
 
-	string::const_iterator string::begin() const
-	{
-        return m_buffer.begin();
-	}
+    const string operator + (const string& l, const string& r)
+    {
+        return operator + ((std::wstring&)l, (std::wstring&)r);
+    }
 
-	string::iterator string::end()
-	{
+    std::wostream& operator << (std::wostream& stream, const System::string& value)
+    {
+        stream << &value.at(0);
+        return stream;
+    }
 
-        return m_buffer.end();
-	}
+    std::ostream& operator << (std::ostream& stream, const System::string& value)
+    {
+        std::string s = value.ToStdString();
+        stream << s;
+        return stream;
+    }
 
-	string::const_iterator string::end() const
-	{
-        return m_buffer.end();
-	}
+    const string string::ToLower() const
+    {
+        string result = *this;
+
+        std::transform(result.begin(), result.end(), result.begin(), [](const wchar_t& c) -> wchar_t
+        {
+            std::locale loc;
+            return std::use_facet<std::ctype<wchar_t>>(loc).tolower(c);
+        });
+
+        return result;
+    }
+
+    bool string::EndWith(const string &value) const
+    {
+        auto pos = find_last_of(value);
+        return pos != npos;
+    }
+
+    bool string::StartWith(const string &value) const
+    {
+        auto pos = find_first_of(value);
+        return pos != npos;
+    }
+
+    string& string::arg(int8_t value) { return *this; }
+    string& string::arg(uint8_t value) { return *this; }
+    string& string::arg(int16_t value) { return *this; }
+    string& string::arg(uint16_t value) { return *this; }
+    string& string::arg(int32_t value) { return *this; }
+    string& string::arg(uint32_t value) { return *this; }
+    string& string::arg(uint64_t value) { return *this; }
+    string& string::arg(int64_t value) { return *this; }
+    string& string::arg(float value) { return *this; }
+    string& string::arg(double value) { return *this; }
+    string& string::arg(const string& value) { return *this; }
+    string& string::arg(bool value) { return *this; }
+    string& string::arg(const char* value) { return *this; }
 
 }/**/

@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #endif
 
+#include <iostream>
 #include <istream>
 #include "errors/module.h"
 #include "binary_file.h"
@@ -57,12 +58,15 @@ namespace System
     size_t GetFileSize(int hFile)
     {
         __off_t size = lseek(hFile, 0, SEEK_END);
+        lseek(hFile, 0, SEEK_SET);
         return (size_t)size;
     }
 
     int OpenReadFile(const System::string& filename)
     {
-        int hFile = open(&filename.ToUtf8()[0], O_RDONLY);
+        auto buffer = filename.ToUtf8();
+        buffer.push_back(0);
+        int hFile = open(&buffer[0], O_RDONLY);
         return hFile;
     }
 
@@ -74,6 +78,7 @@ namespace System
     void ReadFile(int handle, void* ptr, size_t size)
     {
         size_t res = read(handle, ptr, size);
+        std::cout << "Read result: " << res << std::endl;
     }
 
 #endif

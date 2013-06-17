@@ -29,12 +29,8 @@ namespace System
 	//	const wchar_t* m_w_what;
 	//};
 
-    class PUNK_ENGINE_API string
+    class PUNK_ENGINE_API string : public std::wstring
 	{
-	public:
-        typedef std::vector<wchar_t>::iterator iterator;
-        typedef std::vector<wchar_t>::const_iterator const_iterator;
-
 	public:
          string();
          string(const char* s);
@@ -42,6 +38,7 @@ namespace System
          string(const char* s, size_t length);
          string(const wchar_t* s, size_t length);
          string(const string& s);
+         string(const std::wstring& s);
          explicit string(size_t length);
 
          string& operator = (const string& s);
@@ -68,9 +65,6 @@ namespace System
 
          string& operator += (const string& s);
          string& operator += (const char* s);
-
-         void ToANSI(char*& buffer, size_t& length) const;
-         void ToANSI(char* buffer, size_t size) const;
 
          const std::vector<char> ToAscii() const;
          const std::vector<char> ToUtf8() const;
@@ -105,58 +99,33 @@ namespace System
          bool Save(std::ostream& stream) const;
          bool Load(std::istream& stream);
 
-         iterator begin();
-         const_iterator begin() const;
-         iterator end();
-         const_iterator end() const;
-
-         string& arg(int8_t value) { return *this; }
-         string& arg(uint8_t value) { return *this; }
-         string& arg(int16_t value) { return *this; }
-         string& arg(uint16_t value) { return *this; }
-         string& arg(int32_t value) { return *this; }
-         string& arg(uint32_t value) { return *this; }         
-         string& arg(uint64_t value) { return *this; }
-         string& arg(int64_t value) { return *this; }
-         string& arg(float value) { return *this; }
-         string& arg(double value) { return *this; }
-         string& arg(const string& value) { return *this; }
-         string& arg(bool value) { return *this; }
-         string& arg(const char* value) { return *this; }
+         string& arg(int8_t value);
+         string& arg(uint8_t value);
+         string& arg(int16_t value);
+         string& arg(uint16_t value);
+         string& arg(int32_t value);
+         string& arg(uint32_t value);
+         string& arg(uint64_t value);
+         string& arg(int64_t value);
+         string& arg(float value);
+         string& arg(double value);
+         string& arg(const string& value);
+         string& arg(bool value);
+         string& arg(const char* value);
 #ifdef _WIN32
-         string& arg(long value) { return *this; }         
+         string& arg(long value);
 #endif
-         bool EndWith(const string& value) const { return false; }
-         bool StartWith(const string& value) const { return false; }
+         bool EndWith(const string& value) const;
+         bool StartWith(const string& value) const;
 
-         const string AsLower() const { return *this; }
-         string& ToLower() { return *this; }
-
-    private:
-        //  UTF8
-         std::vector<wchar_t> m_buffer;
-
-        friend bool operator == (const string& s1, const string& s2);
-        friend  bool operator == (const string& s1, const char* s2);
-        friend  bool operator != (const string& s1, const string& s2);
-        friend  bool operator != (const string& s1, const char* s2);
-        friend  bool operator < (const string& s1, const string& s2);
-        friend  bool operator < (const string& s1, const char* s2);
-        friend  const string operator + (const string& s1, const string& s2);
-        friend  const string operator + (const string& s1, const char* s2);
-        friend  const string operator + (const char* s1, const string& s2);
+         const string ToLower() const;
 	};
 
-     bool operator == (const string& s1, const string& s2);
-     bool operator == (const string& s1, const char* s2);
-     bool operator != (const string& s1, const string& s2);
-     bool operator != (const string& s1, const char* s2);
-     bool operator < (const string& s1, const string& s2);
-     bool operator < (const string& s1, const char* s2);
-     const string operator + (const string& s1, const string& s2);
-     const string operator + (const string& s1, const char* s2);
-     const string operator + (const char* s1, const string& s2);
+    bool operator == (const string& l, const string& r);
+    const string operator + (const string& l, const string& r);
 
+    std::wostream& operator << (std::wostream& stream, const System::string& value);
+    std::ostream& operator << (std::ostream& stream, const System::string& value);
 }
 
 

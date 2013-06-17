@@ -25,7 +25,7 @@ namespace System
 			cur_time[3] = cur_time[7] = cur_time[10] = cur_time[19] = 0;		//	split string into several strings
             const char* buf = cur_time.Data();
 			//	makefile name according to the current date
-            string filename("log_" + string(&buf[20]) + "_" + string(&buf[4]) + "_" + string(&buf[8]));
+            string filename(L"log_" + string(&buf[20]) + L"_" + string(&buf[4]) + L"_" + string(&buf[8]));
 			m_stream.open(filename.ToStdString().c_str(), std::ios_base::app);
 		}
 

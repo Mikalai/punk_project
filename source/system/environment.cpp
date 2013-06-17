@@ -46,7 +46,7 @@ namespace System
 
 	const string Environment::GetModelFolder()
 	{
-		return GetCurrentFolder() + L"\\..\\..\\data\\models\\";
+        return GetCurrentFolder() + L"/../../data/models/";
 		//return GetCurrentFolder() + L"models\\";
 	}
 
@@ -64,8 +64,12 @@ namespace System
 
 	const string Environment::GetTextureFolder()
 	{
-		return GetCurrentFolder() + L"\\..\\..\\data\\textures\\";
-		//return GetCurrentFolder() + L"textures\\";
+#ifdef _WIN32
+        return GetCurrentFolder() + L"\\..\\..\\data\\textures\\";
+        //return GetCurrentFolder() + L"textures\\";
+#elif defined __gnu_linux__
+        return GetCurrentFolder() + L"/../../data/textures/";
+#endif
 	}
 
 	const string Environment::GetQuestFolder() 
@@ -82,7 +86,9 @@ namespace System
 
 	const string Environment::GetShaderFolder()
 	{
-		return GetCurrentFolder() + L"\\..\\..\\data\\shaders\\";
+#ifdef __gnu_linux__
+        return GetCurrentFolder() + L"/../../data/shaders/";
+#endif
 		//return GetCurrentFolder() + L"shaders\\";
 	}
 	
