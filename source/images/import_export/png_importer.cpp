@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 #ifdef USE_PNG
-#include <png/png.h>
+#include <png.h>
 #endif // USE_PNG
 
 namespace ImageModule

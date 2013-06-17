@@ -1,10 +1,11 @@
+#include <stdio.h>
 #include "png_exporter.h"
 #include "../internal_images/image.h"
 #include "../../string/string.h"
 #include "../error/module.h"
 
 #ifdef USE_PNG
-#include <png/png.h>
+#include "png.h"
 #endif // USE_PNG
 
 namespace ImageModule
@@ -17,7 +18,11 @@ namespace ImageModule
 		png_infop info_ptr;
 
 		/* open the file */
+#ifdef _WIN32
 		_wfopen_s(&fp, filename.Data(), L"wb");
+#elif defined __gnu_linux__
+        fp = fopen(&filename.ToUtf8()[0], "wb");
+#endif
 		if (fp == NULL)
 			throw ImageException(L"Can't open file");
 

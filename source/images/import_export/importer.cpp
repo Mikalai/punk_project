@@ -62,7 +62,7 @@ namespace ImageModule
 
 	bool Importer::Load(const System::string& filename)
 	{
-        auto file = filename.AsLower();
+        auto file = filename.ToLower();
         if (file.EndWith(".png"))
 		{
 			PngImporter importer;
