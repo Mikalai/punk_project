@@ -13,7 +13,7 @@ namespace Virtual
 
 	System::StreamingStepResult TerrainLoader::Load()
 	{
-        System::string filename = System::Environment::Instance()->GetMapFolder() + m_map_name + "\\" + System::string("{0}_{1}.raw")
+        System::string filename = System::Environment::Instance()->GetMapFolder() + m_map_name + System::string("/{0}_{1}.raw")
                 .arg(m_block.X()).arg(m_block.Y());
 		
 		System::Buffer buffer;

@@ -54,7 +54,6 @@ namespace Virtual
 		Faces m_faces;		
 		TextureMeshes m_tex_coords;		
 		Math::mat4 m_world_offset;
-
 	};
 }
 

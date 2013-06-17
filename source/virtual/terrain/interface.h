@@ -14,6 +14,7 @@ namespace Virtual
 	class TerrainView;
 	class TerrainViewLoader;
 	class TerrainViewProcessor;
+    class TerrainRawDataSource;
 }
 
 #endif	//	_H_PUNK_VIRTUAL_TERRAIN_MODULE_INTERFACE
