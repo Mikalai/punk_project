@@ -42,6 +42,7 @@ namespace Utility
 		WORD_MATERIAL,					// 6
 		WORD_NORMAL_MAP,					// 6
 		WORD_DIFFUSE_MAP,					// 6
+        WORD_SPECULAR_MAP,					// 6
 		WORD_MATERIALS,					// 6
 		WORD_GIMBAL_TRANSFORM,					// 6
 		WORD_ACTION,					// 6
@@ -122,7 +123,13 @@ namespace Utility
 		WORD_ARMATURETEXT,
 		WORD_ACTIONTEXT,
 		WORD_STATICMESHTEXT,
-		WORD_MATERIALTEXT
+        WORD_MATERIALTEXT,
+        WORD_NAVIMESHTEXT,
+        WORD_PATHTEXT,
+        WORD_POINT,
+        WORD_SPLINE,
+        WORD_POSITION,
+        WORD_WEIGHT
 	};
 
 	struct Record
@@ -169,6 +176,7 @@ namespace Utility
         { WORD_MATERIAL,				"*materia" },
         { WORD_NORMAL_MAP,				"*normal_map" },
         { WORD_DIFFUSE_MAP,				"*diffuse_map" },
+        { WORD_SPECULAR_MAP,            "*specular_map" },
         { WORD_MATERIALS,				"*materials" },
         { WORD_GIMBAL_TRANSFORM,		"*gimbal_transform" },
         { WORD_ACTION,					"*action" },
@@ -246,10 +254,16 @@ namespace Utility
         { WORD_HEIGHT_SCALE,			"*height_scale" },
         { WORD_WORLD_ORIGIN,			"*world_origin" },
         { WORD_CELL,					"*cel" },
+        { WORD_POINT,                   "*point" },
+        { WORD_SPLINE,                  "*spline" },
+        { WORD_POSITION,                "*position" },
+        { WORD_WEIGHT,                  "*weight" },
         { WORD_ARMATURETEXT,			"ARMATURETEXT" },
         { WORD_ACTIONTEXT,				"ACTIONTEXT" },
         { WORD_STATICMESHTEXT,			"STATICMESHTEXT" },
-        { WORD_MATERIALTEXT,			"MATERIALTEXT" }
+        { WORD_MATERIALTEXT,			"MATERIALTEXT" },
+        { WORD_NAVIMESHTEXT,            "NAVIMESHTEXT" },
+        { WORD_PATHTEXT,                "PATHTEXT" }
 	};
 }
 
