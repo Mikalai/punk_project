@@ -16,6 +16,14 @@ class OBJECT_PT_punk_engine_tools(Panel):
         layout.prop(ob, "punk_entity_type")
                 
         if (ob.punk_entity_type == 'STATIC'):
+            layout.prop(text = "Triangles count", data = ob.data, property = "polygons")           
+            layout.prop(ob, "name", expand = True)
+            layout.prop(ob.data.materials[0], "diffuse_color", expand = True)
+        elif ob.punk_entity_type == 'TERRAIN':
+            layout.prop(text = "Triangles count", data = ob.data, property = "polygons")
+            layout.prop(ob, "name", expand = True)
+            layout.prop(ob.data.materials[0], "diffuse_color", expand = True)
+        elif ob.punk_entity_type == 'RIVER':
             layout.prop(text = "Triangles count", data = ob.data, property = "polygons")
             layout.prop(ob, "name", expand = True)
             layout.prop(ob.data.materials[0], "diffuse_color", expand = True)
@@ -130,7 +138,11 @@ def register():
                  ("SMALL_SLOT", "Small slot", "Small slot",                15),\
                  ("MIDDLE_SLOT", "Middle slot", "Middles slot",            16),\
                  ("LARGE_SLOT", "Large slot", "Large slot",                17),\
-                 ("COLD_WEAPON", "Cold weapon", "Cold weapon",             18)])
+                 ("COLD_WEAPON", "Cold weapon", "Cold weapon",             18),\
+                 ("TERRAIN", "Terrain", "Terrain",                         19),\
+                 ("RIVER", "River", "River",                               20),\
+                 ("SUN", "Sun", "Sun",                                     21),\
+                 ("PATH", "Geometry Path", "Geometry Path",                22)])
                          
 def unregister():
     del bpy.types.Object.punk_entity_type
