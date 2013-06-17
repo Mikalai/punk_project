@@ -16,16 +16,18 @@
 #include "test12.h"
 #include "test13.h"
 #include "test14.h"
+#include "test15.h"
+#include "test16.h"
 
-static const int TestNumber = 1;
+static const int TestNumber = 11;
 
 int main()
 {
-    std::cout << "Hello world" << std::endl;
-	std::cout << "Welcome to the test interface" << std::endl;
+    std::cout << "Size of wchar_t: " << sizeof(wchar_t) << std::endl;
+    std::cout << "Size of short: " << sizeof(short) << std::endl;
 	if (TestNumber == 1)
 	{
-		CreateOpenGLWindow test1;
+        Test1::Test test1;
 		test1.Run();
 		std::cout << "Result " << (test1.Succeed()? "Pass" : "Failed") << std::endl;
 	}
@@ -113,5 +115,17 @@ int main()
 		test.Run();
 		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
 	}
+    else if (TestNumber == 15)
+    {
+        Test15::Test test;
+        test.Run();
+        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+    }
+    else if (TestNumber == 16)
+    {
+        Test16::Test test;
+        test.Run();
+        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+    }
 	return 0;
 }

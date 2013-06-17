@@ -1,5 +1,7 @@
 #include "test_create_opengl_window.h"
 
+namespace Test1
+{
 class MyApp : public Punk::Application
 {
 public:
@@ -9,7 +11,7 @@ public:
     }
 };
 
-void CreateOpenGLWindow::Run()
+void Test::Run()
 {
     MyApp app;
     try
@@ -24,7 +26,8 @@ void CreateOpenGLWindow::Run()
     }
 }
 
-bool CreateOpenGLWindow::Succeed()
+bool Test::Succeed()
 {
     return m_result;
+}
 }

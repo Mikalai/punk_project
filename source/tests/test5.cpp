@@ -134,11 +134,6 @@ namespace Test5
 			m_quad -= 0.015f;
 
 		}
-
-		void WndOnResizeEvent(System::WindowResizeEvent *event) override
-		{
-
-		}
 	};
 
 	void Test::Run()

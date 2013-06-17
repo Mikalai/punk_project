@@ -4,7 +4,9 @@
 #include "../../punk_engine.h"
 #include "../test_interface.h"
 
-class CreateOpenGLWindow : public TestInterface
+namespace Test1
+{
+class Test : public TestInterface
 {
 public:
 
@@ -21,5 +23,6 @@ public:
 private:
     bool m_result;
 };
+}
 
 #endif // _H_CREATE_OPENGL_WINDOW_TEST

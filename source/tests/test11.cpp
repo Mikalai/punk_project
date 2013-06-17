@@ -44,7 +44,7 @@ namespace Test11
 
 		virtual void OnInit(const Punk::Config&) override
 		{
-			Virtual::StaticGeometry* g = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"Cube.001.static"));
+            Virtual::StaticGeometry* g = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"bridge_mesh.static"));
 
 			GPU::StaticMesh* mesh(new GPU::StaticMesh(GetVideoDriver()));
 			mesh->Cook(g);
