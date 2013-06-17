@@ -13,6 +13,7 @@ namespace GPU
 {
 	struct PUNK_ENGINE_API Config
 	{
+        bool disable_3d_graphics;
 		int view_width;
 		int view_height;
 		int view_left;

@@ -2,8 +2,9 @@
 
 namespace GPU
 {
-	Config::Config()
-		: view_width(1024)
+	Config::Config()   
+        : disable_3d_graphics(false)
+        , view_width(1024)
 		, view_height(768)
 		, view_left(100)
 		, view_top(100)

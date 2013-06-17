@@ -88,13 +88,15 @@ namespace GPU
 
 		void Shader::CookFromFile(const System::string& filename)
 		{
+            glGetError();
 			System::Buffer shader_data;
 			System::BinaryFile::Load(filename, shader_data);		
 			m_shader_index = glCreateShader(m_type);
 			ValidateOpenGL(L"Unable to create shader");
 			out_message() << L"Loading vertex shader " + filename << std::endl;
-			char * body = (char*)shader_data.StartPointer();
+			char * body = (char*)shader_data.StartPointer();            
 			int len = shader_data.GetSize();
+            out_message() << "Shader: " << std::endl << System::string(body, len) << std::endl;
 			GLint compileStatus;
 			glShaderSource(m_shader_index, 1, (const char**)&body,  &len);
 			ValidateOpenGL(L"Unable to set shader source");
