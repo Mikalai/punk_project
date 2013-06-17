@@ -146,6 +146,24 @@ namespace Math
 			return *this;
 		}
 
+        Vector4<T>& operator += (const Vector4<T>& v)
+        {
+            for (int i = 0; i < Size_c; i++)
+            {
+                m_v[i] += v[i];
+            }
+            return *this;
+        }
+
+        Vector4<T>& operator -= (const Vector4<T>& v)
+        {
+            for (int i = 0; i < Size_c; i++)
+            {
+                m_v[i] -= v[i];
+            }
+            return *this;
+        }
+
         Vector4<T>& operator *= (const T& v)
         {
             for (int i = 0; i < Size_c; i++)
@@ -156,7 +174,7 @@ namespace Math
             return *this;
         }
 
-		T Length()
+        T Length() const
 		{
 			//
 			//	it will always convert to float
