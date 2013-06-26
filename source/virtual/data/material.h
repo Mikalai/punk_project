@@ -19,25 +19,11 @@ namespace Utility
 
 namespace Virtual
 {
+    class TextureSlot;
+
 	class PUNK_ENGINE_API Material : public System::Object, public System::Aspect<Material*, System::string>
 	{
 	public:		
-		/**
-		*	When cache is droped data should be removed, because
-		*	it is considered, that Material is owner of this stuff
-		*/
-		struct Cache
-		{
-            GPU::Texture2D* m_diffuse_texture_cache;
-            GPU::Texture2D* m_normal_texture_cache;
-            GPU::Texture2D* m_diffuse_texture_cache_2;
-            GPU::Texture2D* m_height_texture_cache;
-            GPU::Texture2D* m_specular_texture_cache;
-
-			Cache();
-		};
-	
-	public:
 
 		Material();
 		Material(const Utility::MaterialDesc& desc);
@@ -99,6 +85,11 @@ namespace Virtual
 		void SetTranslucency(float value) { m_translucency = value; }
 		float GetTranslucency() const { return m_translucency; }
 
+        void AddTextureSlot(TextureSlot* value);
+        TextureSlot* GetTextureSlot(size_t index);
+        const TextureSlot* GetTextureSlot(size_t index) const;
+        size_t GetTextureSlotCount() const;
+
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 		virtual ~Material();
@@ -108,18 +99,6 @@ namespace Virtual
 
 		static Material* DefaultMaterial;
 
-		void DropCache();
-		
-        void SetDiffuseTextureCache(GPU::Texture2D* value) { m_cache.m_diffuse_texture_cache = value; }
-        void SetNormalTextureCache(GPU::Texture2D* value) { m_cache.m_normal_texture_cache = value; }
-        void SetDiffuseTexture2Cache(GPU::Texture2D* value) { m_cache.m_diffuse_texture_cache_2 = value; }
-        void SetHeightTextureCache(GPU::Texture2D* value) { m_cache.m_height_texture_cache = value; }
-
-		Cache& GetCache() { return m_cache; }
-		//System::Proxy<System::Object> GetDiffuseTextureCache() { return m_cache.m_diffuse_texture_cache; }
-		//System::Proxy<System::Object> GetNormalTextureCache() { return m_cache.m_normal_texture_cache; }
-		//System::Proxy<System::Object> GetDiffuseTexture2Cache() { return m_cache.m_diffuse_texture_cache_2; }
-		//System::Proxy<System::Object> GetHeightTextureCache() { return m_cache.m_height_texture_cache; }
 
 	private:
 		
@@ -143,10 +122,10 @@ namespace Virtual
 		float m_specular_slope;
 		float m_translucency;		
 
-		Cache m_cache;
-
 		Material(const Material&);
 		Material& operator = (const Material&);
+
+        std::vector<TextureSlot*> m_texture_slots;
 	};
 
 	typedef std::map<System::string, Material> Materials;

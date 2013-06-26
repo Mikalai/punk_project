@@ -4,16 +4,50 @@
 #include "material.h"
 #include "../../utility/descriptors/material_desc.h"
 #include "../../system/hresource.h"
+#include "texture_slot.h"
 
 namespace Virtual
-{
-	Material::Cache::Cache()
-		: m_diffuse_texture_cache(nullptr)
-		, m_normal_texture_cache(nullptr)
-		, m_diffuse_texture_cache_2(nullptr)
-		, m_height_texture_cache(nullptr)
-		, m_specular_texture_cache(nullptr)
-	{}
+{/*
+    void SetScale(const Math::vec3& value)
+    {
+        m_scale = value;
+    }
+
+    const Math::vec3& GetScale() const
+    {
+        return m_scale;
+    }
+
+    void MarkAsDiffuse(bool value)
+    {
+        m_is_diffuse_map = value;
+    }
+
+    void MarkAsNormal(bool value)
+    {
+        m_is_normal_map = value;
+    }
+
+    bool IsDiffuseMap()
+    {
+        return m_is_diffuse_map;
+    }
+
+    bool IsNormalMap()
+    {
+        return m_is_normal_map;
+    }
+
+    float GetDiffuseColorFactor() const
+    {
+        return m_diffuse_color_factor;
+    }
+
+    float GetNormalFactor() const
+    {
+        return m_
+    }
+    */
 	
 	Material* Material::DefaultMaterial(new Material);
 
@@ -181,6 +215,11 @@ namespace Virtual
 
 	Material::~Material()
 	{
+        while (!m_texture_slots.empty())
+        {
+            delete m_texture_slots.back();
+            m_texture_slots.pop_back();
+        }
 	}
 
 	Material* Material::CreateFromFile(const System::string& path)
@@ -193,12 +232,23 @@ namespace Virtual
 		return nullptr;
 	}
 
-	void Material::DropCache() 
-	{ 
-		safe_delete(m_cache.m_diffuse_texture_cache);
-		safe_delete(m_cache.m_normal_texture_cache);
-		safe_delete(m_cache.m_diffuse_texture_cache_2);
-		safe_delete(m_cache.m_height_texture_cache);
-	}
+    void Material::AddTextureSlot(TextureSlot* value)
+    {
+        m_texture_slots.push_back(value);
+    }
 
+    TextureSlot* Material::GetTextureSlot(size_t index)
+    {
+        return m_texture_slots.at(index);
+    }
+
+    const TextureSlot* Material::GetTextureSlot(size_t index) const
+    {
+        return m_texture_slots.at(index);
+    }
+
+    size_t Material::GetTextureSlotCount() const
+    {
+        return m_texture_slots.size();
+    }
 }
