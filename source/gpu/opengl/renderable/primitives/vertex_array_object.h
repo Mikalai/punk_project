@@ -307,6 +307,16 @@ namespace GPU
 			{
 				return m_sphere;
 			}
+
+            virtual size_t GetMemoryUsage() override
+            {
+                size_t res = 0;
+                if (m_index_buffer != 0)
+                    res += m_index_buffer->GetSize();
+                if (m_vertex_buffer != 0)
+                    res += m_vertex_buffer->GetSize();
+                return res;
+            }
 		};
 	};
 }

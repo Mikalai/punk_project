@@ -53,7 +53,11 @@ namespace GPU
 #endif
 
 #ifdef USE_BUMP_MAPPING_RC
-            AbstractRenderPolicy::add(RenderPolicySet::RC_BUMP_MAPING, new RenderContextBumpMapping());
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsBumpMapping, new FsBumpMapping, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::BumpMapping, rc);
+            }
 #endif
 
 #ifdef USE_GUI_RC

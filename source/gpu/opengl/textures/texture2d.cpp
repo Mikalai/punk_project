@@ -41,7 +41,7 @@ namespace GPU
 		impl = nullptr;
 	}
 
-	bool Texture2D::CopyFromCPU(int x, int y, int width, int height, const void* data)
+    bool Texture2D::CopyFromCpu(int x, int y, int width, int height, const void* data)
 	{
 		return impl->CopyFromCPU(x, y, width, height, data);
 	}
@@ -50,6 +50,11 @@ namespace GPU
 	{
 		return impl->m_texture_id != 0;
 	}
+
+    size_t Texture2D::GetMemoryUsage()  const
+    {
+        return impl->GetMemoryUsage();
+    }
 
 	void Texture2D::Resize(int width, int height)
 	{
@@ -71,10 +76,10 @@ namespace GPU
 		return impl->m_height;
 	}
 
-	unsigned Texture2D::GetCode() const
-	{
-		return impl->m_texture_id;
-	}
+    unsigned Texture2D::GetCode() const
+    {
+        return impl->m_texture_id;
+    }
 
 	void* Texture2D::Map()
 	{
@@ -94,5 +99,5 @@ namespace GPU
 	void Texture2D::Clear()
 	{
 		impl->Clear();
-	}
+    }
 }

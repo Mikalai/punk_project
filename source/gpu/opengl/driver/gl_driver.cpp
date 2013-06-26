@@ -1,4 +1,3 @@
-
 #ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -278,41 +277,34 @@ void VideoDriverImpl::CreateOpenGLWindow()
                                                 RootWindow( m_display, m_visual_info->screen ),
                                                 m_visual_info->visual, AllocNone );
     swa.border_pixel = 0;
-    swa.event_mask =  StructureNotifyMask | ExposureMask | KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask
-                    | EnterWindowMask
-                    | LeaveWindowMask
-                    | PointerMotionMask
-                    | PointerMotionHintMask
-                    | Button1MotionMask
-                    | Button2MotionMask
-                    | Button3MotionMask
-                    | Button4MotionMask
-                    | Button5MotionMask
-                    | ButtonMotionMask
-                    | KeymapStateMask
-                    | ExposureMask
-                    | VisibilityChangeMask
-                    | StructureNotifyMask
-                    | ResizeRedirectMask
-                    | SubstructureNotifyMask
-                    | SubstructureRedirectMask
-                    | FocusChangeMask
-                    | PropertyChangeMask
-                    | ColormapChangeMask
-                    | OwnerGrabButtonMask;
-
 
     printf( "Creating window\n" );
     m_window = XCreateWindow( m_display, RootWindow(m_display, m_visual_info->screen ),
                                 m_desc.window->GetX(), m_desc.window->GetY(), m_desc.window->GetWidth(), m_desc.window->GetHeight(), 0, m_visual_info->depth, InputOutput,
                                 m_visual_info->visual,
-                                CWBorderPixel|CWColormap|CWEventMask, &swa );
+                                CWBorderPixel|CWColormap, &swa );
 
     if ( !m_window )
     {
         printf( "Failed to create window.\n" );
         exit(1);
     }
+
+    XSelectInput(m_display, m_window, ExposureMask | KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask
+                 | EnterWindowMask
+                 | LeaveWindowMask
+                 | PointerMotionMask
+                 | KeymapStateMask
+                 | ExposureMask
+                 | VisibilityChangeMask
+                 | StructureNotifyMask
+                 | ResizeRedirectMask
+                 | SubstructureNotifyMask
+                 | SubstructureRedirectMask
+                 | FocusChangeMask
+                 | PropertyChangeMask
+                 | ColormapChangeMask
+                 | OwnerGrabButtonMask);
 
     // Done with the visual info data
     XFree( m_visual_info );

@@ -22,7 +22,7 @@ namespace GPU
         bool m_use_mip_maps;		
         GLenum m_format;
 		GLenum m_internal_format;
-		GLenum m_internal_type;
+        GLenum m_internal_type;
 
         OpenGL::PixelBufferObject* m_pbo;
 
@@ -34,7 +34,7 @@ namespace GPU
 			, m_width(0)
 			, m_height(0)
 			, m_format(0)
-			, m_pbo(nullptr)			
+            , m_pbo(nullptr)
 		{
 			//Create(64, 64, GL_RED, 0);
 		}
@@ -49,6 +49,11 @@ namespace GPU
 		{
 			Clear();
 		}
+
+        size_t GetMemoryUsage() const
+        {
+            return m_pbo->GetSize();
+        }
 
         void Bind(int slot)
         {
@@ -81,7 +86,7 @@ namespace GPU
 				glDeleteTextures(1, &m_texture_id);
 				ValidateOpenGL(L"Can't delete texture");
 				m_texture_id = 0;
-			}
+            }
 		}
 
 //		void CreateFromImage(const ImageModule::Image& image, ImageModule::ImageFormat internal_format, bool use_mipmaps)
@@ -445,7 +450,6 @@ namespace GPU
 					UpdateMipMaps();
 			}
 		}
-
 
 
 		int ToInternalFormat(ImageModule::ImageFormat format)
