@@ -84,6 +84,7 @@ namespace Test13
         GPU::Renderable* m_renderable3;
         GPU::Renderable* m_renderable4;
         Math::Frustum m_frustum;
+        Math::mat4 m_projection;
         float m_a;
         float a, b, h;
         float m_rz;
@@ -334,6 +335,7 @@ namespace Test13
         }
 
         TestApp()
+            : m_frustum(m_projection)
         {
             m_renderable = nullptr;
             m_renderable2 = nullptr;
@@ -346,7 +348,8 @@ namespace Test13
             MakeResult();
 
 
-            m_frustum.Set(Math::PI / 4.0f, 800, 600, 1, 10.0);
+            m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, 800, 600, 1, 10.0);
+            m_frustum.Update();
 
             //            Math::Plane p0(0.875370000000000, 0, -0.483454000000000, 0);
             //            Math::Plane p1(0, 0, 1, 10);
@@ -434,7 +437,8 @@ namespace Test13
 
         virtual void OnInit(const Punk::Config&) override
         {
-            m_frustum.Set(Math::PI / 4.0f, 800, 600, 1, 10.0);
+            m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, 800, 600, 1, 10.0);
+            m_frustum.Update();
 
             if (m_renderable)
                 delete m_renderable;
@@ -462,7 +466,9 @@ namespace Test13
 
         virtual void OnResize(System::WindowResizeEvent *event) override
         {
-            m_frustum.Set(Math::PI / 4.0f, event->width, event->height, 1, 10.0);
+            m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, event->width, event->height, 1, 10.0);
+            m_frustum.Update();
+
             if (m_renderable2)
             {
                 delete m_renderable2;
@@ -546,7 +552,9 @@ namespace Test13
         {
             frame->SetClearColor(Math::vec4(0.5, 0.5, 0.5, 1));
             frame->EnableDiffuseShading(true);
-            frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
+            float width = GetWindow()->GetWidth();
+            float height = GetWindow()->GetHeight();
+            frame->SetProjectionMatrix(m_projection);
             frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(-50, -50, -50), Math::vec3(0, 0, 0), Math::vec3(0, 1, 0)));
             frame->EnableDepthTest(false);
             frame->EnableBlending(true);

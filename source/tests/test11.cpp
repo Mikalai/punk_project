@@ -44,8 +44,9 @@ namespace Test11
 
 		virtual void OnInit(const Punk::Config&) override
 		{
-            Virtual::StaticGeometry* g = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"bridge_mesh.static"));
+            Virtual::Material* m = Cast<Virtual::Material*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"bridge_material.material"));
 
+            Virtual::StaticGeometry* g = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"bridge_mesh.static"));            
 			GPU::StaticMesh* mesh(new GPU::StaticMesh(GetVideoDriver()));
 			mesh->Cook(g);
 			delete g;
@@ -57,6 +58,13 @@ namespace Test11
 
 			m_texture = m_opaque_texture;
 		}
+
+        virtual void OnDestroy() override
+        {
+            delete m_renderable;
+            delete m_opaque_texture;
+            delete m_transparent_texture;
+        }
 
 		virtual void OnMouseWheel(System::MouseWheelEvent *event)
 		{
@@ -117,7 +125,9 @@ namespace Test11
 			frame->SetDiffuseMap0(m_texture);
 
 			frame->SetTextureMatrix(Math::mat4::CreateIdentity());
-			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
+            float width = GetWindow()->GetWidth();
+            float height = GetWindow()->GetHeight();
+            frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
 			frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(-1, -2, 0), Math::vec3(0, 0, -7), Math::vec3(0, 1, 0)));
 
 			frame->PushAllState();
@@ -174,13 +184,14 @@ namespace Test11
 	};
 
 	void Test::Run()
-	{
-		TestApp app;
+	{		
 		try
 		{
-			app.Init(Punk::Config());
+            TestApp* app = new TestApp;
+            app->Init(Punk::Config());
 			System::Mouse::Instance()->LockInWindow(false);
-			app.Run();
+            app->Run();
+            delete app;
 		}
 		catch(System::PunkException& e)
 		{

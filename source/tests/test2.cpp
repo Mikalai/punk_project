@@ -22,7 +22,9 @@ namespace Test2
 
 			frame->BeginRendering();
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(-1.5, 0, -6));
-			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
+            float width = GetWindow()->GetWidth();
+            float height = GetWindow()->GetHeight();
+            frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
 
 			frame->SetDiffuseColor(Math::vec4(1,1,1,1));
 			GPU::RenderableBuilder builder(GetVideoDriver());

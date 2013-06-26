@@ -71,7 +71,9 @@ namespace Test6
 			frame->BeginRendering();
 			frame->Clear(true, true, true);
 			frame->SetDiffuseMap0(m_texture.get());
-			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
+            float width = GetWindow()->GetWidth();
+            float height = GetWindow()->GetHeight();
+            frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(0, 0, -5));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_x));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_y));

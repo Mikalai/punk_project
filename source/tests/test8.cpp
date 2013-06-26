@@ -85,8 +85,8 @@ namespace Test8
 
 			m_renderable.reset(b.ToRenderable());
 
-			m_opaque_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"wood_floor.png", true));
-			m_transparent_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"Glass.png", true));
+            m_opaque_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"wood_floor.png", false));
+            m_transparent_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"grass.png", false));
 
 			m_texture = m_opaque_texture.get();
 		}
@@ -150,7 +150,9 @@ namespace Test8
 			frame->SetDiffuseMap0(m_texture);
 
 			frame->SetTextureMatrix(Math::mat4::CreateIdentity());
-			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
+            float width = GetWindow()->GetWidth();
+            float height = GetWindow()->GetHeight();
+            frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
 			frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(-1, -2, 0), Math::vec3(0, 0, -7), Math::vec3(0, 1, 0)));
 
 			frame->PushAllState();
@@ -194,8 +196,8 @@ namespace Test8
 			m_y += 0.0002f;
 			m_z += 0.0004f;
 
-            auto fan = new GPU::TriangleFan<GPU::Vertex<GPU::VertexComponent::Position>>(GetVideoDriver());
-            fan->Bind(0);
+           // auto fan = new GPU::TriangleFan<GPU::Vertex<GPU::VertexComponent::Position>>(GetVideoDriver());
+           // fan->Bind(0);
 		}
 	};
 

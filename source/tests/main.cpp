@@ -18,8 +18,11 @@
 #include "test14.h"
 #include "test15.h"
 #include "test16.h"
+#include "test17.h"
+#include "test18.h"
+#include "test19.h"
 
-static const int TestNumber = 11;
+static const int TestNumber = 19;
 
 int main()
 {
@@ -124,6 +127,24 @@ int main()
     else if (TestNumber == 16)
     {
         Test16::Test test;
+        test.Run();
+        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+    }
+    else if (TestNumber == 17)
+    {
+        Test17::Test test;
+        test.Run();
+        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+    }
+    else if (TestNumber == 18)
+    {
+        Test18::Test test;
+        test.Run();
+        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+    }
+    else if (TestNumber == 19)
+    {
+        Test19::Test test;
         test.Run();
         std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
     }

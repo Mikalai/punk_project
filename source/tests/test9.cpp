@@ -98,7 +98,9 @@ namespace Test9
             frame->SetBlendColor(1,1,1,1);
 			frame->SetBlendFunc(GPU::BlendFunction::SourceAlpha, GPU::BlendFunction::One);
 			frame->SetDiffuseMap0(m_texture.get());
-			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
+            float width = GetWindow()->GetWidth();
+            float height = GetWindow()->GetHeight();
+            frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
 			frame->BeginRendering();
 			for (int i = 0; i < c_num_particles; ++i)
 			{

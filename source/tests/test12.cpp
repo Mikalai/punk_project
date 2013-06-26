@@ -5,12 +5,14 @@ namespace Test12
 	class TestApp : public Punk::Application
 	{
 		GPU::Renderable* m_renderable;
+        Math::mat4 m_projection;
 		Math::Frustum m_frustum;
 		float m_a;
 		float a, b, h;
 		float m_rz;
 	public:
 		TestApp()
+            : m_frustum(m_projection)
 		{
 			m_renderable = nullptr;
             m_a = Math::PI / 2.0f - 0.01f;
@@ -22,7 +24,7 @@ namespace Test12
 
 		virtual void OnInit(const Punk::Config&) override
 		{
-			m_frustum.Set(Math::PI / 4.0f, 800, 600, 1, 10.0);
+            m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, 800, 600, 1, 10.0);
 
 			if (m_renderable)
 				delete m_renderable;
@@ -86,7 +88,10 @@ namespace Test12
 		{
 			frame->SetClearColor(Math::vec4(0.5, 0.5, 0.5, 1));
 			frame->EnableDiffuseShading(true);
-			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
+            float width = GetWindow()->GetWidth();
+            float height = GetWindow()->GetHeight();
+            m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0);
+            frame->SetProjectionMatrix(m_projection);
 			frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(-50, -50, -50), Math::vec3(0, 0, 0), Math::vec3(0, 1, 0)));
 			frame->PushAllState();
 
