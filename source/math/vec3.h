@@ -16,6 +16,7 @@ namespace Math
 	template<class T>
 	class Vector3
 	{
+    protected:
 		static const int Size_c = 3;
 		static constexpr float Eps = 1e-3;
 		T m_v[Size_c];
@@ -40,9 +41,9 @@ namespace Math
 
 		Vector3<T>(T x, T y, T z)
 		{
-			m_v[0] = fabs(x) < Eps ? 0 : x;
-			m_v[1] = fabs(y) < Eps ? 0 : y;
-			m_v[2] = fabs(z) < Eps ? 0 : z;
+            m_v[0] = x;
+            m_v[1] = y;
+            m_v[2] = z;
 		}
 
 		Vector3<T>(const Vector3<T>& origin, const Vector3<T>& destination)
@@ -232,47 +233,18 @@ namespace Math
 		T SquareLength() const
 		{
 			return m_v[0]*m_v[0]+m_v[1]*m_v[1]+m_v[2]*m_v[2];
-		}
-
-		T Length() const
-		{
-			return static_cast<T>(sqrtf((float)(m_v[0]*m_v[0]+m_v[1]*m_v[1]+m_v[2]*m_v[2])));
-		}
-
-		Vector3<T> Normalized() const
-		{
-			T length = Length();
-			return *this / length;
-		}
-
-		Vector3<T>& Normalize()
-		{
-			T length = Length();
-			m_v[0] /= length;
-			m_v[1] /= length;
-			m_v[2] /= length;
-			return *this;
-		}
+		}		
 
 		void Set(T x, T y, T z)
 		{
-			m_v[0] = fabs(x) < Eps ? 0 : x;
-			m_v[1] = fabs(y) < Eps ? 0 : y;
-			m_v[2] = fabs(z) < Eps ? 0 : z;
+            m_v[0] = x;
+            m_v[1] = y;
+            m_v[2] = z;
 		}
 
 		T Dot(const Vector3<T>& a) const
 		{
 			return m_v[0] * a.m_v[0] + m_v[1] * a.m_v[1] + m_v[2] * a.m_v[2];
-		}
-
-		Vector3<T> Cross(const Vector3<T>& vec) const
-		{
-			Vector3<T> v(
-				m_v[1] * vec.m_v[2] - m_v[2] * vec.m_v[1],
-				m_v[2] * vec.m_v[0] - m_v[0] * vec.m_v[2],
-				m_v[0] * vec.m_v[1] - m_v[1] * vec.m_v[0]);
-			return v;
 		}
 
 		Vector3<T>& operator = (const Vector3<T>& vec)
@@ -366,7 +338,77 @@ namespace Math
 		vec3(float x, float y, float z) : Vector3<float>(x, y, z) {}
 		vec3(const vec3& vec) : Vector3<float>(vec) {}
 		vec3(const Vector3<float>& vec) : Vector3<float>(vec) {}
+
+        float Length() const
+        {
+            return sqrtf(m_v[0]*m_v[0]+m_v[1]*m_v[1]+m_v[2]*m_v[2]);
+        }
+
+        const vec3 Normalized() const
+        {
+            float length = Length();
+            return *this / length;
+        }
+
+        vec3& Normalize()
+        {
+            float length = Length();
+            m_v[0] /= length;
+            m_v[1] /= length;
+            m_v[2] /= length;
+            return *this;
+        }
+
+        const vec3 Cross(const vec3& vec) const
+        {
+            vec3 v(
+                m_v[1] * vec.m_v[2] - m_v[2] * vec.m_v[1],
+                m_v[2] * vec.m_v[0] - m_v[0] * vec.m_v[2],
+                m_v[0] * vec.m_v[1] - m_v[1] * vec.m_v[0]);
+            return v;
+        }
+
 	};
+
+    static vec3 operator + (const vec3& a, const vec3& b)
+    {
+        return vec3(a[0] + b[0], a[1] + b[1], a[2] + b[2]);
+    }
+
+    static vec3 operator -(const vec3& a, const vec3& b)
+    {
+        return vec3(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+    }
+
+    static vec3 operator *(const vec3& a, float d)
+    {
+        return vec3(a[0] * d, a[1] * d, a[2] * d);
+    }
+
+    static vec3 operator *(float d, const vec3& a)
+    {
+        return vec3(a[0] * d, a[1] * d, a[2] * d);
+    }
+
+    static vec3 operator *(const vec3& a, const vec3& b)
+    {
+        return vec3(a[0] * b[0], a[1] * b[1], a[2] * b[2]);
+    }
+
+    static vec3 operator /(const vec3& a, float d)
+    {
+        return vec3(a[0] / d, a[1] / d, a[2] / d);
+    }
+
+    static bool operator ==(const vec3& a, const vec3& b)
+    {
+        return a[0] == b[0] && a[1] == b[1] && a[2] == b[2];
+    }
+
+    static bool operator !=(const vec3& a, const vec3& b)
+    {
+        return !(a == b);
+    }
 
 	class PUNK_ENGINE_API ivec3 : public Vector3<int> 
 	{

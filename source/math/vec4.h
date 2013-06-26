@@ -3,8 +3,8 @@ MODULE FOR WORKING WITH 4 DIMENSIONAL VECTOR
 AUTHOR: Mikalai Abramau
 */
 
-#ifndef _H_VEC4_MATH
-#define _H_VEC4_MATH
+#ifndef _H_PUNK_MATH_VEC4
+#define _H_PUNK_MATH_VEC4
 
 #include <iosfwd>
 #include <stdio.h>
@@ -540,27 +540,30 @@ namespace Math
 		return !(a == b);
 	}
 
+    class vec3;
+
 	class PUNK_ENGINE_API vec4 : public Vector4<float> 
 	{
 	public:
-		vec4() : Vector4<float>() {}
-		vec4(float x, float y, float z, float w) : Vector4<float>(x, y, z, w) {}
-		vec4(float x) : Vector4<float>(x) {}
-		vec4(const vec4& origin, const vec4& destination) : Vector4<float>(origin, destination) {}
-		vec4(const vec3& p, float d = 1) : Vector4<float>(p, d) {}
-		vec4(const vec4& vec) : Vector4<float>(vec) {}
-		vec4(const Vector4<float>& vec) : Vector4<float>(vec) {}
+        vec4();
+        vec4(float x, float y, float z, float w);
+        vec4(float x);
+        vec4(const vec4& origin, const vec4& destination);
+        vec4(const vec3& p, float d = 1);
+        vec4(const vec4& vec);
+        vec4(const Vector4<float>& vec);
+        const vec3 ToHomogeneus() const;
 	};
 
 	class PUNK_ENGINE_API ivec4 : public Vector4<int> 
 	{
 	public:
-		ivec4() : Vector4<int>() {}
-		ivec4(int x, int y, int z, int w) : Vector4<int>(x, y, z, w) {}
-		ivec4(int x) : Vector4<int>(x) {}
-		ivec4(const ivec4& vec) : Vector4<int>(vec) {}
-		ivec4(const Vector4<int>& vec) : Vector4<int>(vec) {}
+        ivec4();
+        ivec4(int x, int y, int z, int w);
+        ivec4(int x);
+        ivec4(const ivec4& vec);
+        ivec4(const Vector4<int>& vec);
 	};	
 }
 
-#endif
+#endif  //  _H_PUNK_MATH_VEC4
