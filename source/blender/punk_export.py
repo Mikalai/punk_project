@@ -223,6 +223,22 @@ def export_tex_coords(f, mesh):
         end_block(f)
     return
 
+def export_texture_slot(f, slot):
+    start_block(f, "*texture_slot")
+    try:
+        export_vec3(f, "*scale", slot.scale)
+        export_string(f, "*image", slot.texture.image.name)
+        if slot.use_map_color_diffuse:
+            export_float(f, "*diffuse_map", slot.diffuse_color_factor)   
+        if slot.use_map_normal:
+            export_float(f, "*normal_map", slot.normal_factor)
+        if slot.use_map_specular:
+            export_float(f, "*specular_intensity_map", slot.specular_factor)
+        end_block(f)    #*texture
+    except:
+        print("Failed to export texture")
+    return
+
 def export_material(f, m):
     global text_offset
     old = text_offset 
@@ -254,7 +270,7 @@ def export_material(f, m):
     for slot in m.texture_slots:
         try:            
             if slot.texture.image != None:
-                export_string(f, "*" + slot.name, slot.texture.image.name)   
+                export_texture_slot(f, slot)
         except:
             print("No texture found")
                         
@@ -365,22 +381,17 @@ def export_navi_meshes(f):
     return
 
 def export_terrain(f, object):
+    export_static_mesh(f, object)
     global text_offset
     old = text_offset 
     text_offset = 0
     
     file = object.data.name + ".terrain"    
     f = open(file, "w")
-    f.write("TERRAINTEXT\n")
+    f.write("TERRAINTEXT\n")    
     mesh = object.data
     start_block(f, mesh.name)
-    export_mat4(f, "*world_matrix", object.matrix_world)
-    export_vertex_position(f, mesh)
-    export_normals(f, mesh)
-    export_faces(f, mesh)
-    export_tex_coords(f, mesh)
-    if len(mesh.materials) != 0:
-        export_material(f, bpy.data.materials[mesh.materials[0].name])        
+    export_string(f, "*mesh", mesh.name + ".static")
     end_block(f)    #   terrain        
     f.close()        
     
@@ -397,6 +408,7 @@ def export_terrains(f):
     return
 
 def export_river(f, object):
+    export_static_mesh(f, object)
     global text_offset
     old = text_offset 
     text_offset = 0
@@ -406,13 +418,9 @@ def export_river(f, object):
     f.write("RIVERTEXT\n")
     mesh = object.data
     start_block(f, mesh.name)
-    export_mat4(f, "*world_matrix", object.matrix_world)
-    export_vertex_position(f, mesh)
-    export_normals(f, mesh)
-    export_faces(f, mesh)
-    export_tex_coords(f, mesh)
-    if len(mesh.materials) != 0:
-        export_material(f, bpy.data.materials[mesh.materials[0].name])        
+    export_string(f, "*mesh", mesh.name + ".static")    
+    export_float(f, "*flow_speed", 1)
+    export_vec3(f, "*flow_direction", [1, 0, 0])
     end_block(f)    #   river            
     f.close()        
     
@@ -459,4 +467,38 @@ def export_paths(f):
         data = object.data
         if data != None:
             export_path(f, object)
+    return
+
+def export_camera(f, object):
+    global text_offset
+    old = text_offset 
+    text_offset = 0
+    
+    file = object.data.name + ".camera"    
+    f = open(file, "w")
+    f.write("CAMERATEXT\n")
+    
+    camera = object.data
+    start_block(f, "*camera")
+    export_string(f, "*name", camera.name)
+    export_string(f, "*type", camera.type)
+    export_float(f, "*fov", camera.angle)
+    export_float(f, "*near", camera.clip_start)
+    export_float(f, "*far", camera.clip_end)
+    export_float(f, "*focus", camera.dof_distance)
+    export_float(f, "*ortho_scale", camera.ortho_scale)   
+    end_block(f)
+    
+    f.close()        
+    
+    text_offset = old    
+    return
+
+def export_cameras(f):
+    if not ("*camera" in used_entities.keys()):
+        return
+    for object in used_entities["*camera"]:
+        data = object.data
+        if data != None:
+            export_camera(f, object)
     return

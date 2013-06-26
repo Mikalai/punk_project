@@ -386,21 +386,7 @@ def export_point_lamp(f, lamp):
     export_float(f, "*linear_attenuation", lamp.linear_attenuation)
     export_float(f, "*quadratic_attenuation", lamp.quadratic_attenuation)
     end_block(f);
-        
-#
-#   export camera
-#
-def export_camera(f, camera):
-    start_block(f, "*camera")
-    export_string(f, "*name", camera.name)
-    export_string(f, "*type", camera.type)
-    export_float(f, "*fov", camera.angle)
-    export_float(f, "*near", camera.clip_start)
-    export_float(f, "*far", camera.clip_end)
-    export_float(f, "*focus", camera.dof_distance)
-    export_float(f, "*ortho_scale", camera.ortho_scale)   
-    end_block(f)
- 
+         
 def export_light(f, object):
     start_block(f, "*transform_node")
     export_string(f, "*name", object.name + "_transform")
@@ -450,7 +436,7 @@ def export_static_mesh_node(f, object):
 
     if type(object.data) == bpy.types.Mesh:
         start_block(f, "*static_mesh_node")
-        export_string(f, "*name", object.name)
+        export_string(f, "*name", object.data.name)
         push_entity("*static_mesh", object)
         end_block(f)    #   static_mesh_node        
     end_block(f) #  transform
@@ -583,11 +569,11 @@ def export_sun_node(f, object):
     
     export_string(f, "*name", object.name)
     export_local_matrix(f, object)
-    start_block(f, "*sun")
+    start_block(f, "*sun_node")
     export_string(f, "*name", object.data.name)
     push_entity("*sun", object)
+    export_children(f, object)
     end_block(f)    #   sun
-    
     end_block(f) #  transform    
     return
 
@@ -599,11 +585,11 @@ def export_navi_mesh_node(f, object):
     
     export_string(f, "*name", object.name)
     export_local_matrix(f, object)
-    start_block(f, "*navi_mesh")
+    start_block(f, "*navi_mesh_node")
     export_string(f, "*name", object.data.name)
     push_entity("*navi_mesh", object)
+    export_children(f, object)
     end_block(f)    #   sun
-    
     end_block(f) #  transform    
     return
 
@@ -622,11 +608,11 @@ def export_terrain_node(f, object):
     
     export_string(f, "*name", object.name)
     export_local_matrix(f, object)
-    start_block(f, "*terrain")
+    start_block(f, "*terrain_node")
     export_string(f, "*name", object.data.name)
     push_entity("*terrain", object)
+    export_children(f, object)
     end_block(f)    #   sun
-    
     end_block(f) #  transform    
     
     if not((mesh == None) or (len(mesh.materials) == 0)):
@@ -648,11 +634,11 @@ def export_river_node(f, object):
     
     export_string(f, "*name", object.name)
     export_local_matrix(f, object)
-    start_block(f, "*river")
+    start_block(f, "*river_node")
     export_string(f, "*name", object.data.name)
     push_entity("*river", object)
-    end_block(f)    #   sun
-    
+    export_children(f, object)
+    end_block(f)    #   sun    
     end_block(f) #  transform    
     
     if not((mesh == None) or (len(mesh.materials) == 0)):
@@ -667,12 +653,26 @@ def export_path_node(f, object):
     
     export_string(f, "*name", object.name)
     export_local_matrix(f, object)
-    start_block(f, "*path")
+    start_block(f, "*path_node")
     export_string(f, "*name", object.data.name)
     push_entity("*path", object)
+    export_children(f, object)
     end_block(f)    #   path
-    
     end_block(f) #  transform    
+    return
+
+def export_camera_node(f, object):
+    if object.data == None:
+       return
+    start_block(f, "*transform_node")
+    export_string(f, "*name", object.name)
+    export_local_matrix(f, object)
+    start_block(f, "*camera_node")
+    export_string(f, "*name", object.data.name)
+    push_entity("*camera", object)
+    export_children(f, object)
+    end_block(f) # camer
+    end_block(f) # transform
     return
 
 #
@@ -713,7 +713,7 @@ def export_object(f, object):
         export_character(f, object)
     elif object.punk_entity_type == "CAMERA":   
         if type(object.data) == bpy.types.Camera:
-            export_camera(f, object.data)   
+            export_camera_node(f, object)
     elif object.punk_entity_type == "COLLISION_MESH":
         export_collision_mesh(f, object)                 
     return     
@@ -725,6 +725,7 @@ def export_model(context, filepath, anim_in_separate_file):
     cur_dir = os.getcwd()
     try:
         f = open(filepath, 'w')
+        f.write("SCENETEXT\n")
         for obj in bpy.context.selected_objects:
             export_object(f, obj)
         os.chdir(path)
@@ -737,6 +738,7 @@ def export_model(context, filepath, anim_in_separate_file):
         export_terrains(f)
         export_rivers(f)
         export_paths(f)
+        export_cameras(f)
         f.close()
         return {'FINISHED'}
     finally:
