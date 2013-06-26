@@ -510,13 +510,13 @@ namespace System
 
     bool string::EndWith(const string &value) const
     {
-        auto pos = find_last_of(value);
+        auto pos = find(value);
         return pos != npos;
     }
 
     bool string::StartWith(const string &value) const
     {
-        auto pos = find_first_of(value);
+        auto pos = find(value);
         return pos != npos;
     }
 
