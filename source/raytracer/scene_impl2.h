@@ -141,7 +141,7 @@ namespace Raytracer
 
         const Math::vec3 CalclLightDir(const Light& light, const Math::vec3& /*point*/, const Math::vec3& normal, const Math::vec3& diffuse)
 		{
-			auto light_dir = light.m_direction.Negated();
+            auto light_dir = Math::vec3(light.m_direction.Negated());
 			float s = normal.Dot(light_dir);
 
 			Math::vec3 spec(1,1,1);

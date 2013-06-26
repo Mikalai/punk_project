@@ -10,10 +10,9 @@ win32 {
     DEFINES += _WIN32
 }
 
-DEFINES += PUNK_ENGINE_EXPORTS USE_OPENGL USE_PNG USE_ZLIB USE_OPENEXR # USE_JPEG  USE_FREETYPE
+DEFINES += PUNK_ENGINE_EXPORTS USE_OPENGL USE_PNG USE_ZLIB USE_OPENEXR USE_JPEG  USE_FREETYPE
 
 contains(DEFINES, USE_OPENGL) {
-#   USE_BUMP_MAPPING_RC
 #   USE_GRASS_RC
 #   USE_TERRAIN_RC
 #   USE_WATER_RC
@@ -25,6 +24,7 @@ DEFINES += USE_LIGHT_PER_VERTEX_DIFFUSE
 DEFINES += USE_LIGHT_PER_FRAGMENT_DIFFUSE
 DEFINES += USE_RC_PVRTDL    # Render context per vertex texture diffuse lighting
 DEFINES += USE_RC_PFRTDL    # Render context per fragment texture diffuse lighting
+DEFINES += USE_BUMP_MAPPING_RC
 
 }
 
@@ -58,6 +58,7 @@ contains (DEFINES, USE_ZLIB)
 contains (DEFINES, USE_FREETYPE)
 {
     LIBS += -lfreetype
+    INCLUDEPATH += "/usr/include/freetype2"
 }
 
 contains (DEFINES, USE_OPENEXR)
@@ -547,7 +548,6 @@ SOURCES += ../../source/main.cpp \
     ../../source/math/curve.cpp \
     ../../source/math/spline.cpp \
     ../../source/math/weighted_point.cpp \
-    ../../source/utility/parser/parse_texture.cpp \
     ../../source/utility/parser/parse_simple.cpp \
     ../../source/utility/parser/parse_bbox.cpp \
     ../../source/utility/parser/parse_convex_mesh.cpp \
@@ -574,19 +574,41 @@ SOURCES += ../../source/main.cpp \
     ../../source/utility/parser/parse_transform_node.cpp \
     ../../source/utility/parser/parse_portal_node.cpp \
     ../../source/utility/parser/parse_location_indoor.cpp \
-    ../../source/utility/parser/parse_world.cpp \
     ../../source/utility/parser/parse_terrain_raw_data_source.cpp \
     ../../source/utility/parser/parse_terrain_cell.cpp \
     ../../source/utility/parser/parse_map_description.cpp \
     ../../source/utility/parser/parse_anything.cpp \
     ../../source/utility/parser/parse_punk_file.cpp \
-    ../../source/utility/parser/load_world.cpp \
     ../../source/utility/parser/parse_navi_mesh.cpp \
     ../../source/ai/curvepath.cpp \
     ../../source/utility/parser/parse_curve_path.cpp \
     ../../source/utility/parser/parse_spline.cpp \
     ../../source/utility/parser/parse_weighted_point.cpp \
-    ../../source/ai/navi_mesh.cpp
+    ../../source/ai/navi_mesh.cpp \
+    ../../source/virtual/data/texture_slot.cpp \
+    ../../source/utility/parser/parse_texture_slot.cpp \
+    ../../source/virtual/water/river.cpp \
+    ../../source/virtual/data/lights/sun.cpp \
+    ../../source/utility/parser/parse_scene.cpp \
+    ../../source/scene/sun_node.cpp \
+    ../../source/utility/parser/parse_sun.cpp \
+    ../../source/utility/parser/parse_sun_node.cpp \
+    ../../source/scene/navi_mesh_node.cpp \
+    ../../source/scene/path_node.cpp \
+    ../../source/utility/parser/parse_navi_mesh_node.cpp \
+    ../../source/utility/parser/parse_curve_path_node.cpp \
+    ../../source/utility/parser/parse_terrain_node.cpp \
+    ../../source/utility/parser/parse_river_node.cpp \
+    ../../source/scene/river_node.cpp \
+    ../../source/render/v2/render_v2.cpp \
+    ../../source/utility/parser/parse_terrain_mesh.cpp \
+    ../../source/utility/parser/parse_river.cpp \
+    ../../source/scene/selector/selector.cpp \
+    ../../source/math/perspective_decoder.cpp \
+    ../../source/math/mat4.cpp \
+    ../../source/math/vec4.cpp \
+    ../../source/math/frustum_plane.cpp \
+    ../../source/scene/selector/selection.cpp
 
 
 # Input
@@ -1029,7 +1051,22 @@ HEADERS += ../../source/config.h \
     ../../source/math/weighted_point.h \
     ../../source/utility/parser/parse_functions.h \
     ../../source/ai/module.h \
-    ../../source/ai/curvepath.h
+    ../../source/ai/curvepath.h \
+    ../../source/virtual/data/texture_slot.h \
+    ../../source/virtual/water/river.h \
+    ../../source/virtual/water/module.h \
+    ../../source/virtual/water/interface.h \
+    ../../source/virtual/data/lights/sun.h \
+    ../../source/scene/sun_node.h \
+    ../../source/scene/navi_mesh_node.h \
+    ../../source/scene/path_node.h \
+    ../../source/scene/river_node.h \
+    ../../source/render/v2/render_v2.h \
+    ../../source/render/v2/module.h \
+    ../../source/scene/selector/selector.h \
+    ../../source/math/perspective_decoder.h \
+    ../../source/math/frustum_plane.h \
+    ../../source/scene/selector/selection.h
 
 
 release:MYDLLDIR = $IN_PWD/../../../bin/release

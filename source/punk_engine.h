@@ -11,10 +11,10 @@
 #include "raytracer/raytracer.h"
 #include "application/module.h"
 #include "audio/punk_audio.h"
+#include "scene/module.h"
+#include "render/module.h"
 
 //#include "gui/module.h"
-//#include "scene/module.h"
 //#include "gpu/module.h"
-//#include "render/module.h"
 
 #endif
