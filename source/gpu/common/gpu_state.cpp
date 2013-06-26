@@ -22,6 +22,7 @@ namespace GPU
 		m_depth_test = true;
 		m_enable_lighting = false;
 		m_enable_diffuse_shading = true;
+       // m_enable_bump_maping_shading = false;
 	}
 
 	CoreState::CoreState()
