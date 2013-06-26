@@ -99,9 +99,9 @@ namespace Math
         return *this;
 	}
 
-	const vec3& Plane::GetNormal() const
+    const vec3 Plane::GetNormal() const
 	{
-		return m_plane.XYZ();
+        return m_plane.XYZ();
 	}
 
 	float Plane::GetDistance() const
@@ -139,7 +139,7 @@ namespace Math
 
     Plane& Plane::Normalize()
     {
-        float f = 1.0f / m_plane.XYZ().Length();
+        float f = 1.0f / vec3(m_plane.XYZ()).Length();
         m_plane *= f;
         return *this;
     }

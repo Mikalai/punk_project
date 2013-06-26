@@ -38,7 +38,7 @@ namespace Math
         Plane& Set(const vec3& a, const vec3& b, const vec3& c);
 
         const Plane TransformNode(const mat4& matrix) const;
-		const vec3& GetNormal() const;
+        const vec3 GetNormal() const;
 		float GetDistance() const;
         friend class Line3D;
 
