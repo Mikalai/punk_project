@@ -129,7 +129,24 @@ namespace Utility
         WORD_POINT,
         WORD_SPLINE,
         WORD_POSITION,
-        WORD_WEIGHT
+        WORD_WEIGHT,
+        WORD_SCALE,
+        WORD_IMAGE,
+        WORD_SUN,
+        WORD_SUN_NODE,
+        WORD_SPECULAR_INTENSITY_MAP,
+        WORD_TEXTURE_SLOT,
+        WORD_RIVERTEXT,
+        WORD_SCENETEXT,
+        WORD_SUNTEXT,
+        WORD_NAVIMESH_NODE,
+        WORD_PATH_NODE,
+        WORD_TERRAIN_NODE,
+        WORD_RIVER_NODE,
+        WORD_MESH,
+        WORD_TERRAINTEXT,
+        WORD_FLOW_SPEED,
+        WORD_FLOW_DIRECTION
 	};
 
 	struct Record
@@ -190,7 +207,7 @@ namespace Utility
         { WORD_AMBIENT,					"*ambient" },
         { WORD_DARKNESS,				"*darkness" },
         { WORD_DIFFUSE_COLOR,			"*diffuse_color" },
-        { WORD_DIFFUSE_FRESNEL,			"*diffuse_fresne" },
+        { WORD_DIFFUSE_FRESNEL,			"*diffuse_fresnel" },
         { WORD_DIFFUSE_FRESNEL_FACTOR,	"*diffuse_fresnel_factor" },
         { WORD_DIFFUSE_INTENSITY,		"*diffuse_intensity" },
         { WORD_EMIT,					"*emit" },
@@ -258,12 +275,30 @@ namespace Utility
         { WORD_SPLINE,                  "*spline" },
         { WORD_POSITION,                "*position" },
         { WORD_WEIGHT,                  "*weight" },
+        { WORD_SCALE,                   "*scale" },
+        { WORD_IMAGE,                   "*image" },
+        { WORD_SPECULAR_INTENSITY_MAP,  "*specular_intensity_map" },
+        { WORD_TEXTURE_SLOT,            "*texture_slot" },
         { WORD_ARMATURETEXT,			"ARMATURETEXT" },
         { WORD_ACTIONTEXT,				"ACTIONTEXT" },
         { WORD_STATICMESHTEXT,			"STATICMESHTEXT" },
         { WORD_MATERIALTEXT,			"MATERIALTEXT" },
         { WORD_NAVIMESHTEXT,            "NAVIMESHTEXT" },
-        { WORD_PATHTEXT,                "PATHTEXT" }
+        { WORD_PATHTEXT,                "PATHTEXT" },
+        { WORD_RIVERTEXT,               "RIVERTEXT" },
+        { WORD_SCENETEXT,               "SCENETEXT" },
+        { WORD_SUNTEXT,                 "SUNTEXT" },
+        { WORD_TERRAINTEXT,             "SUNTEXT" },
+        { WORD_SUN,                     "*sun" },
+        { WORD_SUN_NODE,                "*sun_node" },
+        { WORD_NAVIMESH_NODE,           "*navi_mesh_node" },
+        { WORD_PATH_NODE,               "*path_node" },
+        { WORD_TERRAIN_NODE,            "*terrain_node" },
+        { WORD_RIVER_NODE,              "*river_node" },
+        { WORD_MESH,                    "*mesh" },
+        { WORD_TERRAINTEXT,             "TERRAINTEXT" },
+        { WORD_FLOW_SPEED,              "*flow_speed" },
+        { WORD_FLOW_DIRECTION,          "*flow_direction" }
 	};
 }
 
