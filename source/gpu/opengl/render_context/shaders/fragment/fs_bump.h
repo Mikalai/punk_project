@@ -7,10 +7,21 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class FragmentShaderBump : public Shader
+        class FsBumpMapping : public Shader
 		{
 		public:
-			FragmentShaderBump();
+            FsBumpMapping();
+            void InitUniforms() override;
+            void BindParameters(const CoreState& params) override;
+            int64_t GetRequiredAttributesSet() const override;
+
+        private:
+            unsigned uAmbient;
+            unsigned uSpecular;
+            unsigned uDiffuse;
+            unsigned uSpecularPower;
+            unsigned uDiffuseMap;
+            unsigned uNormalMap;
 		};
 	}
 }

@@ -3,33 +3,33 @@
 
 namespace GPU
 {
-namespace OpenGL
-{
+    namespace OpenGL
+    {
 
-enum class ShaderType { Bad, Vertex, Fragment, Geometry };
+        enum class ShaderType { Bad, Vertex, Fragment, Geometry };
 
-enum class ShaderCollection {
-    No,
-    VertexBumpMapping,
-    FragmentBumpMapping,
-    VertexSolidColor,
-    FragmentSolidColor,
-    VertexSolidVertexColor,
-	FragmentSolidVertexColor,
-	VertexSolidTextured,
-	FragmentSolidTextured,
-	VertexLightPerVertexDiffuse,
-	FragmentLightPerVertexDiffuse,
-	VertexLightPerFragmentDiffuse,
-	FragmentLightPerFragmentDiffuse,
-	VertexLightPerVertexTextureDiffuse,
-	FragmentLightPerVertexTextureDiffuse,
-	VertexLightPerFragmentTextureDiffuse,
-	FragmentLightPerFragmentTextureDiffuse
-};
+        enum class ShaderCollection {
+            No,
+            VertexBumpMapping,
+            FragmentBumpMapping,
+            VertexSolidColor,
+            FragmentSolidColor,
+            VertexSolidVertexColor,
+            FragmentSolidVertexColor,
+            VertexSolidTextured,
+            FragmentSolidTextured,
+            VertexLightPerVertexDiffuse,
+            FragmentLightPerVertexDiffuse,
+            VertexLightPerFragmentDiffuse,
+            FragmentLightPerFragmentDiffuse,
+            VertexLightPerVertexTextureDiffuse,
+            FragmentLightPerVertexTextureDiffuse,
+            VertexLightPerFragmentTextureDiffuse,
+            FragmentLightPerFragmentTextureDiffuse
+        };
 
-extern const wchar_t* GetShaderFile(ShaderCollection shader);
+        extern const wchar_t* GetShaderFile(ShaderCollection shader);
 
-}
+    }
 }
 #endif // SHADER_TYPE_H

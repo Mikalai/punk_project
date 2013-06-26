@@ -1,6 +1,7 @@
 #include "render_target_texture.h"
 #include "../textures/module.h"
 #include "../gl/module.h"
+#include "../textures/texture2d_pbo_impl.h"
 
 namespace GPU
 {
@@ -33,7 +34,7 @@ namespace GPU
             //	tune resolve frame buffer
             glBindFramebuffer(GL_FRAMEBUFFER, m_resolve_fb);
             //	bind color texture
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_color_texture->GetCode(), 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_color_texture->impl->m_texture_id, 0);
 
             Check();
 
@@ -119,7 +120,7 @@ namespace GPU
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             ValidateOpenGL(L"Can't unbind frame buffer");
 
-            glBindTexture(GL_TEXTURE_2D, m_color_texture->GetCode());
+            glBindTexture(GL_TEXTURE_2D, m_color_texture->impl->m_texture_id);
             ValidateOpenGL(L"Can't bind texture");
             glGenerateMipmap(GL_TEXTURE_2D);
             ValidateOpenGL(L"Can't generate mipmaps");
