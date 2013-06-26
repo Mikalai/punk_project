@@ -3,19 +3,28 @@
 
 namespace Scene
 {
-	class CameraNode;
-	class StaticMeshNode;
-	class SkinMeshNode;
-	class LightNode;
-	class MaterialNode;
-	class Node;
-	class TransformNode;
-	class LocationIndoorNode;
-	class PortalNode;
-	class ArmatureNode;
-	class BoneNode;
-	class TextureViewNode;
-	class TerrainNode;
+    class ArmatureNode;
+    class BoneNode;
+    class BoundingVolumeUpdater;
+    class CameraNode;
+    class DefaultVisitor;
+    class GeometryNode;
+    class LightNode;
+    class LocationIndoorNode;
+    class MaterialNode;
+    class Node;
+    class PointLightNode;
+    class PortalNode;
+    class SceneGraph;
+    class SkinMeshNode;
+    class StaticMeshNode;
+    class TerrainNode;
+    class TransformNode;
+    class SunNode;
+    class PathNode;
+    class NaviMeshNode;
+    class RiverNode;
+    class TextureViewNode;
 
     class AbstractVisitor
 	{
@@ -33,7 +42,11 @@ namespace Scene
         virtual bool Visit(BoneNode*) = 0;
         virtual bool Visit(TerrainNode*) = 0;
         virtual bool Visit(TextureViewNode*) = 0;
+        virtual bool Visit(SunNode*) = 0;
+        virtual bool Visit(PathNode*) = 0;
+        virtual bool Visit(NaviMeshNode*) = 0;
+        virtual bool Visit(RiverNode*) = 0;
 	};
 }
 
-#endif
+#endif  //  _H_PUNK_SCENE_VISITOR
