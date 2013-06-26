@@ -114,7 +114,9 @@ namespace System
 
 	Object* Factory::CreateFromTextFile(const string& path)
 	{
-		return Utility::LoadWorld(path);
+        return 0;
+
+//		return Utility::LoadWorld(path);
 	}
 
 }
