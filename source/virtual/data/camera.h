@@ -34,6 +34,7 @@ namespace Virtual
 		Camera();
 		Camera(const CameraOptions& options);
 		void SetPosition(const Math::vec3& pos);
+        void SetPosition(float x, float y, float z);
 		const Math::vec3& GetPosition() const { return m_position; }
 		Math::vec3& GetPosition() { return m_position; }
 		const Math::mat4 GetProjectionMatrix() const;
@@ -76,6 +77,7 @@ namespace Virtual
 		Math::vec3 m_right;
 		Math::vec3 m_up;
 		Math::mat4 m_view_matrix;
+        Math::mat4 m_proj_matrix;
 		Math::Frustum m_frustum;
 		Math::Rect m_viewport;
 

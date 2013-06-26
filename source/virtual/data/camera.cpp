@@ -6,12 +6,15 @@
 namespace Virtual
 {
 	Camera::Camera()
+        : m_frustum(m_proj_matrix)
 	{
 	}
 
 	Camera::Camera(const CameraOptions& options)
+        : m_frustum(m_proj_matrix)
 	{
-		m_frustum.Set(options.m_fov, 1, 3.0 / 4.0, options.m_near, options.m_far);
+        m_proj_matrix = Math::mat4::CreatePerspectiveProjection(options.m_fov, 1, options.m_aspect, options.m_near, options.m_far);
+        m_frustum.Update();
 	}
 
 	void Camera::SetYaw(float value)
@@ -65,15 +68,21 @@ namespace Virtual
 		UpdateInternals();
 	}
 
+    void Camera::SetPosition(float x, float y, float z)
+    {
+        m_position.Set(x, y, z);
+        UpdateInternals();;
+    }
+
 	bool Camera::Save(std::ostream& stream) const
 	{
-		m_frustum.Save(stream);
+        //m_frustum.Save(stream);
 		return true;
 	}
 
 	bool Camera::Load(std::istream& stream)
 	{
-		m_frustum.Load(stream);
+        //m_frustum.Load(stream);
 		return true;
 	}
 
@@ -109,7 +118,7 @@ namespace Virtual
 
 
 		//	find mouse point in the view space
-		Math::vec3 mouse_in_view(proj_x, proj_y, -1.0f / tan(m_frustum.GetFOV()/2.0f));
+		Math::vec3 mouse_in_view(proj_x, proj_y, -1.0f / tan(m_frustum.GetFovY()/2.0f));
 		//	translate mouse point to the world space
 		Math::vec4 mouse_in_world_4 = (m_view_matrix.Inversed() * Math::vec4(mouse_in_view, 1.0f));
 		mouse_in_world_4 /= mouse_in_world_4[3];
