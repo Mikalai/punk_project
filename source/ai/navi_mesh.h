@@ -31,6 +31,9 @@ namespace AI
         void SetNormals(const Normals& value);
         void SetFaces(const Faces& value);
 
+        const Points& GetPoints() const;
+        const Faces& GetFaces() const;
+
 	private:
 		Math::mat4 m_transfrom;
         Points m_points;

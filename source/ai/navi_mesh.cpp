@@ -39,4 +39,14 @@ namespace AI
     {
         m_faces = value;
     }
+
+    const NaviMesh::Points& NaviMesh::GetPoints() const
+    {
+        return m_points;
+    }
+
+    const NaviMesh::Faces& NaviMesh::GetFaces() const
+    {
+        return m_faces;
+    }
 }
