@@ -49,7 +49,7 @@ namespace Render
 		void Clear();
 
 	private:
-		MeshCooker m_cooker;
+        //MeshCooker m_cooker;
 		GPU::ScaledGridObject m_grid;
 		float m_time;
 		int m_terrain_slices;

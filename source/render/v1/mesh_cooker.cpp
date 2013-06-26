@@ -19,9 +19,9 @@ namespace Render
 	bool MeshCooker::Visit(Scene::TerrainNode* node)
 	{
 		Virtual::Material* material(new Virtual::Material);
-		material->GetCache().m_diffuse_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg", true);
-		material->GetCache().m_diffuse_texture_cache_2 = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"ground.png", true);
-		material->GetCache().m_normal_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"bump.png", true);
+//		material->GetCache().m_diffuse_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"snow.jpg", true);
+//		material->GetCache().m_diffuse_texture_cache_2 = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"ground.png", true);
+//		material->GetCache().m_normal_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"bump.png", true);
 		node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->SetMaterial(material);
 		return true;
 	}
@@ -116,8 +116,8 @@ namespace Render
 		Virtual::Material::validate();
 		Virtual::Material* mat = Virtual::Material::find(node->GetName());
 		node->SetMaterial(mat);
-		mat->GetCache().m_diffuse_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + mat->GetDiffuseMap(), true);
-		mat->GetCache().m_normal_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + mat->GetNormalMap(), true);
+//		mat->GetCache().m_diffuse_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + mat->GetDiffuseMap(), true);
+//		mat->GetCache().m_normal_texture_cache = nullptr; // m_video_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + mat->GetNormalMap(), true);
 		for (auto o : *node)
 		{
 			Scene::Node* child = As<Scene::Node*>(o);

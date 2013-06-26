@@ -20,7 +20,7 @@ namespace Render
 		: m_driver(driver)
         , m_grid(driver)
         , s(driver)
-        , m_cooker(driver)
+        //, m_cooker(driver)
 		, m_cube(driver)
 		, m_sphere(driver)
 		, m_quad(driver)
@@ -176,10 +176,10 @@ namespace Render
 		m_frame->SetDiffuseColor(material->GetDiffuseColor());
 
 		Virtual::Material* m = node->GetMaterial();
-		if (m->GetCache().m_diffuse_texture_cache == nullptr)
-			m->GetCache().m_diffuse_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetDiffuseMap(), true);
-		if (m->GetCache().m_normal_texture_cache == nullptr)
-			m->GetCache().m_normal_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetNormalMap(), true);
+//		if (m->GetCache().m_diffuse_texture_cache == nullptr)
+//			m->GetCache().m_diffuse_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetDiffuseMap(), true);
+//		if (m->GetCache().m_normal_texture_cache == nullptr)
+//			m->GetCache().m_normal_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetNormalMap(), true);
 
 //		m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(m->GetCache().m_diffuse_texture_cache));
 //		m_frame->SetBumpMap(Cast<GPU::Texture2D*>(m->GetCache().m_normal_texture_cache));
@@ -390,10 +390,10 @@ namespace Render
 		if (m_scene)
 		{
 //			m_rt->SetViewport(m_scene->GetCameraNode()->GetCamera()->GetViewport());
-			m_frame->SetViewMatrix(m_scene->GetCameraNode()->GetCamera()->GetViewMatrix());
-			m_frame->SetProjectionMatrix(m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix());
-			m_frame->SetClipSpace(m_scene->GetCameraNode()->GetCamera()->ToClipSpace());
-			m_scene->GetRootNode()->Apply(this);
+//			m_frame->SetViewMatrix(m_scene->GetCameraNode()->GetCamera()->GetViewMatrix());
+//			m_frame->SetProjectionMatrix(m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix());
+//			m_frame->SetClipSpace(m_scene->GetCameraNode()->GetCamera()->ToClipSpace());
+//			m_scene->GetRootNode()->Apply(this);
 		}
 		if (m_root)
 		{
@@ -422,8 +422,8 @@ namespace Render
     //	m_rt = new GPU::OpenGL::RenderTargetBackBuffer;
     //	m_rt->Init(&p);
 		m_scene = scene;
-		if (m_scene)
-			m_scene->GetRootNode()->Apply(&m_cooker);
+//		if (m_scene)
+//			m_scene->GetRootNode()->Apply(&m_cooker);
 		m_context = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::BumpMapping);
 		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Solid3D);
 		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::SolidTextured3D);
