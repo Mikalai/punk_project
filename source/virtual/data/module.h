@@ -7,6 +7,7 @@
 
 #include "light.h"
 #include "lights/point_light.h"
+#include "lights/sun.h"
 
 #include "entity.h"
 #include "transform.h"
@@ -19,5 +20,8 @@
 #include "skin_geometry.h"
 #include "location.h"
 #include "interior_location.h"
+
+#include "texture_slot.h"
+
 
 #endif

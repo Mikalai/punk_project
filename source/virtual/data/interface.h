@@ -17,6 +17,8 @@ namespace Virtual
 	class StaticGeometry;
 	class Transform;
 	class World;
+    class TextureSlot;
+    class Sun;
 }
 
 #endif	//	_H_PUNK_VIRTUAL_DATA_MODULE_INTERFACE
