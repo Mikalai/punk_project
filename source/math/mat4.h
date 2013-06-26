@@ -18,312 +18,224 @@ namespace Math
 	template<class T>
 	class Matrix4x4
 	{
+    protected:
 		T m[16];
 	public:
 
-		static const Matrix4x4<T> CreateFromPoistionAndDirection(const Math::Vector3<T>& position, const Math::Vector3<T>& direction)
-		{
-			Matrix4x4<T> result = CreateTargetCameraMatrix(position, position + direction, Math::Vector3<T>(0, 1, 0)).Inversed();
-			return result;
-		}
+        static const Matrix4x4<T> CreateFromPoistionAndDirection(const Math::Vector3<T>& position, const Math::Vector3<T>& direction)
+        {
+            Matrix4x4<T> result = CreateTargetCameraMatrix(position, position + direction, Math::Vector3<T>(0, 1, 0)).Inversed();
+            return result;
+        }
 
-		static Matrix4x4<T> CreatePerspectiveProjection(T fovx, T aspect, T znear, T zfar)
-		{
-			Matrix4x4<T> res;
+        static Matrix4x4<T> CreatePerspectiveProjectionInfinity(T left, T right, T top, T bottom, T znear)
+        {
+            Matrix4x4<T> res;
 
-			float e = 1.0f / tanf(fovx / 2.0f);
-			float fovy = 2.0f * atanf(aspect / e);
-			float xScale = 1.0f / tanf(0.5f * fovy);
-			float yScale = xScale * aspect;
-			float* m = &res[0];
+            float* m = &res[0];
 
-			m[0*4 + 0] = xScale;
-			m[0*4 + 1] = 0.0f;
-			m[0*4 + 2] = 0.0f;
-			m[0*4 + 3] = 0.0f;
+            m[0*4 + 0] = T(2)*znear / (right - left);
+            m[0*4 + 1] = 0.0f;
+            m[0*4 + 2] = 0.0f;
+            m[0*4 + 3] = 0.0f;
 
-			m[1*4 + 0] = 0.0f;
-			m[1*4 + 1] = yScale;
-			m[1*4 + 2] = 0.0f;
-			m[1*4 + 3] = 0.0f;
+            m[1*4 + 0] = 0.0f;
+            m[1*4 + 1] = T(2)*znear / (top - bottom);
+            m[1*4 + 2] = 0.0f;
+            m[1*4 + 3] = 0.0f;
 
-			m[2*4 + 0] = 0.0f;
-			m[2*4 + 1] = 0.0f;
-			m[2*4 + 2] = (zfar + znear) / (znear - zfar);
-			m[2*4 + 3] = -1.0f;
+            m[2*4 + 0] = (right + left) / (right - left);
+            m[2*4 + 1] = (top + bottom) / (top - bottom);
+            m[2*4 + 2] = -1;
+            m[2*4 + 3] = -1.0f;
 
-			m[3*4 + 0] = 0.0f;
-			m[3*4 + 1] = 0.0f;
-			m[3*4 + 2] = (2.0f * zfar * znear) / (znear - zfar);
-			m[3*4 + 3] = 0.0f;
+            m[3*4 + 0] = 0.0f;
+            m[3*4 + 1] = 0.0f;
+            m[3*4 + 2] = -(2.0f * znear);
+            m[3*4 + 3] = 0.0f;
 
-			return res;
-		}
+            return res;
+        }
 
-		static Matrix4x4<T> CreatePerspectiveProjectionInfinity(T left, T right, T top, T bottom, T znear)
-		{
-			Matrix4x4<T> res;
+        static Matrix4x4<T> CreatePerspectiveProjection(T left, T right, T top, T bottom, T znear, T zfar)
+        {
+            Matrix4x4<T> res;
 
-			float* m = &res[0];
+            float* m = &res[0];
 
-			m[0*4 + 0] = T(2)*znear / (right - left);
-			m[0*4 + 1] = 0.0f;
-			m[0*4 + 2] = 0.0f;
-			m[0*4 + 3] = 0.0f;
+            m[0*4 + 0] = T(2)*znear / (right - left);
+            m[0*4 + 1] = 0.0f;
+            m[0*4 + 2] = 0.0f;
+            m[0*4 + 3] = 0.0f;
 
-			m[1*4 + 0] = 0.0f;
-			m[1*4 + 1] = T(2)*znear / (top - bottom);
-			m[1*4 + 2] = 0.0f;
-			m[1*4 + 3] = 0.0f;
+            m[1*4 + 0] = 0.0f;
+            m[1*4 + 1] = T(2)*znear / (top - bottom);
+            m[1*4 + 2] = 0.0f;
+            m[1*4 + 3] = 0.0f;
 
-			m[2*4 + 0] = (right + left) / (right - left);
-			m[2*4 + 1] = (top + bottom) / (top - bottom);
-			m[2*4 + 2] = -1;
-			m[2*4 + 3] = -1.0f;
+            m[2*4 + 0] = (right + left) / (right - left);
+            m[2*4 + 1] = (top + bottom) / (top - bottom);
+            m[2*4 + 2] = -(zfar+znear) / (zfar - znear);
+            m[2*4 + 3] = -1.0f;
 
-			m[3*4 + 0] = 0.0f;
-			m[3*4 + 1] = 0.0f;
-			m[3*4 + 2] = -(2.0f * znear);
-			m[3*4 + 3] = 0.0f;
+            m[3*4 + 0] = 0.0f;
+            m[3*4 + 1] = 0.0f;
+            m[3*4 + 2] = -(2.0f * znear * zfar) / (zfar - znear);
+            m[3*4 + 3] = 0.0f;
 
-			return res;
-		}
+            return res;
+        }
 
-		static Matrix4x4<T> CreatePerspectiveProjection(T left, T right, T top, T bottom, T znear, T zfar)
-		{
-			Matrix4x4<T> res;
+        static Matrix4x4<T> CreateFreeCameraMatrix(const Vector3<T>& eye, const Vector3<T>& dir, const Vector3<T>& up)
+        {
+            Vector3<T> target = eye + dir;
+            return CreateTargetCameraMatrix(eye, target, up);
+        }
 
-			float* m = &res[0];
+        static Matrix4x4<T> CreateIdentity()
+        {
+            return Matrix4x4<T>();
+        }
 
-			m[0*4 + 0] = T(2)*znear / (right - left);
-			m[0*4 + 1] = 0.0f;
-			m[0*4 + 2] = 0.0f;
-			m[0*4 + 3] = 0.0f;
+        static Matrix4x4<T> CreateOrthographicProjection(float left, float right, float top, float bottom, float _near, float _far)
+        {
+            Matrix4x4<T> result;
+            result.SetColumn(0, Vector4<T>(T(2)/(right - left), 0, 0, 0));
+            result.SetColumn(1, Vector4<T>(0, T(2)/(top - bottom), 0, 0));
+            result.SetColumn(2, Vector4<T>(0, 0, T(-2)/(_far - _near), 0));
+            result.SetColumn(3, Vector4<T>(-(right+left)/(right - left), -(top + bottom)/(top-bottom), - (_far+_near)/(_far-_near), 1));
+            return result;
+        }
 
-			m[1*4 + 0] = 0.0f;
-			m[1*4 + 1] = T(2)*znear / (top - bottom);
-			m[1*4 + 2] = 0.0f;
-			m[1*4 + 3] = 0.0f;
+        static Matrix4x4<T> CreateTranslate(float x, float y, float z)
+        {
+            Matrix4x4<T> result;
+            result.SetColumn(0, Vector4<T>(1, 0, 0, 0));
+            result.SetColumn(1, Vector4<T>(0, 1, 0, 0));
+            result.SetColumn(2, Vector4<T>(0, 0, 1, 0));
+            result.SetColumn(3, Vector4<T>(x, y, z, 1));
+            return result;
+        }
 
-			m[2*4 + 0] = (right + left) / (right - left);
-			m[2*4 + 1] = (top + bottom) / (top - bottom);
-			m[2*4 + 2] = -(zfar+znear) / (zfar - znear);
-			m[2*4 + 3] = -1.0f;
+        static Matrix4x4<T> CreateTranslate(const Vector3<T>& v)
+        {
+            Matrix4x4<T> result;
+            result.SetColumn(0, Vector4<T>(1, 0, 0, 0));
+            result.SetColumn(1, Vector4<T>(0, 1, 0, 0));
+            result.SetColumn(2, Vector4<T>(0, 0, 1, 0));
+            result.SetColumn(3, Vector4<T>(v[0], v[1], v[2], 1));
+            return result;
+        }
 
-			m[3*4 + 0] = 0.0f;
-			m[3*4 + 1] = 0.0f;
-			m[3*4 + 2] = -(2.0f * znear * zfar) / (zfar - znear);
-			m[3*4 + 3] = 0.0f;
+        static Matrix4x4<T> CreateScaling(float sx, float sy, float sz)
+        {
+            Matrix4x4<T> result;
+            result.SetColumn(0, Vector4<T>(sx, 0, 0, 0));
+            result.SetColumn(1, Vector4<T>(0, sy, 0, 0));
+            result.SetColumn(2, Vector4<T>(0, 0, sz, 0));
+            result.SetColumn(3, Vector4<T>(0, 0, 0, 1));
+            return result;
+        }
 
-			return res;
-		}
+        static Matrix4x4<T> CreateZRotation(T angle)
+        {
+            T s = std::sin(angle);
+            T c = std::cos(angle);
+            Matrix4x4<T> result;
+            result.SetColumn(0, Vector4<T>(c, s, 0, 0));
+            result.SetColumn(1, Vector4<T>(-s, c, 0, 0));
+            result.SetColumn(2, Vector4<T>(0, 0, 1, 0));
+            result.SetColumn(3, Vector4<T>(0, 0, 0, 1));
+            return result;
+        }
+        static Matrix4x4 CreateXRotation(T angle)
+        {
+            T s = std::sin(angle);
+            T c = std::cos(angle);
+            Matrix4x4<T> result;
+            result.SetColumn(0, Vector4<T>(1, 0, 0, 0));
+            result.SetColumn(1, Vector4<T>(0, c, s, 0));
+            result.SetColumn(2, Vector4<T>(0, -s, c, 0));
+            result.SetColumn(3, Vector4<T>(0, 0, 0, 1));
+            return result;
+        }
 
-		static Matrix4x4<T> CreateTargetCameraMatrix(const Vector3<T>& eye, const Vector3<T>& target, const Vector3<T>& up)
-		{
-			Vector3<T> zAxis = (eye - target);
-			zAxis.Normalize();
+        static Matrix4x4 CreateYRotation(T angle)
+        {
+            T s = std::sin(angle);
+            T c = std::cos(angle);
+            Matrix4x4<T> result;
+            result.SetColumn(0, Vector4<T>(c, 0, -s, 0));
+            result.SetColumn(1, Vector4<T>(0, 1, 0, 0));
+            result.SetColumn(2, Vector4<T>(s, 0, c, 0));
+            result.SetColumn(3, Vector4<T>(0, 0, 0, 1));
+            return result;
+        }
 
-			vec3 xAxis = up.Cross(zAxis);
-			xAxis.Normalize();
+        static Matrix4x4<T> CreateRotation(T x, T y, T z, T angle)
+        {
+            T inversed_length = T(1)/sqrt(x*x+y*y+z*z);
 
-			vec3 yAxis = zAxis.Cross(xAxis);
-			yAxis.Normalize();
+            x *= inversed_length;
+            y *= inversed_length;
+            z *= inversed_length;
 
-			Matrix4x4<T> res;
-			float* m = res.m;
+            Matrix4x4<T> result;
+            T c = std::cos(angle);
+            T s = std::sin(angle);
+            result.SetColumn(0, Vector4<T>(c+(1-c)*x*x, (1-c)*x*y+s*z, (1-c)*x*z-s*y, 0));
+            result.SetColumn(1, Vector4<T>((1-c)*x*y-s*z, c+(1-c)*y*y, (1-c)*y*z+s*x, 0));
+            result.SetColumn(2, Vector4<T>((1-c)*x*z+s*y, (1-c)*y*z-s*x, c+(1-c)*z*z, 0));
+            result.SetColumn(3, Vector4<T>(0,0,0,1));
+            return result;
+        }
 
-			/*m[0*4 + 0] = xAxis[0];
-			m[0*4 + 1] = xAxis[1];
-			m[0*4 + 2] = xAxis[2];
-			m[0*4 + 3] = -eye.Dot(xAxis);
+        static Matrix4x4<T> CreateReflectZ()
+        {
+            Matrix4x4<T> m;
+            m[0] = 1;
+            m[5] = 1;
+            m[10] = -1;
+            m[15] = 1;
+            return m;
+        }
 
-			m[1*4 + 0] = yAxis[0];
-			m[1*4 + 1] = yAxis[1];
-			m[1*4 + 2] = yAxis[2];
-			m[1*4 + 3] = -eye.Dot(yAxis);
+        static Matrix4x4<T> CreateReflectX()
+        {
+            Matrix4x4<T> m;
+            m[0] = -1;
+            m[5] = 1;
+            m[10] = 1;
+            m[15] = 1;
+            return m;
+        }
 
-			m[2*4 + 0] = -zAxis[0];
-			m[2*4 + 1] = -zAxis[1];
-			m[2*4 + 2] = -zAxis[2];
-			m[2*4 + 3] = -eye.Dot(zAxis);
+        static Matrix4x4<T> CreateReflectY()
+        {
+            Matrix4x4<T> m;
+            m[0] = 1;
+            m[5] = -1;
+            m[10] = 1;
+            m[15] = 1;
+            return m;
+        }
 
-			m[3*4 + 0] = 0.0f;
-			m[3*4 + 1] = 0.0f;
-			m[3*4 + 2] = 0.0f;
-			m[3*4 + 3] = 1.0f;*/
+        static Matrix4x4<T> CreateFromYawPitchRoll(const Vector3<T>& eye, T yaw, T pitch, T roll)
+        {
+            T cos_yaw = cos(yaw);
+            T cos_pitch = cos(pitch);
+            T cos_roll = cos(roll);
+            T sin_yaw = sin(yaw);
+            T sin_pitch = sin(pitch);
+            T sin_roll = sin(roll);
 
-			m[0*4 + 0] = xAxis[0];
-			m[1*4 + 0] = xAxis[1];
-			m[2*4 + 0] = xAxis[2];
-			m[3*4 + 0] = -eye.Dot(xAxis);
+            Math::Vector3<T> dir(sin_yaw * cos_pitch, sin_pitch, cos_pitch * -cos_yaw);
+            Math::Vector3<T> up(-cos_yaw * sin_roll - sin_yaw * sin_pitch * cos_roll, cos_pitch * cos_roll, -sin_yaw * sin_roll - sin_pitch * cos_roll * -cos_yaw);
 
-			m[0*4 + 1] = yAxis[0];
-			m[1*4 + 1] = yAxis[1];
-			m[2*4 + 1] = yAxis[2];
-			m[3*4 + 1] = -eye.Dot(yAxis);
+            return CreateTargetCameraMatrix(eye, eye + dir, up);
+        }
 
-			m[0*4 + 2] = zAxis[0];
-			m[1*4 + 2] = zAxis[1];
-			m[2*4 + 2] = zAxis[2];
-			m[3*4 + 2] = -eye.Dot(zAxis);
-
-			m[0*4 + 3] = 0.0f;
-			m[1*4 + 3] = 0.0f;
-			m[2*4 + 3] = 0.0f;
-			m[3*4 + 3] = 1.0f;/**/
-			return res;
-		}
-
-		static Matrix4x4<T> CreateFreeCameraMatrix(const Vector3<T>& eye, const Vector3<T>& dir, const Vector3<T>& up)
-		{
-			Vector3<T> target = eye + dir;
-			return CreateTargetCameraMatrix(eye, target, up);
-		}
-
-		static Matrix4x4<T> CreateIdentity()
-		{
-			return Matrix4x4<T>();
-		}
-
-		static Matrix4x4<T> CreateOrthographicProjection(float left, float right, float top, float bottom, float _near, float _far)
-		{
-			Matrix4x4<T> result;
-			result.SetColumn(0, Vector4<T>(T(2)/(right - left), 0, 0, 0));
-			result.SetColumn(1, Vector4<T>(0, T(2)/(top - bottom), 0, 0));
-			result.SetColumn(2, Vector4<T>(0, 0, T(-2)/(_far - _near), 0));
-			result.SetColumn(3, Vector4<T>(-(right+left)/(right - left), -(top + bottom)/(top-bottom), - (_far+_near)/(_far-_near), 1));
-			return result;
-		}
-
-		static Matrix4x4<T> CreateTranslate(float x, float y, float z)
-		{
-			Matrix4x4<T> result;
-			result.SetColumn(0, Vector4<T>(1, 0, 0, 0));
-			result.SetColumn(1, Vector4<T>(0, 1, 0, 0));
-			result.SetColumn(2, Vector4<T>(0, 0, 1, 0));
-			result.SetColumn(3, Vector4<T>(x, y, z, 1));
-			return result;
-		}
-
-		static Matrix4x4<T> CreateTranslate(const Vector3<T>& v)
-		{
-			Matrix4x4<T> result;
-			result.SetColumn(0, Vector4<T>(1, 0, 0, 0));
-			result.SetColumn(1, Vector4<T>(0, 1, 0, 0));
-			result.SetColumn(2, Vector4<T>(0, 0, 1, 0));
-			result.SetColumn(3, Vector4<T>(v[0], v[1], v[2], 1));
-			return result;
-		}
-
-		static Matrix4x4<T> CreateScaling(float sx, float sy, float sz)
-		{
-			Matrix4x4<T> result;
-			result.SetColumn(0, Vector4<T>(sx, 0, 0, 0));
-			result.SetColumn(1, Vector4<T>(0, sy, 0, 0));
-			result.SetColumn(2, Vector4<T>(0, 0, sz, 0));
-			result.SetColumn(3, Vector4<T>(0, 0, 0, 1));
-			return result;
-		}
-
-		static Matrix4x4<T> CreateZRotation(T angle)
-		{
-			T s = std::sin(angle);
-			T c = std::cos(angle);
-			Matrix4x4<T> result;
-			result.SetColumn(0, Vector4<T>(c, s, 0, 0));
-			result.SetColumn(1, Vector4<T>(-s, c, 0, 0));
-			result.SetColumn(2, Vector4<T>(0, 0, 1, 0));
-			result.SetColumn(3, Vector4<T>(0, 0, 0, 1));
-			return result;
-		}
-		static Matrix4x4 CreateXRotation(T angle)
-		{
-			T s = std::sin(angle);
-			T c = std::cos(angle);
-			Matrix4x4<T> result;
-			result.SetColumn(0, Vector4<T>(1, 0, 0, 0));
-			result.SetColumn(1, Vector4<T>(0, c, s, 0));
-			result.SetColumn(2, Vector4<T>(0, -s, c, 0));
-			result.SetColumn(3, Vector4<T>(0, 0, 0, 1));
-			return result;
-		}
-
-		static Matrix4x4 CreateYRotation(T angle)
-		{
-			T s = std::sin(angle);
-			T c = std::cos(angle);
-			Matrix4x4<T> result;
-			result.SetColumn(0, Vector4<T>(c, 0, -s, 0));
-			result.SetColumn(1, Vector4<T>(0, 1, 0, 0));
-			result.SetColumn(2, Vector4<T>(s, 0, c, 0));
-			result.SetColumn(3, Vector4<T>(0, 0, 0, 1));
-			return result;
-		}
-
-		static Matrix4x4<T> CreateRotation(T x, T y, T z, T angle)
-		{
-			T inversed_length = T(1)/sqrt(x*x+y*y+z*z);
-
-			x *= inversed_length;
-			y *= inversed_length;
-			z *= inversed_length;
-
-			Matrix4x4<T> result;
-			T c = std::cos(angle);
-			T s = std::sin(angle);
-			result.SetColumn(0, Vector4<T>(c+(1-c)*x*x, (1-c)*x*y+s*z, (1-c)*x*z-s*y, 0));
-			result.SetColumn(1, Vector4<T>((1-c)*x*y-s*z, c+(1-c)*y*y, (1-c)*y*z+s*x, 0));
-			result.SetColumn(2, Vector4<T>((1-c)*x*z+s*y, (1-c)*y*z-s*x, c+(1-c)*z*z, 0));
-			result.SetColumn(3, Vector4<T>(0,0,0,1));
-			return result;
-		}
-
-		static Matrix4x4<T> CreateReflectZ()
-		{
-			Matrix4x4<T> m;
-			m[0] = 1;
-			m[5] = 1;
-			m[10] = -1;
-			m[15] = 1;
-			return m;
-		}
-
-		static Matrix4x4<T> CreateReflectX()
-		{
-			Matrix4x4<T> m;
-			m[0] = -1;
-			m[5] = 1;
-			m[10] = 1;
-			m[15] = 1;
-			return m;
-		}
-
-		static Matrix4x4<T> CreateReflectY()
-		{
-			Matrix4x4<T> m;
-			m[0] = 1;
-			m[5] = -1;
-			m[10] = 1;
-			m[15] = 1;
-			return m;
-		}
-
-		static Matrix4x4<T> CreateFromYawPitchRoll(const Vector3<T>& eye, T yaw, T pitch, T roll)
-		{
-			T cos_yaw = cos(yaw);
-			T cos_pitch = cos(pitch);
-			T cos_roll = cos(roll);
-			T sin_yaw = sin(yaw);
-			T sin_pitch = sin(pitch);
-			T sin_roll = sin(roll);
-
-			Math::Vector3<T> dir(sin_yaw * cos_pitch, sin_pitch, cos_pitch * -cos_yaw);
-			Math::Vector3<T> up(-cos_yaw * sin_roll - sin_yaw * sin_pitch * cos_roll, cos_pitch * cos_roll, -sin_yaw * sin_roll - sin_pitch * cos_roll * -cos_yaw);
-
-			return CreateTargetCameraMatrix(eye, eye + dir, up);
-		}
-
-		/*
+        /*
 		0 4 8
 		1 5 9
 		2 6 10
@@ -841,17 +753,27 @@ namespace Math
 		stream.width(old);
 		stream.precision(old_prec);
 		return stream;
-	}
+    }
 
 
 	class PUNK_ENGINE_API mat4 : public Matrix4x4<float>
 	{
 	public:
-		mat4() : Matrix4x4<float> () {}
-		mat4(const mat4& m) : Matrix4x4<float>(m) {}
-		mat4(const Matrix4x4<float>& m) : Matrix4x4<float>(m) {}
+        mat4();
+        mat4(const mat4& m);
+        mat4(const Matrix4x4<float>& m);
+
+        static const mat4 CreateTargetCameraMatrix(const vec3& eye, const vec3& target, const vec3& up);
+        static const mat4 CreatePerspectiveProjection(float fovy, float width, float height, float znear, float zfar);
+        const mat4 Inversed() const;
 	};
 
+    PUNK_ENGINE_API const mat4 operator + (const mat4& a, const mat4& b);
+    PUNK_ENGINE_API const mat4 operator * (const mat4& a, const mat4& b);
+    PUNK_ENGINE_API const vec4 operator * (const mat4& m, const vec4& v);
+    PUNK_ENGINE_API const vec3 operator * (const mat4& m, const vec3& v);
+    PUNK_ENGINE_API const mat4 operator * (const mat4& m, const float& v);
+    PUNK_ENGINE_API const mat4 operator * (const float& v, const mat4& m);
 }
 
 #endif
