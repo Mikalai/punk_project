@@ -1,7 +1,8 @@
 #include <map>
 
 #ifdef USE_FREETYPE
-#include <freetype/ft2build.h>
+
+#include <ft2build.h>
 #include FT_FREETYPE_H
 #endif //   USE_FREETYPE
 
@@ -75,7 +76,7 @@ namespace Utility
 		System::string iniFontsFile;
 		System::string pathToFonts = System::Environment::Instance()->GetFontFolder();
 
-		System::ConfigFile conf;
+        //System::ConfigFile conf;
 
 		iniFontsFile = System::Environment::Instance()->GetFontFolder() + L"fonts.ini";
 
@@ -99,8 +100,8 @@ namespace Utility
 
 			char ansi[1024];
 			int len = 1024;
-			path.ToANSI(ansi, len);
-			error = FT_New_Face(library, ansi, 0, &face);
+            std::vector<char> buffer = path.ToUtf8();
+            error = FT_New_Face(library, &buffer[0], 0, &face);
 
 			if (error == FT_Err_Unknown_File_Format)
 			{
