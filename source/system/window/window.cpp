@@ -427,8 +427,9 @@ int Window::Impl::DecodeKey(KeySym keysym, int& charKey, bool press)
     case XK_Return:
         m_buttons[(key = PUNK_KEY_ENTER)] = press;
         break;
-    case XK_Escape:
+    case XK_Escape:        
         m_buttons[(key = PUNK_KEY_ESCAPE)] = press;
+        BreakMainLoop();
         break;
     case XK_space:
         charKey = ' ';
@@ -868,7 +869,11 @@ int Window::Impl::Loop()
     while (1)
     {
         if (m_exit_main_loop)
+        {
+            m_adapter->WndOnDestroyEvent();
             break;
+        }
+
         do
         {
             //XNextEvent(display, &event);
@@ -908,8 +913,12 @@ int Window::Impl::Loop()
             case MotionNotify:
             {
                 MouseMoveEvent* e = new MouseMoveEvent;
+                e->x_prev = x_prev;
+                e->y_prev = y_prev;
                 e->x = event.xmotion.x;
                 e->y = event.xmotion.y;
+                x_prev = event.xmotion.x;
+                y_prev = event.xmotion.y;
                 /*event->controlKey = (bool)(wParam & MK_CONTROL);
 event->leftButton = (bool)(wParam & MK_LBUTTON);
 event->middleButton = (bool)(wParam & MK_MBUTTON);
@@ -1070,7 +1079,7 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
                     MouseWheelEvent* e = new MouseWheelEvent;
                     e->x = event.xbutton.x;
                     e->y = event.xbutton.y;
-                    e->delta = 1;
+                    e->delta = -1;
                     /*event->controlKey = (bool)(wParam & MK_CONTROL);
 event->leftButton = (bool)(wParam & MK_LBUTTON);
 event->middleButton = (bool)(wParam & MK_MBUTTON);
