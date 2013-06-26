@@ -113,7 +113,7 @@ namespace Math
 	{
 		for (int i = 0; i != 6; ++i)
 		{
-			Frustum::FrustumPlane plane = (Frustum::FrustumPlane)i;
+            FrustumPlane plane = (FrustumPlane)i;
 			if (ClassifyPoint(point, frustum.GetPlane(plane)) == Relation::BACK)
 				return Relation::OUTSIDE;
 		}
@@ -361,7 +361,7 @@ namespace Math
 		const vec3 org = line.GetOrigin();
 		const vec3 n = triangle.GetNormal();
 		float org_dst = triangle.GetDistance();
-		const vec3 dir = line.GetDirection();
+        const vec3 dir = line.GetDestination() - line.GetOrigin();
 		float v = n.Dot(dir);
 
 		if (Math::Abs(v) < EPS)
@@ -380,7 +380,7 @@ namespace Math
 
 		Relation res = ClassifyPoint(intersect_point, triangle);
 
-		if (res != Relation::INSIDE)
+        if (res == Relation::INSIDE)
 			return Relation::INTERSECT;
 		return Relation::NOT_INTERSECT;
 	}
@@ -392,6 +392,31 @@ namespace Math
 		vec = line.PointAt(t);
 		return res;
 	}
+
+    Relation CrossLineTriangles(const Line3D &line, const std::vector<vec3> &point, const std::vector<ivec3> &faces, std::vector<vec3> &res_points, std::vector<size_t> &res_faces)
+    {
+        res_faces.clear();
+        res_points.clear();
+        for (size_t i = 0; i != faces.size(); ++i)
+        {
+            const ivec3& face = faces[i];
+            const vec3& p0 = point[face[0]];
+            const vec3& p1 = point[face[1]];
+            const vec3& p2 = point[face[2]];
+
+            const Triangle3D triangle(p0, p1, p2);
+            float t;
+            Relation res = CrossLineTriangle(line, triangle, t);
+            if (res == Relation::INTERSECT)
+            {
+                res_points.push_back(line.PointAt(t));
+                res_faces.push_back(i);
+            }
+        }
+        if (res_faces.empty())
+            return Relation::NOT_INTERSECT;
+        return Relation::INTERSECT;
+    }
 
 	Relation CrossLineSphere(const Line3D& line, const Sphere& sphere, float& t1, float& t2)
 	{
@@ -820,7 +845,7 @@ namespace Math
 
 		bool partial_visible = false;
 		Portal temp(portal);
-		Frustum::FrustumPlane p = (Frustum::FrustumPlane)0;
+        FrustumPlane p = (FrustumPlane)0;
 		for (const auto& plane : clipper)
 		{
 			std::vector<int> in_points; in_points.reserve(portal.size());
@@ -888,7 +913,7 @@ namespace Math
 				}
 			}
 
-			p = (Frustum::FrustumPlane)((int)p + 1);
+            p = (FrustumPlane)((int)p + 1);
 			temp.SetPoints(new_points);
 		}
 

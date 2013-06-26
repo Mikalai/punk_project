@@ -2,12 +2,14 @@
 #define _H_PUNK_MATH_INTERSECTION_TYPE
 
 #include "../config.h"
+#include <cstdint>
 #include <vector>
 
 namespace Math
 {
 	class vec3;
 	class vec2;
+    class ivec3;
 	class Plane;
 	class Line3D;
 	class Triangle3D;
@@ -81,12 +83,13 @@ namespace Math
 	PUNK_ENGINE_API Relation CrossLinePlane(const Line3D& line, const Plane& p, vec3& point);
 	PUNK_ENGINE_API Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, float& t);
 	PUNK_ENGINE_API Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, vec3& vec);
+    PUNK_ENGINE_API Relation CrossLineTriangles(const Line3D& line, const std::vector<vec3>& point, const std::vector<ivec3>& faces, std::vector<vec3>& res_points, std::vector<std::size_t>& res_faces);
 	PUNK_ENGINE_API Relation CrossLineSphere(const Line3D& line, const Sphere& sphere, float& t1, float& t2);
 	PUNK_ENGINE_API Relation CrossLineSphere(const Line3D& line, const Sphere& sphere, vec3& p1, vec3& p2);
 	PUNK_ENGINE_API Relation CrossLineEllipsoid(const Line3D& line, const Ellipsoid& ellipsoid, float& t1, float& t2);
 	PUNK_ENGINE_API Relation CrossLineEllipsoid(const Line3D& line, const Ellipsoid& ellipsoid, vec3& p1, vec3& p2);
 	PUNK_ENGINE_API Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, float& t1, float& t2, int& face_index1, int& face_index2);
-	PUNK_ENGINE_API Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, vec3& p1, vec3& p2, int& face_index1, int& face_index2);
+	PUNK_ENGINE_API Relation CrossLineConvexShape(const Line3D& line, const ConvexShapeMesh& shape, vec3& p1, vec3& p2, int& face_index1, int& face_index2);    
 	PUNK_ENGINE_API Relation CrossSphereSphere(const Sphere& a, const Sphere& b);
 
 	PUNK_ENGINE_API Relation CrossThreePlane(const Plane& a, const Plane& b, const Plane& c, vec3& point);
