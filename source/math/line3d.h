@@ -7,6 +7,8 @@
 
 namespace Math
 {
+    class mat4;
+
 	class PUNK_ENGINE_API Line3D
 	{
 		vec3 m_origin;
@@ -31,5 +33,7 @@ namespace Math
 
         const System::string ToString() const;
 	};
+
+    const Line3D operator * (const mat4& l, const Line3D& r);
 }
 #endif // LINE_H

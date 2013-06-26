@@ -56,4 +56,13 @@ namespace Math
         System::string result = L"{Org: " + m_origin.ToString() + L"; Dst: "  + m_destination.ToString() + L" Dir: " + m_direction.ToString();
         return result;
     }
+
+    const Line3D operator * (const mat4& l, const Line3D& r)
+    {
+        Math::vec3 org = l * r.GetOrigin();
+        Math::vec3 dst = l * r.GetDestination();
+        Line3D res;
+        res.SetOriginDestination(org, dst);
+        return res;
+    }
 }
