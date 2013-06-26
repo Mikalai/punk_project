@@ -1,5 +1,6 @@
 #include "../../system/module.h"
 #include "../../virtual/module.h"
+#include "../../scene/module.h"
 #include "../../ai/module.h"
 
 #include "parse_functions.h"
@@ -23,6 +24,11 @@ namespace Utility
             case WORD_ARMATURETEXT:
             {
                 System::string word = buffer.ReadWord();
+                {
+                    auto value = Virtual::Armature::find(word);
+                    if (value)
+                        return value;
+                }
                 std::unique_ptr<Virtual::Armature> armature;
                 if (word == L"male_armature")
                 {
@@ -40,6 +46,11 @@ namespace Utility
             case WORD_ACTIONTEXT:
             {
                 System::string word = buffer.ReadWord();
+                {
+                    auto value = Virtual::Action::find(word);
+                    if (value)
+                        return value;
+                }
                 std::unique_ptr<Virtual::Action> action;
                 if (word == L"male_walk")
                     action.reset(new Virtual::ActionMaleWalk);
@@ -52,17 +63,28 @@ namespace Utility
             case WORD_STATICMESHTEXT:
             {
                 System::string word = buffer.ReadWord();
+                {
+                    auto value = Virtual::StaticGeometry::find(word);
+                    if (value)
+                        return value;
+                }
                 std::unique_ptr<Virtual::StaticGeometry> mesh(new Virtual::StaticGeometry);
                 ParseStaticMesh(buffer, mesh.get());
                 Virtual::StaticGeometry::add(word, mesh.get());
                 mesh->SetName(word);
-                mesh->SetStorageName(word);
+                mesh->SetStorageName(word);                
                 return mesh.release();
             }
                 break;
             case WORD_MATERIALTEXT:
             {
+                Virtual::Material::validate();
                 System::string word = buffer.ReadWord();
+                {
+                    auto value = Virtual::Material::find(word);
+                    if (value)
+                        return value;
+                }
                 std::unique_ptr<Virtual::Material> material(new Virtual::Material);
                 ParseMaterial(buffer, material.get());
                 Virtual::Material::add(word, material.get());
@@ -71,6 +93,11 @@ namespace Utility
             case WORD_NAVIMESHTEXT:
             {
                 System::string word = buffer.ReadWord();
+                {
+                    auto value = AI::NaviMesh::find(word);
+                    if (value)
+                        return value;
+                }
                 std::unique_ptr<AI::NaviMesh> navi_mesh(new AI::NaviMesh);
                 ParseNaviMesh(buffer, navi_mesh.get());
                 AI::NaviMesh::add(word, navi_mesh.get());
@@ -79,10 +106,61 @@ namespace Utility
             case WORD_PATHTEXT:
             {
                 System::string word = buffer.ReadWord();
+                {
+                    auto value = AI::CurvePath::find(word);
+                    if (value)
+                        return value;
+                }
                 std::unique_ptr<AI::CurvePath> path(new AI::CurvePath);
                 ParseCurvePath(buffer, path.get());
                 AI::CurvePath::add(word, path.get());
                 return path.release();
+            }
+            case WORD_RIVERTEXT:
+            {
+                System::string word = buffer.ReadWord();
+                {
+                    auto value = Virtual::River::find(word);
+                    if (value)
+                        return value;
+                }
+                std::unique_ptr<Virtual::River> river(new Virtual::River);
+                ParseRiver(buffer, *river);
+                Virtual::River::add(word, river.get());
+                return river.release();
+            }
+            case WORD_SCENETEXT:
+            {                
+                std::unique_ptr<Scene::SceneGraph> graph(new Scene::SceneGraph);
+                ParseSceneGraph(buffer, *graph);
+                return graph.release();
+            }
+            case WORD_SUNTEXT:
+            {
+                System::string word = buffer.ReadWord();
+                {
+                    auto value = Virtual::Sun::find(word);
+                    if (value)
+                        return value;
+                }
+                std::unique_ptr<Virtual::Sun> sun(new Virtual::Sun);
+                ParseSun(buffer, *sun);
+                Virtual::Sun::add(word, sun.get());
+                return sun.release();
+            }
+            case WORD_TERRAINTEXT:
+            {
+                System::string word = buffer.ReadWord();
+                {
+                    auto mesh = Virtual::TerrainMesh::find(word);
+                    if (mesh)
+                        return mesh;
+                }
+                std::unique_ptr<Virtual::TerrainMesh> mesh(new Virtual::TerrainMesh);
+                ParseTerrainMesh(buffer, *mesh);
+                Virtual::TerrainMesh::add(word, mesh.get());
+                return mesh.release();
+
             }
             default:
                 throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);

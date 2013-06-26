@@ -18,7 +18,7 @@ namespace Utility
                 System::string value;
                 ParseBlockedString(buffer, value);
                 mesh->SetName(value);
-                mesh->SetStorageName(value);
+                mesh->SetStorageName(value + L".skin");
             }
                 break;
             default:

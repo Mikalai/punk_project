@@ -1,4 +1,5 @@
 #include "../../virtual/data/material.h"
+#include "../../virtual/data/texture_slot.h"
 #include "parse_functions.h"
 
 namespace Utility
@@ -142,25 +143,11 @@ namespace Utility
                 mat->SetTranslucency(value);
             }
             break;
-            case WORD_NORMAL_MAP:
+            case WORD_TEXTURE_SLOT:
             {
-                System::string value;
-                ParseBlockedString(buffer, value);
-                mat->SetNormalMap(value);
-            }
-            break;
-            case WORD_DIFFUSE_MAP:
-            {
-                System::string value;
-                ParseBlockedString(buffer, value);
-                mat->SetDiffuseMap(value);
-            }
-            break;
-            case WORD_SPECULAR_MAP:
-            {
-                System::string value;
-                ParseBlockedString(buffer, value);
-                mat->SetSpecularMap(value);
+                std::unique_ptr<Virtual::TextureSlot> slot(new Virtual::TextureSlot(mat));
+                ParseTextureSlot(buffer, *slot);
+                mat->AddTextureSlot(slot.release());
             }
             break;
             default:

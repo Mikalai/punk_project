@@ -18,7 +18,7 @@ namespace Utility
                 System::string value;
                 ParseBlockedString(buffer, value);
                 material->SetName(value);
-                material->SetStorageName(value);
+                material->SetStorageName(value + L".material");
             }
                 break;
             case WORD_STATIC_MESH_NODE:

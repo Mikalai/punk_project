@@ -19,7 +19,7 @@ namespace Utility
                 System::string name;
                 ParseBlockedString(buffer, name);
                 node->SetName(name);
-                node->SetStorageName(name);
+                node->SetStorageName(name + L".portal");
             }
                 break;
             case WORD_LOCAL_MATRIX:

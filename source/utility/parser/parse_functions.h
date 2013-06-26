@@ -27,6 +27,11 @@
     throw System::PunkInvalidArgumentException(L"Integrity check failed");\
     }
 
+namespace Scene
+{
+    class SceneGraph;
+}
+
 namespace System
 {
     class Buffer;
@@ -107,5 +112,16 @@ namespace Utility
     extern bool ParseCurvePath(System::Buffer& buffer, AI::CurvePath* value);
     extern bool ParseSpline(System::Buffer& buffer, Math::Spline& value);
     extern bool ParseWeightedPoint(System::Buffer& buffer, Math::WeightedPoint& value);
+    PUNK_ENGINE_LOCAL bool ParseTextureSlot(System::Buffer& buffer, Virtual::TextureSlot& value);
+    PUNK_ENGINE_LOCAL bool ParseSceneGraph(System::Buffer& buffer, Scene::SceneGraph& value);
+    PUNK_ENGINE_LOCAL bool ParseSun(System::Buffer& buffer, Virtual::Sun& value);
+    PUNK_ENGINE_LOCAL bool ParseSunNode(System::Buffer& buffer, Scene::SunNode& value);
+    PUNK_ENGINE_LOCAL bool ParseNaviMeshNode(System::Buffer& buffer, Scene::NaviMeshNode& value);
+    PUNK_ENGINE_LOCAL bool ParsePathNode(System::Buffer& buffer, Scene::PathNode& value);
+    PUNK_ENGINE_LOCAL bool ParseTerrainNode(System::Buffer& buffer, Scene::TerrainNode& value);
+    PUNK_ENGINE_LOCAL bool ParseRiverNode(System::Buffer& buffer, Scene::RiverNode& value);
+    PUNK_ENGINE_LOCAL bool ParseTerrainMesh(System::Buffer& buffer, Virtual::TerrainMesh& value);
+    PUNK_ENGINE_LOCAL bool ParseRiver(System::Buffer& buffer, Virtual::River& value);
 }
+
 #endif // PARSE_FUNCTIONS_H
