@@ -87,7 +87,9 @@ namespace GPU
 
 	void Frame::PushViewState()
 	{
-		m_state.push(m_state.top()->Clone(CoreState::VIEW_STATE));
+        CoreState* state = m_state.top();
+        state = state->Clone(CoreState::VIEW_STATE);
+        m_state.push(state);
 	}
 
 	void Frame::PopViewState()
@@ -170,6 +172,11 @@ namespace GPU
 		Top()->texture_state->m_diffuse_map_0 = value;
 	}
 
+    void Frame::SetNormalMap(const Texture2D* value)
+    {
+        Top()->texture_state->m_normal_map = value;
+    }
+
 	void Frame::SetDiffuseMap1(const Texture2D* value)
 	{
 		Top()->texture_state->m_diffuse_map_1 = value;
@@ -184,6 +191,11 @@ namespace GPU
 	{
 		Top()->render_state->m_enable_diffuse_shading = value;
 	}
+
+//    void Frame::EnableBumpMapping(bool value)
+//    {
+//        Top()->render_state->m_enable_bump_maping_shading = value;
+//    }
 
 	void Frame::EnableSkinning(bool value)
 	{
@@ -430,6 +442,8 @@ namespace GPU
 	void Frame::DrawLine(const Math::vec3& start, const Math::vec3& end)
 	{
 		PushAllState();
+        EnableLighting(false);
+        EnableTexturing(false);
 		RenderableBuilder b(m_driver);
 		b.Begin(PrimitiveType::LINES);
 		b.Vertex3fv(start);
@@ -440,6 +454,90 @@ namespace GPU
 		PopAllState();
 	}
 
+    void Frame::DrawLine(float x1, float y1, float x2, float y2)
+    {
+        PushAllState();
+        EnableLighting(false);
+        EnableTexturing(false);
+        SetProjectionMatrix(Math::mat4::CreateIdentity());
+        SetViewMatrix(Math::mat4::CreateIdentity());
+        SetWorldMatrix(Math::mat4::CreateIdentity());
+
+        float width = GetVideoDriver()->GetWindow()->GetWidth();
+        float height = GetVideoDriver()->GetWindow()->GetHeight();
+
+        Math::vec3 p1;
+        p1[0] = -1.0f + 2.0f * x1 / width;
+        p1[1] = -1.0f + 2.0f * y1 / height;
+        p1[2] = 0;
+
+        Math::vec3 p2;
+        p2[0] = -1.0f + 2.0f * x2 / width;
+        p2[1] = -1.0f + 2.0f * y2 / height;
+        p2[2] = 0;
+
+        RenderableBuilder b(m_driver);
+        b.Begin(PrimitiveType::LINES);
+        b.Vertex3fv(p1);
+        b.Vertex3fv(p2);
+        b.End();
+        Renderable* r(b.ToRenderable());
+        Render(r, true);
+        PopAllState();
+    }
+
+    void Frame::DrawPoint(float x, float y)
+    {
+        PushAllState();
+        SetProjectionMatrix(Math::mat4::CreateIdentity());
+        SetViewMatrix(Math::mat4::CreateIdentity());
+        SetWorldMatrix(Math::mat4::CreateIdentity());
+
+        float width = GetVideoDriver()->GetWindow()->GetWidth();
+        float height = GetVideoDriver()->GetWindow()->GetHeight();
+
+        Math::vec3 p1;
+        p1[0] = -1.0f + 2.0f * x / width;
+        p1[1] = -1.0f + 2.0f * y / height;
+        p1[2] = 0;
+
+        RenderableBuilder b(m_driver);
+        b.Begin(PrimitiveType::POINTS);
+        b.Vertex3fv(p1);
+        b.End();
+        Renderable* r(b.ToRenderable());
+        Render(r, true);
+        PopAllState();
+    }
+
+    void Frame::DrawPoint(float x, float y, float z)
+    {
+        PushAllState();
+        EnableLighting(false);
+        EnableTexturing(false);
+        RenderableBuilder b(m_driver);
+        b.Begin(PrimitiveType::POINTS);
+        b.Vertex3fv(Math::vec3(x, y, z));
+        b.End();
+        Renderable* r(b.ToRenderable());
+        Render(r, true);
+        PopAllState();
+    }
+
+    void Frame::DrawPoint(const Math::vec3& v)
+    {
+        PushAllState();
+        EnableLighting(false);
+        EnableTexturing(false);
+        RenderableBuilder b(m_driver);
+        b.Begin(PrimitiveType::POINTS);
+        b.Vertex3fv(v);
+        b.End();
+        Renderable* r(b.ToRenderable());
+        Render(r, true);
+        PopAllState();
+    }
+
 	FogDescription& Frame::Fog()
 	{
 		return Top()->render_state->m_fog;
@@ -449,4 +547,9 @@ namespace GPU
 	{
 		return Top()->render_state->m_fog;
 	}
+
+    VideoDriver* Frame::GetVideoDriver() const
+    {
+        return m_driver;
+    }
 }

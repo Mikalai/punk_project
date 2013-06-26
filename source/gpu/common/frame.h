@@ -34,14 +34,15 @@ namespace GPU
 		void SetDiffuseColor(float r, float g, float b, float a);
 		void SetDiffuseMap0(const Texture2D* value);
 		void SetDiffuseMap1(const Texture2D* value);
+        void SetHeightMap(const Texture2D* value);
+        void SetNormalMap(const Texture2D* value);
 		void SetTextColor(const Math::vec4& value);
 		void SetFontMap(const Texture2D* value);
 		void SetBoneMatrix(int bone_index, const Math::mat4& value);
 		void SetSpecularColor(const Math::vec4& value);
 		void SetSpecularFactor(float value);
 		void SetAmbientColor(float value);
-		void SetClipSpace(const Math::ClipSpace& value);
-		void SetHeightMap(const Texture2D* value);
+		void SetClipSpace(const Math::ClipSpace& value);		
 		void SetLineWidth(float value);
 		void SetPointSize(float value);
 		void SetTextureMatrix(const Math::mat4& value);
@@ -69,13 +70,14 @@ namespace GPU
 
 		void EnableBlending(bool value);
 		void EnableDepthTest(bool value);		
-		void EnableDiffuseShading(bool value);
+        void EnableDiffuseShading(bool value);
+        //void EnableBumpMapping(bool value);
 		void EnableSkinning(bool value);
 		void EnableWireframe(bool value);
 		void EnableTerrainRendering(bool value);
 		void EnableLighting(bool value);
 		void EnableTexturing(bool value);
-		void EnableFontRendering(bool value);
+		void EnableFontRendering(bool value);        
 
         //  added on 01.05.2013
 		void SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer);
@@ -94,6 +96,10 @@ namespace GPU
 		LightParameters& Light(int slot);
 
 		void DrawLine(const Math::vec3& start, const Math::vec3& end);
+        void DrawLine(float x1, float y1, float x2, float y2);
+        void DrawPoint(float x, float y);
+        void DrawPoint(const Math::vec3& v);
+        void DrawPoint(float x, float y, float z);
 
 
 		void SetBlendColor(const Math::vec4& value);
@@ -121,6 +127,7 @@ namespace GPU
 		void PushTextureState();
 		void PopTextureState();
 
+        VideoDriver* GetVideoDriver() const;
 	private:
 
 		CoreState* Top();
