@@ -315,8 +315,8 @@ namespace Scene
 	const Collider::CollisionResult Collider::Run(const Math::BoundingSphere& sphere)
 	{
 		m_current_sphere = sphere;
-		if (m_scene)
-			m_scene->GetRootNode()->Apply(this);
+//		if (m_scene)
+//			m_scene->GetRootNode()->Apply(this);
 		return m_result;
 	}
 

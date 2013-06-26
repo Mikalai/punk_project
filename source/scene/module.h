@@ -21,5 +21,11 @@
 #include "visitor.h"
 #include "texture_view_node.h"
 #include "collider.h"
+#include "sun_node.h"
+#include "navi_mesh_node.h"
+#include "path_node.h"
+#include "river_node.h"
+#include "selector/selection.h"
+#include "selector/selector.h"
 
 #endif	//	_H_PUNK_SCENE_MODULE

@@ -4,8 +4,8 @@
 namespace Scene
 {
 	TerrainNode::TerrainNode()
+        : m_mesh(nullptr)
 	{
-		SetType(System::ObjectType::TERRAIN_NODE);
 	}
 
 	TerrainNode::~TerrainNode()
@@ -43,4 +43,15 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    void TerrainNode::SetTerrainMesh(Virtual::TerrainMesh* value)
+    {
+        m_mesh = value;
+    }
+
+    Virtual::TerrainMesh* TerrainNode::GetTerrainMesh()
+    {
+        return m_mesh;
+    }
+
 }

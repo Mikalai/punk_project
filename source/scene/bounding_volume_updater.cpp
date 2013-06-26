@@ -282,8 +282,8 @@ namespace Scene
 
 	void BoundingVolumeUpdater::Update()
 	{
-		if (m_scene)
-			m_scene->GetRootNode()->Apply(this);
+//		if (m_scene)
+//			m_scene->GetRootNode()->Apply(this);
 	}
 
 	void BoundingVolumeUpdater::SetScene(Scene::SceneGraph* scene)

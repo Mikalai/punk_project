@@ -3,9 +3,12 @@
 namespace Scene
 {
 	MaterialNode::MaterialNode()
+        : m_material(nullptr)
 	{
-		SetType(System::ObjectType::MATERIAL_NODE);
 	}
+
+    MaterialNode::~MaterialNode()
+    {}
 
 	bool MaterialNode::Save(std::ostream& stream) const
 	{

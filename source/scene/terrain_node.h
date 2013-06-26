@@ -4,7 +4,12 @@
 #include "../config.h"
 #include "node.h"
 
-namespace Virtual { class TerrainObserver; }
+namespace Virtual
+{
+    class TerrainObserver;
+    class StaticGeometry;
+    class TerrainMesh;
+}
 
 namespace Scene
 {
@@ -13,7 +18,7 @@ namespace Scene
 	public:
 
 		TerrainNode();
-		~TerrainNode();
+        virtual ~TerrainNode();
 
 		void SetTerrainObserver(Virtual::TerrainObserver* value) { m_observer = value; }
 		Virtual::TerrainObserver* GetTerrainObserver() { return m_observer; }
@@ -26,11 +31,13 @@ namespace Scene
 
 		virtual bool Apply(AbstractVisitor* visitor);							
 
+        void SetTerrainMesh(Virtual::TerrainMesh* value);
+        Virtual::TerrainMesh* GetTerrainMesh();
+
 	private:		
-		Virtual::TerrainObserver* m_observer;		
+        Virtual::TerrainObserver* m_observer;
+        Virtual::TerrainMesh* m_mesh;
 	};
 }
-
-//REGISTER_MANAGER(L"resource.terrains", L"*.terrain", System::Environment::Instance()->GetModelFolder(), System::ObjectType::T, Scene, GeometryNode, return, return);
 
 #endif	//	_H_PUNK_SCENE_TERRAIN_NODE

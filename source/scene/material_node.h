@@ -11,6 +11,7 @@ namespace Scene
 	public:
 
 		MaterialNode();
+        virtual ~MaterialNode();
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
