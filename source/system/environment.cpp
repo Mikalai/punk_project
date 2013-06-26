@@ -40,7 +40,7 @@ namespace System
 
 	const string Environment::GetFontFolder()
 	{
-		return GetCurrentFolder() + L"\\..\\..\\data\\fonts\\";
+        return GetCurrentFolder() + L"/../../data/fonts/";
 		//return GetCurrentFolder() + L"fonts\\";
 	}
 
