@@ -25,6 +25,7 @@ namespace System
 	Buffer::~Buffer()
 	{
 		delete[] m_buffer;
+        m_buffer = nullptr;
 	}
 
 	void Buffer::Reset()
@@ -64,9 +65,15 @@ namespace System
 	{
 		m_size = size;
 		if (m_buffer)
-			delete[] m_buffer;        
-		m_current = m_buffer = new unsigned char[m_size];
-        memset(m_buffer, 0, size);
+        {
+            delete[] m_buffer;
+            m_buffer = nullptr;
+        }
+        if (m_size != 0)
+        {
+            m_current = m_buffer = new unsigned char[m_size];
+            memset(m_buffer, 0, size);
+        }
 	}
 
 	void* Buffer::StartPointer()
@@ -157,12 +164,12 @@ namespace System
 		//	skip spaces
 		//
 		unsigned char* p = 0;
-		for (p = m_current; (*p == '\n' || *p == '\r' || *p == '\t' || *p == ' ') && p < m_buffer + m_size; p++);		
+        for (p = m_current; (p < m_buffer + m_size) && (*p == '\n' || *p == '\r' || *p == '\t' || *p == ' '); p++);
 		m_current = p;
 		int len = 0;
-		for (unsigned char* p = m_current; *p != '\n' && *p != '\r' && *p !='\t' && *p != ' ' && p < m_buffer + m_size; p++, len++);		
+        for (unsigned char* p = m_current; (p < m_buffer + m_size) && *p != '\n' && *p != '\r' && *p !='\t' && *p != ' '; p++, len++);
 		string res((char*)m_current, len);
-		for (unsigned char* p = m_current+len; (*p == '\n' || *p =='\t' || *p == '\r' || *p == ' ') && p < m_buffer + m_size; p++, len++);		
+        for (unsigned char* p = m_current+len;  (p < m_buffer + m_size) && (*p == '\n' || *p =='\t' || *p == '\r' || *p == ' '); p++, len++);
 		m_current += len;
 		return res;
 	}
