@@ -10,7 +10,7 @@ namespace System
 	class PUNK_ENGINE_API Console
 	{
 	public:
-
+        ~Console();
 		//	possible colors that can be use in console
 		typedef enum {COLOR_BLACK,
 			COLOR_BLUE,

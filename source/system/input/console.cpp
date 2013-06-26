@@ -400,6 +400,12 @@ namespace System
 		: impl(new Impl)
 	{}
 
+    Console::~Console()
+    {
+        delete impl;
+        impl = nullptr;
+    }
+
 	void Console::SetPosition(int x, int y)
 	{
 		impl->SetPosition(x, y);
