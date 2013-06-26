@@ -22,7 +22,8 @@ namespace Punk
 	}
 
 	void Application::Clear()
-	{
+	{        
+        OnDestroy();
 		safe_delete(m_font_builder);
 		GPU::GPU_DESTROY();
 		Virtual::StaticGeometry::clear();
@@ -44,6 +45,8 @@ namespace Punk
 
         m_event_manager = new System::EventManager();
         System::WindowDesc wnd_desc;
+        wnd_desc.m_width = data.gpu_config.view_width;
+        wnd_desc.m_height = data.gpu_config.view_height;
         m_window = new System::Window(this, wnd_desc);
         if (!data.gpu_config.disable_3d_graphics)
         {
@@ -96,6 +99,7 @@ namespace Punk
 
 	void Application::WndOnIdleEvent(System::IdleEvent* event)
 	{
+        Idle(event);
 		//m_simulator->Update(float(event->elapsed_time_s));
 		m_event_manager->FixEvent(event);
 		m_event_manager->Process();
@@ -105,7 +109,7 @@ namespace Punk
 	}
 
 	void Application::WndOnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event)
-	{
+	{        
 		m_event_manager->FixEvent(event);
 	}
 
@@ -131,6 +135,7 @@ namespace Punk
 
 	void Application::WndOnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event)
 	{
+        MouseLeftButtonDown(event);
 		m_event_manager->FixEvent(event);
 	}
 
@@ -299,6 +304,15 @@ namespace Punk
 	void Application::OnMouseMove(System::MouseMoveEvent *event)
 	{}
 
+    void Application::OnDestroy()
+    {}
+
+    void Application::OnIdle(System::IdleEvent *event)
+    {}
+
+    void Application::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent *event)
+    {}
+
 	void Application::Resize(System::WindowResizeEvent *event)
 	{
 		m_event_manager->FixEvent(event);
@@ -334,4 +348,14 @@ namespace Punk
 	{
 		OnMouseMove(event);
 	}
+
+    void Application::MouseLeftButtonDown(System::MouseLeftButtonDownEvent* event)
+    {
+        OnMouseLeftButtonDown(event);
+    }
+
+    void Application::Idle(System::IdleEvent *event)
+    {
+        OnIdle(event);
+    }
 }

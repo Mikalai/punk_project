@@ -62,6 +62,9 @@ namespace Punk
 		virtual void OnKeyUp(System::KeyUpEvent* event);
 		virtual void OnMouseWheel(System::MouseWheelEvent* event);
 		virtual void OnMouseMove(System::MouseMoveEvent* event);
+        virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
+        virtual void OnDestroy();
+        virtual void OnIdle(System::IdleEvent* event);
 
 		void Init(const Config& value);
 	private:
@@ -84,6 +87,8 @@ namespace Punk
 		void KeyUp(System::KeyUpEvent* event);
 		void MouseWheel(System::MouseWheelEvent* event);		
 		void MouseMove(System::MouseMoveEvent* event);
+        void MouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
+        void Idle(System::IdleEvent* event);
 
 		//
 		//	to perform speed up and slow down
