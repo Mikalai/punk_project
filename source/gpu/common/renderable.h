@@ -31,6 +31,11 @@ namespace GPU
 			throw GPUException(L"Load() not implemented");
 		}
 
+        virtual size_t GetMemoryUsage()
+        {
+            throw GPUException(L"GetMemoryUsage() not implemented");
+        }
+
 	protected:
 
 		int m_primitive_type;

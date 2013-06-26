@@ -67,6 +67,8 @@ namespace GPU
         size_t width = image.GetWidth();
         size_t height = image.GetHeight();
         void* data = (void*)image.GetData();
+        std::vector<unsigned char> buffer(image.GetSizeInBytes());
+        memcpy(&buffer[0], data, image.GetSizeInBytes());
         return CreateTexture2D(width, height, internal_format, format, data, use_mipmaps);
 	}
 }

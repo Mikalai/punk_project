@@ -6,7 +6,7 @@ namespace GPU
 	LightParameters::LightParameters()
 	{
 		m_attenuation = LightAttenuation::Constant;
-		m_constant_attenuation = 1;
+        m_constant_attenuation = 1;
 		m_linear_attenuation = 0;
 		m_quadric_attenuation = 0;
 		m_spot_exponent = 100.0;

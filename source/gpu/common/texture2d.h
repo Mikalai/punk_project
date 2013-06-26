@@ -19,29 +19,31 @@ namespace GPU
 
     class PUNK_ENGINE_API Texture2D final
 	{
-	public:		
+    public:
 		virtual ~Texture2D();
 
         void Bind(int slot = 0) const;
 		void Unbind() const;			
-		bool CopyFromCPU(int x, int y, int width, int height, const void* data);
+        bool CopyFromCpu(int x, int y, int width, int height, const void* data);
 		void Resize(int width, int height);
 		void Fill(unsigned char data);
 		int GetHeight() const;
 		int GetWidth() const;
-		unsigned GetCode() const;		
-		void* Map();
+        unsigned GetCode() const;
+        void* Map();
 		void Unmap(void* data);
 
-		void SetSourceFile(const System::string& filename);
-		const System::string& GetSourceFile() const;
-		void SetIndex(int index);
-		int GetIndex() const;
+        void SetSourceFile(const System::string& filename);
+        const System::string& GetSourceFile() const;
+        void SetIndex(int index);
+        int GetIndex() const;
 
-		void Init();
+        void Init();
 		void Clear();
 
 		bool IsValid() const;
+
+        size_t GetMemoryUsage() const;
 
 		struct Texture2DImpl;
 		Texture2DImpl* impl;
@@ -54,7 +56,7 @@ namespace GPU
         Texture2D& operator = (const Texture2D& texture) = delete;
 
         friend class VideoDriver;
-	};
+    };
 }
 
 #endif	//	_H_PUNK_GPU_TEXTURE_2D

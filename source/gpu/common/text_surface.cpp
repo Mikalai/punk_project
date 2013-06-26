@@ -124,7 +124,7 @@ namespace GPU
                 if (y < 0)
                     return true;
             }
-            m_texture->CopyFromCPU(x + x_offset, y - y_offset, width, height, buffer);
+            m_texture->CopyFromCpu(x + x_offset, y - y_offset, width, height, buffer);
             x += x_advance;
         }
         return true;

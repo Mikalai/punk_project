@@ -100,7 +100,7 @@ namespace GPU
 						if (state->light_state->m_light_model == LightModel::BumpMapping)
                         {
 							tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
-							tc.SetTexture(1, state->texture_state->m_normal_map);
+                            tc.SetTexture(1, state->texture_state->m_normal_map);
                             policy = AbstractRenderPolicy::find(RenderPolicySet::BumpMapping);
                         }
 						else if (state->light_state->m_light_model == LightModel::PerFragmentDiffuse)
