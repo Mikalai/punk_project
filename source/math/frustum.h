@@ -9,18 +9,11 @@
 
 namespace Math
 {
+    enum class FrustumPlane : uint8_t;
+
 	class PUNK_ENGINE_API Frustum
 	{
 	public:
-
-		enum FrustumPlane {
-			PLANE_TOP,
-			PLANE_BOTTOM,
-			PLANE_LEFT,
-			PLANE_RIGHT,
-			PLANE_FAR,
-			PLANE_NEAR
-		};
 
 		/**
 		 * @brief The FrustumPoints enum. Contains corner points of the frustum.
@@ -40,26 +33,28 @@ namespace Math
 
 	public:
 
-		Frustum();
+        Frustum(const mat4& projection_matrix);
 
 		//void Set(float left, float right, float top, float bottom, float znear, float zfar);
 		//void Set(float fov, float width, float height, float near, float far);
-		void Set(float fov, float width, float height, float near, float far);
+        //void Set(float fov, float width, float height, float near, float far);
 		const mat4& GetProjectionMatrix() const;
 		const ClipSpace ToClipSpace() const;
 
-		float GetFOV() const { return m_fov; }
-		float GetAspectRation() const { return m_aspect; }
-		float GetNearPlane() const { return m_znear; }
-		float GetFarPlane() const { return m_zfar; }
+        float GetFovY() const;
+        float GetAspectRation() const;
+        float GetNearPlane() const;
+        float GetFarPlane() const;
 
 		const Plane& GetPlane(FrustumPlane value) const;
 		const Math::vec3& GetPoint(FrustumPoints value) const;
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        //bool Save(std::ostream& stream) const;
+        //bool Load(std::istream& stream);
 
 		static bool IsAdjacent(FrustumPlane a, FrustumPlane b);
+
+        void Update();
 
 	protected:
 
@@ -67,13 +62,13 @@ namespace Math
 
 		Math::vec3 m_points[8];
 
-		mat4 m_projection_matrix;
-		float m_fov;
-		float m_aspect;
-		float m_znear;
-		float m_zfar;	
+        const mat4& m_projection_matrix;
+//		float m_fov;
+//		float m_aspect;
+//		float m_znear;
+//		float m_zfar;
 
-		void UpdateMatrix();
+        //void UpdateMatrix();
 		void CalculatePlanes();
 	};
 
