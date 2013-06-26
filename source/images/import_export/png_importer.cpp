@@ -125,7 +125,7 @@ namespace ImageModule
         image->Create(width, height, channels, ComponentType::UnsignedByte, format);
 
 		png_bytep * rowPtr  = new png_bytep[height];
-		unsigned long     * lineBuf = new unsigned long[width];
+        uint32_t     * lineBuf = new uint32_t[width];
 
 		for (unsigned i = 0; i < height; i++ )
 			rowPtr [i] = (png_bytep) malloc ( rowBytes );
@@ -197,7 +197,7 @@ namespace ImageModule
 
 			unsigned char* src = (unsigned char*)lineBuf;
             unsigned char* offset = (unsigned char*)image->GetData() + height*width*channels - (i+1)*width*channels;	//alligned
-			for (int k = 0; k < (int)width; k++, src += 4)
+            for (int k = 0; k < (int)width; k++, src += 4)
 			{
 				if (channels == 1)
 				{

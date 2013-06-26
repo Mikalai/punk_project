@@ -7,10 +7,11 @@
 #include "jpg_importer.h"
 #include "../internal_images/image_impl.h"
 #include <stdio.h>
+#include <memory.h>
 
 #ifdef USE_JPEG
-#include <jpeg/jpeglib.h>
-#include <jpeg/jerror.h>
+#include <jpeglib.h>
+#include <jerror.h>
 #include <setjmp.h>
 #endif  //  USE_JPEG
 
@@ -18,7 +19,10 @@ namespace ImageModule
 {
 	JpgImporter::JpgImporter()
 		: Importer()
-	{}
+    {
+        jpeg_decompress_struct s;
+        s.src = nullptr;
+    }
 
 #ifdef USE_JPEG
 	struct my_error_mgr {
@@ -295,9 +299,9 @@ namespace ImageModule
 
 	bool JpgImporter::Load(std::istream& stream, Image* image)
 	{
+        jpeg_decompress_struct cinfo;
 	    #ifdef USE_JPEG
-		struct my_error_mgr jerr;
-		struct jpeg_decompress_struct cinfo;
+        my_error_mgr jerr;
 
 		jpeg_create_decompress(&cinfo);
 		cinfo.err = jpeg_std_error(&jerr.pub);
