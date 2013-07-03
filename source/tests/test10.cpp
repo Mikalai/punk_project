@@ -29,6 +29,7 @@ namespace Test10
 
 	void Test::Run()
 	{
+        m_result = true;
 		TestApp app;
 		try
 		{

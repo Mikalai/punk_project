@@ -24,6 +24,8 @@ namespace Scene
 		void SetPortal(const Math::Portal& value) { m_portal = value; }
 		const Math::Portal& GetPortal() const { return m_portal; }
 
+        virtual Node* Clone() const override;
+
 	protected:
 		Math::Portal m_portal;
 	};

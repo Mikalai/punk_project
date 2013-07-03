@@ -97,9 +97,6 @@ namespace Virtual
 		static Material* CreateFromFile(const System::string& path);
 		static Material* CreateFromStream(std::istream& stream);
 
-		static Material* DefaultMaterial;
-
-
 	private:
 		
 		System::string m_diffuse_map;

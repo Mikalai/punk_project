@@ -10,7 +10,7 @@ win32 {
     DEFINES += _WIN32
 }
 
-DEFINES += PUNK_ENGINE_EXPORTS USE_OPENGL USE_PNG USE_ZLIB USE_OPENEXR USE_JPEG  USE_FREETYPE
+DEFINES += PUNK_ENGINE_EXPORTS USE_OPENGL USE_PNG USE_ZLIB USE_OPENEXR USE_JPEG  USE_FREETYPE USE_LIB_TIFF
 
 contains(DEFINES, USE_OPENGL) {
 #   USE_GRASS_RC
@@ -38,7 +38,8 @@ win32 {
 }
 
 unix {
-    LIBS += -lGL
+
+LIBS += -lGL
 
 contains (DEFINES, USE_PNG)
 {
@@ -48,6 +49,11 @@ contains (DEFINES, USE_PNG)
 contains (DEFINES, USE_JPEG)
 {
     LIBS += -ljpeg
+}
+
+contains (DEFINES, USE_LIB_TIFF)
+{
+    LIBS += -ltiff
 }
 
 contains (DEFINES, USE_ZLIB)
@@ -72,26 +78,6 @@ contains (DEFINES, USE_NOISE)
 }
 
 }
-
-CONFIG += dll
-TEMPLATE = lib
-TARGET = punk_engine
-
-release:OBJECTS_DIR = release/.obj
-release:MOC_DIR = release/.moc
-release:RCC_DIR = release/.rcc
-release:UI_DIR = release/.ui
-
-#DESTDIR = ../../bin/debug
-
-debug:OBJECTS_DIR = debug/.obj
-debug:MOC_DIR = debug/.moc
-debug:RCC_DIR = debug/.rcc
-debug:UI_DIR = debug/.ui
-
-debug:DEFINES += _DEBUG
-release:DEFINES += _NDEBUG
-
 
 contains(DEFINES, USE_NEVER) {
 HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_window.h \
@@ -215,7 +201,6 @@ SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp 
 	   ../../source/gpu/opengl/attribute_configer.cpp \
 	   ../../source/gpu/opengl/gpu_opengl_module.cpp \
 	   ../../source/gpu/opengl/module.cpp \
-	   ../../source/tests/test_create_opengl_window/test_create_opengl_window.cpp \
 	   ../../source/gpu/opengl/buffers/ibo.cpp \
 	   ../../source/gpu/opengl/buffers/pbo.cpp \
 	   ../../source/gpu/opengl/buffers/vbo.cpp \
@@ -453,7 +438,6 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/system/input/mouse.cpp \
 	   ../../source/system/streaming/async_loader.cpp \
 	   ../../source/system/types/list.cpp \
-	   ../../source/system/window/window.cpp \	   
 	   ../../source/translator/echo_module/echo_module.cpp \
 	   ../../source/utility/descriptors/action_desc.cpp \
 	   ../../source/utility/descriptors/animation_desc.cpp \
@@ -608,7 +592,11 @@ SOURCES += ../../source/main.cpp \
     ../../source/math/mat4.cpp \
     ../../source/math/vec4.cpp \
     ../../source/math/frustum_plane.cpp \
-    ../../source/scene/selector/selection.cpp
+    ../../source/scene/selector/selection.cpp \
+    ../../source/images/import_export/tiff_importer.cpp \
+    ../../source/system/window/window_win32.cpp \
+    ../../source/system/window/window_linux.cpp \
+    ../../source/system/pool.cpp
 
 
 # Input
@@ -1066,8 +1054,29 @@ HEADERS += ../../source/config.h \
     ../../source/scene/selector/selector.h \
     ../../source/math/perspective_decoder.h \
     ../../source/math/frustum_plane.h \
-    ../../source/scene/selector/selection.h
+    ../../source/scene/selector/selection.h \
+    ../../source/ai/interface.h \
+    ../../source/images/import_export/tiff_importer.h
 
+
+CONFIG += dll
+TEMPLATE = lib
+TARGET = punk_engine
+
+release:OBJECTS_DIR = release/.obj
+release:MOC_DIR = release/.moc
+release:RCC_DIR = release/.rcc
+release:UI_DIR = release/.ui
+
+#DESTDIR = ../../bin/debug
+
+debug:OBJECTS_DIR = debug/.obj
+debug:MOC_DIR = debug/.moc
+debug:RCC_DIR = debug/.rcc
+debug:UI_DIR = debug/.ui
+
+debug:DEFINES += _DEBUG
+release:DEFINES += _NDEBUG
 
 release:MYDLLDIR = $IN_PWD/../../../bin/release
 debug:MYDLLDIR = $IN_PWD/../../../bin/debug
@@ -1081,7 +1090,7 @@ win32:file ~= s,/,\\,g
 win32:DDIR ~= s,/,\\,g
 win32:SDIR ~= s,/,\\,g
 
-for(file, HEADERS) {
-    QMAKE_POST_LINK += $$QMAKE_COPY $$quote($${SDIR}$${file}) $$quote($$DDIR) $$escape_expand(\\n\\t)
-}
+#for(file, HEADERS) {
+#    QMAKE_POST_LINK += $$QMAKE_COPY $$quote($${SDIR}$${file}) $$quote($$DDIR) $$escape_expand(\\n\\t)
+#}
 

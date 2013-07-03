@@ -215,24 +215,4 @@ namespace GPU
     {
         return impl->HasData();
     }
-
-    Math::BoundingBox& SkinMesh::GetBoundingBox()
-    {
-        return impl->GetBoundingBox();
-    }
-
-    const Math::BoundingBox& SkinMesh::GetBoundingBox() const
-    {
-        return impl->GetBoundingBox();
-    }
-
-    Math::BoundingSphere& SkinMesh::GetBoundingSphere()
-    {
-        return impl->GetBoundingSphere();
-    }
-
-    const Math::BoundingSphere& SkinMesh::GetBoundingSphere() const
-    {
-        return impl->GetBoundingSphere();
-    }
 }

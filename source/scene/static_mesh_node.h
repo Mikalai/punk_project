@@ -22,6 +22,7 @@ namespace Scene
 
 		virtual bool Apply(AbstractVisitor* visitor);
 
+        virtual Node* Clone() const override;
 		Virtual::StaticGeometry* GetStaticGeometry();
 	};
 }

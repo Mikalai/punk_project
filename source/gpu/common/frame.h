@@ -78,6 +78,12 @@ namespace GPU
 		void EnableLighting(bool value);
 		void EnableTexturing(bool value);
 		void EnableFontRendering(bool value);        
+        void EnableBoundBoxRendering(bool value);
+        bool IsEnabledBoundingBoxRendering() const;
+        void EnableBoundingSphereRendering(bool value);
+        bool IsEnabledBoundingSphereRendering() const;
+        void EnableNaviMeshRendering(bool value);
+        bool IsEnabledNaviMeshRendering();
 
         //  added on 01.05.2013
 		void SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer);
@@ -100,6 +106,8 @@ namespace GPU
         void DrawPoint(float x, float y);
         void DrawPoint(const Math::vec3& v);
         void DrawPoint(float x, float y, float z);
+        void DrawCircleXY(float x, float y, float z, float r);
+        void DrawCircleXY(const Math::vec3& c, float r);
 
 
 		void SetBlendColor(const Math::vec4& value);

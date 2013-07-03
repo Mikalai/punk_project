@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_MATH_BOUNDING_SPHERE
 #define _H_PUNK_MATH_BOUNDING_SPHERE
 
+#include <vector>
 #include "sphere.h"
 
 namespace Math
@@ -10,7 +11,7 @@ namespace Math
 	public:
 		BoundingSphere() {}
 		BoundingSphere(const Sphere& s) : Sphere(s) {}
-		bool Create(const float* vbuffer, int count, unsigned vertex_size);
+        bool Create(const std::vector<vec3>& vbuffer);
 	};
 
 	inline const BoundingSphere operator * (const mat4& m, const BoundingSphere& bsphere)

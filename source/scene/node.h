@@ -35,10 +35,14 @@ namespace Scene
 		const Math::BoundingSphere& GetBoundingSphere() const { return m_bsphere; }
 
 		virtual void SetUserData(SceneGraphAdapter* adapter);
-		SceneGraphAdapter* GetUserData();
+		SceneGraphAdapter* GetUserData();        
+
+        virtual Node* Clone() const;
 
 	protected:
 		virtual bool Update(int time_ms);
+
+        void CloneInternals(Node* dst) const;
 	private:
 
 		Math::BoundingBox m_bbox;

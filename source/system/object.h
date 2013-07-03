@@ -13,27 +13,27 @@ namespace System
     class PUNK_ENGINE_API Object
 	{
 	public:
-		Object() {}
-		virtual ~Object() {}
+        Object();
+        virtual ~Object();
 
-		void SetName(const string& value) { m_name = value; }
-		const string& GetName() const { return m_name; }
+        void SetName(const string& value);
+        const string& GetName() const;
 
-		void SetText(const string& value) { m_text = value; }
-		const string& GetText() const { return m_text; }
+        void SetText(const string& value);
+        const string& GetText() const;
 
-		void SetOwner(Object* owner) { m_owner = owner; }
-		const Object* GetOwner() const { return m_owner; }
-		Object* GetOwner() { return m_owner; }
+        void SetOwner(Object* owner);
+        const Object* GetOwner() const;
+        Object* GetOwner();
 
-		const System::string& GetStorageName() const { return m_storage_name; }
-		void SetStorageName(const System::string& name) { m_storage_name = name; }
+        const System::string& GetStorageName() const;
+        void SetStorageName(const System::string& name);
 
-		ObjectType GetType() const { return m_type; }
-		void SetType(ObjectType type) { m_type = type; }
+        ObjectType GetType() const;
+        void SetType(ObjectType type);
 
-		bool IsModified() const { return m_modified; }
-		void Invalidate() { m_modified = true; }
+        bool IsModified() const;
+        void Invalidate();
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);

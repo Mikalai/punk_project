@@ -185,6 +185,7 @@ namespace Test11
 
 	void Test::Run()
 	{		
+        m_result = true;
 		try
 		{
             TestApp* app = new TestApp;

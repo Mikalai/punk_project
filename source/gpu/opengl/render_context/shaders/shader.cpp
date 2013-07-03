@@ -28,36 +28,23 @@ namespace GPU
 		}
 
 		Shader::~Shader()
-		{
-			try
-			{
-				if (m_shader_index)
-				{
-					glDeleteShader(m_shader_index);
-					ValidateOpenGL(L"Unable to delete shader");
-					m_shader_index = 0;
-				}
-			}
-			catch(...)
-			{
-				//	avoid leaving destructor
-			}
-		}
+        {
+            if (m_shader_index)
+            {
+                GL_CALL(glDeleteShader(m_shader_index));
+                m_shader_index = 0;
+            }
+        }
 
 		void Shader::CookFromString(const char* string, unsigned length)
 		{
-			m_shader_index = glCreateShader(m_type);
-			ValidateOpenGL(L"Unable to create shader");
-			out_message() << L"Loading vertex shader\n" + System::string(string, length) << std::endl;
+            GL_CALL(m_shader_index = glCreateShader(m_type));
 			const char * body = string;
 			int len = length;
 			GLint compileStatus;
-			glShaderSource(m_shader_index, 1, (const char**)&body,  &len);
-			ValidateOpenGL(L"Unable to set shader source");
-			glCompileShader(m_shader_index);
-			ValidateOpenGL(L"Unable to compile shader");
-			glGetShaderiv(m_shader_index, GL_COMPILE_STATUS, &compileStatus);
-			ValidateOpenGL(L"Unable to get shader compile status");
+            GL_CALL(glShaderSource(m_shader_index, 1, (const char**)&body,  &len));
+            GL_CALL(glCompileShader(m_shader_index));
+            GL_CALL(glGetShaderiv(m_shader_index, GL_COMPILE_STATUS, &compileStatus));
 			if (compileStatus == GL_TRUE)
 			{
 				out_message() << L"Shader has been compiled successfully" << std::endl;
@@ -65,71 +52,22 @@ namespace GPU
 			else
 			{
 				GLint logLength;
-				glGetShaderiv(m_shader_index, GL_INFO_LOG_LENGTH, &logLength);
-				ValidateOpenGL(L"Unable to get shader info log length");
-				if (logLength > 65536)
-				{
-					GLchar* buffer = new GLchar[logLength];
-					glGetShaderInfoLog(m_shader_index, logLength, NULL, buffer);
-					ValidateOpenGL(L"Unable to get shader info log text");
-					out_error() << System::string(buffer) << std::endl;
-					delete[] buffer;
-				}
-				else
-				{
-					GLchar buffer[65536];
-					glGetShaderInfoLog(m_shader_index, 65536, NULL, buffer);
-					ValidateOpenGL(L"Unable to get shader info log text");
-					out_error() << System::string(buffer) << std::endl;
-				}
-				out_error() << L"Can't create vertex shader" << std::endl;
+                GL_CALL(glGetShaderiv(m_shader_index, GL_INFO_LOG_LENGTH, &logLength));
+                std::vector<char> buffer(logLength);
+                GL_CALL(glGetShaderInfoLog(m_shader_index, logLength, NULL, &buffer[0]));
+                out_error() << L"Can't create vertex shader" << std::endl;
 			}
 		}
 
 		void Shader::CookFromFile(const System::string& filename)
 		{
-            glGetError();
 			System::Buffer shader_data;
 			System::BinaryFile::Load(filename, shader_data);		
-			m_shader_index = glCreateShader(m_type);
-			ValidateOpenGL(L"Unable to create shader");
+            GL_CALL(m_shader_index = glCreateShader(m_type));
 			out_message() << L"Loading vertex shader " + filename << std::endl;
-			char * body = (char*)shader_data.StartPointer();            
+            const char* body = (const char*)shader_data.StartPointer();
 			int len = shader_data.GetSize();
-            out_message() << "Shader: " << std::endl << System::string(body, len) << std::endl;
-			GLint compileStatus;
-			glShaderSource(m_shader_index, 1, (const char**)&body,  &len);
-			ValidateOpenGL(L"Unable to set shader source");
-			glCompileShader(m_shader_index);
-			ValidateOpenGL(L"Unable to compile shader");
-			glGetShaderiv(m_shader_index, GL_COMPILE_STATUS, &compileStatus);
-			ValidateOpenGL(L"Unable to get shader compile status");
-			if (compileStatus == GL_TRUE)
-			{
-				out_message() << filename + L" has been compiled successfully" << std::endl;
-			}
-			else
-			{
-				GLint logLength;
-				glGetShaderiv(m_shader_index, GL_INFO_LOG_LENGTH, &logLength);
-				ValidateOpenGL(L"Unable to get shader info log length");
-				if (logLength > 65536)
-				{
-					GLchar* buffer = new GLchar[logLength];
-					glGetShaderInfoLog(m_shader_index, logLength, NULL, buffer);
-					ValidateOpenGL(L"Unable to get shader info log text");
-					out_error() << System::string(buffer) << std::endl;
-					delete[] buffer;
-				}
-				else
-				{
-					GLchar buffer[65536];
-					glGetShaderInfoLog(m_shader_index, 65536, NULL, buffer);
-					ValidateOpenGL(L"Unable to get shader info log text");
-					out_error() << System::string(buffer) << std::endl;
-				}
-				out_error() << L"Can't create vertex shader" << std::endl;
-			}
+            CookFromString(body, len);
 		}
 
 		unsigned Shader::GetIndex() const

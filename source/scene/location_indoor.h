@@ -23,6 +23,7 @@ namespace Scene
 		void SetConvexMesh(const Math::ConvexShapeMesh shape) { m_convex_mesh = shape; }
 		const Math::ConvexShapeMesh& GetConvexShape() const { return m_convex_mesh; }
 
+        virtual Node* Clone() const override;
 	protected:
 		Math::ConvexShapeMesh m_convex_mesh;
 	};

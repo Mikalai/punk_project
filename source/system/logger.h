@@ -9,7 +9,7 @@
 #include <cstdint>
 
 #include "../config.h"
-//#include "stack_trace.h"
+#include "errors/stack_trace.h"
 #include "input/console.h"
 #include "clock.h"
 #include "../string/string.h"
@@ -98,7 +98,11 @@ namespace System
 	    void Header()
 		{
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTRED);
-			Streamer::Instance()<< Clock::SysTimeNowAsLocal() << ": Error: ";
+            System::Stack stack;
+            std::wstringstream stream;
+            stack.Print(stream);
+            Streamer::Instance() << Clock::SysTimeNowAsLocal() << ": Call stack: " << stream.str() << "Error: ";
+
 			Console::Instance()->SetTextColor(Console::COLOR_LIGHTGRAY);
 		}
 	};

@@ -46,4 +46,12 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    Node* CameraNode::Clone() const
+    {
+        CameraNode* node = new CameraNode;
+        node->SetCamera(m_camera);
+        CloneInternals(node);
+        return node;
+    }
 }

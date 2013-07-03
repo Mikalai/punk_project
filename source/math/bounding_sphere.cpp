@@ -3,24 +3,22 @@
 
 namespace Math
 {
-	bool BoundingSphere::Create(const float* vbuffer, int count, unsigned vertex_size)
+    bool BoundingSphere::Create(const std::vector<vec3>& vbuffer)
 	{
-		if (vbuffer == nullptr || count == 0 || vertex_size == 0)
+        if (vbuffer.empty())
 			return (out_error() << "Bad data to counstruct bounding sphere" << std::endl, false);
 
 		vec3 r, s, t;
-		if (!CalculateNativeAxis(vbuffer, count, vertex_size, r, s, t))
+        if (!CalculateNativeAxis(vbuffer, r, s, t))
 			return (out_error() << "Can't build bounding sphere" << std::endl, false);
 
-		vec3 min_p = vec3(vbuffer[0], vbuffer[1], vbuffer[2]);
+        vec3 min_p = vbuffer.front();
 		float min_value = r.Dot(min_p);
 		vec3 max_p = min_p;
 		float max_value = r.Dot(max_p);
 
-		for (int i = 0; i < count; ++i)
-		{
-			const vec3 v(vbuffer[i*(vertex_size/sizeof(float)) + 0], vbuffer[i*(vertex_size/sizeof(float)) + 1], vbuffer[i*(vertex_size/sizeof(float)) + 2]);
-		
+        for (auto v : vbuffer)
+		{		
 			float value = r.Dot(v);
 			if (min_value > value)
 			{

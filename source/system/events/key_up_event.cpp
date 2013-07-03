@@ -9,6 +9,6 @@ namespace System
 
 	string KeyUpEvent::ToString()
 	{
-        return string("Code: %d; Type: KEY_UP; Key: %d;").arg(eventCode).arg(key);
+        return string("Code: {0}; Type: KEY_UP; Key: {1};").arg(eventCode).arg(key);
 	}
 }

@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_MATH_ROOT_FIND
 #define _H_PUNK_MATH_ROOT_FIND
 
+#include <limits>
 #include "helper.h"
 
 namespace Math
@@ -52,7 +53,7 @@ namespace Math
 
 		T D = -(q*q + p*p*p);
 
-		if (Abs(D) < 1e-6)
+        if (Abs(D) < std::numeric_limits<T>::epsilon())
 		{
 			T r = pow(-q, T(1.0)/T(3.0));
 			out[0] = T(2) * r;

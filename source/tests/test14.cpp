@@ -515,6 +515,7 @@ namespace Test14
 
 	void Test::Run()
 	{
+        m_result = true;
 		TestApp app;
 		try
 		{

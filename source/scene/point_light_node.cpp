@@ -44,4 +44,12 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    Node* PointLightNode::Clone() const
+    {
+        PointLightNode* node = new PointLightNode;
+        node->SetPointLight(m_point_light);
+        CloneInternals(node);
+        return node;
+    }
 }

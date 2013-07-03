@@ -40,6 +40,8 @@ namespace GPU
 		void Normal3fv(const Math::vec3& value);
 		void End();
 
+        bool IsValid() const;
+
 		/**
 		 * @brief ToRenderable converts internal data stored to the renderable entity
 		 * @return Pointer to the renderable. Should be destroyed somewhere

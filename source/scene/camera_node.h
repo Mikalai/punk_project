@@ -23,6 +23,8 @@ namespace Scene
 		void SetCamera(Virtual::Camera* value) { m_camera = value; }
 		Virtual::Camera* GetCamera() { return m_camera; }
 
+        virtual Node* Clone() const override;
+
 	private:
 		Virtual::Camera* m_camera;
 	};

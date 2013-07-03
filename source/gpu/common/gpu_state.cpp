@@ -20,8 +20,12 @@ namespace GPU
 		m_point_size = 1;
 		m_clear_depth = 1;
 		m_depth_test = true;
+        m_render_depth = false;
 		m_enable_lighting = false;
 		m_enable_diffuse_shading = true;
+        m_enable_bounding_box_rendering = false;
+        m_enable_bounding_sphere_rendering= false;
+        m_enable_navi_mesh_rendering = false;
        // m_enable_bump_maping_shading = false;
 	}
 

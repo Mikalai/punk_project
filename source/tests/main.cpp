@@ -21,6 +21,8 @@
 #include "test17.h"
 #include "test18.h"
 #include "test19.h"
+#include "test20.h"
+#include "test0.h"
 
 static const int TestNumber = 19;
 
@@ -28,17 +30,18 @@ int main()
 {
     std::cout << "Size of wchar_t: " << sizeof(wchar_t) << std::endl;
     std::cout << "Size of short: " << sizeof(short) << std::endl;
-	if (TestNumber == 1)
+
+    if (TestNumber == 0)
+    {
+        Test0::Test test;
+        test.Run();
+        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+    }
+    else if (TestNumber == 1)
 	{
         Test1::Test test1;
 		test1.Run();
 		std::cout << "Result " << (test1.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 0)
-	{
-		TestClearBuffer test2;
-		test2.Run();
-		std::cout << "Result " << (test2.Succeed()? "Pass" : "Failed") << std::endl;
 	}
 	else if (TestNumber == 2)
 	{
@@ -145,6 +148,12 @@ int main()
     else if (TestNumber == 19)
     {
         Test19::Test test;
+        test.Run();
+        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+    }
+    else if (TestNumber == 20)
+    {
+        Test20::Test test;
         test.Run();
         std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
     }

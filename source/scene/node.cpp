@@ -83,5 +83,22 @@ namespace Scene
 	{
 		return m_entity;
 	}
+
+    Node* Node::Clone() const
+    {
+        Node* node = new Node;
+        CloneInternals(node);
+        return node;
+    }
+
+    void Node::CloneInternals(Node *dst) const
+    {
+        for (auto o : m_children)
+        {
+            Node* n = As<Node*>(o);
+            if (n)
+                dst->Add(n->Clone());
+        }
+    }
 }
 

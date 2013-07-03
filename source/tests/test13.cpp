@@ -588,6 +588,7 @@ namespace Test13
 
     void Test::Run()
     {
+        m_result = true;
         TestApp app;
         try
         {

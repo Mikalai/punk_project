@@ -20,10 +20,7 @@ namespace GPU
         virtual void Render() override;
         bool Cook(Virtual::StaticGeometry* desc);
         bool HasData();
-        Math::BoundingBox& GetBoundingBox();
-        const Math::BoundingBox& GetBoundingBox() const;
-        Math::BoundingSphere& GetBoundingSphere();
-        const Math::BoundingSphere& GetBoundingSphere() const;
+
     private:
         StaticMesh(const StaticMesh&) = delete;
         StaticMesh& operator = (const StaticMesh&) = delete;

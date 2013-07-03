@@ -24,6 +24,8 @@ namespace Scene
 		void SetPointLight(Virtual::PointLight* value) { m_point_light = value; }
 		Virtual::PointLight* GetPointLight() { return m_point_light; }
 
+        virtual Node* Clone() const override;
+
 	private:
 		Virtual::PointLight* m_point_light;
 	};

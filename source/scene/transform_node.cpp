@@ -13,7 +13,6 @@ namespace Scene
 	{
 		Node::Save(stream);
 		m_local.Save(stream);
-		m_global.Save(stream);
 		return true;
 	}
 
@@ -21,7 +20,6 @@ namespace Scene
 	{
 		Node::Load(stream);
 		m_local.Load(stream);
-		m_global.Load(stream);
 		return true;
 	}
 
@@ -44,4 +42,36 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    const Math::mat4 TransformNode::GetGlobalMatrix() const
+    {
+        if (GetOwner() == nullptr)
+            return m_local;
+        std::vector<const Scene::TransformNode*> nodes;
+        nodes.push_back(this);
+        const Scene::Node* owner = As<const Scene::Node*>(GetOwner());
+        while (owner != nullptr)
+        {
+            const Scene::TransformNode* cur_transform = As<const Scene::TransformNode*>(owner);
+            if (cur_transform)
+            {
+                nodes.push_back(cur_transform);
+            }
+            owner = As<const Scene::Node*>(owner->GetOwner());
+        }
+        Math::mat4 res;
+        for (auto it = nodes.rbegin(); it != nodes.rend(); ++it)
+        {
+            res *= (*it)->GetLocalMatrix();
+        }
+        return res;
+    }
+
+    Node* TransformNode::Clone() const
+    {
+        TransformNode* node = new TransformNode;
+        node->SetLocalMatrix(m_local);
+        CloneInternals(node);
+        return node;
+    }
 }

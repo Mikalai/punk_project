@@ -12,6 +12,7 @@ namespace Test16
 
     void Test::Run()
     {
+        m_result = true;
         try
         {
             System::string string("Hello this world");
@@ -53,6 +54,13 @@ namespace Test16
 
             std::wcout << "s2 size: " << s2.Size() << std::endl;
             std::wcout << "s2 length: " << s2.Length() << std::endl;
+
+            {
+                System::string s("The value is {0} and {1}");
+
+                int8_t p = 13;
+                std::wcout << s.arg(p).arg(p/2) << std::endl;
+            }
         }
         catch(System::PunkException& e)
         {

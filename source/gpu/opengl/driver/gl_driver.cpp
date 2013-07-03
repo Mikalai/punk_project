@@ -194,15 +194,18 @@ void VideoDriverImpl::SelectVisualInfo()
                     " SAMPLES = %d\n",
                     i, vi -> visualid, samp_buf, samples );
 
+            if (samp_buf == 1)
+            {
             if ( best_fbc < 0 || samp_buf && samples > best_num_samp )
                 best_fbc = i, best_num_samp = samples;
             if ( worst_fbc < 0 || !samp_buf || samples < worst_num_samp )
                 worst_fbc = i, worst_num_samp = samples;
+            }
         }
         XFree( vi );
     }
 
-    m_best_fbc = fbc[ best_fbc ];
+    m_best_fbc = fbc[ worst_fbc ];
 
     // Be sure to free the FBConfig list allocated by glXChooseFBConfig()
     XFree( fbc );

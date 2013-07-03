@@ -133,7 +133,7 @@ namespace System
         tm _tm = *gmtime(&t);
         string str(asctime(&_tm));
         // replace new line in the time string. 24 because total length 26 and it is STANDARD
-        str[24] = '\0';
+        str[24] = L'\0';
         return str;
 #endif
 	}
@@ -156,8 +156,8 @@ namespace System
         tm _tm = *localtime(&t);
         string str(asctime(&_tm));
         // replace new line in the time string. 24 because total length 26 and it is STANDARD
-        str[24] = '\0';
-        return str;
+        str[19] = 0;
+        return string(&str[11], &str[19] - &str[11]);
 #endif
 	}
 

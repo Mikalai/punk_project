@@ -25,10 +25,8 @@ namespace GPU
             unsigned m_vertex_size;
             bool m_was_modified;
 			unsigned m_primitive_count;
-			int m_vb_size;
-			int m_ib_size;		
-			Math::BoundingBox m_bbox;
-            Math::BoundingSphere m_sphere;
+            int m_vb_size;
+            int m_ib_size;
             IndexBufferObject* m_index_buffer;
             VertexBufferObject* m_vertex_buffer;
 
@@ -105,10 +103,8 @@ namespace GPU
                 m_vertex_buffer = m_driver->GetVideoMemory()->AllocateVertexBuffer(size_in_bytes);
 				m_vertex_buffer->Bind();
 				m_vertex_buffer->CopyData(vbuffer, m_vb_size);
-				m_vertex_buffer->Unbind();
+                m_vertex_buffer->Unbind();
 
-				m_bbox.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
-				m_sphere.Create(reinterpret_cast<const float*>(vbuffer), m_vb_size/sizeof(CurrentVertex), sizeof(CurrentVertex));
 				m_was_modified = true;
 			}
 
@@ -287,26 +283,6 @@ namespace GPU
             {
                 return m_index_buffer != nullptr && m_vertex_buffer != nullptr;
             }
-
-			Math::BoundingBox& GetBoundingBox()
-			{
-				return m_bbox;
-			}
-
-			const Math::BoundingBox& GetBoundingBox() const
-			{
-				return m_bbox;
-			}
-
-			Math::BoundingSphere& GetBoundingSphere()
-			{
-				return m_sphere;
-			}
-
-			const Math::BoundingSphere& GetBoundingSphere() const
-			{
-				return m_sphere;
-			}
 
             virtual size_t GetMemoryUsage() override
             {

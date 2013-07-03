@@ -42,4 +42,12 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    Node* LocationIndoorNode::Clone() const
+    {
+        LocationIndoorNode* node = new LocationIndoorNode;
+        node->SetConvexMesh(m_convex_mesh);
+        CloneInternals(node);
+        return node;
+    }
 }

@@ -27,7 +27,8 @@ namespace Scene
 
 		Virtual::Geometry* GetGeometry() { return m_geometry; }
 
-	private:		
+        virtual Node* Clone() const override;
+    protected:
 		Virtual::Geometry* m_geometry;		
 	};
 }

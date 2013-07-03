@@ -21,10 +21,6 @@ namespace GPU
         virtual void Render() override;
         bool Cook(const Virtual::SkinGeometry* mesh, const Virtual::Armature* armature);
         bool HasData();
-        Math::BoundingBox& GetBoundingBox();
-        const Math::BoundingBox& GetBoundingBox() const;
-        Math::BoundingSphere& GetBoundingSphere();
-        const Math::BoundingSphere& GetBoundingSphere() const;
 
     private:
         SkinMesh(const SkinMesh&) = delete;

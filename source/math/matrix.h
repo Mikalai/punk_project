@@ -102,7 +102,7 @@ namespace Math
 				int height = rep.m_height;
 
 				if (start_col + width >= m_width || start_row + height >= m_height)
-					throw MathIndexOutOfRange();
+                    throw System::PunkException("Index out of range");
 
 				T* cells = rep.m_cell;
 
@@ -114,7 +114,7 @@ namespace Math
 			void CopySubMatrix(const Rep& rep, int src_start_col, int src_start_row, int width, int height, int dst_start_col, int dst_start_row)
 			{
 				if (dst_start_col + width >= m_width || dst_start_row + height >= m_height)
-					throw MathIndexOutOfRange();
+                    throw System::PunkException("Index out of range");
 
 				int src_width = rep.m_width;
 
@@ -187,7 +187,7 @@ namespace Math
 		MatrixNxM<T> GetSubMatrix(int start_col, int start_row, int width, int height)
 		{
 			if (start_col + width >= m_rep->m_width || start_row + height >= m_rep->m_height)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 
 			MatrixNxM<T> matrix(width, height);
 			matrix.CopySubMatrix(*this, start_col, start_row, width, height, 0, 0);
@@ -229,7 +229,7 @@ namespace Math
 		void SwapRows(int a, int b)
 		{
 			if (a >= m_rep->m_height || b >= m_rep->m_height)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			m_rep = m_rep->GetOwnCopy();
 			T* tmp = new T[m_rep->m_width];
 			memcpy(tmp, m_rep->m_cell + m_rep->m_width*a, sizeof(T)*m_rep->m_width);
@@ -241,7 +241,7 @@ namespace Math
 		void SwapColumns(int a, int b)
 		{
 			if (a >= m_rep->m_width || b >= m_rep->m_width)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 
 			for (int i = 0; i < m_rep->m_height; i++)
 			{
@@ -254,7 +254,7 @@ namespace Math
 		void SwapCells(int col1, int row1, int col2, int row2)
 		{
 			if (col1 >= m_rep->m_width || col2 >= m_rep->m_width || row1 >= m_rep->m_height || row2 >= m_rep->m_height)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			m_rep = m_rep->GetOwnCopy();
 			T t = m_rep->m_cell[m_rep->m_width*row1+col1];
 			m_rep->m_cell[m_rep->m_width*row1+col1] = m_rep->m_cell[m_rep->m_width*row2+col2];
@@ -264,7 +264,7 @@ namespace Math
 		MatrixNxM<T> GetRow(int row)
 		{
 			if (row >= m_rep->m_height)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			MatrixNxM<T> m(m_rep->m_width, 1);
 			m.CopySubMatrix(*this, 0, row, m_rep->m_width, 1, 0, 0);
 			return m;
@@ -273,7 +273,7 @@ namespace Math
 		MatrixNxM<T> GetColumn(int col)
 		{
 			if (col >= m_rep->m_width)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			MatrixNxM<T> m(1, m_rep->m_height);
 			m.CopySubMatrix(*this, col, 0, 1, m_rep->m_height, 0, 0);
 			return m;

@@ -43,4 +43,12 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    Node* StaticMeshNode::Clone() const
+    {
+        StaticMeshNode* node = new StaticMeshNode;
+        node->SetGeometry(m_geometry);
+        CloneInternals(node);
+        return node;
+    }
 }

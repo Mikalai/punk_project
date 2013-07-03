@@ -1,7 +1,7 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
-
+#include <cstdint>
 #ifdef _WIN32
 #include <Windows.h>
 #elif defined __gnu_linux__
@@ -70,8 +70,15 @@ namespace System
 	}
 
     const std::vector<char> string::ToAscii() const
-    {
+    {        
         size_t inp_size = size() * sizeof(std::wstring::value_type);
+        if (inp_size == 0)
+        {
+            std::vector<char> res;
+            res.push_back(0);
+            return res;
+        }
+
         size_t outp_size;        
         void* inp = (void*)c_str();
         if (!ConvertByteArray("WCHAR_T", "ASCII", inp, inp_size, nullptr, &outp_size))
@@ -85,6 +92,12 @@ namespace System
     const std::vector<char> string::ToUtf8() const
     {
         size_t inp_size = size() * sizeof(std::wstring::value_type);
+        if (inp_size == 0)
+        {
+            std::vector<char> res;
+            res.push_back(0);
+            return res;
+        }
         size_t outp_size;        
         void* inp = (void*)c_str();
         if (!ConvertByteArray("WCHAR_T", "UTF8", inp, inp_size, nullptr, &outp_size))
@@ -119,16 +132,6 @@ namespace System
     size_t string::Length() const
 	{
         return size();
-	}
-
-    wchar_t string::operator[] (int i) const
-	{
-        return std::wstring::operator [](i);
-	}
-
-    wchar_t& string::operator [] (int i)
-	{
-        return std::wstring::operator [](i);
 	}
 
 	string::~string()
@@ -250,21 +253,21 @@ namespace System
         return string(stream.str().c_str());
 	}
 
-	const string string::Convert(signed char value)
-	{
-        char buf[16];
-		buf[0] = value;
-		buf[1] = 0;
-		return string(buf);
-	}
+//	const string string::Convert(signed char value)
+//	{
+//        char buf[16];
+//		buf[0] = value;
+//		buf[1] = 0;
+//		return string(buf);
+//	}
 
-	const string string::Convert(unsigned char value)
-	{
-        char buf[16];
-		buf[0] = value;
-		buf[1] = 0;
-		return string(buf);
-	}
+//	const string string::Convert(unsigned char value)
+//	{
+//        char buf[16];
+//		buf[0] = value;
+//		buf[1] = 0;
+//		return string(buf);
+//	}
 
 	const string string::Convert(int16_t value, int radix)
 	{
@@ -283,14 +286,14 @@ namespace System
 	const string string::Convert(int8_t value, int radix)
 	{
         std::stringstream stream;
-        stream << value;
+        stream << (int)value;
         return string(stream.str().c_str());
 	}
 
 	const string string::Convert(uint8_t value, int radix)
 	{
         std::stringstream stream;
-        stream << value;
+        stream << (unsigned)value;
         return string(stream.str().c_str());
 	}
 
@@ -469,7 +472,7 @@ namespace System
 
     const std::wstring string::ToStdWString() const
     {
-        return std::wstring();
+        return *this;
     }
 
     bool operator == (const string& l, const string& r)
@@ -484,7 +487,7 @@ namespace System
 
     std::wostream& operator << (std::wostream& stream, const System::string& value)
     {
-        stream << &value.at(0);
+        stream << value.ToStdWString();
         return stream;
     }
 
@@ -520,18 +523,145 @@ namespace System
         return pos != npos;
     }
 
-    string& string::arg(int8_t value) { return *this; }
-    string& string::arg(uint8_t value) { return *this; }
-    string& string::arg(int16_t value) { return *this; }
-    string& string::arg(uint16_t value) { return *this; }
-    string& string::arg(int32_t value) { return *this; }
-    string& string::arg(uint32_t value) { return *this; }
-    string& string::arg(uint64_t value) { return *this; }
-    string& string::arg(int64_t value) { return *this; }
-    string& string::arg(float value) { return *this; }
-    string& string::arg(double value) { return *this; }
-    string& string::arg(const string& value) { return *this; }
-    string& string::arg(bool value) { return *this; }
-    string& string::arg(const char* value) { return *this; }
+    string& string::arg(std::int8_t value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
 
+    string& string::arg(uint8_t value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(int16_t value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(uint16_t value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(int32_t value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(uint32_t value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+    string& string::arg(uint64_t value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(int64_t value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(float value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(double value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(const string& value)
+    {
+        string v = value;
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(bool value)
+    {
+        string v = Convert((std::int8_t)value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
+
+    string& string::arg(const char* value)
+    {
+        string v = System::string(value);
+        auto start = find(L'{');
+        if (start == npos)
+            return *this;
+        auto end = find(L'}', start);
+        replace(start, end-start+1, v);
+        return *this;
+    }
 }/**/

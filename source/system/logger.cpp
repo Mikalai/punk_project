@@ -22,18 +22,17 @@ namespace System
 		{
 			string cur_time = System::Clock::SysTimeAsUTC();
 			// cook a nice name for the log file
-			cur_time[3] = cur_time[7] = cur_time[10] = cur_time[19] = 0;		//	split string into several strings
-            const char* buf = cur_time.Data();
+			cur_time[3] = cur_time[7] = cur_time[10] = cur_time[19] = 0;		//	split string into several strings            
 			//	makefile name according to the current date
-            string filename(L"log_" + string(&buf[20]) + L"_" + string(&buf[4]) + L"_" + string(&buf[8]));
+            string filename(L"log_" + string(&cur_time[20]) + L"_" + string(&cur_time[4]) + L"_" + string(&cur_time[8]));
 			m_stream.open(filename.ToStdString().c_str(), std::ios_base::app);
 		}
 
 		Streamer& Streamer::operator << (const string& s)
 		{
-			std::wcout << s.Data();
+            std::wcout << s;
 			if (m_stream.is_open())
-				m_stream << s.Data();
+                m_stream << s;
 			return *this;
 		}
 

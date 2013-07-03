@@ -32,13 +32,15 @@ void Handler::operator() (Event* params)
             : "r" (params), "r" (o), "r" (m)
         );
 #elif defined __gnu_linux__ && __amd64__
-        asm volatile (
-            "push %0;"
-            "mov %1, %%rcx;"
-            "call %2;"
-            :
-            : "r" (params), "r" (o), "r" (m)
-        );
+//        asm volatile (
+//            "movq %0, %%rdx;"
+//            "movq %1, %%rax;"
+//            "movq %%rdx, %%rsi;"
+//            "movq %%rax, %%rdi;"
+//            "call *%2;"
+//            :
+//            : "r" (o), "r" (params), "r" (a)
+//        );
 #elif defined __gnu_linux__ && __i386__
         asm ("mov %0, 0x4(%%esp)\n"\
              "mov %1, %%eax\n"\

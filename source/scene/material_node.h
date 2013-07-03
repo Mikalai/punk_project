@@ -24,6 +24,7 @@ namespace Scene
 
 		virtual bool Apply(AbstractVisitor* visitor);
 
+        Node* Clone() const;
 	private:
 		//	this pointer should not be deleted in destructor
 		Virtual::Material* m_material;

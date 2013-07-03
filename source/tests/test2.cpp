@@ -55,15 +55,11 @@ namespace Test2
 			frame->EndRendering();
 
 		}
-
-		void WndOnResizeEvent(System::WindowResizeEvent *event) override
-		{
-
-		}
 	};
 
 	void Test::Run()
 	{
+        m_result = true;
 		TestApp app;
 		try
 		{

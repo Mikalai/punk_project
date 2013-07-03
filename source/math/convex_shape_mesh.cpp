@@ -11,10 +11,10 @@ namespace Math
 
 	bool ConvexShapeMesh::UpdateBoundingVolumes()
 	{
-		if (!m_bbox.Create((float*)&m_points[0], (int)m_points.size(), sizeof(m_points[0])))
+        if (!m_bbox.Create(m_points))
 			return (out_error() << "Can't create bounding box for convex shape" << std::endl, false);
 
-		if (!m_bsphere.Create((float*)&m_points[0], (int)m_points.size(), sizeof(m_points[0])))
+        if (!m_bsphere.Create(m_points))
 			return (out_error() << "Can't create bounding sphere for convex shape" << std::endl, false);
 
 		return true;

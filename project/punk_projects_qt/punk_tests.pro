@@ -59,7 +59,9 @@ HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_windo
     ../../source/tests/test16.h \
     ../../source/tests/test17.h \
     ../../source/tests/test18.h \
-    ../../source/tests/test19.h
+    ../../source/tests/test19.h \
+    ../../source/tests/test20.h \
+    ../../source/tests/test0.h
 
 SOURCES += ../../source/tests/main.cpp \
            ../../source/tests/test_create_opengl_window/test_create_opengl_window.cpp \
@@ -83,7 +85,9 @@ SOURCES += ../../source/tests/main.cpp \
     ../../source/tests/test16.cpp \
     ../../source/tests/test17.cpp \
     ../../source/tests/test18.cpp \
-    ../../source/tests/test19.cpp
+    ../../source/tests/test19.cpp \
+    ../../source/tests/test20.cpp \
+    ../../source/tests/test0.cpp
 
 
 releas:MYDLLDIR = $$IN_PWD/../../../bin/release

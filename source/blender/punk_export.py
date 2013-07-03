@@ -17,7 +17,7 @@ def push_entity(type, object):
 def export_float(f, name, value):
     start_block(f, name)
     make_offset(f)
-    f.write("%f\n" % value)
+    f.write("{0}\n".format(value))
     end_block(f)
     return
 
@@ -25,7 +25,7 @@ def export_float(f, name, value):
 def export_vec4(f, name, value):
     start_block(f, name)
     make_offset(f)
-    f.write("%f   %f   %f   %f\n" % (value[0], value[1], value[2], value[3]))
+    f.write("{0} {1} {2} {3}\n".format(value[0], value[1], value[2], value[3]))
     end_block(f)
     return
 
@@ -33,7 +33,7 @@ def export_vec4(f, name, value):
 def export_vec3(f, name, value):
     start_block(f, name)
     make_offset(f)
-    f.write("%f   %f   %f\n" % (value[0], value[1], value[2]))
+    f.write("{0} {1} {2}\n".format(value[0], value[1], value[2]))
     end_block(f)
     return
 
@@ -49,7 +49,7 @@ def export_mat4(f, name, matrix):
     start_block(f, name)
     for v in matrix:  
         make_offset(f)      
-        f.write("%16f%16f%16f%16f\n" % (v[0], v[1], v[2], v[3]))
+        f.write("{0} {1} {2} {3}\n".format(v[0], v[1], v[2], v[3]))
     end_block(f)
     return
 
@@ -96,7 +96,7 @@ def export_bounding_box(f, object):
         
     for vertex in object.bound_box:
         make_offset(f)
-        f.write("%16f%16f%16f\n" % (vertex[0], vertex[1], vertex[2]))
+        f.write("{0} {1} {2}\n".format(vertex[0], vertex[1], vertex[2]))
     
     end_block(f)
     return
@@ -115,7 +115,7 @@ def export_normals(f, mesh):
     #   f.write("%d\n" % len(mesh.vertices))
     for vertex in mesh.vertices:
         make_offset(f)
-        f.write("%5d%16f%16f%16f\n" % (vertex.index, vertex.normal.x, vertex.normal.y, vertex.normal.z))
+        f.write("{0} {1} {2} {3}\n".format(vertex.index, vertex.normal.x, vertex.normal.y, vertex.normal.z))
     end_block(f)
     return
     
@@ -130,7 +130,7 @@ def export_vertex_position(f, mesh):
     #f.write("%d\n" % len(mesh.vertices))
     for vertex in mesh.vertices:
         make_offset(f)
-        f.write("%5d%16f%16f%16f\n" % (vertex.index, vertex.co.x, vertex.co.y, vertex.co.z)) 
+        f.write("{0} {1} {2} {3}\n".format(vertex.index, vertex.co.x, vertex.co.y, vertex.co.z))
 
     end_block(f)
     return
@@ -147,7 +147,7 @@ def export_faces(f, mesh):
     start_block(f, "*faces")
     for face in mesh.polygons:
         make_offset(f)
-        f.write("%10d%10d%10d%10d\n" % (face.index, face.vertices[0], face.vertices[1], face.vertices[2]))       
+        f.write("{0} {1} {2} {3}\n".format(face.index, face.vertices[0], face.vertices[1], face.vertices[2]))
     end_block(f)
     
     return
@@ -161,7 +161,7 @@ def export_face_normals(f, mesh):
     start_block(f, "*face_normals")
     for face in mesh.polygons:
         make_offset(f)
-        f.write("%16d%16f%16f%16f\n" % (face.index, face.normal[0], face.normal[1], face.normal[2]))
+        f.write("{0} {1} {2} {3}\n".format(face.index, face.normal[0], face.normal[1], face.normal[2]))
     end_block(f)
     return
 
@@ -183,7 +183,7 @@ def export_bones_weight(f, data):
                 weight = group.weight(ind)
                 #print(weight)
                 make_offset(f)
-                f.write("%5d %s %f\n" % (ind, gr_name, weight))
+                f.write("{0} {1} {2}\n",format(ind, gr_name, weight))
             except:
                 pass
                 #print("found a vertex that is not in a group")
@@ -217,7 +217,7 @@ def export_tex_coords(f, mesh):
     
         for face in range(0, len(mesh.polygons)):
             make_offset(f)
-            f.write("%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t\n" % (data[3*face].uv[0], data[3*face].uv[1], data[3*face+1].uv[0], data[3*face+1].uv[1], data[3*face+2].uv[0], data[3*face+2].uv[1], 0, 0))
+            f.write("{0} {1} {2} {3} {4} {5} {6} {7}\n".format(data[3*face].uv[0], data[3*face].uv[1], data[3*face+1].uv[0], data[3*face+1].uv[1], data[3*face+2].uv[0], data[3*face+2].uv[1], 0, 0))
             
         end_block(f)   
         end_block(f)
@@ -227,7 +227,8 @@ def export_texture_slot(f, slot):
     start_block(f, "*texture_slot")
     try:
         export_vec3(f, "*scale", slot.scale)
-        export_string(f, "*image", slot.texture.image.name)
+        s = slot.texture.image.filepath
+        export_string(f, "*image", s[s.rfind('/')+1:])
         if slot.use_map_color_diffuse:
             export_float(f, "*diffuse_map", slot.diffuse_color_factor)   
         if slot.use_map_normal:

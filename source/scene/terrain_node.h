@@ -34,6 +34,7 @@ namespace Scene
         void SetTerrainMesh(Virtual::TerrainMesh* value);
         Virtual::TerrainMesh* GetTerrainMesh();
 
+        virtual Node* Clone() const override;
 	private:		
         Virtual::TerrainObserver* m_observer;
         Virtual::TerrainMesh* m_mesh;

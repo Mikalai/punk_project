@@ -163,37 +163,33 @@ namespace Math
 		return mat;
 	}
 
-	const vec3 CalculateAverage(const float* points, int count, unsigned point_size)
+    const vec3 CalculateAverage(const std::vector<vec3>& points)
 	{
 		vec3 center;
 
-		for (int i = 0; i < count; ++i)
-		{
-			const vec3 v(points[i*(point_size/sizeof(float)) + 0], points[i*(point_size/sizeof(float)) + 1], points[i*(point_size/sizeof(float)) + 2]);
+        for (auto v : points)
 			center += v;
-		}
 
-		center /= (float)count;
+        center /= (float)points.size();
 
 		return center;
 	}
 
-	const mat3 CreateCovarianceMatrix(const float* points, int count, unsigned point_size)
+    const mat3 CreateCovarianceMatrix(const std::vector<vec3>& points)
 	{
 		//	find average of the vertices
-		vec3 center = CalculateAverage(points, count, point_size);
+        vec3 center = CalculateAverage(points);
 
 		//	find covariance matrix
 		mat3 res;
 		res.Zerofy();
 
-		for (int i = 0; i < count; ++i)
+        for (auto v : points)
 		{
-			const vec3 v(points[i*(point_size/sizeof(float)) + 0], points[i*(point_size/sizeof(float)) + 1], points[i*(point_size/sizeof(float)) + 2]);
 			res += MultTransposed((v - center), (v - center));
 		}
 
-		res /= (float)count;
+        res /= (float)points.size();
 
 		return res;
 	}
@@ -359,10 +355,10 @@ namespace Math
 		return true;
 	}
 
-	bool CalculateNativeAxis(const float* points, int count, unsigned vertex_size, vec3& r, vec3& s, vec3& t)
+    bool CalculateNativeAxis(const std::vector<vec3>& points, vec3& r, vec3& s, vec3& t)
 	{	
 		//	find covariance matrix
-		mat3 c = CreateCovarianceMatrix(points, count, vertex_size);
+        mat3 c = CreateCovarianceMatrix(points);
 
 		//	find eigen values of the covariance matrix
 		Math::vec3 eigen_values;
@@ -448,8 +444,8 @@ namespace Math
             //	gram-shmidt normalization
             //
             nrm.Normalize();
-            tng = (tng - tng.Dot(nrm)*nrm).Normalize();
-            btn = (btn - btn.Dot(nrm)*nrm - btn.Dot(tng)*tng).Normalize();
+            tng = (tng - tng.Dot(nrm)*nrm).Normalized();
+            btn = (btn - btn.Dot(nrm)*nrm - btn.Dot(tng)*tng).Normalized();
 
             Matrix<float> m(3,3);
             m.At(0,0) = tng[0]; m.At(0,1) = tng[1]; m.At(0,2) = tng[2];

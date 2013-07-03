@@ -108,6 +108,9 @@ namespace GPU
 		bool m_enable_skinning;
 		bool m_enable_terrain;
 		bool m_enable_water;
+        bool m_enable_bounding_box_rendering;
+        bool m_enable_bounding_sphere_rendering;
+        bool m_enable_navi_mesh_rendering;
         //bool m_enable_bump_maping_shading;
 		bool m_render_depth;        
 		float m_clear_depth;

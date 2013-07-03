@@ -8,6 +8,26 @@ namespace Virtual
 //		safe_delete(m_cache.m_physics_buffer);
 	}
 
+    Math::BoundingBox& Geometry::GetBoundingBox()
+    {
+        return m_bbox;
+    }
+
+    const Math::BoundingBox& Geometry::GetBoundingBox() const
+    {
+        return m_bbox;
+    }
+
+    Math::BoundingSphere& Geometry::GetBoundingSphere()
+    {
+        return m_sphere;
+    }
+
+    const Math::BoundingSphere& Geometry::GetBoundingSphere() const
+    {
+        return m_sphere;
+    }
+
 //	void Geometry::DropGPUCache()
 //	{
 //		delete m_cache.m_gpu_buffer;

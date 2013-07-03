@@ -94,8 +94,6 @@ namespace Virtual
         const Faces& GetFaces() const;
         const TextureMeshes& GetTextureMeshes();
 
-        const Math::BoundingBox& GetBoundingBox();
-
         void SetWorldOffset(const Math::mat4& value);
         const Math::mat4& GetWorldOffset() const;
 
@@ -108,12 +106,13 @@ namespace Virtual
     private:
 
         System::string m_filename;
-        Math::BoundingBox m_bbox;
         Math::mat4 m_world_offset;
 
         CpuCache m_cpu_cache;
         GpuCache m_gpu_cache;
 
+        friend class CpuCache;
+        friend class GpuCache;
     };
 }
 

@@ -18,16 +18,16 @@ namespace System
 		bool Remove(const string& name);
 		bool Remove(int index);
 
-		Object* Find(const string& name);
-		Object* Find(int index);
-		const Object* Find(const string& name) const;
-		const Object* Find(int index) const;
+        size_t GetIndex(const System::string& name) const;
+        Object* Find(const string& name, bool in_depth = false);
+        Object* Find(int index);
+        const Object* Find(const string& name, bool in_depth = false) const;
+        const Object* Find(int index) const;
 
 		virtual bool Save(std::ostream& stream) const;
 		virtual bool Load(std::istream& stream);
 
 	public:
-		typedef std::map<string, int> CollectionCacheType;
 		typedef std::vector<Object*> CollectionType;
 		typedef CollectionType::iterator iterator;
 		typedef CollectionType::const_iterator const_iterator;
@@ -43,10 +43,8 @@ namespace System
 
         virtual bool OnAdd(System::Object*) { return true; }
         virtual bool OnRemove(System::Object*) { return true; }
-	private:
 
 		CollectionType m_children;
-		CollectionCacheType m_cache;
 	};
 }
 

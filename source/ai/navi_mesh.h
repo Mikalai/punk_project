@@ -40,6 +40,8 @@ namespace AI
         Normals m_normals;
         Faces m_faces;
 	};
+
+
 }
 
 #endif	//	_H_PUNK_AI_NAVI_MESH

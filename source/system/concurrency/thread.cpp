@@ -26,7 +26,7 @@ namespace System
 #endif	//	_WIN32
 
 #ifdef __gnu_linux__
-    bool Thread::Create(void *(*thread_func)(void *), void *data, unsigned stack)
+    bool Thread::Create(void* (PUNK_STDCALL *thread_func)(void *), void *data, unsigned stack)
     {
         bool result = false;
         pthread_attr_t attr;

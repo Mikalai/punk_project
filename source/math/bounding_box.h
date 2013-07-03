@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_MATH_BOUNDING_BOX
 #define _H_PUNK_MATH_BOUNDING_BOX
 
+#include <vector>
 #include "../config.h"
 #include "vec3.h"
 #include "plane.h"
@@ -14,13 +15,14 @@ namespace Math
 		/**
 		*	Initialize bounding box with array of vertex
 		*/
-		bool Create(const float* vbuffer, int count, unsigned vertex_size);
+        bool Create(const std::vector<vec3>& vbuffer);
 
 		const vec3& GetR() const { return m_r; }
 		const vec3& GetS() const { return m_s; }
 		const vec3& GetT() const { return m_t; }
 		const vec3& GetCenter() const { return m_center; }
 		const vec3& GetMassCenter() const { return m_center_of_mass; }
+        const vec3& GetMinCorner() const { return m_min_corner; }
 
 		const Plane& GetPlane(int index) const { return m_plane[index]; }
 		bool Save(std::ostream& stream) const;
@@ -33,6 +35,7 @@ namespace Math
 		
 		//	bbox center
 		vec3 m_center;
+        vec3 m_min_corner;
 
 		//	natural axes
 		vec3 m_r;

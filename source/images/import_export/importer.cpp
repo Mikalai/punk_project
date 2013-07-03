@@ -11,6 +11,7 @@
 #include "../../system/logger.h"
 #include "png_importer.h"
 #include "jpg_importer.h"
+#include "tiff_importer.h"
 
 namespace ImageModule
 {
@@ -77,6 +78,13 @@ namespace ImageModule
 			std::swap(impl_image, importer.impl_image);
 			return true;
 		}
+        else if (file.EndWith(".tiff") || file.EndWith(".tif"))
+        {
+            TiffImporter importer;
+            importer.Load(filename);
+            std::swap(impl_image, importer.impl_image);
+            return true;
+        }
 		else		
             throw ImageException("Unsupported file format");
 	}

@@ -46,9 +46,6 @@ namespace System
          string& operator = (const char* s);
          ~string();
 
-         wchar_t operator [] (int i) const;
-         wchar_t& operator [] (int i);
-
          const std::string ToStdString() const;
          const std::wstring ToStdWString() const;
 
@@ -74,16 +71,16 @@ namespace System
          float ToFloat() const;
          double ToDouble() const;
 
-         static const string Convert(int32_t value, int radix = 10);
-         static const string Convert(uint32_t value, int radix = 10);
-         static const string Convert(int64_t value, int radix = 10);
-         static const string Convert(uint64_t value, int radix = 10);
-         static const string Convert(int16_t value, int radix = 10);
-         static const string Convert(uint16_t value, int radix = 10);
-         static const string Convert(int8_t value, int radix = 10);
-         static const string Convert(uint8_t value, int radix = 10);
-         static const string Convert(signed char value);
-         static const string Convert(unsigned char value);
+         static const string Convert(std::int32_t value, int radix = 10);
+         static const string Convert(std::uint32_t value, int radix = 10);
+         static const string Convert(std::int64_t value, int radix = 10);
+         static const string Convert(std::uint64_t value, int radix = 10);
+         static const string Convert(std::int16_t value, int radix = 10);
+         static const string Convert(std::uint16_t value, int radix = 10);
+         static const string Convert(std::int8_t value, int radix = 10);
+         static const string Convert(std::uint8_t value, int radix = 10);
+         //static const string Convert(signed char value);
+         //static const string Convert(unsigned char value);
          static const string Convert(float value, int precision = 5);
          static const string Convert(double value, int precision = 5);
          static const string Convert(long double value, int precision = 5);
@@ -99,14 +96,14 @@ namespace System
          bool Save(std::ostream& stream) const;
          bool Load(std::istream& stream);
 
-         string& arg(int8_t value);
-         string& arg(uint8_t value);
-         string& arg(int16_t value);
-         string& arg(uint16_t value);
-         string& arg(int32_t value);
-         string& arg(uint32_t value);
-         string& arg(uint64_t value);
-         string& arg(int64_t value);
+         string& arg(std::int8_t value);
+         string& arg(std::uint8_t value);
+         string& arg(std::int16_t value);
+         string& arg(std::uint16_t value);
+         string& arg(std::int32_t value);
+         string& arg(std::uint32_t value);
+         string& arg(std::uint64_t value);
+         string& arg(std::int64_t value);
          string& arg(float value);
          string& arg(double value);
          string& arg(const string& value);

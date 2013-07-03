@@ -43,4 +43,11 @@ namespace Scene
 		return visitor->Visit(this);
 	}
 
+    Node* PortalNode::Clone() const
+    {
+        PortalNode* node = new PortalNode;
+        node->SetPortal(m_portal);
+        CloneInternals(node);
+        return node;
+    }
 }

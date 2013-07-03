@@ -176,6 +176,7 @@ namespace Test17
 
     void Test::Run()
     {
+        m_result = true;
         try
         {
             TestApp* app = new TestApp;

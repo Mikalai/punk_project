@@ -44,4 +44,12 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    Node* GeometryNode::Clone() const
+    {
+        GeometryNode* node = new GeometryNode;
+        node->SetGeometry(m_geometry);
+CloneInternals(node);
+        return node;
+    }
 }

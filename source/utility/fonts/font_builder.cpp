@@ -67,7 +67,7 @@ namespace Utility
 
     void FontBuilder::FontBuilderImpl::Clear()
     {
-        if (!FT_Done_FreeType(library))
+        if (FT_Done_FreeType(library) != 0)
             out_error() << L"Can't destroy font builder" << std::endl;
     }
 
@@ -101,6 +101,7 @@ namespace Utility
 			char ansi[1024];
 			int len = 1024;
             std::vector<char> buffer = path.ToUtf8();
+            buffer.push_back(0);
             error = FT_New_Face(library, &buffer[0], 0, &face);
 
 			if (error == FT_Err_Unknown_File_Format)
@@ -119,8 +120,8 @@ namespace Utility
 				out_error() << L"Can't set char size" << std::endl;
 			}
 
-			out_message() << L"Font style: " + System::string(face->style_name) << std::endl;
-			out_message() << System::string("Num glyphs: %d", face->num_glyphs) << std::endl;
+            out_message() << System::string("Font style: {0}").arg(face->style_name) << std::endl;
+            out_message() << System::string("Num glyphs: {0}").arg(face->num_glyphs) << std::endl;
 
 			curFace = face;
 			fontFace[name] = face;

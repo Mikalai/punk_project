@@ -1,11 +1,15 @@
+#include <ostream>
+
 #ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif	//	NOMINMAX
 #include <Windows.h>
 #include <DbgHelp.h>
-#include <ostream>
 #endif	//	_WIN32
+#ifdef __gnu_linux__
+#include <execinfo.h>
+#endif  //  __gnu_linux__
 
 #include "stack_trace.h"
 #include "exceptions.h"
@@ -197,5 +201,24 @@ namespace System
 		free(pSym);
 #endif	//	_M_IX86
 #endif	//	_WIN32
+#ifdef __gnu_linux__
+        const int s = 100;
+        void *array[s];
+        size_t size;
+        char **strings;
+        size_t i;
+
+        size = backtrace (array, s);
+        strings = backtrace_symbols (array, size);
+
+        stream << System::string("Obtained {0} stack frames.").arg(size) << std::endl;
+
+        for (i = 0; i < size; i++)
+        {
+            stream << System::string(strings[i]) << std::endl;
+        }
+
+        free (strings);
+#endif  //    __gnu_linux__
 	}
 }

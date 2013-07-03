@@ -54,4 +54,11 @@ namespace Scene
         return m_mesh;
     }
 
+    Node* TerrainNode::Clone() const
+    {
+        TerrainNode* node = new TerrainNode;
+        node->SetTerrainMesh(m_mesh);
+        CloneInternals(node);
+        return node;
+    }
 }

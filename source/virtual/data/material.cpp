@@ -49,8 +49,6 @@ namespace Virtual
     }
     */
 	
-	Material* Material::DefaultMaterial(new Material);
-
 	Material::Material()
 		: m_diffuse_map(L"")
 		, m_normal_map(L"")

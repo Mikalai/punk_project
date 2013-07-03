@@ -17,7 +17,7 @@ namespace System
 		void* anyData;
 		void* reciever;
         //virtual void Release() = 0;
-		char tmp[1024*1024];	//	dummy memory allocation to check memory leaks
+        //char tmp[1024*1024];	//	dummy memory allocation to check memory leaks
 
 		virtual ~Event() {}
 

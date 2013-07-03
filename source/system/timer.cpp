@@ -65,7 +65,8 @@ namespace System
 
 		double GetElapsedSeconds() const
 		{
-            return GetCurrentTime() - m_last_check;
+            double res = GetCurrentTime() - m_last_check;
+            return res;
 		}
 
 		double GetElapsedMiliseconds() const

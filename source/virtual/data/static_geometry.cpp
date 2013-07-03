@@ -59,6 +59,8 @@ namespace Virtual
     {
         m_vertices = value;
         m_is_on_cpu = true;
+        m_geom.m_bbox.Create(m_vertices);
+        m_geom.m_sphere.Create(m_vertices);
     }
 
     void StaticGeometry::CpuCache::SetNormals(const Normals& value)
@@ -325,11 +327,6 @@ namespace Virtual
     const StaticGeometry::TextureMeshes& StaticGeometry::GetTextureMeshes()
     {
         return m_cpu_cache.GetTextureMeshes();
-    }
-
-    const Math::BoundingBox& StaticGeometry::GetBoundingBox()
-    {
-        return m_bbox;
     }
 
     void StaticGeometry::SetWorldOffset(const Math::mat4& value)

@@ -1,5 +1,6 @@
 #include <set>
-
+#include "low_level_math.h"
+#include <limits>
 #include "relations.h"
 #include "constants.h"
 #include "helper.h"
@@ -16,6 +17,7 @@
 #include "bounding_box.h"
 #include "convex_shape_mesh.h"
 #include "frustum.h"
+#include "triangle2d.h"
 
 namespace Math
 {
@@ -583,6 +585,9 @@ namespace Math
 		const vec3 n1 = a.GetNormal();
 		const vec3 n2 = b.GetNormal();
 
+        if (fabs(n1.Dot(n2)) > 1.0f - Math::EPS)
+            return NOT_INTERSECT;
+
 		vec3 dir = n1.Cross(n2).Normalized();
 
 		Plane c(dir, 0);
@@ -680,7 +685,7 @@ namespace Math
 	Relation CrossPlanePolygon(const Plane& plane, const Polygon3D& polygon, const Polygon3D& front, const Polygon3D& back)
 	{
 		(void)plane; (void)polygon; (void)front; (void)back;
-		throw MathError(L"Not implemented");
+        throw System::PunkNotImplemented();
 	}
 
 	Relation SplitTriangle(const Plane& splitter, const Triangle3D& t, Triangle3D front[2], Triangle3D back[2])
@@ -1090,5 +1095,203 @@ namespace Math
 
 		return INTERSECT;
 	}
+
+    Relation CrossCircleTrianglesProjection(const std::vector<vec3>& point, const std::vector<ivec3>& faces, const Math::vec3& center, float radius)
+    {
+        for (const Math::ivec3& f : faces)
+        {
+            const Math::vec3& p0 = point[f[0]];
+            const Math::vec3& p1 = point[f[1]];
+            const Math::vec3& p2 = point[f[2]];
+
+            auto c = (p0 + p1 + p2) * 0.33333333f;
+            if ((c - center).Length() < radius)
+                return Relation::INTERSECT;
+        }
+        return Relation::NOT_INTERSECT;
+    }
+
+    Relation CrossLineAxisAlignedBox(const Line3D& line, const AxisAlignedBox& a, float& tmin, vec3& q)
+    {
+        auto p = line.GetOrigin();
+        auto d = line.GetDestination() - line.GetOrigin();
+        tmin = -std::numeric_limits<float>::max();
+        float tmax = std::numeric_limits<float>::max();
+        for (int i = 0; i < 3; ++i)
+        {
+            if (fabs(d[i]) < EPS)
+            {
+                if (p[i] < a.MinPoint()[i] || p[i] > a.MaxPoint()[i])
+                    return Relation::NOT_INTERSECT;
+            }
+            else
+            {
+                float ood = 1.0f / d[i];
+                float t1 = (a.MinPoint()[i] - p[i]) * ood;
+                float t2 = (a.MaxPoint()[i] - p[i]) * ood;
+
+                if (t1 > t2)
+                    std::swap(t1, t2);
+                tmin = std::max(tmin, t1);
+                tmax = std::min(tmax, t2);
+
+                if (tmin > tmax)
+                    return Relation::NOT_INTERSECT;
+            }
+        }
+        q = p + d * tmin;
+        return Relation::INTERSECT;
+    }
+
+    Relation CrossLineBoundingBox(const Line3D& line, const BoundingBox& bbox, vec3& p)
+    {
+        mat4 t;
+        t.SetColumn(0, vec4(bbox.GetR(), 0));
+        t.SetColumn(1, vec4(bbox.GetS(), 0));
+        t.SetColumn(2, vec4(bbox.GetT(), 0));
+        t.SetColumn(3, vec4(bbox.GetMinCorner().X(), bbox.GetMinCorner().Y(), bbox.GetMinCorner().Z(),1));
+
+        auto l = t.Inversed() * line;
+
+        AxisAlignedBox aabb;
+        aabb.Set(vec3(0,0,0), vec3(bbox.GetR().Length(), bbox.GetS().Length(), bbox.GetT().Length()));
+        float tmin;
+        if (Relation::NOT_INTERSECT == CrossLineAxisAlignedBox(l, aabb, tmin, p))
+            return Relation::NOT_INTERSECT;
+        p = t * p;
+        return Relation::INTERSECT;
+    }
+
+    Relation ClassifyPoint(const vec3 &p, const AxisAlignedBox &aabb)
+    {
+        if (p[0] >= aabb.MinPoint()[0] && p[0] <= aabb.MaxPoint()[0] &&
+            p[1] >= aabb.MinPoint()[1] && p[1] <= aabb.MaxPoint()[1] &&
+            p[2] >= aabb.MinPoint()[2] && p[2] <= aabb.MaxPoint()[2])
+            return Relation::INSIDE;
+        return Relation::OUTSIDE;
+    }
+
+
+    Relation CrossTriangleAxisAlignedBox(const Triangle3D& t, const AxisAlignedBox& aabb)
+    {
+        auto pp1 = t[0];
+        auto pp2 = t[2];
+        auto pp3 = t[3];
+        if (pp1[0] > aabb.MaxPoint()[0] && pp2[0] > aabb.MaxPoint()[0] && pp3[0] > aabb.MaxPoint()[0])
+            return NOT_INTERSECT;
+        if (pp1[0] < aabb.MinPoint()[0] && pp2[0] < aabb.MinPoint()[0] && pp3[0] < aabb.MinPoint()[0])
+            return NOT_INTERSECT;
+        if (pp1[1] > aabb.MaxPoint()[1] && pp2[1] > aabb.MaxPoint()[1] && pp3[1] > aabb.MaxPoint()[1])
+            return NOT_INTERSECT;
+        if (pp1[1] < aabb.MinPoint()[1] && pp2[1] < aabb.MinPoint()[1] && pp3[1] < aabb.MinPoint()[1])
+            return NOT_INTERSECT;
+        if (pp1[2] > aabb.MaxPoint()[2] && pp2[2] > aabb.MaxPoint()[2] && pp3[2] > aabb.MaxPoint()[2])
+            return NOT_INTERSECT;
+        if (pp1[2] < aabb.MinPoint()[2] && pp2[2] < aabb.MinPoint()[2] && pp3[2] < aabb.MinPoint()[2])
+            return NOT_INTERSECT;
+        //
+        //  the simpliest test
+        //
+        if (ClassifyPoint(pp1, aabb) == Relation::INSIDE
+                || ClassifyPoint(pp2, aabb) == Relation::INSIDE
+                || ClassifyPoint(pp3, aabb) == Relation::INSIDE)
+            return INTERSECT;
+
+        if (ClipSegment3D(pp1, pp2, aabb.MinPoint(), aabb.MaxPoint()))
+            return INTERSECT;
+        if (ClipSegment3D(pp2, pp3, aabb.MinPoint(), aabb.MaxPoint()))
+            return INTERSECT;
+        if (ClipSegment3D(pp3, pp1, aabb.MinPoint(), aabb.MaxPoint()))
+            return INTERSECT;
+
+        return NOT_INTERSECT;
+    }
+
+    bool ClipSegment(float min, float max, float a, float b, float d, float* t0, float* t1)
+    {
+        if (fabs(d) < std::numeric_limits<float>().epsilon())
+        {
+            if (d > 0.0f)
+            {
+                return !(b < min || a > max);
+            }
+            else
+            {
+                return !(a < min || b > max);
+            }
+        }
+
+        float u0, u1;
+
+        u0 = (min - a) / (d);
+        u1 = (max - a) / (d);
+
+        if (u0 > u1)
+        {
+            float temp = u0;
+            u0 = u1;
+            u1 = temp;
+        }
+
+        if (u1 < *t0 || u0 > *t1)
+        {
+            return false;
+        }
+
+        *t0 = Max(u0, *t0);
+        *t1 = Max(u1, *t1);
+
+        if (*t1 < *t0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    bool ClipSegment3D(const vec3& A, const vec3& B, const vec3& min, const vec3& max)
+    {
+        float t0 = 0.0f, t1 = 1.0f;
+//		float S[3] = {A[0], A[1], A[2]};
+        float D[3] = {B[0]-A[0], B[1]-A[1], B[2]-A[2]};
+
+        if (!ClipSegment(min[0], max[0], A[0], B[0], D[0], &t0, &t1))
+        {
+            return false;
+        }
+
+        if (!ClipSegment(min[1], max[1], A[1], B[1], D[1], &t0, &t1))
+        {
+            return false;
+        }
+
+        if (!ClipSegment(
+            min[2], max[2], A[2], B[2], D[2], &t0, &t1))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    bool ClipSegment2D(const vec2& A, const vec2& B, const vec2& min, const vec2& max)
+    {
+        float t0 = 0.0f, t1 = 1.0f;
+//		float S[2] = {A[0], A[1]};
+        float D[2] = {B[0]-A[0], B[1]-A[1]};
+
+        if (!ClipSegment(min[0], max[0], A[0], B[0], D[0], &t0, &t1))
+        {
+            return false;
+        }
+
+        if (!ClipSegment(min[1], max[1], A[1], B[1], D[1], &t0, &t1))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 }
 

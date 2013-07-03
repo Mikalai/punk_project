@@ -47,4 +47,12 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    Node* SkinMeshNode::Clone() const
+    {
+        SkinMeshNode* node = new SkinMeshNode;
+        node->SetGeometry(m_geometry);
+        CloneInternals(node);
+        return node;
+    }
 }

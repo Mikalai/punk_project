@@ -29,6 +29,8 @@ namespace Scene
 		Virtual::Bone* GetBone();
 		void SetBone(Virtual::Bone* value);
 
+        virtual Node* Clone();
+
 	private:
 		BoneNode(const BoneNode&);
 		BoneNode& operator = (const BoneNode&);

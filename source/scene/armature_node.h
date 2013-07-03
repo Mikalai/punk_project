@@ -25,6 +25,7 @@ namespace Scene
 		void SetArmature(Virtual::Armature* value);
 		Virtual::Armature* GetArmature();
 
+        virtual Node* Clone();
 	private:
 
 		Virtual::Armature* m_armature;

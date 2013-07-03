@@ -1,5 +1,6 @@
 #include "texture_context.h"
 #include "texture2d.h"
+#include <string.h>
 
 namespace GPU
 {

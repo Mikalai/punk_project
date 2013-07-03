@@ -7,6 +7,7 @@
 #ifndef _H_MAT2X2_MATH
 #define _H_MAT2X2_MATH
 
+#include "../system/errors/exceptions.h"
 #include "math_error.h"
 #include "vec2.h"
 
@@ -72,14 +73,14 @@ namespace Math
 		const T& operator [] (int i) const
 		{
 			if (i < 0 || i > 3)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			return m[i];
 		}
 
 		T& operator [] (int i)
 		{
 			if (i < 0 || i > 3)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			return m[i];
 		}
 
@@ -118,7 +119,7 @@ namespace Math
 		{
 			T d = Determinant();
 			if (d == T(0))
-				throw MathDevisionByZero();
+                throw System::PunkException("Can't inverse matrix. Determinant is 0");
 
 			d = T(1) / d;
 
@@ -136,7 +137,7 @@ namespace Math
 		{
 			T d = Determinant();
 			if (d == T(0))
-				throw MathDevisionByZero();
+                throw System::PunkException("Can't inverse matrix. Determinant is 0");
 
 			d = T(1) / d;
 
@@ -248,7 +249,7 @@ namespace Math
 	static Matrix2x2<T> operator / (const Matrix2x2<T>& a, T b)
 	{
 		if (b == T(0))
-			throw MathDevisionByZero();
+            throw System::PunkException("Devision by 0");
 
 		b = T(1) / b;
 		return a * b;

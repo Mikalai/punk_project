@@ -41,6 +41,7 @@ namespace GPU
 
         Texture2DImpl(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, const void* data, bool use_mipmaps, VideoDriver* driver)
             : m_driver(driver->impl)
+            , m_pbo(nullptr)
         {
             Create(width, height, ImageFormatToOpenGL(internal_format), ImageFormatToOpenGL(format), data, use_mipmaps);
         }
@@ -58,16 +59,14 @@ namespace GPU
         void Bind(int slot)
         {
             m_bind_slot = slot;
-            glActiveTexture(GL_TEXTURE0 + slot);
-            glBindTexture(GL_TEXTURE_2D, m_texture_id);
-            ValidateOpenGL(L"Unable to bind texture");
+            GL_CALL(glActiveTexture(GL_TEXTURE0 + slot));
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, m_texture_id));
         }
 
         void Unbind()
         {
-            glActiveTexture(GL_TEXTURE0 + m_bind_slot);
-            glBindTexture(GL_TEXTURE_2D, 0);
-            ValidateOpenGL(L"Unable to unbind texture");
+            GL_CALL(glActiveTexture(GL_TEXTURE0 + m_bind_slot));
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
         }
 
 		void Init()
@@ -229,7 +228,7 @@ namespace GPU
 			ValidateOpenGL(L"Can't tex paramter f");
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			ValidateOpenGL(L"Can't tex prarameter f");
-			glTexImage2D(GL_TEXTURE_2D, 0, m_format, width, height, 0, m_internal_format, GL_UNSIGNED_BYTE, 0);
+            glTexImage2D(GL_TEXTURE_2D, 0, m_format, width, height, 0, m_internal_format, m_internal_type, 0);
 			ValidateOpenGL(L"Can't tex image");
 			Fill(0);
 		}
@@ -353,53 +352,35 @@ namespace GPU
             m_pixel_size = GetPixelSize(internal_format);
             m_internal_type = GetPixelType(format);
 
-			glGenTextures(1, &m_texture_id);
-			ValidateOpenGL(L"Can't generate texture");
-			glBindTexture(GL_TEXTURE_2D, m_texture_id);
-			ValidateOpenGL(L"Can't bind texture");
+            GL_CALL(glGenTextures(1, &m_texture_id));
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, m_texture_id));
 
 			if (use_mipmaps)
 			{
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-				ValidateOpenGL(L"Can't set up texture min filter");
+                GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 			}
 			else
 			{
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				ValidateOpenGL(L"Can't set up texture min filter");
+                GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 			}
 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			ValidateOpenGL(L"Can't set up mag filter");
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			ValidateOpenGL(L"Can't set up wrap s");
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-			ValidateOpenGL(L"Can't set up wrap r");
+            GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+            GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+            GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT));
 
-			glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
-			ValidateOpenGL(L"Can't copy data from PBO to texture");
-
-			glBindTexture(GL_TEXTURE_2D, 0);
-			ValidateOpenGL(L"Can't unbind texture");
-
-            m_pbo = m_driver->GetVideoMemory()->AllocatePixelBuffer(m_width * m_height * m_pixel_size);
-			//m_pbo->Bind();
+            GL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0));
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 
 			//	if data available than copy them
 			if (source)
 			{
 				void* data = Map();
-				ValidateOpenGL(L"Can't map buffer");
 				if (data)
 				{
 					memcpy(data, source, m_width * m_height * m_pixel_size);
 					Unmap(0);
-					ValidateOpenGL(L"Can't unmap buffer");
 				}
 			}
-			//m_pbo->Unbind();
-			//glTexImage2D(GL_TEXTURE_2D, 0, m_internal_format, m_width, m_height, 0, m_format, m_internal_type, 0);
-			//ValidateOpenGL(L"Can't copy data from PBO to texture");
 			if (m_use_mip_maps)
 				UpdateMipMaps();
 
@@ -408,32 +389,36 @@ namespace GPU
 
 		void UpdateMipMaps()
 		{
-			glBindTexture(GL_TEXTURE_2D, m_texture_id);
-			ValidateOpenGL(L"Can't bind texture");
-			glGenerateMipmap(GL_TEXTURE_2D);
-			ValidateOpenGL(L"Can't generate mip map levels for texture");
-			glBindTexture(GL_TEXTURE_2D, 0);
-			ValidateOpenGL(L"Can't unbind texture");
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, m_texture_id));
+            GL_CALL(glGenerateMipmap(GL_TEXTURE_2D));
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
 		}
 
 		void* Map()
-		{
-			if (m_pbo)
-				return m_pbo->Map();
-			return nullptr;
+		{            
+            if (m_pbo)
+                throw System::PunkException(L"Texture already mapped");
+            m_pbo = m_driver->GetVideoMemory()->AllocatePixelBuffer(m_width*m_height*m_pixel_size);
+            void* ptr = m_pbo->Map();
+            if (!ptr)
+                m_driver->GetVideoMemory()->FreePixelBuffer(m_pbo);
+            return ptr;
 		}
 
 		void Unmap(void*)
 		{
-			m_pbo->Unmap();
-			glBindTexture(GL_TEXTURE_2D, m_texture_id);
-			ValidateOpenGL(L"Can't bind texture");
-			m_pbo->Bind();
-			glTexSubImage2D(GL_TEXTURE_2D, 0,0, 0, m_width, m_height, m_format, m_internal_type, 0);
-			ValidateOpenGL(L"Can't transfer data from PBO to texture");
-			m_pbo->Unbind();
-			glBindTexture(GL_TEXTURE_2D, 0);
-			ValidateOpenGL(L"Can't unbind texture");
+            if (!m_pbo)
+                throw System::PunkException("Texture was not mapped");
+            m_pbo->Unmap();
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, m_texture_id));
+            m_pbo->Bind();
+            GL_CALL(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, m_internal_format, m_internal_type, 0));
+            m_pbo->Unbind();
+            GL_CALL(glBindTexture(GL_TEXTURE_2D, 0));
+
+            m_driver->GetVideoMemory()->FreePixelBuffer(m_pbo);
+            m_pbo = nullptr;
+
 			if (m_use_mip_maps)
 				UpdateMipMaps();
 		}

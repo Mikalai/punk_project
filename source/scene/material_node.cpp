@@ -57,4 +57,12 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    Node* MaterialNode::Clone() const
+    {
+        MaterialNode* node = new MaterialNode;
+        node->SetMaterial(m_material);
+        CloneInternals(node);
+        return node;
+    }
 }

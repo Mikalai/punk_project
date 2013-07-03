@@ -3,6 +3,12 @@
 
 namespace System { class string; }
 
+#ifdef _DEBUG
+#define GL_CALL(X) X; ValidateOpenGL(#X)
+#else
+#define GL_CALL(X) X;
+#endif
+
 namespace GPU
 {
 	namespace OpenGL

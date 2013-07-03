@@ -25,6 +25,8 @@ namespace Scene
 		virtual bool Apply(AbstractVisitor* visitor);
 
 		Virtual::SkinGeometry* GetSkinGeometry();
+
+        virtual Node* Clone() const override;
 	};
 }
 

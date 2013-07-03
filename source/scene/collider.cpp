@@ -29,7 +29,7 @@ namespace Scene
 			GPU::StaticMesh* mesh = NULL;// dynamic_cast<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());
 			if (mesh)
 			{
-				node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
+//				node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 				return true;
 			}
 			Math::Sphere s(Math::vec3(0,0,0), 1);
@@ -46,7 +46,7 @@ namespace Scene
 	bool Collider::Visit(Scene::SkinMeshNode* node)
 	{
 		GPU::SkinMesh* mesh = nullptr;	// dynamic_cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
-		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
+//		node->SetBoundingSphere(m_states.CurrentState()->Get().m_local * mesh->GetBoundingSphere());
 		if (Math::CrossSphereSphere(m_current_sphere, node->GetBoundingSphere()))
 		{
 			m_result.m_nodes.push_back(node);

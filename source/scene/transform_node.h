@@ -24,11 +24,11 @@ namespace Scene
 		void SetLocalMatrix(const Math::mat4& m) { m_local = m; }
 		const Math::mat4& GetLocalMatrix() const { return m_local; }
 
-		const Math::mat4& GetGlobalMatrix() const { return m_global; }
+        const Math::mat4 GetGlobalMatrix() const;
 
+        virtual Node* Clone() const override;
 	private:
 		Math::mat4 m_local;
-		Math::mat4 m_global;
 	};
 }
 

@@ -8,8 +8,7 @@ namespace System
 	{
 		for (auto it = m_children.begin(); it != m_children.end(); ++it)
 			safe_delete(*it);
-		m_children.clear();
-		m_cache.clear();
+		m_children.clear();		
 	}
 
 	bool CompoundObject::Save(std::ostream& stream) const
@@ -53,13 +52,13 @@ namespace System
 		if (value == nullptr)
 			return (out_error() << "Can't add null object" << std::endl, false);
 
-		auto it = m_cache.find(value->GetStorageName());
+        auto o = Find(value->GetName());
 
-		if (it != m_cache.end())
-			out_warning() << "Object with name " << value->GetStorageName() << " already in the set" << std::endl;
+        if (o)
+            out_warning() << "Object with name " << value->GetName() << " already in the set" << std::endl;
 
 		m_children.push_back(value);
-		m_cache[value->GetStorageName()] = m_children.size() - 1;
+        value->SetOwner(this);
 
 		if (!OnAdd(value))
 			return (out_error() << "OnAdd failed" << std::endl, false);
@@ -77,7 +76,7 @@ namespace System
 			if (*it == value)
 			{
 				m_children.erase(it);
-				m_cache.erase(m_cache.find(value->GetStorageName()));
+                value->SetOwner(nullptr);
 				return true;
 			}
 		}
@@ -91,56 +90,64 @@ namespace System
 	}
 
 	bool CompoundObject::Remove(const string& name)
-	{
-		auto it = m_cache.find(name);
-		if (it == m_cache.end())
-			return (out_warning() << "Can't remove object " << name << std::endl, false);
-
-		if  (!OnRemove(m_children[it->second]))
-			return (out_error() << "OnRemove failed" << std::endl, false);
-
-		m_children.erase(m_children.begin() + it->second);
-		m_cache.erase(it);
-		return true;
+	{        
+        return Remove(Find(name));
 	}
 
 	bool CompoundObject::Remove(int index)
 	{
-		try
-		{
-			auto storage_name = m_children.at(index)->GetStorageName();
-			if (!OnRemove(m_children[index]))
-				return (out_error() << "OnRemove failed" << std::endl, false);
-			m_cache.erase(m_cache.find(storage_name));
-			m_children.erase(m_children.begin() + index);
-		}
-		catch(...)
-		{
-            return (out_error() << "Can't remove object with " << index << " index" << std::endl, false);
-		}
-		return true;
+        if (index < 0 || index >= m_children.size())
+            return false;
+        return Remove(m_children[index]);
 	}
 
-	const Object* CompoundObject::Find(const string& name) const
+    const Object* CompoundObject::Find(const string& name, bool in_depth) const
 	{
-		auto it = m_cache.find(name);
-		if (it == m_cache.end())
-			return nullptr;
-		return m_children[it->second];
+        for (Object* o : m_children)
+        {
+            if (o->GetName() == name)
+                return o;
+        }
+        if (in_depth)
+        {
+            for (Object* o : m_children)
+            {
+                CompoundObject* co = As<CompoundObject*>(o);
+                if (co)
+                {
+                    Object* res = co->Find(name, in_depth);
+                    if (res)
+                        return res;
+                }
+            }
+        }
+        return nullptr;
 	}
 
-	const Object* CompoundObject::Find(int index) const
+    size_t CompoundObject::GetIndex(const System::string& name) const
+    {
+        size_t index = 0;
+        for (const Object* o : m_children)
+        {
+            if (o->GetName() == name)
+                return index;
+            index++;
+        }
+        return -1;
+    }
+
+    const Object* CompoundObject::Find(int index) const
 	{
 		return m_children[index];
 	}
 
-	Object* CompoundObject::Find(const string& name)
+    Object* CompoundObject::Find(const string& name, bool in_depth)
 	{
-		return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(name));
+        return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(name, in_depth));
 	}
 
-	Object* CompoundObject::Find(int index)
+    Object* CompoundObject::Find(int index)
 	{
-		return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(index));
+        return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(index));
 	}
 }

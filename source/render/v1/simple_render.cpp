@@ -14,7 +14,6 @@
 namespace Render
 {
 // TODO (chip#1#): global variable should be removed
-    Utility::FontBuilder g_font_builder;
 
 	SimpleRender::SimpleRender(GPU::VideoDriver* driver)
 		: m_driver(driver)
@@ -359,9 +358,9 @@ namespace Render
 
     void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4&)
 	{
-		g_font_builder.SetCharSize(14, 14);
-		int len = g_font_builder.CalculateLength(text.Data());
-		int h = g_font_builder.CalculateHeight(text.Data());
+        //g_font_builder.SetCharSize(14, 14);
+        int len = 0;//g_font_builder.CalculateLength(text.Data());
+        int h = 0;//g_font_builder.CalculateHeight(text.Data());
 		s.SetSize(len, h);
 		s.SetText(text);
 

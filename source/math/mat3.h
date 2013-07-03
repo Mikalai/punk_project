@@ -8,6 +8,7 @@
 #define _H_MAT3X3_MATH
 
 //#include <algorithm>
+#include "../system/errors/exceptions.h"
 #include "math_error.h"
 #include "mat2.h"
 #include "vec3.h"
@@ -81,7 +82,7 @@ namespace Math
 		T& operator [] (int i)
 		{
 			if (i < 0 || i > 8)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 
 			return m[i];
 		}
@@ -89,7 +90,7 @@ namespace Math
 		const T& operator [] (int i) const
 		{
 			if (i < 0 || i > 8)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			return m[i];
 		}
 
@@ -190,7 +191,7 @@ namespace Math
 			T d = Determinant();
 
 			if (d == T(0))
-				throw MathDevisionByZero();
+                throw System::PunkException("Can't inverse matrix. Determinant is 0");
 
 			return inversedMatrix / d;
 		}
@@ -213,7 +214,7 @@ namespace Math
 			memcpy(m, tm, sizeof(m));
 
 			if (d == T(0))
-				throw MathDevisionByZero();
+                throw System::PunkException("Can't inverse matrix. Determinant is 0");
 			
 			return *this /= d;
 		}

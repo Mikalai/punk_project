@@ -54,4 +54,12 @@ namespace Scene
 	{
 		return visitor->Visit(this);
 	}
+
+    Node* BoneNode::Clone()
+    {
+        BoneNode* node = new BoneNode;
+        node->SetBone(m_bone);
+        CloneInternals(node);
+        return node;
+    }
 }

@@ -27,6 +27,8 @@ namespace GPU
 		void Normal3fv(const Math::vec3& value);
 		void End();		
 
+        bool IsValid() const;
+
 		void ValidateBegin();
 		void ValidateEnd();
 		void ValidateDraw();
@@ -427,6 +429,11 @@ namespace GPU
 		return renderable;
 	}
 
+    bool RenderableBuilderImpl::IsValid() const
+    {
+        return !m_vertex.empty();
+    }
+
 	RenderableBuilder::RenderableBuilder(VideoDriver* driver)
 		: impl(new RenderableBuilderImpl(driver))
 	{}
@@ -496,6 +503,11 @@ namespace GPU
 	{
 		return impl->ToRenderable();
 	}
+
+    bool RenderableBuilder::IsValid() const
+    {
+        return impl->IsValid();
+    }
 
 	void RenderableBuilder::Normal3f(float x, float y, float z)
 	{

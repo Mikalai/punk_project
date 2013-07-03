@@ -24,14 +24,10 @@ namespace GPU
 			if (IsValid())
 				Destroy();
 
-			glGenBuffers(1, &m_index);
-			ValidateOpenGL(L"Unable to generate pixel buffer");
-			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_index);
-			ValidateOpenGL(L"Unable to bind pixel buffer");
-			glBufferData(GL_PIXEL_UNPACK_BUFFER, size, data, GL_STATIC_DRAW);
-			ValidateOpenGL(L"Unable to fill pixel buffer with data");
-			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-			ValidateOpenGL(L"Unable to unbind pixel buffer");	
+            GL_CALL(glGenBuffers(1, &m_index));
+            GL_CALL(glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_index));
+            GL_CALL(glBufferData(GL_PIXEL_UNPACK_BUFFER, size, data, GL_STATIC_DRAW));
+            GL_CALL(glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0));
 			m_size = size;
 		}
 
@@ -39,8 +35,7 @@ namespace GPU
 		{
 			if (m_index)
 			{
-				glDeleteBuffers(1, &m_index);				
-				ValidateOpenGL(L"Unable to delete pixel buffer");
+                GL_CALL(glDeleteBuffers(1, &m_index));
 				m_index = 0;
 			}
 		}
@@ -55,26 +50,22 @@ namespace GPU
 			if (!IsValid())
 				throw OpenGLInvalidValueException(L"Buffer is not valid");
 
-			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_index);
-			ValidateOpenGL(L"Unable to bind pixel buffer");
+            GL_CALL(glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_index));
 		}
 
 		void PixelBufferObject::Unbind() const
 		{
 			if (!IsValid())
 				throw OpenGLInvalidValueException(L"Buffer is not valid");
-			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-			ValidateOpenGL(L"Unable to unbind pixel buffer");
+            GL_CALL(glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0));
 		}
 
 
 		void* PixelBufferObject::Map()
 		{
 			Bind();
-			glBufferData(GL_PIXEL_UNPACK_BUFFER, m_size, 0, GL_STREAM_DRAW);
-			ValidateOpenGL(L"Unable drop buffer");
-			GLvoid* buffer = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_READ_WRITE);
-			ValidateOpenGL(L"Unable to map buffer");
+            GL_CALL(glBufferData(GL_PIXEL_UNPACK_BUFFER, m_size, 0, GL_STREAM_DRAW));
+            GL_CALL(GLvoid* buffer = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_READ_WRITE));
 			Unbind();
 			return buffer;
 		}
@@ -82,8 +73,7 @@ namespace GPU
 		const void* PixelBufferObject::Map() const
 		{
 			Bind();
-			GLvoid* buffer = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_READ_BUFFER);
-			ValidateOpenGL(L"Unable to map buffer");
+            GL_CALL(GLvoid* buffer = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_READ_WRITE));
 			Unbind();
 			return buffer;			
 		}
@@ -91,8 +81,7 @@ namespace GPU
 		void PixelBufferObject::Unmap() const
 		{
 			Bind();
-			glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
-			ValidateOpenGL(L"Unable to map buffer");
+            GL_CALL(glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER));
 			Unbind();
 		}
 
@@ -101,7 +90,7 @@ namespace GPU
 			if (m_size < size)
 				throw OpenGLOutOfMemoryException(L"pixel buffer is to small " + System::string::Convert(m_size) + L" to hold " + System::string::Convert(size));
 			Bind();
-			glBufferSubData(GL_PIXEL_UNPACK_BUFFER, 0, size, data);
+            GL_CALL(glBufferSubData(GL_PIXEL_UNPACK_BUFFER, 0, size, data));
 			Unbind();
 		}
 	}

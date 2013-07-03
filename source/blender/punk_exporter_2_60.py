@@ -29,7 +29,7 @@ def export_local_matrix(f, object):
     start_block(f, "*local_matrix")
     for v in object.matrix_local:  
         make_offset(f)      
-        f.write("%16f%16f%16f%16f\n" % (v[0], v[1], v[2], v[3]))
+        f.write('{0} {1} {2} {3}\n'.format(v[0], v[1], v[2], v[3]))
     end_block(f)
     return    
 
@@ -39,7 +39,7 @@ def export_parent_inverse_matrix(f, object):
     start_block(f, "*parent_inverse_matrix")
     for v in object.matrix_parent_inverse:  
         make_offset(f)      
-        f.write("%16f%16f%16f%16f\n" % (v[0], v[1], v[2], v[3]))
+        f.write("{0} {1} {2} {3}\n".format(v[0], v[1], v[2], v[3]))
     end_block(f)
     return    
 
@@ -430,7 +430,7 @@ def export_static_mesh_node(f, object):
         export_string(f, "*name", mesh.materials[0].name)
      
     start_block(f, "*transform_node")
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     export_bounding_box(f, object)
 
@@ -457,7 +457,7 @@ def export_skin_mesh_node(f, object):
         export_string(f, "*name", mesh.materials[0].name)
      
     start_block(f, "*transform_node")
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_bounding_box(f, object)    
     export_local_matrix(f, object)
 
@@ -478,7 +478,7 @@ def export_armature_node(f, object):
         return
      
     start_block(f, "*transform_node")
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     export_bounding_box(f, object)
     
@@ -567,7 +567,7 @@ def export_sun_node(f, object):
     
     start_block(f, "*transform_node")
     
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     start_block(f, "*sun_node")
     export_string(f, "*name", object.data.name)
@@ -583,7 +583,7 @@ def export_navi_mesh_node(f, object):
     
     start_block(f, "*transform_node")
     
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     start_block(f, "*navi_mesh_node")
     export_string(f, "*name", object.data.name)
@@ -606,7 +606,7 @@ def export_terrain_node(f, object):
     
     start_block(f, "*transform_node")
     
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     start_block(f, "*terrain_node")
     export_string(f, "*name", object.data.name)
@@ -632,7 +632,7 @@ def export_river_node(f, object):
     
     start_block(f, "*transform_node")
     
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     start_block(f, "*river_node")
     export_string(f, "*name", object.data.name)
@@ -651,7 +651,7 @@ def export_path_node(f, object):
     
     start_block(f, "*transform_node")
     
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     start_block(f, "*path_node")
     export_string(f, "*name", object.data.name)
@@ -665,7 +665,7 @@ def export_camera_node(f, object):
     if object.data == None:
        return
     start_block(f, "*transform_node")
-    export_string(f, "*name", object.name)
+    export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     start_block(f, "*camera_node")
     export_string(f, "*name", object.data.name)
