@@ -1,0 +1,109 @@
+MATERIALTEXT
+_e5f86cc_dds.001
+{
+  *alpha
+  {
+    1.0
+  }
+
+  *ambient
+  {
+    1.0
+  }
+
+  *darkness
+  {
+    1.0
+  }
+
+  *diffuse_color
+  {
+    0.800000011920929 0.800000011920929 0.800000011920929
+  }
+
+  *diffuse_fresnel
+  {
+    0.10000000149011612
+  }
+
+  *diffuse_fresnel_factor
+  {
+    0.5
+  }
+
+  *diffuse_intensity
+  {
+    0.800000011920929
+  }
+
+  *emit
+  {
+    0.0
+  }
+
+  *mirror_color
+  {
+    1.0 1.0 1.0
+  }
+
+  *roughness
+  {
+    0.5
+  }
+
+  *specular_alpha
+  {
+    1.0
+  }
+
+  *specular_color
+  {
+    1.0 1.0 1.0
+  }
+
+  *specular_hardness
+  {
+    50
+  }
+
+  *specular_intensity
+  {
+    0.5
+  }
+
+  *specular_ior
+  {
+    4.0
+  }
+
+  *specular_slope
+  {
+    0.10000000149011612
+  }
+
+  *translucency
+  {
+    0.0
+  }
+
+  *texture_slot
+  {
+    *scale
+    {
+      1.0 1.0 1.0
+    }
+
+    *image
+    {
+      1e5f86cc.tif
+    }
+
+    *diffuse_map
+    {
+      1.0
+    }
+
+  }
+
+}
+
