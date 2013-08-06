@@ -1,0 +1,6 @@
+#ifndef PUNK_VIRTUAL_WATER_MODULE_H
+#define PUNK_VIRTUAL_WATER_MODULE_H
+
+#include "river.h"
+
+#endif // PUNK_VIRTUAL_WATER_MODULE_H

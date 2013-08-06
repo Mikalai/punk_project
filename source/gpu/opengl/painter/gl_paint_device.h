@@ -3,7 +3,7 @@
 
 #include "../../painter/paint_device.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

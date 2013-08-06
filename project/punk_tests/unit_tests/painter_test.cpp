@@ -8,14 +8,14 @@ class MyApp : public Punk::Application
 {
 	Scene::SceneGraph* graph;
 	Render::SimpleRender* render;
-	GPU::OpenGL::Texture2D* t;
+	GPU::Texture2D* t;
 public:
 	virtual void Init(const Punk::Config& value) override
 	{
 		Application::Init(value);
 		graph = new Scene::SceneGraph();
-		graph->SetActiveCamera(new Virtual::FirstPersonCamera);			
-		render = new Render::SimpleRender(GetDriver());
+		graph->SetActiveCamera(new Virtual::Camera);			
+		render = new Render::SimpleRender(GetVideoDriver());
 		render->SetScene(graph);	
 		render->SetPaintEngine(GetPaintEngine());
 		System::Mouse::Instance()->LockInWindow(false);			
@@ -39,7 +39,7 @@ public:
 	virtual void OnIdleEvent(System::IdleEvent* e) override
 	{
 		Punk::Application::OnIdleEvent(e);
-		
+				
 		/*	It is possible to drawing on idle, but if no changes
 		*	happened there is no need to draw data every frame 
 		*/
@@ -61,6 +61,7 @@ public:
 	{
 		Punk::Application::OnResizeEvent(e);
 
+		graph->GetCameraNode()->GetCamera()->SetViewport(0,0,e->width, e->height);
 		//	we will redraw 2d surface only when resized
 		auto p = GetPaintEngine();
 		int count = 100;

@@ -7,7 +7,7 @@
 
 namespace Utility
 {
-	class PUNK_ENGINE BoneDesc
+	class PUNK_ENGINE_API BoneDesc
 	{
 	public:
 		System::string m_name;

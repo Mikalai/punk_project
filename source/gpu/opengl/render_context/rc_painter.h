@@ -1,3 +1,5 @@
+#ifdef USE_PAINTER_RC
+
 #ifndef _H_PUNK_OPENGL_RENDER_CONTEXT_PAINTER
 #define _H_PUNK_OPENGL_RENDER_CONTEXT_PAINTER
 
@@ -9,9 +11,9 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		/**********************************************************************************************/
-		/*			PAINTER RENDER 
-		/**********************************************************************************************/
+        /**********************************************************************************************
+        *			PAINTER RENDER
+        **********************************************************************************************/
 		template<> class RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> : public OpenGLRenderContext
 		{	
 		public:
@@ -19,7 +21,7 @@ namespace GPU
 			void Init() override;
 			void InitUniforms() override;
 			void BindParameters(const CoreState& pparams) override;
-			VertexAttributes GetRequiredAttributesSet() const override;
+			int64_t GetRequiredAttributesSet() const= 0;
 			virtual void Begin() override;
 			virtual void End() override;
 
@@ -36,3 +38,5 @@ namespace GPU
 	}
 }
 #endif
+
+#endif  //  USE_PAINTER_RC

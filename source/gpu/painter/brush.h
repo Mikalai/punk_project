@@ -3,21 +3,21 @@
 
 #include "../../config.h"
 
-namespace Math 
+namespace Math
 {
 	class vec4;
 	class mat3;
 	class mat2;
 }
 
-namespace GPU
+namespace Gpu
 {
-	namespace OpenGL { class Texture2D; }
+	class Texture2D;
 
-	class PUNK_ENGINE Brush sealed
+	class PUNK_ENGINE_API Brush final
 	{
 	public:
-		Brush();		
+		Brush();
 		Brush(const Brush& value);
 		Brush& operator = (const Brush& value);
 		~Brush();
@@ -28,8 +28,8 @@ namespace GPU
 		const Math::mat3& GetMatrix() const;
 		void SetStyle(int value);
 		int GetStyle() const;
-		void SetTexture(const OpenGL::Texture2D* texture);
-		const OpenGL::Texture2D* GetTexture() const;
+		void SetTexture(const Texture2D* texture);
+		const Texture2D* GetTexture() const;
 
 		struct BrushImpl;
 		BrushImpl* impl;

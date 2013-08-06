@@ -5,13 +5,13 @@ namespace System
 {
 
 	const long PUNK_KEY_LEFT_ALT = 0x01;
-	const long PUNK_KEY_RIGHT_ALT =0x02;	
+    const long PUNK_KEY_RIGHT_ALT =0x02;
 	const long PUNK_KEY_CAPSLOCK =0x04;
 	const long PUNK_KEY_PAGE_UP =0x05;
 	const long PUNK_KEY_PAGE_DOWN =0x06;
 	const long PUNK_KEY_BACKSPACE = 0x08;
 	const long PUNK_KEY_TAB = 0x09;
-	const long PUNK_KEY_ENTER = 0x0D;
+    const long PUNK_KEY_ENTER = 0x0D;
 	const long PUNK_KEY_SHIFT = 0x10;
 	const long PUNK_KEY_CONTROL = 0x11;
 	const long PUNK_KEY_ALT = 0x12;
@@ -23,10 +23,10 @@ namespace System
 
 	const long PUNK_KEY_LEFT = 0x25;
 	const long PUNK_KEY_UP = 0x26;
-	const long PUNK_KEY_RIGHT = 0x27;
+    const long PUNK_KEY_RIGHT = 0x27;
 	const long PUNK_KEY_DOWN = 0x28;
 
-	const long PUNK_KEY_INSERT =0x2D;
+    const long PUNK_KEY_INSERT =0x2D;
 	const long PUNK_KEY_DELETE =0x2E;
 
 	const long PUNK_KEY_0 = 0x30;
@@ -48,16 +48,16 @@ namespace System
 	const long PUNK_KEY_F = 0x46;
 	const long PUNK_KEY_G = 0x47;
 	const long PUNK_KEY_H = 0x48;
-	const long PUNK_KEY_I = 0x49;
-	const long PUNK_KEY_J = 0x4A;
+    const long PUNK_KEY_I = 0x49;
+    const long PUNK_KEY_J = 0x4A;
 	const long PUNK_KEY_K = 0x4B;
 	const long PUNK_KEY_L = 0x4C;
-	const long PUNK_KEY_M = 0x4D;
+    const long PUNK_KEY_M = 0x4D;
 	const long PUNK_KEY_N = 0x4E;
 	const long PUNK_KEY_O = 0x4F;
 	const long PUNK_KEY_P = 0x50;
 	const long PUNK_KEY_Q = 0x51;
-	const long PUNK_KEY_R = 0x52;
+    const long PUNK_KEY_R = 0x52;
 	const long PUNK_KEY_S = 0x53;
 	const long PUNK_KEY_T = 0x54;
 	const long PUNK_KEY_U = 0x55;
@@ -92,9 +92,9 @@ namespace System
 	const long PUNK_KEY_F12 = 0x7B;
 	
 	const long PUNK_KEY_LEFT_SHIFT = 0xA0;
-	const long PUNK_KEY_RIGHT_SHIFT = 0xA1;
+    const long PUNK_KEY_RIGHT_SHIFT = 0xA1;
 	const long PUNK_KEY_LEFT_CONTROL = 0xA2;
-	const long PUNK_KEY_RIGHT_CONTROL = 0xA3;
+    const long PUNK_KEY_RIGHT_CONTROL = 0xA3;
 
 	const long MAX_EVENTS_COUNT = 0x0800;
 
@@ -103,7 +103,7 @@ namespace System
 	const long EVENT_MOUSE_WHEEL = 0x0002;
 	const long EVENT_KEY_DOWN = 0x0003;
 	const long EVENT_KEY_UP = 0x0004;
-	const long EVENT_KEY_CHAR = 0x0005;
+    const long EVENT_KEY_CHAR = 0x0005;
 	const long EVENT_MOUSE_LBUTTON_DOWN = 0x0006;
 	const long EVENT_MOUSE_LBUTTON_UP = 0x0007;
 	const long EVENT_MOUSE_RBUTTON_DOWN = 0x0008;
@@ -121,7 +121,7 @@ namespace System
 
 	const long EVENT_INSTANCE_CHANGED_LOCATION = 0x0014;
 	const long EVENT_INSTANCE_DESTROYED = 0x0015;
-	const long EVENT_INSTANCE_CHANGED_PARENT = 0x0016;
+	const long EVENT_INSTANCE_CHANGED_parent = 0x0016;
 	const long EVENT_INSTANCE_APPEARED = 0x0017;
 
 	const long EVENT_MODEL_TIME_STEP	= 0x0018;

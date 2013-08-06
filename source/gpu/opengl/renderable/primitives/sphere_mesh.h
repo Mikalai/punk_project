@@ -7,10 +7,16 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class PUNK_ENGINE SphereObject : public VertexArrayObject2<GL_LINE_LOOP, COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_TANGENT|COMPONENT_BITANGENT >
+		class PUNK_ENGINE SphereObject : public VertexArrayObject2<GL_LINE_LOOP,
+			Vertex<VertexComponent::Position,
+				VertexComponent::Normal,
+				VertexComponent::Tangent,
+				VertexComponent::Bitangent,
+				VertexComponent::Texture0>>
 		{
 			enum { PrimitiveType = GL_LINE_LOOP };
-			enum { VertexType = COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_TANGENT|COMPONENT_BITANGENT };
+			static int64_t VertexCode;
+
 		public:
 			SphereObject();
 			void Cook(float radius);
@@ -19,7 +25,7 @@ namespace GPU
 			static void Destroy();
 
 		private:
-			static std::auto_ptr<SphereObject> m_instance;
+			static std::unique_ptr<SphereObject> m_instance;
 		};
 	}
 }

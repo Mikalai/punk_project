@@ -7,27 +7,27 @@
 
 namespace System
 {
-	class PUNK_ENGINE CompoundObject : public Object
+    class PUNK_ENGINE_API CompoundObject : public Object
 	{
 	public:
+        CompoundObject();
+        CompoundObject(const CompoundObject&) = delete;
+        CompoundObject& operator = (const CompoundObject&) = delete;
+        virtual const string ToString() const;
 		virtual ~CompoundObject();
 
 		bool Add(Object* object);
 		
-		bool Remove(Object* object);
-		bool Remove(const string& name);
+        bool Remove(Object* object, bool depth = false);        
 		bool Remove(int index);
 
-		Object* Find(const string& name);
-		Object* Find(int index);
-		const Object* Find(const string& name) const;
-		const Object* Find(int index) const;
+        Object* Find(int index);        
+        const Object* Find(int index) const;        
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+        virtual void Save(Buffer* buffer) const;
+        virtual void Load(Buffer* buffer);
 
 	public:
-		typedef std::map<string, int> CollectionCacheType;
 		typedef std::vector<Object*> CollectionType;
 		typedef CollectionType::iterator iterator;
 		typedef CollectionType::const_iterator const_iterator;
@@ -41,13 +41,20 @@ namespace System
 
 	protected:
 
-		virtual bool OnAdd(System::Object* object) { return true; }
-		virtual bool OnRemove(System::Object* object) { return true; }
-	private:
+        virtual bool OnAdd(System::Object*) { return true; }
+        virtual bool OnRemove(System::Object*) { return true; }
 
 		CollectionType m_children;
-		CollectionCacheType m_cache;
+
+        PUNK_OBJECT(CompoundObject)
 	};
+
+    /**
+      * if child had parent, it will be replaced, and from
+      * previous parent child will be removed
+      */
+    void PUNK_ENGINE_API Bind(CompoundObject* parent, Object* child);
+
 }
 
 #endif	//	_H_PUNK_SYSTEM_COMPOUND_OBJECT

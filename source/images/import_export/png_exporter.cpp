@@ -1,19 +1,28 @@
+#include <stdio.h>
 #include "png_exporter.h"
 #include "../internal_images/image.h"
 #include "../../string/string.h"
 #include "../error/module.h"
-#include <png/png.h>
+
+#ifdef USE_PNG
+#include "png.h"
+#endif // USE_PNG
 
 namespace ImageModule
 {
 	void PngExporter::Export(const System::string& filename, const Image& image)
 	{
+	    #ifdef USE_PNG
 		FILE *fp;
 		png_structp png_ptr;
 		png_infop info_ptr;
 
 		/* open the file */
+#ifdef _WIN32
 		_wfopen_s(&fp, filename.Data(), L"wb");
+#elif defined __gnu_linux__
+        fp = fopen(&filename.ToUtf8()[0], "wb");
+#endif
 		if (fp == NULL)
 			throw ImageException(L"Can't open file");
 
@@ -141,5 +150,9 @@ namespace ImageModule
 
 		/* close the file */
 		fclose(fp);
+#else
+        (void)filename; (void)image;
+		throw System::PunkNotImplemented(L"PNG image can't be handled");
+#endif  //  USE_PNG
 	}
 }

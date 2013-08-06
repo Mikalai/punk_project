@@ -9,7 +9,7 @@ namespace Virtual
 {
 	class TerrainCell;
 
-	class PUNK_ENGINE TerrainLoader : public System::AbstractDataLoader
+	class PUNK_ENGINE_API TerrainLoader : public System::AbstractDataLoader
 	{		
 	public:
 		TerrainLoader(const System::string& map_name, const Math::ivec2& block);

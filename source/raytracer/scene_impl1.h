@@ -119,7 +119,7 @@ namespace Raytracer
 				}
 			}
 
-			if (!near_object || min_t1 <= 0)
+			if (!near_object || min_t1 <override)
 				return Point(0,0,0);
 
 			for each(const auto& light in m_lights)

@@ -19,13 +19,13 @@ namespace Math
 	class MatrixNxM
 	{
 		struct Rep
-		{
-			T* m_cell;
-			int m_usage_count;
+		{						
+            T* m_cell;
 			int m_width;
-			int m_height;			
+			int m_height;			            
+            int m_usage_count;
 
-			Rep() : m_width(4), m_height(4), m_cell(0), m_usage_count(1)
+            Rep() : m_cell(nullptr), m_width(4), m_height(4), m_usage_count(1)
 			{			
 				SetSize(m_width, m_height);
 			}
@@ -38,7 +38,7 @@ namespace Math
 				m_cell = rep.m_cell;
 			}
 
-			Rep(int width, int height) : m_width(width), m_height(height), m_cell(0), m_usage_count(1)
+            Rep(int width, int height) : m_cell(nullptr), m_width(width), m_height(height), m_usage_count(1)
 			{
 				SetSize(m_width, m_height);
 			}
@@ -102,7 +102,7 @@ namespace Math
 				int height = rep.m_height;
 
 				if (start_col + width >= m_width || start_row + height >= m_height)
-					throw MathIndexOutOfRange();
+                    throw System::PunkException("Index out of range");
 
 				T* cells = rep.m_cell;
 
@@ -114,7 +114,7 @@ namespace Math
 			void CopySubMatrix(const Rep& rep, int src_start_col, int src_start_row, int width, int height, int dst_start_col, int dst_start_row)
 			{
 				if (dst_start_col + width >= m_width || dst_start_row + height >= m_height)
-					throw MathIndexOutOfRange();
+                    throw System::PunkException("Index out of range");
 
 				int src_width = rep.m_width;
 
@@ -162,7 +162,7 @@ namespace Math
 			if (--m_rep->m_usage_count == 0)
 			{
 				delete m_rep;
-				m_rep = 0;
+                m_rep = 0;
 			}
 		}
 
@@ -187,7 +187,7 @@ namespace Math
 		MatrixNxM<T> GetSubMatrix(int start_col, int start_row, int width, int height)
 		{
 			if (start_col + width >= m_rep->m_width || start_row + height >= m_rep->m_height)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 
 			MatrixNxM<T> matrix(width, height);
 			matrix.CopySubMatrix(*this, start_col, start_row, width, height, 0, 0);
@@ -229,7 +229,7 @@ namespace Math
 		void SwapRows(int a, int b)
 		{
 			if (a >= m_rep->m_height || b >= m_rep->m_height)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			m_rep = m_rep->GetOwnCopy();
 			T* tmp = new T[m_rep->m_width];
 			memcpy(tmp, m_rep->m_cell + m_rep->m_width*a, sizeof(T)*m_rep->m_width);
@@ -241,7 +241,7 @@ namespace Math
 		void SwapColumns(int a, int b)
 		{
 			if (a >= m_rep->m_width || b >= m_rep->m_width)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 
 			for (int i = 0; i < m_rep->m_height; i++)
 			{
@@ -254,7 +254,7 @@ namespace Math
 		void SwapCells(int col1, int row1, int col2, int row2)
 		{
 			if (col1 >= m_rep->m_width || col2 >= m_rep->m_width || row1 >= m_rep->m_height || row2 >= m_rep->m_height)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			m_rep = m_rep->GetOwnCopy();
 			T t = m_rep->m_cell[m_rep->m_width*row1+col1];
 			m_rep->m_cell[m_rep->m_width*row1+col1] = m_rep->m_cell[m_rep->m_width*row2+col2];
@@ -264,7 +264,7 @@ namespace Math
 		MatrixNxM<T> GetRow(int row)
 		{
 			if (row >= m_rep->m_height)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			MatrixNxM<T> m(m_rep->m_width, 1);
 			m.CopySubMatrix(*this, 0, row, m_rep->m_width, 1, 0, 0);
 			return m;
@@ -273,16 +273,16 @@ namespace Math
 		MatrixNxM<T> GetColumn(int col)
 		{
 			if (col >= m_rep->m_width)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			MatrixNxM<T> m(1, m_rep->m_height);
 			m.CopySubMatrix(*this, col, 0, 1, m_rep->m_height, 0, 0);
 			return m;
 		}
 	};
 
-	template class PUNK_ENGINE MatrixNxM<float>;
-	template class PUNK_ENGINE MatrixNxM<int>;
-	template class PUNK_ENGINE MatrixNxM<bool>;
+	template class PUNK_ENGINE_API MatrixNxM<float>;
+	template class PUNK_ENGINE_API MatrixNxM<int>;
+	template class PUNK_ENGINE_API MatrixNxM<bool>;
 
 	typedef MatrixNxM<float> matNxM;
 	typedef MatrixNxM<int> imatNxM;

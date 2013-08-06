@@ -7,7 +7,7 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		std::auto_ptr<CubeObject> CubeObject::m_instance;
+		std::unique_ptr<CubeObject> CubeObject::m_instance;
 
 		CubeObject* CubeObject::Instance()
 		{
@@ -22,13 +22,13 @@ namespace GPU
 		void CubeObject::Destroy()
 		{
 			m_instance.reset(nullptr);
-		}		
+		}
 
 		CubeObject::CubeObject() {}
 
 		void CubeObject::Cook(float width, float height, float depth)
-		{				
-			std::vector<Vertex<VertexType>> vb(8);
+		{
+			std::vector<CurrentVertex> vb(8);
 			std::vector<unsigned> ib(36);
 
 			vb[0].m_position.Set(-1.0f, -1.0f, -1.0f, 1.0f);
@@ -102,7 +102,7 @@ namespace GPU
 
 			SetVertexBuffer(vb);
 			SetIndexBuffer(ib);
-			VertexArrayObject2<PrimitiveType, VertexType>::Cook();
+			VertexArrayObject2<PrimitiveType, CurrentVertex>::Cook();
 		}
 	}
 }

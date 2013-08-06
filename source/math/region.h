@@ -8,7 +8,7 @@ namespace Math
 	class Region
 	{
 	public:
-		virtual bool IsPointIn(const Vector3<float>& point) = 0;
+		virtual bool IsPointIn(const Vector3<float>& point) override;
 	}
 }
 

@@ -4,6 +4,18 @@
 
 namespace Math
 {
+    float DegToRad(float value)
+    {
+        auto res = value / 45.0 * atan(1);
+        return res;
+    }
+
+    float RadToDeg(float value)
+    {
+        auto res = value / atan(1) * 45.0;
+        return res;
+    }
+
 	const mat4 Translate(vec3 pos)
 	{
 		mat4 res;
@@ -163,37 +175,33 @@ namespace Math
 		return mat;
 	}
 
-	const vec3 CalculateAverage(const float* points, int count, unsigned point_size)
+    const vec3 CalculateAverage(const std::vector<vec3>& points)
 	{
 		vec3 center;
 
-		for (int i = 0; i < count; ++i)
-		{
-			const vec3 v(points[i*(point_size/sizeof(float)) + 0], points[i*(point_size/sizeof(float)) + 1], points[i*(point_size/sizeof(float)) + 2]);
+        for (auto v : points)
 			center += v;
-		}
 
-		center /= (float)count;
+        center /= (float)points.size();
 
 		return center;
 	}
 
-	const mat3 CreateCovarianceMatrix(const float* points, int count, unsigned point_size)
+    const mat3 CreateCovarianceMatrix(const std::vector<vec3>& points)
 	{
 		//	find average of the vertices
-		vec3 center = CalculateAverage(points, count, point_size);
+        vec3 center = CalculateAverage(points);
 
 		//	find covariance matrix
 		mat3 res;
 		res.Zerofy();
 
-		for (int i = 0; i < count; ++i)
+        for (auto v : points)
 		{
-			const vec3 v(points[i*(point_size/sizeof(float)) + 0], points[i*(point_size/sizeof(float)) + 1], points[i*(point_size/sizeof(float)) + 2]);
 			res += MultTransposed((v - center), (v - center));
 		}
 
-		res /= (float)count;
+        res /= (float)points.size();
 
 		return res;
 	}
@@ -236,7 +244,7 @@ namespace Math
 
 	bool EigenVectors(const mat3& m, const vec3& value, vec3 res[3])
 	{
-		for (int v = 0; v < 3; ++v)
+        for (int v = 0; v < 3; ++v)
 		{
 			//	use inverse power method
 			vec3 bb0(1,1,1);
@@ -271,7 +279,7 @@ namespace Math
 
 		r.Identity();
 
-		for (int a = 0; a < max_sweep; ++a)
+        for (int a = 0; a < max_sweep; ++a)
 		{
 			if ((Abs(m12) < epsilon) && (Abs(m13) < epsilon) && (Abs(m23) < epsilon))
 				break;
@@ -288,7 +296,7 @@ namespace Math
 
 				m11 -= t * m12;
 				m22 += t * m12;
-				m12 = 0.0f;
+                m12 = 0.0f;
 
 				float temp = c*m13 - s * m23;
 				m23 = s * m13 + c * m23;
@@ -314,7 +322,7 @@ namespace Math
 
 				m11 -= t * m13;
 				m33 += t * m13;
-				m13 = 0.0f;
+                m13 = 0.0f;
 
 				float temp = c * m12 - s * m23;
 				m23 = s * m12 + c * m23;
@@ -340,7 +348,7 @@ namespace Math
 
 				m22 -= t * m23;
 				m33 += t * m23;
-				m23 = 0.0f;
+                m23 = 0.0f;
 
 				float temp = c * m12 - s * m13;
 				m13 = s * m12 + c * m13;
@@ -359,10 +367,10 @@ namespace Math
 		return true;
 	}
 
-	bool CalculateNativeAxis(const float* points, int count, unsigned vertex_size, vec3& r, vec3& s, vec3& t)
+    bool CalculateNativeAxis(const std::vector<vec3>& points, vec3& r, vec3& s, vec3& t)
 	{	
 		//	find covariance matrix
-		mat3 c = CreateCovarianceMatrix(points, count, vertex_size);
+        mat3 c = CreateCovarianceMatrix(points);
 
 		//	find eigen values of the covariance matrix
 		Math::vec3 eigen_values;
@@ -407,4 +415,61 @@ namespace Math
 		dir.Normalize();
 		return true;
 	}
+
+    void CalculateTBN(const vec3& p1, const vec3& p2, const vec3& p3,
+        const vec2& tex1, const vec2& tex2, const vec2& tex3,
+        vec3& tng, vec3& btn, vec3& nrm, float& mm)
+    {
+        nrm = CalculateNormal(p1, p2, p3);
+        Matrix<float> s(2,2);
+        s.At(0,0) = (tex2 - tex1)[0];
+        s.At(0,1) = (tex2 - tex1)[1];
+        s.At(1,0) = (tex3 - tex1)[0];
+        s.At(1,1) = (tex3 - tex1)[1];
+
+        Matrix<float> q(2, 3);
+        q.At(0,0) = (p2 - p1)[0];
+        q.At(0,1) = (p2 - p1)[1];
+        q.At(0,2) = (p2 - p1)[2];
+        q.At(1,0) = (p3 - p1)[0];
+        q.At(1,1) = (p3 - p1)[1];
+        q.At(1,2) = (p3 - p1)[2];
+
+        Matrix<float> tb = s.Inversed()*q;
+
+        tng[0] = tb.At(0,0);
+        tng[1] = tb.At(0,1);
+        tng[2] = tb.At(0,2);
+
+        btn[0] = tb.At(1,0);
+        btn[1] = tb.At(1,1);
+        btn[2] = tb.At(1,2);
+
+        if (btn.Length()==0 || tng.Length() == 0)
+        {
+            nrm.Normalize();
+            mm = 1;
+        }
+        else
+        {
+            //
+            //	gram-shmidt normalization
+            //
+            nrm.Normalize();
+            tng = (tng - tng.Dot(nrm)*nrm).Normalized();
+            btn = (btn - btn.Dot(nrm)*nrm - btn.Dot(tng)*tng).Normalized();
+
+            Matrix<float> m(3,3);
+            m.At(0,0) = tng[0]; m.At(0,1) = tng[1]; m.At(0,2) = tng[2];
+            m.At(1,0) = btn[0]; m.At(1,1) = btn[1]; m.At(1,2) = btn[2];
+            m.At(2,0) = nrm[0]; m.At(2,1) = nrm[1]; m.At(2,2) = nrm[2];
+
+            mm = m.Determinant();/**/
+        }
+    }
+
+    const vec3 CalculateNormal(const vec3& p1, const vec3& p2, const vec3& p3)
+    {
+        return ((p2-p1).Cross(p3-p1)).Normalized();
+    }
 }

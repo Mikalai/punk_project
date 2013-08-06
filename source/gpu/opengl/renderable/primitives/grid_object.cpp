@@ -4,10 +4,14 @@ namespace GPU
 {
 	namespace OpenGL
 	{
+		int64_t GridObject::VertexCode = Vertex<VertexComponent::Position, 
+				VertexComponent::Normal, 
+				VertexComponent::Texture0, 
+				VertexComponent::Flag>::Value();
 
 		void GridObject::Cook(float width, float height, unsigned hor_slices, unsigned vert_slices)
 		{		
-			std::vector<Vertex<VertexType>> v((hor_slices+1)*(vert_slices+1));
+			std::vector<CurrentVertex> v((hor_slices+1)*(vert_slices+1));
 			for (int i = 0; i < (int)vert_slices + 1; i++)
 			{
 				for (int j = 0; j < (int)hor_slices + 1; j++)
@@ -49,7 +53,7 @@ namespace GPU
 
 			SetVertexBuffer(v);
 			SetIndexBuffer(index);
-			VertexArrayObject2<PrimitiveType, VertexType>::Cook();/**/
+			VertexArrayObject2<PrimitiveType, CurrentVertex>::Cook();/**/
 		}
 	}
 }

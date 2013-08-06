@@ -12,12 +12,12 @@
 #include "../gpu_config.h"
 #include "painter/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
-		extern bool PUNK_ENGINE GPU_OPENGL_INIT(const Config& data);
-		extern bool PUNK_ENGINE GPU_OPENGL_DESTROY();	
+		extern bool PUNK_ENGINE_API GPU_OPENGL_INIT(const Config& data);
+		extern bool PUNK_ENGINE_API GPU_OPENGL_DESTROY();	
 	}
 }
 

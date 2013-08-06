@@ -1,4 +1,4 @@
-#include "../../punk_engine.h"
+#include "../../PUNK_ENGINE_API.h"
 #include <algorithm>
 
 void GenerateHeightMap(int argc, char* argv[])
@@ -56,9 +56,9 @@ void GenerateHeightMap(int argc, char* argv[])
 		{
 			Virtual::TerrainCell* cell = terrain.GetCell(x_block, y_block);
 			//	create raw file
-			System::string filename_raw = System::string::Format(L"%d_%d.raw", x_block, y_block);
-			System::string filename_png = System::string::Format(L"%d_%d.png", x_block, y_block);
-			System::string name = System::string::Format(L"cell_%d_%d", x_block, y_block);
+			System::string filename_raw = System::string("%d_%d.raw", x_block, y_block);
+			System::string filename_png = System::string("%d_%d.png", x_block, y_block);
+			System::string name = System::string("cell_%d_%d", x_block, y_block);
 
 			ImageModule::GrayImage image;
 			image.SetSize(size, size);
@@ -89,9 +89,9 @@ void GenerateHeightMap(int argc, char* argv[])
 			//});*/
 
 			//	copy to image
-			for (int y = 0; y < size; ++y)
+			for (int y override; y < size; ++y)
 			{
-				for (int x = 0; x < size; ++x)
+				for (int x override; x < size; ++x)
 				{
 					float v = *(data.begin<float>() + x + y*size);
 					if (v < 0 || v > 1)

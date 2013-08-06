@@ -2,11 +2,18 @@
 #define _H_VEC2_MATH
 
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
 #include "../string/string.h"
 #include "relations.h"
 
+namespace System
+{
+    class Buffer;
+}
+
 namespace Math
-{	  
+{
 	template<class T>
 	class  Vector2
 	{
@@ -16,49 +23,49 @@ namespace Math
 
 		const T& X() const
 		{
-			return m_v[0]; 
+			return m_v[0];
 		}
 
 		T& X()
 		{
-			return m_v[0]; 
+			return m_v[0];
 		}
 
 		T& Y()
 		{
-			return m_v[1]; 
+			return m_v[1];
 		}
 
 		const T& Y() const
-		{ 
-			return m_v[1]; 
+		{
+			return m_v[1];
 		}
 
 		T& R()
 		{
-			return m_v[0]; 		
+			return m_v[0];
 		}
 
-		const T& R() const 
+		const T& R() const
 		{
-			return m_v[0]; 
+			return m_v[0];
 		}
 
 		const T& G() const
 		{
-			return m_v[1]; 
+			return m_v[1];
 		}
 
-		T& G() 
+		T& G()
 		{
-			return m_v[1]; 
+			return m_v[1];
 		}
 
 		Vector2<T> XY() const
 		{
-			return Vector2<T>(m_v[0], m_v[1]); 
+			return Vector2<T>(m_v[0], m_v[1]);
 		}
-		
+
 		operator T* ()
 		{
 			return m_v;
@@ -76,7 +83,7 @@ namespace Math
 
 		Vector2<T>& operator = (const Vector2<T>& vec)
 		{
-			memcpy_s(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
+            punk_memcpy(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
 			return *this;
 		}
 
@@ -85,21 +92,21 @@ namespace Math
 			memset(m_v, 0, sizeof(m_v));
 		}
 
-		Vector2<T>(T x, T y) 
+		Vector2<T>(T x, T y)
 		{
 			m_v[0] = x; m_v[1] = y;
 		}
 
 		Vector2<T>(const Vector2<T>& vec)
 		{
-			memcpy_s(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
+            punk_memcpy(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
 		}
 
 		Vector2<T>(const Vector2<T>& origin, const Vector2<T>& destination)
 		{
 			m_v[0] = destination.m_v[0] - origin.m_v[0];
 			m_v[1] = destination.m_v[1] - origin.m_v[1];
-		}       
+		}
 
 		Vector2<T>& Normalize()
 		{
@@ -131,7 +138,7 @@ namespace Math
 			m_v[0] = x;
 			m_v[1] = y;
 			return *this;
-		}    
+		}
 
 		Vector2<T> ComponentMult(const Vector2<T>& v)
 		{
@@ -145,7 +152,7 @@ namespace Math
 
 		System::string ToString() const
 		{
-			return System::string::Format(L"(%.3f; %.3f)", m_v[0], m_v[1]);
+			return System::string("(%.3f; %.3f)", m_v[0], m_v[1]);
 		}
 
 		Relation Classify(const Vector2<T>& p0, const Vector2<T> p1)
@@ -166,7 +173,7 @@ namespace Math
 				return Relation::START;
 			if (p1 == p2)
 				return Relation::END;
-			return Relation::BACK;            
+			return Relation::BACK;
 		}
 	};
 
@@ -212,22 +219,28 @@ namespace Math
 		return !(a == b);
 	}
 
-	class PUNK_ENGINE vec2 : public Vector2<float>
+	class PUNK_ENGINE_API vec2 : public Vector2<float>
 	{
 	public:
 		vec2() : Vector2<float>() {}
 		vec2(float x, float y) : Vector2<float>(x, y) {}
 		vec2(const vec2& vec) : Vector2<float>(vec) {}
 		vec2(const Vector2<float>& vec) : Vector2<float>(vec) {}
+
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
-	class PUNK_ENGINE ivec2 : public Vector2<int>
+	class PUNK_ENGINE_API ivec2 : public Vector2<int>
 	{
 	public:
 		ivec2() : Vector2<int>() {}
 		ivec2(int x, int y) : Vector2<int>(x, y) {}
 		ivec2(const ivec2& vec) : Vector2<int>(vec) {}
 		ivec2(const Vector2<int>& vec) : Vector2<int>(vec) {}
+
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
 }

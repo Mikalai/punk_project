@@ -1,4 +1,4 @@
-#include "../../gpu/opengl/textures/texture2d.h"
+#include "../../gpu/common/module.h"
 #include "../../system/logger.h"
 #include <iostream>
 #include "terrain_manager.h"
@@ -20,7 +20,7 @@ namespace Virtual
 	{
 		Terrain* terrain = m_desc.m_manager->GetTerrain();
 		if (!terrain)
-			return (out_error() << L"Manager do not manage any terrain" << std::endl, System::STREAM_ERROR);
+			return (out_error() << L"Manager do not manage any terrain" << std::endl, System::StreamingStepResult::STREAM_ERROR);
 
 		//	find coordinates of the observer position in the map coordinate system
 		auto mark = (m_desc.m_view_point - m_desc.m_world_origin) / m_desc.m_block_scale;
@@ -47,8 +47,8 @@ namespace Virtual
 		{
 			for (int y = std::max(0, cell.Y() - north_count); y <= std::min(terrain->GetNumBlocks(), cell.Y() + south_count); ++y)
 			{
-				if (x >= 0 && x < terrain->GetNumBlocks() 
-					&& y >= 0 && y < terrain->GetNumBlocks() )
+                if (x >= 0 && x < terrain->GetNumBlocks()
+                    && y >= 0 && y < terrain->GetNumBlocks() )
 				{
 					auto cell = terrain->GetCell(x, y);
 					//	check is cell data is value
@@ -72,7 +72,7 @@ namespace Virtual
 
 		//	if not all cell are in memory return false
 		if (!is_valid)
-			return System::STREAM_TRY_AGAIN;
+			return System::StreamingStepResult::STREAM_TRY_AGAIN;
 
 		float* dst_buffer = (float*)m_desc.m_buffer;
 		memset(dst_buffer, 0, m_desc.m_buffer_size);
@@ -81,9 +81,9 @@ namespace Virtual
 		{
 			for (int iy = std::max(0, cell.Y() - north_count); iy <= std::min(terrain->GetNumBlocks(), cell.Y() + south_count); ++iy)
 			{
-				TerrainData* cell_ref = 0;
-				if (ix >= 0 && ix < terrain->GetNumBlocks() 
-					&& iy >= 0 && iy < terrain->GetNumBlocks() )
+                TerrainData* cell_ref = nullptr;
+                if (ix >= 0 && ix < terrain->GetNumBlocks()
+                    && iy >= 0 && iy < terrain->GetNumBlocks() )
 				{
 					cell_ref = terrain->GetCell(ix, iy)->GetDataCached();
 				}				
@@ -97,16 +97,16 @@ namespace Virtual
 				int dst_start_y = std::max(0, int(iy * m_desc.m_block_size + src_start_y - mark.Y() + (int)mark_size / 2));
 				int dst_end_y = std::min((int)m_desc.m_view_size, int(src_end_y + (iy) * m_desc.m_block_size - mark.Y() + mark_size / 2));
 				
-				for (int y = 0; y < dst_end_y - dst_start_y; ++y)
+                for (int y = 0; y < dst_end_y - dst_start_y; ++y)
 				{
-					for (int x = 0; x < dst_end_x - dst_start_x; ++x)
+                    for (int x = 0; x < dst_end_x - dst_start_x; ++x)
 					{
 						int dst_x = int(m_desc.m_block_scale * float(dst_start_x + x));
 						int dst_y = int(m_desc.m_block_scale * float(dst_start_y + y));
 						int src_x = src_start_x + x;
 						int src_y = src_start_y + y;
 
-						if (dst_x >= 0 && dst_x < mark_size && dst_y >= 0 && dst_y < mark_size)
+                        if (dst_x >= 0 && dst_x < mark_size && dst_y >= 0 && dst_y < mark_size)
 						{								
 							if (cell_ref)
 							{
@@ -114,7 +114,7 @@ namespace Virtual
 							}
 							else
 							{
-								dst_buffer[dst_x + m_desc.m_view_size * dst_y] = 0;
+                                dst_buffer[dst_x + m_desc.m_view_size * dst_y] = 0;
 							}
 						}
 						else
@@ -124,9 +124,9 @@ namespace Virtual
 					}
 				}
 
-				/*for (int i = 0; i < m_desc.m_view_size; ++i)
+                /*for (int i = 0; i < m_desc.m_view_size; ++i)
 				{
-					for (int j = 0; j < m_desc.m_view_size; ++j)
+                    for (int j = 0; j < m_desc.m_view_size; ++j)
 					{
 						dst_buffer[j + i * m_desc.m_view_size] = pow(1.2, i);
 					}
@@ -134,18 +134,18 @@ namespace Virtual
 			}
 		}
 				
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainViewLoader::Decompress(void** data, unsigned* size)
 	{
 		*data = m_desc.m_buffer;
 		*size = m_desc.m_buffer_size;
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainViewLoader::Destroy()
 	{
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 }

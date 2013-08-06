@@ -100,7 +100,7 @@ namespace Math
 		n.Normalize();
 
 		Line2D f = Line2D(p, p + n);
-		float t = 0;
+        float t = 0;
 		f.CrossLine(line, t);
 		return t;
 	}

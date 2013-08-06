@@ -1,6 +1,7 @@
 #ifndef _H_HELPER_MATH
 #define _H_HELPER_MATH
 
+#include <vector>
 #include "../config.h"
 #include "vec3.h"
 #include "vec4.h"
@@ -11,31 +12,34 @@
 
 namespace Math
 {
-	PUNK_ENGINE const mat4 ProjectionMatrix(float fov, float aspect, float zNear, float zFar);
-	PUNK_ENGINE const mat4 OrthoMatrix(float width, float height, float bottom, float top);
-	PUNK_ENGINE const mat4 Rotate(vec4 v);
-	PUNK_ENGINE const mat4 Translate(vec3 pos);
-	PUNK_ENGINE const mat4 Scale(vec3 scale);
-	PUNK_ENGINE const mat4 TargetCamera(vec3 eye, vec3 pos, vec3 up);
-	PUNK_ENGINE const mat4 FreeCamera(vec3 pos, vec3 dir, vec3 up);
-	PUNK_ENGINE const mat4 RotationMatrixFromQuaternion(const quat& q);
-	PUNK_ENGINE const mat3 NormalMatrixFromWorldView(const mat4& worldView);
+    float DegToRad(float value);
+    float RadToDeg(float value);
+
+    //PUNK_ENGINE_API const mat4 ProjectionMatrix(float fov, float aspect, float zNear, float zFar);
+//	PUNK_ENGINE_API const mat4 OrthoMatrix(float width, float height, float bottom, float top);
+//	PUNK_ENGINE_API const mat4 Rotate(vec4 v);
+//	PUNK_ENGINE_API const mat4 Translate(vec3 pos);
+//	PUNK_ENGINE_API const mat4 Scale(vec3 scale);
+//	PUNK_ENGINE_API const mat4 TargetCamera(vec3 eye, vec3 pos, vec3 up);
+//	PUNK_ENGINE_API const mat4 FreeCamera(vec3 pos, vec3 dir, vec3 up);
+	PUNK_ENGINE_API const mat4 RotationMatrixFromQuaternion(const quat& q);
+	PUNK_ENGINE_API const mat3 NormalMatrixFromWorldView(const mat4& worldView);
 
 	//	used to find ceter of the mass of the object
-	PUNK_ENGINE const vec3 CalculateAverage(const float* points, int count, unsigned offset);
-	PUNK_ENGINE const mat3 CreateCovarianceMatrix(const float* points, int count, unsigned offset);
-	PUNK_ENGINE bool DiagonalizeMatrix(const mat3& m, mat3& res);
-	PUNK_ENGINE bool EigenValues(const mat3& m, vec3& res);
-	PUNK_ENGINE bool EigenVectors(const mat3& m, const vec3& value, vec3 res[3]);
+    PUNK_ENGINE_API const vec3 CalculateAverage(const std::vector<vec3>& points);
+    PUNK_ENGINE_API const mat3 CreateCovarianceMatrix(const std::vector<vec3>& points);
+	PUNK_ENGINE_API bool DiagonalizeMatrix(const mat3& m, mat3& res);
+	PUNK_ENGINE_API bool EigenValues(const mat3& m, vec3& res);
+	PUNK_ENGINE_API bool EigenVectors(const mat3& m, const vec3& value, vec3 res[3]);
 
-	PUNK_ENGINE bool SymmetricEigenSystem(const mat3& m, vec3& value, mat3& r);
+	PUNK_ENGINE_API bool SymmetricEigenSystem(const mat3& m, vec3& value, mat3& r);
 
 	//	used to find native axis of the point set
-	PUNK_ENGINE bool CalculateNativeAxis(const float* points, int count, unsigned offset, vec3& r, vec3& s, vec3& t);
-	PUNK_ENGINE bool YawPitchRollToUpDirection(float yaw, float pitch, float roll, vec3& up, vec3& dir);
+    PUNK_ENGINE_API bool CalculateNativeAxis(const std::vector<vec3>& points, vec3& r, vec3& s, vec3& t);
+	PUNK_ENGINE_API bool YawPitchRollToUpDirection(float yaw, float pitch, float roll, vec3& up, vec3& dir);
 
 	template<class T>
-	const Quaternion<T> Matrix4x4ToQuaternion(const Matrix4x4<T>& m) 
+	const Quaternion<T> Matrix4x4ToQuaternion(const Matrix4x4<T>& m)
 	{
 		T t = m[0] + m[5] + m[10] + T(1);
 		if (t > 0)
@@ -47,7 +51,7 @@ namespace Math
 			T z = (m[1] - m[4]) * s;
 			return Quaternion<T>(w, x, y, z);
 		}
-		int Max = 0;
+        int Max = 0;
 		for (int i = 0; i < 3; i++)
 		{
 			if (m[Max*4 + Max] < m[i*4 + i])
@@ -91,7 +95,7 @@ namespace Math
 	}
 
 	template<class T>
-	const Matrix4x4<T> QuaternionToMatrix4x4(const Quaternion<T>& q) 
+	const Matrix4x4<T> QuaternionToMatrix4x4(const Quaternion<T>& q)
 	{
 		Matrix4x4<T> m;
 		T xx = q.X()*q.X();
@@ -129,10 +133,22 @@ namespace Math
 		return (x == T(0) ? 0 : ((x < 0) ? -1 : 1));
 	}
 
-	template<class T>
-	inline T Abs(T x)
+	inline float Abs(float x)
 	{
-		return abs(x);
+		float res = fabsf(x);
+		return res;
+	}
+
+	inline float Abs(double x)
+	{
+		double res = fabs(x);
+		return res;
+	}
+
+	inline int Abs(int x)
+	{
+		int res = abs(x);
+		return res;
 	}
 
 	template<class T>
@@ -179,12 +195,6 @@ namespace Math
 	}
 
 	template<class T>
-	T Clamp(T min_val, T max_val, T x)
-	{
-		return Min(Max(x, min_val), max_val);
-	}
-
-	template<class T>
 	inline T Min(T x, T y)
 	{
 		return x < y ? x : y;
@@ -206,6 +216,12 @@ namespace Math
 	inline T Max(T a, T b, T c)
 	{
 		return Max(a, Max(b, c));
+	}
+
+	template<class T>
+	T Clamp(T min_val, T max_val, T x)
+	{
+		return Min(Max(x, min_val), max_val);
 	}
 
 	template<class T>
@@ -236,65 +252,11 @@ namespace Math
 	{
 		return x*(1-a)+y*a;
 	}
-	template<class T> 
-	Vector3<T> CalculateNormal(const Vector3<T>& p1, const Vector3<T>& p2, const Vector3<T>& p3)
-	{
-		return ((p2-p1).Cross(p3-p1)).Normalize();
-	}
 
-	template<class T>
-	static void CalculateTBN(const Vector3<T>& p1, const Vector3<T>& p2, const Vector3<T>& p3, 
-		const Vector2<T>& tex1, const Vector2<T>& tex2, const Vector2<T>& tex3, 
-		Vector3<T>& tng, Vector3<T>& btn, Vector3<T>& nrm, T& mm)
-	{
-		nrm = CalculateNormal(p1, p2, p3);
-		Matrix<T> s(2,2);
-		s.At(0,0) = (tex2 - tex1)[0];
-		s.At(0,1) = (tex2 - tex1)[1];
-		s.At(1,0) = (tex3 - tex1)[0];
-		s.At(1,1) = (tex3 - tex1)[1];
-
-		Matrix<T> q(2, 3);
-		q.At(0,0) = (p2 - p1)[0];
-		q.At(0,1) = (p2 - p1)[1];
-		q.At(0,2) = (p2 - p1)[2];
-		q.At(1,0) = (p3 - p1)[0];
-		q.At(1,1) = (p3 - p1)[1];
-		q.At(1,2) = (p3 - p1)[2];
-
-		Matrix<T> tb = s.Inversed()*q;
-
-		tng[0] = tb.At(0,0);
-		tng[1] = tb.At(0,1);
-		tng[2] = tb.At(0,2);
-
-		btn[0] = tb.At(1,0);
-		btn[1] = tb.At(1,1);
-		btn[2] = tb.At(1,2);
-
-		if (btn.Length()==0 || tng.Length() == 0)
-		{
-			nrm.Normalize();	
-			mm = 1;
-		}
-		else
-		{
-			//
-			//	gram-shmidt normalization
-			//
-			nrm.Normalize();
-			tng = (tng - tng.Dot(nrm)*nrm).Normalize();
-			btn = (btn - btn.Dot(nrm)*nrm - btn.Dot(tng)*tng).Normalize();
-
-			Matrix<T> m(3,3);
-			m.At(0,0) = tng[0]; m.At(0,1) = tng[1]; m.At(0,2) = tng[2];
-			m.At(1,0) = btn[0]; m.At(1,1) = btn[1]; m.At(1,2) = btn[2];
-			m.At(2,0) = nrm[0]; m.At(2,1) = nrm[1]; m.At(2,2) = nrm[2];
-
-			mm = m.Determinant();/**/
-		}
-	}
-
+    PUNK_ENGINE_API const vec3 CalculateNormal(const vec3& p1, const vec3& p2, const vec3& p3);
+    PUNK_ENGINE_API void CalculateTBN(const vec3& p1, const vec3& p2, const vec3& p3,
+        const vec2& tex1, const vec2& tex2, const vec2& tex3,
+        vec3& tng, vec3& btn, vec3& nrm, float& mm);
 }
 
-#endif 
+#endif

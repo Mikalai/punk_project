@@ -1,29 +1,31 @@
+#ifdef USE_BULLET_PHYSICS
+
 #include "bullet_motion_state.h"
 #include "../../scene/module.h"
 
 namespace Physics
 {
-	BulletMotionState::BulletMotionState(const btTransform &initialpos, Scene::TransformNode* node) 		
+	BulletMotionState::BulletMotionState(const btTransform &initialpos, Scene::TransformNode* node)
 		: m_visible_node(node)
 		, m_position(initialpos)
 	{}
 
-	BulletMotionState::~BulletMotionState() 
+	BulletMotionState::~BulletMotionState()
 	{
 		m_visible_node = nullptr;
 	}
 
-	void BulletMotionState::SetNode(Scene::TransformNode *node) 
+	void BulletMotionState::SetNode(Scene::TransformNode *node)
 	{
 		m_visible_node = node;
 	}
 
-	void BulletMotionState::getWorldTransform(btTransform &worldTrans) const 
+	void BulletMotionState::getWorldTransform(btTransform &worldTrans) const
 	{
 		worldTrans = m_position;
 	}
 
-	void BulletMotionState::setWorldTransform(const btTransform &worldTrans) 
+	void BulletMotionState::setWorldTransform(const btTransform &worldTrans)
 	{
 		if (nullptr == m_visible_node)
 			return; // silently return before we set a node
@@ -32,3 +34,5 @@ namespace Physics
 		m_visible_node->SetLocalMatrix(m);
 	}
 }
+
+#endif // USE_BULLET_PHYSICS

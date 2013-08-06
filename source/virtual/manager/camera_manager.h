@@ -9,13 +9,13 @@
 //{		
 //	namespace Cameras
 //	{
-//		class FirstPersonCamera;
+//		class Camera;
 //	}
 //}
 //
 //namespace System
 //{
-//	template<> class PUNK_ENGINE Policy<Virtual::FirstPersonCamera>
+//	template<> class PUNK_ENGINE_API Policy<Virtual::Camera>
 //	{
 //	public:
 //		static const System::string GetResourceFile() { return L"resource"; }
@@ -29,12 +29,12 @@
 //
 //namespace Virtual
 //{
-//	class PUNK_ENGINE FirstPersonCameraManager : public System::ResourceManager2<Cameras::FirstPersonCamera, System::Policy>
+//	class PUNK_ENGINE_API CameraManager : public System::ResourceManager2<Cameras::Camera, System::Policy>
 //	{
-//		FirstPersonCameraManager(const FirstPersonCameraManager&);
-//		FirstPersonCameraManager& operator = (const FirstPersonCameraManager&);		
+//		CameraManager(const CameraManager&);
+//		CameraManager& operator = (const CameraManager&);		
 //	public:
-//		FirstPersonCameraManager() {}
+//		CameraManager() {}
 //	};
 //}
 //

@@ -14,6 +14,7 @@ namespace ImageModule
 
 		virtual bool Load(const System::string& filename);
 		virtual bool Load(std::istream& stream, Image* image);
+        virtual bool Load(System::Buffer* buffer, Image* image);
 
 		friend class Importer;
 	};

@@ -1,543 +1,437 @@
-﻿#include "simple_render.h"
-#include "../../gpu/module.h"
-#include "../../virtual/module.h"
-#include "../../scene/module.h"
-#include "../../system/window/module.h"
-#include "../../utility/fonts/font_builder.h"
+﻿///**
+//*	ł
+//*/
 
-#define STATE m_states.CurrentState()->Get()
+//#include "simple_render.h"
+//#include "../../gpu/module.h"
+//#include "../../virtual/module.h"
+//#include "../../scene/module.h"
+//#include "../../system/window/module.h"
+//#include "../../utility/fonts/font_builder.h"
 
-namespace Render
-{
-	SimpleRender::SimpleRender(GPU::OpenGL::Driver* driver)
-		: m_driver(driver)
-	{
-		m_rt = nullptr;				
-		m_text = nullptr;
-		m_tc = nullptr;
-		m_gui_render = nullptr;
+//#define STATE m_states.CurrentState()->Get()
 
-		// next pointers should not be delete in destructor
-		m_scene = nullptr;		
-		m_root = nullptr;
-		m_skin_rc = nullptr;
-		m_context = nullptr;
-		m_solid_rc = nullptr;
-		m_textured_rc = nullptr;
-		m_gui_rc = nullptr;
-		m_terrain_rc = nullptr;
-		m_paint_engine = nullptr;
+//namespace Render
+//{
+//// TODO (chip#1#): global variable should be removed
 
-	}
+//	SimpleRender::SimpleRender(Gpu::VideoDriver* driver)
+//		: m_driver(driver)
+//        , m_grid(driver)
+//        , s(driver)
+//        //, m_cooker(driver)
+//		, m_cube(driver)
+//		, m_sphere(driver)
+//		, m_quad(driver)
+//	{
+//		m_rt = nullptr;
+//		m_text = nullptr;
+//		m_tc = nullptr;
+//		m_gui_render = nullptr;
 
-	SimpleRender::~SimpleRender()
-	{
-		try
-		{
-			Clear();
-		}
-		catch(...)
-		{}
-	}
+//		// next pointers should not be delete in destructor
+//		m_scene = nullptr;
+//		m_root = nullptr;
+//		m_skin_rc = nullptr;
+//		m_context = nullptr;
+//		m_solid_rc = nullptr;
+//		m_textured_rc = nullptr;
+//		m_gui_rc = nullptr;
+//		m_terrain_rc = nullptr;
+//		m_paint_engine = nullptr;
 
-	void SimpleRender::Clear()
-	{
-		safe_delete(m_rt);
-		//safe_delete(m_scene);				
-		safe_delete(m_text);		
-		safe_delete(m_gui_render);
-		safe_delete(m_tc);
-	}
+//	}
 
-	bool SimpleRender::Visit(Scene::CameraNode* node)
-	{
-		m_states.Push();
-		STATE.m_view = node->GetCamera()->GetViewMatrix();
-		STATE.m_projection = node->GetCamera()->GetProjectionMatrix();
-		STATE.m_camera_position = node->GetCamera()->GetPosition();
-		STATE.m_camera = node->GetCamera();
+//	SimpleRender::~SimpleRender()
+//	{
+//		try
+//		{
+//			Clear();
+//		}
+//		catch(...)
+//		{}
+//	}
 
-		for each (auto o in *node)
-		{
-			Scene::Node* child = As<Scene::Node*>(o);
-			if (child)
-				child->Apply(this);
-		}
-		return true;
-	}
+//	void SimpleRender::Clear()
+//	{
+//		safe_delete(m_rt);
+//		//safe_delete(m_scene);
+//		safe_delete(m_text);
+//		safe_delete(m_gui_render);
+//		safe_delete(m_tc);
+//	}
 
-	bool SimpleRender::Visit(Scene::TextureViewNode* node)
-	{
-		//RenderQuad(0, 0.8, 0.2, 0.2, Math::vec4(1,0,0,1));
-		RenderTexturedQuad(node->GetX(), node->GetY(), node->GetWidth(), node->GetHeight(), node->GetWatchTexture());
-		return true;
-	}
+//	bool SimpleRender::ApplyToChildren(Scene::Node* node)
+//	{
+//		for (auto o : *node)
+//		{
+//			Scene::Node* child = As<Scene::Node*>(o);
+//			if (child)
+//				if (!child->Apply(this))
+//					return false;
+//		}
+//		return true;
+//	}
 
-	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
-	{				
-		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
-		{
-			GPU::OpenGL::StaticMesh* mesh = As<GPU::OpenGL::StaticMesh*>(node->GetStaticGeometry()->GetGPUBufferCache());		
-			if (mesh)
-			{
-				const Math::BoundingBox& bbox = mesh->GetBoundingBox();		
-				m_tc->Bind();
-				if (!STATE.m_rc)
-					STATE.m_rc = m_context;
-				STATE.m_rc->Begin();
-				STATE.m_rc->BindParameters(STATE);	
-				mesh->Bind(STATE.m_rc->GetRequiredAttributesSet());
-				mesh->Render();
-				mesh->Unbind();		
-				STATE.m_rc->End();		
-				m_tc->Unbind();
-				return true;
-			}
-		}
-		{
-			GPU::OpenGL::CubeObject* mesh = As<GPU::OpenGL::CubeObject*>(node->GetStaticGeometry()->GetGPUBufferCache());		
-			if (mesh)
-			{
-				m_tc->Bind();
-				if (!STATE.m_rc)
-					STATE.m_rc = m_context;
-				STATE.m_rc->Begin();
-				STATE.m_rc->BindParameters(STATE);	
-				mesh->Bind(STATE.m_rc->GetRequiredAttributesSet());
-				mesh->Render();
-				mesh->Unbind();		
-				STATE.m_rc->End();		
-				m_tc->Unbind();
-				return true;
-			}
-		}
+//	bool SimpleRender::Visit(Scene::CameraNode* node)
+//	{
+//		bool result = true;
+//		m_frame->PushAllState();
+//		m_frame->SetViewMatrix(node->GetCamera()->GetViewMatrix());
+//		m_frame->SetProjectionMatrix(node->GetCamera()->GetProjectionMatrix());
+//		m_frame->SetClipSpace(node->GetCamera()->ToClipSpace());
+//		result = ApplyToChildren(node);
+//		m_frame->PopAllState();
+//		return result;
+//	}
 
-		return true;
-	}
+//	bool SimpleRender::Visit(Scene::TextureViewNode* node)
+//	{
+//		//RenderQuad(0, 0.8, 0.2, 0.2, Math::vec4(1,0,0,1));
+//		RenderTexturedQuad(node->GetX(), node->GetY(), node->GetWidth(), node->GetHeight(), node->GetWatchTexture());
+//		return true;
+//	}
 
-	bool SimpleRender::Visit(Scene::SkinMeshNode* node)
-	{			
-		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
-		Virtual::Armature* armature = STATE.m_armature;
-		//out_message() << "Mesh matrix: " << STATE.m_mesh_matrix_local.ToString() << std::endl;
-		//for (int i = 0; i < armature->GetBonesCount(); ++i)
-		//{
-		//	Virtual::Bone* bone = armature->GetBoneByIndex(i);
-		//	out_message() << bone->GetName() << ": " << std::endl << (STATE.m_armature_world * bone->GetAnimatedGlobalMatrix()).ToString() << std::endl;
-		//}
-		STATE.m_rc = m_skin_rc;
-		GPU::OpenGL::SkinMesh* mesh = Cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
-		m_tc->Bind();		
-		STATE.m_rc->Begin();
-		STATE.m_rc->BindParameters(STATE);		
-		mesh->Bind(STATE.m_rc->GetRequiredAttributesSet());
-		mesh->Render();
-		mesh->Unbind();		
-		STATE.m_rc->End();		
-		m_tc->Unbind();
-		return true;
-	}
+//	bool SimpleRender::Visit(Scene::StaticMeshNode* node)
+//	{
+////		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
+////		m_frame->PushAllState();
+////		GPU::Renderable* mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
+////		if (!mesh)
+////		{
+////			GPU::StaticMesh* m = nullptr;//	new GPU::OpenGL::StaticMesh();
+////			m->Cook(node->GetStaticGeometry());
+////			node->GetStaticGeometry()->SetGPUBufferCache(m);
+////			mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
+////		}
 
-	bool SimpleRender::Visit(Scene::ArmatureNode* node)
-	{		
-		Virtual::Action::validate();
-		m_states.Push();	
-		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(1, 0, 0, 1));
-		Virtual::Armature* armature = Virtual::Armature::find(node->GetStorageName());
-		Virtual::Action* action = Virtual::Action::find(L"male_walk");
-		for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
-		{
-			Virtual::Bone* bone = armature->GetBoneByIndex(i);
-			Virtual::Animation* anim = Cast<Virtual::Animation*>(action->Find(bone->GetName()));
-			auto pos = anim->GetPosition(m_time);
-			auto rot = anim->GetRotation(m_time);			
-			Math::mat4 m = Math::mat4::CreateTranslate(pos) * Math::QuaternionToMatrix4x4(rot);
-			bone->SetBoneMatrix(m);
-		}
+////		m_frame->Render(mesh);
+////		m_frame->PopAllState();
+//		return true;
+//	}
 
-		STATE.m_armature = armature;
-		STATE.m_armature_world = STATE.m_local;
-		STATE.m_rc = m_skin_rc;
+//	bool SimpleRender::Visit(Scene::SkinMeshNode* node)
+//	{
+//		m_frame->PushAllState();
+//		m_frame->EnableSkinning(true);
+//		Gpu::SkinMesh* mesh = nullptr;	// Cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
+//		m_frame->Render(mesh);
+//		m_frame->PopAllState();
+//		return true;
+//	}
 
-		for each (auto o in *node)
-		{
-			Scene::Node* child = As<Scene::Node*>(o);
-			if (child)
-				if (!child->Apply(this))
-					return false;
-		}
-		m_states.Pop();
-		return true;
-	}
+//	bool SimpleRender::Visit(Scene::ArmatureNode* node)
+//	{
+//		bool result = true;
+//		Virtual::Action::validate();
+//		m_frame->PushAllState();
 
-	bool SimpleRender::Visit(Scene::BoneNode* node)
-	{
-		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(1, 1, 0, 1));
-		m_states.Push();
-		STATE.m_rc = m_context;
-		Virtual::Armature* armature = STATE.m_armature;
-		if (!armature)
-			return (out_error() << "It is impossible to process bone node without valid armature" << std::endl, false);
+//		//	should be moved in update visitor
+//		Virtual::Armature* armature = Virtual::Armature::find(node->GetStorageName());
+//		Virtual::Action* action = Virtual::Action::find(L"male_walk");
+//		for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
+//		{
+//			Virtual::Bone* bone = armature->GetBoneByIndex(i);
+//			Virtual::Animation* anim = Cast<Virtual::Animation*>(action->Find(bone->GetName()));
+//			auto pos = anim->GetPosition(m_time);
+//			auto rot = anim->GetRotation(m_time);
+//			Math::mat4 m = Math::mat4::CreateTranslate(pos) * Math::QuaternionToMatrix4x4(rot);
+//			bone->SetBoneMatrix(m);
+//		}
 
-		Virtual::Bone* bone = armature->GetBoneByName(node->GetName());
-		if (!bone)
-			return (out_error() << "Bone " << node->GetName() << std::endl, false);
+//		result = ApplyToChildren(node);
 
-		STATE.m_local *= bone->GetAnimatedGlobalMatrix();
+//		m_frame->PopAllState();
+//		return result;
+//	}
 
-		for each (auto o in *node)
-		{
-			Scene::Node* child = As<Scene::Node*>(o);
-			if (child)
-			{
-				if (!child->Apply(this))
-					return false;
-			}
-		}
-		m_states.Pop();
-		return true;
-	}
+//	bool SimpleRender::Visit(Scene::BoneNode* node)
+//	{
+//		bool result = true;
+//		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(1, 1, 0, 1));
+//		m_frame->PushAllState();
 
-	bool SimpleRender::Visit(Scene::LightNode* node)
-	{
-		for each (auto o in *node)
-		{
-			Scene::Node* child = As<Scene::Node*>(o);
-			if (child)
-				if (!child->Apply(this))
-					return false;
-		}
-		return true;
-	}
+//		Virtual::Bone* bone = node->GetBone();
+//        //m_frame->MultWorldMatrix(bone->GetAnimatedGlobalMatrix());
+//		m_frame->SetBoneMatrix(bone->GetIndex(), m_frame->GetWorldMatrix());
 
-	bool SimpleRender::Visit(Scene::MaterialNode* node)
-	{
-		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0, 0, 1, 1));
-		m_states.Push();
-		STATE.m_material = Virtual::Material::find(node->GetStorageName());
-		//m_tc = m_tc;
-		m_tc->SetTexture(0, Cast<GPU::OpenGL::Texture2D*>(node->GetMaterial()->GetCache().m_diffuse_texture_cache));
-		m_tc->SetTexture(1, Cast<GPU::OpenGL::Texture2D*>(node->GetMaterial()->GetCache().m_normal_texture_cache));
-		STATE.m_diffuse_slot_0 = 0;
-		STATE.m_normal_slot = 1;
-		//STATE.m_rc = m_context;
-		//STATE.m_rc->Init();
-		for each (auto o in *node)
-		{
-			Scene::Node* child = As<Scene::Node*>(o);
-			if (child)
-				if (!child->Apply(this))
-					break;
-		}
-		m_states.Pop();
-		return true;
-	}
+//		result = ApplyToChildren(node);
 
-	bool SimpleRender::Visit(Scene::Node* node)
-	{
-		for each (auto o in *node)
-		{
-			Scene::Node* child = As<Scene::Node*>(o);
-			if (child)
-				if (!child->Apply(this))
-					break;
-		}
-		return true;
-	}
-	bool SimpleRender::Visit(Scene::TransformNode* node)
-	{
-		if (Math::Relation::VISIBLE != Math::ClassifyBoudingSphere(STATE.m_camera->GetViewMatrix() * node->GetBoundingSphere(), STATE.m_camera->ToClipSpace()))
-			return true;
-		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0, 0, 0, 1));
-		m_states.Push();
-		STATE.m_mesh_matrix_local = node->GetLocalMatrix();
-		STATE.m_local *= node->GetLocalMatrix();
-		for each (auto o in *node)
-		{
-			Scene::Node* child = As<Scene::Node*>(o);
-			if (child)
-				if (!child->Apply(this))
-					break;
-		}
-		m_states.Pop();
-		return true;
-	}
+//		m_frame->PopAllState();
+//		return result;
+//	}
 
-	bool SimpleRender::Visit(Scene::LocationIndoorNode* node)
-	{
-		m_states.Push();
-		STATE.m_local *= node->GetLocalMatrix();
-		auto pos = STATE.m_camera_position;
+//	bool SimpleRender::Visit(Scene::LightNode* node)
+//	{
+//		return ApplyToChildren(node);
+//	}
 
-		if (Math::ClassifyPoint(STATE.m_local.Inversed() * pos, node->GetConvexShape()) != Math::Relation::INSIDE)
-		{
-			out_message() << "OUTSIDE" << std::endl;
-			for each (auto o in *node)
-			{
-				Scene::PortalNode* portals = As<Scene::PortalNode*>(o);
-				if (portals)
-				{
-					Math::mat4 matrix = STATE.m_view * STATE.m_local * node->GetLocalMatrix() * portals->GetLocalMatrix();
-					Math::Portal portal = matrix * portals->GetPortal();
+//	bool SimpleRender::Visit(Scene::MaterialNode* node)
+//	{
+//		bool result = true;
+//		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0, 0, 1, 1));
+//		m_frame->PushAllState();
+//		auto material = node->GetMaterial();
+//		m_frame->SetDiffuseColor(material->GetDiffuseColor());
 
-					Math::ClipSpace clip_space;
-					Math::Portal clipped_portal;
-					auto relation = Math::ClipPortal(STATE.m_camera->ToClipSpace(), portal, clipped_portal, clip_space);
-					if (relation != Math::Relation::NOT_VISIBLE)
-					{
-						STATE.m_clip_space = clip_space;
-						for each (auto o in *node)
-						{
-							Scene::Node* child = As<Scene::Node*>(o);
-							if (child)
+//		Virtual::Material* m = node->GetMaterial();
+////		if (m->GetCache().m_diffuse_texture_cache == nullptr)
+////			m->GetCache().m_diffuse_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetDiffuseMap(), true);
+////		if (m->GetCache().m_normal_texture_cache == nullptr)
+////			m->GetCache().m_normal_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetNormalMap(), true);
 
-							{
-								if (!child->Apply(this))
-									break;
-							}
-						}
-					}
-				}
-			}
-		}	
-		else
-		{
-			out_message() << "INSIDE" << std::endl;
-			for each (auto o in *node)
-			{
-				Scene::Node* child = As<Scene::Node*>(o);
-				if (child)
-					if (!child->Apply(this))
-						break;
-			}
-		}
-		m_states.Pop();
-		return true;
-	}
+////		m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(m->GetCache().m_diffuse_texture_cache));
+////		m_frame->SetBumpMap(Cast<GPU::Texture2D*>(m->GetCache().m_normal_texture_cache));
+////		m_frame->SetSpecularColor(material->GetSpecularColor());
+////		m_frame->SetSpecularMap(Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_specular_texture_cache));
+////		m_frame->SetAmbientColor(material->GetAmbient());
+////		m_frame->SetSpecularFactor(material->GetSpecularFactor());
 
-	bool SimpleRender::Visit(Scene::PortalNode* node)
-	{
-		RenderCube(1,1,1);
-		//m_text->SetText(L"Hello world");
-		//RenderTexturedQuad(0,0,1,1,m_text->GetTexture());
-		//RenderText(-0.9, 0, L"Вітаю Вас, шаноўнае спадарства! PunkEngine ńešta moža :)", Math::vec4(0, 1, 0, 1));
-		return true;
-	}
+//		result = ApplyToChildren(node);
 
-	bool SimpleRender::Visit(Scene::TerrainNode* node)
-	{
-		m_states.Push();
+//		m_frame->PopAllState();
+//		return result;
+//	}
 
-		Math::vec2 relative_pos = (node->GetTerrainObserver()->GetTerrainView()->GetPosition() - STATE.m_camera->GetPosition().XZ());
+//	bool SimpleRender::Visit(Scene::Node* node)
+//	{
+//		return ApplyToChildren(node);
+//	}
+//	bool SimpleRender::Visit(Scene::TransformNode* node)
+//	{
+//		bool result = true;
+//		const Math::mat4& view = m_frame->GetViewMatrix();
+//		const Math::ClipSpace& clip_space = m_frame->GetClipSpace();
+//		if (Math::Relation::VISIBLE != Math::ClassifyBoudingSphere(view * node->GetBoundingSphere(), clip_space))
+//			return true;
+//		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0, 0, 0, 1));
+//		m_frame->PushAllState();
+//		m_frame->SetLocalMatrix(node->GetLocalMatrix());
+//		m_frame->MultWorldMatrix(node->GetLocalMatrix());
 
-		STATE.m_local = Math::mat4::CreateTranslate(STATE.m_camera->GetPosition().X(), 0, 
-			STATE.m_camera->GetPosition().Z());
-		STATE.m_terrain = node->GetTerrainObserver()->GetTerrainView()->GetTerrain();
-		STATE.m_terrain_observer = node->GetTerrainObserver();
+//		result = ApplyToChildren(node);
+//		m_frame->PopAllState();
 
-		static Math::vec3 sun(100, 100, 100);
-		static float angle = 0;
+//		return result;
+//	}
 
-		STATE.m_height_map_slot = 0;
-		STATE.m_diffuse_slot_0 = 1;
-		STATE.m_diffuse_slot_1 = 2;
-		STATE.m_normal_slot = 3;
+//	bool SimpleRender::Visit(Scene::LocationIndoorNode* node)
+//	{
+//		bool result = true;
+//		m_frame->PushAllState();
+//		m_frame->MultWorldMatrix(node->GetLocalMatrix());
 
-		Virtual::TerrainView* view = node->GetTerrainObserver()->GetTerrainView();
-		if (view && view->GetHeightMap()->IsValid())
-		{
-			//m_tc = m_tc;
-			m_tc->SetTexture(0, view->GetHeightMap());
-			m_tc->SetTexture(1, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
-			m_tc->SetTexture(2, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
-			m_tc->SetTexture(3, Cast<GPU::OpenGL::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
+//		auto pos = m_frame->GetViewMatrix().TranslationPart();
+//		auto world = m_frame->GetWorldMatrix();
+//		auto view = m_frame->GetViewMatrix();
+//		if (Math::ClassifyPoint(world.Inversed() * pos, node->GetConvexShape()) != Math::Relation::INSIDE)
+//		{
+//			out_message() << "OUTSIDE" << std::endl;
+//			for (auto o : *node)
+//			{
+//				Scene::PortalNode* portals = As<Scene::PortalNode*>(o);
+//				if (portals)
+//				{
+//					Math::mat4 matrix = view * world * portals->GetLocalMatrix();
+//					Math::Portal portal = matrix * portals->GetPortal();
 
-			m_terrain_rc->Begin();
-			m_grid.Bind(m_terrain_rc->GetRequiredAttributesSet());
-			m_tc->Bind();		
-			STATE.m_wireframe = false;
-			STATE.m_depth_test = true;
-			STATE.m_line_width = 1;
-			//STATE.m_terran_position = Math::vec2(floor(STATE.m_camera->GetPosition().X()), floor(STATE.m_camera->GetPosition().Z()));
-			auto v = node->GetTerrainObserver()->GetTerrainView()->GetPosition();
-			STATE.m_terran_position.Set(floor(v.X()), floor(v.Y()));
-			m_terrain_rc->BindParameters(STATE);
-			m_grid.Render();
+//					Math::ClipSpace clip_space;
+//					Math::Portal clipped_portal;
+//					auto relation = Math::ClipPortal(m_frame->GetClipSpace(), portal, clipped_portal, clip_space);
 
-			m_terrain_rc->End();
-			m_tc->Unbind();
-			m_grid.Unbind();
-		}
-		m_states.Pop();
-		return true;
-	}
+//					if (relation != Math::Relation::NOT_VISIBLE)
+//					{
+//						m_frame->SetClipSpace(clip_space);
+//						result = ApplyToChildren(node);
+//					}
+//				}
+//			}
+//		}
+//		else
+//		{
+//			out_message() << "INSIDE" << std::endl;
+//			result = ApplyToChildren(node);
+//		}
+//		m_frame->PopAllState();
+//		return result;
+//	}
 
-	void SimpleRender::RenderCube(float width, float height, float depth)
-	{
-		m_states.Push();
-		//	shift quad
-		STATE.m_local *= Math::mat4::CreateScaling(width, height, depth);		
-		STATE.m_diffuse_color.Set(0,1,0,1);
-		STATE.m_wireframe = true;
-		m_solid_rc->Begin();
-		m_solid_rc->BindParameters(STATE);
-		GPU::OpenGL::CubeObject::Instance()->Bind(m_context->GetRequiredAttributesSet());
-		GPU::OpenGL::CubeObject::Instance()->Render();
-		GPU::OpenGL::CubeObject::Instance()->Unbind();
-		m_solid_rc->End();
-		m_states.Pop();
-	}
+//    bool SimpleRender::Visit(Scene::PortalNode*)
+//	{
+//		//RenderCube(1,1,1);
+//		//m_text->SetText(L"Hello world");
+//		//RenderTexturedQuad(0,0,1,1,m_text->GetTexture());
+//		//RenderText(-0.9, 0, L"Вітаю Вас, шаноўнае спадарства! PunkEngine ńešta moža :)", Math::vec4(0, 1, 0, 1));
+//		return true;
+//	}
 
-	void SimpleRender::RenderSphere(const Math::vec3& position, float radius, const Math::vec4& color)
-	{
-		m_states.Push();
-		//	shift quad
-		STATE.m_local = Math::mat4::CreateTranslate(position) * Math::mat4::CreateScaling(radius, radius, radius);		
-		STATE.m_diffuse_color = color;
-		STATE.m_wireframe = true;
-		STATE.m_line_width = 5.0f;
-		m_solid_rc->Begin();
-		m_solid_rc->BindParameters(STATE);
-		GPU::OpenGL::SphereObject::Instance()->Bind(m_context->GetRequiredAttributesSet());
-		GPU::OpenGL::SphereObject::Instance()->Render();
-		GPU::OpenGL::SphereObject::Instance()->Unbind();
-		m_solid_rc->End();
-		m_states.Pop();
-	}
+//	bool SimpleRender::Visit(Scene::TerrainNode* node)
+//	{
+//		bool result = true;
+//		m_frame->PushAllState();
 
-	void SimpleRender::RenderQuad(float x, float y, float width, float height, const Math::vec4& color)
-	{
-		m_states.Push();
-		//	shift quadSTATE
-		STATE.m_local = Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1);
-		STATE.m_projection = Math::mat4::CreateIdentity();
-		STATE.m_view = Math::mat4::CreateIdentity();
-		STATE.m_diffuse_color = color;
-		m_solid_rc->Begin();
-		m_solid_rc->BindParameters(STATE);
-		GPU::OpenGL::QuadObject::Instance()->Bind(m_solid_rc->GetRequiredAttributesSet());
-		GPU::OpenGL::QuadObject::Instance()->Render();
-		GPU::OpenGL::QuadObject::Instance()->Unbind();
-		m_solid_rc->End();
-		m_states.Pop();
-	}
+//		auto camera_position = m_frame->GetViewMatrix().Inversed().TranslationPart();
+//		Math::vec2 terrain_position = node->GetTerrainObserver()->GetTerrainView()->GetPosition();
+//		Math::vec2 texture_offset(camera_position.X() - terrain_position.X(), camera_position.Z() - terrain_position.Y());
+//		/*m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(terrain_position.X(), 0, terrain_position.Y()) * Math::mat4::CreateTranslate(texture_offset.X(), 0, texture_offset.Y()));*/
 
-	void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, GPU::OpenGL::Texture2D* texture)
-	{
-		m_states.Push();
-		//	shift quad
-		STATE.m_local = Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1);
-		STATE.m_projection = Math::mat4::CreateIdentity();
-		STATE.m_view = Math::mat4::CreateIdentity();
-		STATE.m_diffuse_slot_0 = 0;
-		STATE.m_diffuse_color.Set(1,1,1,1);
-		STATE.m_texture_matrix = Math::mat2::CreateMirrorX();
-		STATE.m_wireframe = false;
-		m_tc->Clear();
-		m_tc->SetTexture(0, texture);
-		m_tc->Bind();
-		m_textured_rc->Begin();
-		m_textured_rc->BindParameters(STATE);
-		GPU::OpenGL::QuadObject::Instance()->Bind(m_textured_rc->GetRequiredAttributesSet());
-		GPU::OpenGL::QuadObject::Instance()->Render();
-		GPU::OpenGL::QuadObject::Instance()->Unbind();
-		m_textured_rc->End();
-		m_tc->Unbind();
-		m_states.Pop();
-	}
+//		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(floor(terrain_position.X()), 0, floor(terrain_position.Y())));
 
-	void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4& color)
-	{
-		Utility::FontBuilder::Instance()->SetCharSize(14, 14);
-		int len = Utility::FontBuilder::Instance()->CalculateLength(text.Data());
-		int h = Utility::FontBuilder::Instance()->CalculateHeight(text.Data());
-		GPU::OpenGL::TextSurface s;
-		s.SetSize(len, h);
-		s.SetText(text);
-		m_states.Push();
-		float width = 2.0f * len / (float)m_driver->GetWindow()->GetWidth();
-		float height = 2.0f * h / (float)m_driver->GetWindow()->GetHeight();
-		//	shift quad
-		STATE.m_local = Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(width, height, 1);
-		STATE.m_projection = Math::mat4::CreateIdentity();
-		STATE.m_view = Math::mat4::CreateIdentity();
-		STATE.m_diffuse_slot_0 = 0;
-		STATE.m_diffuse_color.Set(0,0,1,1);
-		STATE.m_no_diffuse_texture_color.Set(1,1,1,1);
-		STATE.m_texture_matrix = Math::mat2::CreateMirrorX();
-		STATE.m_text_slot = 0;
+//    //	static Math::vec3 sun(100, 100, 100);
+////		static float angle override;
 
-		m_tc->SetTexture(0, s.GetTexture());
-		m_tc->SetTexture(1, nullptr);
-		m_tc->Bind();
-		m_gui_rc->Begin();
-		m_gui_rc->BindParameters(STATE);
-		GPU::OpenGL::QuadObject::Instance()->Bind(m_gui_rc->GetRequiredAttributesSet());
-		GPU::OpenGL::QuadObject::Instance()->Render();
-		GPU::OpenGL::QuadObject::Instance()->Unbind();
-		m_gui_rc->End();
-		m_tc->Unbind();
-		m_states.Pop();
-	}
+//		Virtual::TerrainView* view = node->GetTerrainObserver()->GetTerrainView();
+//        if (view && view->GetHeightMap())
+//		{
+//			//m_tc = m_tc;
+//			//m_frame->SetTextureMatrix(Math::mat4::CreateIdentity());
+//			m_frame->SetTextureMatrix(Math::mat4::CreateTranslate(terrain_position.X() / m_grid.GetTotalWidth()
+//				, terrain_position.Y() / m_grid.GetTotalHeight(), 0));
+////			m_frame->SetHeightMap(view->GetHeightMap());
+////			m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
+////			m_frame->SetDiffuseMap1(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
+////			m_frame->SetBumpMap(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
+////			m_frame->EnableWireframe(false);
+////			m_frame->EnableDepthTest(true);
+////			m_frame->SetLineWidth(1);
+////			m_frame->EnableTerrainRendering(true);
+////			m_frame->Render(&m_grid);
+//		}
+//		m_frame->PopAllState();
+//		return result;
+//	}
 
+//	void SimpleRender::RenderCube(float width, float height, float depth)
+//	{
+//		m_frame->PushAllState();
+//		//	shift quad
+//		m_frame->MultWorldMatrix(Math::mat4::CreateScaling(width, height, depth));
+//		m_frame->SetDiffuseColor(Math::vec4(0,1,0,1));
+//		m_frame->EnableWireframe(true);
+//		m_frame->Render(&m_cube);
+//		m_frame->PopAllState();
+//	}
 
-	bool SimpleRender::Render()
-	{
-		m_time += 0.1f;
-		m_rt->Activate();			
-		if (m_scene)
-		{
-			STATE.m_camera_position = m_scene->GetCameraNode()->GetCamera()->GetPosition();
-			STATE.m_projection = m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix();
-			STATE.m_view = m_scene->GetCameraNode()->GetCamera()->GetViewMatrix();
-			STATE.m_camera = m_scene->GetCameraNode()->GetCamera();
-			STATE.m_lights = m_cooker.m_light_set;
-			m_scene->GetRootNode()->Apply(this);			
-		}
-		if (m_root)
-		{
-			m_gui_render->Begin(0, 0, m_driver->GetWindow()->GetWidth(), m_driver->GetWindow()->GetHeight());
-			m_gui_render->RenderWidget(m_root);
-			m_gui_render->End();
-		}
-		if (m_paint_engine)
-		{
-			GPU::OpenGL::OpenGLPaintEngine* device = Cast<GPU::OpenGL::OpenGLPaintEngine*>(m_paint_engine);
-			RenderTexturedQuad(0, 0, 1, 1, device->GetRenderTarget()->GetColorBuffer());
-		}
-		m_driver->SwapBuffers();
-		m_rt->Deactivate();
-		return true;
-	}
+//	void SimpleRender::RenderSphere(const Math::vec3& position, float radius, const Math::vec4& color)
+//	{
+//		m_frame->PushAllState();
+//		//	shift quad
+//		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(position) * Math::mat4::CreateScaling(radius, radius, radius));
+//		m_frame->SetDiffuseColor(color);
+//		m_frame->EnableWireframe(true);
+//		m_frame->EnableTexturing(false);
+//		m_frame->EnableDiffuseShading(true);
+//		m_frame->SetLineWidth(5.0f);
+//		m_frame->Render(&m_sphere);
+//		m_frame->PopAllState();
+//	}
 
-	void SimpleRender::SetScene(Scene::SceneGraph* scene)
-	{
-		m_terrain_slices = 63;
-		m_time = 0;
-		GPU::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
-		m_tc = new GPU::OpenGL::TextureContext;
-		m_rt = new GPU::OpenGL::RenderTargetBackBuffer;
-		m_rt->Init(&p);
-		m_scene = scene;
-		if (m_scene)
-			m_scene->GetRootNode()->Apply(&m_cooker);		
-		m_context = GPU::AbstractRenderPolicy::find(GPU::RC_BUMP_MAPING);
-		m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SOLD_3D);
-		m_textured_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TEXTURED_3D);
-		m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RC_GUI);
-		m_skin_rc = GPU::AbstractRenderPolicy::find(GPU::RC_SKINNING);
-		m_terrain_rc = GPU::AbstractRenderPolicy::find(GPU::RC_TERRAIN);
-		m_text = new GPU::OpenGL::TextSurface;
-		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
-		m_gui_render = new GUIRender;		
-		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 5);	}
+//	void SimpleRender::RenderQuad(float x, float y, float width, float height, const Math::vec4& color)
+//	{
+//		m_frame->PushAllState();
+//		//	shift quadSTATE
+//		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1));
+//		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
+//		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
+//		m_frame->SetDiffuseColor(color);
+//		m_frame->Render(&m_quad);
+//		m_frame->PopAllState();
+//	}
 
-	//void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, System::Proxy<Texture2D> texture)
-	//{
-	//}
+//	void SimpleRender::RenderTexturedQuad(float x, float y, float width, float height, Gpu::Texture2D* texture)
+//	{
+//		m_frame->PushAllState();
+//		//	shift quad
+//		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(2.0f * x - 1, 2.0f * y-1, 0) * Math::mat4::CreateScaling(2.0f*width, 2.0f*height, 1));
+//		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
+//		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
+//		m_frame->SetDiffuseColor(Math::vec4(1,1,1,1));
+//		m_frame->SetTextureMatrix(Math::mat4::CreateReflectY());
+//		m_frame->EnableWireframe(false);
+//		m_frame->SetDiffuseMap0(texture);
+//		m_frame->EnableLighting(false);
+//		m_frame->EnableTexturing(true);
+//		m_frame->EnableDiffuseShading(true);
+//		m_frame->Render(&m_quad);
+//		m_frame->PopAllState();
+//	}
 
-	//void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4& color)
-	//{
-	//}
+//    void SimpleRender::RenderText(float x, float y, const System::string& text, const Math::vec4&)
+//	{
+//        //g_font_builder.SetCharSize(14, 14);
+//        int len override;//g_font_builder.CalculateLength(text.Data());
+//        int h override;//g_font_builder.CalculateHeight(text.Data());
+//		s.SetSize(len, h);
+//		s.SetText(text);
 
-}
+//		m_frame->PushAllState();
+//		float width = 2.0f * len / (float)m_driver->GetWindow()->GetWidth();
+//		float height = 2.0f * h / (float)m_driver->GetWindow()->GetHeight();
+//		//	shift quad
+//		m_frame->SetWorldMatrix(Math::mat4::CreateTranslate(2*x-1.0f, 2*y - 1.0f, 0) * Math::mat4::CreateScaling(width, height, 1));
+//		m_frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
+//		m_frame->SetViewMatrix(Math::mat4::CreateIdentity());
+//		m_frame->SetDiffuseColor(Math::vec4(0,0,1,1));
+//		m_frame->SetTextColor(Math::vec4(1, 1, 1, 1));
+//		m_frame->SetTextureMatrix(Math::mat4::CreateReflectY());
+//		m_frame->SetFontMap(s.GetTexture());
+//		m_frame->EnableFontRendering(true);
+//		m_frame->Render(&m_quad);
+//		m_frame->PopAllState();
+//	}
+
+//	bool SimpleRender::Render()
+//	{
+//		m_time +override.1f;
+//        //m_rt->Activate();
+//		m_frame = m_driver->BeginFrame();
+//		m_frame->BeginRendering();
+//		if (m_scene)
+//		{
+////			m_rt->SetViewport(m_scene->GetCameraNode()->GetCamera()->GetViewport());
+////			m_frame->SetViewMatrix(m_scene->GetCameraNode()->GetCamera()->GetViewMatrix());
+////			m_frame->SetProjectionMatrix(m_scene->GetCameraNode()->GetCamera()->GetProjectionMatrix());
+////			m_frame->SetClipSpace(m_scene->GetCameraNode()->GetCamera()->ToClipSpace());
+////			m_scene->GetRootNode()->Apply(this);
+//		}
+//		if (m_root)
+//		{
+//			m_gui_render->Begin(0, 0, m_driver->GetWindow()->GetWidth(), m_driver->GetWindow()->GetHeight());
+//			m_gui_render->RenderWidget(m_root);
+//			m_gui_render->End();
+//		}
+//		if (m_paint_engine)
+//		{
+//			RenderText(0, 0, L"SDFGSDFGS DFGSDFG SDF", Math::vec4(1,1,1,1));
+//			//GPU::OpenGL::OpenGLPaintEngine* device = Cast<GPU::OpenGL::OpenGLPaintEngine*>(m_paint_engine);
+//			///RenderTexturedQuad(0, 0, 1, 1, device->GetRenderTarget()->GetColorBuffer());
+//		}
+//		m_frame->EndRendering();
+//		m_driver->EndFrame(m_frame);
+////		m_rt->Deactivate();
+//		return true;
+//	}
+
+//	void SimpleRender::SetScene(Scene::SceneGraph* scene)
+//	{
+//		m_terrain_slices = 63;
+//		m_time override;
+////		GPU::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
+//        m_tc = new Gpu::TextureContext;
+//    //	m_rt = new GPU::OpenGL::RenderTargetBackBuffer;
+//    //	m_rt->Init(&p);
+//		m_scene = scene;
+////		if (m_scene)
+////			m_scene->GetRootNode()->Apply(&m_cooker);
+//		m_context = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::BumpMapping);
+//		m_solid_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::Solid3D);
+//		m_textured_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::SolidTextured3D);
+//		m_gui_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::GUI);
+//		m_skin_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::Skinning);
+//		m_terrain_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::Terrain);
+//        m_text = new Gpu::TextSurface(m_driver);
+//		m_text->SetSize(int(m_driver->GetWindow()->GetWidth() * 0.5f), int(m_driver->GetWindow()->GetHeight() * 0.5f));
+//		m_gui_render = new GUIRender(m_driver);
+//		m_grid.Cook(64, 64, m_terrain_slices, m_terrain_slices, 2);
+//	}
+//}

@@ -25,5 +25,9 @@
 #include "oct_tree.h"
 #include "helper.h"
 #include "rect.h"
+#include "bounding_box.h"
+#include "bounding_shere.h"
+#include "graph/module.h"
+#include "perspective_decoder.h"
 
 #endif

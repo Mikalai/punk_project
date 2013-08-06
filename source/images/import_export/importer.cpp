@@ -11,6 +11,7 @@
 #include "../../system/logger.h"
 #include "png_importer.h"
 #include "jpg_importer.h"
+#include "tiff_importer.h"
 
 namespace ImageModule
 {
@@ -33,8 +34,8 @@ namespace ImageModule
 	RGBAImage* Importer::LoadRGBA(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_image->m_components != 4)
-			throw ImageException((filename + L" is not an RGBA image").Data());
+        if (impl_image->m_channels != 4)
+            throw ImageException(System::string("{0} is not an RGBA image").arg(filename));
 		RGBAImage* rgba_image = new RGBAImage;
 		std::swap(rgba_image->impl_image, impl_image);
 		return rgba_image;
@@ -43,8 +44,8 @@ namespace ImageModule
 	RGBImage* Importer::LoadRGB(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_image->m_components != 3)
-			throw ImageException((filename + L" is not an RGB image").Data());
+        if (impl_image->m_channels != 3)
+            throw ImageException(System::string("{0} is not an RGB image").arg(filename));
 		RGBImage* rgb_image = new RGBImage;
 		std::swap(rgb_image->impl_image, impl_image);
 		return rgb_image;
@@ -53,8 +54,8 @@ namespace ImageModule
 	GrayImage* Importer::LoadGray(const System::string& filename)
 	{
 		Load(filename);
-		if (impl_image->m_components != 1)
-			throw ImageException((filename + L" is not an RGB image").Data());
+        if (impl_image->m_channels != 1)
+            throw ImageException(System::string("{0} is not an Alpha image").arg(filename));
 		GrayImage* gray_image = new GrayImage;
 		std::swap(gray_image->impl_image, impl_image);
 		return gray_image;
@@ -62,35 +63,29 @@ namespace ImageModule
 
 	bool Importer::Load(const System::string& filename)
 	{
-		std::wstring file(filename.Data());
-		std::transform(file.begin(), file.end(), file.begin(), ::towlower);
-		if (file.rfind(L".png") != std::wstring::npos)
+        auto file = filename.ToLower();
+        if (file.EndWith(".png"))
 		{
 			PngImporter importer;
 			importer.Load(filename);
 			std::swap(impl_image, importer.impl_image);
 			return true;
 		}		
-		else if (file.rfind(L".jpeg") != std::wstring::npos || file.rfind(L".jpg") != std::wstring::npos)
+        else if (file.EndWith(".jpeg") || file.EndWith(".jpg"))
 		{
 			JpgImporter importer;
 			importer.Load(filename);
 			std::swap(impl_image, importer.impl_image);
 			return true;
 		}
-		else
-		{
-			auto default_file_name = System::Environment::Instance()->GetTextureFolder() + L"default.png";
-			PngImporter importer;
-			if (importer.Load(default_file_name))
-			{
-				std::swap(impl_image, importer.impl_image);
-				return true;
-			}
-			else
-			{
-				throw ImageException(L"Unsupported file format");
-			}
-		}		
+        else if (file.EndWith(".tiff") || file.EndWith(".tif"))
+        {
+            TiffImporter importer;
+            importer.Load(filename);
+            std::swap(impl_image, importer.impl_image);
+            return true;
+        }
+		else		
+            throw ImageException("Unsupported file format");
 	}
 }

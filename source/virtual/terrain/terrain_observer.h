@@ -10,7 +10,7 @@ namespace Virtual
 	class TerrainManager;
 	class TerrainView;
 
-	class PUNK_ENGINE TerrainObserver : public System::Object
+	class PUNK_ENGINE_API TerrainObserver : public System::Object
 	{
 	public:
 		virtual ~TerrainObserver();

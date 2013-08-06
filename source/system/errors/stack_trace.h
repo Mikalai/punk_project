@@ -1,8 +1,21 @@
-#ifndef _H_PUNK_STACK_TRACE
-#define _H_PUNK_STACK_TRACE
+#ifndef _H_PUNK_STACK_TRACE_WIN32
+#define _H_PUNK_STACK_TRACE_WIN32
 
-#ifdef _WIN32
-#include "win32\stack_trace_win32.h"
-#endif
+#include <iosfwd>
 
-#endif
+#include "../../config.h"
+#include "../../string/string.h"
+
+namespace System
+{
+	class PUNK_ENGINE_API Stack
+	{
+	public:
+		Stack();
+		~Stack();
+		string GetStackTrace();
+		void Print(std::wostream& stream);
+	};
+}
+
+#endif	//_H_PUNK_STACK_TRACE_WIN32

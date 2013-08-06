@@ -1,24 +1,27 @@
+#include <string.h>
 #include "video_memory.h"
 #include "../gl/module.h"
 #include "../buffers/module.h"
 #include "../error/module.h"
+#include "../../../system/logger.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
-		std::auto_ptr<VideoMemory> VideoMemory::m_instance;		
-		VideoMemory* VideoMemory::Instance()
-		{
-			if (!m_instance.get())
-				m_instance.reset(new VideoMemory);
-			return m_instance.get();
-		}
+//		std::unique_ptr<VideoMemory> VideoMemory::m_instance;
 
-		void VideoMemory::Destroy()
-		{
-			m_instance.reset(0);
-		}
+//		VideoMemory* VideoMemory::Instance()
+//		{
+//			if (!m_instance.get())
+//				m_instance.reset(new VideoMemory);
+//			return m_instance.get();
+//		}
+
+//		void VideoMemory::Destroy()
+//		{
+//			m_instance.reset(0);
+//		}
 
 		VideoMemory::VideoMemory()
 		{
@@ -30,11 +33,37 @@ namespace GPU
 			glGetIntegerv(GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &mem[2]);
 			glGetIntegerv(GPU_MEMORY_INFO_EVICTION_COUNT_NVX, &mem[3]);
 			glGetIntegerv(GPU_MEMORY_INFO_EVICTED_MEMORY_NVX, &mem[4]);
-			m_core.m_max_mem_usage = (m_core.m_max_mem_available << 1) / 3;						
+			m_core.m_max_mem_usage = (m_core.m_max_mem_available << 1) / 3;
+		}
+
+		VideoMemory::~VideoMemory()
+		{
+			out_message() << m_pbo_list.size() << " pixel buffers left." << std::endl;
+			while (!m_pbo_list.empty())
+			{
+				delete m_pbo_list.back();
+				m_pbo_list.pop_back();
+			}
+
+			out_message() << m_vbo_list.size() << " vertex buffers left." << std::endl;
+			while (!m_vbo_list.empty())
+			{
+				delete m_vbo_list.back();
+				m_vbo_list.pop_back();
+			}
+
+			out_message() << m_ibo_list.size() << " index buffers left." << std::endl;
+			while (!m_ibo_list.empty())
+			{
+				delete m_ibo_list.back();
+				m_ibo_list.pop_back();
+			}
 		}
 
 		void VideoMemory::SetMaxMemoryUsage(size_t value)
 		{
+            (void)value;
+            throw System::PunkNotImplemented();
 		}
 
 		size_t VideoMemory::GetMaxMemoryUsage() const
@@ -53,19 +82,19 @@ namespace GPU
 		}
 
 		PixelBufferObject* VideoMemory::AllocatePixelBuffer(size_t size)
-		{			
+		{
 			VerifyMemory(size);
 			PixelBufferObject* value(new PixelBufferObject);
 			try
 			{
-				value->Create(0, size);				
+				value->Create(0, size);
 				m_core.m_mem_usage += size;
 				return value;
 			}
 			catch(...)
 			{
 				delete value;
-				throw;
+                throw System::PunkException(L"Failed to allocate memory for pixel buffer");
 			}
 		}
 
@@ -79,7 +108,7 @@ namespace GPU
 		}
 
 		VertexBufferObject* VideoMemory::AllocateVertexBuffer(size_t size)
-		{			
+		{
 			VerifyMemory(size);
 			VertexBufferObject* value(new VertexBufferObject);
 			try
@@ -91,7 +120,7 @@ namespace GPU
 			catch(...)
 			{
 				delete value;
-				throw;
+                throw System::PunkException(L"Failed to allocate memory for vertex buffer");
 			}
 		}
 
@@ -107,7 +136,7 @@ namespace GPU
 		IndexBufferObject* VideoMemory::AllocateIndexBuffer(size_t size)
 		{
 			VerifyMemory(size);
-			IndexBufferObject* value(new IndexBufferObject);		
+			IndexBufferObject* value(new IndexBufferObject);
 			try
 			{
 				value->Create(0, size);
@@ -117,7 +146,7 @@ namespace GPU
 			catch(...)
 			{
 				delete value;
-				throw;
+                throw System::PunkException(L"Failed to allocate memory for index buffer");
 			}
 		}
 
@@ -138,8 +167,8 @@ namespace GPU
 		}
 
 		//void VideoMemory::OptimizeMemoryUsage(size_t size)
-		//{		
-		//	size_t to_free = 0;
+		//{
+		//	size_t to_free override;
 		//	//	remove useless textures
 		//	for (size_t i = 0; i < m_pbo_list.size(); ++i)
 		//	{

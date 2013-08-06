@@ -6,15 +6,15 @@
 
 namespace System
 {
-	class PUNK_ENGINE AbstractDataProcessor
+	class PUNK_ENGINE_API AbstractDataProcessor
 	{
 	public:
 		virtual ~AbstractDataProcessor() {};
-		virtual StreamingStepResult LockDeviceObject() = 0;
-		virtual StreamingStepResult UnlockDeviceObject() = 0;
-		virtual StreamingStepResult Process(void* data, unsigned size) = 0;
-		virtual StreamingStepResult CopyToResource() = 0;
-		virtual StreamingStepResult SetResourceError() = 0;
+        virtual StreamingStepResult LockDeviceObject() = 0;
+        virtual StreamingStepResult UnlockDeviceObject() = 0;
+        virtual StreamingStepResult Process(void* data, unsigned size) = 0;
+        virtual StreamingStepResult CopyToResource() = 0;
+        virtual StreamingStepResult SetResourceError() = 0;
 	};
 }
 

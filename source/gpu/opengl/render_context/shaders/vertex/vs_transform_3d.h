@@ -1,9 +1,9 @@
 #ifndef _H_PUNK_OPENGL_SHADER_TRANSFORM_3D
 #define _H_PUNK_OPENGL_SHADER_TRANSFORM_3D
 
-#include "..\shader.h"
+#include "../shader.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

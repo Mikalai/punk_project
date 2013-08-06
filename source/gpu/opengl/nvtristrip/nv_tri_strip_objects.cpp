@@ -104,7 +104,7 @@ void NvStripifier::BuildStripifyInfo(NvFaceInfoVec &faceInfos, NvEdgeInfoVec &ed
 
 	// iterate through the triangles of the triangle list
 	int numTriangles = numIndices / 3;
-	int index        = 0;
+    int index        = 0;
 	bool bFaceUpdated[3];
 
 	for (int i = 0; i < numTriangles; i++)
@@ -313,7 +313,7 @@ NvFaceInfo* NvStripifier::FindGoodResetPoint(NvFaceInfoVec &faceInfos, NvEdgeInf
 		{
 			startPoint = (int)(((float) numFaces - 1) * meshJump);
 
-			//meshJump += 0.1f;
+			//meshJump +override.1f;
 			//if (meshJump > 1.0f)
 			//	meshJump = .05f;
 		}
@@ -334,7 +334,7 @@ NvFaceInfo* NvStripifier::FindGoodResetPoint(NvFaceInfoVec &faceInfos, NvEdgeInf
 		} while (i != startPoint);
 
 		// update the meshJump
-		meshJump += 0.1f;
+        meshJump += 0.1f;
 		if (meshJump > 1.0f)
 			meshJump = .05f;
 	}
@@ -972,7 +972,7 @@ void NvStripifier::CreateStrips(const NvStripInfoVec& allStrips, IntVec& stripIn
 	//we infer the cw/ccw ordering depending on the number of indices
 	//this is screwed up by the fact that we insert -1s to denote changing strips
 	//this is to account for that
-	int accountForNegatives = 0;
+    int accountForNegatives = 0;
 
 	for (int i = 0; i < nStripCount; i++)
 	{
@@ -1110,7 +1110,7 @@ void NvStripifier::Stripify(const WordVec &in_indices, const int in_cacheSize,
 							const int in_minStripLength, const unsigned short maxIndex,
 							NvStripInfoVec &outStrips, NvFaceInfoVec& outFaceList)
 {
-	meshJump = 0.0f;
+    meshJump = 0.0f;
 	bFirstTimeResetPoint = true; //used in FindGoodResetPoint()
 
 	//the number of times to run the experiments
@@ -1200,7 +1200,7 @@ void NvStripifier::SplitUpStripsAndOptimize(NvStripInfoVec &allStrips, NvStripIn
 		NvStripInfo* currentStrip;
 		NvStripStartInfo startInfo(NULL, NULL, false);
 
-		int actualStripSize = 0;
+        int actualStripSize = 0;
 		for(unsigned j = 0; j < allStrips[i]->m_faces.size(); ++j)
 		{
 			if( !IsDegenerate(allStrips[i]->m_faces[j]) )
@@ -1213,7 +1213,7 @@ void NvStripifier::SplitUpStripsAndOptimize(NvStripInfoVec &allStrips, NvStripIn
 			int numTimes    = actualStripSize /*allStrips[i]->m_faces.size()*/ / threshold;
 			int numLeftover = actualStripSize /*allStrips[i]->m_faces.size()*/ % threshold;
 
-			int degenerateCount = 0;
+            int degenerateCount = 0;
 			int j;
 			for( j = 0; j < numTimes; j++)
 			{
@@ -1344,12 +1344,12 @@ void NvStripifier::SplitUpStripsAndOptimize(NvStripInfoVec &allStrips, NvStripIn
 		int bestIndex;
 		bool done = false;
 
-		int firstIndex = 0;
+        int firstIndex = 0;
 		float minCost = 10000.0f;
 
 		for(unsigned i = 0; i < tempStrips2.size(); i++)
 		{
-			int numNeighbors = 0;
+            int numNeighbors = 0;
 
 			//find strip with least number of neighbors per face
 			for(unsigned j = 0; j < tempStrips2[i]->m_faces.size(); j++)
@@ -1492,8 +1492,8 @@ void NvStripifier::UpdateCacheFace(VertexCache* vcache, NvFaceInfo* face)
 //
 float NvStripifier::CalcNumHitsStrip(VertexCache* vcache, NvStripInfo* strip)
 {
-	int numHits = 0;
-	int numFaces = 0;
+    int numHits = 0;
+    int numFaces = 0;
 
 	for(unsigned i = 0; i < strip->m_faces.size(); i++)
 	{
@@ -1520,7 +1520,7 @@ float NvStripifier::CalcNumHitsStrip(VertexCache* vcache, NvStripInfo* strip)
 //
 int NvStripifier::CalcNumHitsFace(VertexCache* vcache, NvFaceInfo* face)
 {
-	int numHits = 0;
+    int numHits = 0;
 
 	if(vcache->InCache(face->m_v0))
 		numHits++;
@@ -1542,7 +1542,7 @@ int NvStripifier::CalcNumHitsFace(VertexCache* vcache, NvFaceInfo* face)
 //
 int NvStripifier::NumNeighbors(NvFaceInfo* face, NvEdgeInfoVec& edgeInfoVec)
 {
-	int numNeighbors = 0;
+    int numNeighbors = 0;
 
 	if(FindOtherFace(edgeInfoVec, face->m_v0, face->m_v1, face) != NULL)
 	{
@@ -1595,8 +1595,8 @@ void NvStripifier::FindAllStrips(NvStripInfoVec &allStrips,
 								 NvEdgeInfoVec &allEdgeInfos,
 								 int numSamples){
 	// the experiments
-	int experimentId = 0;
-	int stripId      = 0;
+    int experimentId = 0;
+    int stripId      = 0;
 	bool done        = false;
 
 	int loopCtr = 0;
@@ -1609,7 +1609,7 @@ void NvStripifier::FindAllStrips(NvStripInfoVec &allStrips,
 		// PHASE 1: Set up numSamples * numEdges experiments
 		//
 		NvStripInfoVec *experiments = new NvStripInfoVec [numSamples * 6];
-		int experimentIndex = 0;
+        int experimentIndex = 0;
 		std::set   <NvFaceInfo*>  resetPoints;
 		for (int i = 0; i < numSamples; i++)
 		{
@@ -1696,13 +1696,13 @@ void NvStripifier::FindAllStrips(NvStripInfoVec &allStrips,
 		//
 		// Phase 3: Find the experiment that has the most promise
 		//
-		int bestIndex = 0;
-		double bestValue = 0;
+        int bestIndex = 0;
+        double bestValue = 0;
 		for (int i = 0; i < numExperiments; i++)
 		{
 			const float avgStripSizeWeight = 1.0f;
-			const float numTrisWeight      = 0.0f;
-			const float numStripsWeight    = 0.0f;
+            const float numTrisWeight      = 0.0f;
+            const float numStripsWeight    = 0.0f;
 			float avgStripSize = AvgStripSize(experiments[i]);
 			float numStrips    = (float) experiments[i].size();
 			float value        = avgStripSize * avgStripSizeWeight + (numStrips * numStripsWeight);
@@ -1757,7 +1757,7 @@ void NvStripifier::FindAllStrips(NvStripInfoVec &allStrips,
 //
 int NvStripifier::CountRemainingTris(std::list<NvStripInfo*>::iterator iter,
 											std::list<NvStripInfo*>::iterator  end){
-	int count = 0;
+    int count = 0;
 	while (iter != end){
 		count += (*iter)->m_faces.size();
 		iter++;

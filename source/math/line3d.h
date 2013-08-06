@@ -7,7 +7,9 @@
 
 namespace Math
 {
-	class PUNK_ENGINE Line3D
+    class mat4;
+
+	class PUNK_ENGINE_API Line3D
 	{
 		vec3 m_origin;
 		vec3 m_destination;
@@ -28,6 +30,10 @@ namespace Math
 
 		Line3D& SetOriginDirection(const vec3& org, const vec3& dir);
 		Line3D& SetOriginDestination(const vec3& org, const vec3& dst);
+
+        const System::string ToString() const;
 	};
+
+    const Line3D operator * (const mat4& l, const Line3D& r);
 }
 #endif // LINE_H

@@ -158,7 +158,7 @@ namespace Math
 
 	inline bool glClipSegment3D(const float* A, const float* B, const float* min, const float* max)
 	{
-		float t0 = 0.0f, t1 = 1.0f;
+        float t0 = 0.0f, t1 = 1.0f;
 //		float S[3] = {A[0], A[1], A[2]};
 		float D[3] = {B[0]-A[0], B[1]-A[1], B[2]-A[2]};
 
@@ -182,7 +182,7 @@ namespace Math
 
 	inline bool glClipSegment2D(const float* A, const float* B, const float* min, const float* max)
 	{
-		float t0 = 0.0f, t1 = 1.0f;
+        float t0 = 0.0f, t1 = 1.0f;
 //		float S[2] = {A[0], A[1]};
 		float D[2] = {B[0]-A[0], B[1]-A[1]};
 
@@ -444,7 +444,7 @@ namespace Math
 
 		s = r0[4];
 
-		if ( s != 0 )
+		if ( s != 0)
 		{
 			r1[4] -= m1 * s; r2[4] -= m2 * s; r3[4] -= m3 * s;
 		}

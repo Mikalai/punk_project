@@ -37,17 +37,17 @@
 //		virtual void InitUniforms()
 //		{
 //			m_proj_view_world_uniform = glGetUniformLocation(m_program, "uProjViewWorld");
-//			CHECK_GL_ERROR(L"Unable to get uniform location");
+//			ValidateOpenGL(L"Unable to get uniform location");
 //			m_world_uniform = glGetUniformLocation(m_program, "uWorld");
-//			CHECK_GL_ERROR(L"Unable to get uniform location");
+//			ValidateOpenGL(L"Unable to get uniform location");
 //			m_proj_uniform = glGetUniformLocation(m_program, "uProj");
-//			CHECK_GL_ERROR(L"Unable to get uniform location");
+//			ValidateOpenGL(L"Unable to get uniform location");
 //			m_view_uniform = glGetUniformLocation(m_program, "uView");			
-//			CHECK_GL_ERROR(L"Unable to get uniform location");
+//			ValidateOpenGL(L"Unable to get uniform location");
 //			m_use_gravity_uniform = glGetUniformLocation(m_program, "uUseGravity");			
-//			CHECK_GL_ERROR(L"Unable to get uniform location");
+//			ValidateOpenGL(L"Unable to get uniform location");
 //			m_time_uniform = glGetUniformLocation(m_program, "uTime");			
-//			CHECK_GL_ERROR(L"Unable to get uniform location");;
+//			ValidateOpenGL(L"Unable to get uniform location");;
 //		}
 //
 //		virtual void BindUniforms()

@@ -1,6 +1,7 @@
 #ifndef _H_PUNK_SYSTEM_ASYNC_LOADER
 #define _H_PUNK_SYSTEM_ASYNC_LOADER
 
+#include <memory>
 #include <deque>
 #include <vector>
 #include "../../config.h"
@@ -11,13 +12,13 @@
 
 namespace System
 {
-	class PUNK_ENGINE AsyncLoader
+	class PUNK_ENGINE_API AsyncLoader
 	{
 	public:
 		bool InitAsyncLoading(int num_process_threads);
 		void DestroyAsyncLoading();
 
-		int AddWorkItem(AbstractDataLoader* loader, AbstractDataProcessor* processor, unsigned* result);		
+		int AddWorkItem(AbstractDataLoader* loader, AbstractDataProcessor* processor, unsigned* result);
 		unsigned FileIOThreadProc();
 		unsigned ProcessingThreadProc();
 		unsigned MainThreadProc(unsigned num_to_process);
@@ -25,7 +26,7 @@ namespace System
 		static AsyncLoader* Instance();
 		static void Destroy();
 	private:
-		static std::auto_ptr<AsyncLoader> m_instance;
+		static std::unique_ptr<AsyncLoader> m_instance;
 
 		std::deque<ResourceRequest> m_io_queue;
 		std::deque<ResourceRequest> m_process_queue;

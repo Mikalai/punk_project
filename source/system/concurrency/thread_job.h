@@ -7,7 +7,7 @@ namespace System
 {
 	class ThreadPool;
 
-	class PUNK_ENGINE ThreadJob
+	class PUNK_ENGINE_API ThreadJob
 	{
 	public:	
 		ThreadJob();	
@@ -18,7 +18,7 @@ namespace System
 		ThreadPool* m_pool;
 		friend class ThreadPool;
 	protected:
-		virtual void RunThread() = 0;
+        virtual void RunThread() = 0;
 	};
 }
 

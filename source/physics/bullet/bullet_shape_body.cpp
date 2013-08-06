@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #include "../../virtual/module.h"
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
@@ -9,13 +11,13 @@ namespace Physics
 		: m_shape(nullptr)
 	{}
 
-	void BulletShapeBody::InitConvexHull(Virtual::Geometry* value, bool auto_cache) 
+	void BulletShapeBody::InitConvexHull(Virtual::Geometry* value, bool auto_cache)
 	{
 		if (m_shape)
 			delete m_shape;
 		const Virtual::Geometry::Vertices& v = value->GetVertexArray();
 		m_shape = new btConvexHullShape((btScalar*)&v[0], v.size(), sizeof(v[0]));
-		
+
 		if (auto_cache)
 			value->SetPhysicsCache(this);
 	}
@@ -46,7 +48,9 @@ namespace Physics
 		if (m_shape)
 		{
 			delete m_shape;
-			m_shape = 0;
+			m_shape override;
 		}
 	}
 }
+
+#endif // USE_BULLET_PHYSICS

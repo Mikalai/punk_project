@@ -1,23 +1,26 @@
 /**********************************************************
-/*	File: mat3.h
-/*	Author: Mikalai Abramau
-/*	Desc: Implements a 3x3 matrix entity
-/***********************************************************/
+*	File: mat3.h
+*	Author: Mikalai Abramau
+*	Desc: Implements a 3x3 matrix entity
+***********************************************************/
 
 #ifndef _H_MAT3X3_MATH
 #define _H_MAT3X3_MATH
 
 //#include <algorithm>
+#include "../system/errors/exceptions.h"
 #include "math_error.h"
 #include "mat2.h"
 #include "vec3.h"
 #include "../string/string.h"
 
+namespace System { class Buffer; }
 namespace Math
 {
 	template<class T>
 	class  Matrix3x3
 	{
+    protected:
 		T m[9];
 
 	public:
@@ -81,7 +84,7 @@ namespace Math
 		T& operator [] (int i)
 		{
 			if (i < 0 || i > 8)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 
 			return m[i];
 		}
@@ -89,7 +92,7 @@ namespace Math
 		const T& operator [] (int i) const
 		{
 			if (i < 0 || i > 8)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			return m[i];
 		}
 
@@ -158,7 +161,7 @@ namespace Math
 		Matrix3x3<T>& SwapRows(int row1, int row2)
 		{
 			int size = 3;
-			for (int col = 0; col < size; ++col)
+            for (int col = 0; col < size; ++col)
 				std::swap(At(row1, col), At(row2, col));
 			return *this;
 		}
@@ -190,9 +193,9 @@ namespace Math
 			T d = Determinant();
 
 			if (d == T(0))
-				throw MathDevisionByZero();
+                throw System::PunkException("Can't inverse matrix. Determinant is 0");
 
-			return inversedMatrix * d;
+			return inversedMatrix / d;
 		}
 
 		Matrix3x3<T>& Inverse()
@@ -213,9 +216,9 @@ namespace Math
 			memcpy(m, tm, sizeof(m));
 
 			if (d == T(0))
-				throw MathDevisionByZero();
+                throw System::PunkException("Can't inverse matrix. Determinant is 0");
 			
-			return *this *= d;
+			return *this /= d;
 		}
 
 		/******************************************************
@@ -280,7 +283,8 @@ namespace Math
 
 		const System::string ToString() const
 		{
-			return System::string::Format(L"\n%7.3f %7.3f %7.3f\n%7.3f %7.3f %7.3f\n%7.3f %7.3f %7.3f\n", m[0], m[3], m[6], m[1], m[4], m[7], m[2], m[5], m[8]);
+            return System::string(L"\n {0:7.3} {1:7.3} %{2:7.3}\n {3:7.3} {4:7.3} {5:7.3}\n{6:7.3} %{7:7.3} {8:7.3}\n").arg(m[0])
+                    .arg(m[3]).arg(m[6]).arg(m[1]).arg(m[4]).arg(m[7]).arg(m[2]).arg(m[5]).arg(m[8]);
 		}
 
 
@@ -592,7 +596,7 @@ namespace Math
 		return true;;
 	}
 
-	class PUNK_ENGINE mat3 : public Matrix3x3<float>
+	class PUNK_ENGINE_API mat3 : public Matrix3x3<float>
 	{		
 	public:
 		typedef float T;
@@ -601,6 +605,8 @@ namespace Math
 		mat3(const mat3& m) : Matrix3x3<float>(m) {}
 		mat3(const Matrix3x3<float>& m) : Matrix3x3<float>(m) {}
 		mat3(T m0, T m1, T m2, T m3, T m4, T m5, T m6, T m7, T m8) : Matrix3x3<float>(m0, m1, m2, m3, m4, m5, m6, m7, m8) {}
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
 }

@@ -1,6 +1,10 @@
 #ifndef _H_PUNK_BONE_FRAME
 #define _H_PUNK_BONE_FRAME
 
+#include <map>
+#include "../../math/quat.h"
+#include "../../math/vec3.h"
+
 namespace Utility
 {
 	class BoneFrame

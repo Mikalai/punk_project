@@ -1,6 +1,8 @@
+#include <limits>
 #include "../../system/streaming/module.h"
-#include "../../gpu/opengl/textures/texture2d.h"
+#include "../../gpu/common/module.h"
 #include "../../physics/module.h"
+#include "../../math/line3d.h"
 
 #include "terrain_view_loader.h"
 #include "terrain_view_processor.h"
@@ -13,8 +15,8 @@ namespace Virtual
 		: m_desc(desc)
 		, m_front_buffer((void*)new float[m_desc.view_size*m_desc.view_size])
 		, m_back_buffer((void*)new float[m_desc.view_size*m_desc.view_size])
-		, m_height_map_front(new GPU::OpenGL::Texture2D())
-		, m_height_map_back(new GPU::OpenGL::Texture2D())
+        , m_height_map_front(nullptr)
+        , m_height_map_back(nullptr)
 		, m_loading(false)
 		, m_init(false)
 		, m_bullet_terrain(false)
@@ -22,8 +24,8 @@ namespace Virtual
 		memset(m_front_buffer, 0, sizeof(m_desc.view_size*m_desc.view_size*sizeof(float)));
 		m_last_unprocessed.Set(std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
 		m_position_back = m_desc.position;
-		m_bullet_terrain = new Physics::BulletTerrain();
-		UpdatePosition(m_desc.position);		
+		m_bullet_terrain = new Physics::Terrain();
+		UpdatePosition(m_desc.position);
 	}
 
 	TerrainView::~TerrainView()
@@ -50,7 +52,7 @@ namespace Virtual
 		{
 			m_init = true;
 			//	Start uploading if position is far from previos one
-			InitiateAsynchronousUploading();			
+			InitiateAsynchronousUploading();
 		}
 	}
 
@@ -60,11 +62,6 @@ namespace Virtual
 		if (!m_loading)
 		{
 			m_loading = true;
-			//	swap front and back buffers
-		
-			std::swap(m_front_buffer, m_back_buffer);
-			std::swap(m_height_map_front, m_height_map_back);
-			m_desc.position = m_position_back;
 
 			//	if not, than store position for future view
 			m_position_back = m_last_unprocessed;
@@ -88,7 +85,7 @@ namespace Virtual
 			proc_desc.m_on_end_data = this;
 			TerrainViewProcessor* processor = new TerrainViewProcessor(proc_desc);
 
-			System::AsyncLoader::Instance()->AddWorkItem(loader, processor, &m_result);						
+			System::AsyncLoader::Instance()->AddWorkItem(loader, processor, &m_result);
 		}
 	}
 
@@ -104,16 +101,66 @@ namespace Virtual
 		//std::swap(view->m_height_map_front, view->m_height_map_back);
 		////	mark loading as finished
 		view->m_loading = false;
+		//	swap front and back buffers
+		std::swap(view->m_front_buffer, view->m_back_buffer);
+		std::swap(view->m_height_map_front, view->m_height_map_back);
+		view->m_desc.position = view->m_position_back;
+
 		////	check if uploading is needed again
 		//if ((view->m_position - view->m_last_unprocessed).Length() > view->m_threshold)
 		//{
 		//	view->InitiateAsynchronousUploading();
 		//}
-	}	
+	}
 
 	void TerrainView::UpdatePhysics()
-	{		
+	{
 		m_bullet_terrain->UpdateData(this);
-		m_bullet_terrain->EnterWorld(m_desc.manager->GetPhysicsSimulator()->GetWorld());
+		m_bullet_terrain->EnterWorld(m_desc.manager->GetPhysicsSimulator());
+	}
+
+	float TerrainView::GetHeightAboveSurface(const Math::vec3& world_point)
+	{
+		float* heights = (float*)m_front_buffer;
+		Math::vec2 local = world_point.XZ() - m_desc.position;
+		if (abs(local.X()) > m_desc.view_size / 2)
+			return 0;
+		if (abs(local.Y()) > m_desc.view_size / 2)
+			return 0;
+
+		float terrain_height = heights[int(local.Y()) * m_desc.view_size + int(local.X())];
+		return world_point.Y() - terrain_height;
+	}
+
+	bool TerrainView::IntersectRay(const Math::Line3D& ray, Math::vec3& c)
+	{
+		Math::vec3 a = ray.GetOrigin();
+		Math::vec3 b = ray.GetDestination();
+
+		float start_height = GetHeightAboveSurface(a);
+		float end_height = GetHeightAboveSurface(a);
+		if (start_height > 0 && end_height > 0)
+			return false;
+		if (start_height < 0 && end_height < 0)
+			return false;
+
+		float eps = 1e-3;
+		while (fabs(start_height - end_height) > eps)
+		{
+			c = (a + b) / 2.0f;
+			float h = GetHeightAboveSurface(c);
+
+			if (h > 0)
+			{
+				a = c;
+				start_height = h;
+			}
+			else
+			{
+				b = c;
+				end_height = h;
+			}
+		}
+		return true;
 	}
 }

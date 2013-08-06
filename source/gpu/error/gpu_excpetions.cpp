@@ -1,6 +1,6 @@
 #include "gpu_exceptions.h"
 
-namespace GPU
+namespace Gpu
 {
 	GPUException::GPUException()
 		: System::PunkException(L"GPUException")

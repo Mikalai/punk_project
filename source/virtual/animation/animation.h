@@ -3,6 +3,7 @@
 
 #include "../../system/object.h"
 #include "../../system/aop/aop.h"
+#include "../../system/serializable.h"
 #include "../../config.h"
 #include "animation_track.h"
 #include "../../math/vec3.h"
@@ -15,13 +16,11 @@ namespace Utility
 
 namespace Virtual
 {
-	enum AnimationType { ANIMATION_NONE, ANIMATION_OBJECT, ANIMATION_BONE };
-
-	class PUNK_ENGINE Animation : public System::Object, public System::Aspect<Animation*, System::string>
+    class PUNK_ENGINE_API Animation : public System::Object
 	{
 		AnimationTrack<Math::vec3> m_pos_track;
 		AnimationTrack<Math::quat> m_rot_track;
-		AnimationType m_animation_type;
+        System::string m_name;
 	public:
 		Animation();
 		Animation(Utility::AnimationDesc& desc);
@@ -34,17 +33,14 @@ namespace Virtual
 		const Math::vec3 GetPosition(float frame) const;
 		const Math::quat GetRotation(float frame) const;
 
-		void SetAnimationType(AnimationType type) { m_animation_type = type; }
-		AnimationType GetAnimationType() const { return m_animation_type; }
-
 		void SetPositionTrack(const AnimationTrack<Math::vec3>& track) { m_pos_track = track; }
 		void SetRotationTrack(const AnimationTrack<Math::quat>& track) { m_rot_track = track; }
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+        const System::string& GetName() const;
+        void SetName(const System::string& value);
 
-		static Animation* CreateFromFile(const System::string& path);
-		static Animation* CreateFromStream(std::istream& stream);
+        virtual void Save(System::Buffer* buffer) const override;
+        virtual void Load(System::Buffer* buffer) override;
 	};
 }
 

@@ -1,7 +1,7 @@
 #include "../error/module.h"
 #include "renderable.h"
 
-namespace GPU
+namespace Gpu
 {
 	Renderable::Renderable() 
 		//: m_primitive_type(PrimitiveTypes::NONE)

@@ -12,7 +12,7 @@ namespace System
 
 namespace ImageModule
 {
-	class PUNK_ENGINE RGBAImage : public Image
+	class PUNK_ENGINE_API RGBAImage : public Image
 	{
 	public:
 		RGBAImage();
@@ -20,7 +20,7 @@ namespace ImageModule
 		RGBAImage& operator = (const RGBAImage& image);
 	};
 
-	std::auto_ptr<RGBAImage> ImportRGBAImage(const System::string& filename);
+	std::unique_ptr<RGBAImage> ImportRGBAImage(const System::string& filename);
 	void ExportRGBAImage(const RGBAImage& image, const System::string& filename);
 }
 

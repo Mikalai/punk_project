@@ -1,11 +1,32 @@
-#ifndef FOLDER_H
-#define FOLDER_H
+#ifndef H_PUNK_SYSTEM_FOLDER
+#define H_PUNK_SYSTEM_FOLDER
 
-#ifdef _WIN32
-#include "win32/folder_win32.h"
-#endif
-#ifdef __linux__
-#include "linux/folder_linux.h"
-#endif
+#include <list>
+#include "../string/string.h"
+#include "../config.h"
 
-#endif // FOLDER_H
+namespace System
+{
+	class PUNK_ENGINE_API Folder
+	{    
+		Folder(const Folder&);
+		Folder& operator = (const Folder&);
+		System::string m_folder_name;
+		System::string m_prev_folder_name;
+	public:
+		Folder();
+		~Folder();
+		bool IsContain(const System::string&) const;
+		std::list<System::string> ListAllItems();
+		bool Open(const System::string& name);    
+		void Close();
+		std::list<System::string> Find(const System::string& name) const;
+		const System::string& Name() const;
+
+		static void DeleteFile(const System::string& filename);
+		static const string GetCurrentFolder();
+		static void SetCurrentFolder(const string& value);
+	};
+}
+
+#endif // H_PUNK_SYSTEM_FOLDER

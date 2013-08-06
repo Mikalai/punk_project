@@ -16,8 +16,8 @@
 //
 //	protected:
 //
-//	virtual void Delete() = 0;
-//	virtual void DeleteThis() = 0;
+//	virtual void Delete() override;
+//	virtual void DeleteThis() override;
 //
 //	bool IncRef()
 //	{
@@ -217,7 +217,7 @@
 //				delete m_ptr; 								
 //				delete m_count;				
 //				m_ptr = 0; 								
-//				m_count = 0;				
+//				m_count= 0;				
 //			}			
 //		}
 //
@@ -225,7 +225,7 @@
 //		{		
 //			DecRef();
 //			m_ptr = 0;
-//			m_count = 0;
+//			m_count= 0;
 //		}
 //
 //		bool IsValid() const

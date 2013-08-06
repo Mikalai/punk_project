@@ -9,7 +9,7 @@ namespace Math
 	class vec3;
 }
 
-namespace Phyiscs
+namespace Physics
 {
 	struct RigidBodyDesc;
 	class RigidBody;
@@ -17,16 +17,19 @@ namespace Phyiscs
 	class Object;
 	class Terrain;
 
-	class PUNK_ENGINE Simulator	
+	class PUNK_ENGINE_API Simulator
 	{
 	public:
-		virtual void Init() = 0;
-		virtual void Clear() = 0;
-		virtual void Update(float delta) = 0;
-		virtual RigidBody* CreateRigidBody() = 0;
-		virtual void RemoveRigidBody(RigidBody* value) = 0;
-		virtual void SetGravity(const Math::vec3& g) = 0;
-		virtual ~Simulator() {}
+		void Init();
+		void Clear();
+		void Update(float delta);
+		RigidBody* CreateRigidBody();
+		void RemoveRigidBody(RigidBody* value);
+		void SetGravity(const Math::vec3& g);
+		~Simulator() {}
+
+		struct SimulatorImpl;
+		SimulatorImpl* impl;
 	};
 }
 

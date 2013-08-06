@@ -9,6 +9,6 @@ namespace GUI
 
 	System::string MouseLeaveEvent::ToString()
 	{
-		return System::string::Format(L"Code: %d; Type: MOUSE_LEAVE;");
+        return System::string("Code: {0}; Type: MOUSE_LEAVE;");
 	}
 }

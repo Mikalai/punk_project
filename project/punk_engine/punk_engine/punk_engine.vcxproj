@@ -21,11 +21,29 @@
     <ClInclude Include="..\..\..\source\application\module.h" />
     <ClInclude Include="..\..\..\source\audio\audio_buffer.h" />
     <ClInclude Include="..\..\..\source\audio\audio_config.h" />
-    <ClInclude Include="..\..\..\source\audio\player.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_distance_model.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_format.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_listener.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_loader.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_ogg_loader.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_ogg_processor.h" />
+    <ClInclude Include="..\..\..\source\audio\audio_source.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\alext.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_distance_models.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_error.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_format.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_buffer_impl.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_listener_impl.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_sound_system_impl.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\al_source_impl.h" />
+    <ClInclude Include="..\..\..\source\audio\openal\openal.h" />
     <ClInclude Include="..\..\..\source\audio\punk_audio.h" />
     <ClInclude Include="..\..\..\source\audio\resource.h" />
+    <ClInclude Include="..\..\..\source\audio\sound_system.h" />
     <ClInclude Include="..\..\..\source\config.h" />
     <ClInclude Include="..\..\..\source\gpu\common\abstract_render_context_policy.h" />
+    <ClInclude Include="..\..\..\source\gpu\common\video_driver.h" />
+    <ClInclude Include="..\..\..\source\gpu\common\frame.h" />
     <ClInclude Include="..\..\..\source\gpu\common\renderable.h" />
     <ClInclude Include="..\..\..\source\gpu\common\gpu_state.h" />
     <ClInclude Include="..\..\..\source\gpu\common\render_target.h" />
@@ -36,34 +54,34 @@
     <ClInclude Include="..\..\..\source\gpu\error\module.h" />
     <ClInclude Include="..\..\..\source\gpu\gpu_config.h" />
     <ClInclude Include="..\..\..\source\gpu\module.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\buffer.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\buffer_impl.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\command_queue.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\command_queue_impl.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\context.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\context_impl.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\device.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\device_impl.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_buffer.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_buffer_impl.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_command_queue.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_command_queue_impl.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_context.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_context_impl.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_device.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_device_impl.h" />
     <ClInclude Include="..\..\..\source\gpu\opencl\errors\cl_error_check.h" />
     <ClInclude Include="..\..\..\source\gpu\opencl\errors\cl_exceptions.h" />
     <ClInclude Include="..\..\..\source\gpu\opencl\errors\module.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\kernel.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\kernel_impl.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_kernel.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_kernel_impl.h" />
     <ClInclude Include="..\..\..\source\gpu\opencl\module.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\platform.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\platform_impl.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\program.h" />
-    <ClInclude Include="..\..\..\source\gpu\opencl\program_impl.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_platform.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_platform_impl.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_program.h" />
+    <ClInclude Include="..\..\..\source\gpu\opencl\cl_program_impl.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\ibo.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\pbo.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\template_buffer.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\buffers\vbo.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\driver\driver.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\gl_driver.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\driver\video_memory.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\driver\win32\driver_win32.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\driver\win32\gl_driver_win32.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\error\gl_error_check.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\error\gl_exceptions.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\error\module.h" />
@@ -91,6 +109,10 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\triangle_strip.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\renderable\module.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_batch.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_frame.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_render.h" />
+    <ClInclude Include="..\..\..\source\gpu\opengl\render\gl_renderer.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\module.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.h" />
@@ -134,10 +156,8 @@
     <ClInclude Include="..\..\..\source\gpu\opengl\render_targets\render_target_texture.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\internal_formats.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\module.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_impl.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture2d_pbo_impl.h" />
-    <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\texture_context.h" />
     <ClInclude Include="..\..\..\source\gpu\opengl\textures\text_surface.h" />
     <ClInclude Include="..\..\..\source\gpu\painter\brush.h" />
@@ -310,6 +330,7 @@
     <ClInclude Include="..\..\..\source\scene\bone_node.h" />
     <ClInclude Include="..\..\..\source\scene\bounding_volume_updater.h" />
     <ClInclude Include="..\..\..\source\scene\camera_node.h" />
+    <ClInclude Include="..\..\..\source\scene\collider.h" />
     <ClInclude Include="..\..\..\source\scene\default_visitor.h" />
     <ClInclude Include="..\..\..\source\scene\geometry_node.h" />
     <ClInclude Include="..\..\..\source\scene\interface.h" />
@@ -330,9 +351,9 @@
     <ClInclude Include="..\..\..\source\scene\visitor.h" />
     <ClInclude Include="..\..\..\source\string\string.h" />
     <ClInclude Include="..\..\..\source\string\win32\string_win32.h" />
-    <ClInclude Include="..\..\..\source\system\abstract_manager.h" />
     <ClInclude Include="..\..\..\source\system\allocator.h" />
     <ClInclude Include="..\..\..\source\system\aop\aop.h" />
+    <ClInclude Include="..\..\..\source\system\atomicint.h" />
     <ClInclude Include="..\..\..\source\system\binary_file.h" />
     <ClInclude Include="..\..\..\source\system\buffer.h" />
     <ClInclude Include="..\..\..\source\system\camera_capture.h" />
@@ -342,35 +363,26 @@
     <ClInclude Include="..\..\..\source\system\concurrency\module.h" />
     <ClInclude Include="..\..\..\source\system\concurrency\monitor.h" />
     <ClInclude Include="..\..\..\source\system\concurrency\monitor_scope.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\os_handle.h" />
+    <ClInclude Include="..\..\..\source\system\concurrency\process.h" />
     <ClInclude Include="..\..\..\source\system\concurrency\semaphore.h" />
     <ClInclude Include="..\..\..\source\system\concurrency\thread.h" />
     <ClInclude Include="..\..\..\source\system\concurrency\thread_job.h" />
     <ClInclude Include="..\..\..\source\system\concurrency\thread_mutex.h" />
     <ClInclude Include="..\..\..\source\system\concurrency\thread_pool.h" />
-    <ClInclude Include="..\..\..\source\system\concurrency\win32\atomic_win32.h" />
-    <ClInclude Include="..\..\..\source\system\concurrency\win32\monitor_win32.h" />
-    <ClInclude Include="..\..\..\source\system\concurrency\win32\os_handle.h" />
-    <ClInclude Include="..\..\..\source\system\concurrency\win32\semaphore_win32.h" />
-    <ClInclude Include="..\..\..\source\system\concurrency\win32\thread_mutex_win32.h" />
-    <ClInclude Include="..\..\..\source\system\concurrency\win32\thread_win32.h" />
     <ClInclude Include="..\..\..\source\system\config_file.h" />
-    <ClInclude Include="..\..\..\source\system\console.h" />
     <ClInclude Include="..\..\..\source\system\decl_property.h" />
-    <ClInclude Include="..\..\..\source\system\dynamic_array.h" />
-    <ClInclude Include="..\..\..\source\system\dynamic_data.h" />
     <ClInclude Include="..\..\..\source\system\environment.h" />
     <ClInclude Include="..\..\..\source\system\errors\assert2.h" />
+    <ClInclude Include="..\..\..\source\system\errors\error.h" />
     <ClInclude Include="..\..\..\source\system\errors\exceptions.h" />
     <ClInclude Include="..\..\..\source\system\errors\module.h" />
     <ClInclude Include="..\..\..\source\system\errors\stack_trace.h" />
-    <ClInclude Include="..\..\..\source\system\errors\sys_check_error.h" />
-    <ClInclude Include="..\..\..\source\system\errors\win32\assert2_win32.h" />
-    <ClInclude Include="..\..\..\source\system\errors\win32\error_win32.h" />
-    <ClInclude Include="..\..\..\source\system\errors\win32\stack_trace_win32.h" />
     <ClInclude Include="..\..\..\source\system\events\event.h" />
     <ClInclude Include="..\..\..\source\system\events\events.h" />
     <ClInclude Include="..\..\..\source\system\events\event_type.h" />
     <ClInclude Include="..\..\..\source\system\events\idle_event.h" />
+    <ClInclude Include="..\..\..\source\system\events\interface.h" />
     <ClInclude Include="..\..\..\source\system\events\key_char_event.h" />
     <ClInclude Include="..\..\..\source\system\events\key_down_event.h" />
     <ClInclude Include="..\..\..\source\system\events\key_up_event.h" />
@@ -389,33 +401,22 @@
     <ClInclude Include="..\..\..\source\system\event_manager.h" />
     <ClInclude Include="..\..\..\source\system\factory.h" />
     <ClInclude Include="..\..\..\source\system\folder.h" />
-    <ClInclude Include="..\..\..\source\system\global_resource_manager.h" />
+    <ClInclude Include="..\..\..\source\system\handler.h" />
     <ClInclude Include="..\..\..\source\system\hresource.h" />
-    <ClInclude Include="..\..\..\source\system\keyboard.h" />
-    <ClInclude Include="..\..\..\source\system\linux\clock_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\folder_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\monitor_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\text_file_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\timer_linux.h" />
-    <ClInclude Include="..\..\..\source\system\linux\types_linux.h" />
+    <ClInclude Include="..\..\..\source\system\input\camera_capture.h" />
+    <ClInclude Include="..\..\..\source\system\input\console.h" />
+    <ClInclude Include="..\..\..\source\system\input\keyboard.h" />
+    <ClInclude Include="..\..\..\source\system\input\module.h" />
+    <ClInclude Include="..\..\..\source\system\input\mouse.h" />
     <ClInclude Include="..\..\..\source\system\logger.h" />
-    <ClInclude Include="..\..\..\source\system\mega_destroyer.h" />
     <ClInclude Include="..\..\..\source\system\module.h" />
-    <ClInclude Include="..\..\..\source\system\monitor.h" />
-    <ClInclude Include="..\..\..\source\system\monitor_scope.h" />
-    <ClInclude Include="..\..\..\source\system\mouse.h" />
-    <ClInclude Include="..\..\..\source\system\node.h" />
     <ClInclude Include="..\..\..\source\system\object.h" />
     <ClInclude Include="..\..\..\source\system\pool.h" />
     <ClInclude Include="..\..\..\source\system\pool_manager.h" />
-    <ClInclude Include="..\..\..\source\system\process.h" />
     <ClInclude Include="..\..\..\source\system\profiler.h" />
     <ClInclude Include="..\..\..\source\system\region.h" />
     <ClInclude Include="..\..\..\source\system\resource.h" />
     <ClInclude Include="..\..\..\source\system\resource_creator.h" />
-    <ClInclude Include="..\..\..\source\system\resource_manager.h" />
-    <ClInclude Include="..\..\..\source\system\resource_manager_2_old.h" />
-    <ClInclude Include="..\..\..\source\system\resource_manager_3.h" />
     <ClInclude Include="..\..\..\source\system\scene_graph.h" />
     <ClInclude Include="..\..\..\source\system\serializable.h" />
     <ClInclude Include="..\..\..\source\system\signal_slot\signal_slot.h" />
@@ -431,37 +432,12 @@
     <ClInclude Include="..\..\..\source\system\streaming\data_processor.h" />
     <ClInclude Include="..\..\..\source\system\streaming\module.h" />
     <ClInclude Include="..\..\..\source\system\streaming\resource_request.h" />
-    <ClInclude Include="..\..\..\source\system\system_clock.h" />
     <ClInclude Include="..\..\..\source\system\template_singletone.h" />
     <ClInclude Include="..\..\..\source\system\timer.h" />
-    <ClInclude Include="..\..\..\source\system\type.h" />
     <ClInclude Include="..\..\..\source\system\types.h" />
-    <ClInclude Include="..\..\..\source\system\types\base_types.h" />
     <ClInclude Include="..\..\..\source\system\types\list.h" />
     <ClInclude Include="..\..\..\source\system\types\priority_list.h" />
-    <ClInclude Include="..\..\..\source\system\types\win32\base_types_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\binary_file_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\buffer_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\camera_capture_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\clock_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\config_file_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\console_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\environment_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\folder_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\handle_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\keyboard_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\monitor_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\mouse_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\process_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\profiler_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\static_array.h" />
-    <ClInclude Include="..\..\..\source\system\win32\static_string.h" />
-    <ClInclude Include="..\..\..\source\system\win32\timer_win32.h" />
-    <ClInclude Include="..\..\..\source\system\win32\types_win32.h" />
-    <ClInclude Include="..\..\..\source\system\window.h" />
-    <ClInclude Include="..\..\..\source\system\window\linux\window_linux.h" />
     <ClInclude Include="..\..\..\source\system\window\module.h" />
-    <ClInclude Include="..\..\..\source\system\window\win32\window_win32.h" />
     <ClInclude Include="..\..\..\source\system\window\window.h" />
     <ClInclude Include="..\..\..\source\system\window\window_adapter.h" />
     <ClInclude Include="..\..\..\source\utility\descriptors\action_desc.h" />
@@ -487,6 +463,7 @@
     <ClInclude Include="..\..\..\source\utility\parser\parser.h" />
     <ClInclude Include="..\..\..\source\utility\module.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\action.h" />
+    <ClInclude Include="..\..\..\source\virtual\animation\action_male_walk.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\module.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\animation.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\animation_mixer.h" />
@@ -497,9 +474,9 @@
     <ClInclude Include="..\..\..\source\virtual\animation\object_animation.h" />
     <ClInclude Include="..\..\..\source\virtual\animation\object_animation_mixer.h" />
     <ClInclude Include="..\..\..\source\virtual\building.h" />
+    <ClInclude Include="..\..\..\source\virtual\controllers\camera_controller.h" />
     <ClInclude Include="..\..\..\source\virtual\controllers\controllers.h" />
     <ClInclude Include="..\..\..\source\virtual\data\camera.h" />
-    <ClInclude Include="..\..\..\source\virtual\data\cameras\fps_camera.h" />
     <ClInclude Include="..\..\..\source\virtual\data\module.h" />
     <ClInclude Include="..\..\..\source\virtual\data\door.h" />
     <ClInclude Include="..\..\..\source\virtual\data\entity.h" />
@@ -526,6 +503,9 @@
     <ClInclude Include="..\..\..\source\virtual\motions\motion.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\motion_strategy.h" />
     <ClInclude Include="..\..\..\source\virtual\motions\static_motion_strategy.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\human.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\human_impl.h" />
+    <ClInclude Include="..\..\..\source\virtual\objects\characters\male_human.h" />
     <ClInclude Include="..\..\..\source\virtual\objects\module.h" />
     <ClInclude Include="..\..\..\source\virtual\objects\simple\module.h" />
     <ClInclude Include="..\..\..\source\virtual\objects\simple\solid_cube.h" />
@@ -534,6 +514,9 @@
     <ClInclude Include="..\..\..\source\virtual\skinning\armature.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\bone.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\bone_frame.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_female_armature.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_male_armature.h" />
+    <ClInclude Include="..\..\..\source\virtual\skinning\human_armature.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\interface.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\module.h" />
     <ClInclude Include="..\..\..\source\virtual\skinning\types.h" />
@@ -554,16 +537,27 @@
     <ClInclude Include="..\..\..\source\virtual\texture_faces.h" />
     <ClInclude Include="..\..\..\source\virtual\track_pos.h" />
     <ClInclude Include="..\..\..\source\virtual\module.h" />
-    <ClInclude Include="Header.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\application\application.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\audio\audio_listener.cpp" />
     <ClCompile Include="..\..\..\source\audio\audio_buffer.cpp" />
     <ClCompile Include="..\..\..\source\audio\audio_config.cpp" />
-    <ClCompile Include="..\..\..\source\audio\player.cpp" />
+    <ClCompile Include="..\..\..\source\audio\audio_ogg_loader.cpp" />
+    <ClCompile Include="..\..\..\source\audio\audio_ogg_processor.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\alext.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_buffer_impl.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_distance_models.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_error.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_format.cpp" />
+    <ClCompile Include="..\..\..\source\audio\audio_source.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_listener_impl.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_sound_system_impl.cpp" />
+    <ClCompile Include="..\..\..\source\audio\openal\al_source_impl.cpp" />
+    <ClCompile Include="..\..\..\source\audio\sound_system.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\abstract_render_context_policy.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\gpu_common_module.cpp" />
     <ClCompile Include="..\..\..\source\gpu\common\renderable.cpp" />
@@ -572,21 +566,21 @@
     <ClCompile Include="..\..\..\source\gpu\error\gpu_excpetions.cpp" />
     <ClCompile Include="..\..\..\source\gpu\gpu_config.cpp" />
     <ClCompile Include="..\..\..\source\gpu\gpu_module.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opencl\buffer.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opencl\command_queue.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opencl\context.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opencl\device.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_buffer.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_command_queue.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_context.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_device.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opencl\errors\cl_exceptions.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opencl\kernel.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opencl\platform.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opencl\program.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_kernel.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_platform.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opencl\cl_program.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\buffers\ibo.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\buffers\pbo.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\buffers\vbo.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\driver\linux\driver_parameters_linux.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\driver\linux\video_driver_linux.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\driver\video_memory.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opengl\driver\win32\driver_win32.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\driver\win32\gl_driver_win32.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\error\gl_exceptions.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\gl\win32\extensions_win32.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\gpu_opengl_module.cpp" />
@@ -600,6 +594,9 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\sphere_mesh.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\static_mesh.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\renderable\primitives\vertex_array_object.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_batch.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_frame.cpp" />
+    <ClCompile Include="..\..\..\source\gpu\opengl\render\gl_renderer.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\gl_render_context.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_bump_mapping.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\render_context\rc_grass.cpp" />
@@ -639,7 +636,6 @@
     <ClCompile Include="..\..\..\source\gpu\opengl\render_targets\render_target_texture.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\internal_formats.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture2d.cpp" />
-    <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_2d_manager.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\texture_context.cpp" />
     <ClCompile Include="..\..\..\source\gpu\opengl\textures\text_surface.cpp" />
     <ClCompile Include="..\..\..\source\gpu\painter\brush.cpp" />
@@ -741,6 +737,7 @@
     <ClCompile Include="..\..\..\source\scene\bone_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\bounding_volume_updater.cpp" />
     <ClCompile Include="..\..\..\source\scene\camera_node.cpp" />
+    <ClCompile Include="..\..\..\source\scene\collider.cpp" />
     <ClCompile Include="..\..\..\source\scene\default_visitor.cpp" />
     <ClCompile Include="..\..\..\source\scene\geometry_node.cpp" />
     <ClCompile Include="..\..\..\source\scene\light_node.cpp" />
@@ -756,17 +753,22 @@
     <ClCompile Include="..\..\..\source\scene\transform_node.cpp" />
     <ClCompile Include="..\..\..\source\string\string.cpp" />
     <ClCompile Include="..\..\..\source\string\win32\string_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\binary_file.cpp" />
+    <ClCompile Include="..\..\..\source\system\buffer.cpp" />
     <ClCompile Include="..\..\..\source\system\clock.cpp" />
     <ClCompile Include="..\..\..\source\system\compound_object.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\process.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\semaphore.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\thread.cpp" />
     <ClCompile Include="..\..\..\source\system\concurrency\thread_job.cpp" />
+    <ClCompile Include="..\..\..\source\system\concurrency\thread_mutex.cpp" />
     <ClCompile Include="..\..\..\source\system\concurrency\thread_pool.cpp" />
-    <ClCompile Include="..\..\..\source\system\concurrency\win32\semaphore_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\concurrency\win32\thread_mutex_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\concurrency\win32\thread_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\config_file.cpp" />
+    <ClCompile Include="..\..\..\source\system\environment.cpp" />
+    <ClCompile Include="..\..\..\source\system\errors\assert2.cpp" />
+    <ClCompile Include="..\..\..\source\system\errors\error.cpp" />
     <ClCompile Include="..\..\..\source\system\errors\exceptions.cpp" />
-    <ClCompile Include="..\..\..\source\system\errors\win32\assert2_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\errors\win32\error_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\errors\win32\stack_trace_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\errors\stack_trace.cpp" />
     <ClCompile Include="..\..\..\source\system\events\events.cpp" />
     <ClCompile Include="..\..\..\source\system\events\idle_event.cpp" />
     <ClCompile Include="..\..\..\source\system\events\key_char_event.cpp" />
@@ -786,40 +788,23 @@
     <ClCompile Include="..\..\..\source\system\events\window_resize_event.cpp" />
     <ClCompile Include="..\..\..\source\system\event_manager.cpp" />
     <ClCompile Include="..\..\..\source\system\factory.cpp" />
-    <ClCompile Include="..\..\..\source\system\global_resource_manager.cpp" />
+    <ClCompile Include="..\..\..\source\system\folder.cpp" />
     <ClCompile Include="..\..\..\source\system\hresource.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\clock_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\folder_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\text_file_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\linux\timer_linux.cpp" />
+    <ClCompile Include="..\..\..\source\system\input\camera_capture.cpp" />
+    <ClCompile Include="..\..\..\source\system\input\console.cpp" />
+    <ClCompile Include="..\..\..\source\system\input\keyboard.cpp" />
+    <ClCompile Include="..\..\..\source\system\input\mouse.cpp" />
     <ClCompile Include="..\..\..\source\system\logger.cpp" />
-    <ClCompile Include="..\..\..\source\system\mega_destroyer.cpp" />
-    <ClCompile Include="..\..\..\source\system\node.cpp" />
     <ClCompile Include="..\..\..\source\system\object.cpp" />
     <ClCompile Include="..\..\..\source\system\poolable.h" />
     <ClCompile Include="..\..\..\source\system\pool_manager.cpp" />
-    <ClCompile Include="..\..\..\source\system\resource_manager_3.cpp" />
+    <ClCompile Include="..\..\..\source\system\profiler.cpp" />
     <ClCompile Include="..\..\..\source\system\storable.cpp" />
     <ClCompile Include="..\..\..\source\system\streaming\async_loader.cpp" />
     <ClCompile Include="..\..\..\source\system\streaming\data_loader.h" />
-    <ClCompile Include="..\..\..\source\system\system_clock.cpp" />
+    <ClCompile Include="..\..\..\source\system\timer.cpp" />
     <ClCompile Include="..\..\..\source\system\types\list.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\binary_file_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\buffer_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\camera_capture_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\clock_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\config_file_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\console_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\environment_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\folder_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\handle_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\keyboard_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\mouse_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\process_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\profiler_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\win32\timer_win32.cpp" />
-    <ClCompile Include="..\..\..\source\system\window\linux\window_linux.cpp" />
-    <ClCompile Include="..\..\..\source\system\window\win32\window_win32.cpp" />
+    <ClCompile Include="..\..\..\source\system\window\window.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\action_desc.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\animation_desc.cpp" />
     <ClCompile Include="..\..\..\source\utility\descriptors\armature_desc.cpp" />
@@ -839,11 +824,12 @@
     <ClCompile Include="..\..\..\source\virtual\animation\animation_mixer.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\armature_animation_mixer.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\bone_animation.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\animation\action_male_walk.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\object_animation.cpp" />
     <ClCompile Include="..\..\..\source\virtual\animation\object_animation_mixer.cpp" />
     <ClCompile Include="..\..\..\source\virtual\building.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\controllers\camera_controller.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\camera.cpp" />
-    <ClCompile Include="..\..\..\source\virtual\data\cameras\fps_camera.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\entity.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\geometry.cpp" />
     <ClCompile Include="..\..\..\source\virtual\data\light.cpp" />
@@ -859,10 +845,16 @@
     <ClCompile Include="..\..\..\source\virtual\manager\material_manager.cpp" />
     <ClCompile Include="..\..\..\source\virtual\motions\motion_strategy.cpp" />
     <ClCompile Include="..\..\..\source\virtual\motions\static_motion_strategy.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\human.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\male_human.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\objects\characters\male_human_impl.h" />
     <ClCompile Include="..\..\..\source\virtual\objects\simple\solid_cube.cpp" />
     <ClCompile Include="..\..\..\source\virtual\scheme.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\armature.cpp" />
     <ClCompile Include="..\..\..\source\virtual\skinning\bone.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_armature.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_female_armature.cpp" />
+    <ClCompile Include="..\..\..\source\virtual\skinning\human_male_armature.cpp" />
     <ClCompile Include="..\..\..\source\virtual\sound.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain.cpp" />
     <ClCompile Include="..\..\..\source\virtual\terrain\terrain_cell.cpp" />
@@ -917,7 +909,6 @@
     <None Include="..\..\..\data\shaders\textured_2d_330.vert" />
     <None Include="..\..\..\source\blender\punk_exporter_2_60.py" />
     <None Include="..\..\..\source\images\converter\yuy2_to_rgb.cl" />
-    <None Include="..\..\..\source\system\poolable.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\source\gpu\common\module.h" />
@@ -972,12 +963,13 @@
       <MinimalRebuild>false</MinimalRebuild>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\lib\VS2012\$(ConfigurationName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libnoise.lib;jpeg.lib;OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;freetype246_D.lib;libpngd.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libvorbisfile.lib;libogg.lib;libvorbis.lib;libnoise.lib;jpeg.lib;OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib;freetype246_D.lib;libpngd.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -991,9 +983,9 @@
       <PreprocessorDefinitions>NOMINMAX;WIN32;NDEBUG;_WINDOWS;_USRDLL;PUNK_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\3rd\include;$(SolutionDir)..\..\3rd\include\bullet</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <OpenMPSupport>true</OpenMPSupport>
+      <OpenMPSupport>false</OpenMPSupport>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -1002,7 +994,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\3rd\lib\VS2012\$(ConfigurationName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libnoise.lib;jpeg.lib;OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;EFX-Util.lib;freetype246.lib;libpng.lib;zlib.lib;BulletCollision_vs2010.lib;BulletDynamics_vs2010.lib;BulletSoftBody_vs2010.lib;HACD_vs2010.lib;LinearMath_vs2010.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libvorbisfile.lib;libogg.lib;libvorbis.lib;libnoise.lib;jpeg.lib;OpenCL.lib;OpenAL32.lib;Opengl32.lib;dbghelp.lib;vfw32.lib;EFX-Util.lib;freetype246.lib;libpng.lib;zlib.lib;BulletCollision_vs2010.lib;BulletDynamics_vs2010.lib;BulletSoftBody_vs2010.lib;HACD_vs2010.lib;LinearMath_vs2010.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -7,9 +7,8 @@
 namespace ImageModule
 {
 	void Exporter::Export(const System::string& filename, const Image& image)
-	{
-		std::wstring file(filename.Data());
-		if (file.rfind(L".png") != std::wstring::npos)
+    {
+        if (filename.EndWith(".png"))
 		{
 			PngExporter importer;
 			importer.Export(filename, image);			

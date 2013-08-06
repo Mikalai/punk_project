@@ -1,9 +1,9 @@
 #ifndef _H_PUNK_OPENGL_VERTEX_SHADER_PARTICLE
 #define _H_PUNK_OPENGL_VERTEX_SHADER_PARTICLE
 
-#include "..\shader.h"
+#include "../shader.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

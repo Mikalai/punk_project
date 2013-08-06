@@ -1,12 +1,13 @@
+#ifdef USE_PAINTER_RC
 #include "rc_painter.h"
 
 namespace GPU
 {
 	namespace OpenGL
 	{
-		/**********************************************************************************************/
-		/*			PAINTER RENDER 
-		/**********************************************************************************************/		
+        /**********************************************************************************************
+        *			PAINTER RENDER
+        **********************************************************************************************/
 		RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader>::RenderContextPolicy()
 		{
 			m_vertex_shader.reset(new VertexShaderPainter);
@@ -54,15 +55,15 @@ namespace GPU
 
 			glLineWidth(pparams.m_line_width);
 
-			if (pparams.m_wireframe)
+			if (pparams.m_enable_wireframe)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}			
 			else
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				CHECK_GL_ERROR(L"Can't change polygon mode");
+				ValidateOpenGL(L"Can't change polygon mode");
 			}
 
 			if (pparams.m_blending)
@@ -76,9 +77,9 @@ namespace GPU
 			}
 		}
 
-		VertexAttributes RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader>::GetRequiredAttributesSet() const 
+		int64_t RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader>::GetRequiredAttributesSet() const 
 		{
-			return COMPONENT_POSITION|COMPONENT_TEXTURE;
+			return Vertex<VertexComponent::Position, VertexComponent::Texture0>::Value();
 		}
 
 		void RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader>::Begin()
@@ -93,3 +94,4 @@ namespace GPU
 		}		
 	};
 }
+#endif  //  USE_PAINTER_RC

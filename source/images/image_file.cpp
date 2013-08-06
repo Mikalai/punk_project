@@ -36,7 +36,7 @@ namespace ImageModule
 		m_data = new unsigned char[m_size];
 	}
 
-	void ImageFile::Rep::SetSize(int width, int height)
+    void ImageFile::Rep::SetSize(unsigned width, unsigned height)
 	{
 		if (m_width == width && m_height == height)
 			return;
@@ -130,10 +130,10 @@ namespace ImageModule
 			p[2] = b;
 			p[3] = a;
 
-/*			p[0] = a;
-			p[1] = r;
-			p[2] = g;
-			p[3] = b;/**/		
+//          p[0] = a;
+//			p[1] = r;
+//			p[2] = g;
+//			p[3] = b;
 		}
 		else
 		{

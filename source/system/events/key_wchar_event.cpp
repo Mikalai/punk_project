@@ -9,12 +9,8 @@ namespace System
 
 	string KeyWCharEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: KEY_WCHAR; Key: %d; Repeat: %d; Scancode: %d; IsExtended: %d; \
-							   IsAltPressed: %s; PrevState: %s; TransitionState: %s",
-							   eventCode, key, repeat_count, scan_code,
-							   isExtended ? L"TRUE" : L"FALSE",
-							   isAltPressed ? L"TRUE" : L"FALSE",
-							   prevState ? L"TRUE" : L"FALSE",
-							   transitionState ? L"TRUE" : L"FALSE");
+        return string("Code: {0}; Type: KEY_WCHAR; Key: {1}; Repeat: {2}; Scancode: {3}; IsExtended: {4}; IsAltPressed: {5}; PrevState: {6}; TransitionState: {7}")
+                .arg(eventCode).arg(key).arg(repeat_count).arg(scan_code).arg(isExtended ? L"TRUE" : L"FALSE").arg(isAltPressed ? L"TRUE" : L"FALSE")
+                .arg(prevState ? L"TRUE" : L"FALSE").arg(transitionState ? L"TRUE" : L"FALSE");
 	}
 }

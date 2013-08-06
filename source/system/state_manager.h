@@ -4,11 +4,13 @@
 #include <vector>
 #include <stack>
 #include "smart_pointers/proxy.h"
+#include "errors/module.h"
+#include "poolable.h"
 
 namespace System
 {
 	template<class T>
-	class State
+	class State : public Poolable<State<T>>
 	{
 	public:
 
@@ -21,16 +23,16 @@ namespace System
 	template<class T>
 	class StateManager
 	{
-	public:		
-		StateManager() 
-		{ 
-			m_current_state = new State<T>; 
+	public:
+		StateManager()
+		{
+			m_current_state = new State<T>;
 		}
 
 		~StateManager()
 		{
 			delete m_current_state;
-			m_current_state = 0;
+            m_current_state = 0;
 			while (!m_states.empty())
 			{
 				delete m_states.top();
@@ -60,7 +62,7 @@ namespace System
 	private:
 		State<T>* m_current_state;
 		std::stack<State<T>*> m_states;
-	};	
+	};
 }
 
 #endif	//	_H_PUNK_SYSTEM_STATE

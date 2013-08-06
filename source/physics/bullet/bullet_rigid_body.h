@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #ifndef _H_BULLET_RIGID_BODY
 #define _H_BULLET_RIGID_BODY
 
@@ -20,12 +22,12 @@ namespace Physics
 		bool m_is_character;
 
 		RigidBodyDesc() : m_is_character(false) {}
-			
+
 	};
 
-	class PUNK_ENGINE BulletRigidBody 
+	class PUNK_ENGINE_API BulletRigidBody
 	{
-	public:				
+	public:
 		BulletRigidBody();
 		virtual void Init(RigidBodyDesc& desc);
 		virtual ~BulletRigidBody();
@@ -59,3 +61,5 @@ namespace Physics
 }
 
 #endif	//	_H_BULLET_RIGID_BODY
+
+#endif // USE_BULLET_PHYSICS

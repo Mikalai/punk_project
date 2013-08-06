@@ -3,34 +3,32 @@
 
 #include "../../system/compound_object.h"
 #include "../../system/aop/aop.h"
+#include "../../system/serializable.h"
 #include "../../system/smart_pointers/module.h"
 #include "../../string/string.h"
 
 namespace Virtual
 {
-	class Animation;
-}
+    class Animation;
 
-namespace Virtual
-{
 	//	Animation is a child of Action
-	class Action : public System::CompoundObject, public System::Aspect<Action*, System::string>
-	{			
-	public:		
+    class PUNK_ENGINE_API Action : public System::CompoundObject, public System::Aspect<Action*, System::string>
+	{
+	public:
 		Action();
 
-		int GetStartFrame() const { return m_start_frame; }		
+		int GetStartFrame() const { return m_start_frame; }
 		int GetEndFrame() const { return m_end_frame; }
-
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
 		virtual ~Action();
-
-		static Action* CreateFromFile(const System::string& path);
-		static Action* CreateFromStream(std::istream& stream);
 
 		void SetEndFrame(const int frame) { m_end_frame = frame; }
 		void SetStartFrame(int frame) { m_start_frame = frame; }
+
+        void SetName(System::string& value);
+        const System::string& GetName() const;
+
+        virtual void Save(System::Buffer* buffer) const override;
+        virtual void Load(System::Buffer* buffer) override;
 
 	private:
 		Action(const Action&);
@@ -38,7 +36,8 @@ namespace Virtual
 
 	private:
 		int m_start_frame;
-		int m_end_frame;			
+		int m_end_frame;
+        System::string m_name;
 	};
 }
 

@@ -133,7 +133,7 @@ public:
 		m_stripId      = stripId;
 		m_experimentId = experimentId;
 		visited = false;
-		m_numDegenerates = 0;
+        m_numDegenerates = 0;
 	}
 
 	// This is an experiment if the experiment id is >= 0

@@ -9,6 +9,6 @@ namespace System
 
 	string IdleEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: IDLE", eventCode);
+		return string("Code: %d; Type: IDLE", eventCode);
 	}
 }

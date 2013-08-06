@@ -7,4 +7,8 @@ namespace Math
 		m_planes.push_back(plane);
 	}
 
+	const ClipSpace::PlanesCollection& ClipSpace::GetPlanes() const
+	{
+		return m_planes;
+	}
 }

@@ -6,7 +6,7 @@
 
 namespace ImageModule
 {
-	class PUNK_ENGINE RGBImage : public Image
+	class PUNK_ENGINE_API RGBImage : public Image
 	{
 	public:
 		RGBImage();

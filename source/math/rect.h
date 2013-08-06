@@ -7,7 +7,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE Rect
+	class PUNK_ENGINE_API Rect
 	{
 	public:
 		Rect();
@@ -20,6 +20,8 @@ namespace Math
 		float GetWidth() const { return m_width; }
 		float GetHeight() const { return m_height; }
 
+		void Set(float x, float y, float width, float height);
+		
 	private:
 
 		float m_x;
@@ -28,6 +30,13 @@ namespace Math
 		float m_height;
 	};
 
+	inline void Rect::Set(float x, float y, float width, float height)
+	{
+		m_x = x;
+		m_y = y;
+		m_width = width;
+		m_height = height;
+	}
 };
 
 #endif	//	_H_PUNK_MATH_RECT

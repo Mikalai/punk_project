@@ -13,26 +13,27 @@ namespace Virtual
 
 	System::StreamingStepResult TerrainLoader::Load()
 	{
-		System::string filename = System::Environment::Instance()->GetMapFolder() + m_map_name + L"\\" + System::string::Format(L"%d_%d.raw", m_block.X(), m_block.Y());
+        System::string filename = System::Environment::Instance()->GetMapFolder() + m_map_name + System::string("/{0}_{1}.raw")
+                .arg(m_block.X()).arg(m_block.Y());
 		
 		System::Buffer buffer;
 		if (!System::BinaryFile::Load(filename, buffer))
-			return (out_error() << "Can't load " << filename << std::endl, System::STREAM_ERROR);
+			return (out_error() << "Can't load " << filename << std::endl, System::StreamingStepResult::STREAM_ERROR);
 		m_size = buffer.GetSize();
 		m_data = buffer.Release();
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainLoader::Decompress(void** data, unsigned* size)
 	{
 		*data = m_data;
 		*size = m_size;
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	System::StreamingStepResult TerrainLoader::Destroy()
 	{
-		return System::STREAM_OK;
+		return System::StreamingStepResult::STREAM_OK;
 	}
 
 	TerrainLoader::~TerrainLoader()

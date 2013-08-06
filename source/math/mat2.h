@@ -1,20 +1,24 @@
-/****************************************************/
-/*	File: mat2.h
-/*	Author: Mikalai Abramau
-/*	Desc: Class implemeting 2x2 matrix
-/****************************************************/
+/****************************************************
+*	File: mat2.h
+*    Author: Mikalai Abramau
+*	Desc: Class implemeting 2x2 matrix
+****************************************************/
 
 #ifndef _H_MAT2X2_MATH
 #define _H_MAT2X2_MATH
 
+#include "../system/errors/exceptions.h"
 #include "math_error.h"
 #include "vec2.h"
+
+namespace System { class Buffer; }
 
 namespace Math
 {
 	template<class T>
 	class  Matrix2x2
 	{
+    protected:
 		T m[4];
 	public:
 
@@ -27,8 +31,8 @@ namespace Math
 		{
 			Matrix2x2<T> m;
 			m[0] = 1;
-			m[1] = 0;
-			m[2] = 0;
+            m[1] = 0;
+            m[2] = 0;
 			m[3] = -1;
 			return m;
 
@@ -38,8 +42,8 @@ namespace Math
 		{
 			Matrix2x2<T> m;
 			m[0] = -1;
-			m[1] = 0;
-			m[2] = 0;
+            m[1] = 0;
+            m[2] = 0;
 			m[3] = 1;
 			return m;
 		}
@@ -48,8 +52,8 @@ namespace Math
 		{
 			Matrix2x2<T> m;
 			m[0] = -1;
-			m[1] = 0;
-			m[2] = 0;
+            m[1] = 0;
+            m[2] = 0;
 			m[3] = -1;
 			return m;
 		}
@@ -60,17 +64,26 @@ namespace Math
 			m[0] = m[3] = T(1);
 		}
 
+        Matrix2x2<T>(float a00, float a01, float a10, float a11)
+        {
+            m[0] = a00;
+            m[1] = a10;
+            m[2] = a01;
+            m[3] = a11;
+        }
+
+
 		const T& operator [] (int i) const
 		{
 			if (i < 0 || i > 3)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			return m[i];
 		}
 
 		T& operator [] (int i)
 		{
 			if (i < 0 || i > 3)
-				throw MathIndexOutOfRange();
+                throw System::PunkException("Index out of range");
 			return m[i];
 		}
 
@@ -109,7 +122,7 @@ namespace Math
 		{
 			T d = Determinant();
 			if (d == T(0))
-				throw MathDevisionByZero();
+                throw System::PunkException("Can't inverse matrix. Determinant is 0");
 
 			d = T(1) / d;
 
@@ -127,7 +140,7 @@ namespace Math
 		{
 			T d = Determinant();
 			if (d == T(0))
-				throw MathDevisionByZero();
+                throw System::PunkException("Can't inverse matrix. Determinant is 0");
 
 			d = T(1) / d;
 
@@ -172,6 +185,15 @@ namespace Math
 			memcpy(m, tm, sizeof(m));
 			return *this;
 		}
+
+		Matrix2x2<T>& operator *= (float k)
+		{
+			for (int i = 0; i != 4; ++i)
+			{
+				m[i] *= k;
+			}
+			return *this;
+		}
 	};
 
 	//  mult two matrix
@@ -192,7 +214,7 @@ namespace Math
 	{
 		Vector2<T> r;
 		r[0] = a[0]*v[0] + a[2]*v[1];
-		r[1] = a[1]*v[0] + a[3]*v[2];
+        r[1] = a[1]*v[0] + a[3]*v[1];
 		return r;
 	}
 	//
@@ -201,12 +223,27 @@ namespace Math
 	template<class T>
 	static Matrix2x2<T> operator * (const Matrix2x2<T>& a, T b)
 	{
-		Matrix2x2<T> c;
+        Matrix2x2<T> c(a);
 		c[0] *= b;
 		c[1] *= b;
 		c[2] *= b;
 		c[3] *= b;
+        return c;
 	}
+
+    //
+    //	mult matrix on scalar
+    //
+    template<class T>
+    static Matrix2x2<T> operator * (T b, const Matrix2x2<T>& a)
+    {
+        Matrix2x2<T> c(a);
+        c[0] *= b;
+        c[1] *= b;
+        c[2] *= b;
+        c[3] *= b;
+        return c;
+    }
 
 	//
 	//	divide matrix on scalar
@@ -215,7 +252,7 @@ namespace Math
 	static Matrix2x2<T> operator / (const Matrix2x2<T>& a, T b)
 	{
 		if (b == T(0))
-			throw MathDevisionByZero();
+            throw System::PunkException("Devision by 0");
 
 		b = T(1) / b;
 		return a * b;
@@ -233,12 +270,15 @@ namespace Math
 		return m;
 	}
 
-	class PUNK_ENGINE mat2 : public Matrix2x2<float>
+	class PUNK_ENGINE_API mat2 : public Matrix2x2<float>
 	{
 	public:
 		mat2() : Matrix2x2<float> () {}
 		mat2(const mat2& m) : Matrix2x2<float>(m) {}
 		mat2(const Matrix2x2<float>& m) : Matrix2x2<float>(m) {}
+        mat2(float a00, float a01, float a10, float a11) : Matrix2x2<float>(a00, a01, a10, a11) {}
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
 }

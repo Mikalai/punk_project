@@ -8,10 +8,10 @@ namespace GUI
 	class Adapter
 	{
 	public:
-		virtual void OnSetFocusedEvent(SetFocusedEvent* event) = 0;
-		virtual void OnSetUnFocusedEvent(SetUnFocusedEvent* event) = 0;
-		virtual void OnMouseEnterEvent(MouseEnterEvent* event) = 0;
-		virtual void OnMouseLeaveEvent(MouseLeaveEvent* event) = 0;
+        virtual void OnSetFocusedEvent(SetFocusedEvent* event) = 0;
+        virtual void OnSetUnFocusedEvent(SetUnFocusedEvent* event) = 0;
+        virtual void OnMouseEnterEvent(MouseEnterEvent* event) = 0;
+        virtual void OnMouseLeaveEvent(MouseLeaveEvent* event) = 0;
 	};
 }
 

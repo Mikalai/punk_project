@@ -1,109 +1,36 @@
+#ifdef USE_SOLID_TEXTURE_3D_RC
+
 #ifndef _H_PUNK_OPENGL_RC_SOLID_TEXTURED_3D
 #define _H_PUNK_OPENGL_RC_SOLID_TEXTURED_3D
 
 #include "gl_render_context.h"
-#include "shaders/vertex/vs_transformed_textured_3d.h"
-#include "shaders/fragment/fs_solid_textured.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
 
-		template<> class RenderContextPolicy<VertexShaderTransformTextured3D, FragmentShaderSolidTextured, NoShader> : public OpenGLRenderContext
+		template<> class RenderContextPolicy<
+				ShaderCollection::VertexSolidTextured,
+				ShaderCollection::FragmentSolidTextured,
+				ShaderCollection::No>: public OpenGLRenderContext
 		{	
 			unsigned uProjViewWorld;
-			unsigned uDiffuseColor;
 			unsigned uDiffuseMap;
+			unsigned uDiffuseColor;
 			unsigned uTextureMatrix;
 
 		public:
 
-			RenderContextPolicy()
-			{
-				m_vertex_shader.reset(new VertexShaderTransformTextured3D);
-				m_fragment_shader.reset(new FragmentShaderSolidTextured);
-				Init();
-			}
-
-			virtual ~RenderContextPolicy()
-			{
-			}
-
-			virtual void Init()
-			{
-				if (m_was_modified || !m_program)
-				{
-					OpenGLRenderContext::Init();
-					InitUniforms();
-				}
-			}
-
-			virtual void InitUniforms()
-			{
-				uProjViewWorld = GetUniformLocation("uProjViewWorld");
-				uDiffuseColor = GetUniformLocation("uDiffuseColor");
-				uDiffuseMap = GetUniformLocation("uDiffuseMap");
-				uTextureMatrix = GetUniformLocation("uTextureMatrix");
-			}
-
-			virtual void BindParameters(const CoreState& params)
-			{									
-				const Math::mat4 proj_view_world = params.m_projection * params.m_view * params.m_local;
-				SetUniformMatrix4f(uProjViewWorld, &(proj_view_world[0]));
-				SetUniformVector4f(uDiffuseColor, &(params.m_diffuse_color[0]));
-				SetUniformInt(uDiffuseMap, params.m_diffuse_slot_0);
-				SetUniformMatrix2f(uTextureMatrix, &params.m_texture_matrix[0]);
-
-				if (params.m_wireframe)
-				{
-					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-					CHECK_GL_ERROR(L"Can't change polygon mode");
-				}			
-				else
-				{
-					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-					CHECK_GL_ERROR(L"Can't change polygon mode");
-				}
-
-				if (params.m_depth_test)
-				{
-					glEnable(GL_DEPTH_TEST);
-				}
-				else
-				{
-					glDisable(GL_DEPTH_TEST);
-				}
-			}
-
-			virtual VertexAttributes GetRequiredAttributesSet() const 
-			{
-				return COMPONENT_POSITION|COMPONENT_TEXTURE;
-			}
-
-			virtual void Begin()
-			{
-				/*
-				Begin();
-				BindParameters()
-				***
-				render();
-				***
-				BindParameters()
-				render();
-				End();
-				*/
-
-				Init();
-				OpenGLRenderContext::Begin();
-			}
-
-			virtual void End()
-			{
-				OpenGLRenderContext::End();			
-			}		
+			RenderContextPolicy();
+			virtual ~RenderContextPolicy();
+			void InitUniforms() override;
+			void BindParameters(const CoreState& params) override;
+            int64_t GetRequiredAttributesSet() const override;
 		};
 	}
 }
 
 #endif	//	_H_PUNK_OPENGL_RC_SOLID_TEXTURED_3D
+
+#endif  //  USE_SOLID_TEXTURE_3D_RC

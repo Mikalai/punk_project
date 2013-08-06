@@ -1,12 +1,12 @@
 #include "fs_terrain.h"
 #include "../../../../../system/environment.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
 		FragmentShaderTerrain::FragmentShaderTerrain()
-			: Shader(SHADER_FRAGMENT)
+			: Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"terrain_330.frag");
 		}

@@ -1,4 +1,4 @@
-#include <process.h>
+#include "atomic.h"
 #include "thread_pool.h"
 
 namespace System
@@ -11,14 +11,10 @@ namespace System
 
 	ThreadPool::~ThreadPool()
 	{
-		for each (HANDLE thread in m_threads)
-		{
-			CloseHandle(thread);
-		}
-		DeleteCriticalSection(&m_cs);	
 	}
 
-	unsigned __stdcall ThreadPool::ThreadFunc(void* data)
+#ifdef _WIN32
+	unsigned PUNK_STDCALL ThreadPool::ThreadFunc(void* data)
 	{
 		ThreadPool* pool = reinterpret_cast<ThreadPool*>(data);
 		try
@@ -40,70 +36,93 @@ namespace System
 		}
 		return 0;
 	}
+#elif defined __gnu_linux__
+    void* ThreadPool::ThreadFunc(void* data)
+    {
+        ThreadPool* pool = reinterpret_cast<ThreadPool*>(data);
+        try
+        {
+            while (1)
+            {
+                if (!pool->HasJobs() && pool->IsFinish())
+                    return 0;
+                ThreadJob* job = pool->GetThreadJob();
+                if (!job)
+                    return 0;
+                job->Run();
+                job->m_complete = true;
+            }
+        }
+        catch (...)
+        {
+            return (void*)-1;
+        }
+        return nullptr;
+    }
+#endif
 
 	void ThreadPool::Init(int thread_count)
 	{
-		InitializeConditionVariable(&m_cond);
-		InitializeCriticalSection(&m_cs);
-		m_finish = 0;
+        m_finish.Store(0);
 
 		m_threads.resize(thread_count);
 		for(auto it = m_threads.begin(); it != m_threads.end(); ++it)
 		{
-			HANDLE& thread = *it;
-			thread = (HANDLE)_beginthreadex(0, 100, ThreadFunc, this, 0, 0);
+            Thread& thread = *it;
+            thread.Create(ThreadFunc, (void*)this);
 		}
 	}
 
 	ThreadJob* ThreadPool::GetThreadJob()
 	{
-		EnterCriticalSection(&m_cs);
+        m_monitor.Lock();
 		if (m_jobs.empty())
-			SleepConditionVariableCS(&m_cond, &m_cs, INFINITE);
+            m_monitor.Wait();
 
 		if (m_jobs.empty())
 			return 0;
 
 		ThreadJob* job = m_jobs.front();
 		m_jobs.pop();
-		LeaveCriticalSection(&m_cs);
+        m_monitor.Unlock();
 		return job;
 	}
 
 	void ThreadPool::ExecuteJob(ThreadJob* job)
 	{
-		EnterCriticalSection(&m_cs);
+        m_monitor.Lock();
 		m_jobs.push(job);
-		WakeConditionVariable(&m_cond);
-		LeaveCriticalSection(&m_cs);
+        m_monitor.Pulse();
+        m_monitor.Unlock();
 	}
 
 	void ThreadPool::Lock()
 	{
-		EnterCriticalSection(&m_cs);
+        m_monitor.Lock();
 	}
 
 	void ThreadPool::Unlock()
 	{
-		LeaveCriticalSection(&m_cs);
+        m_monitor.Unlock();
 	}
 
 	void ThreadPool::Join()
 	{
-		InterlockedIncrement(&m_finish);
-		WaitForMultipleObjects(m_threads.size(), &m_threads[0], TRUE, INFINITE);
+        m_finish.FetchAndAddOrdered(1);
+        for (size_t i = 0; i != m_threads.size(); ++i)
+            m_threads[i].Join();
 	}
 
 	bool ThreadPool::IsFinish()
-	{
-		return m_finish == 1;
+	{        
+        return m_finish.TestAndSetOrdered(1, 1);
 	}
 
 	int ThreadPool::HasJobs()
 	{
-		EnterCriticalSection(&m_cs);
+        m_monitor.Lock();
 		int tasks = m_jobs.size();
-		LeaveCriticalSection(&m_cs);
+        m_monitor.Unlock();
 		return tasks;
 	}
 

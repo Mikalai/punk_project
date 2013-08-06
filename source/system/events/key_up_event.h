@@ -5,7 +5,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE KeyUpEvent : public Event, public Poolable<KeyUpEvent>
+	class PUNK_ENGINE_API KeyUpEvent : public Event, public Poolable<KeyUpEvent>
     {        
         KeyUpEvent(const KeyUpEvent&);
     public:

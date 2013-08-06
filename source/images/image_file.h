@@ -13,7 +13,7 @@
 
 namespace ImageModule
 {
-	class PUNK_ENGINE ImageFile
+	class PUNK_ENGINE_API ImageFile
 	{
 	protected:
 		struct Rep
@@ -31,7 +31,7 @@ namespace ImageModule
 			Rep();
 			Rep(const Rep& rep);
 			~Rep();
-			void SetSize(int width, int height);
+            void SetSize(unsigned width, unsigned height);
 			void SetSize(unsigned size);
 			Rep* GetOwnCopy();
 		};
@@ -46,8 +46,8 @@ namespace ImageModule
 
 		virtual ~ImageFile();
 
-		virtual bool Save(const wchar_t* file) const { return false; }
-		virtual bool Load(const wchar_t* file) { return false; }		
+        virtual bool Save(const wchar_t*) const { return false; }
+        virtual bool Load(const wchar_t*) { return false; }
 
 		virtual void Store(System::Buffer& buffer);
 		virtual void Restore(System::Buffer& buffer);

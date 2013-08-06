@@ -12,7 +12,7 @@ namespace Math
 {
 	class Line3D;
 
-	class PUNK_ENGINE OctTree
+	class PUNK_ENGINE_API OctTree
 	{
 	public:
 		typedef std::vector<ivec3> FaceList;
@@ -20,32 +20,32 @@ namespace Math
 	private:
 		static const int MaxFaceCount = 8;
 		static const int MaxDepth = 20;
+        OctTree* m_parent;
+        AxisAlignedBox m_bbox;
+        int m_face_count;
+        bool m_is_finale;
 		int m_cur_depth;
-		std::auto_ptr<OctTree> m_right_front_up;
-		std::auto_ptr<OctTree> m_right_front_down;
-		std::auto_ptr<OctTree> m_right_back_up;
-		std::auto_ptr<OctTree> m_right_back_down;
-		std::auto_ptr<OctTree> m_left_front_up;
-		std::auto_ptr<OctTree> m_left_front_down;
-		std::auto_ptr<OctTree> m_left_back_up;
-		std::auto_ptr<OctTree> m_left_back_down;
-		OctTree* m_parent;
-		AxisAlignedBox m_bbox;
-		int m_face_count;
+		std::unique_ptr<OctTree> m_right_front_up;
+		std::unique_ptr<OctTree> m_right_front_down;
+		std::unique_ptr<OctTree> m_right_back_up;
+		std::unique_ptr<OctTree> m_right_back_down;
+		std::unique_ptr<OctTree> m_left_front_up;
+		std::unique_ptr<OctTree> m_left_front_down;
+		std::unique_ptr<OctTree> m_left_back_up;
+		std::unique_ptr<OctTree> m_left_back_down;						
 		FaceList m_face_list;
-		//VertexList vertexList;
-		bool m_is_finale;
-		
+		//VertexList vertexList;		
+
 	public:
-		OctTree(OctTree* parent = 0);
-		OctTree(const OctTree& tree);		
-		void SetData(const FaceList& fl, const VertexList& vl);        
+        OctTree(OctTree* parent = 0);
+		OctTree(const OctTree& tree);
+		void SetData(const FaceList& fl, const VertexList& vl);
 		OctTree* Build(const FaceList& fl, const VertexList& vertexList);
 		FaceList Cross(const Line3D& line);
 		FaceList CrossAll(const Line3D& line) const;
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+		void Save(System::Buffer* buffer) const;
+		void Load(System::Buffer* buffer);
 	};
 }
 

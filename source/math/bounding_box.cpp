@@ -8,100 +8,106 @@
 
 namespace Math
 {
-	bool BoundingBox::Save(std::ostream& stream) const
-	{
-		m_center_of_mass.Save(stream);
-		m_center.Save(stream);
-		m_r.Save(stream);
-		m_s.Save(stream);
-		m_t.Save(stream);
-		for (int i = 0; i < 6; ++i)
-			m_plane[i].Save(stream);
-		return true;
-	}
+    void BoundingBox::Save(System::Buffer *buffer) const
+    {
+        m_center_of_mass.Save(buffer);
+        m_center.Save(buffer);
+        m_r.Save(buffer);
+        m_s.Save(buffer);
+        m_t.Save(buffer);
+        for (int i = 0; i < 6; ++i)
+            m_plane[i].Save(buffer);
+    }
 
-	bool BoundingBox::Load(std::istream& stream)
-	{
-		m_center_of_mass.Load(stream);
-		m_center.Load(stream);
-		m_r.Load(stream);
-		m_s.Load(stream);
-		m_t.Load(stream);
-		for (int i = 0; i < 6; ++i)
-			m_plane[i].Load(stream);
-		return true;
-	}
+    void BoundingBox::Load(System::Buffer *buffer)
+    {
+        m_center_of_mass.Load(buffer);
+        m_center.Load(buffer);
+        m_r.Load(buffer);
+        m_s.Load(buffer);
+        m_t.Load(buffer);
+        for (int i = 0; i < 6; ++i)
+            m_plane[i].Load(buffer);
+    }
 
-	bool BoundingBox::Create(const float* vertex, int count, unsigned vertex_size)
-	{
-		//	check input data
-		if (vertex == nullptr || count == 0 || vertex_size == 0)
-			return (out_error() << "Bad arguments" << std::endl, false);
-		
-		//	find average of the vertices
-		m_center_of_mass = CalculateAverage(vertex, count, vertex_size);
+    bool BoundingBox::Create(const std::vector<vec3>& vertex)
+    {
+        //	check input data
+        if (vertex.empty())
+            return (out_error() << "Bad arguments" << std::endl, false);
 
-		if (!CalculateNativeAxis(vertex, count, vertex_size, m_r, m_s, m_t))
-			return (out_error() << "Can't create bounding box" << std::endl, false);
+        //	find average of the vertices
+        m_center_of_mass = CalculateAverage(vertex);
 
-		//	find plane distances
-		float d[6];
+        if (!CalculateNativeAxis(vertex, m_r, m_s, m_t))
+            return (out_error() << "Can't create bounding box" << std::endl, false);
 
-		//	init distances with appropriate values
-		const vec3 v(vertex[0], vertex[1], vertex[2]);
-		d[0] = v.Dot(m_r);
-		d[1] = v.Dot(m_r);
-		
-		d[2] = v.Dot(m_s);
-		d[3] = v.Dot(m_s);
+        //	find plane distances
+        float d[6];
 
-		d[4] = v.Dot(m_t);
-		d[5] = v.Dot(m_t);
-		
-		for (int i = 0; i < count; ++i)
-		{
-			const vec3 v(vertex[i*(vertex_size/sizeof(float)) + 0], vertex[i*(vertex_size/sizeof(float)) + 1], vertex[i*(vertex_size/sizeof(float)) + 2]);
-			
-			float r = m_r.Dot(v);
-			if (d[0] > r)
-				d[0] = r;
-			if (d[1] < r)
-				d[1] = r;
+        //	init distances with appropriate values
+        const vec3 v = vertex.front();
+        d[0] = v.Dot(m_r);
+        d[1] = v.Dot(m_r);
 
-			float s = m_s.Dot(v);
-			if (d[2] > s)
-				d[2] = s;
-			if (d[3] < s)
-				d[3] = s;
+        d[2] = v.Dot(m_s);
+        d[3] = v.Dot(m_s);
 
-			float t = m_t.Dot(v);
-			if (d[4] > t)
-				d[4] = t;
-			if (d[5] < t)
-				d[5] = t;
-		}
+        d[4] = v.Dot(m_t);
+        d[5] = v.Dot(m_t);
 
-		//	find natural planes
-		m_plane[0].Set(m_r, -d[0]);
-		m_plane[1].Set(-m_r, d[1]);
-		m_plane[2].Set(m_s, -d[2]);
-		m_plane[3].Set(-m_s, d[3]);
-		m_plane[4].Set(m_t, -d[4]);
-		m_plane[5].Set(-m_t, d[5]);
+        for (auto v : vertex)
+        {
+            float r = m_r.Dot(v);
+            if (d[0] > r)
+                d[0] = r;
+            if (d[1] < r)
+                d[1] = r;
 
-		//	find bbox center
-		{
-			float a = -(d[0] + d[1]) / 2.0f;
-			float b = -(d[2] + d[3]) / 2.0f;
-			float c = -(d[4] + d[5]) / 2.0f;
+            float s = m_s.Dot(v);
+            if (d[2] > s)
+                d[2] = s;
+            if (d[3] < s)
+                d[3] = s;
 
-			m_center = a*m_r + b*m_s + c*m_t;
+            float t = m_t.Dot(v);
+            if (d[4] > t)
+                d[4] = t;
+            if (d[5] < t)
+                d[5] = t;
+        }
 
-			m_r *= (d[1] - d[0]);
-			m_s *= (d[3] - d[2]);
-			m_t *= (d[5] - d[4]);
-		}
+        //	find natural planes
+        m_plane[0].Set(m_r, -d[0]);
+        m_plane[1].Set(-m_r, d[1]);
+        m_plane[2].Set(m_s, -d[2]);
+        m_plane[3].Set(-m_s, d[3]);
+        m_plane[4].Set(m_t, -d[4]);
+        m_plane[5].Set(-m_t, d[5]);
 
-		return true;
-	}
+        //	find bbox center
+        {
+            float a = (d[0] + d[1]) / 2.0f;
+            float b = (d[2] + d[3]) / 2.0f;
+            float c = (d[4] + d[5]) / 2.0f;
+
+            m_center = a*m_r + b*m_s + c*m_t;
+
+            m_r *= (d[1] - d[0]);
+            m_s *= (d[3] - d[2]);
+            m_t *= (d[5] - d[4]);
+
+            m_min_corner = m_center - m_r * 0.5f - m_s * 0.5f - m_t * 0.5f;
+        }
+
+        return true;
+    }
+
+    const BoundingSphere BoundingBox::ToBoundingSphere()
+    {
+        std::vector<vec3> p {m_min_corner, m_min_corner + m_r + m_s + m_t, m_min_corner + m_r, m_min_corner + m_s};
+        BoundingSphere s;
+        s.Create(p);
+        return s;
+    }
 }

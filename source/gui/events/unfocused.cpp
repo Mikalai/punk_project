@@ -9,6 +9,6 @@ namespace GUI
 
 	System::string SetUnFocusedEvent::ToString()
 	{
-		return System::string::Format(L"Code: %d; Type: UNFOCUSED", eventCode);
+        return System::string("Code: {0}; Type: UNFOCUSED").arg(eventCode);
 	}
 }

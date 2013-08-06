@@ -7,20 +7,24 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		class PUNK_ENGINE GridObject : public VertexArrayObject2<GL_TRIANGLES, COMPONENT_POSITION|
-			COMPONENT_NORMAL|
-			COMPONENT_TEXTURE|
-			COMPONENT_FLAG>
+		class PUNK_ENGINE GridObject : public VertexArrayObject2<GL_TRIANGLES, 
+			Vertex<VertexComponent::Position, 
+				VertexComponent::Normal, 
+				VertexComponent::Texture0, 
+				VertexComponent::Flag>>
 		{
+            typedef VertexArrayObject2<GL_TRIANGLES,
+            Vertex<VertexComponent::Position,
+                VertexComponent::Normal,
+                VertexComponent::Texture0,
+                VertexComponent::Flag>> Base;
+
 			enum { PrimitiveType = GL_TRIANGLES };
-			enum { VertexType = COMPONENT_POSITION|
-				COMPONENT_NORMAL|
-				COMPONENT_TEXTURE|
-				COMPONENT_FLAG};
+			static int64_t VertexCode;
 
 		public:
 
-			GridObject::GridObject() {}
+            GridObject(VideoDriver* driver) : Base(driver) {}
 
 			virtual void Cook(float width, float height, unsigned hor_slices, unsigned vert_slices);
 

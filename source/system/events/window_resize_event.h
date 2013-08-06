@@ -6,7 +6,7 @@
 
 namespace System
 {
-	class PUNK_ENGINE WindowResizeEvent : public Event, public Poolable<WindowResizeEvent>
+	class PUNK_ENGINE_API WindowResizeEvent : public Event, public Poolable<WindowResizeEvent>
     {        
         WindowResizeEvent(const WindowResizeEvent&);
     public:

@@ -9,20 +9,20 @@
 
 namespace Virtual
 {
-	class PUNK_ENGINE TerrainRawDataSource
+	class PUNK_ENGINE_API TerrainRawDataSource
 	{
 	public:
 		void SetRawFile(const System::string& filename) { m_raw_file = filename; }
 		const System::string& GetRawFile() const { return m_raw_file; }
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+		void Save(System::Buffer* buffer) const;
+		void Load(System::Buffer* buffer);
 
 	private:
 		System::string m_raw_file;
 	};
 
-	class PUNK_ENGINE TerrainCell
+	class PUNK_ENGINE_API TerrainCell
 	{
 	public:
 		TerrainCell();
@@ -45,8 +45,8 @@ namespace Virtual
 		void SetRawDataSource(const TerrainRawDataSource& value) { m_source = value; }
 		const TerrainRawDataSource& GetRawDataSource() const { return m_source; }
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+		void Save(System::Buffer* buffer) const;
+		void Load(System::Buffer* buffer);
 
 		/**
 		*	This method is used by the main thread, when data is needed.

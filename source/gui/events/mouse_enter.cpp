@@ -9,7 +9,6 @@ namespace GUI
 
 	System::string MouseEnterEvent::ToString()
 	{
-		return System::string::Format(L"Code: %d; Type: MOUSE_ENTER",
-			eventCode);
+        return System::string("Code: {0}; Type: MOUSE_ENTER").arg(eventCode);
 	}
 }

@@ -10,7 +10,7 @@
 //namespace System
 //{
 //	template<>
-//	class Policy<OpenGL::Texture2D>
+//	class Policy<Texture2D>
 //	{
 //	public:
 //		static const System::string GetResourceFile() { return L"resource"; }
@@ -24,7 +24,7 @@
 //
 //namespace OpenGL
 //{
-//	class PUNK_ENGINE Texture2DManager : public System::ResourceManager2<Texture2D, System::Policy>
+//	class PUNK_ENGINE_API Texture2DManager : public System::ResourceManager2<Texture2D, System::Policy>
 //	{
 //		Texture2DManager(const Texture2DManager&);
 //		Texture2DManager& operator = (const Texture2DManager&);

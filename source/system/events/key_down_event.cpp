@@ -9,10 +9,8 @@ namespace System
 
 	string KeyDownEvent::ToString()
 	{
-		return string::Format(L"Code: %d; Type: KEY_DOWN; Key: %d; Repeat: %d; Scancode: %d \
-IsExtended: %s; PrevState: %s; TransitionState: %s", eventCode, key,
-							   repeat_count, scan_code, isExtended ? L"TRUE" : L"FALSE",
-							   prevState ? L"TRUE" : L"FALSE",
-							   transitionState ? L"TRUE" : L"FALSE");
+        return string("Code: {0}; Type: KEY_DOWN; Key: {1}; Repeat: {2}; Scancode: {3}; IsExtended: {4}; PrevState: {5}; TransitionState: {6}")
+                .arg(eventCode).arg(key).arg(repeat_count).arg(scan_code).arg(isExtended ? L"TRUE" : L"FALSE").arg(prevState ? L"TRUE" : L"FALSE")
+                .arg(transitionState ? L"TRUE" : L"FALSE");
 	}
 }

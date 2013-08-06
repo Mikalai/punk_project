@@ -1,12 +1,12 @@
 #include "fs_skinning.h"
 #include "../../../../../system/environment.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
 		FragmentShaderSkinning::FragmentShaderSkinning()
-			: Shader(SHADER_FRAGMENT)
+			: Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"skinning_330.frag");
 		}

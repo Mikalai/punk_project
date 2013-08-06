@@ -1,17 +1,21 @@
+#ifdef __gnu_linux__
+#include <limits.h>
+#endif
+
 #include "async_loader.h"
 #include "data_loader.h"
 #include "data_processor.h"
 
 namespace System
 {
-	std::auto_ptr<AsyncLoader> AsyncLoader::m_instance;
+	std::unique_ptr<AsyncLoader> AsyncLoader::m_instance;
 
 	AsyncLoader* AsyncLoader::Instance()
 	{
 		if (!m_instance.get())
 		{
 			m_instance.reset(new AsyncLoader);
-			m_instance->InitAsyncLoading(1);
+			//m_instance->InitAsyncLoading(1);
 		}
 		return m_instance.get();
 	}
@@ -21,26 +25,43 @@ namespace System
 		m_instance.reset(0);
 	}
 
-	unsigned __stdcall IOThread(void* data)
-	{
-		if (data == nullptr)
-			return 0;
-		return reinterpret_cast<AsyncLoader*>(data)->FileIOThreadProc();
-	}
+#ifdef _WIN32
+    unsigned PUNK_STDCALL IOThread(void* data)
+    {
+        if (data == nullptr)
+            return 0;
+        return reinterpret_cast<AsyncLoader*>(data)->FileIOThreadProc();
+    }
 
-	unsigned __stdcall ProcessThread(void* data)
+	unsigned PUNK_STDCALL ProcessThread(void* data)
 	{
 		if (data == nullptr)
 			return 0;
 		return reinterpret_cast<AsyncLoader*>(data)->ProcessingThreadProc();
 	}
+#elif defined __gnu_linux__
+    void* ProcessThread(void* data)
+    {
+        if (data == nullptr)
+            return 0;
+        return (void*)reinterpret_cast<AsyncLoader*>(data)->ProcessingThreadProc();
+    }
+
+    void* IOThread(void* data)
+    {
+        if (data == nullptr)
+            return 0;
+        return (void*)reinterpret_cast<AsyncLoader*>(data)->FileIOThreadProc();
+    }
+
+#endif
 
 	bool AsyncLoader::InitAsyncLoading(int num_process_threads)
 	{
-		m_global_done_flag = false;		
-		m_io_thread_semaphore.Create(LONG_MAX);
+		m_global_done_flag = false;
+        m_io_thread_semaphore.Create(LONG_MAX);
 		m_process_thread_semaphore.Create(LONG_MAX);
-		
+
 		m_process_threads.resize(num_process_threads);
 		for (auto it = m_process_threads.begin(); it != m_process_threads.end(); ++it)
 		{
@@ -54,8 +75,8 @@ namespace System
 	}
 
 	/**
-	*	This method initiates process of loading data from hard drive 
-	*	that finaly should lead to the uploading data to the device 
+	*	This method initiates process of loading data from hard drive
+	*	that finaly should lead to the uploading data to the device
 	*	memory
 	*/
 	int AsyncLoader::AddWorkItem(AbstractDataLoader* loader, AbstractDataProcessor* processor, unsigned* result)
@@ -67,7 +88,7 @@ namespace System
 
 		//	create initial request
 		ResourceRequest request;
-		request.m_loader = loader;		
+		request.m_loader = loader;
 		request.m_processor = processor;
 		request.m_result = result;
 		request.m_valid_flag = true;
@@ -76,7 +97,7 @@ namespace System
 		request.m_on_end_data = nullptr;
 
 		//	add request to input queue
-		m_io_queue_mutex.Lock();		
+		m_io_queue_mutex.Lock();
 		m_io_queue.push_back(request);
 		res = (int)m_io_queue.size() - 1;
 		m_io_queue_mutex.Unlock();
@@ -89,7 +110,7 @@ namespace System
 
 	/*
 	*	This method works in separate thread and can load
-	*	data from hard driver using data loader 
+	*	data from hard driver using data loader
 	*	and can upload data from host memory to device memory
 	*	using data processor
 	*/
@@ -112,21 +133,21 @@ namespace System
 			m_io_queue.pop_front();
 			m_io_queue_mutex.Unlock();
 
-			//	check requested operation			
+			//	check requested operation
 			//	LOAD - from hard drive data loading
-			if (ResourceRequest::LOAD == request.m_task)	
+			if (ResourceRequest::LOAD == request.m_task)
 			{
 				//	check if the request is valid
 				if (request.m_valid_flag)
 				{
 					auto res = request.m_loader->Load();
 					//	if error, mark request as invalid
-					if (STREAM_ERROR == res)
+					if (StreamingStepResult::STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
 					}
 					//	if try again, mark add request to the io queue again, and continue
-					else if (STREAM_TRY_AGAIN == res)
+					else if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{
 						m_io_queue_mutex.Lock();
 						m_io_queue.push_back(request);
@@ -155,13 +176,13 @@ namespace System
 					//	try to copy data to device memory
 					auto res = request.m_processor->CopyToResource();
 					//	mark invalid is error
-					if (STREAM_ERROR == res)
+					if (StreamingStepResult::STREAM_ERROR == res)
 					{
 						//	if troubles invalidate request
 						request.m_valid_flag = false;
 					}
-					else if (STREAM_TRY_AGAIN == res)
-					{						
+					else if (StreamingStepResult::STREAM_TRY_AGAIN == res)
+					{
 						m_io_queue_mutex.Lock();
 						m_io_queue.push_back(request);
 						m_io_queue_mutex.Unlock();
@@ -210,21 +231,21 @@ namespace System
 			if (request.m_valid_flag)
 			{
 				void* data = nullptr;
-				unsigned size = 0;
+                unsigned size = 0;
 				//	decompress data using loader
-				auto res = request.m_loader->Decompress(&data, &size);				
+				auto res = request.m_loader->Decompress(&data, &size);
 				//	if all ok continue decompression
-				if (STREAM_OK == res)
+				if (StreamingStepResult::STREAM_OK == res)
 				{
 					// process data using processor
-					res = request.m_processor->Process(data, size); 					
+					res = request.m_processor->Process(data, size);
 					//	if failed set request is invalid
-					if (STREAM_ERROR == res)
-					{						
+					if (StreamingStepResult::STREAM_ERROR == res)
+					{
 						request.m_valid_flag = false;
 					}
 					//	try again if required
-					else if (STREAM_TRY_AGAIN == res)
+					else if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{
 						m_process_queue_mutex.Lock();
 						m_process_queue.push_back(request);
@@ -233,21 +254,21 @@ namespace System
 					}
 				}
 				//	try again if required
-				else if (res == STREAM_TRY_AGAIN)
+				else if (res == StreamingStepResult::STREAM_TRY_AGAIN)
 				{
 					m_process_queue_mutex.Lock();
 					m_process_queue.push_back(request);
 					m_process_queue_mutex.Unlock();
-					m_process_thread_semaphore.Release();				
+					m_process_thread_semaphore.Release();
 				}
 				//	if decompress failed set request as invalid
-				else if (res == STREAM_ERROR)
+				else if (res == StreamingStepResult::STREAM_ERROR)
 				{
 					request.m_valid_flag = false;
 				}
 			}
-			
-			//	lock request, that means we are gonna copy data from 
+
+			//	lock request, that means we are gonna copy data from
 			//	host to device in the render thread (main thread)
 			request.m_task = ResourceRequest::LOCK;
 
@@ -287,15 +308,15 @@ namespace System
 					//	try to lock is request is still valid
 					auto res = request.m_processor->LockDeviceObject();
 					//	if there was not enough resource now, try again later
-					if (STREAM_TRY_AGAIN == res)
+					if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{
 						m_render_queue_mutex.Lock();
 						m_render_queue.push_back(request);
 						m_render_queue_mutex.Unlock();
 						continue;
-					} 
+					}
 					//	if it was a complete fail, just mark this request is not valid
-					else if (STREAM_ERROR == res)
+					else if (StreamingStepResult::STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
 					}
@@ -316,16 +337,16 @@ namespace System
 			//	if task is unlock, it means that we have finished loading
 			//	and cooking resource
 			else if (ResourceRequest::UNLOCK == request.m_task)
-			{				
+			{
 				if (request.m_valid_flag)
 				{
 					//	if object is valid, unloc resource
-					auto res = request.m_processor->UnlockDeviceObject();					
-					if (STREAM_ERROR == res)
+					auto res = request.m_processor->UnlockDeviceObject();
+					if (StreamingStepResult::STREAM_ERROR == res)
 					{
 						request.m_valid_flag = false;
 					}
-					else if (STREAM_TRY_AGAIN == res)
+					else if (StreamingStepResult::STREAM_TRY_AGAIN == res)
 					{
 						m_render_queue_mutex.Lock();
 						m_render_queue.push_back(request);
@@ -368,7 +389,7 @@ namespace System
 		while (!m_io_done_flag || !m_process_done_flag)
 		{
 			//	Confusing a bit, but still should work
-			Sleep(100);
+            System::Thread::Sleep(100);
 		}
 
 		//	destroy all semaphores

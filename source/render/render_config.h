@@ -5,7 +5,7 @@
 
 namespace Render
 {
-	struct PUNK_ENGINE Config
+	struct PUNK_ENGINE_API Config
 	{
 		float visible_distance;
 		bool use_shadows;
@@ -14,4 +14,4 @@ namespace Render
 	};
 }
 
-#endif	_H_PUNK_RENDER_CONFIG
+#endif	// _H_PUNK_RENDER_CONFIG

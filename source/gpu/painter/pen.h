@@ -5,9 +5,9 @@
 
 namespace Math { class vec4; }
 
-namespace GPU
+namespace Gpu
 {
-	class PUNK_ENGINE Pen sealed
+	class PUNK_ENGINE_API Pen final
 	{
 	public:
 		Pen();
