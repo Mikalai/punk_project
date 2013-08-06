@@ -34,3 +34,5 @@ old
 log*
 ./project
 !./project/punk_projects_qt
+./projects/*build*
+./data/textures
