@@ -35,6 +35,25 @@ namespace System
         pthread_mutex_t m_mutex;
 #endif
 	};
+
+    struct ThreadMutexLock
+    {
+    public:
+        ThreadMutexLock(ThreadMutex& mutex, bool auto_lock = true)
+            : m_mutex(mutex)
+        {
+            if (auto_lock)
+                m_mutex.Lock();
+        }
+
+        void Lock() { m_mutex.Lock(); }
+        void Unlock() { m_mutex.Unlock(); }
+
+        ~ThreadMutexLock() { m_mutex.Unlock(); }
+
+    private:
+        ThreadMutex& m_mutex;
+    };
 }
 
 #endif // _H_PUNK_SYSMTE_THREAD_MUTEX

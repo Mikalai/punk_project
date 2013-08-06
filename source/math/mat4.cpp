@@ -377,7 +377,8 @@ namespace Math
 
     const vec3 operator * (const mat4& m, const vec3& v)
     {
-        return (m * vec4(v[0], v[1], v[2], float(1))).XYZ();
+        auto r = m * vec4(v[0], v[1], v[2], float(1));
+        return vec3(r[0] / r[3], r[1] / r[3], r[2] / r[3]);
     }
 
 
@@ -396,5 +397,21 @@ namespace Math
         for (int i = 0; i < 16; i++)
             res[i] = m[i]*v;
         return res;
+    }
+
+    void mat4::Save(System::Buffer* buffer) const
+    {
+        for (int i = 0; i != 16; ++i)
+        {
+            buffer->WriteReal32(m[i]);
+        }
+    }
+
+    void mat4::Load(System::Buffer* buffer)
+    {
+        for (int i = 0; i != 16; ++i)
+        {
+            m[i] = buffer->ReadReal32();
+        }
     }
 }

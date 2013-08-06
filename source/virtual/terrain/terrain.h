@@ -31,8 +31,8 @@ namespace Virtual
 		void SetOrigin(const Math::vec2& value) { m_core.m_origin = value; }
 		const Math::vec2& GetOrigin() const { return m_core.m_origin; }
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+//		virtual void Save(System::Buffer* buffer) const;
+//		virtual void Load(System::Buffer* buffer);
 
 		const System::string ToString() const;
 

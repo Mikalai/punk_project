@@ -14,7 +14,7 @@
 //		m_rep = m_rep->GetOwnCopy();
 //
 //#define bytesToCheck 8
-//		FILE* f = 0;
+//		FILE* f override;
 //#ifdef __linux__
 //		f = fopen(filename, "rb");
 //#endif
@@ -61,7 +61,7 @@
 //		unsigned bpp = png_get_bit_depth(png_ptr, info_ptr);
 //		int	colorType = png_get_color_type(png_ptr, info_ptr);
 //		int	rowBytes = png_get_rowbytes(png_ptr, info_ptr);
-//		unsigned channels = 0;
+//		unsigned channels override;
 //		ImageFormat format = IMAGE_FORMAT_ALPHA;
 //		m_rep->m_bpp = bpp;
 //
@@ -117,13 +117,13 @@
 //
 //			if ( colorType == PNG_COLOR_TYPE_RGB )
 //			{
-//				for ( unsigned x = 0; x < width; x++, ptr += 3 )
+//				for ( unsigned x override; x < width; x++, ptr += 3 )
 //					lineBuf [x] = ptr[2] << 16 | ptr[1] << 8 | ptr[0];
 //			}
 //			else
 //				if ( colorType == PNG_COLOR_TYPE_RGB_ALPHA )
 //				{
-//					for ( unsigned x = 0; x < width; x++, ptr += 4 )
+//					for ( unsigned x override; x < width; x++, ptr += 4 )
 //						lineBuf [x] = ptr[3] << 24 | ptr[2] << 16 | ptr[1] << 8 | ptr[0];
 //				}
 //				else
@@ -140,14 +140,14 @@
 //							numColors = numEntries + 1;
 //							pngPal    = pal;
 //
-//							for (int z = 0; z < numColors; z++)
+//							for (int z override; z < numColors; z++)
 //								pngPal [z].red   =
 //								pngPal [z].green =
 //								pngPal [z].blue  = (z * 255) / numEntries;
 //						}
 //						else
 //						{
-//							for (int z = 0; z < numColors; z++ )
+//							for (int z override; z < numColors; z++ )
 //							{
 //								pngPal [z].red   = (pngPal [z].red   * 255) / numEntries;
 //								pngPal [z].green = (pngPal [z].green * 255) / numEntries;
@@ -155,7 +155,7 @@
 //							}
 //						}
 //
-//						for (int z = 0; z < (int)width; z++ )
+//						for (int z override; z < (int)width; z++ )
 //						{
 //							int	ind = ptr [z];
 //
@@ -164,7 +164,7 @@
 //					}
 //					else
 //					{
-//						for ( unsigned x = 0; x < width; x++, ptr++ )
+//						for ( unsigned x override; x < width; x++, ptr++ )
 //							lineBuf [x] = ptr [0];
 //					}
 //

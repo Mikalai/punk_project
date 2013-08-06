@@ -2,12 +2,15 @@
 #include <memory>
 #include "point_light.h"
 #include "../../../utility/descriptors/light_desc.h"
+#include "../../../engine_objects.h"
 
 namespace Virtual
 {
+    PUNK_OBJECT_REG(PointLight, "Virtual.PointLight", PUNK_POINT_LIGHT, &Light::Info.Type);
+
 	PointLight::PointLight()
 	{
-		SetType(System::ObjectType::POINT_LIGHT);
+        Info.Add(this);
 	}
 
 	PointLight::PointLight(const Utility::LightDesc& value)
@@ -18,55 +21,57 @@ namespace Virtual
 		, m_linear_attenuation(value.m_linear_attenuation)
 		, m_quadratic_attenuation(value.m_quadratic_attenuation)
 	{
-		SetStorageName(value.m_name);
-		SetType(System::ObjectType::POINT_LIGHT);
+        Info.Add(this);
 	}
 
-	PointLight::~PointLight() {}
+    PointLight::~PointLight()
+    {
+        Info.Remove(this);
+    }
 
 	const Math::vec3 PointLight::GetPosition() const
 	{
 		return m_position;
 	}
 
-	bool PointLight::Save(std::ostream& stream) const
-	{
-		Light::Save(stream);
-		m_position.Save(stream);
-		m_color.Save(stream);
-		stream.write((char*)&m_distance, sizeof(m_distance));
-		stream.write((char*)&m_energy, sizeof(m_energy));
-		stream.write((char*)&m_linear_attenuation, sizeof(m_linear_attenuation));
-		stream.write((char*)&m_quadratic_attenuation, sizeof(m_quadratic_attenuation));
-		return true;
-	}
+//	bool PointLight::Save(std::ostream& stream) const
+//	{
+//		Light::Save(stream);
+//		m_position.Save(stream);
+//		m_color.Save(stream);
+//		stream.write((char*)&m_distance, sizeof(m_distance));
+//		stream.write((char*)&m_energy, sizeof(m_energy));
+//		stream.write((char*)&m_linear_attenuation, sizeof(m_linear_attenuation));
+//		stream.write((char*)&m_quadratic_attenuation, sizeof(m_quadratic_attenuation));
+//		return true;
+//	}
 
-	bool PointLight::Load(std::istream& stream)
-	{
-		Light::Load(stream);
-		m_position.Load(stream);
-		m_color.Load(stream);
-		stream.read((char*)&m_distance, sizeof(m_distance));
-		stream.read((char*)&m_energy, sizeof(m_energy));
-		stream.read((char*)&m_linear_attenuation, sizeof(m_linear_attenuation));
-		stream.read((char*)&m_quadratic_attenuation, sizeof(m_quadratic_attenuation));
-		return true;
-	}
+//	bool PointLight::Load(std::istream& stream)
+//	{
+//		Light::Load(stream);
+//		m_position.Load(stream);
+//		m_color.Load(stream);
+//		stream.read((char*)&m_distance, sizeof(m_distance));
+//		stream.read((char*)&m_energy, sizeof(m_energy));
+//		stream.read((char*)&m_linear_attenuation, sizeof(m_linear_attenuation));
+//		stream.read((char*)&m_quadratic_attenuation, sizeof(m_quadratic_attenuation));
+//		return true;
+//	}
 
-	PointLight* PointLight::CreateFromFile(const System::string& path)
-	{
-		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
-		if (!stream.is_open())
-			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
-		return CreateFromStream(stream);
-	}
+//	PointLight* PointLight::CreateFromFile(const System::string& path)
+//	{
+//		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
+//		if (!stream.is_open())
+//			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
+//		return CreateFromStream(stream);
+//	}
 
-	PointLight* PointLight::CreateFromStream(std::istream& stream)
-	{
-		std::unique_ptr<PointLight> node(new PointLight);
-		node->Load(stream);
-		return node.release();
-	}
+//	PointLight* PointLight::CreateFromStream(std::istream& stream)
+//	{
+//		std::unique_ptr<PointLight> node(new PointLight);
+//		node->Load(stream);
+//		return node.release();
+//	}
 
 	void PointLight::SetPosition(const Math::vec3& value)
 	{

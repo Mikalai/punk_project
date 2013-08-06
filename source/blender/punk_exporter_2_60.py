@@ -10,7 +10,6 @@ bl_info = {
 
 #mesh.materials['Material'].texture_slots['bump].texture.image.name
 import bpy
-import copy
 import punk_export
 import os
 
@@ -18,10 +17,7 @@ import os
 # invoke() function which calls the file selector.
 from bpy_extras.io_utils import ExportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty
-from copy import deepcopy
 from punk_export import *
-
-vertex_groups = {}
 
 #   export local matrix
 #
@@ -84,228 +80,18 @@ def export_collision_mesh(f, object):
         export_vertex_position(f, object.data)
         end_block(f)
     return
-#
-#   export bones
-#
-def export_bones(f):
-    armatures = bpy.data.armatures
-    if len(armatures) == 0:
-        return
-    start_block(f, "*armatures")
-    for armature in armatures:
-        export_armature(f, armature)
-    end_block(f)    #*armatures
-
-#
-#   export armature skeleton
-#
-def export_armature(object):
-    global text_offset
-    old = text_offset 
-    text_offset = 0
-    
-    file = path + "/" + object.data.name + ".armature"
-    print(file)
-    f = open(file, "w")
-    f.write("ARMATURETEXT\n")    
-    armature = object.data
-    start_block(f, armature.name)
-    for bone in armature.bones:
-        #   export bone
-        start_block(f, "*bone")
-        #   write bone name
-        export_string(f, "*name", bone.name)
-        #   write bone length
-        export_float(f, "*length", bone.length)
-        #   write bone parent
-        if bone.parent != None:
-            export_string(f, "*parent", bone.parent.name)
-        #   write bone matrix
-        export_mat4(f, "*local_matrix", bone.matrix_local)
-        end_block(f)    #*bone
-    end_block(f)    #*armature
-    f.close()        
-    
-    text_offset = old
-    return
-    
+   
 #
 #   used to export animation data
 #
-def export_action_ref(f, object):
-    if object.animation_data == None:
-        return
-    animation = object.animation_data
-    for track in animation.nla_tracks:        
-        for strip in track.strips:
-            used_actions.add(strip.name)
-    return
-
-#
-#   export all animation
-#    
-def export_actions(f):    
-    if not ("*action" in used_entities.keys()):
-        return
-    
-    start_block(f, "*actions")
-    for action_name in used_entities["*action"]:
-        action = bpy.data.actions[action_name]
-        export_action(f, action)
-    end_block(f) #*actions
-                
-    return
-
-#
-#   export one action
-#
-def export_action(f, action):
-    global text_offset
-    old = text_offset 
-    text_offset = 0
-    
-    file = path + "/" + action.name + ".action"
-    
-    print(file)
-    f = open(file, "w")
-
-    f.write("ACTIONTEXT\n")
-            
-    start_block(f, action.name)
-    
-    try:
-        start = int(action.frame_range[0])
-        end = int(action.frame_range[1])
-        start_block(f, "*timing")
-        make_offset(f)
-        f.write("%d %d\n" % (start, end))
-        end_block(f)    #*timing
-    except:
-        print("erorr in timings")            
-    
-    tracks = dict()        
-    
-    #   cook tracks from curves
-    #   keyframe points in each channel should be equal
-    for curve in action.fcurves:         
-        index = curve.array_index
-        track_name = curve.group.name                    
-        #   get all location tracks collection
-        object_tracks = tracks.get(track_name)
-        if object_tracks == None:
-            object_tracks = dict()
-            tracks[track_name] = object_tracks
-        
-        #   determine whether it is location or rotation.
-        #   rotation should be represented only as quaternion
-        if curve.data_path.rfind("location") != -1:
-            track = object_tracks.get(curve.data_path)
-            #   if no, than create new location tracks collection
-            if track == None:
-                track = list()
-                object_tracks[curve.data_path] = track 
-            #   [time, [x, y, z]]
-            etalon = [0, [0.0, 0.0, 0.0]]
-        if curve.data_path.rfind("rotation_quaternion") != -1:
-            track = object_tracks.get(curve.data_path)
-            if track == None:
-                track = list()
-                object_tracks[curve.data_path] = track
-            #   [time, [w, x, y, z]]
-            etalon = [0, [0.0, 0.0, 0.0, 0.0]]
-        #   extract points from curve
-        for key_index in range(0, len(curve.keyframe_points)):
-            #   define location to write data
-            #   if point already in track we use it
-            #   otherwise create new point and add it
-            #   to the track
-            if len(track) > key_index:
-                point = track[key_index]
-            else:
-                point = deepcopy(etalon)
-                track.append(point)     
-            #   retrieve cure           
-            key = curve.keyframe_points[key_index]
-            point[0] = int(key.co[0])
-            point[1][index] = key.co[1]
-      
-    #   export all tracks 
-    for object_name in tracks:
-        object_tracks = tracks[object_name]
-        #   write bone name that is affected by this curve
-        if list(object_tracks.keys())[0].rfind("bones") != -1:
-            start_block(f, "*bone_animation")
-            start_block(f, "*name")
-            make_offset(f)
-            f.write("%s\n" % object_name)
-            end_block(f)
-        #   otherwise just mark this track as suitable for any object
-        else:
-            start_block(f, "*object_animation")
-            
-        #   export all tracks for current object    
-        for track_name in object_tracks:
-            track = object_tracks[track_name]            
-            #   export position
-            if track_name.rfind("location") != -1:
-                start_block(f, "*position_track")
-                for point in track:
-                    make_offset(f)
-                    f.write("%5d %16f %16f %16f\n" % (point[0], point[1][0], point[1][1], point[1][2]))
-                end_block(f) #  *position_track
-            #   epxort rotation
-            if track_name.find("rotation_quaternion") != -1:
-                start_block(f, "*rotation_track")
-                for point in track:
-                    make_offset(f)
-                    f.write("%5d %16f %16f %16f %16f\n" % (point[0], point[1][0], point[1][1], point[1][2], point[1][3]))
-                end_block(f) #  *rotation_track
-        
-        end_block(f)    # *bone_animation or *object_animation
-    end_block(f)    # *action   
-    
-    text_offset = old
-    return
-
-def export_skin_mesh(object):
-    global text_offset
-    old = text_offset 
-    text_offset = 0
-    
-    file = path + "/" + object.data.name + ".skin"
-    print(file)
-    f = open(file, "w")
-    f.write("SKINMESHTEXT\n")
-    skin = object.data
-    start_block(f, skin.name)
-    export_world_matrix(f, object)
-    export_vertex_position(f, skin)
-    export_normals(f, skin)
-    export_faces(f, skin)
-    export_tex_coords(f, skin)
-    export_bones_weight(f, skin)
-    end_block(f)    #   skin_mesh        
-    f.close()        
-    
-    text_offset = old
-    return
-        
-def export_skin_meshes(f): 
-    if not ("*skin_mesh" in used_entities.keys()):
-        return    
-    start_block(f, "*skin_meshes")
-    for name in used_entities["*skin_mesh"]:
-        data = skins[name]
-        start_block(f, "*skin_mesh")
-        export_string(f, "*name", data.name)
-        export_vertex_position(f, data)
-        export_normals(f, data)
-        export_faces(f, data)
-        export_tex_coords(f, data)
-        export_bones_weight(f, data)
-        end_block(f)    #   skin_mesh        
-    end_block(f)    #   skin_meshes
-    return
+#def export_action_ref(f, object):
+#    if object.animation_data == None:
+#        return
+#    animation = object.animation_data
+#    for track in animation.nla_tracks:        
+#        for strip in track.strips:
+#            used_actions.add(strip.name)
+#    return
 
 #
 #   export sound
@@ -388,7 +174,7 @@ def export_point_lamp(f, lamp):
     end_block(f);
          
 def export_light(f, object):
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     export_bounding_box(f, object)
@@ -402,7 +188,7 @@ def export_transform(f, object):
     if object.parent_bone != '':
         start_block(f, "*bone_node")
         export_string(f, "*name", object.parent_bone)
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
     export_children(f, object)        
@@ -413,8 +199,8 @@ def export_transform(f, object):
 
 def export_portal(f, object):
     if type(object.data) == bpy.types.Mesh:        
-        start_block(f, "*portal_node")
-        export_string(f, "*name", object.name)
+        start_block(f, "*node")
+        export_string(f, "*name", object.name + ".portal")
         export_local_matrix(f, object)
         export_vertex_position(f, object.data)
         end_block(f)
@@ -425,18 +211,18 @@ def export_static_mesh_node(f, object):
         return
     mesh = object.data
     if not((mesh == None) or (len(mesh.materials) == 0)):
-        start_block(f, "*material_node")
+        start_block(f, "*node")
         push_entity("*material", mesh.materials[0])
-        export_string(f, "*name", mesh.materials[0].name)
+        export_string(f, "*name", mesh.materials[0].name + ".material")
      
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
-    export_bounding_box(f, object)
 
     if type(object.data) == bpy.types.Mesh:
-        start_block(f, "*static_mesh_node")
-        export_string(f, "*name", object.data.name)
+        start_block(f, "*node")
+        export_string(f, "*name", object.data.name + ".static")
+        export_bounding_box(f, object)
         push_entity("*static_mesh", object)
         end_block(f)    #   static_mesh_node        
     end_block(f) #  transform
@@ -450,45 +236,41 @@ def export_static_mesh_node(f, object):
 def export_skin_mesh_node(f, object): 
     if object.data == None:
         return
+    
     mesh = object.data
     if not((mesh == None) or (len(mesh.materials) == 0)):
-        start_block(f, "*material_node")
-        used_materials.add(mesh.materials[0].name)
-        export_string(f, "*name", mesh.materials[0].name)
+        start_block(f, "*node")
+        export_string(f, "*name", mesh.materials[0].name + ".material")
      
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
-    export_bounding_box(f, object)    
     export_local_matrix(f, object)
 
     if type(object.data) == bpy.types.Mesh:
-        start_block(f, "*skin_mesh_node")
-        export_string(f, "*name", object.data.name)
-        vertex_groups[object.data.name] = object.vertex_groups
-        used_skin_meshes.add(object.data.name)
-        export_skin_mesh(object)
+        start_block(f, "*node")
+        export_string(f, "*name", object.data.name + ".skin")
+        export_bounding_box(f, object)
+        push_entity("*skin_mesh", object)
         end_block(f)    #   *skin_mesh_node
     end_block(f) #  transform
+    
     if not((mesh == None) or (len(mesh.materials) == 0)):
-        end_block(f)    #   material
+        end_block(f)    #*material_node"
     return
 
 def export_armature_node(f, object):
     if object.data == None:
         return
      
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
-    export_bounding_box(f, object)
+    #export_bounding_box(f, object)
     
     armature = object.data
-    start_block(f, "*armature_node")    
-    export_string(f, "*name", armature.name)  
-    used_armatures.add(armature.name)  
-    export_armature(object)
-    #   export animation
-    export_action_ref(f, object)
+    start_block(f, "*node")    
+    export_string(f, "*name", armature.name + ".armature")  
+    push_entity("*armature", object)  
     #   export all children
     export_children(f, object)        
     end_block(f)    #*armature_node
@@ -547,7 +329,7 @@ def export_common(f, object):
     if object.parent != None:
         export_string(f, "*parent", object.parent.name)
         
-    export_bounding_box(f, object)
+    #export_bounding_box(f, object)
     export_world_matrix(f, object)
     export_local_matrix(f, object)
     export_parent_inverse_matrix(f, object)
@@ -565,12 +347,12 @@ def export_sun_node(f, object):
     if object.data == None:
         return
     
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
-    start_block(f, "*sun_node")
-    export_string(f, "*name", object.data.name)
+    start_block(f, "*node")
+    export_string(f, "*name", object.data.name + ".sun")
     push_entity("*sun", object)
     export_children(f, object)
     end_block(f)    #   sun
@@ -581,12 +363,12 @@ def export_navi_mesh_node(f, object):
     if object.data == None:
         return
     
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
-    start_block(f, "*navi_mesh_node")
-    export_string(f, "*name", object.data.name)
+    start_block(f, "*node")
+    export_string(f, "*name", object.data.name + ".navi_mesh")
     push_entity("*navi_mesh", object)
     export_children(f, object)
     end_block(f)    #   sun
@@ -600,16 +382,16 @@ def export_terrain_node(f, object):
     mesh = object.data
     
     if not((mesh == None) or (len(mesh.materials) == 0)):
-        start_block(f, "*material_node")
+        start_block(f, "*node")
         push_entity("*material", mesh.materials[0])
-        export_string(f, "*name", mesh.materials[0].name)
+        export_string(f, "*name", mesh.materials[0].name + ".material")
     
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
-    start_block(f, "*terrain_node")
-    export_string(f, "*name", object.data.name)
+    start_block(f, "*node")
+    export_string(f, "*name", object.data.name + ".terrain")
     push_entity("*terrain", object)
     export_children(f, object)
     end_block(f)    #   sun
@@ -626,16 +408,16 @@ def export_river_node(f, object):
     mesh = object.data
     
     if not((mesh == None) or (len(mesh.materials) == 0)):
-        start_block(f, "*material_node")
+        start_block(f, "*node")
         push_entity("*material", mesh.materials[0])
-        export_string(f, "*name", mesh.materials[0].name)
+        export_string(f, "*name", mesh.materials[0].name + ".material")
     
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
-    start_block(f, "*river_node")
-    export_string(f, "*name", object.data.name)
+    start_block(f, "*node")
+    export_string(f, "*name", object.data.name + ".river")
     push_entity("*river", object)
     export_children(f, object)
     end_block(f)    #   sun    
@@ -649,12 +431,12 @@ def export_path_node(f, object):
     if object.data == None:
         return
     
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
-    start_block(f, "*path_node")
-    export_string(f, "*name", object.data.name)
+    start_block(f, "*node")
+    export_string(f, "*name", object.data.name + ".path")
     push_entity("*path", object)
     export_children(f, object)
     end_block(f)    #   path
@@ -664,11 +446,11 @@ def export_path_node(f, object):
 def export_camera_node(f, object):
     if object.data == None:
        return
-    start_block(f, "*transform_node")
+    start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
     export_local_matrix(f, object)
-    start_block(f, "*camera_node")
-    export_string(f, "*name", object.data.name)
+    start_block(f, "*node")
+    export_string(f, "*name", object.data.name + ".camera")
     push_entity("*camera", object)
     export_children(f, object)
     end_block(f) # camer
@@ -733,6 +515,7 @@ def export_model(context, filepath, anim_in_separate_file):
         export_skin_meshes(f)
         export_materials(f)
         export_actions(f)
+        export_armatures(f)
         export_suns(f)
         export_navi_meshes(f)
         export_terrains(f)

@@ -46,10 +46,10 @@ public:
 		m_driver.SetClearColor(0.0, 0.0, 0, 1);
 
 		m_gui.reset(new GUI::Manager());
-		float y = 0.95;
-		float h = 0.05;
+		float y override.95;
+		float h override.05;
 		float w0 = 0.2;
-		float w1 = 0.2;
+		float w1 override.2;
 		float w2 = 1 - w1 - w0;
 		btn_load = new GUI::Button(w0, y, w1+w2, h, L"Load");
 		y -= h;

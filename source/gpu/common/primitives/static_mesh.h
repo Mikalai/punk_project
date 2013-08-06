@@ -5,7 +5,7 @@
 
 namespace Virtual { class StaticGeometry; }
 
-namespace GPU
+namespace Gpu
 {
     class VideoDriver;
 

@@ -35,7 +35,7 @@ namespace GUI
 		m_event_manager = desc.event_manager;
 		m_adapter = desc.adapter;
 
-		m_focusWidget = 0;
+        m_focusWidget = 0;
 		//m_render = new DefaultGUIRender();
 		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_MOVE, System::EventHandler(this, &Manager::OnMouseMove));
 		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_LBUTTON_DOWN, System::EventHandler(this, &Manager::OnMouseLeftDown));
@@ -43,7 +43,7 @@ namespace GUI
 		m_event_manager->SubscribeHandler(System::EVENT_IDLE, System::EventHandler(this, &Manager::OnIdle));
 		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_WHEEL, System::EventHandler(this, &Manager::OnMouseWheel));
 		m_event_manager->SubscribeHandler(System::EVENT_MOUSE_HOOVER, System::EventHandler(this, &Manager::OnMouseHoover));
-		m_event_manager->SubscribeHandler(System::EVENT_KEY_CHAR, System::EventHandler(this, &Manager::OnKeyChar));
+        m_event_manager->SubscribeHandler(System::EVENT_KEY_CHAR, System::EventHandler(this, &Manager::OnKeyChar));
 		m_event_manager->SubscribeHandler(System::EVENT_WINDOW_RESIZE, System::EventHandler(this, &Manager::OnResize));
 		m_event_manager->SubscribeHandler(System::EVENT_KEY_DOWN, System::EventHandler(this, &Manager::OnKeyDownHandler));
 		m_event_manager->SubscribeHandler(System::EVENT_KEY_UP, System::EventHandler(this, &Manager::OnKeyUpHandler));
@@ -137,7 +137,7 @@ namespace GUI
 	void Manager::OnMouseLeftDown(System::Event* event)
 	{
 		System::MouseLeftButtonDownEvent* e = static_cast<System::MouseLeftButtonDownEvent*>(event);
-		Widget* newFocuseWidget = 0;
+        Widget* newFocuseWidget = nullptr;
 		for (auto it = rootWidgets.begin(); it != rootWidgets.end(); it++)
 		{
 			if (!(*it)->IsVisible() || !(*it)->IsEnabled())

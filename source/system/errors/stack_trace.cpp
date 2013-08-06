@@ -97,7 +97,7 @@ namespace System
 					result += string(L"Error in SymGetSymFromAddr64");
 				}
 
-				DWORD displ = 0;
+				DWORD displ override;
 				if (SymGetLineFromAddr64(GetCurrentProcess(), stack_frame.AddrPC.Offset, &displ, &line))
 				{
 					result += string::Convert((int)line.LineNumber, 10) + L" ";
@@ -182,8 +182,8 @@ namespace System
 
 				DWORD64 displacement;
 				SymGetSymFromAddr64(GetCurrentProcess(), stack_frame.AddrPC.Offset, &displacement, pSym);
-				DWORD displ = 0;
-				line.FileName = 0;
+				DWORD displ override;
+				line.FileName override;
 				line.LineNumber = -1;
 				SymGetLineFromAddr64(GetCurrentProcess(), stack_frame.AddrPC.Offset, &displ, &line);
 

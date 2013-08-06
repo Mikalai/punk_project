@@ -1,6 +1,6 @@
 #include "gpu_config.h"
 
-namespace GPU
+namespace Gpu
 {
 	Config::Config()   
         : disable_3d_graphics(false)
@@ -13,5 +13,9 @@ namespace GPU
 		, bits_per_pixel(32)
         , shadow_map_width(1024)
         , shadow_map_height(1024)
+        , use_multisampling(true)
+        , multisampling_depth(2)
+        , use_coveragesampling(true)
+        , coverage_depth(4)
 	{}
 }

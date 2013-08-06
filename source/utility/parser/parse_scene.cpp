@@ -14,27 +14,13 @@ namespace Utility
             {
             case WORD_CLOSE_BRACKET:
             return true;
-            case WORD_LOCATION_INDOOR:
+            case WORD_NODE:
             {
-                std::unique_ptr<Scene::LocationIndoorNode> node(new Scene::LocationIndoorNode);
-                ParseLocationIndoor(buffer, node.get());
+                std::unique_ptr<Scene::Node> node(new Scene::Node);
+                ParseSceneNode(buffer, node.get());
                 value.Add(node.release());
             }
-            break;
-            case WORD_TRANSFORM_NODE:
-            {
-                std::unique_ptr<Scene::TransformNode> node(new Scene::TransformNode);
-                ParseTransformNode(buffer, node.get());
-                value.Add(node.release());
-            }
-            break;
-            case WORD_MATERIAL_NODE:
-            {
-                std::unique_ptr<Scene::MaterialNode> node(new Scene::MaterialNode);
-                ParseMaterialNode(buffer, node.get());
-                value.Add(node.release());
-            }
-            break;
+            break;            
             default:
                 throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);
             }

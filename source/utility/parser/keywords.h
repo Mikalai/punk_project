@@ -146,7 +146,9 @@ namespace Utility
         WORD_MESH,
         WORD_TERRAINTEXT,
         WORD_FLOW_SPEED,
-        WORD_FLOW_DIRECTION
+        WORD_FLOW_DIRECTION,
+        WORD_SKINMESH_TEXT,
+        WORD_NODE,
 	};
 
 	struct Record
@@ -298,7 +300,9 @@ namespace Utility
         { WORD_MESH,                    "*mesh" },
         { WORD_TERRAINTEXT,             "TERRAINTEXT" },
         { WORD_FLOW_SPEED,              "*flow_speed" },
-        { WORD_FLOW_DIRECTION,          "*flow_direction" }
+        { WORD_FLOW_DIRECTION,          "*flow_direction" },
+        { WORD_SKINMESH_TEXT,           "SKINMESHTEXT" },
+        { WORD_NODE,                    "*node" }
 	};
 }
 

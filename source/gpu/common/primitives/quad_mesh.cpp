@@ -5,7 +5,7 @@
 #else
 #endif	//	USE_OPENGL
 
-namespace GPU
+namespace Gpu
 {
 #ifdef USE_OPENGL
     using QuadObjectBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES, Vertex<VertexComponent::Position, VertexComponent::Normal, VertexComponent::Texture0>>;

@@ -9,7 +9,7 @@
 #include "../config.h"
 //#include "../opengl/driver.h"
 #include "../math/math.h"
-#include "../gpu/common/text_surface.h"
+#include "../gpu/common/texture/module.h"
 #include "events/interface.h"
 #include "../system/events/interface.h"
 
@@ -87,9 +87,9 @@ namespace GUI
         void Store(System::Buffer&) {}
         void Restore(System::Buffer&) {}
 
-        const GPU::Texture2D* GetTextTexture() const;
-        void SetBackgroundTexture(GPU::Texture2D* texture);
-        const GPU::Texture2D* GetBackgroundTexture() const;
+        const Gpu::Texture2D* GetTextTexture() const;
+        void SetBackgroundTexture(Gpu::Texture2D* texture);
+        const Gpu::Texture2D* GetBackgroundTexture() const;
 
         const Manager* GetManager() const;
         Manager* GetManager();
@@ -179,12 +179,12 @@ namespace GUI
         System::string m_font;
 
         //	should be deleted outside widget
-        GPU::Texture2D* m_background_texture;
+        Gpu::Texture2D* m_background_texture;
 
         void* m_any_data;
 
         //	should be deleted in destructor
-        GPU::TextSurface* m_text_texture;
+        Gpu::TextSurface* m_text_texture;
 
 
         /******************************************************************

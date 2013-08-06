@@ -8,10 +8,20 @@
 
 namespace AI
 {
-    class PUNK_ENGINE_API CurvePath : public Math::Curve, public System::Object, public System::Aspect<CurvePath*, System::string>
+    class PUNK_ENGINE_API CurvePath : public Math::Curve, public System::Object
     {
     public:
         CurvePath();
+        CurvePath(const CurvePath&) = delete;
+        CurvePath& operator = (const CurvePath&) = delete;
+        virtual ~CurvePath();
+
+        void SetName(const System::string& value);
+        const System::string& GetName() const;
+    private:
+        System::string m_name;
+    private:
+        PUNK_OBJECT(CurvePath);
     };
 }
 

@@ -3,7 +3,7 @@
 
 #include "../../error/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

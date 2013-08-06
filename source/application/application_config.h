@@ -10,7 +10,7 @@ namespace Punk
 {
 	struct Config
 	{
-		GPU::Config gpu_config;
+		Gpu::Config gpu_config;
 		Render::Config render_config;
 		Audio::Config audio_config;
 		Physics::Config physics_config;

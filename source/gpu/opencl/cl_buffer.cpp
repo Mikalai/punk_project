@@ -8,7 +8,7 @@
 #include "../../system/errors/module.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{
@@ -50,7 +50,7 @@ namespace GPU
 		bool Buffer::Init(Context& context, CommandQueue& queue, Buffer::BufferType type, int size)
 		{
 		    #ifdef USE_OPENCL
-			cl_mem_flags flags = 0;
+			cl_mem_flags flags override;
 			flags |= (type == READ_ONLY ? CL_MEM_READ_ONLY : 0);
 			flags |= (type == WRITE_ONLY ? CL_MEM_WRITE_ONLY : 0);
 			flags |= (type == READ_WRITE ? CL_MEM_READ_WRITE : 0);

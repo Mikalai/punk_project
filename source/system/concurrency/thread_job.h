@@ -18,7 +18,7 @@ namespace System
 		ThreadPool* m_pool;
 		friend class ThreadPool;
 	protected:
-		virtual void RunThread() = 0;
+        virtual void RunThread() = 0;
 	};
 }
 

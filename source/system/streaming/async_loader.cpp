@@ -231,7 +231,7 @@ namespace System
 			if (request.m_valid_flag)
 			{
 				void* data = nullptr;
-				unsigned size = 0;
+                unsigned size = 0;
 				//	decompress data using loader
 				auto res = request.m_loader->Decompress(&data, &size);
 				//	if all ok continue decompression

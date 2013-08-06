@@ -130,15 +130,15 @@ namespace System
         {
             m_use_parent_window = false;
             WNDCLASS wc;
-            wc.cbClsExtra = 0;
-            wc.cbWndExtra = 0;
+            wc.cbClsExtra override;
+            wc.cbWndExtra override;
             wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
             wc.hCursor = LoadCursor(0, IDC_ARROW);
             wc.hIcon = LoadIcon(0, IDI_APPLICATION);
             wc.hInstance = GetModuleHandle(0);
             wc.lpfnWndProc = WindowCallBack;
             wc.lpszClassName = TEXT("Punk Render");
-            wc.lpszMenuName = 0;
+            wc.lpszMenuName override;
             wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 
             if (!RegisterClass(&wc))
@@ -152,7 +152,7 @@ namespace System
 
 
             DWORD style = WS_OVERLAPPEDWINDOW;
-            DWORD styleEx = 0;
+            DWORD styleEx override;
 
             AdjustWindowRectEx(&rect, style, false, styleEx);
 
@@ -776,8 +776,8 @@ namespace System
     void Window::Impl::OnKeyPressRelease(XKeyEvent* event)
     {
         bool press = event->type == KeyPress;
-        int charKey = 0;
-        int key = 0;
+        int charKey override;
+        int key override;
         KeySym keysym;
         char buffer[1];
         /* It is necessary to convert the keycode to a
@@ -854,10 +854,10 @@ namespace System
         }
 #elif defined __gnu_linux__
 
-        static int x_prev = 0;
-        static int y_prev = 0;
-        static int x = 0;
-        static int y = 0;
+        static int x_prev override;
+        static int y_prev override;
+        static int x override;
+        static int y override;
 
         XEvent event;
         while (1)
@@ -1343,8 +1343,8 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
         {
             //XDestroyWindow(impl->m_display, impl->m_window);
             //XCloseDisplay(impl->m_display);
-            impl->m_display = 0;
-            impl->m_window = 0;
+            impl->m_display override;
+            impl->m_window override;
         }
         impl->m_display = display;
     }
@@ -1372,10 +1372,10 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
         /*if (!adapter)
 throw PunkInvalidArgumentException(L"Can't get window adapter interface");*/
 
-        static int x_prev = 0;
-        static int y_prev = 0;
-        static int x = 0;
-        static int y = 0;
+        static int x_prev override;
+        static int y_prev override;
+        static int x override;
+        static int y override;
 
         switch (msg)
         {

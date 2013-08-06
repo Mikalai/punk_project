@@ -23,7 +23,7 @@ namespace Math
 		LocationList& GetNeighbours() { return m_neighbours; }
 		const LocationList& GetNeighbours() const { return m_neighbours; }
 
-		virtual const std::string ToString() const = 0;
+        virtual const std::string ToString() const = 0;
 	private:
 		LocationList m_neighbours;
 		mutable AStarNode* m_node;
@@ -35,8 +35,8 @@ namespace Math
 	class Agent
 	{
 	public:
-		virtual double EstimateCost(const Location* a, const Location* b) = 0;
-		virtual double TraverseCost(const Location* a, const Location* b) = 0;
+        virtual double EstimateCost(const Location* a, const Location* b) = 0;
+        virtual double TraverseCost(const Location* a, const Location* b) = 0;
 	};
 
 	class AStarNode
@@ -47,7 +47,7 @@ namespace Math
 
 	public:
 		AStarNode(const Location* location);
-		~AStarNode() { if (m_location) m_location->m_node = 0; }
+        ~AStarNode() { if (m_location) m_location->m_node = nullptr; }
 		void SetCostFromStart(double cost) { m_cost_from_start = cost; }
 		double GetCostFromStart() const { return m_cost_from_start; }
 

@@ -8,7 +8,7 @@ namespace Virtual { class Armature; }
 
 namespace Math { class vec4; }
 
-namespace GPU
+namespace Gpu
 {
     class VideoDriver;
     class PUNK_ENGINE_API SkinMesh : public Renderable

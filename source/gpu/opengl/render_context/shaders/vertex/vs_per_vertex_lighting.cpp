@@ -3,7 +3,7 @@
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

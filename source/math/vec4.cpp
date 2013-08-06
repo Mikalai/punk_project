@@ -1,3 +1,4 @@
+#include "../system/buffer.h"
 #include "vec4.h"
 #include "vec3.h"
 
@@ -40,6 +41,57 @@ namespace Math
         return r;
     }
 
+    void vec4::Save(System::Buffer* buffer) const
+    {
+        for (int i = 0; i != 4; ++i)
+        {
+            buffer->WriteReal32(m_v[i]);
+        }
+    }
+
+    void vec4::Load(System::Buffer* buffer)
+    {
+        for (int i = 0; i != 4; ++i)
+        {
+            m_v[i] = buffer->ReadReal32();
+        }
+    }
+
+    const vec4 operator + (const vec4& a, const vec4& b)
+    {
+        return vec4(a[0] + b[0], a[1] + b[1], a[2] + b[2], a[3] + b[3]);
+    }
+
+    const vec4 operator - (const vec4& a, const vec4& b)
+    {
+        return vec4(a[0] - b[0], a[1] - b[1], a[2] - b[2], a[3] - b[3]);
+    }
+
+    const vec4 operator *(const vec4& a, float d)
+    {
+        return vec4(a[0] * d, a[1] * d, a[2] * d, a[3] * d);
+    }
+
+    const vec4 operator *(float d, const vec4& a)
+    {
+        return vec4(a[0] * d, a[1] * d, a[2] * d, a[3] * d);
+    }
+
+    const vec4 operator /(const vec4& a, double d)
+    {
+        return vec4(a[0] / d, a[1] / d, a[2] / d, a[3] / d);
+    }
+
+    bool operator ==(const vec4& a, const vec4& b)
+    {
+        return a[0] == b[0] && a[1] == b[1] && a[2] == b[2] && a[3] == b[3];
+    }
+
+    bool operator !=(const vec4& a, const vec4& b)
+    {
+        return !(a == b);
+    }
+
     ivec4::ivec4()
         : Vector4<int>()
     {}
@@ -58,4 +110,5 @@ namespace Math
     ivec4::ivec4(const Vector4<int>& vec)
         : Vector4<int>(vec)
     {}
+
 }

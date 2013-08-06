@@ -23,8 +23,9 @@
 #include "test19.h"
 #include "test20.h"
 #include "test0.h"
+#include "test21.h"
 
-static const int TestNumber = 19;
+static const int TestNumber = 21;
 
 int main()
 {
@@ -154,6 +155,12 @@ int main()
     else if (TestNumber == 20)
     {
         Test20::Test test;
+        test.Run();
+        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+    }
+    else if (TestNumber == 21)
+    {
+        Test21::Test test;
         test.Run();
         std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
     }

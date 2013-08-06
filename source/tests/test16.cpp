@@ -61,6 +61,19 @@ namespace Test16
                 int8_t p = 13;
                 std::wcout << s.arg(p).arg(p/2) << std::endl;
             }
+
+            {
+                System::string s = L"Hełło world šæźžćđš¶ŧŋ";
+                std::ofstream stream("test.string");
+                s.Save(stream);
+            }
+
+            {
+                std::ifstream stream("test.string");
+                System::string s;
+                s.Load(stream);
+                std::wcout << s << std::endl;
+            }
         }
         catch(System::PunkException& e)
         {

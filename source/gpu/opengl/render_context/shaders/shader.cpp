@@ -5,7 +5,7 @@
 #include "../rc_dynamic.h"
 #include <algorithm>
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -55,7 +55,7 @@ namespace GPU
                 GL_CALL(glGetShaderiv(m_shader_index, GL_INFO_LOG_LENGTH, &logLength));
                 std::vector<char> buffer(logLength);
                 GL_CALL(glGetShaderInfoLog(m_shader_index, logLength, NULL, &buffer[0]));
-                out_error() << L"Can't create vertex shader" << std::endl;
+                out_error() << L"Can't create vertex shader: " << std::endl << System::string(&buffer[0], buffer.size()) << std::endl;
 			}
 		}
 

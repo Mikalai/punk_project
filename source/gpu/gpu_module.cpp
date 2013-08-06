@@ -1,7 +1,7 @@
 #include "module.h"
 #include "opengl/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	bool GPU_INIT(const Config& data)
 	{

@@ -16,7 +16,7 @@ namespace System
 	void Mouse::Destroy()
 	{
 		delete m_instance;
-		m_instance = 0;
+        m_instance = 0;
 	}
 
 
@@ -73,6 +73,8 @@ namespace System
 		POINT p;
 		GetCursorPos(&p);
 		return p.x;
+#endif
+#ifdef __gnu_linux__
 #endif
 	}
 

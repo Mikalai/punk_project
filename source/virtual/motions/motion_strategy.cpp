@@ -12,29 +12,29 @@ namespace Virtual
 	MotionStrategy::~MotionStrategy()
 	{}
 
-	bool MotionStrategy::Save(std::ostream& stream) const
-	{
-		if (!System::Object::Save(stream))
-		{
-			out_error() << "Can't save motion strategy" << std::endl;
-			return false;
-		}
+//	bool MotionStrategy::Save(std::ostream& stream) const
+//	{
+//		if (!System::Object::Save(stream))
+//		{
+//			out_error() << "Can't save motion strategy" << std::endl;
+//			return false;
+//		}
 
-		stream.write((char*)&m_motion_type, sizeof(m_motion_type));
+//		stream.write((char*)&m_motion_type, sizeof(m_motion_type));
 
-		return true;
-	}
+//		return true;
+//	}
 
-	bool MotionStrategy::Load(std::istream& stream)
-	{
-		if (!System::Object::Load(stream))
-		{
-			out_error() << "Can't load motion strategy" << std::endl;
-			return false;
-		}
+//	bool MotionStrategy::Load(std::istream& stream)
+//	{
+//		if (!System::Object::Load(stream))
+//		{
+//			out_error() << "Can't load motion strategy" << std::endl;
+//			return false;
+//		}
 
-		stream.read((char*)&m_motion_type, sizeof(m_motion_type));
+//		stream.read((char*)&m_motion_type, sizeof(m_motion_type));
 
-		return true;
-	}
+//		return true;
+//	}
 }

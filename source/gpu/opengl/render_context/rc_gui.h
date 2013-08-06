@@ -30,7 +30,7 @@ namespace GPU
 			void Init() override;
 			void InitUniforms() override;
 			void BindParameters(const CoreState& pparams) override;
-			int64_t GetRequiredAttributesSet() const override;
+			int64_t GetRequiredAttributesSet() const= 0;
 			void Begin() override;
 			void End() override;
 		};

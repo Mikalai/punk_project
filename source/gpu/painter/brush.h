@@ -10,7 +10,7 @@ namespace Math
 	class mat2;
 }
 
-namespace GPU
+namespace Gpu
 {
 	class Texture2D;
 

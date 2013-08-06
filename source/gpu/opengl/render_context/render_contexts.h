@@ -18,7 +18,7 @@
 #include "rc_pftdl.h"
 #include "rc_dynamic.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -35,13 +35,13 @@ namespace GPU
 		class PUNK_ENGINE_API RenderContextGUI final : public RenderContextPolicy<VertexShaderGUI, FragmentShaderGUI, NoShader> {};
 #endif
 
-#ifdef USE_SOLID_TEXTURE_3D_RC
-		class PUNK_ENGINE_API RenderContextSolidTexture3D final
-				: public RenderContextPolicy<
-				ShaderCollection::VertexSolidTextured,
-				ShaderCollection::FragmentSolidTextured,
-				ShaderCollection::No> {};
-#endif	//	USE_SOLID_TEXTURE_3D_RC
+//#ifdef USE_SOLID_TEXTURE_3D_RC
+//		class PUNK_ENGINE_API RenderContextSolidTexture3D final
+//				: public RenderContextPolicy<
+//				ShaderCollection::VertexSolidTextured,
+//				ShaderCollection::FragmentSolidTextured,
+//				ShaderCollection::No> {};
+//#endif	//	USE_SOLID_TEXTURE_3D_RC
 
 //#ifdef USE_LIGHT_PER_VERTEX_DIFFUSE
 //		class PUNK_ENGINE_API RenderContextPerVertexDiffuseLight final
@@ -74,10 +74,6 @@ namespace GPU
 				ShaderCollection::FragmentLightPerFragmentDiffuse,
 				ShaderCollection::No> {};
 #endif	//	USE_LIGHT_PER_VERTEX_DIFFUSE
-
-#ifdef USE_SKINNING_RC
-		class PUNK_ENGINE_API RenderContextSkinning final : public RenderContextPolicy<VertexShaderSkinning, FragmentShaderSkinning, NoShader> {};
-#endif
 
 #ifdef USE_PAINTER_RC
 		class PUNK_ENGINE_API RenderContextPainter final : public RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> {};

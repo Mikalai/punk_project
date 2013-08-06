@@ -17,8 +17,8 @@ namespace Virtual
 
 	public:
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+		virtual void Save(System::Buffer* buffer) const;
+		virtual void Load(System::Buffer* buffer);
 
 		State GetState() const { return m_state; }
 		void SetState(State value) { m_state = value; }

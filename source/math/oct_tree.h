@@ -37,15 +37,15 @@ namespace Math
 		//VertexList vertexList;		
 
 	public:
-		OctTree(OctTree* parent = 0);
+        OctTree(OctTree* parent = 0);
 		OctTree(const OctTree& tree);
 		void SetData(const FaceList& fl, const VertexList& vl);
 		OctTree* Build(const FaceList& fl, const VertexList& vertexList);
 		FaceList Cross(const Line3D& line);
 		FaceList CrossAll(const Line3D& line) const;
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+		void Save(System::Buffer* buffer) const;
+		void Load(System::Buffer* buffer);
 	};
 }
 

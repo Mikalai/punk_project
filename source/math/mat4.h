@@ -13,6 +13,11 @@
 #include "vec4.h"
 #include "vec3.h"
 
+namespace System
+{
+    class Buffer;
+}
+
 namespace Math
 {
 	template<class T>
@@ -360,7 +365,7 @@ namespace Math
 			if ( fabs ( r1 [0] ) > fabs ( r0 [0 ] ) )
 				SWAP_ROWS ( r1, r0 );
 
-			if ( r0 [0] == 0 )
+            if ( r0 [0] == 0 )
 				return Matrix4x4<T>();
 
 			// eliminate first variable
@@ -385,28 +390,28 @@ namespace Math
 
 			s = r0[4];
 
-			if ( s != 0 )
+            if ( s != 0 )
 			{
 				r1[4] -= m1 * s; r2[4] -= m2 * s; r3[4] -= m3 * s;
 			}
 
 			s = r0[5];
 
-			if ( s != 0.0 )
+            if ( s != 0.0 )
 			{
 				r1[5] -= m1 * s; r2[5] -= m2 * s; r3[5] -= m3 * s;
 			}
 
 			s = r0[6];
 
-			if ( s != 0 )
+            if ( s != 0 )
 			{
 				r1[6] -= m1 * s; r2[6] -= m2 * s; r3[6] -= m3 * s;
 			}
 
 			s = r0[7];
 
-			if ( s != 0 )
+            if ( s != 0 )
 			{
 				r1[7] -= m1 * s; r2[7] -= m2 * s; r3[7] -= m3 * s;
 			}
@@ -418,7 +423,7 @@ namespace Math
 			if ( fabs ( r2 [1] ) > fabs ( r1 [1] ) )
 				SWAP_ROWS ( r2, r1 );
 
-			if ( r1 [1] == 0 )
+            if ( r1 [1] == 0 )
 				return Matrix4x4<T>();
 
 
@@ -459,7 +464,7 @@ namespace Math
 			if ( fabs ( r3 [2] ) > fabs ( r2 [2] ) )
 				SWAP_ROWS ( r3, r2 );
 
-			if ( r2 [2] == 0)
+            if ( r2 [2] == 0)
 				return Matrix4x4<T>();
 
 			// eliminate third variable
@@ -469,7 +474,7 @@ namespace Math
 				r3[7] -= m3 * r2[7];
 
 			// last check
-			if ( r3 [3] == 0 )
+            if ( r3 [3] == 0 )
 				return Matrix4x4<T>();
 
 
@@ -576,7 +581,7 @@ namespace Math
 			int RowLength = 4;
 			for (int i = 0; i < RowLength; i++)
 			{
-				for (int j = 0; j < RowLength; j++)
+                for (int j = 0; j < RowLength; j++)
 				{
 					if (i == j)
 						m[i * RowLength + j] = 1;
@@ -741,7 +746,7 @@ namespace Math
 	{
 		std::streamsize old = stream.width(8);
 		std::streamsize old_prec = stream.precision(5);
-		for (int row = 0; row < 4; ++row)
+        for (int row = 0; row < 4; ++row)
 		{
 			stream << Tab();
 			for (int col = 0; col < 4; ++col)
@@ -766,6 +771,8 @@ namespace Math
         static const mat4 CreateTargetCameraMatrix(const vec3& eye, const vec3& target, const vec3& up);
         static const mat4 CreatePerspectiveProjection(float fovy, float width, float height, float znear, float zfar);
         const mat4 Inversed() const;
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
     PUNK_ENGINE_API const mat4 operator + (const mat4& a, const mat4& b);

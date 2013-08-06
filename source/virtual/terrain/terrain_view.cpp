@@ -1,6 +1,6 @@
 #include <limits>
 #include "../../system/streaming/module.h"
-#include "../../gpu/common/texture2d.h"
+#include "../../gpu/common/module.h"
 #include "../../physics/module.h"
 #include "../../math/line3d.h"
 

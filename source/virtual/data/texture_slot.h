@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include "../../math/vec3.h"
 #include "../../string/string.h"
-#include "../../gpu/common/texture2d.h"
+#include "../../gpu/common/texture/module.h"
 
 namespace Virtual
 {
@@ -18,7 +18,7 @@ namespace Virtual
         {
             Cache(TextureSlot& slot);
             ~Cache();
-            GPU::Texture2D* GetTexture();
+            Gpu::Texture2D* GetTexture();
 
             /**
              * @brief Drop - removes data from GPU
@@ -28,7 +28,7 @@ namespace Virtual
             /**
              * @brief Update - sends data to GPU throug the specified driver
              */
-            void Update(GPU::VideoDriver* driver);
+            void Update(Gpu::VideoDriver* driver);
 
             /**
              * @brief IsOnGpu
@@ -43,7 +43,7 @@ namespace Virtual
             size_t GetMemoryGpuUsage() const;
 
         private:
-            GPU::Texture2D* m_texture;
+            Gpu::Texture2D* m_texture;
             TextureSlot& m_slot;
         };
 

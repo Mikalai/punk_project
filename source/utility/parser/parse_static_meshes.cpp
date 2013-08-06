@@ -21,8 +21,7 @@ namespace Utility
             case WORD_STATIC_MESH:
             {
                 std::unique_ptr<Virtual::StaticGeometry> mesh(new Virtual::StaticGeometry);
-                ParseStaticMesh(buffer, mesh.get());
-                Virtual::StaticGeometry::add(mesh->GetStorageName(), mesh.get());
+                ParseStaticMesh(buffer, mesh.get());                
                 mesh.release();
             }
                 break;

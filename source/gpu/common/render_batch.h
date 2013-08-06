@@ -4,7 +4,7 @@
 #include <list>
 #include "../../system/poolable.h"
 
-namespace GPU
+namespace Gpu
 {
 
     class CoreState;

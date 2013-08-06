@@ -1,6 +1,6 @@
 #include "fog.h"
 
-namespace GPU
+namespace Gpu
 {
 
 	FogDescription::FogDescription()

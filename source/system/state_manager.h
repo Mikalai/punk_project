@@ -32,7 +32,7 @@ namespace System
 		~StateManager()
 		{
 			delete m_current_state;
-			m_current_state = 0;
+            m_current_state = 0;
 			while (!m_states.empty())
 			{
 				delete m_states.top();

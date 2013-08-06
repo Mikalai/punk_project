@@ -66,7 +66,7 @@ namespace ImageModule
 //            m_component_type = type;
 //            m_size = m_width*m_height*m_channels*GetComponentSize(type);
 //			m_data.resize(m_size);
-//			//m_bit_depth = 0;
+//			//m_bit_depth override;
 //			//m_format = IMAGE_FORMAT_BAD;
 //			std::fill(m_data.begin(), m_data.end(), 0);
 //		}
@@ -87,25 +87,23 @@ namespace ImageModule
 //            std::copy(data, data + width_in_pixel*components_per_pixel*GetComponentSize(m_component_type), m_data.begin() + y*m_width*m_channels*GetComponentSize(m_component_type));
 		}
 
-		bool Save(std::ostream& stream) const
+        void Save(System::Buffer* buffer) const
 		{
-			stream.write(reinterpret_cast<const char*>(&m_width), sizeof(m_width));
-			stream.write(reinterpret_cast<const char*>(&m_height), sizeof(m_height));
-            stream.write(reinterpret_cast<const char*>(&m_channels), sizeof(m_channels));
-			stream.write(reinterpret_cast<const char*>(&m_data[0]), m_size);
-			return true;
+            buffer->WriteUnsigned32(m_width);
+            buffer->WriteUnsigned32(m_height);
+            buffer->WriteUnsigned32(m_channels);
+            buffer->WriteUnsigned32(m_size);
+            buffer->WriteBuffer(&m_data[0], m_size);
 		}
 
-        bool Load(std::istream&)
+        void Load(System::Buffer* buffer)
 		{			
-			//stream.read(reinterpret_cast<char*>(&m_descriptor), sizeof(m_descriptor));
-			//stream.read(reinterpret_cast<char*>(&m_width), sizeof(m_width));
-			//stream.read(reinterpret_cast<char*>(&m_height), sizeof(m_height));
-			//stream.read(reinterpret_cast<char*>(&m_components), sizeof(m_components));
-			//m_size = m_width*m_height*m_components*sizeof(Component);
-			//m_data.resize(m_size);
-			//stream.read(reinterpret_cast<char*>(&m_data[0]), m_size);
-			return false;
+            m_width = buffer->ReadSigned32();
+            m_height = buffer->ReadSigned32();
+            m_channels = buffer->ReadSigned32();
+            m_size = buffer->ReadSigned32();
+            m_data.resize(m_size);
+            buffer->ReadBuffer(&m_data[0], m_size);
 		}
 
 
@@ -166,9 +164,9 @@ namespace ImageModule
             if (m_component_type != impl.m_component_type)
                 throw ImageException(L"Can't set sub image due to different components type");
 
-			for (unsigned y_dst = y, y_org = 0; y_dst < m_height && y_org < impl.m_height; ++y_dst, ++y_org)
+            for (unsigned y_dst = y, y_org = 0; y_dst < m_height && y_org < impl.m_height; ++y_dst, ++y_org)
 			{
-				for (unsigned x_dst = x, x_org = 0; x_dst < m_width && x_org < impl.m_width; ++x_dst, ++x_org)
+                for (unsigned x_dst = x, x_org = 0; x_dst < m_width && x_org < impl.m_width; ++x_dst, ++x_org)
 				{
                     for (unsigned c = 0; c < m_channels; ++c)
 					{

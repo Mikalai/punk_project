@@ -1,9 +1,19 @@
 #include "navi_mesh.h"
+#include "../engine_objects.h"
 
 namespace AI
 {
+    PUNK_OBJECT_REG(NaviMesh, "AI.NaviMesh", PUNK_NAVI_MESH, &System::Object::Info.Type);
+
     NaviMesh::NaviMesh()
-    {}
+    {
+        Info.Add(this);
+    }
+
+    NaviMesh::~NaviMesh()
+    {
+        Info.Remove(this);
+    }
 
     void NaviMesh::SetTransform(const Math::mat4& value)
     {
@@ -49,4 +59,15 @@ namespace AI
     {
         return m_faces;
     }
+
+    void NaviMesh::SetName(const System::string& value)
+    {
+        m_name = value;
+    }
+
+    const System::string& NaviMesh::GetName() const
+    {
+        return m_name;
+    }
+
 }

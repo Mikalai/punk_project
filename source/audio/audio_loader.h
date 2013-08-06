@@ -14,17 +14,17 @@ namespace Audio
 		/**
 		*	when 0 returns it means an error
 		*/
-		virtual System::StreamingStepResult Load() = 0;
+        virtual System::StreamingStepResult Load() = 0;
 		
 		/**
 		*	when 0 returns it means an error
 		*/
-		virtual System::StreamingStepResult Decompress(void** data, unsigned* size) = 0;
+        virtual System::StreamingStepResult Decompress(void** data, unsigned* size) = 0;
 
 		/**
 		*	when 0 returns it means an error
 		*/
-		virtual System::StreamingStepResult Destroy() = 0;
+        virtual System::StreamingStepResult Destroy() = 0;
 
 	};
 }

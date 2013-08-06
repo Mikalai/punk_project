@@ -224,7 +224,7 @@ namespace Math
 			for (const auto& plane : clipper)
 			{
 				const vec3 n = plane.GetNormal();
-				float r_eff = 0.5f * ( Abs(n.Dot(bbox.GetS())) + Abs(n.Dot(bbox.GetT())));
+                float r_eff = 0.5f * ( Abs(n.Dot(bbox.GetS())) + Abs(n.Dot(bbox.GetT())));
 
 				float r1 = plane * q1;
 				float r2 = plane * q2;
@@ -251,7 +251,7 @@ namespace Math
 			for (const auto& plane : clipper)
 			{
 				const vec3 n = plane.GetNormal();
-				float r_eff = 0.5f * (Abs(n.Dot(bbox.GetR())) + Abs(n.Dot(bbox.GetS())) + Abs(n.Dot(bbox.GetT())));
+                float r_eff = 0.5f * (Abs(n.Dot(bbox.GetR())) + Abs(n.Dot(bbox.GetS())) + Abs(n.Dot(bbox.GetT())));
 
 				float value = plane * bbox.GetCenter();
 				if (value < -r_eff)
@@ -324,7 +324,7 @@ namespace Math
 		{
 			auto p1 = line1.PointAt(t1);
 			auto p2 = line2.PointAt(t2);
-			p = 0.5f * (p1 + p2);
+            p = 0.5f * (p1 + p2);
 		}
 		return res;
 	}
@@ -352,7 +352,7 @@ namespace Math
 
 	Relation CrossLinePlane(const Line3D& line, const Plane& p, vec3& point)
 	{
-		float t = 0;
+        float t = 0;
 		Relation res = CrossLinePlane(line, p, t);
 		point = line.PointAt(t);
 		return res;
@@ -389,7 +389,7 @@ namespace Math
 
 	Relation CrossLineTriangle(const Line3D& line, const Triangle3D& triangle, vec3& vec)
 	{
-		float t = 0;
+        float t= 0;
 		Relation res = CrossLineTriangle(line, triangle, t);
 		vec = line.PointAt(t);
 		return res;
@@ -656,7 +656,7 @@ namespace Math
 		//
 		//  cross firs tr with second
 		//
-		float s = 0;
+        float s = 0;
 		if (CrossLineTriangle(ab, b, s) == Relation::INTERSECT)
 			if (s >= 0 && s <= 1)
 				return Relation::INTERSECT;
@@ -699,14 +699,14 @@ namespace Math
 		if (Math::Abs(ss0) < Math::EPS)
 			s0 = 0;
 		if (Math::Abs(ss1) < Math::EPS)
-			s1 = 0;
+            s1 = 0;
 		if (Math::Abs(ss2) < Math::EPS)
-			s2 = 0;
+            s2 = 0;
 
 		if (s0 == 0 && s1 == 0 && s2 == 0)
 			return Relation::NO_SPLIT_ON;
 
-		if (s0 <= 0 && s1 <= 0 && s2 <= 0)
+        if (s0 <= 0 && s1 <= 0 && s2 <= 0)
 			return Relation::NO_SPLIT_BACK;
 
 		if (s0 >= 0 && s1 >=0 && s2 >= 0)
@@ -724,7 +724,7 @@ namespace Math
 			if (r != Relation::NOT_INTERSECT)
 				return (out_error() << "Supposed to have a cross" << std::endl, Relation::NOT_INTERSECT);
 
-			if (s1 <= 0 && s2 >= 0)
+            if (s1 <= 0 && s2 >= 0)
 			{
 				(*cur_back) = Triangle3D(t[0], t[1], p);
 				(*cur_front) = Triangle3D(p, t[2], t[0]);
@@ -747,7 +747,7 @@ namespace Math
 			if (r != Relation::NOT_INTERSECT)
 				return (out_error() << "Supposed to have a cross" << std::endl, Relation::NOT_INTERSECT);
 
-			if (s0 <= 0 && s2 >= 0)
+            if (s0 <= 0 && s2 >= 0)
 			{
 				(*cur_back) = Triangle3D(t[1], p, t[0]);
 				(*cur_front) = Triangle3D(t[1], t[2], p);
@@ -770,7 +770,7 @@ namespace Math
 			if (r != Relation::NOT_INTERSECT)
 				return (out_error() << "Supposed to have a cross" << std::endl, Relation::NOT_INTERSECT);
 
-			if (s0 <= 0 && s1 >= 0)
+            if (s0 <= 0 && s1 >= 0)
 			{
 				(*cur_back) = Triangle3D(t[2], t[0], p);
 				(*cur_front) = Triangle3D(t[2], p, t[1]);
@@ -1052,7 +1052,7 @@ namespace Math
 			return NOT_INTERSECT;
 
 		//	line segment on negative halfplane (1)
-		if (s <= 0 &&  org_relative == BACK)
+        if (s <= 0 &&  org_relative == BACK)
 			return NOT_INTERSECT;
 
 		//	line segment on negative halfplane (2)
@@ -1060,7 +1060,7 @@ namespace Math
 			return NOT_INTERSECT;
 
 		//	clip line segment to put dst on the plane (3)
-		if (s <= 0 && dst_relative == FRONT)
+        if (s <= 0 && dst_relative == FRONT)
 		{
 			auto new_dst = line.PointAt(t);
 			ray.SetOriginDestination(org, new_dst);

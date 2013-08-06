@@ -11,7 +11,7 @@ namespace Math
 	class vec2;
 }
 
-namespace GPU
+namespace Gpu
 {
 	enum class PrimitiveType;
 

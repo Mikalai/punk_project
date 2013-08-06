@@ -58,11 +58,11 @@ namespace Audio
 		m_rate = vi->rate;
 
 		char buffer[4096];
-		int current_section = 0;
+		int current_section override;
 
 		std::vector<char> data;
 #ifdef _WIN32
-		long read = 0;
+		long read override;
 		do
 		{
 			read = ov_read(&m_file, buffer, 4096, 0, 2, 1, &current_section);

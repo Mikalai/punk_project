@@ -21,7 +21,7 @@ void  Triangles<VertexType>::Render() {\
     impl->Render();}
 
 
-namespace GPU
+namespace Gpu
 {
 #ifdef USE_OPENGL
     template<typename VertexType>

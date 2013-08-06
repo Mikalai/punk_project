@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 
-namespace GPU
+namespace Gpu
 {
 	class PaintEngine;
 	/**

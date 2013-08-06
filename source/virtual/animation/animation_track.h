@@ -6,13 +6,14 @@
 #include <vector>
 #include <algorithm>
 #include "../../system/logger.h"
+#include "../../system/serializable.h"
 #include "../../math/interpolation.h"
 #include "../../math/quat.h"
 
 namespace Virtual
 {
 	template<class T>
-	class AnimationTrack
+    class AnimationTrack
 	{
 		typedef int Frame;
 		typedef std::vector<std::pair<Frame, T>> Type;
@@ -23,9 +24,9 @@ namespace Virtual
 		bool HasKeyAt(int frame);
 		T& GetOriginalKey(int frame, bool& flag);
 		const T& GetOriginalKey(int frame, bool& flag) const;
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
-		std::wostream& out_formatted(std::wostream& stream);
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
+		std::wostream& out_formatted(std::wostream& stream);        
 	};
 
 	template<class T>
@@ -146,30 +147,35 @@ namespace Virtual
 	}	
 
 	template<class T>
-	inline bool AnimationTrack<T>::Save(std::ostream& stream) const
+    inline void AnimationTrack<T>::Save(System::Buffer *buffer) const
 	{
 		int frame_count = m_keys.size();
-		stream.write(reinterpret_cast<const char*>(&frame_count), sizeof(frame_count));
+        buffer->WriteSigned32(frame_count);
 		if (frame_count)
 		{
-			stream.write(reinterpret_cast<const char*>(&m_keys[0]), m_keys.size()*sizeof(std::pair<Frame, T>));
-//			stream.write(reinterpret_cast<const char*>(&m_is_looping), sizeof(m_is_looping));
+            for (auto& p : m_keys)
+            {
+                buffer->WriteSigned32(p.first);
+                p.second.Save(buffer);
+            }
 		}
-		return true;
 	}
 
 	template<class T>
-	inline bool AnimationTrack<T>::Load(std::istream& stream)
+    inline void AnimationTrack<T>::Load(System::Buffer *buffer)
 	{
-		int frame_count = 0;
-		stream.read(reinterpret_cast<char*>(&frame_count), sizeof(frame_count));
+        int frame_count = buffer->ReadSigned32();
 		if (frame_count)
 		{
 			m_keys.resize(frame_count);
-			stream.read(reinterpret_cast<char*>(&m_keys[0]), m_keys.size()*sizeof(std::pair<Frame, T>));
-			//stream.read(reinterpret_cast<char*>(&m_is_looping), sizeof(m_is_looping));
-		}
-		return true;
+            for (int i = 0; i != frame_count; ++i)
+            {
+                Frame f = buffer->ReadSigned32();
+                T v;
+                v.Load(buffer);
+                m_keys[i] = std::pair<Frame, T>(f, v);
+            }
+		}		
 	}
 
 	template<class T>

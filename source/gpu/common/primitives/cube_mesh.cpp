@@ -4,10 +4,10 @@
 #include "../../opengl/module.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 #ifdef USE_OPENGL
-    using CubeObjectBase = GPU::OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,
+    using CubeObjectBase = Gpu::OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,
     Vertex<VertexComponent::Position,
     VertexComponent::Normal,
     VertexComponent::Tangent,

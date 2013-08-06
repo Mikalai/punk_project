@@ -3,7 +3,7 @@
 
 #include "../gl/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

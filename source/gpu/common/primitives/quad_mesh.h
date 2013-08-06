@@ -3,7 +3,7 @@
 
 #include "../renderable.h"
 
-namespace GPU
+namespace Gpu
 {
     class VideoDriver;
 

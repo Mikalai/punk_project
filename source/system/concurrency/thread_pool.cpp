@@ -63,7 +63,6 @@ namespace System
 
 	void ThreadPool::Init(int thread_count)
 	{
-        m_monitor.Init();
         m_finish.Store(0);
 
 		m_threads.resize(thread_count);

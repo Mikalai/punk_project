@@ -4,7 +4,7 @@
 #include "../../../config.h"
 #include "../../../math/vec4.h"
 
-namespace GPU
+namespace Gpu
 {
 	class PUNK_ENGINE_API Material
 	{	

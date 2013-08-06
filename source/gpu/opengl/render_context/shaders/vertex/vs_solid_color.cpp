@@ -3,29 +3,32 @@
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
-		VertexShaderSolid::VertexShaderSolid()
+        VsSolid::VsSolid()
 			: Shader(ShaderType::Vertex)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder()
 						 + GetShaderFile(ShaderCollection::VertexSolidColor));
 		}
 
-		void VertexShaderSolid::InitUniforms()
+        void VsSolid::InitUniforms()
 		{
+            uViewWorld = m_rc->GetUniformLocation("uViewWorld");
 			uProjViewWorld = m_rc->GetUniformLocation("uProjViewWorld");
 		}
 
-		void VertexShaderSolid::BindParameters(const CoreState& params)
+        void VsSolid::BindParameters(const CoreState& params)
 		{
-			auto m = params.view_state->m_projection * params.view_state->m_view * params.batch_state->m_world;
-			m_rc->SetUniformMatrix4f(uProjViewWorld, &m[0]);
+            auto view_world = params.view_state->m_view * params.batch_state->m_world;
+            auto proj_view_world = params.view_state->m_projection * view_world;
+            m_rc->SetUniformMatrix4f(uProjViewWorld, proj_view_world);
+            m_rc->SetUniformMatrix4f(uViewWorld, view_world);
 		}
 
-		int64_t VertexShaderSolid::GetRequiredAttributesSet() const
+        int64_t VsSolid::GetRequiredAttributesSet() const
 		{
 			return VertexComponent::Position::Value();
 		}

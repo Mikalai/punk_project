@@ -43,11 +43,11 @@ namespace Virtual
 		const Math::vec3 GetUpVector() const { return m_up; }
 		const Math::ClipSpace ToClipSpace() const;
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        void Save(System::Buffer* buffer) const override;
+        void Load(System::Buffer* buffer) override;
 
-		Camera* CreateFromFile(const System::string& path);
-		Camera* CreateFromStream(std::istream& stream);
+//		Camera* CreateFromFile(const System::string& path);
+//		Camera* CreateFromStream(std::istream& stream);
 
 		void SetYaw(float value);
 		void SetRoll(float value);

@@ -23,8 +23,7 @@ namespace Utility
             {
                 System::string name;
                 ParseBlockedString(buffer, name);
-                geometry->SetName(name);
-                geometry->SetStorageName(name);
+                geometry->SetName(name);                
             }
                 break;
             case WORD_VERTEX_POSITION:
@@ -39,6 +38,13 @@ namespace Utility
                 Virtual::SkinGeometry::Normals n;
                 ParseVector3fv(buffer, n);
                 geometry->SetNormals(n);
+            }
+                break;
+            case WORD_ARMATURE:
+            {
+                System::string name;
+                ParseBlockedString(buffer, name);
+                geometry->SetArmatureName(name);
             }
                 break;
             case WORD_FACES:

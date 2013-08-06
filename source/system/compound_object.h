@@ -7,25 +7,25 @@
 
 namespace System
 {
-	class PUNK_ENGINE_API CompoundObject : public Object
+    class PUNK_ENGINE_API CompoundObject : public Object
 	{
 	public:
+        CompoundObject();
+        CompoundObject(const CompoundObject&) = delete;
+        CompoundObject& operator = (const CompoundObject&) = delete;
+        virtual const string ToString() const;
 		virtual ~CompoundObject();
 
 		bool Add(Object* object);
 		
-		bool Remove(Object* object);
-		bool Remove(const string& name);
+        bool Remove(Object* object, bool depth = false);        
 		bool Remove(int index);
 
-        size_t GetIndex(const System::string& name) const;
-        Object* Find(const string& name, bool in_depth = false);
-        Object* Find(int index);
-        const Object* Find(const string& name, bool in_depth = false) const;
-        const Object* Find(int index) const;
+        Object* Find(int index);        
+        const Object* Find(int index) const;        
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+        virtual void Save(Buffer* buffer) const;
+        virtual void Load(Buffer* buffer);
 
 	public:
 		typedef std::vector<Object*> CollectionType;
@@ -45,7 +45,16 @@ namespace System
         virtual bool OnRemove(System::Object*) { return true; }
 
 		CollectionType m_children;
+
+        PUNK_OBJECT(CompoundObject)
 	};
+
+    /**
+      * if child had parent, it will be replaced, and from
+      * previous parent child will be removed
+      */
+    void PUNK_ENGINE_API Bind(CompoundObject* parent, Object* child);
+
 }
 
 #endif	//	_H_PUNK_SYSTEM_COMPOUND_OBJECT

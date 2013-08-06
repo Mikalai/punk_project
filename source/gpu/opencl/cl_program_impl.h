@@ -12,7 +12,7 @@
 #include "cl_program.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

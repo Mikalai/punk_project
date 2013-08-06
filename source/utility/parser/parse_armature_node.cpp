@@ -18,7 +18,7 @@ namespace Utility
                 System::string value;
                 ParseBlockedString(buffer, value);
                 armature_node->SetName(value);
-                armature_node->SetStorageName(value);
+                armature_node->SetStorageName(value + L".armature");
             }
                 break;
             case WORD_MATERIAL_NODE:

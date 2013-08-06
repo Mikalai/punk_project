@@ -70,7 +70,7 @@
 //
 //		OpenGL::RenderContextSkinning::PolicyParameters p;
 //		p.m_ambient = Math::vec4(1,1,1,1);//Math::vec4(material.GetAmbient(), material.GetAmbient(), material.GetAmbient(), 1));
-//		for (int j override; j < armature->GetBonesCount(); ++j)
+//		for (int j = 0; j < armature->GetBonesCount(); ++j)
 //		{
 //			//const Math::mat4 m = meshes[i]->GetMeshTransform().Inversed()*m_armature->GetBoneByIndex(j)->GetAnimatedGlobalMatrix()*meshes[i]->GetMeshTransform();
 //			const Math::mat4 m = armature->GetBoneByIndex(j)->GetAnimatedGlobalMatrix(Math::mat4());

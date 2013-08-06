@@ -3,7 +3,7 @@
 
 #include "../shader.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

@@ -9,7 +9,7 @@ namespace System { class string; }
 #define GL_CALL(X) X;
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

@@ -7,7 +7,7 @@
 #include "../../../math/module.h"
 #include "../../../ai/module.h"
 
-namespace GPU
+namespace Gpu
 {
     Renderable* AsRenderable(const Math::Frustum &value, VideoDriver *driver)
     {
@@ -79,7 +79,7 @@ namespace GPU
         return b.ToRenderable();
     }
 
-    GPU::Renderable* AsRenderable(const Math::ClipSpace& value, VideoDriver* driver)
+    Gpu::Renderable* AsRenderable(const Math::ClipSpace& value, VideoDriver* driver)
     {
 //		std::vector<Math::Line3D> lines;
 //		if (Math::NOT_INTERSECT == Math::CrossPlanes(value.GetPlanes(), lines))
@@ -160,7 +160,7 @@ namespace GPU
                 return nullptr;
     }
 
-    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver)
+    Gpu::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver)
     {
         RenderableBuilder r(driver);
         r.Begin(PrimitiveType::LINES);
@@ -175,7 +175,7 @@ namespace GPU
         return r.ToRenderable();
     }
 
-    GPU::Renderable* AsRenderable(const Math::vec3* value, size_t count, VideoDriver* driver)
+    Gpu::Renderable* AsRenderable(const Math::vec3* value, size_t count, VideoDriver* driver)
     {
         RenderableBuilder r(driver);
         r.Begin(PrimitiveType::POINTS);
@@ -188,12 +188,12 @@ namespace GPU
         return r.ToRenderable();
     }
 
-    GPU::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver)
+    Gpu::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver)
     {
         return nullptr;
     }
 
-    GPU::Renderable* AsRenderable(const Math::BoundingBox& value, VideoDriver* driver)
+    Gpu::Renderable* AsRenderable(const Math::BoundingBox& value, VideoDriver* driver)
     {
         Math::ClipSpace space;
         std::vector<Math::Plane> planes(6);
@@ -204,10 +204,10 @@ namespace GPU
         return AsRenderable(space, driver);
     }
 
-    GPU::Renderable* AsRenderable(const Math::BoundingSphere &value, VideoDriver *driver)
+    Gpu::Renderable* AsRenderable(const Math::BoundingSphere &value, VideoDriver *driver)
     {
         RenderableBuilder b(driver);
-        b.Begin(GPU::PrimitiveType::LINES);
+        b.Begin(Gpu::PrimitiveType::LINES);
         int n = 32;
         float phi = 0;
         float dphi = 2.0f * Math::PI / (float)n;
@@ -261,15 +261,49 @@ namespace GPU
         return b.ToRenderable();
     }
 
-    GPU::Renderable* AsRenderable(const AI::NaviMesh& value, VideoDriver* driver)
+    Gpu::Renderable* AsRenderable(const AI::NaviMesh& value, VideoDriver* driver)
     {
         RenderableBuilder b(driver);
-        b.Begin(GPU::PrimitiveType::TRIANGLES);
+        b.Begin(Gpu::PrimitiveType::TRIANGLES);
         for (const Math::ivec3& f : value.GetFaces())
         {
             b.Vertex3fv(value.GetPoint(f[0]));
             b.Vertex3fv(value.GetPoint(f[1]));
             b.Vertex3fv(value.GetPoint(f[2]));
+        }
+        b.End();
+        return b.ToRenderable();
+    }
+
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::vec3& p0, const Math::vec3& p1, VideoDriver* driver)
+    {
+        auto d = (p0 + p1).Length();
+        auto dir = (p1 - p0).Normalized();
+        auto u = (dir.Cross(Math::vec3(0,1,0)));
+        if (u.Length() == 0)
+        {
+            u = dir.Cross(Math::vec3(0, 0, 1));
+            if (u.Length() == 0)
+            {
+                u = dir.Cross(Math::vec3(1,0,0));
+            }
+        }
+        u.Normalize();
+        auto r = u.Cross(dir);
+        auto p = 0.1f * d;
+        RenderableBuilder b(driver);
+        b.Begin(Gpu::PrimitiveType::LINES);
+        {
+            b.Vertex3fv(p0);
+            b.Vertex3fv(p1);
+            b.Vertex3fv(p1);
+            b.Vertex3fv(p1 - dir * p - u * 0.5f * p);
+            b.Vertex3fv(p1);
+            b.Vertex3fv(p1 - dir * p + u * 0.5f * p);
+            b.Vertex3fv(p1);
+            b.Vertex3fv(p1 - dir * p - r * 0.5f * p);
+            b.Vertex3fv(p1);
+            b.Vertex3fv(p1 - dir * p + r * 0.5f * p);
         }
         b.End();
         return b.ToRenderable();

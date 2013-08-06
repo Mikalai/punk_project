@@ -5,12 +5,12 @@
 
 namespace Render
 {
-	GUIRender::GUIRender(GPU::VideoDriver* driver)
+	GUIRender::GUIRender(Gpu::VideoDriver* driver)
 		: m_selection_color_delta(0.1f, 0.1f, 0.1f, 0.1f)
 		, m_quad(driver)
 	{
-		m_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::GUI);
-        m_tc = new GPU::TextureContext();
+		m_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::GUI);
+        m_tc = new Gpu::TextureContext();
 	}
 
 	GUIRender::~GUIRender()
@@ -46,7 +46,7 @@ namespace Render
 //		m_tc->SetTexture(1, widget->GetBackgroundTexture());
 //		m_tc->SetTexture(0, widget->GetTextTexture());
 //		m_states.CurrentState()->Get().m_diffuse_slot_0 = 1;
-//		m_states.CurrentState()->Get().m_text_slot = 0;
+//		m_states.CurrentState()->Get().m_text_slot= 0;
 //		m_states.CurrentState()->Get().m_no_diffuse_texture_color = widget->GetBackColor();
 //		m_states.CurrentState()->Get().m_texture_matrix = Math::mat4::CreateReflectX();
 //		m_states.CurrentState()->Get().m_enable_blending = true;
@@ -170,7 +170,7 @@ namespace Render
 	//	x = -1 + 2 * slider->GetX();
 	//	y = -1 + 2 * (slider->GetY() + slider->GetHeight() * (slider->GetMax() - slider->GetCurrent()) / float(slider->GetMax() - slider->GetMin()));
 	//	w = slider->GetWidth();
-	//	h = 0.01f;
+	//	h override.01f;
 	//	m_rc->SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0) * Math::mat4::CreateScaling(2*w, 2*h, 1));
 	//	m_rc->SetDiffuseColor(Math::vec4(1,1,1,1) - slider->BackColor());
 	//	m_rc->SetTextColor(Math::vec4(1,1,1,1) - slider->TextColor());

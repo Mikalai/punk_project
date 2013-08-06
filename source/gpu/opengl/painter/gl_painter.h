@@ -8,10 +8,10 @@
 #include "../../../system/state_manager.h"
 #include "../../common/gpu_state.h"
 #include "../../common/vertex.h"
-#include "../../common/texture_context.h"
+#include "../../common/texture/module.h"
 #include "../../common/primitives/module.h"
 
-namespace GPU
+namespace Gpu
 {
     struct Painter::PainterImpl
     {
@@ -20,7 +20,7 @@ namespace GPU
         , VertexComponent::Flag
         , VertexComponent::Color> VertexType;
 
-        std::stack<GPU::CoreState*> m_states;
+        std::stack<Gpu::CoreState*> m_states;
         std::vector<VertexType> m_points;
         bool m_points_modified;
         std::vector<VertexType> m_lines;
@@ -42,14 +42,14 @@ namespace GPU
             m_tc = new TextureContext();
         }
 
-        GPU::CoreState* Top()
+        Gpu::CoreState* Top()
         {
             return m_states.top();
         }
 
         void Push()
         {
-            m_states.push(m_states.top()->Clone(GPU::CoreState::ALL_STATES));
+            m_states.push(m_states.top()->Clone(Gpu::CoreState::ALL_STATES));
         }
 
         void Pop()

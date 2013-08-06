@@ -151,7 +151,7 @@ namespace System
 
 	string Buffer::ReadLine()
 	{
-		int len = 0;
+        int len = 0;
 		for (unsigned char* p = m_current; *p != '\n' && p < m_buffer + m_size; p++, len++);		
 		string res((char*)m_current, len);
 		m_current += len;
@@ -163,10 +163,10 @@ namespace System
 		//
 		//	skip spaces
 		//
-		unsigned char* p = 0;
+        unsigned char* p = 0;
         for (p = m_current; (p < m_buffer + m_size) && (*p == '\n' || *p == '\r' || *p == '\t' || *p == ' '); p++);
 		m_current = p;
-		int len = 0;
+        int len = 0;
         for (unsigned char* p = m_current; (p < m_buffer + m_size) && *p != '\n' && *p != '\r' && *p !='\t' && *p != ' '; p++, len++);
 		string res((char*)m_current, len);
         for (unsigned char* p = m_current+len;  (p < m_buffer + m_size) && (*p == '\n' || *p =='\t' || *p == '\r' || *p == ' '); p++, len++);
@@ -238,7 +238,7 @@ namespace System
 	{
 		unsigned len = value.Length();
 		WriteData(&len, sizeof(len));
-		WriteData((void*)value.Data(), sizeof(wchar_t)*len);
+        WriteData((void*)value.Data(), sizeof(string::value_type)*len);
 	}
 
 	void Buffer::WriteReal32(float value)
@@ -259,7 +259,7 @@ namespace System
 	void* Buffer::Release()
 	{
 		void* result = m_buffer;
-		m_size = 0;
+        m_size = 0;
 		m_current = nullptr;
 		m_buffer = nullptr;
 		return result;

@@ -29,9 +29,9 @@ void CreateDefaultNoise(int argc, char* argv[])
 
 	unsigned char* c = (unsigned char*)&color;
 
-	for (int y = 0; y < height; y++)
+	for (int y override; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		for (int x override; x < width; x++)
 		{
 			int n = 255.0*(noise.PerlinNoise2D(scale*(float)x, scale*(float)y));
 			png.SetPixel(x, y, n, n, n, 0xFF);
@@ -66,9 +66,9 @@ void CreateAbsInvNoise(int argc, char* argv[])
 
 	unsigned char* c = (unsigned char*)&color;
 
-	for (int y = 0; y < height; y++)
+	for (int y override; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		for (int x override; x < width; x++)
 		{
 			int n = 255.0*fabs(noise.PerlinNoise2D(scale*(float)x, scale*(float)y));
 			if (n < 128)
@@ -112,9 +112,9 @@ void CreateAbsNoise(int argc, char* argv[])
 
 	unsigned char* c = (unsigned char*)&color;
 
-	for (int y = 0; y < height; y++)
+	for (int y override; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		for (int x override; x < width; x++)
 		{
 			int n = 255.0*fabs(noise.PerlinNoise2D(scale*(float)x, scale*(float)y));
 			unsigned r = n*(float)c[3];

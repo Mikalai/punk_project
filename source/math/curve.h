@@ -15,6 +15,8 @@ namespace Math
         Curve();
 
         void AddSpline(const Spline& value);
+        float GetTotalLength() const;
+        const Math::vec3 At(float t);
 
     private:
         Splines m_splines;

@@ -2,7 +2,7 @@
 
 namespace System
 {
-    void Monitor::Init()
+    Monitor::Monitor()
     {
 #ifdef _WIN32
 #elif defined __gnu_linux__
@@ -11,7 +11,7 @@ namespace System
 #endif
     }
 
-    void Monitor::Destroy()
+    Monitor::~Monitor()
     {
 #ifdef _WIN32
 #elif defined __gnu_linux__

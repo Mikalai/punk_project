@@ -1,6 +1,6 @@
 #include "gpu_material.h"
 
-namespace GPU
+namespace Gpu
 {
 	Material::Material()
 		: m_diffuse_color(0.8f, 0.8f, 0.8f, 1.0f)

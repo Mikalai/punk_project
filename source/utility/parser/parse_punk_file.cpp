@@ -6,7 +6,8 @@ namespace Utility
     System::Object* ParsePunkFile(const System::string& path)
     {
         System::Buffer buffer;
-        System::BinaryFile::Load(path, buffer);
+        if (!System::BinaryFile::Load(path, buffer))
+            return nullptr;
         return ParseAnything(buffer);
     }
 }

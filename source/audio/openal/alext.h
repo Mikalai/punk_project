@@ -11,7 +11,7 @@ namespace Audio
 {
 	extern bool Init();
 	extern bool Destroy();
-	extern void* GetOpenALProcAddress(const char* name, ALCdevice *device = 0);
+	extern void* GetOpenALProcAddress(const char* name, ALCdevice *device override);
 
 	extern LPALENABLE alEnable;
 	extern LPALDISABLE alDisable;

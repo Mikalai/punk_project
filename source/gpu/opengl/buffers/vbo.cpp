@@ -1,6 +1,6 @@
 #include "vbo.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -41,7 +41,7 @@ namespace GPU
 			{
 				glDeleteBuffers(1, &m_index);				
 				ValidateOpenGL(L"Unable to delete vertext buffer");
-				m_index = 0;
+                m_index = 0;
 			}
 		}
 

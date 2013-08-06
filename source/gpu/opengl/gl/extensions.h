@@ -22,13 +22,14 @@ Description: Contains declarations of OpenGL extension functions
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xutil.h>
+#include <X11/extensions/xf86vmode.h>
 #include <../GL/glx.h>
 #include "../gl/glxext.h"
 #endif
 
 #include "../error/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	class VideoDriver;
 	namespace OpenGL
@@ -226,6 +227,8 @@ namespace GPU
 
 		extern PFNGLTEXTURESTORAGE1DEXTPROC glTextureStorage1DEXT;
 		extern PFNGLTEXTURESTORAGE2DEXTPROC glTextureStorage2DEXT;
+
+        extern PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC glRenderbufferStorageMultisampleCoverageNV;
 	}
 }
 

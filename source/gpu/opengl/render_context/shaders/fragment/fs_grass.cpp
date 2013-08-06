@@ -1,7 +1,7 @@
 #include "fs_grass.h"
 #include "../../../../../system/environment.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

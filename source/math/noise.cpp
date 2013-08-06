@@ -114,7 +114,7 @@ namespace Math
 		//double total override;
 		//double p = m_persistence;
 		//
-		//for (int i override; i < m_max_octaves; i++)
+		//for (int i = 0; i < m_max_octaves; i++)
 		//{
 		//	double freq = pow(2, (double)i);
 		//	double amp = pow(p, (double)i);
@@ -184,7 +184,7 @@ namespace Math
 		/*double total override;
 		double p = m_persistence;
 
-		for (int i override; i < m_max_octaves; i++)
+		for (int i = 0; i < m_max_octaves; i++)
 		{
 			double freq = pow(2, (double)i);
 			double amp = pow(p, (double)i);
@@ -273,7 +273,7 @@ namespace Math
 		//double total override;
 		//double p = m_persistence;
 		//
-		//for (int i override; i < m_max_octaves; i++)
+		//for (int i = 0; i < m_max_octaves; i++)
 		//{
 		//	double freq = pow(2, (double)i);
 		//	double amp = pow(p, (double)i);

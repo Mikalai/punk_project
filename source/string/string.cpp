@@ -377,7 +377,7 @@ namespace System
 	{
         unsigned delLength = (unsigned)strlen(delimiters);
 		unsigned strLength = Length();
-		unsigned start = 0;
+		unsigned start= 0;
 		unsigned end = strLength;
 		for (unsigned i = 0; i < strLength; i++)
 		{
@@ -416,7 +416,7 @@ namespace System
 
     const std::vector<string> string::Split(const char *delimiters) const
 	{
-		unsigned start = 0;
+		unsigned start= 0;
 		unsigned end = Length();
 		std::vector<string> res;
 		for (unsigned i = 0; i < (unsigned)Length(); i++)
@@ -455,14 +455,36 @@ namespace System
 			free(pointer);
 	}
 
-    bool string::Save(std::ostream& stream) const
-	{
-	}
+//    string::Save(std::ostream& stream) const
+//	{
+//        auto buffer = ToUtf8();
+//        size_t size = buffer.size();
+//        stream.write((char*)&size, sizeof(size));
+//        stream.write((char*)&buffer[0], size);
+//        return true;
+//	}
 
-	bool string::Load(std::istream& stream)
-	{
+//	bool string::Load(std::istream& stream)
+//	{
+//        //  TODO: A better way might be searched
+//        size_t size;
+//        stream.read((char*)&size, sizeof(size));
+//        std::vector<char> buffer(size);
+//        stream.read((char*)&buffer[0], size);
 
-	}
+//        size_t inp_size = size;
+//        if (inp_size == 0)
+//            return true;
+//        size_t outp_size;
+//        void* inp = (void*)&buffer[0];
+//        if (!ConvertByteArray("UTF8", "WCHAR_T", inp, inp_size, nullptr, &outp_size))
+//            return false;
+//        std::vector<char> buf(outp_size);
+//        if (!ConvertByteArray("UTF8", "WCHAR_T", inp, inp_size, (void*)&buf[0], &outp_size))
+//            return false;
+//        *this = string((const wchar_t*)&buf[0], buf.size() / sizeof(wchar_t));
+//        return true;
+//	}
 
     const std::string string::ToStdString() const
     {

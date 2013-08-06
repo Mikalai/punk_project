@@ -3,28 +3,28 @@
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
-		FragmentShaderSolid::FragmentShaderSolid()
+		FsShaderSolid::FsShaderSolid()
 			: Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder()
 						 + GetShaderFile(ShaderCollection::FragmentSolidColor));
 		}
 
-		void FragmentShaderSolid::InitUniforms()
+		void FsShaderSolid::InitUniforms()
 		{
 			uDiffuseColor = m_rc->GetUniformLocation("uDiffuseColor");
 		}
 
-		void FragmentShaderSolid::BindParameters(const CoreState& params)
+		void FsShaderSolid::BindParameters(const CoreState& params)
 		{
 			m_rc->SetUniformVector4f(uDiffuseColor, &params.batch_state->m_material.m_diffuse_color[0]);
 		}
 
-		int64_t FragmentShaderSolid::GetRequiredAttributesSet() const
+		int64_t FsShaderSolid::GetRequiredAttributesSet() const
 		{
 			return 0;
 		}

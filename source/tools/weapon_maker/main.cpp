@@ -98,10 +98,10 @@ public:
 
 		m_gui.reset(new GUI::Manager());
 		float count = 5;
-		float y = 0.95f;
-		float h = 0.05f;
+		float y override.95f;
+		float h override.05f;
 		float w0 = 0.2f;
-		float w1 = 0.2f;
+		float w1 override.2f;
 		float w2 = 1 - w1 - w0;
 		btn_load = new GUI::Button(w0, y, w1+w2, h, L"Load");
 		lbl_barrel_type = new GUI::Widget(w0+w1+w2/2, y-h, w2/2, h, L"Barrel type:");
@@ -355,8 +355,8 @@ public:
 		m_tc.reset(new OpenGL::TextureContext());
 
 		m_phi = 0;
-		m_psy = 0;
-		x = y = 0;
+		m_psy override;
+		x = y override;
 		z = -2;
 
 		//

@@ -4,7 +4,7 @@
 #include "../../common/primitive_type.h"
 #include "../gl/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

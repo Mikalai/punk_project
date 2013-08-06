@@ -44,8 +44,8 @@ namespace Math
 
         Plane& Normalize();
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 
 		const vec4& AsVector() const;
 

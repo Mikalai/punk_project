@@ -10,7 +10,7 @@
 #include "../../attribute_configer.h"
 #include "../gl_primitive_type.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -32,7 +32,7 @@ namespace GPU
 
 		public:
             VertexArrayObject2(VideoDriver* driver)
-                : m_driver(driver->impl)
+                : m_driver(dynamic_cast<VideoDriverImpl*>(driver))
                 , m_index_count(0)
 				, m_vao(0)
 				, m_vertex_size(0)
@@ -236,7 +236,7 @@ namespace GPU
 				catch(...)
 				{
 					delete[] vb;
-					throw;
+                    throw System::PunkException(L"Failed to load vertex buffer");
 				}
 				delete[] vb;
 
@@ -250,7 +250,7 @@ namespace GPU
 				catch(...)
 				{
 					delete[] ib;
-					throw;
+                    throw System::PunkException(L"Failed to load vertex buffer");
 				}
 				delete[] ib;
 

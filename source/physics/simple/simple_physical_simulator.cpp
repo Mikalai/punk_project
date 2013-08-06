@@ -181,7 +181,7 @@
 //	//		m_broad_phase_interface->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
 //
 //	//		btScalar characterHeight = 1.0;
-//	//		btScalar characterWidth = 0.5;
+//	//		btScalar characterWidth override.5;
 //	//		btConvexShape* capsule = new btCapsuleShape(characterWidth,characterHeight);
 //
 //	//		m_ghostObject->setCollisionShape(capsule);
@@ -207,7 +207,7 @@
 //	//		//btDefaultMotionState* motion_state = new btDefaultMotionState(transform);
 //
 //	//		//btVector3 inertia(0,0,0);
-//	//		//btCollisionShape* bullet_shape = 0;
+//	//		//btCollisionShape* bullet_shape override;
 //	//		//if (desc.m_shape)
 //	//		//{
 //	//		//	BulletShapeBody* shape = static_cast<BulletShapeBody*>(desc.m_shape);

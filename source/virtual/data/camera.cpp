@@ -7,11 +7,16 @@ namespace Virtual
 {
 	Camera::Camera()
         : m_frustum(m_proj_matrix)
+        , m_yrp(0, 0, 0)
+        , m_position(0, 0, 0)
 	{
+        UpdateInternals();
 	}
 
 	Camera::Camera(const CameraOptions& options)
         : m_frustum(m_proj_matrix)
+        , m_yrp(0, 0, 0)
+        , m_position(0, 0, 0)
 	{
         m_proj_matrix = Math::mat4::CreatePerspectiveProjection(options.m_fov, 1, options.m_aspect, options.m_near, options.m_far);
         m_frustum.Update();
@@ -74,16 +79,13 @@ namespace Virtual
         UpdateInternals();;
     }
 
-	bool Camera::Save(std::ostream& stream) const
-	{
-        //m_frustum.Save(stream);
-		return true;
+    void Camera::Save(System::Buffer *buffer) const
+	{        
 	}
 
-	bool Camera::Load(std::istream& stream)
+    void Camera::Load(System::Buffer *buffer)
 	{
-        //m_frustum.Load(stream);
-		return true;
+
 	}
 
 	void Camera::UpdateInternals()
@@ -93,20 +95,13 @@ namespace Virtual
 		m_view_matrix = Math::mat4::CreateTargetCameraMatrix(m_position, m_position + m_direction, m_up);
 	}
 
-	Camera* Camera::CreateFromFile(const System::string& path)
-	{
-		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
-		if (!stream.is_open())
-			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
-		return CreateFromStream(stream);
-	}
-
-	Camera* Camera::CreateFromStream(std::istream& stream)
-	{
-		std::unique_ptr<Camera> node(new Camera);
-		node->Load(stream);
-		return node.release();
-	}
+//	Camera* Camera::CreateFromFile(const System::string& path)
+//	{
+//		std::ifstream stream(path.ToStdString().c_str(), std::ios::binary);
+//		if (!stream.is_open())
+//			throw System::PunkInvalidArgumentException(L"Can't open file " + path);
+//		return CreateFromStream(stream);
+//	}
 
 	const Math::Line3D Camera::GetWorldRay(float x, float y)
 	{

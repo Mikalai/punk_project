@@ -5,7 +5,7 @@
 #else
 #endif	//	USE_OPENGL
 
-namespace GPU
+namespace Gpu
 {
 #ifdef USE_OPENGL
     using ScaledGridObjectBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,
@@ -48,7 +48,7 @@ namespace GPU
             }
             m_total_width = total_width = total_width + 4.0f * width;
 
-            float total_height = 0;
+            float total_height= 0;
             for (int i = 1; i != levels+1; ++i)
             {
                 total_height += (powf(2.0f, float(i+1))) * height;

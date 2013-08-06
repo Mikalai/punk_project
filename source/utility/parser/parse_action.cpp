@@ -25,7 +25,6 @@ namespace Utility
                 System::string value;
                 ParseBlockedString(buffer, value);
                 action->SetName(value);
-                action->SetStorageName(value);
             }
                 break;
             case WORD_TIMING:
@@ -39,14 +38,14 @@ namespace Utility
                 break;
             case WORD_BONE_ANIMATION:
             {
-                std::unique_ptr<Virtual::Animation> animation(new Virtual::Animation);
+                std::unique_ptr<Virtual::BoneAnimation> animation(new Virtual::BoneAnimation);
                 ParseAnimation(buffer, animation.get());
                 action->Add(animation.release());
             }
                 break;
             case WORD_OBJECT_ANIMATION:
             {
-                std::unique_ptr<Virtual::Animation> animation(new Virtual::Animation);
+                std::unique_ptr<Virtual::ObjectAnimation> animation(new Virtual::ObjectAnimation);
                 ParseAnimation(buffer, animation.get());
                 action->Add(animation.release());
             }

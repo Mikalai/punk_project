@@ -30,8 +30,8 @@ namespace Math
 		vec3& MinPoint();
 		vec3& MaxPoint();		
 
-        bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        void Save(System::Buffer* buffer) const;
+		void Load(System::Buffer* buffer);
 
         void Set(const vec3& min_point, const vec3& max_point);
 

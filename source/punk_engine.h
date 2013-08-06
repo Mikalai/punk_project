@@ -13,6 +13,7 @@
 #include "audio/punk_audio.h"
 #include "scene/module.h"
 #include "render/module.h"
+#include "ai/module.h"
 
 //#include "gui/module.h"
 //#include "gpu/module.h"

@@ -36,6 +36,20 @@ DEFINES += _WIN32
 }
 
 
+
+releas:MYDLLDIR = $$IN_PWD/../../../bin/release
+debug:MYDLLDIR = $$IN_PWD/../../../bin/debug
+
+# As our header files are in the same directory, we can make Qt Creator find it
+# by specifying it as INCLUDEPATH.
+INCLUDEPATH += $$MYDLLDIR
+
+# Dependency to library domain (libdomain.so for Unices or domain.dll on Win32)
+# Repeat this for more libraries if needed.
+win32:LIBS += $$quote($$MYDLLDIR/domain.dll)
+ unix:LIBS += $$quote(-L$$MYDLLDIR) -lpunk_engine -lX11
+
+
 # Input
 HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_window.h \
            ../../source/tests/test_interface.h \
@@ -61,7 +75,8 @@ HEADERS += ../../source/tests/test_create_opengl_window/test_create_opengl_windo
     ../../source/tests/test18.h \
     ../../source/tests/test19.h \
     ../../source/tests/test20.h \
-    ../../source/tests/test0.h
+    ../../source/tests/test0.h \
+    ../../source/tests/test21.h
 
 SOURCES += ../../source/tests/main.cpp \
            ../../source/tests/test_create_opengl_window/test_create_opengl_window.cpp \
@@ -87,17 +102,5 @@ SOURCES += ../../source/tests/main.cpp \
     ../../source/tests/test18.cpp \
     ../../source/tests/test19.cpp \
     ../../source/tests/test20.cpp \
-    ../../source/tests/test0.cpp
-
-
-releas:MYDLLDIR = $$IN_PWD/../../../bin/release
-debug:MYDLLDIR = $$IN_PWD/../../../bin/debug
-
-# As our header files are in the same directory, we can make Qt Creator find it
-# by specifying it as INCLUDEPATH.
-INCLUDEPATH += $$MYDLLDIR
-
-# Dependency to library domain (libdomain.so for Unices or domain.dll on Win32)
-# Repeat this for more libraries if needed.
-win32:LIBS += $$quote($$MYDLLDIR/domain.dll)
- unix:LIBS += $$quote(-L$$MYDLLDIR) -lpunk_engine -lX11
+    ../../source/tests/test0.cpp \
+    ../../source/tests/test21.cpp

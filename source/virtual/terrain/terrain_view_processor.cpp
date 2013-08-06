@@ -1,4 +1,4 @@
-#include "../../gpu/common/texture2d.h"
+#include "../../gpu/common/texture/texture2d.h"
 #include "../../system/logger.h"
 #include "terrain_view_processor.h"
 #include "terrain_view.h"
@@ -8,8 +8,8 @@ namespace Virtual
 	TerrainViewProcessor::TerrainViewProcessor(const TerrainViewProcessorDesc& desc)
 	{
 		m_desc = desc;
-		m_data = 0;
-		m_size = 0;
+        m_data = 0;
+        m_size = 0;
 	}
 
 	
@@ -34,8 +34,8 @@ namespace Virtual
 	System::StreamingStepResult TerrainViewProcessor::UnlockDeviceObject()
 	{		
 		m_desc.m_height_map->Unmap(0);
-		m_data = 0;
-		m_size = 0;
+        m_data = 0;
+        m_size = 0;
 		if (m_desc.OnEnd)
 			m_desc.OnEnd(m_desc.m_on_end_data);
 		return System::StreamingStepResult::STREAM_OK;

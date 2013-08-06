@@ -2,13 +2,11 @@
 #include "renderable.h"
 #include "render_batch.h"
 #include "abstract_render_context_policy.h"
-#include "render_target.h"
 #include "video_driver.h"
 #include "gpu_state.h"
-#include "texture2d.h"
-#include "texture_context.h"
+#include "texture/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	RenderPass::RenderPass(VideoDriver* driver, std::vector<Batch*> batches)
 		: m_driver(driver)
@@ -36,8 +34,8 @@ namespace GPU
         {
             m_shadow_map->Resize(w, h);
         }
-		m_driver->SetRenderTarget(nullptr, m_shadow_map);
-		m_driver->Clear(true, true, true);
+//		m_driver->SetRenderTarget(nullptr, m_shadow_map);
+//		m_driver->Clear(true, true, true);
     }
 
     void RenderObject(Batch* b)
@@ -50,15 +48,15 @@ namespace GPU
 
 	void RenderPass::GenerateShadowMap(std::vector<Batch*>& batches)
     {
-        SetUpShadowMap();
-        for (Batch* b : batches)
-        {
-			if (b->m_state->batch_state->m_cast_shadows)
-            {
-                RenderObject(b);
-            }
-        }
-		m_driver->SetRenderTarget(nullptr, nullptr);
+//        SetUpShadowMap();
+//        for (Batch* b : batches)
+//        {
+//			if (b->m_state->batch_state->m_cast_shadows)
+//            {
+//                RenderObject(b);
+//            }
+//        }
+////		m_driver->SetRenderTarget(nullptr, nullptr);
     }
 
 	void RenderPass::OnePass(Renderable* renderable, CoreState* state)
@@ -67,19 +65,14 @@ namespace GPU
         AbstractRenderPolicy* policy = nullptr;
 		if (state->render_state->m_render_depth)
 		{
-			policy = AbstractRenderPolicy::find(RenderPolicySet::DepthRender);
-        }
-		else if (state->render_state->m_enable_font_rendering)
-        {
-			tc.SetTexture(0, state->texture_state->m_text_map);
-			tc.SetTexture(1, state->texture_state->m_diffuse_map_0);
-            policy = AbstractRenderPolicy::find(RenderPolicySet::GUI);
-        }
-		else if (state->render_state->m_enable_skinning)
-        {
-			tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
-			tc.SetTexture(1, state->texture_state->m_normal_map);
-            policy = AbstractRenderPolicy::find(RenderPolicySet::Skinning);
+            if (state->render_state->m_enable_skinning)
+            {
+                policy = AbstractRenderPolicy::find(RenderPolicySet::DepthRenderSkinning);
+            }
+            else
+            {
+                policy = AbstractRenderPolicy::find(RenderPolicySet::DepthRender);
+            }
         }
 		else if (state->render_state->m_enable_terrain)
         {
@@ -99,19 +92,44 @@ namespace GPU
                     {
 						if (state->light_state->m_light_model == LightModel::BumpMapping)
                         {
-							tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
-                            tc.SetTexture(1, state->texture_state->m_normal_map);
-                            policy = AbstractRenderPolicy::find(RenderPolicySet::BumpMapping);
+                            if (state->render_state->m_enable_skinning)
+                            {
+                                tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                                tc.SetTexture(1, state->texture_state->m_normal_map);
+                                policy = AbstractRenderPolicy::find(RenderPolicySet::BumpMappingSkinning);
+                            }
+                            else    //  no skinning
+                            {
+                                tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                                tc.SetTexture(1, state->texture_state->m_normal_map);
+                                policy = AbstractRenderPolicy::find(RenderPolicySet::BumpMapping);
+                            }
                         }
 						else if (state->light_state->m_light_model == LightModel::PerFragmentDiffuse)
                         {
-							tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
-                            policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerFragmentTextureDiffuse);
+                            if (state->render_state->m_enable_skinning)
+                            {
+                                tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                                policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerFragmentTextureDiffuseSkinning);
+                            }
+                            else    //  no skinning
+                            {
+                                tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                                policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerFragmentTextureDiffuse);
+                            }
                         }
 						else if (state->light_state->m_light_model == LightModel::PerVertexDiffuse)
                         {
-							tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
-                            policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerVertexTextureDiffuse);
+                            if (state->render_state->m_enable_skinning)
+                            {
+                                tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                                policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerVertexTextureDiffuseSkinning);
+                            }
+                            else    //  no skinning
+                            {
+                                tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                                policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerVertexTextureDiffuse);
+                            }
                         }
                     }
                 }
@@ -131,40 +149,40 @@ namespace GPU
             }
             else
             {
-				if (state->render_state->m_enable_texture)
+                if (state->render_state->m_enable_texture)
                 {
-					if (state->render_state->m_enable_diffuse_shading)
+                    if (state->render_state->m_enable_diffuse_shading)
                     {
-						if (state->light_state->m_light_model == LightModel::BumpMapping)
+                        if (state->light_state->m_light_model == LightModel::BumpMapping)
                         {
-							tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
-							tc.SetTexture(1, state->texture_state->m_normal_map);
+                            tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                            tc.SetTexture(1, state->texture_state->m_normal_map);
                             tc.SetTexture(2, m_shadow_map);
                             policy = AbstractRenderPolicy::find(RenderPolicySet::BumpMappingShadowing);
                         }
-						else if (state->light_state->m_light_model == LightModel::PerFragmentDiffuse)
+                        else if (state->light_state->m_light_model == LightModel::PerFragmentDiffuse)
                         {
-							tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                            tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
                             tc.SetTexture(1, m_shadow_map);
                             policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerFragmentTextureDiffuseShadowing);
                         }
-						else if (state->light_state->m_light_model == LightModel::PerVertexDiffuse)
+                        else if (state->light_state->m_light_model == LightModel::PerVertexDiffuse)
                         {
-							tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
+                            tc.SetTexture(0, state->texture_state->m_diffuse_map_0);
                             tc.SetTexture(1, m_shadow_map);
                             policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerVertexTextureDiffuseShadowing);
                         }
                     }
                 }
-                else
+                else    //  no text
                 {
-					if (state->light_state->m_light_model == LightModel::PerVertexDiffuse)
+                    if (state->light_state->m_light_model == LightModel::PerVertexDiffuse)
                     {
                         //	LIGHT-DIFFUSE-COLOR per Vertex
                         tc.SetTexture(0, m_shadow_map);
                         policy = AbstractRenderPolicy::find(RenderPolicySet::LightPerVertexDiffuseShadowing);
                     }
-					else if (state->light_state->m_light_model == LightModel::PerFragmentDiffuse)
+                    else if (state->light_state->m_light_model == LightModel::PerFragmentDiffuse)
                     {
                         //	LIGHT-DIFFUSE-COLOR per Fragment
                         tc.SetTexture(0, m_shadow_map);
@@ -172,6 +190,7 @@ namespace GPU
                     }
                 }
             }
+
         }
         else	//	NO LIGHTING
         {
@@ -185,7 +204,12 @@ namespace GPU
             }
             else
             {
-				if (state->render_state->m_enable_diffuse_shading)
+                if (state->render_state->m_enable_font_rendering)
+                {
+                    tc.SetTexture(0, state->texture_state->m_text_map);
+                    policy = AbstractRenderPolicy::find(RenderPolicySet::TextSolidColor);
+                }
+                else if (state->render_state->m_enable_diffuse_shading)
                 {
 					if (state->render_state->m_enable_vertex_color)
                     {
@@ -195,7 +219,7 @@ namespace GPU
                     {
                         //	diffuse only
                         policy = AbstractRenderPolicy::find(RenderPolicySet::Solid3D);
-                    }
+                    }                                       
                 }
             }
         }
@@ -215,8 +239,8 @@ namespace GPU
     }
 
 	void RenderPass::Run()
-	{
-		//	Process batches: find all shadow casters
+	{        
+        //	Process batches: find all shadow casters
 		//	Process batches: split batches on light groups
 		//	Process batches: for each light group generate shadow map
 		//	Process batches: for each light group using shadow map render final scene

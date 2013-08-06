@@ -1,153 +1,130 @@
+#include <algorithm>
 #include "logger.h"
 #include "compound_object.h"
 #include "factory.h"
+#include "../engine_objects.h"
 
 namespace System
 {
-	CompoundObject::~CompoundObject()
-	{
-		for (auto it = m_children.begin(); it != m_children.end(); ++it)
-			safe_delete(*it);
-		m_children.clear();		
-	}
+    StaticInormation<CompoundObject> CompoundObject::Info{"System.CompoundObject", PUNK_COMPOUND_OBJECT, &Object::Info.Type};
 
-	bool CompoundObject::Save(std::ostream& stream) const
-	{
-		if (!Object::Save(stream))
-			return (out_error() << "Can't save compound object" << std::endl, false);
+    CompoundObject::CompoundObject()
+    {
+        Info.Add(this);
+    }
 
-		unsigned total_count = m_children.size();
-		stream.write((char*)&total_count, sizeof(total_count));
+    CompoundObject::~CompoundObject()
+    {
+        for (auto it = m_children.begin(); it != m_children.end(); ++it)
+            safe_delete(*it);
+        m_children.clear();
+        Info.Remove(this);
+    }
 
-		for (const auto& o : m_children)
-		{
-			System::GetFactory()->SaveToStream(stream, o);
-		}
+    bool CompoundObject::Add(Object* value)
+    {
+        if (value == nullptr)
+            return (out_error() << "Can't add null object" << std::endl, false);
 
-		return true;
-	}
+        auto it = std::find(m_children.begin(), m_children.end(), value);
+        if (it != m_children.end())
+            return true;
 
-	bool CompoundObject::Load(std::istream& stream)
-	{
-		Object::Load(stream);
-
-
-		unsigned total_count = 0;
-		stream.read((char*)&total_count, sizeof(total_count));
-
-		for (int i = 0; i < (int)total_count; ++i)
-		{
-			Object* o = GetFactory()->LoadFromStream(stream);
-			if (!o)
-				throw PunkInvalidArgumentException(L"Can't load compound object");
-			if (!Add(o))
-				return (out_error() << "Can't add loaded object to the object list" << std::endl, false);
-		}
-
-		return true;
-	}
-
-	bool CompoundObject::Add(Object* value)
-	{
-		if (value == nullptr)
-			return (out_error() << "Can't add null object" << std::endl, false);
-
-        auto o = Find(value->GetName());
-
-        if (o)
-            out_warning() << "Object with name " << value->GetName() << " already in the set" << std::endl;
-
-		m_children.push_back(value);
+        m_children.push_back(value);
         value->SetOwner(this);
 
-		if (!OnAdd(value))
-			return (out_error() << "OnAdd failed" << std::endl, false);
+        if (!OnAdd(value))
+            return (out_error() << "OnAdd failed" << std::endl, false);
 
-		return true;
-	}
+        return true;
+    }
 
-	bool CompoundObject::Remove(Object* value)
-	{
-		if (value == nullptr)
-			return (out_error() << "Can't remove null object" << std::endl, false);
-
-		for (auto it = m_children.begin(); it != m_children.end(); ++it)
-		{
-			if (*it == value)
-			{
-				m_children.erase(it);
-                value->SetOwner(nullptr);
-				return true;
-			}
-		}
-
-		out_warning() << "Object " << value->GetStorageName() << " was not found" << std::endl;
-
-		if (!OnRemove(value))
-			return (out_error() << "OnRemove failed" << std::endl, false);
-
-		return false;
-	}
-
-	bool CompoundObject::Remove(const string& name)
-	{        
-        return Remove(Find(name));
-	}
-
-	bool CompoundObject::Remove(int index)
-	{
-        if (index < 0 || index >= m_children.size())
+    bool CompoundObject::Remove(Object* value, bool depth)
+    {
+        if (value == nullptr)
             return false;
-        return Remove(m_children[index]);
-	}
 
-    const Object* CompoundObject::Find(const string& name, bool in_depth) const
-	{
-        for (Object* o : m_children)
+        for (auto it = m_children.begin(); it != m_children.end(); ++it)
         {
-            if (o->GetName() == name)
-                return o;
+            if (*it == value)
+            {
+                m_children.erase(it);
+                value->SetOwner(nullptr);
+                return true;
+            }
         }
-        if (in_depth)
+
+        if (depth)
         {
-            for (Object* o : m_children)
+            for (auto o : m_children)
             {
                 CompoundObject* co = As<CompoundObject*>(o);
                 if (co)
                 {
-                    Object* res = co->Find(name, in_depth);
-                    if (res)
-                        return res;
+                    if (co->Remove(value, depth))
+                        return true;
                 }
             }
         }
-        return nullptr;
-	}
-
-    size_t CompoundObject::GetIndex(const System::string& name) const
-    {
-        size_t index = 0;
-        for (const Object* o : m_children)
-        {
-            if (o->GetName() == name)
-                return index;
-            index++;
-        }
-        return -1;
+        return false;
     }
 
-    const Object* CompoundObject::Find(int index) const
-	{
-		return m_children[index];
-	}
+    bool CompoundObject::Remove(int index)
+    {
+        if (index < 0 || index >= m_children.size())
+            return false;
+        return Remove(m_children[index]);
+    }
 
-    Object* CompoundObject::Find(const string& name, bool in_depth)
-	{
-        return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(name, in_depth));
-	}
+
+    const Object* CompoundObject::Find(int index) const
+    {
+        return m_children[index];
+    }
 
     Object* CompoundObject::Find(int index)
-	{
+    {
         return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(index));
-	}
+    }
+
+
+    void Bind(CompoundObject* parent, Object* child)
+    {
+        CompoundObject* owner = As<CompoundObject*>(child->GetOwner());
+        if (owner)
+            owner->Remove(child);
+        parent->Add(child);
+        child->SetOwner(parent);
+    }
+
+    const string CompoundObject::ToString() const
+    {
+        std::wstringstream stream;
+        stream << '[' << GetLocalIndex() << ' ' << Info.Type.GetName() << ']';
+        return string(stream.str());
+    }
+
+    void CompoundObject::Save(Buffer* buffer) const
+    {
+        Object::Save(buffer);
+        unsigned count = m_children.size();
+        buffer->WriteUnsigned32(count);
+        for (auto child : m_children)
+        {
+            child->Save(buffer);
+        }
+    }
+
+    void CompoundObject::Load(Buffer* buffer)
+    {
+        Object::Load(buffer);
+        unsigned count{buffer->ReadUnsigned32()};
+        for (auto i = 0; i != count; ++i)
+        {
+            unsigned code = buffer->ReadUnsigned32();
+            Object* object{Factory::Create(code)};
+            object->Load(buffer);
+            Add(object);
+        }
+    }
 }

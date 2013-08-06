@@ -16,7 +16,6 @@ contains(DEFINES, USE_OPENGL) {
 #   USE_GRASS_RC
 #   USE_TERRAIN_RC
 #   USE_WATER_RC
-#   USE_SKINNING_RC
 DEFINES += USE_SOLID_COLOR_RC
 DEFINES += USE_SOLID_VERTEX_COLOR_RC
 DEFINES += USE_SOLID_TEXTURE_3D_RC
@@ -25,6 +24,8 @@ DEFINES += USE_LIGHT_PER_FRAGMENT_DIFFUSE
 DEFINES += USE_RC_PVRTDL    # Render context per vertex texture diffuse lighting
 DEFINES += USE_RC_PFRTDL    # Render context per fragment texture diffuse lighting
 DEFINES += USE_BUMP_MAPPING_RC
+DEFINES += USE_SKINNING_RC
+DEFINES += USE_SHADOW_MAPS
 
 }
 
@@ -39,7 +40,7 @@ win32 {
 
 unix {
 
-LIBS += -lGL
+LIBS += -lGL -lXext -lX11 -lXxf86vm
 
 contains (DEFINES, USE_PNG)
 {
@@ -136,11 +137,8 @@ contains(DEFINES, USE_OPENGL) {
            ../../source/gpu/opengl/render_context/rc_skinning.h \           
            ../../source/gpu/opengl/render_context/rc_solid_textured_3d.h \
            ../../source/gpu/opengl/render_context/rc_terrain.h \
-           ../../source/gpu/opengl/render_context/render_contexts.h \
-           ../../source/gpu/opengl/render_targets/gl_render_target.h \
-           ../../source/gpu/opengl/render_targets/module.h \
-           ../../source/gpu/opengl/render_targets/render_target_back_buffer.h \
-           ../../source/gpu/opengl/render_targets/render_target_texture.h \
+           ../../source/gpu/opengl/render_context/render_contexts.h \           
+           ../../source/gpu/opengl/render_targets/module.h \           
            ../../source/gpu/opengl/renderable/gl_primitive_type.h \
            ../../source/gpu/opengl/renderable/module.h \
            ../../source/gpu/opengl/textures/internal_formats.h \
@@ -222,13 +220,9 @@ SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp 
 	   ../../source/gpu/opengl/render_context/rc_solid_textured_3d.cpp \
 	   ../../source/gpu/opengl/render_context/rc_terrain.cpp \
 	   ../../source/gpu/opengl/render_context/rc_per_vertex_lighting.cpp \
-	   ../../source/gpu/opengl/render_context/render_contexts.cpp \
-	   ../../source/gpu/opengl/render_targets/gl_render_target.cpp \
-	   ../../source/gpu/opengl/render_targets/render_target_back_buffer.cpp \
-	   ../../source/gpu/opengl/render_targets/render_target_texture.cpp \
+	   ../../source/gpu/opengl/render_context/render_contexts.cpp \	   	   
 	   ../../source/gpu/opengl/renderable/gl_primitive_type.cpp \
-	   ../../source/gpu/opengl/textures/internal_formats.cpp \	   
-	   ../../source/gpu/opengl/textures/texture2d.cpp \	   
+	   ../../source/gpu/opengl/textures/internal_formats.cpp \	   	   
 	   ../../source/gpu/opengl/render_context/shaders/shader.cpp \
 	   ../../source/gpu/opengl/renderable/primitives/vertex_array_object.cpp \
 	   ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump.cpp \
@@ -309,25 +303,9 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/render/bbox_render.cpp \
 	   ../../source/render/character_render.cpp \
 	   ../../source/render/render_config.cpp \
-	   ../../source/render/solid_object_render.cpp \
-	   ../../source/scene/armature_node.cpp \
-	   ../../source/scene/bone_node.cpp \
-	   ../../source/scene/bounding_volume_updater.cpp \
-	   ../../source/scene/camera_node.cpp \
-	   ../../source/scene/collider.cpp \
-	   ../../source/scene/default_visitor.cpp \
-	   ../../source/scene/geometry_node.cpp \
-	   ../../source/scene/light_node.cpp \
-	   ../../source/scene/location_indoor.cpp \
-	   ../../source/scene/material_node.cpp \
-	   ../../source/scene/node.cpp \
-	   ../../source/scene/point_light_node.cpp \
-	   ../../source/scene/portal_node.cpp \
+	   ../../source/render/solid_object_render.cpp \	   
+           ../../source/scene/node.cpp \
 	   ../../source/scene/scene_graph.cpp \
-	   ../../source/scene/skin_mesh_node.cpp \
-	   ../../source/scene/static_mesh_node.cpp \
-	   ../../source/scene/terrain_node.cpp \
-	   ../../source/scene/transform_node.cpp \
 	   ../../source/string/string.cpp \
 	   ../../source/system/binary_file.cpp \
 	   ../../source/system/buffer.cpp \
@@ -358,8 +336,7 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/audio/openal/alext.cpp \
 	   ../../source/gpu/common/abstract_render_context_policy.cpp \
 	   ../../source/gpu/common/gpu_common_module.cpp \
-	   ../../source/gpu/common/gpu_state.cpp \
-	   ../../source/gpu/common/render_target.cpp \
+	   ../../source/gpu/common/gpu_state.cpp \	   
 	   ../../source/gpu/common/renderable.cpp \
 	   ../../source/gpu/common/renderable_builder.cpp \
 	   ../../source/gpu/error/gpu_excpetions.cpp \
@@ -500,8 +477,7 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/virtual/objects/simple/solid_cube.cpp \	   
 	../../source/system/handler.cpp \	
 	../../source/gpu/common/render_batch.cpp	\
-	../../source/gpu/common/render_pass.cpp \
-	../../source/gpu/common/texture_context.cpp \
+	../../source/gpu/common/render_pass.cpp \	
 	../../source/gpu/common/primitives/triangles.cpp \
         ../../source/gpu/common/primitives/triangle_strip.cpp \
         ../../source/gpu/common/primitives/triangle_fans.cpp \
@@ -519,8 +495,7 @@ SOURCES += ../../source/main.cpp \
 	../../source/gpu/common/video_driver.cpp \
 	../../source/gpu/common/lighting/light_model.cpp \
 	../../source/gpu/common/lighting/light_parameters.cpp \
-	../../source/gpu/common/material/gpu_material.cpp \
-        ../../source/gpu/common/text_surface.cpp \
+	../../source/gpu/common/material/gpu_material.cpp \        
         ../../source/gpu/common/fog/fog.cpp \
         ../../source/gpu/common/fog/fog_mode.cpp \
 	../../source/math/graph/graph.cpp \
@@ -549,14 +524,6 @@ SOURCES += ../../source/main.cpp \
     ../../source/utility/parser/parse_skin_meshes.cpp \
     ../../source/utility/parser/parse_material.cpp \
     ../../source/utility/parser/parse_materials.cpp \
-    ../../source/utility/parser/parse_point_light_node.cpp \
-    ../../source/utility/parser/parse_static_mesh_node.cpp \
-    ../../source/utility/parser/parse_bone_node.cpp \
-    ../../source/utility/parser/parse_skin_mesh_node.cpp \
-    ../../source/utility/parser/parse_material_node.cpp \
-    ../../source/utility/parser/parse_armature_node.cpp \
-    ../../source/utility/parser/parse_transform_node.cpp \
-    ../../source/utility/parser/parse_portal_node.cpp \
     ../../source/utility/parser/parse_location_indoor.cpp \
     ../../source/utility/parser/parse_terrain_raw_data_source.cpp \
     ../../source/utility/parser/parse_terrain_cell.cpp \
@@ -574,16 +541,7 @@ SOURCES += ../../source/main.cpp \
     ../../source/virtual/water/river.cpp \
     ../../source/virtual/data/lights/sun.cpp \
     ../../source/utility/parser/parse_scene.cpp \
-    ../../source/scene/sun_node.cpp \
     ../../source/utility/parser/parse_sun.cpp \
-    ../../source/utility/parser/parse_sun_node.cpp \
-    ../../source/scene/navi_mesh_node.cpp \
-    ../../source/scene/path_node.cpp \
-    ../../source/utility/parser/parse_navi_mesh_node.cpp \
-    ../../source/utility/parser/parse_curve_path_node.cpp \
-    ../../source/utility/parser/parse_terrain_node.cpp \
-    ../../source/utility/parser/parse_river_node.cpp \
-    ../../source/scene/river_node.cpp \
     ../../source/render/v2/render_v2.cpp \
     ../../source/utility/parser/parse_terrain_mesh.cpp \
     ../../source/utility/parser/parse_river.cpp \
@@ -596,7 +554,52 @@ SOURCES += ../../source/main.cpp \
     ../../source/images/import_export/tiff_importer.cpp \
     ../../source/system/window/window_win32.cpp \
     ../../source/system/window/window_linux.cpp \
-    ../../source/system/pool.cpp
+    ../../source/system/pool.cpp \
+    ../../source/render/v2/render_static_mesh.cpp \
+    ../../source/render/v2/render_skin_mesh.cpp \
+    ../../source/render/v2/render_armature.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_text_solid.cpp \
+    ../../source/gpu/common/shadow_model.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_depth.cpp \                
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_shadow_map.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_shadow_map.cpp \
+    ../../source/system/rtti.cpp \
+    ../../source/system/serializable.cpp \
+    ../../source/utility/serializer/serializer.cpp \
+    ../../source/system/static_information.cpp \
+    ../../source/math/mat2.cpp \
+    ../../source/math/mat3.cpp \
+    ../../source/math/vec3.cpp \
+    ../../source/math/quat.cpp \
+    ../../source/math/vec2.cpp \
+    ../../source/utility/parser/parse_scene_node.cpp \
+    ../../source/render/v2/render_river.cpp \
+    ../../source/render/v2/process_armature.cpp \
+    ../../source/render/v2/process_light.cpp \
+    ../../source/render/v2/process_material.cpp \
+    ../../source/render/v2/process_terrain_mesh.cpp \
+    ../../source/render/v2/process_sun.cpp \
+    ../../source/render/v2/process_navi_mesh.cpp \
+    ../../source/scene/scene_helper.cpp \
+    ../../source/utility/async_parser.cpp \
+    ../../source/utility/path_finder.cpp \
+    ../../source/render/v2/process_transform.cpp \
+    ../../source/gpu/common/frame_buffer/frame_buffer_config.cpp \
+    ../../source/gpu/opengl/render_targets/gl_query_supprted_frame_buffer_configs.cpp \
+    ../../source/gpu/common/frame_buffer/frame_buffer.cpp \
+    ../../source/gpu/opengl/render_targets/gl_frame_buffer.cpp \
+    ../../source/gpu/common/frame_buffer/render_buffer.cpp \
+    ../../source/gpu/common/frame_buffer/depth_render_buffer.cpp \
+    ../../source/gpu/common/frame_buffer/color_render_buffer.cpp \
+    ../../source/gpu/opengl/render_targets/gl_depth_render_buffer.cpp \
+    ../../source/gpu/opengl/render_targets/gl_color_render_buffer.cpp \
+    ../../source/gpu/opengl/driver/gl_capabilities.cpp \
+    ../../source/gpu/common/frame_buffer/render_buffer_config.cpp \
+    ../../source/gpu/common/texture/texture_context.cpp \
+    ../../source/gpu/common/texture/text_surface.cpp \
+    ../../source/gpu/common/texture/texture2d.cpp \
+    ../../source/gpu/opengl/textures/texture_convert.cpp \
+    ../../source/gpu/opengl/textures/texture2d_pbo_impl.cpp
 
 
 # Input
@@ -700,30 +703,12 @@ HEADERS += ../../source/config.h \
 	   ../../source/render/module.h \
 	   ../../source/render/render_config.h \
 	   ../../source/render/solid_object_render.h \
-	   ../../source/scene/armature_node.h \
-	   ../../source/scene/bone_node.h \
-	   ../../source/scene/bounding_volume_updater.h \
-	   ../../source/scene/camera_node.h \
-	   ../../source/scene/collider.h \
-	   ../../source/scene/default_visitor.h \
-	   ../../source/scene/geometry_node.h \
 	   ../../source/scene/interface.h \
-	   ../../source/scene/light_node.h \
-	   ../../source/scene/location_indoor.h \
-	   ../../source/scene/material_node.h \
 	   ../../source/scene/module.h \
 	   ../../source/scene/node.h \
-	   ../../source/scene/point_light_node.h \
-	   ../../source/scene/portal_node.h \
 	   ../../source/scene/scene_events.h \
-	   ../../source/scene/scene_graph.h \
-	   ../../source/scene/scene_graph_adapter.h \
-	   ../../source/scene/skin_mesh_node.h \
-	   ../../source/scene/static_mesh_node.h \
+	   ../../source/scene/scene_graph.h \	   
 	   ../../source/scene/storage.h \
-	   ../../source/scene/terrain_node.h \
-	   ../../source/scene/texture_view_node.h \
-	   ../../source/scene/transform_node.h \
 	   ../../source/scene/visitor.h \
 	   ../../source/string/string.h \
 	   ../../source/system/allocator.h \           
@@ -785,11 +770,9 @@ HEADERS += ../../source/config.h \
 	   ../../source/gpu/common/frame.h \
 	   ../../source/gpu/common/gpu_state.h \
 	   ../../source/gpu/common/module.h \
-	   ../../source/gpu/common/primitive_type.h \
-	   ../../source/gpu/common/render_target.h \
+	   ../../source/gpu/common/primitive_type.h \	   
 	   ../../source/gpu/common/renderable.h \
 	   ../../source/gpu/common/renderable_builder.h \
-	   ../../source/gpu/common/texture2d.h \
 	   ../../source/gpu/common/vertex.h \
 	   ../../source/gpu/common/vertex_component.h \
 	   ../../source/gpu/common/video_driver.h \
@@ -1002,8 +985,7 @@ HEADERS += ../../source/config.h \
 	   ../../source/virtual/terrain/terrain_view_loader.h \
 	   ../../source/virtual/terrain/terrain_view_processor.h \
     ../../source/gpu/common/render_pass.h \
-    ../../source/gpu/common/render_batch.h \
-    ../../source/gpu/common/texture_context.h \
+    ../../source/gpu/common/render_batch.h \    
     ../../source/gpu/common/primitives/triangle_strip.h \
     ../../source/gpu/common/primitives/triangle_fans.h \
     ../../source/gpu/common/primitives/static_mesh.h \
@@ -1023,8 +1005,7 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/lighting/light_parameters.h \    
     ../../source/gpu/common/config.h \
     ../../source/gpu/common/material/module.h \
-    ../../source/gpu/common/material/gpu_material.h \
-    ../../source/gpu/common/text_surface.h \
+    ../../source/gpu/common/material/gpu_material.h \    
     ../../source/gpu/common/fog/fog.h \
     ../../source/gpu/common/fog/fog_mode.h \
     ../../source/gpu/common/fog/module.h \
@@ -1045,10 +1026,6 @@ HEADERS += ../../source/config.h \
     ../../source/virtual/water/module.h \
     ../../source/virtual/water/interface.h \
     ../../source/virtual/data/lights/sun.h \
-    ../../source/scene/sun_node.h \
-    ../../source/scene/navi_mesh_node.h \
-    ../../source/scene/path_node.h \
-    ../../source/scene/river_node.h \
     ../../source/render/v2/render_v2.h \
     ../../source/render/v2/module.h \
     ../../source/scene/selector/selector.h \
@@ -1056,7 +1033,51 @@ HEADERS += ../../source/config.h \
     ../../source/math/frustum_plane.h \
     ../../source/scene/selector/selection.h \
     ../../source/ai/interface.h \
-    ../../source/images/import_export/tiff_importer.h
+    ../../source/images/import_export/tiff_importer.h \
+    ../../source/render/v2/render_static_mesh.h \
+    ../../source/render/v2/render_skin_mesh.h \
+    ../../source/render/v2/render_armature.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_text_solid.h \
+    ../../source/gpu/common/shadow_model.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_depth.h \            
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_shadow_map.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_shadow_map.h \
+    ../../source/system/rtti.h \
+    ../../source/system/static_information.h \
+    ../../source/utility/serializer/serializer.h \
+    ../../source/engine_objects.h \
+    ../../source/render/v2/render_river.h \
+    ../../source/render/v2/process_armature.h \
+    ../../source/render/v2/process_light.h \
+    ../../source/render/v2/process_material.h \
+    ../../source/render/v2/process_terrain_mesh.h \
+    ../../source/render/v2/process_sun.h \
+    ../../source/render/v2/process_navi_mesh.h \
+    ../../source/scene/scene_helper.h \
+    ../../source/utility/async_parser.h \
+    ../../source/utility/path_finder.h \
+    ../../source/render/v2/process_transform.h \
+    ../../source/gpu/common/frame_buffer/frame_buffer_config.h \
+    ../../source/gpu/common/frame_buffer/module.h \
+    ../../source/gpu/common/frame_buffer/frame_buffer.h \
+    ../../source/gpu/opengl/render_targets/gl_frame_buffer.h \
+    ../../source/gpu/common/frame_buffer/render_buffer.h \
+    ../../source/gpu/common/frame_buffer/depth_render_buffer.h \
+    ../../source/gpu/common/frame_buffer/color_render_buffer.h \
+    ../../source/gpu/opengl/render_targets/gl_depth_render_buffer.h \
+    ../../source/gpu/opengl/render_targets/gl_color_render_buffer.h \
+    ../../source/gpu/opengl/driver/gl_capabilities.h \
+    ../../source/gpu/common/frame_buffer/render_buffer_config.h \
+    ../../source/gpu/common/texture/texture2d.h \
+    ../../source/gpu/common/texture/texture_context.h \
+    ../../source/gpu/common/texture/text_surface.h \
+    ../../source/gpu/common/texture/module.h \
+    ../../source/gpu/common/texture/texture_filter.h \
+    ../../source/gpu/common/texture/texture_wrap.h \
+    ../../source/gpu/common/texture/texture_compare_func.h \
+    ../../source/gpu/common/texture/texture_compare_mode.h \
+    ../../source/gpu/opengl/textures/texture_convert.h \
+    ../../source/gpu/common/video_driver_caps.h
 
 
 CONFIG += dll

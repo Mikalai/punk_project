@@ -8,7 +8,7 @@ Description: Load OpenGL functions
 #include "../../../system/module.h"
 #include "extensions.h"
 
-namespace GPU
+namespace Gpu
 {
     namespace OpenGL
     {
@@ -185,5 +185,6 @@ namespace GPU
         PFNGLLINEWIDTHPROC glLineWidth;
         PFNGLCLEARDEPTHFPROC glClearDepthf;
         PFNGLCLEARDEPTHPROC glClearDepth;
+        PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC glRenderbufferStorageMultisampleCoverageNV;
     }
 }

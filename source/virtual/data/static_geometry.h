@@ -8,14 +8,14 @@
 #include "../../system/aop/aop.h"
 #include "geometry.h"
 
-namespace GPU
+namespace Gpu
 {
     class VideoDriver;
 }
 
 namespace Virtual
 {
-    class PUNK_ENGINE_API StaticGeometry : public Geometry, public System::Aspect<StaticGeometry*, System::string>
+    class PUNK_ENGINE_API StaticGeometry : public Geometry
     {
     public:
         typedef std::map<System::string, std::vector<Math::Vector4<Math::vec2>>> TextureMeshes;
@@ -26,12 +26,12 @@ namespace Virtual
             ~GpuCache();
             bool IsOnGpu();
             void Drop();
-            void Update(GPU::VideoDriver* driver);
-            GPU::Renderable* GetGpuBuffer();
+            void Update(Gpu::VideoDriver* driver);
+            Gpu::Renderable* GetGpuBuffer();
             size_t GetGpuMemoryUsage() const;
         private:
             StaticGeometry& m_geom;
-            GPU::Renderable* m_gpu_buffer;
+            Gpu::Renderable* m_gpu_buffer;
         };
 
         struct CpuCache
@@ -58,8 +58,8 @@ namespace Virtual
             Faces& GetFaces();
             TextureMeshes& GetTextureMeshes();
 
-            bool Save(std::ostream &stream) const;
-            bool Load(std::istream &stream);
+//            bool Save(std::ostream &stream) const;
+//            bool Load(std::istream &stream);
 
         private:
             StaticGeometry& m_geom;
@@ -73,9 +73,10 @@ namespace Virtual
     public:
 
         StaticGeometry();
+        virtual ~StaticGeometry();
 
-        virtual bool Save(std::ostream& stream) const;
-        virtual bool Load(std::istream& stream);
+//        virtual void Save(System::Buffer* buffer) const;
+//        virtual void Load(System::Buffer* buffer);
 
         virtual Vertices& GetVertexArray() override;
         virtual Normals& GetNormalArray() override;
@@ -103,8 +104,12 @@ namespace Virtual
         GpuCache& GetGpuCache();
         CpuCache& GetCpuCache();
 
+        void SetName(const System::string& value);
+        const System::string& GetName() const;
+
     private:
 
+        System::string m_name;
         System::string m_filename;
         Math::mat4 m_world_offset;
 
@@ -113,6 +118,8 @@ namespace Virtual
 
         friend class CpuCache;
         friend class GpuCache;
+
+        PUNK_OBJECT(StaticGeometry)
     };
 }
 

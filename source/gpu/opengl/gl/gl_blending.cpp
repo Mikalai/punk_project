@@ -1,6 +1,6 @@
 #include "gl_blending.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

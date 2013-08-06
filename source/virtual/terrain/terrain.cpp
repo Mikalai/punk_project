@@ -66,9 +66,9 @@ namespace Virtual
 		stream << L"*height_scale { " << m_core.m_height_scale << L" } " << std::endl;
 		stream << L"*world_origin { " << m_core.m_origin[0] << " " << m_core.m_origin[1] << L" } " << std::endl;
 		
-		for (int y = 0; y < m_core.m_num_blocks; ++y)
+        for (int y = 0; y < m_core.m_num_blocks; ++y)
 		{
-			for (int x = 0; x < m_core.m_num_blocks; ++x)
+            for (int x = 0; x < m_core.m_num_blocks; ++x)
 			{
 				const TerrainCell* cell = GetCell(x, y);
 				stream << L"*cell " << std::endl << L"{ " << std::endl;
@@ -83,35 +83,35 @@ namespace Virtual
 		return System::string(stream.str().c_str());
 	}
 
-	bool Terrain::Save(std::ostream& stream) const
-	{		
-		Object::Save(stream);
+//	bool Terrain::Save(std::ostream& stream) const
+//	{
+//		Object::Save(stream);
 
-		stream.write((char*)&m_core, sizeof(m_core));
-		for (int y = 0; y < GetNumBlocks(); ++y)
-		{
-			for (int x = 0; x < GetNumBlocks(); ++x)
-			{
-				const TerrainCell* cell = GetCell(x, y);
-				cell->Save(stream);
-			}
-		}
-		return true;
-	}
+//		stream.write((char*)&m_core, sizeof(m_core));
+//		for (int y override; y < GetNumBlocks(); ++y)
+//		{
+//			for (int x override; x < GetNumBlocks(); ++x)
+//			{
+//				const TerrainCell* cell = GetCell(x, y);
+//				cell->Save(stream);
+//			}
+//		}
+//		return true;
+//	}
 
-	bool Terrain::Load(std::istream& stream)
-	{
-		Object::Load(stream);
-		stream.read((char*)&m_core, sizeof(m_core));
-		SetNumBlocks(GetNumBlocks());
-		for (int y = 0; y < GetNumBlocks(); ++y)
-		{
-			for (int x = 0; x < GetNumBlocks(); ++x)
-			{
-				TerrainCell* cell = GetCell(x, y);
-				cell->Load(stream);
-			}
-		}
-		return true;
-	}
+//	bool Terrain::Load(std::istream& stream)
+//	{
+//		Object::Load(stream);
+//		stream.read((char*)&m_core, sizeof(m_core));
+//		SetNumBlocks(GetNumBlocks());
+//		for (int y override; y < GetNumBlocks(); ++y)
+//		{
+//			for (int x override; x < GetNumBlocks(); ++x)
+//			{
+//				TerrainCell* cell = GetCell(x, y);
+//				cell->Load(stream);
+//			}
+//		}
+//		return true;
+//	}
 }

@@ -6,7 +6,7 @@
 #include "../error/module.h"
 #include "vertex_component.h"
 
-namespace GPU
+namespace Gpu
 {
     class PUNK_ENGINE_API Renderable
 	{

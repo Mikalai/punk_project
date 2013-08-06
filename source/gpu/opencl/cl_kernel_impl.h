@@ -9,7 +9,7 @@
 #include "cl_buffer_impl.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

@@ -6,8 +6,8 @@
 namespace Virtual
 {
 	enum HumanArmaturePart {
-		HUMAN_BEGIN = 0,
-		HUMAN_ROOT = 0,
+        HUMAN_BEGIN = 0,
+        HUMAN_ROOT = 0,
 		HUMAN_HEAD,
 		HUMAN_NECK,
 		HUMAN_COLLAR_LEFT,
@@ -66,12 +66,19 @@ namespace Virtual
 	class PUNK_ENGINE_API HumanArmature : public Armature
 	{
 	public:
+        HumanArmature();
+        HumanArmature(const HumanArmature&) = delete;
+        HumanArmature& operator = (const HumanArmature&) = delete;
+        virtual ~HumanArmature();
+
 		virtual void UpdateHierarchy() override;
 
 		int GetBoneIndexByName(HumanArmaturePart value);
 
 	private:
 		int m_bone_index[HUMAN_END - HUMAN_BEGIN];
+
+        PUNK_OBJECT(HumanArmature)
 	};
 }
 

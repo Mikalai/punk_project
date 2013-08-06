@@ -20,8 +20,7 @@ namespace Utility
             case WORD_SKIN_MESH:
             {
                 std::unique_ptr<Virtual::SkinGeometry> mesh(new Virtual::SkinGeometry);
-                ParseSkinMesh(buffer, mesh.get());
-                Virtual::SkinGeometry::add(mesh->GetStorageName(), mesh.get());
+                ParseSkinMesh(buffer, mesh.get());                
                 mesh.release();
             }
                 break;

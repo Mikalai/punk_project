@@ -5,7 +5,7 @@
 
 #include "gl_render_context.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -26,7 +26,7 @@ namespace GPU
 			virtual ~RenderContextPolicy();
 			void InitUniforms() override;
 			void BindParameters(const CoreState& params) override;
-			int64_t GetRequiredAttributesSet() const override;
+            int64_t GetRequiredAttributesSet() const override;
 		};
 	}
 }

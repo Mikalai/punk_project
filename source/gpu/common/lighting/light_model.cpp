@@ -1,6 +1,6 @@
 #include "light_model.h"
 
-namespace GPU
+namespace Gpu
 {
 	using LightModelDesc = std::pair<LightModel, System::string>;
 	static const LightModelDesc g_light_models[] = {

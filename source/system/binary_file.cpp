@@ -78,7 +78,7 @@ namespace System
     void ReadFile(int handle, void* ptr, size_t size)
     {
         size_t res = read(handle, ptr, size);
-        std::cout << "Read result: " << res << std::endl;
+       // std::cout << "Read result: " << res << std::endl;
     }
 
 #endif
@@ -96,7 +96,14 @@ namespace System
 	bool BinaryFile::Load(const string& filename, Buffer& buffer)
 	{
         auto hFile = OpenReadFile(filename);
+        if (hFile == -1)
+            return false;
         size_t size = GetFileSize(hFile);
+        if (size == 0)
+        {
+            CloseFile(hFile);
+            return false;
+        }
         buffer.SetSize(size);
         ReadFile(hFile, buffer.StartPointer(), size);
         CloseFile(hFile);

@@ -1,7 +1,7 @@
 #include "vs_gui.h"
 #include "../../../../../system/environment.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

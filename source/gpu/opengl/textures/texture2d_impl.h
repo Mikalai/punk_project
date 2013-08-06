@@ -94,7 +94,7 @@
 //				}
 
 
-//				if (m_id !override)
+//				if (m_id != 0)
 //				{
 //					glDeleteTextures(1, &m_id);
 //					ValidateOpenGL(L"Can't delete texture");
@@ -181,7 +181,7 @@
 
 //			void Resize(int width, int height)
 //			{
-//				if (m_id !override)
+//				if (m_id != 0)
 //				{
 //					glDeleteTextures(1, &m_id);
 //					ValidateOpenGL(L"Can't delete texture");
@@ -207,7 +207,7 @@
 //			bool Create(int width, int height, GLenum format, const void* data)
 //			{
 //				ValidateOpenGL(L"Can't even start to create texture texture");
-//				if (m_id !override)
+//				if (m_id != 0)
 //				{
 //					glDeleteTextures(1, &m_id);
 //					ValidateOpenGL(L"Can't DELETE texture");
@@ -312,9 +312,9 @@
 //				ValidateOpenGL(L"Can't bind texture");
 //				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 //				ValidateOpenGL(L"Can't pixel store i");
-//				for (int i override; i < m_height/size+1; i ++)
+//				for (int i = 0; i < m_height/size+1; i ++)
 //				{
-//					for (int j override; j < m_width/size+1; j ++ )
+//					for (int j = 0; j < m_width/size+1; j ++ )
 //					{
 //						int width;
 //						int height;

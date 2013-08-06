@@ -1,7 +1,7 @@
 #include "paint_device.h"
 #include "paint_engine.h"
 
-namespace GPU
+namespace Gpu
 {
 	PaintDevice::PaintDevice()
 		: m_engine(nullptr)

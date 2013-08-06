@@ -12,7 +12,7 @@
 #include "../gpu_config.h"
 #include "painter/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

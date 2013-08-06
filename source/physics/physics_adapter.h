@@ -10,10 +10,10 @@ namespace Physics
 	class Adapter
 	{
 	public:
-		virtual void EnterPhysicalSimulator(Simulator* value) = 0;
-		virtual void LeavePhysicalSimulator() = 0;
-		virtual void SetTransform(const Math::mat4& value) = 0;
-		virtual void GetTransform(Math::mat4& value) = 0;
+        virtual void EnterPhysicalSimulator(Simulator* value) = 0;
+        virtual void LeavePhysicalSimulator() = 0;
+        virtual void SetTransform(const Math::mat4& value) = 0;
+        virtual void GetTransform(Math::mat4& value) = 0;
 	};
 }
 

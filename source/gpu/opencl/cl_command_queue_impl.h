@@ -7,7 +7,7 @@
 #include "cl_command_queue.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

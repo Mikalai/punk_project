@@ -181,7 +181,7 @@ namespace Utility
 
 	int FontBuilder::FontBuilderImpl::CalculateLength(const System::string& text)
 	{
-		int res = 0;		
+        int res = 0;
 		for (auto it = text.begin(); it != text.end(); ++it)
 		{
 			CacheData* data = wcache[curSize][curFace][*it];
@@ -199,9 +199,9 @@ namespace Utility
 
 	int FontBuilder::FontBuilderImpl::CalculateHeight(const System::string& text)
 	{
-		int res = 0;
-		int min_h = 0;
-		int max_h = 0;		
+        int res = 0;
+        int min_h = 0;
+        int max_h = 0;
 		for (auto it = text.begin(); it != text.end(); ++it)
 		{
 			CacheData* data = wcache[curSize][curFace][*it];
@@ -240,7 +240,7 @@ namespace Utility
 
 	int FontBuilder::FontBuilderImpl::GetMaxOffset(const System::string& s)
 	{
-		int res = 0;
+        int res = 0;
 		for (int i = 0, max_i = s.Length(); i < max_i; ++i)
 		{
 			wchar_t c = s[i];
@@ -253,7 +253,7 @@ namespace Utility
 
 	int FontBuilder::FontBuilderImpl::GetMinOffset(const System::string& s)
 	{
-		int res = 0;
+        int res = 0;
 		for (int i = 0, max_i = s.Length(); i < max_i; ++i)
 		{
 			wchar_t c = s[i];

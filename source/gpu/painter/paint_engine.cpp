@@ -1,6 +1,6 @@
 #include "paint_engine.h"
 
-namespace GPU
+namespace Gpu
 {
     PaintEngine::PaintEngine()
 		: m_device(nullptr)

@@ -26,17 +26,21 @@ namespace Utility
             case WORD_NAME:
             {
                 System::string name;
-                if (!ParseBlockedString(buffer, name))
-                    return (out_error() << "Unable to parse armature name" << std::endl, false);
+                ParseBlockedString(buffer, name);
                 armature->SetName(name);
-                armature->SetStorageName(name);
+            }
+                break;
+            case WORD_ACTION_REF:
+            {
+                System::string action;
+                ParseBlockedString(buffer, action);
+                armature->AddActionName(action);
             }
                 break;
             case WORD_BONE:
             {
                 std::unique_ptr<Virtual::Bone> bone(new Virtual::Bone);
-                if (!ParseBone(buffer, bone.get()))
-                    return (out_error() << "Unable to parse armature bone" << std::endl, false);
+                ParseBone(buffer, bone.get());
                 Virtual::Bone* parent = armature->GetBoneByName(bone->GetParentName());
                 if (parent)
                     parent->AddChild(bone.release());
@@ -65,8 +69,7 @@ namespace Utility
             case WORD_ARMATURE:
             {
                 std::unique_ptr<Virtual::Armature> armature(new Virtual::Armature);
-                ParseArmature(buffer, armature.get());
-                Virtual::Armature::add(armature->GetStorageName(), armature.get());
+                ParseArmature(buffer, armature.get());                
                 armature.release();
             }
                 break;

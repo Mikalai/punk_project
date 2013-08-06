@@ -53,9 +53,8 @@ namespace Math
             cur_length += (p1 - p0).Length();
             index++;
         }
-        float x = cur_length * t / req_length;
-        float local_t = x - t;
-        auto res = m_points[index - 1] * (1.0f - local_t) + m_points[index] * local_t;
+        float x = (cur_length  - req_length) / (m_points[index].GetPoint() - m_points[index-1].GetPoint()).Length();
+        auto res = m_points[index - 1] * x + m_points[index] * (1.0f - x);
         return res;
     }
 }

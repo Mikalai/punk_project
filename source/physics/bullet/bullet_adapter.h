@@ -12,10 +12,10 @@
 //	class BulletAdapter
 //	{
 //	public:
-//		virtual void EnterPhysicalSimulator(BulletSimulator* value) = 0;
-//		virtual void LeavePhysicalSimulator() = 0;
-//		virtual void SetTransform(const Math::mat4& value) = 0;
-//		virtual void GetTransform(Math::mat4& value) = 0;
+//		virtual void EnterPhysicalSimulator(BulletSimulator* value) override;
+//		virtual void LeavePhysicalSimulator() override;
+//		virtual void SetTransform(const Math::mat4& value) override;
+//		virtual void GetTransform(Math::mat4& value) override;
 //	};
 //}
 //

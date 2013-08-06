@@ -1,6 +1,6 @@
 #include "logger.h"
 
-int Tab::m_offset = 0;
+int Tab::m_offset= 0;
 
 namespace System
 {

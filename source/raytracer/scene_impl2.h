@@ -63,7 +63,7 @@ namespace Raytracer
 			float g_minus_lh = g - l_h;
 			float g_plus_lh = g + l_h;
 
-			float f = 0.5f * (g_minus_lh*g_minus_lh) / (g_plus_lh*g_plus_lh);
+            float f = 0.5f * (g_minus_lh*g_minus_lh) / (g_plus_lh*g_plus_lh);
 
 			float a = l_h*(g_plus_lh) - 1.0f;
 			float b = l_h*(g_minus_lh) + 1.0f;
@@ -180,7 +180,7 @@ namespace Raytracer
 				}
 			}
 
-			if (!near_object || min_t1 <= 0)
+            if (!near_object || min_t1 <= 0)
 				return Point(0,0,0);
 
 			for (const auto& light : m_lights)

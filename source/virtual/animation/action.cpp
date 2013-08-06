@@ -7,26 +7,34 @@ namespace Virtual
 {
 	Action::Action()
 	{
-		SetType(System::ObjectType::ACTION);
+//		SetType(System::ObjectType::ACTION);
 	}
 
 	Action::~Action() {}
 
-	bool Action::Save(std::ostream& stream) const
-	{
-		System::CompoundObject::Save(stream);
+    void Action::Save(System::Buffer* buffer) const
+    {
+        System::CompoundObject::Save(buffer);
+        buffer->WriteSigned32(m_start_frame);
+        buffer->WriteSigned32(m_end_frame);
+        buffer->WriteString(m_name);
+    }
 
-		stream.write((char*)&m_start_frame, sizeof(m_start_frame));
-		stream.write((char*)&m_end_frame, sizeof(m_end_frame));
-		return true;
-	}
+    void Action::Load(System::Buffer* buffer)
+    {
+        System::CompoundObject::Load(buffer);
+        m_start_frame = buffer->ReadSigned32();
+        m_end_frame = buffer->ReadSigned32();
+        m_name = buffer->ReadString();
+    }
 
-	bool Action::Load(std::istream& stream) 
-	{
-		System::CompoundObject::Load(stream);
+    void Action::SetName(System::string &value)
+    {
+        m_name = value;
+    }
 
-		stream.read((char*)&m_start_frame, sizeof(m_start_frame));
-		stream.read((char*)&m_end_frame, sizeof(m_end_frame));
-		return true;
-	}
+    const System::string& Action::GetName() const
+    {
+        return m_name;
+    }
 }

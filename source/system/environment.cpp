@@ -15,7 +15,7 @@ namespace System
 	void Environment::Destroy()
 	{
 		delete m_instance;
-		m_instance = 0;
+        m_instance = 0;
 	}
 	
 	Environment::Environment()

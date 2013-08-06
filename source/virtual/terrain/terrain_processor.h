@@ -13,7 +13,7 @@ namespace Virtual
 	{
 	public:
 
-		enum Result { RESULT_ERROR = 0, RESULT_TRY_AGAIN = 1, RESULT_OK = 2 };
+		enum Result { RESULT_ERROr = 0, RESULT_TRY_AGAIN = 1, RESULT_OK = 2 };
 
 		TerrainProcessor(TerrainCell* cell);
 

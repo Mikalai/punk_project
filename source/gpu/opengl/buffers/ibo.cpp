@@ -1,6 +1,6 @@
 #include "ibo.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -24,14 +24,12 @@ namespace GPU
 			if (IsValid())
 				Destroy();
 
-			glGenBuffers(1, &m_index);
-			ValidateOpenGL(L"Unable to generate Index buffer");
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index);
-			ValidateOpenGL(L"Unable to bind Index buffer");
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-			ValidateOpenGL(L"Unable to fill Index buffer with data");
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			ValidateOpenGL(L"Unable to unbind Index buffer");	
+            GL_CALL(glGenBuffers(1, &m_index));
+            GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_index));
+            GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
+            GL_CALL(ValidateOpenGL(L"Unable to fill Index buffer with data"));
+            GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+            GL_CALL(ValidateOpenGL(L"Unable to unbind Index buffer"));
 			m_size = size;
 		}
 
@@ -41,7 +39,7 @@ namespace GPU
 			{
 				glDeleteBuffers(1, &m_index);				
 				ValidateOpenGL(L"Unable to delete Indext buffer");
-				m_index = 0;
+                m_index = 0;
 			}
 		}
 

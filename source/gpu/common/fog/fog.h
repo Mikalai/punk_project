@@ -4,7 +4,7 @@
 #include "../../../math/vec4.h"
 #include "fog_mode.h"
 
-namespace GPU
+namespace Gpu
 {
 	class PUNK_ENGINE_API FogDescription
 	{

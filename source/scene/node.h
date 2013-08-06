@@ -4,29 +4,28 @@
 #include <vector>
 #include "../system/compound_object.h"
 #include "../string/string.h"
-#include "visitor.h"
 #include "../math/bounding_box.h"
 #include "../math/bounding_shere.h"
-#include "scene_graph_adapter.h"
 
+namespace Utility { class AsyncParserTask; }
 namespace Virtual { class Entity; }
 
 namespace Scene
 {
+    class SceneGraph;
 
 	class PUNK_ENGINE_API Node : public System::CompoundObject
 	{
-
+    public:
+        using System::CompoundObject::Remove;
+        using System::CompoundObject::Find;
 	public:
-		Node();
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
-		virtual ~Node();		
 
-		static Node* CreateFromFile(const System::string& path);
-		static Node* CreateFromStream(std::istream& stream);
-			
-		virtual bool Apply(AbstractVisitor* visitor);
+        Node();
+        Node(const Node&) = delete;
+        Node& operator = (const Node&) = delete;
+        virtual const System::string ToString() const;
+		virtual ~Node();		
 
 		void SetBoundingBox(const Math::BoundingBox& bbox) { m_bbox = bbox; }
 		const Math::BoundingBox& GetBoundingBox() const { return m_bbox; }
@@ -34,30 +33,39 @@ namespace Scene
 		void SetBoundingSphere(const Math::BoundingSphere& value) { m_bsphere = value; }
 		const Math::BoundingSphere& GetBoundingSphere() const { return m_bsphere; }
 
-		virtual void SetUserData(SceneGraphAdapter* adapter);
-		SceneGraphAdapter* GetUserData();        
+        virtual Node* Clone();
 
-        virtual Node* Clone() const;
+        void SetData(System::Object* value);
+        System::Object* GetData();
+        const System::Object* GetData() const;
 
-	protected:
-		virtual bool Update(int time_ms);
+        void SetName(const System::string& value);
+        const System::string& GetName() const;
 
-        void CloneInternals(Node* dst) const;
-	private:
+        size_t GetIndex(const System::string& name) const;
+        bool Remove(const System::string& name, bool depth = false);
+        Node* Find(const System::string& name, bool in_depth = false);
+        const Node* Find(const System::string& name, bool in_depth = false) const;
+        std::vector<Node*> FindAll(const System::string& name, bool in_depth, bool strict_compare = true);
 
+        SceneGraph* GetSceneGraph() const;
+
+        Utility::AsyncParserTask* Task() const;
+        Utility::AsyncParserTask* Task(Utility::AsyncParserTask* value);
+
+    private:
+        void CloneInternals(Node *dst);
+
+    private:
+        System::string m_name;
+        System::Object* m_data;
 		Math::BoundingBox m_bbox;
-		Math::BoundingSphere m_bsphere;
-
-		//	should not be deleted 
-		SceneGraphAdapter* m_entity;
-	private:
-		Node(const Node&);
-		Node& operator = (const Node&);
-		void Init();
-		void Clear();	
+        Math::BoundingSphere m_bsphere;
+        Utility::AsyncParserTask* m_task;
+        SceneGraph* m_graph;
+    public:
+        PUNK_OBJECT(Node)
 	};
 }
-
-//REGISTER_MANAGER(L"resource.nodes", L"*.node", System::Environment::Instance()->GetModelFolder(), System::ObjectType::NODE, Scene, Node, return, return);
 
 #endif	//	H_PUNK_SCENE_NODE

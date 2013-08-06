@@ -1,32 +1,25 @@
 #include "transform.h"
 #include "../../utility/descriptors/object_desc.h"
 #include "../../system/logger.h"
-
+#include "../../engine_objects.h"
 namespace Virtual
 {
-	TransformNode::TransformNode(const Math::mat4& m)
+    PUNK_OBJECT_REG(Transform, "Virtual.Transform", PUNK_TRANSFORM, &System::Object::Info.Type);
+
+	Transform::Transform(const Math::mat4& m)
 	{
-		SetType(System::ObjectType::TRANSFORM_NODE);
 		m_transform = m;
+        Info.Add(this);
 	}
 
-	TransformNode::TransformNode() {}
+    Transform::Transform()
+    {
+        Info.Add(this);
+    }
 
-	bool TransformNode::Save(std::ostream& stream) const
-	{
-		System::Object::Save(stream);
-		m_transform.Save(stream);
-		return true;
-	}
-
-	bool TransformNode::Load(std::istream& stream)
-	{
-		System::Object::Load(stream);
-		m_transform.Load(stream);
-		return true;
-	}
-
-	TransformNode::~TransformNode()
-	{}
+	Transform::~Transform()
+    {
+        Info.Remove(this);
+    }
 
 }

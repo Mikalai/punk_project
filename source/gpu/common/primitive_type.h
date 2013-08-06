@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include "../../string/string.h"
 
-namespace GPU
+namespace Gpu
 {
 	enum class PrimitiveType { 
 		POINTS, 

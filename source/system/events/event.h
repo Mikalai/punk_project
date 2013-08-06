@@ -16,7 +16,7 @@ namespace System
         int eventCode;        
 		void* anyData;
 		void* reciever;
-        //virtual void Release() = 0;
+        //virtual void Release() override;
         //char tmp[1024*1024];	//	dummy memory allocation to check memory leaks
 
 		virtual ~Event() {}

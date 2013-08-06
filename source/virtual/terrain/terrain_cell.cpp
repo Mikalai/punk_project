@@ -1,20 +1,17 @@
+#include "../../system/errors/module.h"
 #include "../../system/logger.h"
 #include "terrain_cell.h"
 
 namespace Virtual
 {
-	bool TerrainRawDataSource::Save(std::ostream& stream) const
+    void TerrainRawDataSource::Save(System::Buffer *buffer) const
 	{
-		if (!m_raw_file.Save(stream))
-			return (out_error() << "Can't save terrain raw data source" << std::endl, false);
-		return true;
+        buffer->WriteString(m_raw_file);
 	}
 
-	bool TerrainRawDataSource::Load(std::istream& stream)
+    void TerrainRawDataSource::Load(System::Buffer *buffer)
 	{
-		if (!m_raw_file.Load(stream))
-			return (out_error() << "Can't load terrain raw data source" << std::endl, false);
-		return true;
+        m_raw_file = buffer->ReadString();
 	}
 
 	TerrainCell::Core::Core()
@@ -29,26 +26,22 @@ namespace Virtual
 		, m_data_cache(nullptr)
 	{}
 
-	bool TerrainCell::Save(std::ostream& stream) const
+    void TerrainCell::Save(System::Buffer *buffer) const
 	{
-		stream.write((char*)&m_core, sizeof(m_core));
-		if (!m_name.Save(stream))
-			return (out_error() << "Can't save cell name" << std::endl, false);
-
-		if (!m_source.Save(stream))
-			return (out_error() << "Can't save cell raw file name" << std::endl, false);
-		return true;
+        m_core.m_location.Save(buffer);
+        buffer->WriteReal32(m_core.m_base_height);
+        buffer->WriteSigned32(m_core.m_is_valid);
+        buffer->WriteString(m_name);
+        m_source.Save(buffer);
 	}
 
-	bool TerrainCell::Load(std::istream& stream) 
+    void TerrainCell::Load(System::Buffer *buffer)
 	{
-		stream.read((char*)&m_core, sizeof(m_core));
-		if (!m_name.Load(stream))
-			return (out_error() << "Can't load cell name" << std::endl, false);
-
-		if (!m_source.Load(stream))
-			return (out_error() << "Can't load cell raw file name" << std::endl, false);
-		return true;
+        m_core.m_location.Load(buffer);
+        m_core.m_base_height = buffer->ReadReal32();
+        m_core.m_is_valid = buffer->ReadSigned32();
+        m_name = buffer->ReadString();
+        m_source.Load(buffer);
 	}
 
 	TerrainCell::~TerrainCell()

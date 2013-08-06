@@ -3,12 +3,12 @@
 
 #include "../../painter/paint_engine.h"
 
-namespace GPU
+namespace Gpu
 {
     class VideoDriver;
 	namespace OpenGL
 	{
-		class RenderTargetTexture;
+//		class RenderTargetTextureColorDepth;
 
 		class OpenGLPaintEngine : public PaintEngine
 		{
@@ -16,8 +16,8 @@ namespace GPU
             OpenGLPaintEngine(VideoDriver* driver);
 			virtual	~OpenGLPaintEngine();
 
-			void SetRenderTarget(RenderTargetTexture* value);
-			RenderTargetTexture* GetRenderTarget();
+//			void SetRenderTarget(RenderTargetTextureColorDepth* value);
+//			RenderTargetTextureColorDepth* GetRenderTarget();
 
 			virtual bool Begin(PaintDevice* device) override;
 			virtual void DrawLines(const Math::Line2D* lines, size_t count) override;

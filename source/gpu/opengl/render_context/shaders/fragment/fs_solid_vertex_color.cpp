@@ -3,26 +3,26 @@
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
-		FragmentShaderSolidVertexColor::FragmentShaderSolidVertexColor()
+		FsSolidVertexColor::FsSolidVertexColor()
 			: Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder()
 						 + GetShaderFile(ShaderCollection::FragmentSolidVertexColor));
 		}
 
-		void FragmentShaderSolidVertexColor::InitUniforms()
+		void FsSolidVertexColor::InitUniforms()
 		{
 		}
 
-		void FragmentShaderSolidVertexColor::BindParameters(const CoreState& params)
+		void FsSolidVertexColor::BindParameters(const CoreState& params)
 		{
 		}
 
-		int64_t FragmentShaderSolidVertexColor::GetRequiredAttributesSet() const
+		int64_t FsSolidVertexColor::GetRequiredAttributesSet() const
 		{
 			return 0;
 		}

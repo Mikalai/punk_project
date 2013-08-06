@@ -34,7 +34,7 @@
 //			void Init() override;
 //			void InitUniforms() override;
 //			void BindParameters(const CoreState& pparams) override;
-//			int64_t GetRequiredAttributesSet() const override;
+//			int64_t GetRequiredAttributesSet() const= 0;
 //			virtual void Begin() override;
 //			virtual void End() override;
 //		};

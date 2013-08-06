@@ -1,7 +1,7 @@
 #include "fs_particle.h"
 #include "../../../../../system/environment.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

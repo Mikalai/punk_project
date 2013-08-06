@@ -162,7 +162,7 @@ namespace Math
 			if (--m_rep->m_usage_count == 0)
 			{
 				delete m_rep;
-				m_rep = 0;
+                m_rep = 0;
 			}
 		}
 

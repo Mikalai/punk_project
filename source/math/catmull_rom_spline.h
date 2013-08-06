@@ -10,10 +10,10 @@ namespace Math
 	public:
 		static const T Interpolate(const T* pp1, const T* pp2, const T* pp3, const T* pp4, double u)
 		{
-			if (pp2 =override || pp3 =override)
+			if (pp2 == 0 || pp3 == 0)
 				return T();
 
-			if (pp1 =override || pp2 =override)
+			if (pp1 == 0 || pp2 == 0)
 			{
 				const T& p2 = *pp2;
 				const T& p3 = *pp3;
@@ -39,10 +39,10 @@ namespace Math
 		//	point = [0..4];
 		static const T FastInterpolate(const T* pp1, const T* pp2, const T* pp3, const T* pp4, int point)
 		{
-			if (pp2 =override || pp3 =override)
+			if (pp2 == 0 || pp3 == 0)
 				return T();
 
-			if (pp1 =override || pp4 =override)
+			if (pp1 == 0 || pp4 == 0)
 			{
 				switch (point)
 				{

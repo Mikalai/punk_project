@@ -18,8 +18,8 @@ namespace Virtual
 		System::Object* AsObject() { return m_data; }
 		const System::Object* AsObject() const { return m_data; }		
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+		virtual void Save(System::Buffer* buffer) const;
+		virtual void Load(System::Buffer* buffer);
 		virtual ~Proxy();
 
 	private:

@@ -41,7 +41,7 @@ namespace Math
 		
 		if (s1 >= 0 && s2 >= 0 && s3 >= 0)
 			return true;
-		if (s1 <= 0 && s2 <= 0 && s3 <= 0)
+        if (s1 <= 0 && s2 <= 0 && s3 <= 0)
 			return true;
 
 

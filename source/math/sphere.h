@@ -21,8 +21,8 @@ namespace Math
 
 		friend const Sphere operator * (const mat4& m, const Sphere& s);
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+		void Save(System::Buffer* buffer) const;
+		void Load(System::Buffer* buffer);
 		
 	private:
 		vec3 m_center;
@@ -47,7 +47,7 @@ namespace Math
 			return a;
 
 		Sphere res;		
-		float r = 0.5f * (d + a.GetRadius() + b.GetRadius());
+        float r = 0.5f * (d + a.GetRadius() + b.GetRadius());
 		res.SetRadius(r);
 		res.SetCenter(a.GetCenter() + (r - a.GetRadius()) / d * (b.GetCenter() - a.GetCenter()));
 		return res;

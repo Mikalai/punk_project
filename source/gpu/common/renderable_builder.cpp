@@ -3,7 +3,7 @@
 #include "primitive_type.h"
 #include "primitives/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	class VideoDriver;
 	class Renderable;
@@ -405,7 +405,7 @@ namespace GPU
 
 	Renderable* RenderableBuilderImpl::ToRenderable()
 	{
-		int64_t c = 0;
+        int64_t c = 0;
 		c |= m_vertex.empty() ? 0 : VertexComponent::Position::Value();
 		c |= m_color.empty() ? 0 : VertexComponent::Color::Value();
 		c |= m_normal.empty() ? 0 : VertexComponent::Normal::Value();

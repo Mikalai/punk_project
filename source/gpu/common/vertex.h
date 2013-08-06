@@ -7,7 +7,7 @@
 #include "../../math/vec4.h"
 #include "vertex_component.h"
 
-namespace GPU
+namespace Gpu
 {
 	/**
 		Ubervertex:

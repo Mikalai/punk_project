@@ -25,7 +25,7 @@ namespace Math
 	class mat3;
 }
 
-namespace GPU
+namespace Gpu
 {
 	class PaintEngine;
 	class PaintDevice;

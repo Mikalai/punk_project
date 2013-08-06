@@ -1,14 +1,21 @@
 #include "river.h"
+#include "../../utility/module.h"
+#include "../../engine_objects.h"
 
 namespace Virtual
 {
+    PUNK_OBJECT_REG(River, "Virtual.River", PUNK_RIVER, &System::Object::Info.Type);
+
     River::River()
         : m_geom(nullptr)
+        , m_task(nullptr)
     {
+        Info.Add(this);
     }
 
     River::~River()
     {
+        Info.Remove(this);
     }
 
     void River::SetGeometry(StaticGeometry* value)
@@ -65,4 +72,27 @@ namespace Virtual
     {
         return m_position;
     }
+
+    Utility::AsyncParserTask* River::Task() const
+    {
+        return m_task;
+    }
+
+    Utility::AsyncParserTask* River::Task(Utility::AsyncParserTask* value)
+    {
+        if (m_task)
+            delete m_task;
+        return m_task = value;
+    }
+
+    void River::SetName(const System::string& name)
+    {
+        m_name = name;
+    }
+
+    const System::string& River::GetName() const
+    {
+        return m_name;
+    }
+
 }

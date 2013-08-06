@@ -1,7 +1,18 @@
 #include "gpu_state.h"
 
-namespace GPU
+namespace Gpu
 {
+
+    BatchState::BatchState()
+    {
+        m_terrain_level = 0;
+        m_terrain_i = 0;
+        m_terrain_j = 0;
+        m_terrain_slices = 0;
+        m_used_bones_count = -1;
+        m_cast_shadows = true;
+        m_receive_shadows = true;
+    }
 
 	TextureState::TextureState()
 	{
@@ -26,6 +37,11 @@ namespace GPU
         m_enable_bounding_box_rendering = false;
         m_enable_bounding_sphere_rendering= false;
         m_enable_navi_mesh_rendering = false;
+        m_enable_font_rendering = false;
+        m_enable_shadows = false;
+        m_shadow_model = ShadowModel::ShadowMap;
+        m_shadow_map_size.Set(512, 512);
+
        // m_enable_bump_maping_shading = false;
 	}
 

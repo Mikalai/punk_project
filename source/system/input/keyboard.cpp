@@ -15,7 +15,7 @@ namespace System
 	void Keyboard::Destroy()
 	{
 		delete m_instance;
-		m_instance = 0;
+        m_instance = 0;
 	}
 
 	Keyboard::Keyboard() 

@@ -7,7 +7,7 @@
 #include "cl_context.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

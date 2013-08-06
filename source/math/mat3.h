@@ -14,11 +14,13 @@
 #include "vec3.h"
 #include "../string/string.h"
 
+namespace System { class Buffer; }
 namespace Math
 {
 	template<class T>
 	class  Matrix3x3
 	{
+    protected:
 		T m[9];
 
 	public:
@@ -159,7 +161,7 @@ namespace Math
 		Matrix3x3<T>& SwapRows(int row1, int row2)
 		{
 			int size = 3;
-			for (int col = 0; col < size; ++col)
+            for (int col = 0; col < size; ++col)
 				std::swap(At(row1, col), At(row2, col));
 			return *this;
 		}
@@ -603,6 +605,8 @@ namespace Math
 		mat3(const mat3& m) : Matrix3x3<float>(m) {}
 		mat3(const Matrix3x3<float>& m) : Matrix3x3<float>(m) {}
 		mat3(T m0, T m1, T m2, T m3, T m4, T m5, T m6, T m7, T m8) : Matrix3x3<float>(m0, m1, m2, m3, m4, m5, m6, m7, m8) {}
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
 }

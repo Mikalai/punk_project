@@ -7,7 +7,7 @@
 #include "cl_device.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{
@@ -28,7 +28,7 @@ namespace GPU
 
 			bool Clear()
 			{
-				m_device = 0;
+				m_device override;
 				return true;
 			}
 

@@ -1,7 +1,7 @@
 #ifndef SHADER_TYPE_H
 #define SHADER_TYPE_H
 
-namespace GPU
+namespace Gpu
 {
     namespace OpenGL
     {
@@ -11,7 +11,9 @@ namespace GPU
         enum class ShaderCollection {
             No,
             VertexBumpMapping,
+            VertexBumpMappingShadowMap,
             FragmentBumpMapping,
+            FragmentBumpMappingShadowMap,
             VertexSolidColor,
             FragmentSolidColor,
             VertexSolidVertexColor,
@@ -25,7 +27,10 @@ namespace GPU
             VertexLightPerVertexTextureDiffuse,
             FragmentLightPerVertexTextureDiffuse,
             VertexLightPerFragmentTextureDiffuse,
-            FragmentLightPerFragmentTextureDiffuse
+            FragmentLightPerFragmentTextureDiffuse,
+            VertexSkinning,
+            FragmentTextSolidColor,
+            FragmentDepth
         };
 
         extern const wchar_t* GetShaderFile(ShaderCollection shader);

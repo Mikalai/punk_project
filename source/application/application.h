@@ -9,6 +9,12 @@
 #include "../gui/interface.h"
 #include "../physics/interface.h"
 
+namespace Utility
+{
+    class AsyncParser;
+    class FontBuilder;
+}
+
 namespace Punk
 {
 
@@ -19,12 +25,13 @@ namespace Punk
 		virtual ~Application();
 		System::Window* GetWindow();
 		System::EventManager* GetEventManager();
-		GPU::VideoDriver* GetVideoDriver();
+		Gpu::VideoDriver* GetVideoDriver();
 		Virtual::TerrainManager* GetTerrainManager();
 		GUI::Manager* GetGUIManager();
 		Physics::Simulator* GetSimulator();
-		GPU::PaintEngine* GetPaintEngine();
+		Gpu::PaintEngine* GetPaintEngine();
         System::Mouse* GetMouse();
+        Utility::AsyncParser* GetAsyncParser();
 
 		int Run();
 		void SetTimeScale(int64_t nominator, int64_t denominator);
@@ -55,7 +62,7 @@ namespace Punk
 #endif
 
 		//	User can override next methods
-        virtual void OnRender(GPU::Frame* frame);		
+        virtual void OnRender(Gpu::Frame* frame);		
 		virtual void OnInit(const Config& value);
 		virtual void OnResize(System::WindowResizeEvent* event);
 		virtual void OnKeyDown(System::KeyDownEvent* event);
@@ -63,6 +70,7 @@ namespace Punk
 		virtual void OnMouseWheel(System::MouseWheelEvent* event);
 		virtual void OnMouseMove(System::MouseMoveEvent* event);
         virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
+        virtual void OnMouseRightButtonDown(System::MouseRightButtonDownEvent* event);
         virtual void OnDestroy();
         virtual void OnIdle(System::IdleEvent* event);
 
@@ -71,11 +79,12 @@ namespace Punk
 		void Clear();
 	private:
 
+        Utility::AsyncParser* m_async_parser;
         Utility::FontBuilder* m_font_builder;
-		GPU::PaintEngine* m_paint_engine;
+		Gpu::PaintEngine* m_paint_engine;
 		System::Window* m_window;
 		System::EventManager* m_event_manager;
-		GPU::VideoDriver* m_video_driver;
+		Gpu::VideoDriver* m_video_driver;
 		Physics::Simulator* m_simulator;
 		Virtual::TerrainManager* m_terrain_manager;
 		System::Timer m_timer;
@@ -88,6 +97,7 @@ namespace Punk
 		void MouseWheel(System::MouseWheelEvent* event);		
 		void MouseMove(System::MouseMoveEvent* event);
         void MouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
+        void MouseRightButtonDown(System::MouseRightButtonDownEvent* event);
         void Idle(System::IdleEvent* event);
 
 		//

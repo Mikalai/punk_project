@@ -41,7 +41,7 @@
 //			RenderContextPolicy();
 //			virtual void InitUniforms() override;
 //			virtual void BindParameters(const CoreState& params) override;
-//			virtual int64_t GetRequiredAttributesSet() const override;
+//			virtual int64_t GetRequiredAttributesSet() const= 0;
 //		};
 //	}
 

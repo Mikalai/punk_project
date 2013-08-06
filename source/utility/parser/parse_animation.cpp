@@ -27,7 +27,6 @@ namespace Utility
                 System::string name;
                 ParseBlockedString(buffer, name);
                 animation->SetName(name);
-                animation->SetStorageName(name);
             }
                 break;
             case WORD_POSITION_TRACK:

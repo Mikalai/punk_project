@@ -12,13 +12,16 @@
 
 namespace Math
 {
-	PUNK_ENGINE_API const mat4 ProjectionMatrix(float fov, float aspect, float zNear, float zFar);
-	PUNK_ENGINE_API const mat4 OrthoMatrix(float width, float height, float bottom, float top);
-	PUNK_ENGINE_API const mat4 Rotate(vec4 v);
-	PUNK_ENGINE_API const mat4 Translate(vec3 pos);
-	PUNK_ENGINE_API const mat4 Scale(vec3 scale);
-	PUNK_ENGINE_API const mat4 TargetCamera(vec3 eye, vec3 pos, vec3 up);
-	PUNK_ENGINE_API const mat4 FreeCamera(vec3 pos, vec3 dir, vec3 up);
+    float DegToRad(float value);
+    float RadToDeg(float value);
+
+    //PUNK_ENGINE_API const mat4 ProjectionMatrix(float fov, float aspect, float zNear, float zFar);
+//	PUNK_ENGINE_API const mat4 OrthoMatrix(float width, float height, float bottom, float top);
+//	PUNK_ENGINE_API const mat4 Rotate(vec4 v);
+//	PUNK_ENGINE_API const mat4 Translate(vec3 pos);
+//	PUNK_ENGINE_API const mat4 Scale(vec3 scale);
+//	PUNK_ENGINE_API const mat4 TargetCamera(vec3 eye, vec3 pos, vec3 up);
+//	PUNK_ENGINE_API const mat4 FreeCamera(vec3 pos, vec3 dir, vec3 up);
 	PUNK_ENGINE_API const mat4 RotationMatrixFromQuaternion(const quat& q);
 	PUNK_ENGINE_API const mat3 NormalMatrixFromWorldView(const mat4& worldView);
 
@@ -48,7 +51,7 @@ namespace Math
 			T z = (m[1] - m[4]) * s;
 			return Quaternion<T>(w, x, y, z);
 		}
-		int Max = 0;
+        int Max = 0;
 		for (int i = 0; i < 3; i++)
 		{
 			if (m[Max*4 + Max] < m[i*4 + i])

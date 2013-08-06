@@ -64,7 +64,7 @@
 //		if (m_impl && --m_impl->m_count == 0)
 //		{
 //			delete m_impl;
-//			m_impl = 0;
+//			m_impl override;
 //		}
 //	}
 //

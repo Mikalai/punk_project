@@ -34,32 +34,33 @@ namespace ImageModule
 		impl_image.reset(0);
 	}
 
-	bool Image::Save(std::ostream& stream) const
+    void Image::Save(System::Buffer *buffer) const
 	{
-		return impl_image->Save(stream);
+        impl_image->Save(buffer);
 	}
 
-	bool Image::Load(std::istream& stream)
+    void Image::Load(System::Buffer *buffer)
 	{
 		char header[16];
-		stream.read(header, 16);
+        buffer->ReadBuffer(header, sizeof(header));
 		{
 			unsigned char png[] = { 137, 80, 78, 71, 13, 10, 26, 10 };
             if (!memcmp(header, png, 8))
 			{					
-				stream.seekg(0, std::ios_base::beg);
+                buffer->Reset();
 				PngImporter importer;
-				return importer.Load(stream, this);
+                importer.Load(buffer, this);
+                return;
 			}
 
 			unsigned char jpg[] = {0xFF, 0xD8};
 			if (!memcmp(header, jpg, 2))
 			{
-				stream.seekg(0, std::ios_base::beg);
+                buffer->Reset();
 				JpgImporter importer;
-				return importer.Load(stream, this);
-			}
-			return false;
+                importer.Load(buffer, this);
+                return;
+			}			
 		}
 	}
 		

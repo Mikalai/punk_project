@@ -16,7 +16,7 @@ namespace System
 		DWORD id = GetLastError();
 		if (id != S_OK)
 		{
-			HLOCAL hLocal = 0;
+			HLOCAL hLocal override;
 			if (FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_IGNORE_INSERTS,
 				0, id, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), (PTSTR)&hLocal, 0, 0))
 			{
@@ -39,7 +39,7 @@ namespace System
 #ifdef _WIN32
 		if (code != S_OK)
 		{
-			HLOCAL hLocal = 0;
+			HLOCAL hLocal override;
 			if (FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_IGNORE_INSERTS,
 				0, code, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), (PTSTR)&hLocal, 0, 0))
 			{

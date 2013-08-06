@@ -131,22 +131,16 @@ namespace Math
 //			return true;
 //	}
 
-	bool AxisAlignedBox::Save(std::ostream& stream) const
+    void AxisAlignedBox::Save(System::Buffer *buffer) const
 	{
-//		stream.write((char*)&m_transformed_points, sizeof(m_transformed_points));
-//		stream.write((char*)&m_border_points, sizeof(m_border_points));
-		stream.write((char*)&m_min, sizeof(m_min));
-		stream.write((char*)&m_max, sizeof(m_max));
-		return true;
+        m_min.Save(buffer);
+        m_max.Save(buffer);
 	}
 
-	bool AxisAlignedBox::Load(std::istream& stream)
+    void AxisAlignedBox::Load(System::Buffer *buffer)
 	{
-//		stream.read((char*)&m_transformed_points, sizeof(m_transformed_points));
-//		stream.read((char*)&m_border_points, sizeof(m_border_points));
-		stream.read((char*)&m_min, sizeof(m_min));
-		stream.read((char*)&m_max, sizeof(m_max));
-		return true;
+        m_min.Save(buffer);
+        m_max.Save(buffer);
 	}
 
     void AxisAlignedBox::Set(const vec3& min_point, const vec3& max_point)

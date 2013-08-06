@@ -5,6 +5,7 @@
 #include "../gui/module.h"
 #include "../physics/module.h"
 #include "../virtual/module.h"
+#include "../gpu/opengl/module.h"
 
 namespace Punk
 {
@@ -13,23 +14,25 @@ namespace Punk
 		: m_time_scale_nominator(1)
 		, m_time_scale_denomiator(1)
 		, m_video_driver(nullptr)
+        , m_async_parser(new Utility::AsyncParser)
 	{
 		m_paint_engine = nullptr;
 	}
 
 	Application::~Application()
-	{		
+	{		        
 	}
 
 	void Application::Clear()
-	{        
+    {
+        safe_delete(m_async_parser);
         OnDestroy();
 		safe_delete(m_font_builder);
-		GPU::GPU_DESTROY();
-		Virtual::StaticGeometry::clear();
-		Virtual::SkinGeometry::clear();
-		Virtual::Armature::clear();
-		Virtual::Material::clear();
+		Gpu::GPU_DESTROY();
+        Virtual::StaticGeometry::Info.DestroyAllInstances();
+        Virtual::SkinGeometry::Info.DestroyAllInstances();
+        Virtual::Armature::Info.DestroyAllInstances();
+        Virtual::Material::Info.DestroyAllInstances();
 		safe_delete(m_paint_engine);
 //		GUI::Manager::Destroy();
 		safe_delete(m_terrain_manager);
@@ -38,6 +41,7 @@ namespace Punk
 		safe_delete(m_window);
 		safe_delete(m_event_manager);
     }
+
 
     void Application::Init(const Config& data)
     {
@@ -51,19 +55,17 @@ namespace Punk
         if (!data.gpu_config.disable_3d_graphics)
         {
             System::Mouse::Instance()->LockInWindow(true);
-            m_video_driver = new GPU::VideoDriver;
-
             {
-                GPU::VideoDriverDesc desc;
+                Gpu::VideoDriverDesc desc;
                 desc.config = data.gpu_config;
                 desc.event_manager = m_event_manager;
                 desc.window = m_window;
-                m_video_driver->Start(desc);
-                m_video_driver->SetFontBuilder(m_font_builder);
+                desc.font_builder = m_font_builder;
+                m_video_driver = new Gpu::OpenGL::VideoDriverImpl(desc);
             }
 
             {
-                GPU::GPU_INIT(data.gpu_config);
+                Gpu::GPU_INIT(data.gpu_config);
             }
 
             //		{
@@ -125,6 +127,7 @@ namespace Punk
 
 	void Application::WndOnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event)
 	{
+        MouseRightButtonDown(event);
 		m_event_manager->FixEvent(event);
 	}
 
@@ -227,10 +230,15 @@ namespace Punk
 		return m_event_manager;
 	}
 
-	GPU::VideoDriver* Application::GetVideoDriver()
+	Gpu::VideoDriver* Application::GetVideoDriver()
 	{
 		return m_video_driver;
 	}
+
+    Utility::AsyncParser* Application::GetAsyncParser()
+    {
+        return m_async_parser;
+    }
 
 	GUI::Manager* Application::GetGUIManager()
 	{
@@ -253,12 +261,12 @@ namespace Punk
 		return m_simulator;
 	}
 
-	GPU::PaintEngine* Application::GetPaintEngine()
+	Gpu::PaintEngine* Application::GetPaintEngine()
 	{
 		return m_paint_engine;
 	}
 
-    void Application::OnRender(GPU::Frame*)
+    void Application::OnRender(Gpu::Frame*)
     {
 
     }
@@ -270,15 +278,15 @@ namespace Punk
 
     void Application::Render()
     {
-        GPU::VideoDriver* driver = GetVideoDriver();
+        Gpu::VideoDriver* driver = GetVideoDriver();
         if (!driver)
             return;
 
-        GPU::Frame* frame = driver->BeginFrame();        
+        Gpu::Frame* frame = driver->BeginFrame();
         if (!frame)
             return;
 
-        OnRender(frame);        
+        OnRender(frame);
         driver->EndFrame(frame);
     }
 
@@ -311,6 +319,9 @@ namespace Punk
     {}
 
     void Application::OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent *event)
+    {}
+
+    void Application::OnMouseRightButtonDown(System::MouseRightButtonDownEvent *event)
     {}
 
 	void Application::Resize(System::WindowResizeEvent *event)
@@ -357,5 +368,10 @@ namespace Punk
     void Application::Idle(System::IdleEvent *event)
     {
         OnIdle(event);
+    }
+
+    void Application::MouseRightButtonDown(System::MouseRightButtonDownEvent *event)
+    {
+        OnMouseRightButtonDown(event);
     }
 }

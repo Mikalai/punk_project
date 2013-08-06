@@ -6,7 +6,7 @@
 
 namespace System { class string; }
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

@@ -1,7 +1,10 @@
 #include "human_armature.h"
+#include "../../engine_objects.h"
 
 namespace Virtual
 {
+    PUNK_OBJECT_REG(HumanArmature, "Virtual.HumanArmature", PUNK_HUMAN_ARMATURE, &HumanArmature::Info.Type);
+
 	struct HumanArmaturePartAdapter
 	{
 		HumanArmaturePart key;
@@ -72,4 +75,14 @@ namespace Virtual
 			m_bone_index[HumanPart[i].key] = GetBoneIndex(HumanPart[i].value);
 		}
 	}
+
+    HumanArmature::HumanArmature()
+    {
+        Info.Add(this);
+    }
+
+    HumanArmature::~HumanArmature()
+    {
+        Info.Remove(this);
+    }
 }

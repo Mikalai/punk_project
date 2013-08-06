@@ -8,28 +8,26 @@
 
 namespace Math
 {
-    bool BoundingBox::Save(std::ostream& stream) const
+    void BoundingBox::Save(System::Buffer *buffer) const
     {
-        m_center_of_mass.Save(stream);
-        m_center.Save(stream);
-        m_r.Save(stream);
-        m_s.Save(stream);
-        m_t.Save(stream);
+        m_center_of_mass.Save(buffer);
+        m_center.Save(buffer);
+        m_r.Save(buffer);
+        m_s.Save(buffer);
+        m_t.Save(buffer);
         for (int i = 0; i < 6; ++i)
-            m_plane[i].Save(stream);
-        return true;
+            m_plane[i].Save(buffer);
     }
 
-    bool BoundingBox::Load(std::istream& stream)
+    void BoundingBox::Load(System::Buffer *buffer)
     {
-        m_center_of_mass.Load(stream);
-        m_center.Load(stream);
-        m_r.Load(stream);
-        m_s.Load(stream);
-        m_t.Load(stream);
+        m_center_of_mass.Load(buffer);
+        m_center.Load(buffer);
+        m_r.Load(buffer);
+        m_s.Load(buffer);
+        m_t.Load(buffer);
         for (int i = 0; i < 6; ++i)
-            m_plane[i].Load(stream);
-        return true;
+            m_plane[i].Load(buffer);
     }
 
     bool BoundingBox::Create(const std::vector<vec3>& vertex)
@@ -103,5 +101,13 @@ namespace Math
         }
 
         return true;
+    }
+
+    const BoundingSphere BoundingBox::ToBoundingSphere()
+    {
+        std::vector<vec3> p {m_min_corner, m_min_corner + m_r + m_s + m_t, m_min_corner + m_r, m_min_corner + m_s};
+        BoundingSphere s;
+        s.Create(p);
+        return s;
     }
 }

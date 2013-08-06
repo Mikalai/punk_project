@@ -11,11 +11,14 @@
 #include "math_error.h"
 #include "vec2.h"
 
+namespace System { class Buffer; }
+
 namespace Math
 {
 	template<class T>
 	class  Matrix2x2
 	{
+    protected:
 		T m[4];
 	public:
 
@@ -28,8 +31,8 @@ namespace Math
 		{
 			Matrix2x2<T> m;
 			m[0] = 1;
-			m[1] = 0;
-			m[2] = 0;
+            m[1] = 0;
+            m[2] = 0;
 			m[3] = -1;
 			return m;
 
@@ -39,8 +42,8 @@ namespace Math
 		{
 			Matrix2x2<T> m;
 			m[0] = -1;
-			m[1] = 0;
-			m[2] = 0;
+            m[1] = 0;
+            m[2] = 0;
 			m[3] = 1;
 			return m;
 		}
@@ -49,8 +52,8 @@ namespace Math
 		{
 			Matrix2x2<T> m;
 			m[0] = -1;
-			m[1] = 0;
-			m[2] = 0;
+            m[1] = 0;
+            m[2] = 0;
 			m[3] = -1;
 			return m;
 		}
@@ -274,6 +277,8 @@ namespace Math
 		mat2(const mat2& m) : Matrix2x2<float>(m) {}
 		mat2(const Matrix2x2<float>& m) : Matrix2x2<float>(m) {}
         mat2(float a00, float a01, float a10, float a11) : Matrix2x2<float>(a00, a01, a10, a11) {}
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
 }

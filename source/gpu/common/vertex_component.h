@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-namespace GPU
+namespace Gpu
 {
 	/*
 	position	0

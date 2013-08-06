@@ -176,157 +176,147 @@ namespace Math
         return FaceList();
     }
 
-    bool OctTree::Save(std::ostream& stream) const
+    void OctTree::Save(System::Buffer *buffer) const
     {
-        stream.write((char*)&m_cur_depth, sizeof(m_cur_depth));
-        m_bbox.Save(stream);
-        stream.write((char*)&m_is_finale, sizeof(m_is_finale));
-        stream.write((char*)&m_face_count, sizeof(m_face_count));
+        buffer->WriteSigned32(m_cur_depth);
+        m_bbox.Save(buffer);
+        buffer->WriteSigned32(m_is_finale);
+        buffer->WriteSigned32(m_face_count);
         int has_data = (int)m_face_list.size();
-        stream.write((char*)&has_data, sizeof(has_data));
+        buffer->WriteSigned32(has_data);
         if (m_face_count && has_data)
-            stream.write((char*)&m_face_list[0], sizeof(ivec3)*m_face_count);
+            for (auto& p : m_face_list)
+                p.Save(buffer);
 
         if (m_is_finale)
-            return true;
+            return;
 
         int flag = m_right_front_up.get() != 0;
-        stream.write((char*)&flag, sizeof(flag));
+        buffer->WriteSigned32(flag);
         if (flag)
-            m_right_front_up->Save(stream);
+            m_right_front_up->Save(buffer);
 
         flag = m_right_front_down.get() != 0;
-        stream.write((char*)&flag, sizeof(flag));
+        buffer->WriteSigned32(flag);
         if (flag)
-            m_right_front_down->Save(stream);
+            m_right_front_down->Save(buffer);
 
         flag = m_right_back_up.get() != 0;
-        stream.write((char*)&flag, sizeof(flag));
+        buffer->WriteSigned32(flag);
         if (flag)
-            m_right_back_up->Save(stream);
+            m_right_back_up->Save(buffer);
 
         //flag = m_right_back_up.get() != 0;
-        //stream.write((char*)&flag, sizeof(flag));
+        //buffer.write((char*)&flag, sizeof(flag));
         //if (flag)
-        //	m_right_back_up->Save(stream);
+        //	m_right_back_up->Save(buffer);
 
         flag = m_right_back_down.get() != 0;
-        stream.write((char*)&flag, sizeof(flag));
+        buffer->WriteSigned32(flag);
         if (flag)
-            m_right_back_down->Save(stream);
+            m_right_back_down->Save(buffer);
 
         flag = m_left_front_up.get() != 0;
-        stream.write((char*)&flag, sizeof(flag));
+        buffer->WriteSigned32(flag);
         if (flag)
-            m_left_front_up->Save(stream);
+            m_left_front_up->Save(buffer);
 
         flag = m_left_front_down.get() != 0;
-        stream.write((char*)&flag, sizeof(flag));
+        buffer->WriteSigned32(flag);
         if (flag)
-            m_left_front_down->Save(stream);
+            m_left_front_down->Save(buffer);
 
         flag = m_left_back_up.get() != 0;
-        stream.write((char*)&flag, sizeof(flag));
+        buffer->WriteSigned32(flag);
         if (flag)
-            m_left_back_up->Save(stream);
+            m_left_back_up->Save(buffer);
 
         flag = m_left_back_down.get() != 0;
-        stream.write((char*)&flag, sizeof(flag));
+        buffer->WriteSigned32(flag);
         if (flag)
-            m_left_back_down->Save(stream);
+            m_left_back_down->Save(buffer);
 
-        return true;
     }
 
-    bool OctTree::Load(std::istream& stream)
+    void OctTree::Load(System::Buffer *buffer)
     {
-        stream.read((char*)&m_cur_depth, sizeof(m_cur_depth));
-        m_bbox.Load(stream);
-        stream.read((char*)&m_is_finale, sizeof(m_is_finale));
-        stream.read((char*)&m_face_count, sizeof(m_face_count));
-        int has_data = 0;
-        stream.read((char*)&has_data, sizeof(has_data));
+        m_cur_depth = buffer->ReadSigned32();
+        m_bbox.Load(buffer);
+        m_is_finale = buffer->ReadSigned32();
+        m_face_count = buffer->ReadSigned32();
+        int has_data = buffer->ReadSigned32();
         if (m_face_count && has_data)
         {
             m_face_list.resize(m_face_count);
-            stream.read((char*)&m_face_list[0], sizeof(ivec3)*m_face_count);
+            for (auto& p : m_face_list)
+                p.Load(buffer);
         }
 
         if (m_is_finale)
-            return true;
+            return;
 
-        int flag = m_right_front_up.get() != 0;
-        stream.read((char*)&flag, sizeof(flag));
+        int flag = buffer->ReadSigned32();
         if (flag)
         {
             m_right_front_up.reset(new OctTree);
             m_right_front_up->m_parent = this;
-            m_right_front_up->Load(stream);
+            m_right_front_up->Load(buffer);
         }
 
-        flag = m_right_front_down.get() != 0;
-        stream.read((char*)&flag, sizeof(flag));
+        flag = buffer->ReadSigned32();
         if (flag)
         {
             m_right_front_down.reset(new OctTree);
             m_right_front_down->m_parent = this;
-            m_right_front_down->Load(stream);
+            m_right_front_down->Load(buffer);
         }
 
-        flag = m_right_back_up.get() != 0;
-        stream.read((char*)&flag, sizeof(flag));
+        flag = buffer->ReadSigned32();
         if (flag)
         {
             m_right_back_up.reset(new OctTree);
             m_right_back_up->m_parent = this;
-            m_right_back_up->Load(stream);
+            m_right_back_up->Load(buffer);
         }
 
-        flag = 	m_right_back_down.get() != 0;
-        stream.read((char*)&flag, sizeof(flag));
+        flag = buffer->ReadSigned32();
         if (flag)
         {
             m_right_back_down.reset(new OctTree);
             m_right_back_down->m_parent = this;
-            m_right_back_down->Load(stream);
+            m_right_back_down->Load(buffer);
         }
 
-        flag = 	m_left_front_up.get() != 0;
-        stream.read((char*)&flag, sizeof(flag));
+        flag = buffer->ReadSigned32();
         if (flag)
         {
             m_left_front_up.reset(new OctTree);
             m_left_front_up->m_parent = this;
-            m_left_front_up->Load(stream);
+            m_left_front_up->Load(buffer);
         }
 
-        flag = 	m_left_front_down.get() != 0;
-        stream.read((char*)&flag, sizeof(flag));
+        flag = buffer->ReadSigned32();
         if (flag)
         {
             m_left_front_down.reset(new OctTree);
             m_left_front_down->m_parent = this;
-            m_left_front_down->Load(stream);
+            m_left_front_down->Load(buffer);
         }
 
-        flag = 	m_left_back_up.get() != 0;
-        stream.read((char*)&flag, sizeof(flag));
+        flag = buffer->ReadSigned32();
         if (flag)
         {
             m_left_back_up.reset(new OctTree);
             m_left_back_up->m_parent = this;
-            m_left_back_up->Load(stream);
+            m_left_back_up->Load(buffer);
         }
 
-        flag = 	m_left_back_down.get() != 0;
-        stream.read((char*)&flag, sizeof(flag));
+        flag = buffer->ReadSigned32();
         if (flag)
         {
             m_left_back_down.reset(new OctTree);
             m_left_back_down->m_parent = this;
-            m_left_back_down->Load(stream);
+            m_left_back_down->Load(buffer);
         }
-
-        return true;
     }
 }

@@ -30,8 +30,8 @@ namespace Math
 		const NormalsCollection& GetNormals() const { return m_normals; }
 		NormalsCollection& GetNormals() { return m_normals; }
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+		void Save(System::Buffer* buffer) const;
+		void Load(System::Buffer* buffer);
 
 		bool UpdateBoundingVolumes();
 

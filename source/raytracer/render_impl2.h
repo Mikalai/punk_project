@@ -36,9 +36,9 @@ namespace Raytracer
 			float z = -1/tan(m_fov/2.0f);
 			float a = (float)m_height / (float)m_width;
 
-			for (int y = 0; y < m_height; ++y)
+            for (int y = 0; y < m_height; ++y)
 			{
-				for (int x = 0; x < m_width; ++x)
+                for (int x = 0; x < m_width; ++x)
 				{					
 					Math::vec3 destination(2.0f*(float)x/(float)m_width-1, 2.0f*a*(float)y/(float)m_height-a, z);
 

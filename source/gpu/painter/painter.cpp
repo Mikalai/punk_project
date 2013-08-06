@@ -3,7 +3,7 @@
 #include "pen.h"
 #include "../../math/mat3.h"
 
-namespace GPU
+namespace Gpu
 {
 	struct Painter::PainterImpl
 	{
@@ -202,7 +202,7 @@ namespace GPU
 	Painter::~Painter()
 	{
 		delete impl;
-		impl = 0;
+        impl = 0;
 	}
 
 	void Painter::Begin(PaintDevice* device)

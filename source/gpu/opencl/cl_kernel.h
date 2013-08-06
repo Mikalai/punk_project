@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include <memory>
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

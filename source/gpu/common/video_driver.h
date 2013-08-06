@@ -10,49 +10,56 @@
 namespace Math { class vec4; }
 namespace Utility { class FontBuilder; }
 
-namespace GPU
+namespace Gpu
 {
 	struct VideoDriverDesc
 	{
 		Config config;
+        Utility::FontBuilder* font_builder;
 		System::Window* window;
 		System::EventManager* event_manager;
 	};
 
+    class RenderTarget;
     class Texture2D;
 	class Frame;
+    class FrameBufferConfig;
+    class FrameBuffer;
 
-	struct VideoDriverImpl;
+    struct VideoDriverCaps;
 
 	class PUNK_ENGINE_API VideoDriver
 	{
 	public:
-
-		VideoDriver();
-		~VideoDriver();
-
-        Utility::FontBuilder* GetFontBuilder();
-        void SetFontBuilder(Utility::FontBuilder* value);
-		void SetFullScreen(bool flag);
-		bool Start(const VideoDriverDesc& desc);
-		void Restart();
-		void Shutdown();
-		System::Window* GetWindow();
-		Frame* BeginFrame();
-		void EndFrame(Frame* value);
-		void SetViewport(float x, float y, float width, float height);
-		void SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer);
-		void SetClearColor(const Math::vec4& color);
-		void SetClearDepth(float value);
-		void Clear(bool color, bool depth, bool stencil);
-		void SwapBuffers();
-        const Config& GetConfig() const;
+        VideoDriver() = default;
+        virtual ~VideoDriver();
+        virtual Utility::FontBuilder* GetFontBuilder() = 0;
+        virtual void SetFullScreen(bool flag) = 0;
+        virtual System::Window* GetWindow() = 0;
+        virtual Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, ImageModule::DataType type, const void* data, bool use_mipmaps) = 0;
+        virtual FrameBuffer* CreateFrameBuffer(FrameBufferConfig* config) = 0;
+        virtual void SetViewport(float x, float y, float width, float height) = 0;
+        virtual void SetClearColor(const Math::vec4& color) = 0;
+        virtual void SetClearDepth(float value) = 0;
+        virtual void Clear(bool color, bool depth, bool stencil) = 0;
+        virtual void SwapBuffers() = 0;
+        virtual const Config& GetConfig() const = 0;
+        virtual size_t GetFrameBufferConfigCount() const = 0;
+        virtual FrameBufferConfig* GetFrameBufferConfig(size_t index) = 0;
+        virtual const VideoDriverCaps& GetCaps() = 0;
 
         Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);
-        Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);
+        Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);        
         Texture2D* CreateTexture2D(const ImageModule::Image& image, bool use_mipmaps);
         Texture2D* CreateTexture2D(const System::string& path, bool use_mipmaps);
-		Texture2D* CreateTexture2D(std::istream& stream, bool use_mip_maps);
+        Texture2D* CreateTexture2D(System::Buffer* buffer, bool use_mip_maps);        
+        Texture2D* CreateTexture2D(const ImageModule::Image &image, ImageModule::ImageFormat internal_format, bool use_mipmaps);
+        FrameBuffer* CreateFrameBuffer(int width, int height);
+        FrameBuffer* CreateFrameBuffer(int width, int height, ImageModule::ImageFormat color_format, ImageModule::ImageFormat depth_color);
+        FrameBuffer* CreateFrameBuffer(int width, int height, ImageModule::ImageFormat color_format, ImageModule::ImageFormat depth_color, int depth_samples);
+        FrameBuffer* CreateFrameBuffer(int width, int height, ImageModule::ImageFormat color_format, ImageModule::ImageFormat depth_color, int depth_samples, int coverage_samples);
+        Frame* BeginFrame();
+        void EndFrame(Frame* value);
 
 		/**
 		 * @brief CreateTexture2D
@@ -61,13 +68,11 @@ namespace GPU
 		 * @param use_mipmaps Flag indicating if mip maps are required
 		 * @return Pointer to the created texture.
 		 */
-		Texture2D* CreateTexture2D(const ImageModule::Image& image, ImageModule::ImageFormat internal_format, bool use_mipmaps);
-
-		VideoDriverImpl* impl;
+        //Texture2D* CreateTexture2D(const ImageModule::Image& image, ImageModule::ImageFormat internal_format, bool use_mipmaps);
 
 	private:
-		VideoDriver(const VideoDriver&);
-		VideoDriver& operator = (const VideoDriver&);
+        VideoDriver(const VideoDriver&) = delete;
+        VideoDriver& operator = (const VideoDriver&) = delete;
 	};
 }
 

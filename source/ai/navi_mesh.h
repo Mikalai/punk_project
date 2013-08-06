@@ -11,7 +11,7 @@ namespace System { class string; }
 
 namespace AI
 {
-    class PUNK_ENGINE_API NaviMesh : public System::Object, public System::Aspect<NaviMesh*, System::string>
+    class PUNK_ENGINE_API NaviMesh : public System::Object
 	{
 	public:
         typedef std::vector<Math::vec3> Points;
@@ -19,6 +19,9 @@ namespace AI
         typedef std::vector<Math::ivec3> Faces;
     public:
         NaviMesh();
+        NaviMesh(const NaviMesh&) = delete;
+        NaviMesh& operator = (const NaviMesh&) = delete;
+        virtual ~NaviMesh();
 
         void SetTransform(const Math::mat4& value);
         const Math::mat4& GetTranform() const;
@@ -34,11 +37,17 @@ namespace AI
         const Points& GetPoints() const;
         const Faces& GetFaces() const;
 
+        void SetName(const System::string& value);
+        const System::string& GetName() const;
+
 	private:
+        System::string m_name;
 		Math::mat4 m_transfrom;
         Points m_points;
         Normals m_normals;
         Faces m_faces;
+
+        PUNK_OBJECT(NaviMesh)
 	};
 
 

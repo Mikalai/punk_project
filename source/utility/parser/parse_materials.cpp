@@ -18,8 +18,7 @@ namespace Utility
             case WORD_MATERIAL:
             {
                 std::unique_ptr<Virtual::Material> m(new Virtual::Material);
-                ParseMaterial(buffer, m.get());
-                Virtual::Material::add(m->GetStorageName(), m.get());
+                ParseMaterial(buffer, m.get());                
                 m.release();
             }
                 break;

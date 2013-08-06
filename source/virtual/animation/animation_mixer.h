@@ -11,7 +11,16 @@ namespace Virtual
 	class PUNK_ENGINE_API AnimationMixer : public System::Object
 	{
 	public:
+        AnimationMixer();
+        AnimationMixer(const AnimationMixer&) = delete;
+        AnimationMixer& operator = (const AnimationMixer&) = delete;
 		virtual ~AnimationMixer();
+
+        virtual void SetTrackTime(float time) {}
+        virtual float GetTrackTime() const {}
+        virtual void SetLooping(size_t, bool) {}
+
+        PUNK_OBJECT(AnimationMixer)
 	};
 }
 

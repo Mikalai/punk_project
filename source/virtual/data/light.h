@@ -10,9 +10,12 @@ namespace Virtual
 	class PUNK_ENGINE_API Light : public System::Object
 	{
 	public:
-		virtual const Math::vec3 GetPosition() const = 0;
+        Light();
+        Light(const Light&) = delete;
+        Light& operator = (const Light&) = delete;
+        virtual ~Light();
 
-		static Light* CreateLight(const Utility::LightDesc& value);
+        PUNK_OBJECT(Light)
 	};
 }
 

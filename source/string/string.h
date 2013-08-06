@@ -93,9 +93,6 @@ namespace System
          void* operator new (size_t size);
          void operator delete (void* pointer, size_t size);
 
-         bool Save(std::ostream& stream) const;
-         bool Load(std::istream& stream);
-
          string& arg(std::int8_t value);
          string& arg(std::uint8_t value);
          string& arg(std::int16_t value);

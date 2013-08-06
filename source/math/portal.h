@@ -20,8 +20,8 @@ namespace Math
 	public:
 		bool SetPoints(const PointsCollection& points);
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 
 		iterator begin() { return m_points.begin(); }
 		const_iterator begin() const { return m_points.begin(); }

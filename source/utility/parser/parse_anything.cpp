@@ -25,7 +25,7 @@ namespace Utility
             {
                 System::string word = buffer.ReadWord();
                 {
-                    auto value = Virtual::Armature::find(word);
+                    auto value = System::HasInstance<Virtual::Armature>(word);
                     if (value)
                         return value;
                 }
@@ -39,8 +39,7 @@ namespace Utility
                     armature.reset(new Virtual::Armature);
                 }
 
-                ParseArmature(buffer, armature.get());
-                Virtual::Armature::add(word, armature.get());
+                ParseArmature(buffer, armature.get());                
                 return armature.release();
             }
             case WORD_ACTIONTEXT:
@@ -55,7 +54,7 @@ namespace Utility
                 if (word == L"male_walk")
                     action.reset(new Virtual::ActionMaleWalk);
                 else
-                    throw System::PunkInvalidArgumentException(L"Punk engine doesn't support " + word + L" action");
+                    action.reset(new Virtual::Action);
                 ParseAction(buffer, action.get());
                 Virtual::Action::add(word, action.get());
                 return action.release();
@@ -64,69 +63,62 @@ namespace Utility
             {
                 System::string word = buffer.ReadWord();
                 {
-                    auto value = Virtual::StaticGeometry::find(word);
+                    auto value = System::HasInstance<Virtual::StaticGeometry>(word);
                     if (value)
                         return value;
                 }
                 std::unique_ptr<Virtual::StaticGeometry> mesh(new Virtual::StaticGeometry);
-                ParseStaticMesh(buffer, mesh.get());
-                Virtual::StaticGeometry::add(word, mesh.get());
+                ParseStaticMesh(buffer, mesh.get());                
                 mesh->SetName(word);
-                mesh->SetStorageName(word);                
                 return mesh.release();
             }
                 break;
             case WORD_MATERIALTEXT:
-            {
-                Virtual::Material::validate();
+            {                
                 System::string word = buffer.ReadWord();
                 {
-                    auto value = Virtual::Material::find(word);
+                    auto value = System::HasInstance<Virtual::Material>(word);
                     if (value)
                         return value;
                 }
                 std::unique_ptr<Virtual::Material> material(new Virtual::Material);
-                ParseMaterial(buffer, material.get());
-                Virtual::Material::add(word, material.get());
+                ParseMaterial(buffer, material.get());                
                 return material.release();
             }
             case WORD_NAVIMESHTEXT:
             {
                 System::string word = buffer.ReadWord();
                 {
-                    auto value = AI::NaviMesh::find(word);
+                    auto value = System::HasInstance<AI::NaviMesh>(word);
                     if (value)
                         return value;
                 }
                 std::unique_ptr<AI::NaviMesh> navi_mesh(new AI::NaviMesh);
                 ParseNaviMesh(buffer, navi_mesh.get());
-                AI::NaviMesh::add(word, navi_mesh.get());
                 return navi_mesh.release();
             }
             case WORD_PATHTEXT:
             {
                 System::string word = buffer.ReadWord();
                 {
-                    auto value = AI::CurvePath::find(word);
+                    auto value = System::HasInstance<AI::CurvePath>(word);
                     if (value)
                         return value;
                 }
                 std::unique_ptr<AI::CurvePath> path(new AI::CurvePath);
-                ParseCurvePath(buffer, path.get());
-                AI::CurvePath::add(word, path.get());
+                ParseCurvePath(buffer, path.get());                
                 return path.release();
             }
             case WORD_RIVERTEXT:
             {
                 System::string word = buffer.ReadWord();
                 {
-                    auto value = Virtual::River::find(word);
+                    auto value = System::HasInstance<Virtual::River>(word);
                     if (value)
                         return value;
                 }
                 std::unique_ptr<Virtual::River> river(new Virtual::River);
-                ParseRiver(buffer, *river);
-                Virtual::River::add(word, river.get());
+                ParseRiver(buffer, *river);                
                 return river.release();
             }
             case WORD_SCENETEXT:
@@ -139,28 +131,37 @@ namespace Utility
             {
                 System::string word = buffer.ReadWord();
                 {
-                    auto value = Virtual::Sun::find(word);
+                    auto value = System::HasInstance<Virtual::Sun>(word);
                     if (value)
                         return value;
                 }
                 std::unique_ptr<Virtual::Sun> sun(new Virtual::Sun);
                 ParseSun(buffer, *sun);
-                Virtual::Sun::add(word, sun.get());
                 return sun.release();
             }
             case WORD_TERRAINTEXT:
             {
                 System::string word = buffer.ReadWord();
                 {
-                    auto mesh = Virtual::TerrainMesh::find(word);
+                    auto mesh = System::HasInstance<Virtual::TerrainMesh>(word);
                     if (mesh)
                         return mesh;
                 }
                 std::unique_ptr<Virtual::TerrainMesh> mesh(new Virtual::TerrainMesh);
                 ParseTerrainMesh(buffer, *mesh);
-                Virtual::TerrainMesh::add(word, mesh.get());
                 return mesh.release();
-
+            }
+            case WORD_SKINMESH_TEXT:
+            {
+                System::string word = buffer.ReadWord();
+                {
+                    auto mesh = System::HasInstance<Virtual::SkinGeometry>(word);
+                    if (mesh)
+                        return mesh;
+                }
+                std::unique_ptr<Virtual::SkinGeometry> mesh(new Virtual::SkinGeometry);
+                ParseSkinMesh(buffer, mesh.get());
+                return mesh.release();
             }
             default:
                 throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);

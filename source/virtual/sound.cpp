@@ -1,39 +1,35 @@
 #include <istream>
 #include <ostream>
-
+#include "../system/buffer.h"
 #include "sound.h"
 
-namespace Utility
+namespace Virtual
 {
-	bool Sound::Save(std::ostream& stream) const
+    void Sound::Save(System::Buffer *buffer) const
 	{
-		m_name.Save(stream);
-		m_filename.Save(stream);
-		stream.write((char*)&m_volume, sizeof(m_volume));
-		stream.write((char*)&m_pitch, sizeof(m_pitch));
-		stream.write((char*)&m_max_distance, sizeof(m_max_distance));
-		stream.write((char*)&m_reference_distance, sizeof(m_reference_distance));
-		stream.write((char*)&m_cone_angle_inner, sizeof(m_cone_angle_inner));
-		stream.write((char*)&m_cone_angle_outer, sizeof(m_cone_angle_outer));
-		stream.write((char*)&m_cone_volume_outer, sizeof(m_cone_volume_outer));
-		stream.write((char*)&m_attenuation, sizeof(m_attenuation));
-
-		return true;
+        buffer->WriteString(m_name);
+        buffer->WriteString(m_filename);
+        buffer->WriteReal32(m_volume);
+        buffer->WriteReal32(m_pitch);
+        buffer->WriteReal32(m_max_distance);
+        buffer->WriteReal32(m_reference_distance);
+        buffer->WriteReal32(m_cone_angle_inner);
+        buffer->WriteReal32(m_cone_angle_outer);
+        buffer->WriteReal32(m_cone_volume_outer);
+        buffer->WriteReal32(m_attenuation);
 	}
 
-	bool Sound::Load(std::istream& stream)
+    void Sound::Load(System::Buffer *buffer)
 	{
-		m_name.Load(stream);
-		m_filename.Load(stream);
-		stream.read((char*)&m_volume, sizeof(m_volume));
-		stream.read((char*)&m_pitch, sizeof(m_pitch));
-		stream.read((char*)&m_max_distance, sizeof(m_max_distance));
-		stream.read((char*)&m_reference_distance, sizeof(m_reference_distance));
-		stream.read((char*)&m_cone_angle_inner, sizeof(m_cone_angle_inner));
-		stream.read((char*)&m_cone_angle_outer, sizeof(m_cone_angle_outer));
-		stream.read((char*)&m_cone_volume_outer, sizeof(m_cone_volume_outer));
-		stream.read((char*)&m_attenuation, sizeof(m_attenuation));
-
-		return true;
+        m_name = buffer->ReadString();
+        m_filename = buffer->ReadString();
+        m_volume = buffer->ReadReal32();
+        m_pitch = buffer->ReadReal32();
+        m_max_distance = buffer->ReadReal32();
+        m_reference_distance = buffer->ReadReal32();
+        m_cone_angle_inner = buffer->ReadReal32();
+        m_cone_angle_outer = buffer->ReadReal32();
+        m_cone_volume_outer = buffer->ReadReal32();
+        m_attenuation = buffer->ReadReal32();
 	}
 }

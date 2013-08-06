@@ -6,7 +6,7 @@
 #include "../../../config.h"
 #include "../../../system/smart_pointers/proxy.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

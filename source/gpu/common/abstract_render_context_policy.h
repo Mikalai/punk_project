@@ -6,7 +6,7 @@
 #include "vertex_component.h"
 #include "../../system/aop/aop.h"
 
-namespace GPU
+namespace Gpu
 {
 	enum class RenderPolicySet {
 		Solid3D,
@@ -15,13 +15,17 @@ namespace GPU
 		Terrain,
 		Skinning,
 		BumpMapping,
+        BumpMappingSkinning,
         BumpMappingShadowing,
+        BumpMappingSkinningShadowing,
 		Painter,
 		SolidVertexColor,
 		LightPerFragmentDiffuse,
 		LightPerFragmentTextureDiffuse,
+        LightPerFragmentTextureDiffuseSkinning,
 		LightPerVertexDiffuse,
 		LightPerVertexTextureDiffuse,
+        LightPerVertexTextureDiffuseSkinning,
 		LightPerFragmentDiffuseSpecular,
         LightPerVertexDiffuseSpecular,
         LightPerFragmentDiffuseShadowing,
@@ -30,19 +34,21 @@ namespace GPU
         LightPerVertexTextureDiffuseShadowing,
         LightPerFragmentDiffuseSpecularShadowing,
 		LightPerVertexDiffuseSpecularShadowing,
-		DepthRender
+        TextSolidColor,
+        DepthRender,
+        DepthRenderSkinning
 	};
 
 	class PUNK_ENGINE_API AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
 	{
 	public:
 		AbstractRenderPolicy();
-		virtual void InitUniforms() = 0;
-		virtual void BindParameters(const CoreState& params) = 0;
-		virtual int64_t GetRequiredAttributesSet() const = 0;
-		virtual void Begin() = 0;
-		virtual void End() = 0;
-		virtual void Init() = 0;
+        virtual void InitUniforms() = 0;
+        virtual void BindParameters(const CoreState& params) = 0;
+        virtual int64_t GetRequiredAttributesSet() const = 0;
+        virtual void Begin() = 0;
+        virtual void End() = 0;
+        virtual void Init() = 0;
 		virtual ~AbstractRenderPolicy();
 	protected:
 		bool m_was_modified;

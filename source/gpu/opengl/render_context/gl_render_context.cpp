@@ -4,7 +4,7 @@
 #include "../error/module.h"
 #include "../gl/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -123,7 +123,7 @@ namespace GPU
 			{
 				glDeleteProgram(m_program);
 				m_program = 0;
-				throw;
+                throw System::PunkException(L"Failed to create render context");
 			}
 		}
 

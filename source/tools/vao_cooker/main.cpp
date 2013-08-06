@@ -140,7 +140,7 @@ public:
 	//			stream.close();
 	//		}
 
-	//		int type = 0;
+	//		int type override;
 	//		std::wcout << L"Exporting vao to " << (System::Environment::Instance()->GetModelFolder() + System::string(obj->GetName().Data()) + L".vao").Data() << std::endl;
 	//		if (!strcmp(flag, "--skinned"))
 	//		{

@@ -13,7 +13,7 @@ namespace System
 	class string;
 }
 
-namespace GPU
+namespace Gpu
 {
 	class CoreState;
 

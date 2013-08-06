@@ -3,15 +3,32 @@
 
 #include "../shader.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
-		class VertexShaderSkinning : public Shader
-		{
-		public:
-			VertexShaderSkinning();
-		};
+        class VsSkinning : public Shader
+        {
+        public:
+            VsSkinning();
+
+            virtual void InitUniforms() override;
+            virtual void BindParameters(const CoreState& params) override;
+            virtual int64_t GetRequiredAttributesSet() const override;
+
+        private:
+            unsigned uWorld;
+            unsigned uView;
+            unsigned uProj;
+            unsigned uNormalMatrix;
+
+            unsigned uProjViewWorld;
+            unsigned uViewWorld;
+            unsigned uLightPosition;
+            unsigned uTextureMatrix;
+
+            unsigned uBones[64];
+        };
 	}
 }
 

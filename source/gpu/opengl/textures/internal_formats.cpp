@@ -5,10 +5,30 @@
 
 #include "../gl/glcorearb.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
+        int ImageDataTypeToOpenGL(ImageModule::DataType type)
+        {
+            switch (type)
+            {
+            case ImageModule::IMAGE_DATA_TYPE_BYTE:
+                return GL_UNSIGNED_BYTE;
+                break;
+            case ImageModule::IMAGE_DATA_TYPE_SIGNED_SHORT:
+            case ImageModule::IMAGE_DATA_TYPE_UNSIGNED_SHORT:
+                return GL_UNSIGNED_SHORT;
+            case ImageModule::IMAGE_DATA_TYPE_UNSIGNED_INT:
+            case ImageModule::IMAGE_DATA_TYPE_SIGNED_INT:
+                return GL_UNSIGNED_INT;
+            case ImageModule::IMAGE_DATA_TYPE_FLOAT:
+                return GL_FLOAT;
+            default:
+                return -1;
+            }
+        }
+
 		int ImageFormatToOpenGL(ImageModule::ImageFormat format)
 		{
 			switch (format)
@@ -21,6 +41,8 @@ namespace GPU
 				break;
 			case ImageModule::IMAGE_FORMAT_ALPHA16:
 				break;
+            case ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT:
+                return GL_DEPTH_COMPONENT;
 			case ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT16:
                 return GL_DEPTH_COMPONENT16;
 			case ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT24:
@@ -79,6 +101,7 @@ namespace GPU
 				return GL_RGBA8;
 				break;
 			case ImageModule::IMAGE_FORMAT_RGB10_A2:
+                return GL_RGB10_A2;
 				break;
 			case ImageModule::IMAGE_FORMAT_RGBA12:
 				break;
@@ -173,13 +196,13 @@ namespace GPU
 			case ImageModule::IMAGE_FORMAT_DEPTH24_STENCIL8:
 				break;
 			case ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT32F:
-				break;
+                return GL_DEPTH_COMPONENT32F;
 			case ImageModule::IMAGE_FORMAT_DEPTH32F_STENCIL8:
 				break;
 			case ImageModule::IMAGE_FORMAT_SRGB8:
 				break;
 			case ImageModule::IMAGE_FORMAT_SRGB8_ALPHA8:
-				break;
+                return GL_SRGB8_ALPHA8;
 			case ImageModule::IMAGE_FORMAT_SLUMINANCE8:
 				break;
 			case ImageModule::IMAGE_FORMAT_SLUMINANCE8_ALPHA8:
@@ -195,7 +218,7 @@ namespace GPU
 			case ImageModule::IMAGE_FORMAT_RGB9_E5:
 				break;
 			case ImageModule::IMAGE_FORMAT_R11F_G11F_B10F:
-				break;
+                return GL_R11F_G11F_B10F;
 			case ImageModule::IMAGE_FORMAT_COMPRESSED_LUMINANCE_LATC1:
 				break;
 			case ImageModule::IMAGE_FORMAT_COMPRESSED_SIGNED_LUMINANCE_LATC1:
@@ -218,6 +241,10 @@ namespace GPU
 				break;
 			case ImageModule::IMAGE_FORMAT_RGBA16UI:
 				break;
+            case ImageModule::IMAGE_FORMAT_RGBA16F:
+                return GL_RGBA16F;
+            case ImageModule::IMAGE_FORMAT_RGBA32F:
+                return GL_RGBA32F;
 			case ImageModule::IMAGE_FORMAT_RGB16UI:
 				break;
 			case ImageModule::IMAGE_FORMAT_ALPHA16UI:

@@ -7,7 +7,7 @@
 #include "painter/module.h"
 #include "gpu_config.h"
 
-namespace GPU
+namespace Gpu
 {
     extern bool PUNK_ENGINE_API GPU_INIT(const Config& data);
     extern bool PUNK_ENGINE_API GPU_DESTROY();

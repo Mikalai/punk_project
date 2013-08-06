@@ -247,7 +247,7 @@ namespace System
 		//TCHAR szDeviceName[80];
 		//TCHAR szDeviceVersion[80];
 
-		//for (int wIndex = 0; wIndex < 10; wIndex++) 
+		//for (int windex = 0; wIndex < 10; wIndex++) 
 		//{
 		//	if (capGetDriverDescription(
 		//		wIndex, 
@@ -304,22 +304,22 @@ namespace System
 
 
 		HRESULT hr;
-		IGraphBuilder*  graph= 0;  hr = CoCreateInstance( CLSID_FilterGraph, 0, CLSCTX_INPROC,IID_IGraphBuilder, (void **)&graph );
-		IMediaControl*  ctrl = 0;  hr = graph->QueryInterface( IID_IMediaControl, (void **)&ctrl );
+		IGraphBuilder*  graphoverride;  hr = CoCreateInstance( CLSID_FilterGraph, 0, CLSCTX_INPROC,IID_IGraphBuilder, (void **)&graph );
+		IMediaControl*  ctrl override;  hr = graph->QueryInterface( IID_IMediaControl, (void **)&ctrl );
 
-		ICreateDevEnum* devs = 0;  hr = CoCreateInstance (CLSID_SystemDeviceEnum, 0, CLSCTX_INPROC, IID_ICreateDevEnum, (void **) &devs);
-		IEnumMoniker*   cams = 0;  hr = devs?devs->CreateClassEnumerator (CLSID_VideoInputDeviceCategory, &cams, 0):0;  
-		IMoniker*       mon  = 0;  hr = cams->Next (1,&mon,0);  // get first found capture device (webcam?)    
-		IBaseFilter*    cam  = 0;  hr = mon->BindToObject(0,0,IID_IBaseFilter, (void**)&cam);
+		ICreateDevEnum* devs override;  hr = CoCreateInstance (CLSID_SystemDeviceEnum, 0, CLSCTX_INPROC, IID_ICreateDevEnum, (void **) &devs);
+		IEnumMoniker*   cams override;  hr = devs?devs->CreateClassEnumerator (CLSID_VideoInputDeviceCategory, &cams, 0):0;  
+		IMoniker*       mon  override;  hr = cams->Next (1,&mon,0);  // get first found capture device (webcam?)    
+		IBaseFilter*    cam  override;  hr = mon->BindToObject(0,0,IID_IBaseFilter, (void**)&cam);
 		hr = graph->AddFilter(cam, L"Capture Source"); // add web cam to graph as source
-		IEnumPins*      pins = 0;  hr = cam?cam->EnumPins(&pins):0;   // we need output pin to autogenerate rest of the graph
-		IPin*           pin  = 0;  hr = pins?pins->Next(1,&pin, 0):0; // via graph->Render
+		IEnumPins*      pins override;  hr = cam?cam->EnumPins(&pins):0;   // we need output pin to autogenerate rest of the graph
+		IPin*           pin  override;  hr = pins?pins->Next(1,&pin, 0):0; // via graph->Render
 		hr = graph->Render(pin); // graph builder now builds whole filter chain including MJPG decompression on some webcams
-		IEnumFilters*   fil  = 0;  hr = graph->EnumFilters(&fil); // from all newly added filters
-		IBaseFilter*    rnd  = 0;  hr = fil->Next(1,&rnd,0); // we find last one (renderer)
+		IEnumFilters*   fil  override;  hr = graph->EnumFilters(&fil); // from all newly added filters
+		IBaseFilter*    rnd  override;  hr = fil->Next(1,&rnd,0); // we find last one (renderer)
 		hr = rnd->EnumPins(&pins);  // because data we are intersted in are pumped to renderers input pin 
 		hr = pins->Next(1,&pin, 0); // via Receive member of IMemInputPin interface
-		IMemInputPin*   mem  = 0;  hr = pin->QueryInterface(IID_IMemInputPin,(void**)&mem);
+		IMemInputPin*   mem  override;  hr = pin->QueryInterface(IID_IMemInputPin,(void**)&mem);
 
 		DsHook(mem,6,Receive); // so we redirect it to our own proc to grab image data
 
@@ -528,7 +528,7 @@ namespace System
 //	TCHAR szDeviceName[80];
 //	TCHAR szDeviceVersion[80];
 
-//	for (int wIndex = 0; wIndex < 10; wIndex++) 
+//	for (int windex = 0; wIndex < 10; wIndex++) 
 //	{
 //		if (capGetDriverDescription(
 //			wIndex, 
@@ -577,8 +577,8 @@ namespace System
 //	hdr.bfType = 0x4d42;  // File type designator "BM" 0x42 = "B" 0x4d = "M"
 //	// Compute the size of the entire file.
 //	hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) + pbih->biSize + pbih->biClrUsed * sizeof(RGBQUAD) + pbih->biSizeImage);
-//	hdr.bfReserved1 = 0;
-//	hdr.bfReserved2 = 0;
+//	hdr.bfReserved1 override;
+//	hdr.bfReserved2 override;
 //	// Compute the offset to the array of color indices.
 //	hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) + pbih->biSize + pbih->biClrUsed * sizeof (RGBQUAD);
 //	// Copy the BITMAPFILEHEADER into the .BMP file.
@@ -666,7 +666,7 @@ namespace System
 //	pbmi->bmiHeader.biSizeImage = ((pbmi->bmiHeader.biWidth * cClrBits +31) & ~31) /8 * pbmi->bmiHeader.biHeight;
 //	// Set biClrImportant to 0, indicating that all of the
 //	// device colors are important.
-//	pbmi->bmiHeader.biClrImportant = 0;
+//	pbmi->bmiHeader.biClrImportant= 0;
 
 //	return pbmi; //return BITMAPINFO
 //}

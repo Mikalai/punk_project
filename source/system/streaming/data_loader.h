@@ -14,17 +14,17 @@ namespace System
 		/**
 		*	when 0 returns it means an error
 		*/
-		virtual StreamingStepResult Load() = 0;
+        virtual StreamingStepResult Load() = 0;
 		
 		/**
 		*	when 0 returns it means an error
 		*/
-		virtual StreamingStepResult Decompress(void** data, unsigned* size) = 0;
+        virtual StreamingStepResult Decompress(void** data, unsigned* size) = 0;
 
 		/**
 		*	when 0 returns it means an error
 		*/
-		virtual StreamingStepResult Destroy() = 0;
+        virtual StreamingStepResult Destroy() = 0;
 	};
 }
 

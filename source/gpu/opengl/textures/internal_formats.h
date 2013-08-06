@@ -4,11 +4,12 @@
 #include "../../../config.h"
 #include "../../../images/formats.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
 		int ImageFormatToOpenGL(ImageModule::ImageFormat format);
+        int ImageDataTypeToOpenGL(ImageModule::DataType type);
 	}
 }
 

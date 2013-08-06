@@ -3,7 +3,7 @@
 
 #include "../shader.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -14,7 +14,7 @@ namespace GPU
 
 			virtual void InitUniforms() override;
 			virtual void BindParameters(const CoreState& params) override;
-			virtual int64_t GetRequiredAttributesSet() const override;
+            virtual int64_t GetRequiredAttributesSet() const override;
 
 		private:
             unsigned uNormalMatrix;

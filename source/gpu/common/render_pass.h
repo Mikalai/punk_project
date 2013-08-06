@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-namespace GPU
+namespace Gpu
 {
 	class Batch;    
 	class VideoDriver;

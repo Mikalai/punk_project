@@ -2,7 +2,7 @@
 #include <type_traits>
 #include "primitive_type.h"
 
-namespace GPU
+namespace Gpu
 {
 	using PrimitiveTypeDesc = std::pair<PrimitiveType, System::string>;
 	static const PrimitiveTypeDesc g_primitive_types[] = {

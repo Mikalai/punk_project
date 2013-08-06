@@ -1,7 +1,7 @@
 #include "rc_dynamic.h"
 #include "shaders/shader.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -10,11 +10,11 @@ namespace GPU
 
 		void DynamicRenderContext::SetShaders(Shader *vs, Shader *fs, Shader *gs)
 		{
-			if (m_vertex_shader = vs)
+            if (m_vertex_shader = vs)
 				m_vertex_shader->Connect(this);
-			if (m_fragment_shader = fs)
+            if (m_fragment_shader = fs)
 				m_fragment_shader->Connect(this);
-			if (m_geometry_shader = gs)
+            if (m_geometry_shader = gs)
 				m_geometry_shader->Connect(this);
 			Init();
 		}
@@ -38,7 +38,7 @@ namespace GPU
 
 		int64_t DynamicRenderContext::GetRequiredAttributesSet() const
 		{
-			int64_t result = 0;
+            int64_t result = 0;
 			result |= m_vertex_shader->GetRequiredAttributesSet();
 			result |= m_fragment_shader->GetRequiredAttributesSet();
 			if (m_geometry_shader)

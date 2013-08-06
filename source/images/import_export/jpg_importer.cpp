@@ -1,7 +1,7 @@
 #include <fstream>
 #include <istream>
 #include <ostream>
-
+#include "../../system/buffer.h"
 #include "../../system/logger.h"
 
 #include "jpg_importer.h"
@@ -127,7 +127,7 @@ namespace ImageModule
 		src->stream->read((char*)src->buffer, INPUT_BUF_SIZE);
 		nbytes = (size_t)src->stream->gcount();
 
-		if (nbytes <= 0) {
+        if (nbytes <= 0) {
 			if (src->start_of_file)	/* Treat empty input file as fatal error */
 				ERREXIT(cinfo, JERR_INPUT_EMPTY);
 			WARNMS(cinfo, JWRN_JPEG_EOF);
@@ -204,7 +204,7 @@ namespace ImageModule
 	* resync_to_restart method for error recovery in the presence of RST markers.
 	* For the moment, this source module just uses the default resync method
 	* provided by the JPEG library.  That method assumes that no backtracking
-	* is possible.
+    * is possible.
 	*/
 
 
@@ -262,39 +262,39 @@ namespace ImageModule
 	}
 
 
-	/*
-	* Prepare for input from a supplied memory buffer.
-	* The buffer must contain the whole JPEG data.
-	*/
+//	/*
+//	* Prepare for input from a supplied memory buffer.
+//	* The buffer must contain the whole JPEG data.
+//	*/
 
-	GLOBAL(void)
-		jpeg_mem_src (j_decompress_ptr cinfo,
-		unsigned char * inbuffer, unsigned long insize)
-	{
-		struct jpeg_source_mgr * src;
+//	GLOBAL(void)
+//		jpeg_mem_src (j_decompress_ptr cinfo,
+//		unsigned char * inbuffer, unsigned long insize)
+//	{
+//		struct jpeg_source_mgr * src;
 
-		if (inbuffer == NULL || insize == 0)	/* Treat empty input as fatal error */
-			ERREXIT(cinfo, JERR_INPUT_EMPTY);
+//		if (inbuffer == NULL || insize == 0)	/* Treat empty input as fatal error */
+//			ERREXIT(cinfo, JERR_INPUT_EMPTY);
 
-		/* The source object is made permanent so that a series of JPEG images
-		* can be read from the same buffer by calling jpeg_mem_src only before
-		* the first one.
-		*/
-		if (cinfo->src == NULL) {	/* first time for this JPEG object? */
-			cinfo->src = (struct jpeg_source_mgr *)
-				(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
-				sizeof(struct jpeg_source_mgr));
-		}
+//		/* The source object is made permanent so that a series of JPEG images
+//		* can be read from the same buffer by calling jpeg_mem_src only before
+//		* the first one.
+//		*/
+//		if (cinfo->src == NULL) {	/* first time for this JPEG object? */
+//			cinfo->src = (struct jpeg_source_mgr *)
+//				(*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
+//				sizeof(struct jpeg_source_mgr));
+//		}
 
-		src = cinfo->src;
-		src->init_source = init_mem_source;
-		src->fill_input_buffer = fill_mem_input_buffer;
-		src->skip_input_data = skip_input_data;
-		src->resync_to_restart = jpeg_resync_to_restart; /* use default method */
-		src->term_source = term_source;
-		src->bytes_in_buffer = (size_t) insize;
-		src->next_input_byte = (JOCTET *) inbuffer;
-	}
+//		src = cinfo->src;
+//		src->init_source = init_mem_source;
+//		src->fill_input_buffer = fill_mem_input_buffer;
+//		src->skip_input_data = skip_input_data;
+//		src->resync_to_restart = jpeg_resync_to_restart; /* use default method */
+//		src->term_source = term_source;
+//		src->bytes_in_buffer = (size_t) insize;
+//		src->next_input_byte = (JOCTET *) inbuffer;
+//	}
 #endif  //  USE_JPEG
 
 	bool JpgImporter::Load(std::istream& stream, Image* image)
@@ -351,7 +351,63 @@ namespace ImageModule
         (void)stream; (void)image;
 		throw System::PunkNotImplemented(L"Can't work with jpeg files, cause jpeg lib was not used");
 		#endif  //  USE_JPEG
-	}
+    }
+
+    bool JpgImporter::Load(System::Buffer *mem, Image *image)
+    {
+        jpeg_decompress_struct cinfo;
+        #ifdef USE_JPEG
+        my_error_mgr jerr;
+
+        jpeg_create_decompress(&cinfo);
+        cinfo.err = jpeg_std_error(&jerr.pub);
+        jerr.pub.error_exit = my_error_exit;
+
+        jpeg_mem_src(&cinfo, (unsigned char*)mem->StartPointer(), (unsigned long)mem->GetSize());
+        jpeg_read_header(&cinfo, TRUE);
+        jpeg_start_decompress(&cinfo);
+
+        int output_width = cinfo.output_width;
+        int output_height = cinfo.output_height;
+        int out_color_components = cinfo.out_color_components;
+        int output_components = cinfo.output_components;
+        int actual_number_of_colors	= cinfo.actual_number_of_colors;
+
+        ImageFormat format;
+        if (output_components == 1)
+            format = ImageFormat::IMAGE_FORMAT_ALPHA;
+        else if (output_components == 3)
+            format = ImageFormat::IMAGE_FORMAT_RGB;
+        else
+        {
+            jpeg_destroy_decompress(&cinfo);
+            return (out_error() << "Bad image format" << std::endl, false);
+        }
+
+        image->Create(output_width, output_height, output_components, ComponentType::UnsignedByte, format);
+
+        int row_stride = cinfo.output_width * cinfo.output_components;
+        /* Make a one-row-high sample array that will go away when done with image */
+        JSAMPARRAY buffer = (*cinfo.mem->alloc_sarray)
+        ((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
+
+        unsigned char* dst = (unsigned char*)image->GetData() + row_stride * (cinfo.output_height - 1);
+        while (cinfo.output_scanline < cinfo.output_height)
+        {
+            jpeg_read_scanlines(&cinfo, (JSAMPARRAY)buffer, 1);
+            memcpy(dst, *buffer, row_stride);
+            dst -= row_stride;
+        }
+
+        jpeg_finish_decompress(&cinfo);
+        jpeg_destroy_decompress(&cinfo);
+
+        return true;
+        #else
+        (void)stream; (void)image;
+        throw System::PunkNotImplemented(L"Can't work with jpeg files, cause jpeg lib was not used");
+        #endif  //  USE_JPEG
+    }
 
 	bool JpgImporter::Load(const System::string& file)
 	{

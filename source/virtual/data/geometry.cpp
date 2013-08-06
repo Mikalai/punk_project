@@ -1,9 +1,18 @@
 #include "geometry.h"
+#include "../../engine_objects.h"
 
 namespace Virtual
 {
+    PUNK_OBJECT_REG(Geometry, "Virtual.Geometry", PUNK_GEOMETRY, &System::Object::Info.Type);
+
+    Geometry::Geometry()
+    {
+        Info.Add(this);
+    }
+
 	Geometry::~Geometry()
 	{
+        Info.Remove(this);
 //		safe_delete(m_cache.m_gpu_buffer);
 //		safe_delete(m_cache.m_physics_buffer);
 	}

@@ -8,14 +8,14 @@
 #include "../../system/state_manager.h"
 #include "../../system/poolable.h"
 #include "../../virtual/interface.h"
-#include "render_target.h"
 #include "lighting/module.h"
 #include "blending/module.h"
 #include "fog/module.h"
 #include "material/module.h"
 #include "config.h"
+#include "shadow_model.h"
 
-namespace GPU
+namespace Gpu
 {
 	class CoreState;
 	class Texture2D;
@@ -89,6 +89,8 @@ namespace GPU
 
 		//	added on 15.05.2013
 		FogDescription m_fog;
+        ShadowModel m_shadow_model;
+        Math::ivec2 m_shadow_map_size;
 
 		bool m_depth_test;
 		bool m_enable_blending;
@@ -124,6 +126,8 @@ namespace GPU
     class PUNK_ENGINE_API BatchState final : private BaseState, public System::Poolable<BatchState>
 	{
 	public:
+        BatchState();
+
 		Math::mat4 m_world;
 		Math::mat4 m_local;
 		//	corresponds to the part of the world matrix of the skin mesh
@@ -139,7 +143,8 @@ namespace GPU
 		int m_terrain_j;
 		int m_terrain_slices;
 
-		Math::mat4 m_bone_matrix[256];
+        int m_used_bones_count;
+        Math::mat4 m_bone_matrix[MAX_BONES];
 
 		bool m_cast_shadows;
 		bool m_receive_shadows;
@@ -152,12 +157,12 @@ namespace GPU
 	public:
 		TextureState();
 
-		const Texture2D* m_diffuse_map_1;
-		const Texture2D* m_diffuse_map_0;
-		const Texture2D* m_normal_map;
-		const Texture2D* m_height_map;
-		const Texture2D* m_specular_map;
-		const Texture2D* m_text_map;
+        Texture2D* m_diffuse_map_1;
+        Texture2D* m_diffuse_map_0;
+        Texture2D* m_normal_map;
+        Texture2D* m_height_map;
+        Texture2D* m_specular_map;
+        Texture2D* m_text_map;
 		Texture2D* m_shadow_map;
 
 		int m_diffuse_slot_0;
@@ -173,13 +178,13 @@ namespace GPU
     class PUNK_ENGINE_API CoreState final : private BaseState, public System::Poolable<CoreState>
 	{
 	public:		
-		static const unsigned VIEW_STATE	= 0x0000001;
-		static const unsigned LIGHT_STATE	= 0x0000002;
-		static const unsigned RENDER_STATE	= 0x0000004;
-		static const unsigned BATCH_STATE	= 0x0000008;
-		static const unsigned TEXTURE_STATE = 0x0000010;
-		static const unsigned ALL_STATES	= 0xFFFFFFF;
-		static const unsigned NO_STATES		= 0x0000000;
+        static const unsigned VIEW_STATE	= 0x0000001;
+        static const unsigned LIGHT_STATE	= 0x0000002;
+        static const unsigned RENDER_STATE	= 0x0000004;
+        static const unsigned BATCH_STATE	= 0x0000008;
+        static const unsigned TEXTURE_STATE = 0x0000010;
+        static const unsigned ALL_STATES	= 0xFFFFFFF;
+        static const unsigned NO_STATES		= 0x0000000;
 
 		CoreState();
 		CoreState(unsigned mode, CoreState* state);

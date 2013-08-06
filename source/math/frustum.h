@@ -49,8 +49,8 @@ namespace Math
 		const Plane& GetPlane(FrustumPlane value) const;
 		const Math::vec3& GetPoint(FrustumPoints value) const;
 
-        //bool Save(std::ostream& stream) const;
-        //bool Load(std::istream& stream);
+        //void Save(System::Buffer* buffer) const;
+        //void Load(System::Buffer* buffer);
 
 		static bool IsAdjacent(FrustumPlane a, FrustumPlane b);
 

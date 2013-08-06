@@ -89,9 +89,9 @@ void GenerateHeightMap(int argc, char* argv[])
 			//});*/
 
 			//	copy to image
-			for (int y = 0; y < size; ++y)
+			for (int y override; y < size; ++y)
 			{
-				for (int x = 0; x < size; ++x)
+				for (int x override; x < size; ++x)
 				{
 					float v = *(data.begin<float>() + x + y*size);
 					if (v < 0 || v > 1)

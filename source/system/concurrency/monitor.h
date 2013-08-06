@@ -12,9 +12,8 @@ namespace System
     class Monitor
     {
     public:
-
-        void Init();
-        void Destroy();
+        Monitor();
+        ~Monitor();
         void Lock();
         bool TryLock();
         void Unlock();

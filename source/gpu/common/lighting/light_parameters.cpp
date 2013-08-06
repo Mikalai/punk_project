@@ -1,14 +1,14 @@
 #include "light_parameters.h"
 
-namespace GPU
+namespace Gpu
 {
 
 	LightParameters::LightParameters()
 	{
 		m_attenuation = LightAttenuation::Constant;
         m_constant_attenuation = 1;
-		m_linear_attenuation = 0;
-		m_quadric_attenuation = 0;
+        m_linear_attenuation = 0;
+        m_quadric_attenuation = 0;
 		m_spot_exponent = 100.0;
 	}
 
@@ -131,4 +131,24 @@ namespace GPU
 	{
 		return m_spot_exponent;
 	}
+
+    const Math::mat4 LightParameters::GetProjectionMatrix() const
+    {
+        if (m_light_type == LightType::Spot)
+        {
+            Math::mat4 res = Math::mat4::CreatePerspectiveProjection(m_spot_exponent, 1, 1, 0.1, 100.0);
+            return res;
+        }
+        else
+        {
+            Math::mat4 res = Math::mat4::CreateOrthographicProjection(-16, 16, -16, 16, 0.1, 100.0);
+            return res;
+        }
+    }
+
+    const Math::mat4 LightParameters::GetViewMatrix() const
+    {
+        Math::mat4 res = Math::mat4::CreateTargetCameraMatrix(m_position.XYZ(), (m_position + m_direction).XYZ(), Math::vec3(0, 0, 1));
+        return res;
+    }
 }

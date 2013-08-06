@@ -4,6 +4,18 @@
 
 namespace Math
 {
+    float DegToRad(float value)
+    {
+        auto res = value / 45.0 * atan(1);
+        return res;
+    }
+
+    float RadToDeg(float value)
+    {
+        auto res = value / atan(1) * 45.0;
+        return res;
+    }
+
 	const mat4 Translate(vec3 pos)
 	{
 		mat4 res;
@@ -232,7 +244,7 @@ namespace Math
 
 	bool EigenVectors(const mat3& m, const vec3& value, vec3 res[3])
 	{
-		for (int v = 0; v < 3; ++v)
+        for (int v = 0; v < 3; ++v)
 		{
 			//	use inverse power method
 			vec3 bb0(1,1,1);
@@ -267,7 +279,7 @@ namespace Math
 
 		r.Identity();
 
-		for (int a = 0; a < max_sweep; ++a)
+        for (int a = 0; a < max_sweep; ++a)
 		{
 			if ((Abs(m12) < epsilon) && (Abs(m13) < epsilon) && (Abs(m23) < epsilon))
 				break;
@@ -284,7 +296,7 @@ namespace Math
 
 				m11 -= t * m12;
 				m22 += t * m12;
-				m12 = 0.0f;
+                m12 = 0.0f;
 
 				float temp = c*m13 - s * m23;
 				m23 = s * m13 + c * m23;
@@ -310,7 +322,7 @@ namespace Math
 
 				m11 -= t * m13;
 				m33 += t * m13;
-				m13 = 0.0f;
+                m13 = 0.0f;
 
 				float temp = c * m12 - s * m23;
 				m23 = s * m12 + c * m23;
@@ -336,7 +348,7 @@ namespace Math
 
 				m22 -= t * m23;
 				m33 += t * m23;
-				m23 = 0.0f;
+                m23 = 0.0f;
 
 				float temp = c * m12 - s * m13;
 				m13 = s * m12 + c * m13;

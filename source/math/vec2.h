@@ -7,6 +7,11 @@
 #include "../string/string.h"
 #include "relations.h"
 
+namespace System
+{
+    class Buffer;
+}
+
 namespace Math
 {
 	template<class T>
@@ -221,6 +226,9 @@ namespace Math
 		vec2(float x, float y) : Vector2<float>(x, y) {}
 		vec2(const vec2& vec) : Vector2<float>(vec) {}
 		vec2(const Vector2<float>& vec) : Vector2<float>(vec) {}
+
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
 	class PUNK_ENGINE_API ivec2 : public Vector2<int>
@@ -230,6 +238,9 @@ namespace Math
 		ivec2(int x, int y) : Vector2<int>(x, y) {}
 		ivec2(const ivec2& vec) : Vector2<int>(vec) {}
 		ivec2(const Vector2<int>& vec) : Vector2<int>(vec) {}
+
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
 }

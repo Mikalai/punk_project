@@ -53,7 +53,7 @@ namespace Virtual
 	//	unsigned GetObjectsCount() const;
 	//	const System::string GetObjectName(int index) const;
 
-	//	bool Load(std::istream& stream);
+	//	void Load(System::Buffer* buffer);
 	//	bool Save(std::ostream& stream);
 	//	bool Load(const System::string& filename);
 	//	//Math::OctTree& GetOctTree();

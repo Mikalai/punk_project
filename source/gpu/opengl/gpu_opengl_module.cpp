@@ -1,6 +1,6 @@
 #include "module.h"
 
-namespace GPU
+namespace Gpu
 {
     namespace OpenGL
     {
@@ -11,21 +11,30 @@ namespace GPU
 #ifdef USE_SOLID_COLOR_RC
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VertexShaderSolid, new FragmentShaderSolid, nullptr);
+                rc->SetShaders(new VsSolid, new FsShaderSolid, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::Solid3D, rc);
+            }
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsSolid, new FsDepth, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::DepthRender, rc);
             }
 #endif
 
 #ifdef USE_SOLID_VERTEX_COLOR_RC
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VertexShaderSolidVertexColor, new FragmentShaderSolidVertexColor, nullptr);
+                rc->SetShaders(new VsSolidVertexColor, new FsSolidVertexColor, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::SolidVertexColor, rc);
             }
 #endif	//	USE_SOLID_VERTEX_COLOR_RC
 
 #ifdef USE_SOLID_TEXTURE_3D_RC
-            AbstractRenderPolicy::add(RenderPolicySet::SolidTextured3D, new RenderContextSolidTexture3D());
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsTexture3D, new FsSolidTextured3D, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::SolidTextured3D, rc);
+            }
 #endif	//	USE_SOLID_TEXTURE_3D_RC
 
 #ifdef USE_LIGHT_PER_VERTEX_DIFFUSE
@@ -58,8 +67,35 @@ namespace GPU
                 rc->SetShaders(new VsBumpMapping, new FsBumpMapping, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::BumpMapping, rc);
             }
+#   ifdef USE_SHADOW_MAPS
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsBumpShadowMap, new FsBumpShadowMap, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingShadowing, rc);
+            }
+#   endif  //   USE_SHADOW_MAPS
 #endif
 
+#ifdef USE_SKINNING_RC
+            {
+#   ifdef USE_BUMP_MAPPING_RC
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsSkinning, new FsBumpMapping, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingSkinning, rc);
+#   endif   //  USE_BUMP_MAPPING_RC                               
+            }
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsSkinning, new FsDepth, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::DepthRenderSkinning, rc);
+            }
+#endif  //  USE_SKINNING_RC
+
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsTexture3D, new FsTextSolid, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::TextSolidColor, rc);
+            }
 #ifdef USE_GUI_RC
             AbstractRenderPolicy::add(RenderPolicySet::RC_GUI, new RenderContextGUI());
 #endif

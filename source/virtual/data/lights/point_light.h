@@ -25,8 +25,8 @@ namespace Virtual
 		virtual const Math::vec3 GetPosition() const;
 		virtual void SetPosition(const Math::vec3& value);
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+//		virtual void Save(System::Buffer* buffer) const;
+//		virtual void Load(System::Buffer* buffer);
 
 		void SetColor(const Math::vec3& value) { m_color = value; }
 		const Math::vec3& GetColor() const { return m_color; }
@@ -43,8 +43,10 @@ namespace Virtual
 		void SetQuadraticAttenuation(float value) { m_quadratic_attenuation = value; }
 		float GetQuadraticAttenuation() const { return m_quadratic_attenuation; }
 
-		static PointLight* CreateFromFile(const System::string& path);
-		static PointLight* CreateFromStream(std::istream& stream);
+//		static PointLight* CreateFromFile(const System::string& path);
+//		static PointLight* CreateFromStream(std::istream& stream);
+
+        PUNK_OBJECT(PointLight)
 	};
 }
 

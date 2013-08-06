@@ -17,12 +17,16 @@ namespace Virtual
 {
 	class Entity;
 	
-	class  PUNK_ENGINE_API Armature : public System::Object, public System::Aspect<Armature*, System::string>
+    class  PUNK_ENGINE_API Armature : public System::Object
 	{
 	public:
+        typedef std::vector<System::string> Actions;
+        typedef std::vector<Bone*> Bones;
+    public:
 		Armature();
-		Armature(const Armature&);
-		Armature& operator = (const Armature&);
+        Armature(const Armature&) = delete;
+        Armature& operator = (const Armature&) = delete;
+        virtual ~Armature();
 
 		void AddRootBone(Bone* bone);
 		int GetBoneIndex(const System::string& name) const;
@@ -34,14 +38,18 @@ namespace Virtual
 		Bone* GetRootBone(int index) { return m_root_bones[index]; }
 		int GetBonesCount() const;
 
-		void PrintDebug(Bone* parent, int level = 0);
+        void AddActionName(const System::string& value);
+        bool IsActionSupported(const System::string& value);
+        const Actions& GetSupportedActionArray() const;
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
-		virtual ~Armature();
+        void SetName(const System::string& value);
+        const System::string& GetName() const;
 
-		static Armature* CreateFromFile(const System::string& path);
-		static Armature* CreateFromStream(std::istream& stream);
+        void PrintDebug(Bone* parent, int level = 0);
+
+        virtual void Save(System::Buffer *buffer) const override;
+        virtual void Load(System::Buffer *buffer) override;
+
 
 		virtual void UpdateHierarchy();
 	private:
@@ -49,9 +57,13 @@ namespace Virtual
 		void Clear();
 
 	private:
-		std::vector<Bone*> m_root_bones;
+        Bones m_root_bones;
 		BonesCache m_cache;
 		BonesNamedCache m_named_cache;
+        Actions m_supported_actions;
+        System::string m_name;
+
+        PUNK_OBJECT(Armature)
 	};
 }
 

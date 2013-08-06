@@ -1,7 +1,7 @@
 #include "fs_terrain.h"
 #include "../../../../../system/environment.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

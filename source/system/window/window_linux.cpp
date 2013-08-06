@@ -31,8 +31,7 @@ typedef XID GLXContextID;
 namespace System
 {
     struct Window::Impl
-    {
-        Display* m_display;
+    {        
         ::Window m_window;
         // Screen* m_screen;
         Colormap m_color_map;
@@ -52,6 +51,7 @@ namespace System
         int GetHeight() const;
         int GetX() const;
         int GetY() const;
+        void ShowCursor(bool value);
         void SetSize(int width, int height);
         void SetPosition(int x, int y);
         int Loop();
@@ -92,6 +92,8 @@ namespace System
         int y_prev;
         int x;
         int y;
+
+        Display* m_display;
     };
 
     Window::Impl::Impl(WindowAdapter* adapter, const WindowDesc& desc)
@@ -934,6 +936,37 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
     {
     }
 
+
+    void Window::Impl::ShowCursor(bool value)
+    {
+        static Cursor invisible_cursor = None;
+        if (invisible_cursor == None)
+        {
+            char cursorNoneBits[ 32 ];
+            XColor dontCare;
+            Pixmap cursorNonePixmap;
+            memset( cursorNoneBits, 0, sizeof( cursorNoneBits ) );
+            memset( &dontCare, 0, sizeof( dontCare ) );
+            cursorNonePixmap = XCreateBitmapFromData( m_display,
+                                                      m_window,
+                                                      cursorNoneBits, 16, 16 );
+            if( cursorNonePixmap != None ) {
+                invisible_cursor = XCreatePixmapCursor(m_display,
+                                                 cursorNonePixmap, cursorNonePixmap,
+                                                  &dontCare, &dontCare, 0, 0 );
+                XFreePixmap(m_display, cursorNonePixmap);
+            }
+        }
+        if (value)
+        {
+            XUndefineCursor(m_display, m_window);
+        }
+        else
+        {
+            XDefineCursor(m_display, m_window, invisible_cursor);
+        }
+    }
+
     void Window::Impl::Quite()
     {
 
@@ -1077,6 +1110,26 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
 
     void Window::Impl::MouseMoveProc(Event* e)
     {
+        if (Mouse::Instance()->IsLocked())
+        {
+            MouseMoveEvent* event = (MouseMoveEvent*)e;
+            int w = GetWidth();
+            int h = GetHeight();
+            int w2 = w / 2;
+            int h2 = h / 2;
+            int w4 = w2 / 2;
+            int h4 = h2 / 2;
+            if (abs(event->x - w2) > w4 || abs(event->y - h2) > h4)
+            {
+                x_prev = w2;
+                y_prev = h2;
+                x = w2;
+                y = h2;
+                event->x = event->x_prev = w2;
+                event->y = event->y_prev = h2;
+                XWarpPointer(m_display, m_window, m_window, 0, 0, 0, 0, w2, h2);
+            }
+        }
         if (m_adapter)
         {
             m_adapter->WndOnMouseMoveEvent((MouseMoveEvent*)e);
@@ -1276,6 +1329,11 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
         {
             m_adapter->WndOnDestroyEvent();
         }
+    }
+
+    void Window::ShowCursor(bool value)
+    {
+        impl->ShowCursor(value);
     }
 }
 

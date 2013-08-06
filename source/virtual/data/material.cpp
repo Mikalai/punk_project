@@ -5,51 +5,13 @@
 #include "../../utility/descriptors/material_desc.h"
 #include "../../system/hresource.h"
 #include "texture_slot.h"
+#include "../../engine_objects.h"
 
 namespace Virtual
-{/*
-    void SetScale(const Math::vec3& value)
-    {
-        m_scale = value;
-    }
+{
+    PUNK_OBJECT_REG(Material, "Virtual.Material", PUNK_MATERIAL, &System::Object::Info.Type);
 
-    const Math::vec3& GetScale() const
-    {
-        return m_scale;
-    }
-
-    void MarkAsDiffuse(bool value)
-    {
-        m_is_diffuse_map = value;
-    }
-
-    void MarkAsNormal(bool value)
-    {
-        m_is_normal_map = value;
-    }
-
-    bool IsDiffuseMap()
-    {
-        return m_is_diffuse_map;
-    }
-
-    bool IsNormalMap()
-    {
-        return m_is_normal_map;
-    }
-
-    float GetDiffuseColorFactor() const
-    {
-        return m_diffuse_color_factor;
-    }
-
-    float GetNormalFactor() const
-    {
-        return m_
-    }
-    */
-	
-	Material::Material()
+    Material::Material()
 		: m_diffuse_map(L"")
 		, m_normal_map(L"")
 		, m_diffuse_color(0.1f, 0.1f, 0.1f, 1.0f)
@@ -69,12 +31,11 @@ namespace Virtual
 		, m_specular_slope(0.0f)
 		, m_translucency(0.0f)
 	{
-		SetType(System::ObjectType::MATERIAL);
+        Info.Add(this);
 	}
 
 	Material::Material(const Utility::MaterialDesc& desc)
 	{
-		SetType(System::ObjectType::MATERIAL);
 		m_diffuse_map = desc.m_diffuse_map;
 		m_normal_map = desc.m_normal_map;
 		m_diffuse_color = desc.m_diffuse_color; m_diffuse_color.W() = desc.m_alpha;
@@ -93,7 +54,20 @@ namespace Virtual
 		m_specular_index_of_refraction = desc.m_specular_index_of_refraction;
 		m_specular_slope = desc.m_specular_slope;
 		m_translucency = desc.m_translucency;
+
+        Info.Add(this);
 	}
+
+    Material::~Material()
+    {
+        while (!m_texture_slots.empty())
+        {
+            delete m_texture_slots.back();
+            m_texture_slots.pop_back();
+        }
+
+        Info.Remove(this);
+    }
 
 
     void Material::SetDiffuseMap(const System::string& map)
@@ -161,63 +135,48 @@ namespace Virtual
 		return m_name;
 	}
 
-	bool Material::Save(std::ostream& stream) const
+    void Material::Save(System::Buffer *buffer) const
 	{
-		m_diffuse_map.Save(stream);
-		m_normal_map.Save(stream);
-		m_diffuse_color.Save(stream);
-		m_specular_color.Save(stream);
-		m_name.Save(stream);
-		stream.write((char*)&m_specular_factor, sizeof(m_specular_factor));	
-
-		stream.write((char*)&m_ambient, sizeof(m_ambient));	
-		stream.write((char*)&m_diffuse_intensity, sizeof(m_diffuse_intensity));	
-		stream.write((char*)&m_darkness, sizeof(m_darkness));	
-		stream.write((char*)&m_diffuse_fresnel, sizeof(m_diffuse_fresnel));	
-		stream.write((char*)&m_diffuse_fresnel_factor, sizeof(m_diffuse_fresnel_factor));	
-		stream.write((char*)&m_emit, sizeof(m_emit));			
-		m_mirror_color.Save(stream);
-		stream.write((char*)&m_roughness, sizeof(m_roughness));			
-		stream.write((char*)&m_specular_intensity, sizeof(m_specular_intensity));			
-		stream.write((char*)&m_specular_index_of_refraction, sizeof(m_specular_index_of_refraction));
-		stream.write((char*)&m_specular_slope, sizeof(m_specular_slope));
-		stream.write((char*)&m_translucency, sizeof(m_translucency));		
-
-		return true;
+        buffer->WriteString(m_diffuse_map);
+        buffer->WriteString(m_normal_map);
+        m_diffuse_color.Save(buffer);
+        m_specular_color.Save(buffer);
+        buffer->WriteString(m_name);
+        buffer->WriteReal32(m_specular_factor);
+        buffer->WriteReal32(m_ambient);
+        buffer->WriteReal32(m_diffuse_intensity);
+        buffer->WriteReal32(m_darkness);
+        buffer->WriteReal32(m_diffuse_fresnel);
+        buffer->WriteReal32(m_diffuse_fresnel_factor);
+        buffer->WriteReal32(m_emit);
+        m_mirror_color.Save(buffer);
+        buffer->WriteReal32(m_roughness);
+        buffer->WriteReal32(m_specular_intensity);
+        buffer->WriteReal32(m_specular_index_of_refraction);
+        buffer->WriteReal32(m_specular_slope);
+        buffer->WriteReal32(m_translucency);
 	}
 
-	bool Material::Load(std::istream& stream)
+    void Material::Load(System::Buffer *buffer)
 	{
-		m_diffuse_map.Load(stream);
-		m_normal_map.Load(stream);
-		m_diffuse_color.Load(stream);
-		m_specular_color.Load(stream);
-		m_name.Load(stream);
-		stream.read((char*)&m_specular_factor, sizeof(m_specular_factor));		
-
-		stream.read((char*)&m_ambient, sizeof(m_ambient));	
-		stream.read((char*)&m_diffuse_intensity, sizeof(m_diffuse_intensity));	
-		stream.read((char*)&m_darkness, sizeof(m_darkness));	
-		stream.read((char*)&m_diffuse_fresnel, sizeof(m_diffuse_fresnel));	
-		stream.read((char*)&m_diffuse_fresnel_factor, sizeof(m_diffuse_fresnel_factor));	
-		stream.read((char*)&m_emit, sizeof(m_emit));			
-		m_mirror_color.Load(stream);
-		stream.read((char*)&m_roughness, sizeof(m_roughness));			
-		stream.read((char*)&m_specular_intensity, sizeof(m_specular_intensity));			
-		stream.read((char*)&m_specular_index_of_refraction, sizeof(m_specular_index_of_refraction));
-		stream.read((char*)&m_specular_slope, sizeof(m_specular_slope));
-		stream.read((char*)&m_translucency, sizeof(m_translucency));		
-
-		return true;
-	}
-
-	Material::~Material()
-	{
-        while (!m_texture_slots.empty())
-        {
-            delete m_texture_slots.back();
-            m_texture_slots.pop_back();
-        }
+        m_diffuse_map = buffer->ReadString();
+        m_normal_map = buffer->ReadString();
+        m_diffuse_color.Load(buffer);
+        m_specular_color.Load(buffer);
+        m_name = buffer->ReadString();
+        m_specular_factor = buffer->ReadReal32();
+        m_ambient = buffer->ReadReal32();
+        m_diffuse_intensity = buffer->ReadReal32();
+        m_darkness = buffer->ReadReal32();
+        m_diffuse_fresnel = buffer->ReadReal32();
+        m_diffuse_fresnel_factor = buffer->ReadReal32();
+        m_emit = buffer->ReadReal32();
+        m_mirror_color.Load(buffer);
+        m_roughness = buffer->ReadReal32();
+        m_specular_intensity = buffer->ReadReal32();
+        m_specular_index_of_refraction = buffer->ReadReal32();
+        m_specular_slope = buffer->ReadReal32();
+        m_translucency = buffer->ReadReal32();
 	}
 
 	Material* Material::CreateFromFile(const System::string& path)

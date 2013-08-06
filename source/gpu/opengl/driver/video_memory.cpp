@@ -5,7 +5,7 @@
 #include "../error/module.h"
 #include "../../../system/logger.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -94,7 +94,7 @@ namespace GPU
 			catch(...)
 			{
 				delete value;
-				throw;
+                throw System::PunkException(L"Failed to allocate memory for pixel buffer");
 			}
 		}
 
@@ -120,7 +120,7 @@ namespace GPU
 			catch(...)
 			{
 				delete value;
-				throw;
+                throw System::PunkException(L"Failed to allocate memory for vertex buffer");
 			}
 		}
 
@@ -146,7 +146,7 @@ namespace GPU
 			catch(...)
 			{
 				delete value;
-				throw;
+                throw System::PunkException(L"Failed to allocate memory for index buffer");
 			}
 		}
 
@@ -170,7 +170,7 @@ namespace GPU
 		//{
 		//	size_t to_free override;
 		//	//	remove useless textures
-		//	for (size_t i override; i < m_pbo_list.size(); ++i)
+		//	for (size_t i = 0; i < m_pbo_list.size(); ++i)
 		//	{
 		//		if (m_pbo_list[i].GetCount() == 1)
 		//			to_free += m_pbo_list[i]->GetSize();
@@ -179,7 +179,7 @@ namespace GPU
 		//	}
 
 		//	//	remove useless vbo
-		//	for (size_t i override; i < m_vbo_list.size(); ++i)
+		//	for (size_t i = 0; i < m_vbo_list.size(); ++i)
 		//	{
 		//		if (m_vbo_list[i].GetCount() == 1)
 		//			to_free += m_vbo_list[i]->GetSize();
@@ -188,7 +188,7 @@ namespace GPU
 		//	}
 
 		//	//	remove useless ibo
-		//	for (size_t i override; i < m_ibo_list.size(); ++i)
+		//	for (size_t i = 0; i < m_ibo_list.size(); ++i)
 		//	{
 		//		if (m_ibo_list[i].GetCount() == 1)
 		//			to_free += m_ibo_list[i]->GetSize();

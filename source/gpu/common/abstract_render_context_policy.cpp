@@ -1,7 +1,7 @@
 #include "abstract_render_context_policy.h"
 #include "../error/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	AbstractRenderPolicy::AbstractRenderPolicy()
 		: m_was_modified(false)

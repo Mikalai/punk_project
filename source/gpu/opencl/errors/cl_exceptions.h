@@ -15,7 +15,7 @@
 		OpenCL_##X##_Exception(const System::string& msg) : OpenCLException(System::string(#X) + msg) {} \
 		}
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

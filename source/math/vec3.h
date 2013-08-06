@@ -11,6 +11,8 @@
 #include "../config.h"
 #include "vec2.h"
 
+namespace System { class Buffer; }
+
 namespace Math
 {
     template<class T>
@@ -344,6 +346,8 @@ namespace Math
         const vec3 Normalized() const
         {
             float length = Length();
+            if (length == 0)
+                return *this;
             return *this / length;
         }
 
@@ -366,6 +370,9 @@ namespace Math
                     m_v[0] * vec.m_v[1] - m_v[1] * vec.m_v[0]);
             return v;
         }
+
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 
     };
 
@@ -417,6 +424,9 @@ namespace Math
         ivec3(int x, int y, int z) : Vector3<int>(x, y, z) {}
         ivec3(const ivec3& vec) : Vector3<int>(vec) {}
         ivec3(const Vector3<int>& vec) : Vector3<int>(vec) {}
+
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
     };
 
     typedef std::vector<vec3> PointArray;

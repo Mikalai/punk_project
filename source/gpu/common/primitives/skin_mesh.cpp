@@ -10,7 +10,7 @@
 #endif	//	USE_OPENGL
 
 
-namespace GPU
+namespace Gpu
 {
 #ifdef USE_OPENGL
     using SkinMeshBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,
@@ -147,14 +147,14 @@ namespace GPU
 		int b_id[4] = {0, 0, 0, 0};
 		float w[4] = {0, 0, 0, 0};
 
-		int used = 0;
+        int used = 0;
 		for (int i = 0, max_i = armature->GetBonesCount(); i < max_i; ++i)
 		{
 			const Virtual::Bone* cur_bone = armature->GetBoneByIndex(i);
 			if (weights.find(cur_bone->GetName()) != weights.end())
 			{
 				// replace the least significant bone
-				int Min = 0;
+                int Min = 0;
 				for (int j = 0; j < 4; j++)
 				{
 					if (w[j] < w[Min])

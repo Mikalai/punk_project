@@ -22,8 +22,7 @@ namespace Utility
             {
                 System::string name;
                 ParseBlockedString(buffer, name);
-                geometry->SetName(name);
-                geometry->SetStorageName(name);
+                geometry->SetName(name);                
             }
                 break;
             case WORD_VERTEX_POSITION:

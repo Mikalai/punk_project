@@ -3,7 +3,7 @@
 
 #include "brush.h"
 
-namespace GPU
+namespace Gpu
 {
 	struct Brush::BrushImpl
 	{

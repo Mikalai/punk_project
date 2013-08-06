@@ -1,11 +1,15 @@
+#include <memory>
+#include "frame_buffer/module.h"
 #include "frame.h"
 #include "video_driver.h"
 #include "render_batch.h"
 #include "render_pass.h"
 #include "renderable_builder.h"
 #include "primitive_type.h"
+#include "texture/texture2d.h"
+#include "texture/text_surface.h"
 
-namespace GPU
+namespace Gpu
 {
     Frame::Frame(VideoDriver* driver)
     {
@@ -21,13 +25,13 @@ namespace GPU
             delete m_state.top();
             m_state.pop();
         }
-    }
 
-    void Frame::SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer)
-    {
-        Top()->m_color_buffer = color_buffer;
-        Top()->m_depth_buffer = depth_buffer;
-    }
+        while (!m_texts.empty())
+        {
+            delete m_texts.back();
+            m_texts.pop_back();
+        }
+    }  
 
     void Frame::SetClearColor(const Math::vec4& value)
     {
@@ -46,9 +50,12 @@ namespace GPU
 
     void Frame::Clear(bool color, bool depth, bool stencil)
     {
-        m_driver->SetClearColor(Top()->render_state->m_clear_color);
-        m_driver->SetClearDepth(Top()->render_state->m_clear_depth);
-        m_driver->Clear(color, depth, stencil);
+        if (!Top()->m_active_rendering)
+            throw System::PunkException(L"Can't perform clear operation, because target is not specified");
+        GetVideoDriver()->Clear(color, depth, stencil);
+//        m_current_target->SetClearColor(Top()->render_state->m_clear_color);
+//        m_current_target->SetClearDepth(Top()->render_state->m_clear_depth);
+//        m_current_target->Clear(color, depth, stencil);
     }
 
     const Math::vec4 Frame::GetClearColor() const
@@ -56,12 +63,40 @@ namespace GPU
         return Top()->render_state->m_clear_color;
     }
 
-    void Frame::BeginRendering()
+    void Frame::BeginRendering(FrameBuffer *target)
     {
         if (Top()->m_active_rendering)
             throw System::PunkException(L"Rendering is already started. Call EndRendering() before");
         Top()->m_active_rendering = true;
-        m_driver->SetRenderTarget(Top()->m_color_buffer, Top()->m_depth_buffer);
+        m_current_frame_buffer = target;
+        if (m_current_frame_buffer)
+            m_current_frame_buffer->Bind();
+        GetVideoDriver()->SetViewport(0, 0, GetVideoDriver()->GetWindow()->GetWidth(), GetVideoDriver()->GetWindow()->GetHeight());
+    }
+
+    void Frame::BeginRendering()
+    {
+        BeginRendering(nullptr);
+    }
+
+//    void Frame::BeginRendering(Texture2D *color_buffer, Texture2D *depth_buffer)
+//    {
+//        if (Top()->m_active_rendering)
+//            throw System::PunkException(L"Rendering is already started. Call EndRendering() before");
+//        m_current_target = m_driver->CreateRenderTargetToTexture2D(color_buffer, depth_buffer);
+//        BeginRendering(m_current_target, true);
+//    }
+
+    void Frame::EndRendering()
+    {
+        //	array of batches should be submitted to the actual rendering
+        RenderPass pass(m_driver, m_batches);
+        pass.Run();
+        m_batches.clear();
+        //m_driver->SwapBuffers();
+        Top()->m_active_rendering = false;
+        if (m_current_frame_buffer)
+            m_current_frame_buffer->Unbind();
     }
 
     void Frame::Render(Renderable* value, bool destroy)
@@ -169,22 +204,27 @@ namespace GPU
         Top()->batch_state->m_material.m_diffuse_color.Set(r, g, b, a);
     }
 
-    void Frame::SetDiffuseMap0(const Texture2D* value)
+    void Frame::SetDiffuseMap0(Texture2D* value)
     {
         Top()->texture_state->m_diffuse_map_0 = value;
     }
 
-    void Frame::SetNormalMap(const Texture2D* value)
+    void Frame::SetNormalMap(Texture2D* value)
     {
         Top()->texture_state->m_normal_map = value;
     }
 
-    void Frame::SetDiffuseMap1(const Texture2D* value)
+    void Frame::SetTextMap(Texture2D *value)
+    {
+        Top()->texture_state->m_text_map = value;
+    }
+
+    void Frame::SetDiffuseMap1(Texture2D* value)
     {
         Top()->texture_state->m_diffuse_map_1 = value;
     }
 
-    void Frame::SetFontMap(const Texture2D* value)
+    void Frame::SetFontMap(Texture2D* value)
     {
         Top()->texture_state->m_text_map = value;
     }
@@ -214,12 +254,12 @@ namespace GPU
         Top()->batch_state->m_material.m_specular_color = value;
     }
 
-    void Frame::SetSpecularMap(const Texture2D* value)
+    void Frame::SetSpecularMap(Texture2D* value)
     {
         Top()->texture_state->m_specular_map = value;
     }
 
-    void Frame::SetBumpMap(const Texture2D* value)
+    void Frame::SetBumpMap(Texture2D* value)
     {
         Top()->texture_state->m_normal_map = value;
     }
@@ -232,16 +272,7 @@ namespace GPU
     void Frame::ReceiveShadow(bool value)
     {
         Top()->batch_state->m_receive_shadows = value;
-    }
-
-    void Frame::EndRendering()
-    {
-        //	array of batches should be submitted to the actual rendering
-        RenderPass pass(m_driver, m_batches);
-        pass.Run();
-        m_driver->SwapBuffers();
-        Top()->m_active_rendering = false;
-    }
+    }   
 
     const Math::mat4& Frame::GetWorldMatrix() const
     {
@@ -344,6 +375,21 @@ namespace GPU
     //	Top()->m_enable_skinning = value;
     //}
 
+    void Frame::SetShadowModel(ShadowModel value)
+    {
+        Top()->render_state->m_shadow_model = value;
+    }
+
+    void Frame::SetShadowMapSize(const Math::ivec2& value)
+    {
+        Top()->render_state->m_shadow_map_size = value;
+    }
+
+    void Frame::SetShadowMapSize(int width, int height)
+    {
+        Top()->render_state->m_shadow_map_size.Set(width, height);
+    }
+
     void Frame::EnableWireframe(bool value)
     {
         Top()->render_state->m_enable_wireframe = value;
@@ -357,6 +403,11 @@ namespace GPU
     void Frame::EnableLighting(bool value)
     {
         Top()->render_state->m_enable_lighting = value;
+    }
+
+    void Frame::EnableShadows(bool value)
+    {
+        Top()->render_state->m_enable_shadows = value;
     }
 
     void Frame::EnableTexturing(bool value)
@@ -379,7 +430,7 @@ namespace GPU
         Top()->view_state->m_clip_space = value;
     }
 
-    void Frame::SetHeightMap(const Texture2D* value)
+    void Frame::SetHeightMap(Texture2D* value)
     {
         Top()->texture_state->m_height_map = value;
     }
@@ -407,6 +458,11 @@ namespace GPU
     void Frame::EnableBoundBoxRendering(bool value)
     {
         Top()->render_state->m_enable_bounding_box_rendering = value;
+    }
+
+    void Frame::EnableDepthRendering(bool value)
+    {
+        Top()->render_state->m_render_depth = value;
     }
 
     bool Frame::IsEnabledBoundingBoxRendering() const
@@ -442,6 +498,11 @@ namespace GPU
     void Frame::SetTextColor(const Math::vec4& value)
     {
         Top()->batch_state->m_material.m_text_color = value;
+    }
+
+    void Frame::SetTextColor(float r, float g, float b, float a)
+    {
+        Top()->batch_state->m_material.m_text_color.Set(r, g, b, a);
     }
 
     void Frame::EnablePerVertexColor(bool value)
@@ -597,6 +658,48 @@ namespace GPU
         }
         Render(b.ToRenderable(), true);
         PopAllState();
+    }
+
+    void Frame::DrawText2D(const Math::vec2 &pos, const Math::vec2 &size, const System::string &value)
+    {
+    }
+
+    void Frame::DrawText2D(float x, float y, const System::string &value)
+    {
+        PushAllState();
+        std::unique_ptr<TextSurface> surface(new TextSurface(GetVideoDriver()));
+        surface->SetText(value);
+        int text_width = surface->GetTexture()->GetWidth();
+        int text_height = surface->GetTexture()->GetHeight();
+        SetTextMap(surface->GetTexture());
+        EnableDepthTest(false);
+        EnableBlending(true);
+        EnableTexturing(false);
+        EnableLighting(false);
+        EnableFontRendering(true);
+        SetBlendFunc(BlendFunction::SourceAlpha, BlendFunction::OneMinusSrcAlpha);
+        SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0));
+        int width = GetVideoDriver()->GetWindow()->GetWidth();
+        int height = GetVideoDriver()->GetWindow()->GetHeight();
+        SetProjectionMatrix(Math::mat4::CreateOrthographicProjection(0, width, 0, height, -1, 1));
+        SetViewMatrix(Math::mat4::CreateIdentity());
+
+        RenderableBuilder b(GetVideoDriver());
+        b.Begin(PrimitiveType::QUADS);
+        b.TexCoord2f(0, 0);
+        b.Vertex3f(x, y, 0);
+        b.TexCoord2f(1, 0);
+        b.Vertex3f(x+text_width, y, 0);
+        b.TexCoord2f(1, 1);
+        b.Vertex3f(x+text_width, y+text_height, 0);
+        b.TexCoord2f(0, 1);
+        b.Vertex3f(x, y+text_height, 0);
+        b.End();
+
+        Render(b.ToRenderable(), true);
+
+        PopAllState();
+        m_texts.push_back(surface.release());
     }
 
     void DrawCircleXY(const Math::vec3& c, float r);

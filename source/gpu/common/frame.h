@@ -10,13 +10,14 @@ namespace Math
 	class vec4;
 }
 
-namespace GPU
+namespace Gpu
 {
 	class VideoDriver;
 	class Texture2D;
+    class TextSurface;
 	class Renderable;
 	class Batch;
-    enum class RenderTarget;
+    class FrameBuffer;
 
 	class PUNK_ENGINE_API Frame : public System::Poolable<Frame>
 	{
@@ -25,6 +26,8 @@ namespace GPU
 		~Frame();
 
 		void BeginRendering();
+        //void BeginRendering(Texture2D* color_buffer, Texture2D* depth_buffer);
+        void BeginRendering(FrameBuffer* target);
 		void Render(Renderable* value, bool destroy = false);
 		void MultWorldMatrix(const Math::mat4& value);		
 		void SetWorldMatrix(const Math::mat4& value);		
@@ -32,12 +35,14 @@ namespace GPU
 		void SetProjectionMatrix(const Math::mat4& value);
 		void SetDiffuseColor(const Math::vec4& value);
 		void SetDiffuseColor(float r, float g, float b, float a);
-		void SetDiffuseMap0(const Texture2D* value);
-		void SetDiffuseMap1(const Texture2D* value);
-        void SetHeightMap(const Texture2D* value);
-        void SetNormalMap(const Texture2D* value);
+        void SetDiffuseMap0(Texture2D* value);
+        void SetDiffuseMap1(Texture2D* value);
+        void SetHeightMap(Texture2D* value);
+        void SetNormalMap(Texture2D* value);
+        void SetTextMap(Texture2D* value);
 		void SetTextColor(const Math::vec4& value);
-		void SetFontMap(const Texture2D* value);
+        void SetTextColor(float r, float g, float b, float a);
+        void SetFontMap(Texture2D* value);
 		void SetBoneMatrix(int bone_index, const Math::mat4& value);
 		void SetSpecularColor(const Math::vec4& value);
 		void SetSpecularFactor(float value);
@@ -48,8 +53,8 @@ namespace GPU
 		void SetTextureMatrix(const Math::mat4& value);
 		void SetLocalMatrix(const Math::mat4& value);
 
-		void SetSpecularMap(const Texture2D* value);		
-		void SetBumpMap(const Texture2D* value);				
+        void SetSpecularMap(Texture2D* value);
+        void SetBumpMap(Texture2D* value);
 
 		const Math::mat4& GetWorldMatrix() const;		
 		const Math::mat4& GetLocalMatrix() const;
@@ -76,20 +81,25 @@ namespace GPU
 		void EnableWireframe(bool value);
 		void EnableTerrainRendering(bool value);
 		void EnableLighting(bool value);
+        void EnableShadows(bool value);
 		void EnableTexturing(bool value);
 		void EnableFontRendering(bool value);        
         void EnableBoundBoxRendering(bool value);
+        void EnableDepthRendering(bool value);
         bool IsEnabledBoundingBoxRendering() const;
         void EnableBoundingSphereRendering(bool value);
         bool IsEnabledBoundingSphereRendering() const;
         void EnableNaviMeshRendering(bool value);
         bool IsEnabledNaviMeshRendering();
 
-        //  added on 01.05.2013
-		void SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer);
+        //  added on 01.05.2013		
 		void SetClearColor(const Math::vec4& value);
 		void SetClearColor(float r, float g, float b, float a);
 		void SetClearDepth(float value);
+
+        void SetShadowModel(ShadowModel value);
+        void SetShadowMapSize(const Math::ivec2& value);
+        void SetShadowMapSize(int width, int height);
 
         const Math::vec4 GetClearColor() const;
 
@@ -108,6 +118,12 @@ namespace GPU
         void DrawPoint(float x, float y, float z);
         void DrawCircleXY(float x, float y, float z, float r);
         void DrawCircleXY(const Math::vec3& c, float r);
+        void DrawText2D(float x, float y, const System::string& value);
+        void DrawText2D(float x, float y, float width, float height, const System::string& value);
+        void DrawText2D(const Math::vec2& pos, const System::string& value);
+        void DrawText2D(const Math::vec2& pos, const Math::vec2& size, const System::string& value);
+        void DrawText3D(float x, float y, float z, const System::string& value);
+        void DrawText3D(const Math::vec3& pos, const System::string& value);
 
 
 		void SetBlendColor(const Math::vec4& value);
@@ -145,8 +161,11 @@ namespace GPU
 		std::stack<CoreState*> m_state;
 
 		//	next should not be deleted in destructor
+        FrameBuffer* m_current_frame_buffer;
+
 		VideoDriver* m_driver;
 		std::vector<Batch*> m_batches;
+        std::vector<TextSurface*> m_texts;
 
 	private:
 		//	driver can create frames

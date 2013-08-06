@@ -4,7 +4,7 @@
 
 #include "gl_error_check.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

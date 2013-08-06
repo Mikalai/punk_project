@@ -11,8 +11,8 @@ namespace Math
 		, m_delete_flag(false)
 	{
 		location->m_node = this;
-		m_cost_from_start = 0;
-		m_cost_to_goal = 0;
+        m_cost_from_start = 0;
+        m_cost_to_goal = 0;
 		m_parent = 0;
 	}
 
@@ -20,8 +20,8 @@ namespace Math
 	{
 		if (m_successor.empty() && !m_location->GetNeighbours().empty())
 		{	
-			m_cost_from_start = 0;
-			m_cost_to_goal = 0;
+            m_cost_from_start = 0;
+            m_cost_to_goal = 0;
 			m_parent = 0;
 		}
 	}

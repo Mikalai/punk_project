@@ -6,7 +6,7 @@
 #include "../../system/errors/module.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

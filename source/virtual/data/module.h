@@ -22,6 +22,6 @@
 #include "interior_location.h"
 
 #include "texture_slot.h"
-
+#include "transform.h"
 
 #endif

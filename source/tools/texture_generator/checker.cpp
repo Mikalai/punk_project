@@ -21,7 +21,7 @@ void CreateChecker(int argc, char** argv)
 
 	if (cell_size < 0)
 	{
-		printf("cell size can't be <= 0\n");
+		printf("cell size can't be <override\n");
 		return;
 	}
 
@@ -35,9 +35,9 @@ void CreateChecker(int argc, char** argv)
 	unsigned char* c1 = (unsigned char*)&color1;
 	unsigned char* c2 = (unsigned char*)&color2;
 
-	for (int y = 0; y < height; y++)
+	for (int y override; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		for (int x override; x < width; x++)
 		{
 			if ((x / cell_size) % 2 == 0)
 			{

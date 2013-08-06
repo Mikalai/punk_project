@@ -9,79 +9,138 @@
 #include "../../system/aop/aop.h"
 #include "geometry.h"
 
+namespace Gpu
+{
+    class VideoDriver;
+}
+
+
 namespace Virtual
 {
-	class PUNK_ENGINE_API SkinGeometry : public Geometry, public System::Aspect<SkinGeometry*, System::string>
+    class Armature;
+    class ArmatureAnimationMixer;
+
+    class PUNK_ENGINE_API SkinGeometry : public Geometry
 	{
-	public:
-		typedef int FaceIndex;
-		typedef std::vector<Math::vec3> Vertices;
-		typedef std::vector<Math::vec3> Normals;	
-		typedef std::vector<Math::ivec3> Faces;
+	public:		
 		typedef std::map<int, std::map<System::string, float>> BoneWeights;
-		typedef std::map<System::string, std::vector<Math::Vector4<Math::vec2>>> TextureMeshes;
+        typedef std::map<System::string, std::vector<Math::Vector4<Math::vec2>>> TextureMeshes;
 
 	public:
 
+        struct GpuCache
+        {
+            GpuCache(SkinGeometry& value);
+            ~GpuCache();
+            bool IsOnGpu();
+            void Drop();
+            void Update(Armature* armature, Gpu::VideoDriver* driver);
+            Gpu::Renderable* GetGpuBuffer();
+            size_t GetGpuMemoryUsage() const;
+        private:
+            SkinGeometry& m_geom;
+            Gpu::Renderable* m_gpu_buffer;
+        };
+
+        struct CpuCache
+        {
+            CpuCache(SkinGeometry& value);
+            bool IsOnCpu();
+            void Drop();
+            void Update();
+            void Update(const System::string& path);
+            size_t GetCpuMemoryUsage() const;
+
+            void SetVertices(const Vertices& value);
+            void SetNormals(const Normals& value);
+            void SetFaces(const Faces& value);
+            void SetTextureMeshes(const TextureMeshes& value);
+            void SetBoneWeights(const BoneWeights& value);
+
+            const Vertices& GetVertices() const;
+            const Normals& GetNormals() const;
+            const Faces& GetFaces() const;
+            const TextureMeshes& GetTextureMeshes() const;
+            const BoneWeights& GetBoneWeights() const;
+
+            Vertices& GetVertices();
+            Normals& GetNormals();
+            Faces& GetFaces();
+            TextureMeshes& GetTextureMeshes();
+            BoneWeights& GetBoneWeights();
+
+            void Save(System::Buffer *buffer) const;
+            void Load(System::Buffer *buffer);
+
+        private:
+            SkinGeometry& m_geom;
+            Vertices m_vertices;
+            Normals m_normals;
+            Faces m_faces;
+            TextureMeshes m_tex_coords;
+            BoneWeights m_bone_weights;
+            bool m_is_on_cpu;
+        };
+
+
+    public:
 		SkinGeometry();
+        SkinGeometry(const SkinGeometry&) = delete;
+        SkinGeometry& operator = (const SkinGeometry&) = delete;
+        virtual ~SkinGeometry();
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+        virtual void Save(System::Buffer *buffer) const override;
+        virtual void Load(System::Buffer *buffer) override;
 
-		virtual Vertices& GetVertexArray() override { return m_vertices; }
-		virtual Normals& GetNormalArray() override { return m_normals; }
-		virtual Faces& GetFaceArray() override { return m_faces; }
-		virtual const Vertices& GetVertexArray() const override { return m_vertices; }
-		virtual const Normals& GetNormalArray() const override { return m_normals; }
-		virtual const Faces& GetFaceArray() const override { return m_faces; }
+        virtual Vertices& GetVertexArray() override;
+        virtual Normals& GetNormalArray() override;
+        virtual Faces& GetFaceArray() override;
+        virtual const Vertices& GetVertexArray() const override;
+        virtual const Normals& GetNormalArray() const override;
+        virtual const Faces& GetFaceArray() const override;
 
-		void SetVertices(const Vertices& value) { m_vertices = value; }
-		void SetNormals(const Normals& value) { m_normals = value; }
-		void SetFaces(const Faces& value) { m_faces = value; }
-		void SetTextureMeshes(const TextureMeshes& value) { m_tex_coords = value; }
-		void SetBoneWeights(const BoneWeights& value) { m_bone_weights = value; }
+        void SetVertices(const Vertices& value);
+        void SetNormals(const Normals& value);
+        void SetFaces(const Faces& value);
+        void SetTextureMeshes(const TextureMeshes& value);
+        void SetBoneWeights(const BoneWeights& value);
 
-		const Vertices& GetVertices() const { return m_vertices; }
-		const Normals& GetNormals() const { return m_normals; }
-		const Faces& GetFaces() const { return m_faces; }
-		const TextureMeshes& GetTextureMeshes() const { return m_tex_coords; }
-		const BoneWeights& GetBoneWeights() const { return m_bone_weights; }
+        const Vertices& GetVertices() const;
+        const Normals& GetNormals() const;
+        const Faces& GetFaces() const;
+        const TextureMeshes& GetTextureMeshes() const;
+        const BoneWeights& GetBoneWeights() const;
 
-		const Math::BoundingBox& GetBoundingBox() const { return m_bbox; }
+        void SetWorldOffset(const Math::mat4& value);
+        const Math::mat4& GetWorldOffset() const;
 
-		static SkinGeometry* CreateFromFile(const System::string& path);
-		static SkinGeometry* CreateFromStream(std::istream& stream);
+        void SetFilename(const System::string& filename);
+        const System::string& GetFilename() const;
 
-		void DropCache();
-		bool IsCacheValid();
-		void SetGPUBufferCache(Object* value);
-		System::Object* GetGPUBufferCache() { return m_cache.m_gpu_buffer; }
+        GpuCache& GetGpuCache();
+        CpuCache& GetCpuCache();
 
-		void SetWorldOffset(const Math::mat4& value) { m_world_offset = value; }
-		const Math::mat4& GetWorldOffset() const { return m_world_offset; }
+        void SetArmatureName(const System::string& name);
+        const System::string& GetArmatureName() const;
 
-	private:
-		Math::BoundingBox m_bbox;
-		Vertices m_vertices;
-		Normals m_normals;
-		Faces m_faces;				
-		TextureMeshes m_tex_coords;		
-		BoneWeights m_bone_weights;		
-		Math::mat4 m_world_offset;
+        void SetName(const System::string& value);
+        const System::string& GetName() const;
 
-		/**
-		*	when cache is dropped data should be removed
-		*/
-		struct Cache
-		{
-			System::Object* m_gpu_buffer;
+    private:
 
-			Cache() 
-				: m_gpu_buffer(nullptr) 
-			{}
-		};
+        System::string m_armature_name;
+        System::string m_filename;
+        System::string m_name;
 
-		Cache m_cache;
+        Math::mat4 m_world_offset;
+
+        CpuCache m_cpu_cache;
+        GpuCache m_gpu_cache;
+
+        friend class CpuCache;
+        friend class GpuCache;
+
+        PUNK_OBJECT(SkinGeometry)
 	};
 }
 

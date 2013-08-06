@@ -8,6 +8,13 @@ namespace Virtual
 	class PUNK_ENGINE_API HumanMaleArmature final : public HumanArmature
 	{
 	public:
+        HumanMaleArmature();
+        HumanMaleArmature(const HumanMaleArmature&) = delete;
+        HumanArmaturePart& operator = (const HumanMaleArmature&);
+        virtual ~HumanMaleArmature();
+
+    private:
+        PUNK_OBJECT(HumanMaleArmature)
 	};
 };
 

@@ -20,8 +20,7 @@ namespace Utility
             {
                 System::string value;
                 ParseBlockedString(buffer, value);
-                mat->SetName(value);
-                mat->SetStorageName(value);
+                mat->SetName(value);                
             }
             break;
             case WORD_ALPHA:

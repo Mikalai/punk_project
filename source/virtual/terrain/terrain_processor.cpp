@@ -7,8 +7,8 @@ namespace Virtual
 	TerrainProcessor::TerrainProcessor(TerrainCell* cell)
 	{
 		m_terrain_cell = cell;
-		m_data = 0;
-		m_size = 0;
+        m_data = 0;
+        m_size = 0;
 	}
 
 	System::StreamingStepResult TerrainProcessor::LockDeviceObject()

@@ -2,7 +2,7 @@
 #include "gpu_state.h"
 #include "renderable.h"
 
-namespace GPU
+namespace Gpu
 {
 	Batch::~Batch()
 	{

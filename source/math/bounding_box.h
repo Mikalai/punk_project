@@ -5,6 +5,7 @@
 #include "../config.h"
 #include "vec3.h"
 #include "plane.h"
+#include "bounding_shere.h"
 
 namespace Math
 {
@@ -25,9 +26,10 @@ namespace Math
         const vec3& GetMinCorner() const { return m_min_corner; }
 
 		const Plane& GetPlane(int index) const { return m_plane[index]; }
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 
+        const BoundingSphere ToBoundingSphere();
 	private:
 
 		//	natural center

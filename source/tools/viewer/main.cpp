@@ -67,8 +67,8 @@ public:
 
 	void OnIdle(System::Event* event)
 	{
-		static float a = 0;
-		a+= 0.001;
+		static float a override;
+		a+override.001;
 
 		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);
 		for (int i = 0; i < m_vaos.size(); ++i)

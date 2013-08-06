@@ -61,16 +61,14 @@ namespace Math
 		return Plane(res);
     }
 
-	bool Plane::Save(std::ostream& stream) const
+    void Plane::Save(System::Buffer *buffer) const
 	{
-		m_plane.Save(stream);
-		return true;
+        m_plane.Save(buffer);
 	}
 
-	bool Plane::Load(std::istream& stream)
+    void Plane::Load(System::Buffer *buffer)
 	{
-		m_plane.Load(stream);
-		return true;
+        m_plane.Load(buffer);
 	}
 
     Plane& Plane::Set(float a, float b, float c, float d)

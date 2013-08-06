@@ -278,6 +278,9 @@ namespace Math
 		quat(float w, float x, float y, float z) : Quaternion<float>(w, x, y, z) {}
 		quat(float w, const vec3& v) : Quaternion<float>(w, v) {}
 		quat(const Quaternion<float>& q) : Quaternion<float>(q) {}
+
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
 	//typedef Quaternion<float> quat;

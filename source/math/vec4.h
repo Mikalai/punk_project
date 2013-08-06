@@ -19,6 +19,7 @@ namespace Math
 	template<class T>
 	class  Vector4
 	{		
+    protected:
 		static const int Size_c = 4;
 		static constexpr float Eps = 1e-3;
 		T m_v[Size_c];
@@ -553,7 +554,17 @@ namespace Math
         vec4(const vec4& vec);
         vec4(const Vector4<float>& vec);
         const vec3 ToHomogeneus() const;
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
+
+    PUNK_ENGINE_API const vec4 operator + (const vec4& a, const vec4& b);
+    PUNK_ENGINE_API const vec4 operator - (const vec4& a, const vec4& b);
+    PUNK_ENGINE_API const vec4 operator *(const vec4& a, float d);
+    PUNK_ENGINE_API const vec4 operator *(float d, const vec4& a);
+    PUNK_ENGINE_API const vec4 operator /(const vec4& a, double d);
+    PUNK_ENGINE_API bool operator ==(const vec4& a, const vec4& b);
+    PUNK_ENGINE_API bool operator !=(const vec4& a, const vec4& b);
 
 	class PUNK_ENGINE_API ivec4 : public Vector4<int> 
 	{

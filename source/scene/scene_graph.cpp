@@ -1,31 +1,26 @@
 #include "scene_graph.h"
 #include "../gpu/opengl/renderable/module.h"
 #include "../virtual/module.h"
+#include "../engine_objects.h"
 
 namespace Scene
 {
-	SceneGraph::SceneGraph()
+    PUNK_OBJECT_REG(SceneGraph, "Scene.SceneGraph", PUNK_SCENE_GRAPH, &Node::Info.Type);
+
+    SceneGraph::SceneGraph()
 	{
+        Info.Add(this);
 	}
 
 	SceneGraph::~SceneGraph()
 	{
+        Info.Remove(this);
 	}
 
-
-	bool SceneGraph::Save(std::ostream& stream) const
-	{
-        System::CompoundObject::Save(stream);
-		//System::GetFactory()->SaveToStream(stream, m_root);
-		//System::GetFactory()->SaveToStream(stream, m_camera_node);
-		return true;
-	}
-
-	bool SceneGraph::Load(std::istream& stream)
-	{
-        System::CompoundObject::Load(stream);
-		//m_root = Cast<Node*>(System::GetFactory()->LoadFromStream(stream));
-		//m_camera_node = Cast<CameraNode*>(System::GetFactory()->LoadFromStream(stream));
-		return true;
-	}
+    const System::string SceneGraph::ToString() const
+    {
+        std::wstringstream stream;
+        stream << L'[' << GetLocalIndex() << L' ' << Info.Type.GetName() << L']';
+        return System::string(stream.str());
+    }
 }

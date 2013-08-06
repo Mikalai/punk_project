@@ -9,9 +9,9 @@ namespace System
 	class PUNK_ENGINE_API ResourceCreator
 	{
 	public:
-		virtual Object* Create() = 0;
-		virtual Object* Create(const string& name) = 0;
-		virtual bool Init() = 0;
+		virtual Object* Create() override;
+		virtual Object* Create(const string& name) override;
+		virtual bool Init() override;
 	};
 }
 

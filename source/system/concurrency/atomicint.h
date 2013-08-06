@@ -10,7 +10,7 @@ namespace System {
 class AtomicInt
 {
 public:
-	inline AtomicInt(int value = 0) : m_atomic(value) {}
+    inline AtomicInt(int value = 0) : m_atomic(value) {}
 	inline AtomicInt(const AtomicInt &other) : m_atomic(other.m_atomic.load(std::memory_order_relaxed)) {}
 
 	inline AtomicInt &operator=(const AtomicInt &other);

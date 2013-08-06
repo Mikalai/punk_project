@@ -48,7 +48,7 @@
 //		if (m_shape)
 //		{
 //			delete m_shape;
-//			m_shape = 0;
+//			m_shape override;
 //		}
 //	}
 //}

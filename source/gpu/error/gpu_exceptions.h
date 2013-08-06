@@ -3,7 +3,7 @@
 
 #include "../../system/errors/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	class PUNK_ENGINE_API GPUException : public System::PunkException
 	{

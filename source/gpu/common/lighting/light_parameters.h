@@ -2,9 +2,10 @@
 #define LIGHT_PARAMETERS_H
 
 #include "../../../math/vec4.h"
+#include "../../../math/mat4.h"
 #include "light_model.h"
 
-namespace GPU
+namespace Gpu
 {
 	class PUNK_ENGINE_API LightParameters
 	{
@@ -45,6 +46,9 @@ namespace GPU
 		void SetSpotExponent(float value);
 		float GetSpotExponent() const;
 
+        const Math::mat4 GetProjectionMatrix() const;
+        const Math::mat4 GetViewMatrix() const;
+
 	private:
 		LightType m_light_type;
 		LightAttenuation m_attenuation;
@@ -52,7 +56,9 @@ namespace GPU
 		float m_linear_attenuation;
 		float m_quadric_attenuation;
 		float m_spot_exponent;
+        /// World light position
 		Math::vec4 m_position;
+        /// World light direction
 		Math::vec4 m_direction;
 		Math::vec4 m_diffuse_color;
 		Math::vec4 m_ambient_color;

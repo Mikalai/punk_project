@@ -5,7 +5,7 @@
 #else
 #endif
 
-namespace GPU
+namespace Gpu
 {
 
 #ifdef USE_OPENGL

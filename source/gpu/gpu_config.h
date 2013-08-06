@@ -9,7 +9,7 @@
 
 #define PUNK_GPU_USE_OPENGL
 
-namespace GPU
+namespace Gpu
 {
 	struct PUNK_ENGINE_API Config
 	{
@@ -23,6 +23,11 @@ namespace GPU
 		int bits_per_pixel;
         int shadow_map_width;
         int shadow_map_height;
+        bool use_multisampling;
+        int multisampling_depth;
+        bool use_coveragesampling;
+        int coverage_depth;
+
 
 #ifdef _WIN32
         HWND m_hwnd;

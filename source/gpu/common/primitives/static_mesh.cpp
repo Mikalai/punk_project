@@ -12,7 +12,7 @@
 #endif	//	USE_OPENGL
 
 
-namespace GPU
+namespace Gpu
 {
 #ifdef USE_OPENGL
     using StaticMeshBase = OpenGL::VertexArrayObject2<PrimitiveType::TRIANGLES,

@@ -13,10 +13,6 @@ namespace Virtual
 	public:
 		Light* GetLight(int index);
 		const Light* GetLight(int index) const;
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
-
-		static LightSet* CreateFromStream(std::istream& stream);
 	};
 }
 

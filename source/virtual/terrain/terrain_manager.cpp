@@ -5,7 +5,7 @@
 #include "terrain_observer.h"
 #include "terrain_manager.h"
 #include "terrain_cell.h"
-#include "../../gpu/common/texture2d.h"
+#include "../../gpu/common/module.h"
 
 namespace Virtual
 {
@@ -41,7 +41,7 @@ namespace Virtual
 			m_terrain = new Terrain;
 			try
 			{
-				m_terrain->Load(stream);
+                //m_terrain->Load(stream);
 			}
 			catch(...)
 			{

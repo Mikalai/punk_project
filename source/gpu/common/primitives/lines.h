@@ -18,7 +18,7 @@ private:\
     Renderable* impl;\
 }
 
-namespace GPU
+namespace Gpu
 {
     class VideoDriver;
 

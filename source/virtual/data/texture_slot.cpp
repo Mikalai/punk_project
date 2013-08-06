@@ -16,7 +16,7 @@ namespace Virtual
         Drop();
     }
 
-    GPU::Texture2D* TextureSlot::Cache::GetTexture()
+    Gpu::Texture2D* TextureSlot::Cache::GetTexture()
     {        
         return m_texture;
     }
@@ -27,7 +27,7 @@ namespace Virtual
         m_texture = nullptr;
     }
 
-    void TextureSlot::Cache::Update(GPU::VideoDriver* driver)
+    void TextureSlot::Cache::Update(Gpu::VideoDriver* driver)
     {
         Drop();
         ImageModule::Importer importer;

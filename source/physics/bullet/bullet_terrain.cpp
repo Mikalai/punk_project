@@ -59,11 +59,11 @@ namespace Physics
 		std::unique_ptr<BulletRigidBody> temp_body(new BulletRigidBody());
 
 		RigidBodyDesc desc;
-		desc.m_group = 0;
+		desc.m_group override;
 		desc.m_initial_position = Math::mat4::CreateTranslate(view->GetBackPosition().X(), 0, view->GetBackPosition().Y());
 		desc.m_is_character = false;
 		desc.m_mask = 0;
-		desc.m_mass = 0;
+		desc.m_mass override;
 		desc.m_shape = temp_shape.get();
 		temp_body->Init(desc);
 

@@ -1,4 +1,4 @@
-#include "../../gpu/common/texture2d.h"
+#include "../../gpu/common/module.h"
 #include "../../system/logger.h"
 #include <iostream>
 #include "terrain_manager.h"
@@ -47,8 +47,8 @@ namespace Virtual
 		{
 			for (int y = std::max(0, cell.Y() - north_count); y <= std::min(terrain->GetNumBlocks(), cell.Y() + south_count); ++y)
 			{
-				if (x >= 0 && x < terrain->GetNumBlocks() 
-					&& y >= 0 && y < terrain->GetNumBlocks() )
+                if (x >= 0 && x < terrain->GetNumBlocks()
+                    && y >= 0 && y < terrain->GetNumBlocks() )
 				{
 					auto cell = terrain->GetCell(x, y);
 					//	check is cell data is value
@@ -81,9 +81,9 @@ namespace Virtual
 		{
 			for (int iy = std::max(0, cell.Y() - north_count); iy <= std::min(terrain->GetNumBlocks(), cell.Y() + south_count); ++iy)
 			{
-				TerrainData* cell_ref = 0;
-				if (ix >= 0 && ix < terrain->GetNumBlocks() 
-					&& iy >= 0 && iy < terrain->GetNumBlocks() )
+                TerrainData* cell_ref = nullptr;
+                if (ix >= 0 && ix < terrain->GetNumBlocks()
+                    && iy >= 0 && iy < terrain->GetNumBlocks() )
 				{
 					cell_ref = terrain->GetCell(ix, iy)->GetDataCached();
 				}				
@@ -97,16 +97,16 @@ namespace Virtual
 				int dst_start_y = std::max(0, int(iy * m_desc.m_block_size + src_start_y - mark.Y() + (int)mark_size / 2));
 				int dst_end_y = std::min((int)m_desc.m_view_size, int(src_end_y + (iy) * m_desc.m_block_size - mark.Y() + mark_size / 2));
 				
-				for (int y = 0; y < dst_end_y - dst_start_y; ++y)
+                for (int y = 0; y < dst_end_y - dst_start_y; ++y)
 				{
-					for (int x = 0; x < dst_end_x - dst_start_x; ++x)
+                    for (int x = 0; x < dst_end_x - dst_start_x; ++x)
 					{
 						int dst_x = int(m_desc.m_block_scale * float(dst_start_x + x));
 						int dst_y = int(m_desc.m_block_scale * float(dst_start_y + y));
 						int src_x = src_start_x + x;
 						int src_y = src_start_y + y;
 
-						if (dst_x >= 0 && dst_x < mark_size && dst_y >= 0 && dst_y < mark_size)
+                        if (dst_x >= 0 && dst_x < mark_size && dst_y >= 0 && dst_y < mark_size)
 						{								
 							if (cell_ref)
 							{
@@ -114,7 +114,7 @@ namespace Virtual
 							}
 							else
 							{
-								dst_buffer[dst_x + m_desc.m_view_size * dst_y] = 0;
+                                dst_buffer[dst_x + m_desc.m_view_size * dst_y] = 0;
 							}
 						}
 						else
@@ -124,9 +124,9 @@ namespace Virtual
 					}
 				}
 
-				/*for (int i = 0; i < m_desc.m_view_size; ++i)
+                /*for (int i = 0; i < m_desc.m_view_size; ++i)
 				{
-					for (int j = 0; j < m_desc.m_view_size; ++j)
+                    for (int j = 0; j < m_desc.m_view_size; ++j)
 					{
 						dst_buffer[j + i * m_desc.m_view_size] = pow(1.2, i);
 					}

@@ -5,7 +5,7 @@
 #include "../../system/object.h"
 #include "../../math/module.h"
 
-namespace GPU { class Renderable; }
+namespace Gpu { class Renderable; }
 
 namespace Physics
 {
@@ -23,13 +23,16 @@ namespace Virtual
 		typedef std::vector<Math::ivec3> Faces;
 
 	public:
+        Geometry();
+        Geometry(const Geometry&) = delete;
+        Geometry& operator = (const Geometry&) = delete;
 		virtual ~Geometry();
-		virtual Vertices& GetVertexArray() = 0;
-		virtual Normals& GetNormalArray() = 0;
-		virtual Faces& GetFaceArray() = 0;
-		virtual const Vertices& GetVertexArray() const = 0;
-		virtual const Normals& GetNormalArray() const = 0;
-		virtual const Faces& GetFaceArray() const = 0;
+        virtual Vertices& GetVertexArray() { throw; }
+        virtual Normals& GetNormalArray() { throw; }
+        virtual Faces& GetFaceArray() { throw; }
+        virtual const Vertices& GetVertexArray() const { throw; }
+        virtual const Normals& GetNormalArray() const { throw; }
+        virtual const Faces& GetFaceArray() const { throw; }
 
         Math::BoundingBox& GetBoundingBox();
         const Math::BoundingBox& GetBoundingBox() const;
@@ -39,7 +42,9 @@ namespace Virtual
     protected:
 
         Math::BoundingBox m_bbox;
-        Math::BoundingSphere m_sphere;
+        Math::BoundingSphere m_sphere;    
+
+        PUNK_OBJECT(Geometry)
 	};
 }
 

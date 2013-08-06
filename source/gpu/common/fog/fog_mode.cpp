@@ -1,6 +1,6 @@
 #include "fog_mode.h"
 
-namespace GPU
+namespace Gpu
 {
 	using FogModeDesc = std::pair<FogMode, System::string>;
 	static const FogModeDesc g_fog_modes[] = {

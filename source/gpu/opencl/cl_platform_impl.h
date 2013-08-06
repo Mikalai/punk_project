@@ -9,7 +9,7 @@
 #include "cl_platform.h"
 #endif
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{

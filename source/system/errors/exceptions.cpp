@@ -26,6 +26,6 @@ namespace System
 
 	const System::string& PunkException::ToString() const
 	{
-		return m_data;
+        return m_data;
 	}
 }

@@ -10,7 +10,7 @@
 
 #define STATE m_states.CurrentState()->Get()
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -19,18 +19,18 @@ namespace GPU
 			typedef Vertex<VertexComponent::Position, VertexComponent::Texture0, VertexComponent::Flag, VertexComponent::Color> VertexType;
 
 			VideoDriver* m_driver;
-			RenderTargetTexture* m_rt;
+//			RenderTargetTextureColorDepth* m_rt;
 			//System::StateManager<GPU::CoreState> m_states;
-			GPU::AbstractRenderPolicy* m_solid_rc;
+			Gpu::AbstractRenderPolicy* m_solid_rc;
 			Math::vec4 m_color;
 			Math::vec4 m_fill_color;
-			GPU::TextureContext* m_tc;
-			GPU::AbstractRenderPolicy* m_gui_rc;
-			GPU::AbstractRenderPolicy* m_painter_rc;
+			Gpu::TextureContext* m_tc;
+			Gpu::AbstractRenderPolicy* m_gui_rc;
+			Gpu::AbstractRenderPolicy* m_painter_rc;
 			Utility::FontBuilder m_font_builder;
 
-			GPU::Lines<VertexType> m_lines_vao;
-			GPU::QuadObject m_quad;
+			Gpu::Lines<VertexType> m_lines_vao;
+			Gpu::QuadObject m_quad;
 
 			const Texture2D* m_fill_texture;
 			bool m_use_border;
@@ -43,7 +43,7 @@ namespace GPU
 
 			OpenGLPaintEngineImpl(VideoDriver* driver)
 				: m_driver(driver)
-				, m_rt(nullptr)
+//				, m_rt(nullptr)
 				, m_lines_vao(driver)
 				, m_quad(driver)
 			{
@@ -54,9 +54,9 @@ namespace GPU
 					//m_rt->Init(&props);
 					//m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);
 
-					m_solid_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Solid3D);
-					m_gui_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::GUI);
-					m_painter_rc = GPU::AbstractRenderPolicy::find(GPU::RenderPolicySet::Painter);
+					m_solid_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::Solid3D);
+					m_gui_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::GUI);
+					m_painter_rc = Gpu::AbstractRenderPolicy::find(Gpu::RenderPolicySet::Painter);
 
 					m_tc = new TextureContext;
 
@@ -76,17 +76,17 @@ namespace GPU
 
 			~OpenGLPaintEngineImpl()
 			{
-				delete m_rt;
-				m_rt = nullptr;
+//				delete m_rt;
+//				m_rt = nullptr;
 
 				delete m_tc;
 				m_tc = nullptr;
 			}
 
-			RenderTargetTexture* GetRenderTarget()
-			{
-				return m_rt;
-			}
+//			RenderTargetTextureColorDepth* GetRenderTarget()
+//			{
+//				return m_rt;
+//			}
 
 			void SetSurfaceSize(int, int)
 			{
@@ -101,8 +101,8 @@ namespace GPU
 
 			void CookCPULineBuffer(const Math::Line2D* lines, size_t count)
 			{
-				float max_width = (float)m_rt->GetColorBuffer()->GetWidth();
-				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();
+                float max_width = 0;//(float)m_rt->GetColorBuffer()->GetWidth();
+                float max_height = 0;//(float) m_rt->GetColorBuffer()->GetHeight();
 
 				m_lines_modified = true;
 				for (size_t i = 0; i < count; ++i)
@@ -208,8 +208,8 @@ namespace GPU
 
 			void DrawRect(const Math::Rect& rect)
 			{
-				float max_width = (float)m_rt->GetColorBuffer()->GetWidth();
-				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();
+                float max_width = 0; //(float)m_rt->GetColorBuffer()->GetWidth();
+                float max_height = 0; //(float) m_rt->GetColorBuffer()->GetHeight();
 
 				if (m_use_fill)
 				{
@@ -234,7 +234,7 @@ namespace GPU
 
 			bool End()
 			{
-				m_rt->Deactivate();
+//				m_rt->Deactivate();
 				return true;
 			}
 
@@ -275,14 +275,14 @@ namespace GPU
 
 			void RenderText(float x, float y, const System::string& text, const Math::vec4& color)
 			{
-				float max_width = (float)m_rt->GetColorBuffer()->GetWidth();
-				float max_height = (float) m_rt->GetColorBuffer()->GetHeight();
+                float max_width = 0;//(float)m_rt->GetColorBuffer()->GetWidth();
+                float max_height = 0;//(float) m_rt->GetColorBuffer()->GetHeight();
 
 				m_font_builder.SetCurrentFace(m_font_name);
 				m_font_builder.SetCharSize(m_font_size, m_font_size);
                 int len = m_font_builder.CalculateLength(text);
                 int h = m_font_builder.CalculateHeight(text);
-                GPU::TextSurface s(len, h,  m_driver);
+                Gpu::TextSurface s(len, h,  m_driver);
 				s.SetTextSize(m_font_size);
 				s.SetSize(len, h);
 				s.SetText(text);
@@ -298,7 +298,7 @@ namespace GPU
 //				STATE.m_diffuse_color = color;
 //				STATE.m_no_diffuse_texture_color.Set(1,1,1,0);
 //				//STATE.m_texture_matrix = Math::mat2::CreateMirrorX();
-//				STATE.m_text_slot = 0;
+//				STATE.m_text_slot= 0;
 
 				m_tc->SetTexture(0, s.GetTexture());
 				m_tc->SetTexture(1, nullptr);
@@ -351,10 +351,10 @@ namespace GPU
 			impl = nullptr;
 		}
 
-		RenderTargetTexture* OpenGLPaintEngine::GetRenderTarget()
-		{
-			return impl->GetRenderTarget();
-		}
+//		RenderTargetTextureColorDepth* OpenGLPaintEngine::GetRenderTarget()
+//		{
+//			return impl->GetRenderTarget();
+//		}
 
 		bool OpenGLPaintEngine::Begin(PaintDevice* device)
 		{

@@ -1,63 +1,22 @@
 #ifndef _H_PUNK_SCENE_MAIN_HEADER
 #define _H_PUNK_SCENE_MAIN_HEADER
 
-#include "../system/compound_object.h"
 #include "node.h"
-#include "geometry_node.h"
-#include "transform_node.h"
-#include "camera_node.h"
-#include "light_node.h"
-#include "location_indoor.h"
-#include "portal_node.h"
-#include "point_light_node.h"
-#include "material_node.h"
-#include "default_visitor.h"
-#include "armature_node.h"
-#include "static_mesh_node.h"
-#include "skin_mesh_node.h"
-#include "bone_node.h"
-#include "bounding_volume_updater.h"
-#include "texture_view_node.h"
-#include "terrain_node.h"
-#include "navi_mesh_node.h"
-#include "sun_node.h"
-#include "river_node.h"
-#include "path_node.h"
-
-namespace GUI
-{
-	class Widget;
-}
 
 namespace Scene
 {
-    class PUNK_ENGINE_API SceneGraph : public System::CompoundObject
+    class PUNK_ENGINE_API SceneGraph : public Node
 	{
 	public:
-		SceneGraph();
+        SceneGraph();
+        SceneGraph(const SceneGraph&) = delete;
+        SceneGraph& operator = (const SceneGraph&) = delete;
+        virtual const System::string ToString() const;
 		virtual ~SceneGraph();
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
-				
-        //static SceneGraph* CreateFromFile(const System::string& path);
-        //static SceneGraph* CreateFromStream(std::istream& stream);
+    public:
 
-//		void SetRootNode(Node* value) { m_root = value; }
-//		Node* GetRootNode() { return m_root; }
-
-    //	void SetActiveCamera(Virtual::Camera* value);
-    //	CameraNode* GetCameraNode() { return m_camera_node; }
-
-	private:	
-		SceneGraph(const SceneGraph&);
-		SceneGraph& operator = (const SceneGraph&);
-
-	private:
-
-		//	this node should be deleted
-        //CameraNode* m_camera_node;
-        //Node* m_root;
+        PUNK_OBJECT(SceneGraph)
 	};
 }
 

@@ -15,8 +15,8 @@ namespace Virtual
 		std::unique_ptr<AnimationMixer> m_Mixer;
 		int64_t m_current_time_us;
 	public:
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
+		virtual void Save(System::Buffer* buffer) const;
+		virtual void Load(System::Buffer* buffer);
 		virtual bool GetLocalTransform(Math::Matrix4x4<float>& value);
 		virtual bool SetLocalTransform(const Math::Matrix4x4<float>& value);
 		virtual bool Update(int64_t current_time_us, int64_t delta_us);

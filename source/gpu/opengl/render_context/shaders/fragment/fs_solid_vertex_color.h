@@ -3,18 +3,18 @@
 
 #include "../shader.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
-		class FragmentShaderSolidVertexColor : public Shader
+		class FsSolidVertexColor : public Shader
 		{
 		public:
-			FragmentShaderSolidVertexColor();
+			FsSolidVertexColor();
 
 			virtual void InitUniforms() override;
 			virtual void BindParameters(const CoreState& params) override;
-			virtual int64_t GetRequiredAttributesSet() const override;
+            virtual int64_t GetRequiredAttributesSet() const override;
 		private:
 
 		};

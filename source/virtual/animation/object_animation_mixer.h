@@ -39,8 +39,8 @@ namespace Virtual
 		void SetLooping(const System::string name, bool flag);
 		void SetTrackWeight(const System::string name, float value);
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+//		void Save(System::Buffer* buffer) const;
+//		void Load(System::Buffer* buffer);
 
 	private:
 		void NormalizeWeights();

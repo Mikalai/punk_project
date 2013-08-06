@@ -21,12 +21,15 @@ namespace Virtual
 {
     class TextureSlot;
 
-	class PUNK_ENGINE_API Material : public System::Object, public System::Aspect<Material*, System::string>
+    class PUNK_ENGINE_API Material : public System::Object
 	{
 	public:		
 
 		Material();
+        Material(const Material&) = delete;
+        Material& operator = (const Material&) = delete;
 		Material(const Utility::MaterialDesc& desc);
+        virtual ~Material();
 
 		void SetDiffuseMap(const System::string& map);
 		void SetNormalMap(const System::string& map);
@@ -90,9 +93,8 @@ namespace Virtual
         const TextureSlot* GetTextureSlot(size_t index) const;
         size_t GetTextureSlotCount() const;
 
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
-		virtual ~Material();
+		virtual void Save(System::Buffer* buffer) const;
+		virtual void Load(System::Buffer* buffer);
 
 		static Material* CreateFromFile(const System::string& path);
 		static Material* CreateFromStream(std::istream& stream);
@@ -117,12 +119,11 @@ namespace Virtual
 		float m_specular_intensity;
 		float m_specular_index_of_refraction;
 		float m_specular_slope;
-		float m_translucency;		
-
-		Material(const Material&);
-		Material& operator = (const Material&);
+		float m_translucency;				
 
         std::vector<TextureSlot*> m_texture_slots;
+
+        PUNK_OBJECT(Material)
 	};
 
 	typedef std::map<System::string, Material> Materials;

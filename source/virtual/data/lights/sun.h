@@ -8,10 +8,12 @@
 
 namespace Virtual
 {
-    class PUNK_ENGINE_API Sun : public System::Object, public System::Aspect<Sun*, System::string>
+    class PUNK_ENGINE_API Sun : public System::Object
     {
     public:
         Sun();
+        Sun(const Sun&) = delete;
+        Sun& operator = (const Sun&) = delete;
         virtual ~Sun();
 
         void SetEnergy(float value);
@@ -19,9 +21,15 @@ namespace Virtual
         void SetColor(const Math::vec3& value);
         const Math::vec3& GetColor() const;
 
+        void SetName(const System::string& value);
+        const System::string& GetName() const;
+
     private:
         float m_energy;
         Math::vec3 m_color;
+        System::string m_name;
+
+        PUNK_OBJECT(Sun)
     };
 }
 

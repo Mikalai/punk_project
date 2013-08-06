@@ -6,19 +6,20 @@
 #include "../../../math/clip_space.h"
 #include "../../../ai/interface.h"
 
-namespace GPU
+namespace Gpu
 {
 	class VideoDriver;
 	class Renderable;
 
-	GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Frustum& value, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::ClipSpace& value, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::vec3* value, size_t count, VideoDriver* driver);
-	GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::BoundingBox& value, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const Math::BoundingSphere& value, VideoDriver* driver);
-    GPU::Renderable* PUNK_ENGINE_API AsRenderable(const AI::NaviMesh& value, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::Frustum& value, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::ClipSpace& value, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::vec3* value, size_t count, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::BoundingBox& value, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::BoundingSphere& value, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const AI::NaviMesh& value, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::vec3& p0, const Math::vec3& p1, VideoDriver* driver);
 }
 
 #endif	//	_H_PUNK_FRUSTUM_MESH

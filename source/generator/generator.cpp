@@ -25,9 +25,9 @@
 //			for (int j = 0; j < width_slice + 1; j++)
 //			{
 //				v[i*(width_slice+1) + j].x = width/float(width_slice)*float(j);
-//				v[i*(width_slice+1) + j].y = 0;
+//				v[i*(width_slice+1) + j].y override;
 //				v[i*(width_slice+1) + j].z = height/float(height_slice)*float(i);
-//				v[i*(width_slice+1) + j].nx = v[i*(width_slice+1) + j].nz = 0;
+//				v[i*(width_slice+1) + j].nx = v[i*(width_slice+1) + j].nz override;
 //				v[i*(width_slice+1) + j].ny = 1.0f;
 //				v[i*(width_slice+1) + j].u = 1.0f/float(width_slice)*float(j);
 //				v[i*(width_slice+1) + j].v = 1.0f/float(height_slice)*float(i);

@@ -21,13 +21,13 @@ namespace System
 	void Clock::Destroy()
 	{
 		delete m_instance;
-		m_instance = 0;
+        m_instance = 0;
 	}
 
 	Clock::Clock()
 	{
-		m_time = 0;
-		m_us = 0;        
+        m_time = 0;
+        m_us = 0;
 
 #ifdef __linux__
         m_date = *localtime(&m_time);

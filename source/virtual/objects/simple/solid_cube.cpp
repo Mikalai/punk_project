@@ -20,7 +20,7 @@
 //			m_shape->InitBox(1,1,1);
 //			m_body = new Physics::BulletRigidBody();
 //			Physics::RigidBodyDesc desc;
-//			desc.m_group = 0;
+//			desc.m_group override;
 //			desc.m_is_character = false;
 //			desc.m_mask = 0;
 //			desc.m_mass = 1;

@@ -9,88 +9,96 @@
 
 #include "video_memory.h"
 #include "../../common/video_driver.h"
+#include "../../common/video_driver_caps.h"
 #include "../render_targets/module.h"
 
-namespace GPU
+namespace Gpu
 {
-    struct PUNK_ENGINE_LOCAL VideoDriverImpl
-	{
-		//	video driver interface
-        void SetFontBuilder(Utility::FontBuilder* value);
-        Utility::FontBuilder* GetFontBuilder();
-		void SetFullScreen(bool flag);
-		bool Start(const VideoDriverDesc& desc);
-		void Restart();
-		void Shutdown();				
-		System::Window* GetWindow();
-		void SetViewport(float x, float y, float width, float height);
-		void SetRenderTarget(Texture2D* color_buffer, Texture2D* depth_buffer);
-		void SetClearColor(const Math::vec4& color);
-		void SetClearDepth(float value);
-		void Clear(bool color, bool depth, bool stencil);
-        const Config& GetConfig() const;        
-        bool IsExtensionSupported(const char *extList, const char *extension);
-        void InitExtensions();
+    class FrameBufferConfig;
+
+    namespace OpenGL
+    {
+        class PUNK_ENGINE_LOCAL VideoDriverImpl : public VideoDriver
+        {
+        public:
+            //	constructoion part
+            VideoDriverImpl(const VideoDriverDesc& desc);
+            virtual ~VideoDriverImpl();
+            virtual Utility::FontBuilder* GetFontBuilder() override;
+            virtual void SetFullScreen(bool flag) override;
+            virtual System::Window* GetWindow() override;
+            virtual Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, ImageModule::DataType type, const void* data, bool use_mipmaps) override;
+            virtual FrameBuffer* CreateFrameBuffer(FrameBufferConfig* config) override;
+            virtual void SetViewport(float x, float y, float width, float height) override;
+            virtual void SetClearColor(const Math::vec4& color) override;
+            virtual void SetClearDepth(float value) override;
+            virtual void Clear(bool color, bool depth, bool stencil) override;
+            virtual void SwapBuffers() override;
+            virtual const Config& GetConfig() const override;
+            virtual size_t GetFrameBufferConfigCount() const override;
+            virtual FrameBufferConfig* GetFrameBufferConfig(size_t index) override;
+            virtual const VideoDriverCaps& GetCaps() override;
+
+            bool IsExtensionSupported(const char *extList, const char *extension);
+            void InitExtensions();
+
 #ifdef __gnu_linux__
-        void InitGlxFunctions();
-        GLXFBConfig* ChooseConfis(Display* display, Window window);
-        int* GetVisualAttributes();
-        int* GetContextAttributes();
-        int GetGlxMinorVersion();
-        int GetGlxMajorVersion();
-        void BindWindow(System::Window* window);
-        void SelectVisualInfo();
-        void CreateOpenGLContext();
-        void CreateOpenGLWindow();
+            void InitGlxFunctions();
+            GLXFBConfig* ChooseConfis(Display* display, Window window);
+            int* GetVisualAttributes();
+            int* GetContextAttributes();
+            int GetGlxMinorVersion();
+            int GetGlxMajorVersion();
+            void BindWindow(System::Window* window);
+            void SelectVisualInfo();
+            void CreateOpenGLContext();
+            void CreateOpenGLWindow();
+            void StartLinuxDriver();
+            void ShutdownLinuxDriver();
 #endif
 
-		//	constructoion part
-		VideoDriverImpl(VideoDriver* driver);
-		~VideoDriverImpl();	
+            OpenGL::VideoMemory* GetVideoMemory();
+            const OpenGL::VideoMemory* GetVideoMemory() const;
 
-		//	implementation part
-		void SwapBuffers();
-		void OnKeyDown(System::Event* e);
+            Display* GetDisplay();
 
-        OpenGL::VideoMemory* GetVideoMemory();
-        const OpenGL::VideoMemory* GetVideoMemory() const;
+        private:
 
-	private:
-
-
-		int m_shader_version;
-		int m_opengl_version;
+            int m_shader_version;
+            int m_opengl_version;
 
 #ifdef __gnu_linux__
-        int m_glx_version;
+            int m_glx_version;
 #endif
 
 #ifdef _WIN32
-		HGLRC m_opengl_context;
+            HGLRC m_opengl_context;
 #elif defined __gnu_linux__
-        __GLXcontextRec* ctx;
-        Display* m_display;
-        Window m_window;
-        GLXFBConfig m_best_fbc;
-        XVisualInfo* m_visual_info;
-        int m_glx_minor_version;
-        int m_glx_major_version;
+            __GLXcontextRec* ctx;
+            Display* m_display;
+            Window m_window;
+            GLXFBConfig m_best_fbc;
+            XVisualInfo* m_visual_info;
+            int m_glx_minor_version;
+            int m_glx_major_version;
+            XF86VidModeModeInfo m_default_mode;
 #endif
 
-		VideoDriverDesc m_desc;
-        VideoDriver* m_driver;
-        OpenGL::VideoMemory* m_memory;
-		std::unique_ptr<OpenGL::RenderTarget> m_rt;
-        Utility::FontBuilder* m_font_builder;
+            VideoDriverDesc m_desc;            
+            OpenGL::VideoMemory* m_memory;            
+            std::vector<FrameBufferConfig> m_fb_config;
+            std::vector<OpenGL::OpenGLFrameBuffer*> m_frame_buffer;
+            VideoDriverCaps m_caps;
 
-	private:
-		void Init();
-		void Clear();
-		void ReadConfig();
-		void InitShaderPrograms();
-		void SubscribeForSystemMessages();
-		void InitInternalVertexBuffers();
-	};
+        private:
+            void Init();
+            void Clear();
+            void ReadConfig();
+            void InitShaderPrograms();
+            void SubscribeForSystemMessages();
+            void InitInternalVertexBuffers();
+        };
+    }
 }
 
 #endif	//	_H_PUNK_OPENGL_DRIVER_WIN32

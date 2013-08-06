@@ -14,7 +14,7 @@ namespace Physics
 		BulletMotionState(const btTransform &initialpos, Scene::TransformNode* node);
 		void SetNode(Scene::TransformNode *node);
 		virtual ~BulletMotionState() override;
-		virtual void getWorldTransform(btTransform &worldTrans) const override;
+		virtual void getWorldTransform(btTransform &worldTrans) const= 0;
 		virtual void setWorldTransform(const btTransform &worldTrans) override;
 
 	protected:

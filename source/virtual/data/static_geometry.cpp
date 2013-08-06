@@ -4,9 +4,12 @@
 #include "static_geometry.h"
 #include "../../utility/parser/parser.h"
 #include "../../system/environment.h"
+#include "../../engine_objects.h"
 
 namespace Virtual
 {
+    PUNK_OBJECT_REG(StaticGeometry,"Virtual.StaticGeometry", PUNK_STATIC_GEOMETRY, &Geometry::Info.Type);
+
     StaticGeometry::GpuCache::GpuCache(StaticGeometry& value)
         : m_geom(value)
         , m_gpu_buffer(nullptr)
@@ -33,18 +36,18 @@ namespace Virtual
         m_gpu_buffer = nullptr;
     }
 
-    void StaticGeometry::GpuCache::Update(GPU::VideoDriver* driver)
+    void StaticGeometry::GpuCache::Update(Gpu::VideoDriver* driver)
     {
         if (!m_geom.GetCpuCache().IsOnCpu())
             m_geom.GetCpuCache().Update();
 
         Drop();
-        GPU::StaticMesh* mesh = new GPU::StaticMesh(driver);
+        Gpu::StaticMesh* mesh = new Gpu::StaticMesh(driver);
         mesh->Cook(&m_geom);
         m_gpu_buffer = mesh;
     }
 
-    GPU::Renderable* StaticGeometry::GpuCache::GetGpuBuffer()
+    Gpu::Renderable* StaticGeometry::GpuCache::GetGpuBuffer()
     {
         return m_gpu_buffer;
     }
@@ -179,85 +182,91 @@ namespace Virtual
         return res;
     }
 
-    bool StaticGeometry::CpuCache::Save(std::ostream &stream) const
-    {
-        if (m_vertices.empty() || m_normals.empty() || m_faces.empty() || m_tex_coords.empty())
-            throw System::PunkInvalidArgumentException(L"Can't save static geometry");
+//    bool StaticGeometry::CpuCache::Save(std::ostream &stream) const
+//    {
+//        if (m_vertices.empty() || m_normals.empty() || m_faces.empty() || m_tex_coords.empty())
+//            throw System::PunkInvalidArgumentException(L"Can't save static geometry");
 
-        int size = (int)m_vertices.size();
-        stream.write((char*)&size, sizeof(size));
-        stream.write((char*)&m_vertices[0], sizeof(m_vertices[0])*size);
-        size = (int)m_faces.size();
-        stream.write((char*)&size, sizeof(size));
-        stream.write((char*)&m_faces[0], sizeof(m_faces[0])*size);
-        size = (int)m_normals.size();
-        stream.write((char*)&size, sizeof(size));
-        stream.write((char*)&m_normals[0], sizeof(m_normals[0])*size);
-        int count = (int)m_tex_coords.size();
-        stream.write((char*)&count, sizeof(count));
-        for (auto it = m_tex_coords.begin(); it != m_tex_coords.end(); ++it)
-        {
-            it->first.Save(stream);
-            size = (int)it->second.size();
-            stream.write((char*)&size, sizeof(size));
-            stream.write((char*)&it->second[0], sizeof(it->second[0]) * size);
-        }
-        return true;
-    }
+//        int size = (int)m_vertices.size();
+//        stream.write((char*)&size, sizeof(size));
+//        stream.write((char*)&m_vertices[0], sizeof(m_vertices[0])*size);
+//        size = (int)m_faces.size();
+//        stream.write((char*)&size, sizeof(size));
+//        stream.write((char*)&m_faces[0], sizeof(m_faces[0])*size);
+//        size = (int)m_normals.size();
+//        stream.write((char*)&size, sizeof(size));
+//        stream.write((char*)&m_normals[0], sizeof(m_normals[0])*size);
+//        int count = (int)m_tex_coords.size();
+//        stream.write((char*)&count, sizeof(count));
+//        for (auto it = m_tex_coords.begin(); it != m_tex_coords.end(); ++it)
+//        {
+//            it->first.Save(stream);
+//            size = (int)it->second.size();
+//            stream.write((char*)&size, sizeof(size));
+//            stream.write((char*)&it->second[0], sizeof(it->second[0]) * size);
+//        }
+//        return true;
+//    }
 
-    bool StaticGeometry::CpuCache::Load(std::istream &stream)
-    {
-        int size = 0;
-        stream.read((char*)&size, sizeof(size));
-        m_vertices.resize(size);
-        stream.read((char*)&m_vertices[0], sizeof(m_vertices[0])*size);
+//    bool StaticGeometry::CpuCache::Load(std::istream &stream)
+//    {
+//        int size override;
+//        stream.read((char*)&size, sizeof(size));
+//        m_vertices.resize(size);
+//        stream.read((char*)&m_vertices[0], sizeof(m_vertices[0])*size);
 
-        size = 0;
-        stream.read((char*)&size, sizeof(size));
-        m_faces.resize(size);
-        stream.read((char*)&m_faces[0], sizeof(m_faces[0])*size);
+//        size override;
+//        stream.read((char*)&size, sizeof(size));
+//        m_faces.resize(size);
+//        stream.read((char*)&m_faces[0], sizeof(m_faces[0])*size);
 
-        size = 0;
-        stream.read((char*)&size, sizeof(size));
-        m_normals.resize(size);
-        stream.read((char*)&m_normals[0], sizeof(m_normals[0])*size);
+//        size override;
+//        stream.read((char*)&size, sizeof(size));
+//        m_normals.resize(size);
+//        stream.read((char*)&m_normals[0], sizeof(m_normals[0])*size);
 
-        int count = 0;
-        stream.read((char*)&count, sizeof(count));
-        for (int i = 0; i < count; ++i)
-        {
-            System::string name;
-            name.Load(stream);
-            size = 0;
-            stream.read((char*)&size, sizeof(size));
-            std::vector<Math::Vector4<Math::vec2>> v;
-            v.resize(size);
-            stream.read((char*)&v[0], sizeof(v[0]) * size);
-            m_tex_coords[name] = v;
-        }
-        m_is_on_cpu = true;
-        return true;
-    }
+//        int count= 0;
+//        stream.read((char*)&count, sizeof(count));
+//        for (int i = 0; i < count; ++i)
+//        {
+//            System::string name;
+//            name.Load(stream);
+//            size override;
+//            stream.read((char*)&size, sizeof(size));
+//            std::vector<Math::Vector4<Math::vec2>> v;
+//            v.resize(size);
+//            stream.read((char*)&v[0], sizeof(v[0]) * size);
+//            m_tex_coords[name] = v;
+//        }
+//        m_is_on_cpu = true;
+//        return true;
+//    }
 
     StaticGeometry::StaticGeometry()
         : m_cpu_cache(*this)
         , m_gpu_cache(*this)
     {
+        Info.Add(this);
     }
 
-    bool StaticGeometry::Save(std::ostream& stream) const
+    StaticGeometry::~StaticGeometry()
     {
-        Geometry::Save(stream);
-        m_bbox.Save(stream);
-        return m_cpu_cache.Save(stream);
+        Info.Remove(this);
     }
 
-    bool StaticGeometry::Load(std::istream& stream)
-    {
-        Geometry::Load(stream);
-        m_bbox.Load(stream);
-        return m_cpu_cache.Load(stream);
-    }
+//    bool StaticGeometry::Save(std::ostream& stream) const
+//    {
+//        Geometry::Save(stream);
+//        m_bbox.Save(stream);
+//        return m_cpu_cache.Save(stream);
+//    }
+
+//    bool StaticGeometry::Load(std::istream& stream)
+//    {
+//        Geometry::Load(stream);
+//        m_bbox.Load(stream);
+//        return m_cpu_cache.Load(stream);
+//    }
 
     StaticGeometry::Vertices& StaticGeometry::GetVertexArray()
     {
@@ -357,5 +366,15 @@ namespace Virtual
     StaticGeometry::CpuCache& StaticGeometry::GetCpuCache()
     {
         return m_cpu_cache;
+    }
+
+    void StaticGeometry::SetName(const System::string& value)
+    {
+        m_name = value;
+    }
+
+    const System::string& StaticGeometry::GetName() const
+    {
+        return m_name;
     }
 }

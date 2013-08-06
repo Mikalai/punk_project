@@ -4,9 +4,8 @@
 uniform mat4 uWorld;
 uniform mat4 uView;
 uniform mat4 uProj;
-uniform mat4 uMeshMatrix;
-uniform mat4 uMeshMatrixInversed;
 uniform mat3 uNormalMatrix;
+uniform mat4 uTextureMatrix;
 
 uniform mat4 uProjViewWorld;
 uniform mat4 uViewWorld;
@@ -14,19 +13,19 @@ uniform vec3 uLightPosition;
 
 uniform mat4 uBones[64];
 
+out vec4 Position;
 out vec2 Texcoord;
 out vec3 ViewDirection;
 out vec3 LightDirection;
+out vec4 Weights;
 
 layout(location = 0) in vec4 rm_Vertex;
 layout(location = 1) in vec4 rm_Normal;
 layout(location = 2) in vec4 rm_Tangent;
 layout(location = 3) in vec4 rm_Binormal;
-layout(location = 4) in vec4 rm_Texcoord;
-layout(location = 5) in vec4 rm_BonesId;
-layout(location = 6) in vec4 rm_Weights;
-
-out vec4 Weights;
+layout(location = 5) in vec4 rm_Texcoord;
+layout(location = 9) in vec4 rm_BonesId;
+layout(location = 10) in vec4 rm_Weights;
 
 void main(void)
 {	
@@ -64,11 +63,11 @@ void main(void)
 	else
 		Weights.x = pos.w;
 					 
-	gl_Position = uProj*uView*uWorld*pos;
+	gl_Position = uProjViewWorld*pos;
 				   	
-	vec4 ObjectPosition = uView * uWorld * pos;
-	vec3 ViewDir = ObjectPosition.xyz;
-	vec3 LightDir = (uView*vec4(uLightPosition, 1.0)).xyz - ObjectPosition.xyz;
+	Position = uViewWorld * pos;
+	vec3 ViewDir = Position.xyz;
+	vec3 LightDir = (uView*vec4(uLightPosition, 1.0)).xyz - Position.xyz;
 	
 	vec3 Normal = normalize(uNormalMatrix * norm);
 	vec3 Tangent = normalize(uNormalMatrix * tang);
@@ -82,7 +81,7 @@ void main(void)
 	LightDirection.y = dot(Binormal, LightDir);
 	LightDirection.z = dot(Normal, LightDir);
 	
-	Texcoord = rm_Texcoord.xy; 
+	Texcoord = (uTextureMatrix * vec4(rm_Texcoord.xy, 0, 1)).xy; 
 }
 
 	
