@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #include <bullet/btBulletDynamicsCommon.h>
 #include <bullet/BulletCollision/CollisionDispatch/btGhostObject.h>
 #include "../error/module.h"
@@ -66,7 +68,7 @@ namespace Physics
 		m_world = nullptr;
 	}
 
-	BulletMotionState* BulletRigidBody::GetMotionState() 
+	BulletMotionState* BulletRigidBody::GetMotionState()
 	{
 		return (BulletMotionState*)m_rigid_body->getMotionState();
 	}
@@ -82,7 +84,7 @@ namespace Physics
 	//	{
 	//		btRigidBody* body = btRigidBody::upcast(m_rigid_body);
 	//		if (body)
-	//			sim->DestroyRigidBody(body);		
+	//			sim->DestroyRigidBody(body);
 	//	}
 
 	//	{
@@ -91,7 +93,7 @@ namespace Physics
 	//			sim->DestroyGhostBody(body);
 	//	}
 
-	//	m_rigid_body = 0;
+	//	m_rigid_body override;
 	//}
 
 	//void BulletRigidBody::Init()
@@ -101,7 +103,7 @@ namespace Physics
 
 	//	BulletSimulator* sim = (BulletSimulator*)BulletSimulator::Instance();
 	//	BulletShapeBody* shape_body;// = static_cast<BulletShapeBody*>(m_object->GetShapeBody());
-	//	m_rigid_body = new btRigidBody(0, 0, shape_body->GetCollisionShape());		
+	//	m_rigid_body = new btRigidBody(0, 0, shape_body->GetCollisionShape());
 	//}
 
 	//void BulletRigidBody::SetObject(Object* object)
@@ -137,13 +139,15 @@ namespace Physics
 	//		transform.setFromOpenGLMatrix(&m[0]);
 	//		body->setWorldTransform(transform);
 	//	}
-	//	else 
+	//	else
 	//	{
 	//		btTransform transform;
 	//		transform.setFromOpenGLMatrix(&m[0]);
-	//		m_rigid_body->setWorldTransform(transform);		
+	//		m_rigid_body->setWorldTransform(transform);
 	//	}
 	//}
 
 
 }
+
+#endif // USE_BULLET_PHYSICS

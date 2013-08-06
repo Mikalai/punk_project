@@ -6,7 +6,7 @@
 
 namespace GUI
 {
-	class PUNK_ENGINE MouseEnterEvent : public System::Event, public System::Poolable<MouseEnterEvent>
+	class PUNK_ENGINE_API MouseEnterEvent : public System::Event, public System::Poolable<MouseEnterEvent>
     {        
         MouseEnterEvent(const MouseEnterEvent&);
     public:

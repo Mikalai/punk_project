@@ -16,7 +16,7 @@ namespace Virtual
 
 namespace Virtual
 {
-	class PUNK_ENGINE Bone
+	class PUNK_ENGINE_API Bone
 	{
 	public:
 
@@ -28,10 +28,10 @@ namespace Virtual
 		void SetName(const System::string& name);
 		void SetMatrix(const Math::mat4& matrix);
 		void SetParent(Bone* parent);
-		void SetLocalMatrix(const Math::mat4& matrix) { m_local_matrix = matrix; m_need_update_global_matrix = true; }
-		void SetBoneMatrix(const Math::mat4& matrix) { m_bone_matrix = matrix; m_need_update_global_matrix = true;}
-		const Math::mat4& GetBoneMatrix() const { return m_bone_matrix; }
-		const Math::mat4& GetLocalMatrix() const { return m_local_matrix; }
+        void SetLocalMatrix(const Math::mat4& matrix);
+        void SetBoneMatrix(const Math::mat4& matrix);
+        const Math::mat4& GetBoneMatrix() const;
+        const Math::mat4& GetLocalMatrix() const;
 
 		//void SetIndexInArmature(int index);		
 		///void SetArmature(Armature* armature);
@@ -43,6 +43,7 @@ namespace Virtual
 		const Bone* GetParent() const;
 		const Math::mat4 GetWorldMatrix() const;		
 		int GetIndex() const;
+		void SetIndex(int index);
 
 		void SetLength(float v) { m_length = v; }
 		float GetLength() const { return m_length; }
@@ -53,20 +54,21 @@ namespace Virtual
 		const std::vector<Bone*>& GetChildren() const { return m_children; }
 		Bone* Find(const System::string& name);
 
-		const Math::mat4& GetAnimatedGlobalMatrix() const;
-		const Math::mat4& GetAnimatedGlobalMatrix2() const;
-		void UpdatePose(Virtual::AnimationMixer* Mixer, float frame, bool deep = false);
+        //const Math::mat4& GetAnimatedGlobalMatrix() const;
+        //const Math::mat4& GetAnimatedGlobalMatrix2() const;
+        //void UpdatePose(Virtual::AnimationMixer* Mixer, float frame, bool deep = false);
 
 		/* Drops all precalculated staff */
-		void ResetCache();
+        //void ResetCache();
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 
 	private:
 
 		void Clear();
 
+		int m_index;
 		Bone*				m_parent;
 		std::vector<Bone*>	m_children;
 		BoneName			m_name;
@@ -74,15 +76,16 @@ namespace Virtual
 		Math::mat4			m_global_matrix;				
 		Math::mat4			m_bone_matrix;		
 		Math::mat4			m_local_matrix;	//	matrix relative to armature
-		//int					m_index_in_armature;
-		Math::mat4			m_last_local_matrix_update;
-		mutable Math::mat4	m_last_global_matrix_update;
-		float				m_last_get_global_matrix;
-		float				m_length;
-		mutable bool		m_need_update_global_matrix;
+        float				m_length;
 
-		mutable Math::mat4	m_last_global_matrix_update2;
-		mutable bool		m_need_update_global_matrix2;
+		//int					m_index_in_armature;
+        //Math::mat4			m_last_local_matrix_update;
+        //mutable Math::mat4	m_last_global_matrix_update;
+        //float				m_last_get_global_matrix;
+        //mutable bool		m_need_update_global_matrix;
+
+        //mutable Math::mat4	m_last_global_matrix_update2;
+        //mutable bool		m_need_update_global_matrix2;
 		//Armature*			m_armature;
 	};
 }

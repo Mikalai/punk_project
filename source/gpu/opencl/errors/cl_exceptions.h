@@ -1,22 +1,25 @@
 #ifndef _H_OPENCL_EXCEPTIONS
 #define _H_OPENCL_EXCEPTIONS
 
+#ifdef USE_OPENCL
 #include <CL/cl.h>
+#endif
+
 #include "../../../system/errors/module.h"
 
 #define CreateOpenCLException(X) \
-		class PUNK_ENGINE OpenCL_##X##_Exception : public OpenCLException \
+		class PUNK_ENGINE_API OpenCL_##X##_Exception : public OpenCLException \
 		{ \
 		public: \
 		OpenCL_##X##_Exception() : OpenCLException(System::string(#X)) {} \
 		OpenCL_##X##_Exception(const System::string& msg) : OpenCLException(System::string(#X) + msg) {} \
 		}
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenCL
 	{
-		class PUNK_ENGINE OpenCLException : public System::PunkException
+		class PUNK_ENGINE_API OpenCLException : public System::PunkException
 		{
 		public:
 			OpenCLException() : System::PunkException(L"OpenCLException") {}

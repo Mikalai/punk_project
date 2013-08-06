@@ -40,7 +40,7 @@ namespace Virtual
 
 	//extern SceneObjectIterator* operator ++ (int i, SceneObjectIterator&);
 
-	//class PUNK_ENGINE Scene : public System::Object
+	//class PUNK_ENGINE_API Scene : public System::Object
 	//{
 	//	struct SceneImpl;
 	//	std::auto_ptr<SceneImpl> impl_scene;
@@ -53,7 +53,7 @@ namespace Virtual
 	//	unsigned GetObjectsCount() const;
 	//	const System::string GetObjectName(int index) const;
 
-	//	bool Load(std::istream& stream);
+	//	void Load(System::Buffer* buffer);
 	//	bool Save(std::ostream& stream);
 	//	bool Load(const System::string& filename);
 	//	//Math::OctTree& GetOctTree();

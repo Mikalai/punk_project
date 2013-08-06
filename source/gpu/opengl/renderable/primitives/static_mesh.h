@@ -1,7 +1,6 @@
 #ifndef _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 #define _H_PUNK_OPENGL_MODULE_STATIC_OBJECT
 
-#include "../../../../system/resource_manager.h"
 #include "../../../../system/object.h"
 #include "vertex_array_object.h"
 
@@ -13,10 +12,15 @@ namespace GPU
 	{	
 		class PUNK_ENGINE StaticMesh 
 			: public System::Object
-			, public VertexArrayObject2<GL_TRIANGLES, COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_TEXTURE>
+			, public VertexArrayObject2<GL_TRIANGLES, 
+				Vertex<VertexComponent::Position, 
+					VertexComponent::Normal, 
+					VertexComponent::Tangent, 
+					VertexComponent::Bitangent,					
+					VertexComponent::Texture0>>
 		{
 			enum { PrimitiveType = GL_TRIANGLES };
-			enum { VertexType = COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_TEXTURE };
+			static int64_t VertexCode;
 		public:
 
 			StaticMesh();

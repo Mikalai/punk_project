@@ -19,6 +19,8 @@ namespace System
 		static iterator _begin();
 		static iterator _end();
 		static void add(Key key, T value);
+        static void remove(T value);
+        static void remove(Key value);
 		static void invalidate();
 		static void validate();
 		static void clear();
@@ -30,8 +32,34 @@ namespace System
 	template<class T, typename Key>	
 	void Aspect<T, Key>::add(Key key, T value) 
 	{ 
+        if (m_items.find(key) != m_items.end())
+            throw PunkInvalidArgumentException(L"Item already in collection");
 		m_items[key]  = value; 
 	}
+
+    template<class T, typename Key>
+    void Aspect<T, Key>::remove(T value)
+    {
+        auto it = m_items.begin();
+        while (it != m_items.end())
+        {
+            if (it->second == value)
+            {
+                delete it->second;
+                m_items.erase(it);
+                break;
+            }
+            ++it;
+        }
+    }
+
+    template<class T, typename Key>
+    void Aspect<T, Key>::remove(Key value)
+    {
+        auto it = m_items.find(value);
+        if (it != m_items.end())
+            m_items.erase(it);
+    }
 
 	template<class T, typename Key>	
 	void Aspect<T, Key>::clear()
@@ -46,26 +74,26 @@ namespace System
 	inline void Aspect<T, Key>::invalidate() { m_init = false; }
 
 	template<class T, typename Key>	
-	inline T Aspect<T, Key>::find(const Key& key) 
+    inline T Aspect<T, Key>::find(const Key& key)
 	{ 
-		if (!m_init)
-			throw PunkNotInitializedException(L"Aspects were not initialized");
+//		if (!m_init)
+//			throw PunkNotInitializedException(L"Aspects were not initialized");
 		typename Collection::iterator it = m_items.find(key);
 		if (it != m_items.end())
 			return it->second; 
-		throw PunkInvalidArgumentException(L"Can't find object with key" + key);
+        return T(0);
 	}		
 	
 	template<class T, typename Key>	
-	inline typename Aspect<T, Key>::iterator Aspect<T, Key>::_begin() 
+    inline typename Aspect<T, Key>::iterator Aspect<T, Key>::_begin()
 	{ 
 		if (!m_init)
 			throw PunkNotInitializedException(L"Aspects were not initialized");
-		return m_items.begin(); 
+        return m_items.begin();
 	}
 	
 	template<class T, typename Key>	
-	inline typename Aspect<T, Key>::iterator Aspect<T, Key>::_end() 
+    inline typename Aspect<T, Key>::iterator Aspect<T, Key>::_end()
 	{ 
 		if (!m_init)
 			throw PunkNotInitializedException(L"Aspects were not initialized");

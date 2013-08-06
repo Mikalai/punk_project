@@ -1,12 +1,12 @@
 #include "fs_painter.h"
 #include "../../../../../system/environment.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
 		FragmentShaderPainter::FragmentShaderPainter()
-			: Shader(SHADER_FRAGMENT)
+            : Shader(ShaderType::Fragment)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"painter_330.frag");
 		}

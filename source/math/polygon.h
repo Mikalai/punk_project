@@ -9,7 +9,7 @@ namespace Math
 	class Plane;
 	class Triangle3D;
 
-	class PUNK_ENGINE Polygon3D
+	class PUNK_ENGINE_API Polygon3D
 	{
 	public:
 		Polygon3D();

@@ -6,31 +6,53 @@
 #include "vertex_component.h"
 #include "../../system/aop/aop.h"
 
-namespace GPU
+namespace Gpu
 {
-	enum RenderPolicySet { 
-	RC_SOLD_3D,
-	RC_TEXTURED_3D,
-	RC_GUI,
-	RC_TERRAIN,
-	RC_SKINNING,
-	RC_BUMP_MAPING,
-	RC_PAINTER};
+	enum class RenderPolicySet {
+		Solid3D,
+		SolidTextured3D,
+		GUI,
+		Terrain,
+		Skinning,
+		BumpMapping,
+        BumpMappingSkinning,
+        BumpMappingShadowing,
+        BumpMappingSkinningShadowing,
+		Painter,
+		SolidVertexColor,
+		LightPerFragmentDiffuse,
+		LightPerFragmentTextureDiffuse,
+        LightPerFragmentTextureDiffuseSkinning,
+		LightPerVertexDiffuse,
+		LightPerVertexTextureDiffuse,
+        LightPerVertexTextureDiffuseSkinning,
+		LightPerFragmentDiffuseSpecular,
+        LightPerVertexDiffuseSpecular,
+        LightPerFragmentDiffuseShadowing,
+        LightPerFragmentTextureDiffuseShadowing,
+        LightPerVertexDiffuseShadowing,
+        LightPerVertexTextureDiffuseShadowing,
+        LightPerFragmentDiffuseSpecularShadowing,
+		LightPerVertexDiffuseSpecularShadowing,
+        TextSolidColor,
+        DepthRender,
+        DepthRenderSkinning
+	};
 
-	class PUNK_ENGINE AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
+	class PUNK_ENGINE_API AbstractRenderPolicy : public System::Aspect<AbstractRenderPolicy*, RenderPolicySet>
 	{
 	public:
 		AbstractRenderPolicy();
-		virtual void InitUniforms() = 0;
-		virtual void BindParameters(const CoreState& params) = 0;
-		virtual VertexAttributes GetRequiredAttributesSet() const = 0;
-		virtual void Begin() = 0;
-		virtual void End() = 0;
-		virtual void Init() = 0;		
+        virtual void InitUniforms() = 0;
+        virtual void BindParameters(const CoreState& params) = 0;
+        virtual int64_t GetRequiredAttributesSet() const = 0;
+        virtual void Begin() = 0;
+        virtual void End() = 0;
+        virtual void Init() = 0;
 		virtual ~AbstractRenderPolicy();
 	protected:
 		bool m_was_modified;
-		VertexAttributes m_vertex_attributes;
+		int64_t  m_vertex_attributes;
 	};
 }
 

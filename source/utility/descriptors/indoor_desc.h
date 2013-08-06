@@ -9,8 +9,8 @@ namespace Utility
 	{
 		System::string m_name;
 		System::string m_parent;
-		std::auto_ptr<MeshDesc> m_mesh_desc;
-		std::auto_ptr<LightDesc> m_light_desc;
+		std::unique_ptr<MeshDesc> m_mesh_desc;
+		std::unique_ptr<LightDesc> m_light_desc;
 		std::vector<ObjectDesc*> m_children;
 	};
 }

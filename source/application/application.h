@@ -9,67 +9,102 @@
 #include "../gui/interface.h"
 #include "../physics/interface.h"
 
+namespace Utility
+{
+    class AsyncParser;
+    class FontBuilder;
+}
+
 namespace Punk
 {
 
-	class PUNK_ENGINE Application : public System::WindowAdapter, public GUI::Adapter
+	class PUNK_ENGINE_API Application : public System::WindowAdapter, public GUI::Adapter
 	{
 	public:
-		Application();	
+		Application();
 		virtual ~Application();
 		System::Window* GetWindow();
 		System::EventManager* GetEventManager();
-		GPU::OpenGL::Driver* GetDriver();
+		Gpu::VideoDriver* GetVideoDriver();
 		Virtual::TerrainManager* GetTerrainManager();
 		GUI::Manager* GetGUIManager();
-		Physics::BulletSimulator* GetSimulator();
-		GPU::PaintEngine* GetPaintEngine();
+		Physics::Simulator* GetSimulator();
+		Gpu::PaintEngine* GetPaintEngine();
+        System::Mouse* GetMouse();
+        Utility::AsyncParser* GetAsyncParser();
 
-		int Run();		
-		void SetTimeScale(__int64 nominator, __int64 denominator);
+		int Run();
+		void SetTimeScale(int64_t nominator, int64_t denominator);
 
-		virtual void OnIdleEvent(System::IdleEvent* event) override;
-		virtual void OnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event) override;
-		virtual void OnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event) override;
-		virtual void OnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event) override;
-		virtual void OnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event) override;
-		virtual void OnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event) override;
-		virtual void OnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event) override;
-		virtual void OnMouseHooverEvent(System::MouseHooverEvent* event) override;
-		virtual void OnMouseMoveEvent(System::MouseMoveEvent* event) override;
-		virtual void OnMouseWheelEvent(System::MouseWheelEvent* event) override;
-		virtual void OnCharEvent(System::KeyCharEvent* value) override;
-		virtual void OnWideCharEvent(System::KeyWCharEvent* event) override;
-		virtual void OnKeyDownEvent(System::KeyDownEvent* event) override;
-		virtual void OnKeyUpEvent(System::KeyUpEvent* event) override;
-		virtual void OnResizeEvent(System::WindowResizeEvent* event) override;
-		virtual void OnCreateEvent() override;
-		virtual void OnDestroyEvent() override;
+		virtual void WndOnIdleEvent(System::IdleEvent* event) override;
+		virtual void WndOnMouseMiddleButtonUpEvent(System::MouseMiddleButtonUpEvent* event) override;
+		virtual void WndOnMouseMiddleButtonDownEvent(System::MouseMiddleButtonDownEvent* event) override;
+		virtual void WndOnMouseRightButtonUpEvent(System::MouseRightButtonUpEvent* event) override;
+		virtual void WndOnMouseRightButtonDownEvent(System::MouseRightButtonDownEvent* event) override;
+		virtual void WndOnMouseLeftButtonUpEvent(System::MouseLeftButtonUpEvent* event) override;
+		virtual void WndOnMouseLeftButtonDownEvent(System::MouseLeftButtonDownEvent* event) override;
+		virtual void WndOnMouseHooverEvent(System::MouseHooverEvent* event) override;
+		virtual void WndOnMouseMoveEvent(System::MouseMoveEvent* event) override;
+		virtual void WndOnMouseWheelEvent(System::MouseWheelEvent* event) override;
+		virtual void WndOnCharEvent(System::KeyCharEvent* value) override;
+		virtual void WndOnWideCharEvent(System::KeyWCharEvent* event) override;
+		virtual void WndOnKeyDownEvent(System::KeyDownEvent* event) override;
+		virtual void WndOnKeyUpEvent(System::KeyUpEvent* event) override;
+		virtual void WndOnResizeEvent(System::WindowResizeEvent* event) override;
+		virtual void WndOnCreateEvent() override;
+		virtual void WndOnDestroyEvent() override;
 		virtual void OnSetFocusedEvent(GUI::SetFocusedEvent* event) override;
 		virtual void OnSetUnFocusedEvent(GUI::SetUnFocusedEvent* event) override;
 		virtual void OnMouseEnterEvent(GUI::MouseEnterEvent* event) override;
 		virtual void OnMouseLeaveEvent(GUI::MouseLeaveEvent* event) override;
+#ifdef _WIN32
+		virtual LRESULT CustomDefWindowProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
+#endif
 
-		virtual void Init(const Config& value);
+		//	User can override next methods
+        virtual void OnRender(Gpu::Frame* frame);		
+		virtual void OnInit(const Config& value);
+		virtual void OnResize(System::WindowResizeEvent* event);
+		virtual void OnKeyDown(System::KeyDownEvent* event);
+		virtual void OnKeyUp(System::KeyUpEvent* event);
+		virtual void OnMouseWheel(System::MouseWheelEvent* event);
+		virtual void OnMouseMove(System::MouseMoveEvent* event);
+        virtual void OnMouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
+        virtual void OnMouseRightButtonDown(System::MouseRightButtonDownEvent* event);
+        virtual void OnDestroy();
+        virtual void OnIdle(System::IdleEvent* event);
 
+		void Init(const Config& value);
 	private:
-		GPU::PaintEngine* m_paint_engine;		
+		void Clear();
+	private:
+
+        Utility::AsyncParser* m_async_parser;
+        Utility::FontBuilder* m_font_builder;
+		Gpu::PaintEngine* m_paint_engine;
 		System::Window* m_window;
 		System::EventManager* m_event_manager;
-		GPU::OpenGL::Driver* m_video_driver;
-		Physics::BulletSimulator* m_simulator;
+		Gpu::VideoDriver* m_video_driver;
+		Physics::Simulator* m_simulator;
 		Virtual::TerrainManager* m_terrain_manager;
-		System::Timer m_timer;	
-
+		System::Timer m_timer;
+        System::Mouse* m_mouse;
 		void Step(System::Event* event);
-		void Render();
-		
-		//
-		//	to perform speed up and slow down	
-		//
-		__int64 m_time_scale_nominator;
-		__int64 m_time_scale_denomiator;
+		void Render();		
+		void Resize(System::WindowResizeEvent* event);
+		void KeyDown(System::KeyDownEvent* event);
+		void KeyUp(System::KeyUpEvent* event);
+		void MouseWheel(System::MouseWheelEvent* event);		
+		void MouseMove(System::MouseMoveEvent* event);
+        void MouseLeftButtonDown(System::MouseLeftButtonDownEvent* event);
+        void MouseRightButtonDown(System::MouseRightButtonDownEvent* event);
+        void Idle(System::IdleEvent* event);
 
+		//
+		//	to perform speed up and slow down
+		//
+		int64_t m_time_scale_nominator;
+		int64_t m_time_scale_denomiator;
 
 	};
 }

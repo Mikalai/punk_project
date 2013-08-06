@@ -6,7 +6,7 @@ namespace GPU
 {
 	namespace OpenGL
 	{
-		std::auto_ptr<QuadObject> QuadObject::m_instance;
+		std::unique_ptr<QuadObject> QuadObject::m_instance;
 
 		QuadObject* QuadObject::Instance()
 		{
@@ -21,13 +21,13 @@ namespace GPU
 		void QuadObject::Destroy()
 		{
 			m_instance.reset(nullptr);
-		}		
+		}
 
 		QuadObject::QuadObject() {}
 
 		void QuadObject::Cook(float width, float height)
-		{				
-			std::vector<Vertex<VertexType>> vb(4);
+		{
+			std::vector<CurrentVertex> vb(4);
 			std::vector<unsigned> ib(6);
 
 			vb[0].m_position.Set(0, 0, 0, 1);
@@ -55,7 +55,7 @@ namespace GPU
 
 			SetVertexBuffer(vb);
 			SetIndexBuffer(ib);
-			VertexArrayObject2<PrimitiveType, VertexType>::Cook();
+			VertexArrayObject2<PrimitiveType, CurrentVertex>::Cook();
 		}
 	}
 }

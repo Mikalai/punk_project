@@ -3,23 +3,24 @@
 
 #include <vector>
 #include <memory>
+#include "../config.h"
 
 namespace System
 {
-	class PoolManager
+	class PUNK_ENGINE_API PoolManager
 	{
 	public:
 		typedef void (*CleanFunc)(void);
 	public:
 
-		void AddCleaner(CleanFunc func);
-		~PoolManager();
+		//void AddCleaner(CleanFunc func);
+		//~PoolManager();
 		static PoolManager* Instance();
 		static void Destroy();
 
 	private:
-		std::vector<CleanFunc> m_cleaners;
-		static std::auto_ptr<PoolManager> m_instance;
+		//std::vector<CleanFunc> m_cleaners;
+		static std::unique_ptr<PoolManager> m_instance;
 	};
 }
 

@@ -1,13 +1,14 @@
 #ifndef _H_PUNK_OPENGL_RENDERABLE
 #define _H_PUNK_OPENGL_RENDERABLE
 
+#include <cstdint>
 #include "../../system/smart_pointers/module.h"
 #include "../error/module.h"
 #include "vertex_component.h"
 
-namespace GPU
+namespace Gpu
 {
-	class PUNK_ENGINE Renderable 
+    class PUNK_ENGINE_API Renderable
 	{
 	public:
 
@@ -15,7 +16,7 @@ namespace GPU
 
 		virtual ~Renderable() {}
 
-		virtual void Bind(VertexAttributes supported_by_context)
+        virtual void Bind(int64_t)
 		{
 			throw GPUException(L"Bind() not implemented");
 		}
@@ -30,12 +31,10 @@ namespace GPU
 			throw GPUException(L"Load() not implemented");
 		}
 
-		/*virtual bool Save(std::ostream& stream) const;
-
-		virtual bool Load(std::istream& stream);*/
-
-		/*static System::Proxy<Renderable> CreateFromStream(std::istream& stream) = 0;
-		static System::Proxy<Renderable> CreateFromFile(const System::string& path) = 0;*/
+        virtual size_t GetMemoryUsage()
+        {
+            throw GPUException(L"GetMemoryUsage() not implemented");
+        }
 
 	protected:
 

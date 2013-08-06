@@ -5,7 +5,7 @@
 #include "terrain_observer.h"
 #include "terrain_manager.h"
 #include "terrain_cell.h"
-#include "../../gpu/opengl/textures/texture2d.h"
+#include "../../gpu/common/module.h"
 
 namespace Virtual
 {
@@ -25,7 +25,7 @@ namespace Virtual
 	{
 		m_current_map = map_name;
 		System::string map_file = System::Environment::Instance()->GetMapFolder() + map_name + L"\\map.description";
-		std::ifstream stream(map_file.Data(), std::ios_base::binary);
+		std::ifstream stream(map_file.ToStdString().c_str(), std::ios_base::binary);
 		char buf[16];
 		stream.read(buf, 16);
 		if (!memcmp(buf, "MAPDESCTEXT", strlen("MAPDESCTEXT")))
@@ -37,11 +37,11 @@ namespace Virtual
 		}
 		else if (!memcmp(buf, "MAPDESCBIN", strlen("MAPDESCBIN")))
 		{
-			stream.seekg(std::ios_base::beg, 0);
+			stream.seekg(0, std::ios_base::beg);
 			m_terrain = new Terrain;
 			try
 			{
-				m_terrain->Load(stream);
+                //m_terrain->Load(stream);
 			}
 			catch(...)
 			{

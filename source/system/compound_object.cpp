@@ -1,146 +1,130 @@
+#include <algorithm>
 #include "logger.h"
 #include "compound_object.h"
 #include "factory.h"
+#include "../engine_objects.h"
 
 namespace System
 {
-	CompoundObject::~CompoundObject()
-	{
-		for (auto it = m_children.begin(); it != m_children.end(); ++it)
-			safe_delete(*it);
-		m_children.clear();
-		m_cache.clear();
-	}
+    StaticInormation<CompoundObject> CompoundObject::Info{"System.CompoundObject", PUNK_COMPOUND_OBJECT, &Object::Info.Type};
 
-	bool CompoundObject::Save(std::ostream& stream) const
-	{
-		if (!Object::Save(stream))
-			return (out_error() << "Can't save compound object" << std::endl, false);
+    CompoundObject::CompoundObject()
+    {
+        Info.Add(this);
+    }
 
-		unsigned total_count = m_children.size();
-		stream.write((char*)&total_count, sizeof(total_count));
+    CompoundObject::~CompoundObject()
+    {
+        for (auto it = m_children.begin(); it != m_children.end(); ++it)
+            safe_delete(*it);
+        m_children.clear();
+        Info.Remove(this);
+    }
 
-		for each (const auto& o in m_children)
-		{
-			System::GetFactory()->SaveToStream(stream, o);
-		}
+    bool CompoundObject::Add(Object* value)
+    {
+        if (value == nullptr)
+            return (out_error() << "Can't add null object" << std::endl, false);
 
-		return true;
-	}
+        auto it = std::find(m_children.begin(), m_children.end(), value);
+        if (it != m_children.end())
+            return true;
 
-	bool CompoundObject::Load(std::istream& stream)
-	{
-		Object::Load(stream);
-			
+        m_children.push_back(value);
+        value->SetOwner(this);
 
-		unsigned total_count = 0;
-		stream.read((char*)&total_count, sizeof(total_count));
+        if (!OnAdd(value))
+            return (out_error() << "OnAdd failed" << std::endl, false);
 
-		for (int i = 0; i < (int)total_count; ++i)
-		{
-			Object* o = GetFactory()->LoadFromStream(stream);
-			if (!o)
-				throw PunkInvalidArgumentException(L"Can't load compound object");
-			if (!Add(o))
-				return (out_error() << "Can't add loaded object to the object list" << std::endl, false);
-		}
+        return true;
+    }
 
-		return true;
-	}
+    bool CompoundObject::Remove(Object* value, bool depth)
+    {
+        if (value == nullptr)
+            return false;
 
-	bool CompoundObject::Add(Object* value)
-	{
-		if (value == nullptr)
-			return (out_error() << "Can't add null object" << std::endl, false);
+        for (auto it = m_children.begin(); it != m_children.end(); ++it)
+        {
+            if (*it == value)
+            {
+                m_children.erase(it);
+                value->SetOwner(nullptr);
+                return true;
+            }
+        }
 
-		auto it = m_cache.find(value->GetStorageName());
+        if (depth)
+        {
+            for (auto o : m_children)
+            {
+                CompoundObject* co = As<CompoundObject*>(o);
+                if (co)
+                {
+                    if (co->Remove(value, depth))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
 
-		if (it != m_cache.end())
-			out_warning() << "Object with name " << value->GetStorageName() << " already in the set" << std::endl;
+    bool CompoundObject::Remove(int index)
+    {
+        if (index < 0 || index >= m_children.size())
+            return false;
+        return Remove(m_children[index]);
+    }
 
-		m_children.push_back(value);
-		m_cache[value->GetStorageName()] = m_children.size() - 1;
 
-		if (!OnAdd(value))
-			return (out_error() << "OnAdd failed" << std::endl, false);
+    const Object* CompoundObject::Find(int index) const
+    {
+        return m_children[index];
+    }
 
-		return true;
-	}
+    Object* CompoundObject::Find(int index)
+    {
+        return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(index));
+    }
 
-	bool CompoundObject::Remove(Object* value)
-	{
-		if (value == nullptr)
-			return (out_error() << "Can't remove null object" << std::endl, false);
 
-		for (auto it = m_children.begin(); it != m_children.end(); ++it)
-		{
-			if (*it == value)
-			{
-				m_children.erase(it);
-				m_cache.erase(m_cache.find(value->GetStorageName()));
-				return true;
-			}
-		}
+    void Bind(CompoundObject* parent, Object* child)
+    {
+        CompoundObject* owner = As<CompoundObject*>(child->GetOwner());
+        if (owner)
+            owner->Remove(child);
+        parent->Add(child);
+        child->SetOwner(parent);
+    }
 
-		out_warning() << "Object " << value->GetStorageName() << " was not found" << std::endl;
+    const string CompoundObject::ToString() const
+    {
+        std::wstringstream stream;
+        stream << '[' << GetLocalIndex() << ' ' << Info.Type.GetName() << ']';
+        return string(stream.str());
+    }
 
-		if (!OnRemove(value))
-			return (out_error() << "OnRemove failed" << std::endl, false);
+    void CompoundObject::Save(Buffer* buffer) const
+    {
+        Object::Save(buffer);
+        unsigned count = m_children.size();
+        buffer->WriteUnsigned32(count);
+        for (auto child : m_children)
+        {
+            child->Save(buffer);
+        }
+    }
 
-		return false;
-	}
-
-	bool CompoundObject::Remove(const string& name)
-	{
-		auto it = m_cache.find(name);
-		if (it == m_cache.end())
-			return (out_warning() << "Can't remove object " << name << std::endl, false);
-
-		if  (!OnRemove(m_children[it->second]))
-			return (out_error() << "OnRemove failed" << std::endl, false);
-
-		m_children.erase(m_children.begin() + it->second);	
-		m_cache.erase(it);
-		return true;
-	}
-
-	bool CompoundObject::Remove(int index)
-	{
-		try
-		{
-			auto storage_name = m_children.at(index)->GetStorageName();
-			if (!OnRemove(m_children[index]))
-				return (out_error() << "OnRemove failed" << std::endl, false);
-			m_cache.erase(m_cache.find(storage_name));
-			m_children.erase(m_children.begin() + index);
-		}
-		catch(...)
-		{
-			out_error() << "Can't remove object with " << index << " index" << std::endl, false;
-		}
-		return true;
-	}
-
-	const Object* CompoundObject::Find(const string& name) const
-	{
-		auto it = m_cache.find(name);
-		if (it == m_cache.end())
-			return nullptr;
-		return m_children[it->second];
-	}
-
-	const Object* CompoundObject::Find(int index) const
-	{
-		return m_children[index];
-	}
-
-	Object* CompoundObject::Find(const string& name)
-	{
-		return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(name));
-	}
-
-	Object* CompoundObject::Find(int index)
-	{
-		return const_cast<Object*>(static_cast<const CompoundObject*>(this)->Find(index));
-	}
+    void CompoundObject::Load(Buffer* buffer)
+    {
+        Object::Load(buffer);
+        unsigned count{buffer->ReadUnsigned32()};
+        for (auto i = 0; i != count; ++i)
+        {
+            unsigned code = buffer->ReadUnsigned32();
+            Object* object{Factory::Create(code)};
+            object->Load(buffer);
+            Add(object);
+        }
+    }
 }

@@ -3,6 +3,9 @@
 
 #include "types.h"
 #include "armature.h"
+#include "human_armature.h"
+#include "human_male_armature.h"
+#include "human_female_armature.h"
 #include "bone.h"
 #include "bone_frame.h"
 

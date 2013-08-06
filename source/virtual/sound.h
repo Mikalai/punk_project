@@ -8,9 +8,14 @@
 
 #include <iosfwd>
 
-namespace Utility
+namespace System
 {
-	class PUNK_ENGINE Sound
+    class Buffer;
+}
+
+namespace Virtual
+{
+	class PUNK_ENGINE_API Sound
 	{
 	public:
 		PROPERTY(System::string, Name, m_name);
@@ -23,8 +28,8 @@ namespace Utility
 		PROPERTY(float, ConeAngleOuter, m_cone_angle_outer);
 		PROPERTY(float, ConeVolumeOuter, m_cone_volume_outer);
 		PROPERTY(float, Attenuation, m_attenuation);
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+		void Save(System::Buffer* buffer) const;
+		void Load(System::Buffer* buffer);
 	private:
 		System::string m_name;
 		System::string m_filename;

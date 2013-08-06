@@ -15,36 +15,35 @@ namespace Math
 		const vec3& p2 = m_points[2];
 
 		m_plane.Set(p0, p1, p2);
-		
+
 		return true;
 	}
 
-	bool Portal::Save(std::ostream& stream) const
+    void Portal::Save(System::Buffer *buffer) const
 	{
 		if (m_points.empty())
-			return (out_error() << "Can't save portal points, because there is no points" << std::endl, false);
+            throw System::PunkException("Can't save bad portal");
 
 		int size = (int)m_points.size();
-		stream.write((char*)&size, sizeof(size));
-		stream.write((char*)&m_points[0], sizeof(m_points[0]));
-		m_plane.Save(stream);
-		return true;
+        buffer->WriteSigned32(size);
+        for (auto& p : m_points)
+            p.Save(buffer);
+        m_plane.Save(buffer);
 	}
 
-	bool Portal::Load(std::istream& stream)
+    void Portal::Load(System::Buffer *buffer)
 	{
-		int size = 0;
-		stream.read((char*)&size, sizeof(size));
+        int size = buffer->ReadSigned32();
 		m_points.resize(size);
-		stream.read((char*)&m_points[0], sizeof(m_points[0]));
-		m_plane.Load(stream);
-		return true;
+        for (auto& p : m_points)
+            p.Load(buffer);
+        m_plane.Load(buffer);
 	}
 
 	const Portal operator * (const mat4& m, const Portal& p)
 	{
 		Portal::PointsCollection points;
-		for each (auto& point in p)
+		for (auto& point : p)
 		{
 			points.push_back(m*point);
 		}

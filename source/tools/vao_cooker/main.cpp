@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 
-#include "../../punk_engine.h"
+#include "../../PUNK_ENGINE_API.h"
 
 #define STATIC_VAO 1
 #define SKINNED_VAO 2
@@ -140,7 +140,7 @@ public:
 	//			stream.close();
 	//		}
 
-	//		int type = 0;
+	//		int type override;
 	//		std::wcout << L"Exporting vao to " << (System::Environment::Instance()->GetModelFolder() + System::string(obj->GetName().Data()) + L".vao").Data() << std::endl;
 	//		if (!strcmp(flag, "--skinned"))
 	//		{
@@ -228,7 +228,7 @@ int main(int argc, char** argv)
 //	_CrtSetBreakAlloc(372);
 	if (argc == 1)
 	{
-		out_error() << System::string::Format(L"Not enough parameters. Should be provided a list of pmd files. They will be converted to vao. vao_cooker.exe --skinned|--static file.pmd") << std::endl;
+		out_error() << System::string("Not enough parameters. Should be provided a list of pmd files. They will be converted to vao. vao_cooker.exe --skinned|--static file.pmd") << std::endl;
 		return 0;
 	}
 

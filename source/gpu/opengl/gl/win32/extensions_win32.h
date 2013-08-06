@@ -20,10 +20,9 @@ Description: Contains declarations of OpenGL extension functions
 
 namespace GPU
 {
+	class VideoDriver;
 	namespace OpenGL
 	{
-		class Driver;
-
 		extern PFNGLGETBUFFERPARAMETERI64VPROC glGetBufferParameteri64v;
 		extern PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv;
 		extern PFNGLGETBUFFERPARAMETERI64VPROC glGetBufferParameterui64v;
@@ -149,6 +148,8 @@ namespace GPU
 		extern PFNGLGETINTEGERVPROC glGetIntegerv;
 		extern PFNGLVIEWPORTPROC glViewport;
 		extern PFNGLCLEARCOLORPROC glClearColor;
+		extern PFNGLCLEARDEPTHFPROC glClearDepthf;
+		extern PFNGLCLEARDEPTHPROC glClearDepth;
 		extern PFNGLENABLEPROC glEnable;
 		extern PFNGLDISABLEPROC glDisable;
 		extern PFNGLREADPIXELSPROC glReadPixels;
@@ -205,7 +206,8 @@ namespace GPU
 		extern PFNGLTEXTURESTORAGE1DEXTPROC glTextureStorage1DEXT;
 		extern PFNGLTEXTURESTORAGE2DEXTPROC glTextureStorage2DEXT;
 
-		extern void InitExtensions(Driver* driver);
+        //  windows specific
+		extern void InitExtensions(void* (*GetGPUProcAddres)(const char*));
 		extern bool IsSupported(const char* name);
 	}
 }

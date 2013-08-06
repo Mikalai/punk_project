@@ -10,7 +10,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE Portal
+	class PUNK_ENGINE_API Portal
 	{
 	public:
 		typedef std::vector<vec3> PointsCollection;
@@ -20,8 +20,8 @@ namespace Math
 	public:
 		bool SetPoints(const PointsCollection& points);
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 
 		iterator begin() { return m_points.begin(); }
 		const_iterator begin() const { return m_points.begin(); }
@@ -39,11 +39,11 @@ namespace Math
 		PointsCollection m_points;
 		Plane m_plane;
 
-		friend PUNK_ENGINE const Portal operator * (const mat4& m, const Portal& p);
+		friend PUNK_ENGINE_API const Portal operator * (const mat4& m, const Portal& p);
 	};
 
 	//	transforms portal to other space
-	PUNK_ENGINE const Portal operator * (const mat4& m, const Portal& p);
+	PUNK_ENGINE_API const Portal operator * (const mat4& m, const Portal& p);
 }
 
 #endif	//	_H_PUNK_MATH_PORTAL

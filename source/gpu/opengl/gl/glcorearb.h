@@ -1571,7 +1571,7 @@ typedef void GLvoid;
 #define GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL 0x8CD2
 #define GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE 0x8CD3
 #define GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER 0x8CD4
-#define GL_FRAMEBUFFER_COMPLETE           0x8CD5
+    #define GL_FRAMEBUFFER_COMPLETE           0x8CD5
 #define GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT 0x8CD6
 #define GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT 0x8CD7
 #define GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER 0x8CDB
@@ -2666,8 +2666,8 @@ typedef unsigned long long int uint64_t;
 #include <stdint.h>
 #elif defined(_WIN32)
 typedef __int32 int32_t;
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
+typedef int64_t int64_t;
+typedef uint64_t uint64_t;
 #else
 /* Fallback if nothing above works */
 #include <inttypes.h>

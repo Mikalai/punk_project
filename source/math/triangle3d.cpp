@@ -57,7 +57,7 @@ namespace Math
 
 		float inv_det = 1.0f / (q1_q1*q2_q2 - q1_q2*q1_q2);
 		w1 = inv_det*( q2_q2*r_q1 - q1_q2*r_q2);
-		w2 = inv_det*(-q1_q2*r_q2 + r_q2*q2_q2);
+        w2 = inv_det*(-q1_q2*r_q1 + q1_q1*r_q2);
 		w0 = 1.0f - w1 - w2;	
 		return true;
 	}

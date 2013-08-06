@@ -4,17 +4,15 @@
 
 namespace Math
 {
-	bool Sphere::Save(std::ostream& stream) const
+    void Sphere::Save(System::Buffer *buffer) const
 	{
-		m_center.Save(stream);
-		stream.write((char*)&m_radius, sizeof(m_radius));
-		return true;
+        m_center.Save(buffer);
+        buffer->WriteReal32(m_radius);
 	}
 
-	bool Sphere::Load(std::istream& stream)
+    void Sphere::Load(System::Buffer *buffer)
 	{
-		m_center.Load(stream);
-		stream.read((char*)&m_radius, sizeof(m_radius));
-		return true;
+        m_center.Load(buffer);
+        m_radius = buffer->ReadReal32();
 	}
 }

@@ -1,2 +1,0 @@
-geometry geoms/1.geom
-effect	 effects/solid_3d

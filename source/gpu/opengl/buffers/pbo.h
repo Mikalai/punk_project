@@ -3,13 +3,13 @@
 
 #include "../gl/module.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
 		class VideoMemory;
 
-		class PUNK_ENGINE PixelBufferObject
+        class PUNK_ENGINE_LOCAL PixelBufferObject
 		{
 		public:
 			

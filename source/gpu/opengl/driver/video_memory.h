@@ -6,7 +6,7 @@
 #include "../../../config.h"
 #include "../../../system/smart_pointers/proxy.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
@@ -20,19 +20,20 @@ namespace GPU
 		*	textures and buffers.
 		*	This is a singletone class
 		*/
-		class PUNK_ENGINE VideoMemory
+		class VideoMemory final
 		{
 		public:
 
 			VideoMemory();
+			~VideoMemory();
 
 			void SetMaxMemoryUsage(size_t value);
 			size_t GetMaxMemoryUsage() const;
 			size_t GetMemoryUsage() const;
 			size_t GetMaxAvailableMemory() const;
 
-			static VideoMemory* Instance();
-			static void Destroy();
+        //	static VideoMemory* Instance();
+        //	static void Destroy();
 
 			PixelBufferObject* AllocatePixelBuffer(size_t size);
 			void FreePixelBuffer(PixelBufferObject* value);
@@ -52,7 +53,7 @@ namespace GPU
 			*/
 			void OptimizeMemoryUsage(size_t size);
 
-			static std::auto_ptr<VideoMemory> m_instance;		
+        //	static std::unique_ptr<VideoMemory> m_instance;
 
 			struct Core
 			{

@@ -5,7 +5,8 @@
 
 #include <vector>
 #include <iosfwd>
-
+#include <string>
+#include <cstdint>
 #include "../../config.h"
 
 //
@@ -14,7 +15,7 @@
 //
 
 namespace System
-{	
+{
 	//class PUNK_ENGINE StringError : public std::exception
 	//{
 	//public:
@@ -38,10 +39,10 @@ namespace System
 		string();
 		explicit string(const char* s);
 		string(const wchar_t* s);
-		string(const char* s, int length);
-		string(const wchar_t* s, int length);
+        string(const char* s, size_t length);
+        string(const wchar_t* s, size_t length);
 		string(const string& s);
-		explicit string(int length);
+        explicit string(size_t length);
 
 		string& operator = (const string& s);
 		string& operator = (const wchar_t* s);
@@ -51,8 +52,11 @@ namespace System
 		wchar_t operator [] (int i) const;
 		wchar_t& operator [] (int i);
 
-		int Length() const;
-		int Size() const;
+        const std::string ToStdString() const;
+        const std::wstring ToStdWString() const;
+
+        size_t Length() const;
+        size_t Size() const;
 		string& Erase(int start, int len);
 		string& Insert(wchar_t chr, int pos);
 		const string Replace(const string& what, const string& with) const;
@@ -65,8 +69,8 @@ namespace System
 		string& operator += (const string& s);
 		string& operator += (const wchar_t* s);
 
-		void ToANSI(char*& buffer, int& length) const;
-		void ToANSI(char* buffer, int size) const;
+        void ToANSI(char*& buffer, size_t& length) const;
+        void ToANSI(char* buffer, size_t size) const;
 
 		int ToInt32() const;
 		int ToInt32FromHex() const;
@@ -83,14 +87,14 @@ namespace System
 		friend PUNK_ENGINE bool operator < (const string& s1, const wchar_t* s2);
 
 
-		static const string Convert(int value, int radix = 10);
-		static const string Convert(unsigned value, int radix = 10);
-		static const string Convert(__int64 value, int radix = 10);
-		static const string Convert(unsigned __int64 value, int radix = 10);
-		static const string Convert(__int16 value, int radix = 10);
-		static const string Convert(unsigned __int16 value, int radix = 10);
-		static const string Convert(__int8 value, int radix = 10);
-		static const string Convert(unsigned __int8 value, int radix = 10);
+		static const string Convert(int32_t value, int radix = 10);
+		static const string Convert(uint32_t value, int radix = 10);
+		static const string Convert(int64_t value, int radix = 10);
+		static const string Convert(uint64_t value, int radix = 10);
+		static const string Convert(int16_t value, int radix = 10);
+		static const string Convert(uint16_t value, int radix = 10);
+		static const string Convert(int8_t value, int radix = 10);
+		static const string Convert(uint8_t value, int radix = 10);
 		static const string Convert(signed char value);
 		static const string Convert(unsigned char value);
 		static const string Convert(float value, int precision = 5);

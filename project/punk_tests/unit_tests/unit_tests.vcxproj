@@ -59,7 +59,7 @@
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -88,13 +88,17 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="armature_test.cpp" />
     <ClCompile Include="bbox_test.cpp" />
     <ClCompile Include="painter_test.cpp" />
+    <ClCompile Include="portal_test.cpp" />
+    <ClCompile Include="sound_test.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="math_plane_test.cpp" />
+    <ClCompile Include="action_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\punk_engine\punk_engine\punk_engine.vcxproj">

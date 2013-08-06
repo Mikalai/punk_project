@@ -1,12 +1,12 @@
 #include "vs_terrain.h"
 #include "../../../../../system/environment.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
 		VertexShaderTerrain::VertexShaderTerrain()
-			: Shader(SHADER_VERTEX)
+			: Shader(ShaderType::Vertex)
 		{
 			CookFromFile(System::Environment::Instance()->GetShaderFolder() + L"terrain_330.vert");
 		}

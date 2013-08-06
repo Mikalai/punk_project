@@ -16,11 +16,11 @@ namespace Math
 		//
 		a = v0.X() < v1.X() ? (v0.X() < v2.X() ? v0 : v2) : (v1.X() < v2.X() ? v1 : v2);
 		b = v0.X() > v1.X() ? (v0.X() > v2.X() ? v0 : v2) : (v1.X() > v2.X() ? v1 : v2);
-		if (v0 == a && v1 == b || v0 == b && v1 == a)
+        if ((v0 == a && v1 == b) || (v0 == b && v1 == a))
 			c = v2;
-		else if (v0 == a && v2 == b || v0 == b && v2 == a)
+        else if ((v0 == a && v2 == b) || (v0 == b && v2 == a))
 			c = v1;
-		else if (v1 == a && v2 == b || v1 == b && v2 == a)
+        else if ((v1 == a && v2 == b) || (v1 == b && v2 == a))
 			c = v0;
 		else
 		{
@@ -41,7 +41,7 @@ namespace Math
 		
 		if (s1 >= 0 && s2 >= 0 && s3 >= 0)
 			return true;
-		if (s1 <= 0 && s2 <= 0 && s3 <= 0)
+        if (s1 <= 0 && s2 <= 0 && s3 <= 0)
 			return true;
 
 

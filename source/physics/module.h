@@ -6,5 +6,7 @@
 #include "rigid_body.h"
 #include "shape_body.h"
 #include "bullet/module.h"
+#include "physics_adapter.h"
+#include "physics_terrain.h"
 
 #endif	//	_H_PUNK_PHYSICS_MODULE

@@ -16,6 +16,14 @@ class OBJECT_PT_punk_engine_tools(Panel):
         layout.prop(ob, "punk_entity_type")
                 
         if (ob.punk_entity_type == 'STATIC'):
+            layout.prop(text = "Triangles count", data = ob.data, property = "polygons")           
+            layout.prop(ob, "name", expand = True)
+            layout.prop(ob.data.materials[0], "diffuse_color", expand = True)
+        elif ob.punk_entity_type == 'TERRAIN':
+            layout.prop(text = "Triangles count", data = ob.data, property = "polygons")
+            layout.prop(ob, "name", expand = True)
+            layout.prop(ob.data.materials[0], "diffuse_color", expand = True)
+        elif ob.punk_entity_type == 'RIVER':
             layout.prop(text = "Triangles count", data = ob.data, property = "polygons")
             layout.prop(ob, "name", expand = True)
             layout.prop(ob.data.materials[0], "diffuse_color", expand = True)
@@ -81,7 +89,7 @@ class OBJECT_PT_punk_engine_tools(Panel):
             layout.prop(ob, "name")     
         elif ob.punk_entity_type == 'LOCATION_INDOOR':
             layout.prop(ob, "name")               
-        elif ob.punk_entity_type == 'ARMATURE':
+        elif ob.punk_entity_type == 'HUMAN_ARMATURE':
             layout.prop(ob, "name")
             layout.prop(ob, "armature_type")
         elif ob.punk_entity_type == 'LIGHT':
@@ -124,13 +132,17 @@ def register():
                  ("CHARACTER", "Character", "Character armature and skin", 9), \
                  ("CAMERA", "Camera", "A camera that can be used in game", 10),\
                  ("TRANSFORM", "Transform", "A simple transorm",           11),\
-                 ("ARMATURE", "Armature", "Animated armature",             12),\
+                 ("HUMAN_ARMATURE", "Human armature", "Human armature",             12),\
                  ("SKIN", "Skin",   "Skin object. Has geometry",           13),\
                  ("COLLISION_MESH", "Collision mesh", "Collision mesh",    14),\
                  ("SMALL_SLOT", "Small slot", "Small slot",                15),\
                  ("MIDDLE_SLOT", "Middle slot", "Middles slot",            16),\
                  ("LARGE_SLOT", "Large slot", "Large slot",                17),\
-                 ("COLD_WEAPON", "Cold weapon", "Cold weapon",             18)])
+                 ("COLD_WEAPON", "Cold weapon", "Cold weapon",             18),\
+                 ("TERRAIN", "Terrain", "Terrain",                         19),\
+                 ("RIVER", "River", "River",                               20),\
+                 ("SUN", "Sun", "Sun",                                     21),\
+                 ("PATH", "Geometry Path", "Geometry Path",                22)])
                          
 def unregister():
     del bpy.types.Object.punk_entity_type

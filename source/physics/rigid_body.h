@@ -21,7 +21,7 @@
 //	class RigidBody
 //	{		
 //	public:
-//		virtual void Init(RigidBodyDesc& desc) = 0;
+//		virtual void Init(RigidBodyDesc& desc) override;
 //	};
 //}
 //

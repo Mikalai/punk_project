@@ -1,3 +1,5 @@
+#ifdef USE_BULLET_PHYSICS
+
 #ifndef _H_BULLET_PHYSICAL_SIMULATOR
 #define _H_BULLET_PHYSICAL_SIMULATOR
 
@@ -26,14 +28,14 @@ namespace Physics
 {
 	class BulletRigidBody;
 
-	class PUNK_ENGINE BulletSimulator
+	class PUNK_ENGINE_API BulletSimulator
 	{
 	public:
 		virtual void Init();
 		virtual void Clear();
 		virtual void Update(float delta);
 		virtual void SetGravity(const Math::vec3& g);
-		virtual ~BulletSimulator();		
+		virtual ~BulletSimulator();
 
 		btDiscreteDynamicsWorld* GetWorld() { return m_dynamics_world; }
 
@@ -49,3 +51,5 @@ namespace Physics
 }
 
 #endif
+
+#endif // USE_BULLET_PHYSICS

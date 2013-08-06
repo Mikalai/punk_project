@@ -19,7 +19,7 @@ namespace Utility
 
 	typedef std::map<System::string, Material> MaterialCollection;
 
-	class PUNK_ENGINE RawScene
+	class PUNK_ENGINE_API RawScene
 	{	
 		MaterialCollection m_materials;
 	public:

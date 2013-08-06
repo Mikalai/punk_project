@@ -1,34 +1,62 @@
-#include <ostream>
-#include <istream>
+#include <sstream>
+#include "buffer.h"
 #include "object.h"
+#include "../engine_objects.h"
 
 namespace System
 {
-	bool Object::Save(std::ostream& stream) const
-	{
-		stream.write((char*)&m_modified, sizeof(m_modified));
-		stream.write((char*)&m_type, sizeof(m_type));
+    StaticInormation<Object> Object::Info{"System.Object", PUNK_OBJECT, 0};
+    unsigned Object::m_id_next= 0;
 
-		if (!m_storage_name.Save(stream))
-			throw PunkInvalidArgumentException(L"Can't save object storage name");
-		if (!m_name.Save(stream))
-			throw PunkInvalidArgumentException(L"Can't save object name");
-		if (!m_text.Save(stream))
-			throw PunkInvalidArgumentException(L"Can't save object text");
-		return true;
-	}
+    Object::Object()
+        : m_owner{nullptr}
+        , m_id(m_id_next++)
+    {
+        Info.Add(this);
+    }
 
-	bool Object::Load(std::istream& stream)
-	{
-		stream.read((char*)&m_modified, sizeof(m_modified));
-		stream.read((char*)&m_type, sizeof(m_type));
+    Object::~Object()
+    {
+        Info.Remove(this);
+    }
 
-		if (!m_storage_name.Load(stream))
-			throw PunkInvalidArgumentException(L"Can't load object storage name");
-		if (!m_name.Load(stream))
-			throw PunkInvalidArgumentException(L"Can't save object name");
-		if (!m_text.Load(stream))
-			throw PunkInvalidArgumentException(L"Can't save object text");
-		return true;
-	}
+    void Object::SetOwner(Object* owner)
+    {
+        m_owner = owner;
+    }
+
+    const Object* Object::GetOwner() const
+    {
+        return m_owner;
+    }
+
+    Object* Object::GetOwner()
+    {
+        return m_owner;
+    }  
+
+    const string Object::ToString() const
+    {
+        std::wstringstream stream;
+        stream << '[' << GetLocalIndex() << ' ' << Info.Type.GetName() << ']';
+        return string(stream.str());
+    }
+
+    unsigned Object::GetId() const
+    {
+        return m_id;
+    }
+
+    void Object::Save(Buffer* buffer) const
+    {
+        /*
+         *  We write type code, as a tag for factory, that should be able
+         *  to create an object from code
+         */
+        auto id = Info.Type.GetId();
+        buffer->WriteUnsigned32(id);
+    }
+
+    void Object::Load(Buffer* buffer)
+    {}
 }

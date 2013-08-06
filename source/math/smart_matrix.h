@@ -66,7 +66,7 @@ protected:
             column_count = columns;
             row_count = rows;
             m = new T[column_count*row_count];
-            //memset(m, 0, column_count*row_count*sizeof(T));
+            memset(m, 0, column_count*row_count*sizeof(T));
         }
 
         ~Rep()
@@ -791,8 +791,8 @@ const Matrix<T> PerElementMultiplication(const Matrix<T>& m1, const Matrix<T>& m
 }
 
 
-/*	template class PUNK_ENGINE Matrix<float>;
- template class PUNK_ENGINE Matrix<int>;
+/*	template class PUNK_ENGINE_API Matrix<float>;
+ template class PUNK_ENGINE_API Matrix<int>;
 
  typedef Matrix<float> matrix;
  typedef Matrix<int> imatrix;*/

@@ -1,5 +1,5 @@
-#ifndef _H_PUNK_IMAGE_IMAGE_PUNK_ENGINE_IMPL
-#define _H_PUNK_IMAGE_IMAGE_PUNK_ENGINE_IMPL
+#ifndef _H_PUNK_IMAGE_IMAGE_PUNK_ENGINE_PUBLIC_IMPL
+#define _H_PUNK_IMAGE_IMAGE_PUNK_ENGINE_PUBLIC_IMPL
 
 #include <ostream>
 #include <istream>
@@ -8,7 +8,6 @@
 #include "../formats.h"
 #include "component.h"
 #include "../../system/buffer.h"
-#include "../../system/handle.h"
 #include "../import_export/png_importer.h"
 #include "../import_export/jpg_importer.h"
 
@@ -18,43 +17,40 @@ namespace ImageModule
 	{
 		unsigned m_width;
 		unsigned m_height;
-		unsigned m_components;
-		unsigned m_size;	
-		unsigned m_bit_depth;
+        unsigned m_channels;
+		unsigned m_size;	        
 		ImageFormat m_format;
-		std::vector<Component> m_data;
-		System::Descriptor m_descriptor;
+        ComponentType m_component_type;
+        std::vector<unsigned char> m_data;
 
-		ImageImpl()
-			: m_width(0)
-			, m_height(0)
-			, m_components(0)
-			, m_size(0)
-			, m_data()
-			, m_descriptor()
-			, m_bit_depth(0)
-			, m_format(IMAGE_FORMAT_BAD)
-		{}
+//		ImageImpl()
+//			: m_width(0)
+//			, m_height(0)
+//            , m_channels(0)
+//			, m_size(0)
+//			, m_bit_depth(0)
+//			, m_format(IMAGE_FORMAT_BAD)
+//            , m_data()
+//		{}
 
 		ImageImpl(const ImageImpl& impl)
 			: m_width(impl.m_width)
 			, m_height(impl.m_height)
-			, m_components(impl.m_components)
-			, m_size(impl.m_size)
-			, m_data(impl.m_data.begin(), impl.m_data.end())
-			, m_descriptor(impl.m_descriptor)
-			, m_bit_depth(impl.m_bit_depth)
+            , m_channels(impl.m_channels)
+			, m_size(impl.m_size)			
 			, m_format(impl.m_format)
+            , m_component_type(impl.m_component_type)
+            , m_data(impl.m_data.begin(), impl.m_data.end())
 		{}
 
-		ImageImpl(int width, int height, int components)
+        ImageImpl(int width, int height, int channels, ComponentType type, ImageFormat format)
 			: m_width(width)
 			, m_height(height)
-			, m_components(components)
-			, m_size(m_width*m_height*m_components*sizeof(Component))
-			, m_data(m_size)
-			, m_bit_depth(0)
-			, m_format(IMAGE_FORMAT_BAD)
+            , m_channels(channels)
+            , m_component_type(type)
+            , m_size(m_width*m_height*m_channels*GetComponentSize(type))
+            , m_format(format)
+            , m_data(m_size)
 		{
 			std::fill(m_data.begin(), m_data.end(), 0);
 		}
@@ -62,99 +58,124 @@ namespace ImageModule
 		~ImageImpl()
 		{}
 
-		void Create(int w, int h, int c)
-		{
-			m_width = w;
-			m_height = h;
-			m_components = c;
-			m_size = m_width*m_height*m_components*sizeof(Component);
-			m_data.resize(m_size);
-			//m_bit_depth = 0;
-			//m_format = IMAGE_FORMAT_BAD;
-			std::fill(m_data.begin(), m_data.end(), 0);
-		}
+//        void Create(int w, int h, int c, ComponentType type)
+//		{
+//			m_width = w;
+//			m_height = h;
+//            m_channels = c;
+//            m_component_type = type;
+//            m_size = m_width*m_height*m_channels*GetComponentSize(type);
+//			m_data.resize(m_size);
+//			//m_bit_depth override;
+//			//m_format = IMAGE_FORMAT_BAD;
+//			std::fill(m_data.begin(), m_data.end(), 0);
+//		}
 
 		void Clear()
 		{}		
 
-		void PutLine(int y, int width_in_pixel, int components_per_pixel, Component* data)
+        void PutLine(int y, unsigned width_in_pixel, unsigned components_per_pixel, void* data)
 		{
-			if (!m_data.empty())
-				throw ImageException(L"Data is not allocated");
-			if (width_in_pixel != m_width)
-				throw ImageException(L"Impossible to copy line due to different width");
-			if (components_per_pixel != m_components)
-				throw ImageException(L"Line3D components per pixel count differs from image");
+            throw System::PunkException(L"Not implemented");
+//			if (!m_data.empty())
+//				throw ImageException(L"Data is not allocated");
+//			if (width_in_pixel != m_width)
+//				throw ImageException(L"Impossible to copy line due to different width");
+//            if (components_per_pixel != m_channels)
+//				throw ImageException(L"Line3D components per pixel count differs from image");
 
-			std::copy(data, data + width_in_pixel*components_per_pixel, m_data.begin() + y*m_width*m_components);
+//            std::copy(data, data + width_in_pixel*components_per_pixel*GetComponentSize(m_component_type), m_data.begin() + y*m_width*m_channels*GetComponentSize(m_component_type));
 		}
 
-		bool Save(std::ostream& stream) const
+        void Save(System::Buffer* buffer) const
 		{
-			stream.write(reinterpret_cast<const char*>(&m_descriptor), sizeof(m_descriptor));
-			stream.write(reinterpret_cast<const char*>(&m_width), sizeof(m_width));
-			stream.write(reinterpret_cast<const char*>(&m_height), sizeof(m_height));
-			stream.write(reinterpret_cast<const char*>(&m_components), sizeof(m_components));
-			stream.write(reinterpret_cast<const char*>(&m_data[0]), m_size);
-			return true;
+            buffer->WriteUnsigned32(m_width);
+            buffer->WriteUnsigned32(m_height);
+            buffer->WriteUnsigned32(m_channels);
+            buffer->WriteUnsigned32(m_size);
+            buffer->WriteBuffer(&m_data[0], m_size);
 		}
 
-		bool Load(std::istream& stream)
+        void Load(System::Buffer* buffer)
 		{			
-			//stream.read(reinterpret_cast<char*>(&m_descriptor), sizeof(m_descriptor));
-			//stream.read(reinterpret_cast<char*>(&m_width), sizeof(m_width));
-			//stream.read(reinterpret_cast<char*>(&m_height), sizeof(m_height));
-			//stream.read(reinterpret_cast<char*>(&m_components), sizeof(m_components));
-			//m_size = m_width*m_height*m_components*sizeof(Component);
-			//m_data.resize(m_size);
-			//stream.read(reinterpret_cast<char*>(&m_data[0]), m_size);
-			return false;
+            m_width = buffer->ReadSigned32();
+            m_height = buffer->ReadSigned32();
+            m_channels = buffer->ReadSigned32();
+            m_size = buffer->ReadSigned32();
+            m_data.resize(m_size);
+            buffer->ReadBuffer(&m_data[0], m_size);
 		}
 
 
-		void SetFormat(int format)
+//		void SetFormat(int format)
+//		{
+//			m_format = (ImageFormat)format;
+//		}
+
+//		void SetNumChannels(int channels)
+//		{
+//            m_channels = channels;
+//		}
+
+//		void SetDepth(int bpp)
+//		{
+//			m_bit_depth = bpp;
+//		}
+
+        unsigned GetBitDepth() const
+        {
+            unsigned result = m_channels * GetComponentSize(m_component_type) * 8;
+            return result;
+        }
+
+        const void* At(unsigned x, unsigned y, unsigned component) const
 		{
-			m_format = (ImageFormat)format;
+            size_t index = ((y*m_width+x)*m_channels + component)*GetComponentSize(m_component_type);
+            return (void*)(&m_data[index]);
+        }
+
+        void* At(unsigned x, unsigned y, unsigned component)
+		{
+            return const_cast<void*>(static_cast<const ImageImpl&>(*this).At(x, y, component));
 		}
 
-		void SetNumChannels(int channels)
-		{
-			m_components = channels;
-		}
-
-		void SetDepth(int bpp)
-		{
-			m_bit_depth = bpp;
-		}
-
-		const Component* At(unsigned x, unsigned y, unsigned component) const
-		{
-			return &m_data[y*m_width*m_components+x*m_components + component];
-		}
-
-		Component* At(unsigned x, unsigned y, unsigned component)
-		{
-			return const_cast<Component*>(static_cast<const ImageImpl&>(*this).At(x, y, component));
-		}
+        void Copy(unsigned x, unsigned y, unsigned component, const void* value)
+        {
+            void* pos = At(x, y, component);
+            switch(m_component_type)
+            {
+            case ComponentType::SignedByte:
+            case ComponentType::UnsignedByte:
+                *(char*)pos = *(const char*)value;
+                break;
+            case ComponentType::Float:
+                *(float*)pos = *(const float*)value;
+                break;
+            default:
+                throw System::PunkException(L"Can't copy sub image, becuse component type is not supported");
+            }
+        }
 
 		void SetSubImage(unsigned x, unsigned y, const ImageImpl& impl)
 		{
-			if (m_components != impl.m_components)
+            if (m_channels != impl.m_channels)
 				throw ImageException(L"Can't set sub image due to different components number");
 
-			for (unsigned y_dst = y, y_org = 0; y_dst < m_height && y_org < impl.m_height; ++y_dst, ++y_org)
+            if (m_component_type != impl.m_component_type)
+                throw ImageException(L"Can't set sub image due to different components type");
+
+            for (unsigned y_dst = y, y_org = 0; y_dst < m_height && y_org < impl.m_height; ++y_dst, ++y_org)
 			{
-				for (unsigned x_dst = x, x_org = 0; x_dst < m_width && x_org < impl.m_width; ++x_dst, ++x_org)
+                for (unsigned x_dst = x, x_org = 0; x_dst < m_width && x_org < impl.m_width; ++x_dst, ++x_org)
 				{
-					for (unsigned c = 0; c < m_components; ++c)
+                    for (unsigned c = 0; c < m_channels; ++c)
 					{
-						*At(x_dst, y_dst, c) = *impl.At(x_org, y_org, c);
+                        Copy(x_dst, y_dst, c, impl.At(x_org, y_org, c));
 					}
 				}
 			}
 		}
 	};
-
 }
 
 #endif

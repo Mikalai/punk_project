@@ -2,4 +2,13 @@
 
 namespace Virtual
 {
+    BoneAnimation::BoneAnimation()
+    {
+
+    }
+
+    BoneAnimation::~BoneAnimation()
+    {
+    }
+
 }

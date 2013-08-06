@@ -5,7 +5,7 @@
 
 namespace ImageModule
 {
-	extern PUNK_ENGINE bool YUY2toRGB(const unsigned char* src, int length, unsigned char* dst, int* out_length);
+	extern PUNK_ENGINE_API bool YUY2toRGB(const unsigned char* src, int length, unsigned char* dst, int* out_length);
 }
 
 #endif

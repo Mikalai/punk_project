@@ -1,18 +1,18 @@
 #include <iostream>
 
-#include "../punk_engine/system/string.h"
-#include "../punk_engine/system/system.h"
-#include "../punk_engine/math/math.h"
-#include "../punk_engine/images/images.h"
-#include "../punk_engine/utility/utility.h"
-#include "../punk_engine/system/driver/video/driver.h"
-#include "../punk_engine/gui/gui.h"
+#include "../PUNK_ENGINE_API/system/string.h"
+#include "../PUNK_ENGINE_API/system/system.h"
+#include "../PUNK_ENGINE_API/math/math.h"
+#include "../PUNK_ENGINE_API/images/images.h"
+#include "../PUNK_ENGINE_API/utility/utility.h"
+#include "../PUNK_ENGINE_API/system/driver/video/driver.h"
+#include "../PUNK_ENGINE_API/gui/gui.h"
 
 class Viewer
 {
-	std::auto_ptr<GUI::Manager> m_gui;
+	std::unique_ptr<GUI::Manager> m_gui;
 	OpenGL::Driver m_driver;
-	std::auto_ptr<OpenGL::RenderContextLight> m_light_context;
+	std::unique_ptr<OpenGL::RenderContextLight> m_light_context;
 	float x, y, z;
 	GUI::ListBox* lst_all_food;
 	GUI::Button* btn_load;
@@ -36,20 +36,20 @@ class Viewer
 	GUI::Button* btn_index;
 	GUI::TextBox* txt_index;
 public:
-	
+
 	Viewer()
-	{		
+	{
 		/// start driver
 		m_driver.Start(System::Window::Instance());
 		System::Window::Instance()->SetSize(800, 600);
 		System::Window::Instance()->SetPosition(200, 100);
 		m_driver.SetClearColor(0.0, 0.0, 0, 1);
-	
+
 		m_gui.reset(new GUI::Manager());
-		float y = 0.95;
-		float h = 0.05;
+		float y override.95;
+		float h override.05;
 		float w0 = 0.2;
-		float w1 = 0.2;
+		float w1 override.2;
 		float w2 = 1 - w1 - w0;
 		btn_load = new GUI::Button(w0, y, w1+w2, h, L"Load");
 		y -= h;
@@ -105,7 +105,7 @@ public:
 		m_gui->AddRootWidget(txt_energy);
 		m_gui->AddRootWidget(lbl_kill_range);
 		m_gui->AddRootWidget(txt_kill_range);
-		m_gui->SetFocusedWidget(btn_load);	
+		m_gui->SetFocusedWidget(btn_load);
 
 
 		btn_load->SetNextWidget(txt_file);
@@ -131,7 +131,7 @@ public:
 		btn_clear->SetMouseLeftClickHandler(System::EventHandler(this, &Viewer::OnClear));
 		btn_index->SetMouseLeftClickHandler(System::EventHandler(this, &Viewer::OnIndex));
 	}
-	
+
 	void OnIndex(System::Event*)
 	{
 		System::string data = System::Environment::Instance()->GetCurrentFolder() + L"bullet";
@@ -190,7 +190,7 @@ public:
 	}
 
 	void OnSave(System::Event*)
-	{		
+	{
 		Utility::BulletType bullet;
 		bullet.SetName(txt_name->GetText().Data());
 		bullet.SetDescription(txt_desc->GetText().Data());
@@ -207,7 +207,7 @@ public:
 			System::Logger::Instance()->WriteError(L"Bad satiety value");
 			return;
 		}
-		
+
 		char buf[256];
 		System::string path = System::Environment::Instance()->GetCurrentFolder() + L"bullet\\" + txt_file->GetText();
 		path.ToANSI(buf, 256);
@@ -260,18 +260,18 @@ public:
 	}
 
 	void OnIdle(System::Event* event)
-	{	
-		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);				
+	{
+		m_driver.ClearBuffer(OpenGL::Driver::COLOR_BUFFER|OpenGL::Driver::DEPTH_BUFFER);
 
 		m_gui->Render();
-		
+
 		m_driver.SwapBuffers();
 	}
 };
 
 int main(int argc, char** argv)
 {
-	System::Window::Instance()->SetTitle(L"BulletMaker");	
+	System::Window::Instance()->SetTitle(L"BulletMaker");
 	System::Mouse::Instance()->LockInWindow(false);
 	OpenGL::Module module;
 	module.Init();

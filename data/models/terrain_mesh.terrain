@@ -1,0 +1,10 @@
+TERRAINTEXT
+terrain_mesh
+{
+  *mesh
+  {
+    terrain_mesh.static
+  }
+
+}
+

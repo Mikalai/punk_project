@@ -5,15 +5,10 @@
 
 namespace Virtual
 {
-	class BoneAnimation : public Animation
+    class BoneAnimation : public Animation, public System::Aspect<Animation*, System::string>
 	{
-		System::string m_bone_name;
 	public:
 		BoneAnimation();
-		void SetBoneName(const System::string& value) { m_bone_name = value; }
-		const System::string& GetBoneName() const { return m_bone_name; }
-		virtual bool Save(std::ostream& stream) const;
-		virtual bool Load(std::istream& stream);
 		virtual ~BoneAnimation();
 	};
 }

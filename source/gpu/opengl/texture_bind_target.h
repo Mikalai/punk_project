@@ -1,8 +1,0 @@
-#ifndef _H_PUNK_OPENGL_MODULE_BIND_TARGET
-#define _H_PUNK_OPENGL_MODULE_BIND_TARGET
-
-namespace OpenGL
-{
-}
-
-#endif

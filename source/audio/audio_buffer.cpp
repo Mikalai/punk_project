@@ -1,97 +1,148 @@
-#include "audio_buffer.h"
 #include <vector>
 #include <ostream>
 #include <istream>
 #include <fstream>
-#include <openal/al.h>
-
 #include "../system/environment.h"
+
+#ifdef USE_OPENAL
+#define HAS_AUDIO_BUFFER
+#include "openal/al_buffer_impl.h"
+#else
+#include "audio_buffer.h"
+#endif  //  USE_OPENAL
 
 namespace Audio
 {
-	void OnInit()
-	{
-		//ALFWInit();
-
-		//if (!ALFWInitOpenAL())
-		//{
-		//	out_error() << L"Failed to initialize OpenAL" << std::endl;
-		//	ALFWShutdown();
-		//	return;
-		//}
-	}
-
-	void OnDestroy()
-	{
-		//ALFWShutdownOpenAL();
-		//ALFWShutdown();
-	}
-
-	AudioBuffer::AudioBuffer()
-		: m_buffer(0)
-//		, m_index(-1)
+	Buffer::Buffer()
+#ifdef HAS_AUDIO_BUFFER
+		: impl(new BufferImpl)
+#else
+        : impl(nullptr)
+#endif
 	{}
 
-	AudioBuffer::~AudioBuffer()
+	Buffer::~Buffer()
 	{
-		Clear();
+#ifdef HAS_AUDIO_BUFFER
+		delete impl;
+		impl = nullptr;
+#endif
 	}
 
-	void AudioBuffer::Clear()
+	void Buffer::SetData(Format format, void* data, int size, int frequency)
 	{
-		if (m_buffer != 0)
-		{
-			alDeleteBuffers(1, &m_buffer);
-//			CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
-			m_buffer = 0;
-		}
+	    #ifdef HAS_AUDIO_BUFFER
+		impl->SetData(format, data, size, frequency);
+		#else
+        (void)format; (void)data; (void)size; (void)frequency;
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
 	}
 
-	void AudioBuffer::Init()
+	int Buffer::GetFrequency() const
 	{
-		Clear();
-		alGenBuffers(1, &m_buffer);
-//		CHECK_ALERROR("alGenBuffers(1, &m_buffer); failed");
+	    #ifdef HAS_AUDIO_BUFFER
+		return impl->GetFrequency();
+		#else
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
 	}
 
-	bool AudioBuffer::Save(std::ostream& stream) const
-	{				
-		//stream.write(reinterpret_cast<const char*>(&m_index), sizeof(m_index));		
-		//m_file.Save(stream);
-		return false;
-	}
-
-	bool AudioBuffer::Load(std::istream& stream)
+	int Buffer::GetBits() const
 	{
-		{			
-			// check if this is a wave file
-			struct WaveHeader { char riff[4]; int data; char wave[4]; };
-			WaveHeader buffer;
-			stream.read(reinterpret_cast<char*>(&buffer), sizeof(buffer));
-			if (memcmp(buffer.riff, "RIFF", 4) == 0 && memcmp(buffer.wave, "WAVE", 4) == 0)
-			{			
-				stream.seekg(0, std::ios_base::beg);
-				LoadFromWAV(stream);
-				return true;
-			}			
-		}					
-		return false;
+	    #ifdef HAS_AUDIO_BUFFER
+		return impl->GetBits();
+		#else
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
 	}
 
-	bool AudioBuffer::LoadFromWAV(std::istream& stream)
-	{			
-		alGenBuffers(1, &m_buffer);
-
-		//if (!ALFWLoadWaveToBuffer(stream, m_buffer))
-		//{
-		//	out_error() << L"Failed to load AudioBuffer file from stream" << std::endl;			
-		//	alDeleteBuffers(1, &m_buffer);
-		//	return false;
-		//}
-		return false;
+	int Buffer::GetChannels() const
+	{
+	    #ifdef HAS_AUDIO_BUFFER
+		return impl->GetChannels();
+		#else
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
 	}
 
-	AudioBuffer* AudioBuffer::CreateFromFile(const System::string& path)
+	int Buffer::GetSize() const
+	{
+	    #ifdef HAS_AUDIO_BUFFER
+		return impl->GetSize();
+		#else
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
+	}
+
+	void* Buffer::GetData() const
+	{
+	    #ifdef HAS_AUDIO_BUFFER
+		return impl->GetData();
+		#else
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
+	}
+
+	void Buffer::SetDescription(const System::string& value)
+	{
+	    #ifdef HAS_AUDIO_BUFFER
+		impl->SetDescription(value);
+		#else
+        (void)value;
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
+	}
+
+	const System::string& Buffer::GetDescription() const
+	{
+	    #ifdef HAS_AUDIO_BUFFER
+		return impl->GetDescription();
+		#else
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
+	}
+
+	bool Buffer::IsValid() const
+	{
+	    #ifdef HAS_AUDIO_BUFFER
+		return impl->IsValid();
+		#else
+		throw System::PunkException(L"Audio buffer not supported");
+		#endif
+	}
+
+	//bool AudioBuffer::Load(std::istream& stream)
+	//{
+	//	{
+	//		// check if this is a wave file
+	//		struct WaveHeader { char riff[4]; int data; char wave[4]; };
+	//		WaveHeader buffer;
+	//		stream.read(reinterpret_cast<char*>(&buffer), sizeof(buffer));
+	//		if (memcmp(buffer.riff, "RIFF", 4) == 0 && memcmp(buffer.wave, "WAVE", 4) == 0)
+	//		{
+	//			stream.seekg(0, std::ios_base::beg);
+	//			LoadFromWAV(stream);
+	//			return true;
+	//		}
+	//	}
+	//	return false;
+	//}
+
+	//bool AudioBuffer::LoadFromWAV(std::istream& stream)
+	//{
+	//	alGenBuffers(1, &m_buffer);
+
+	//	//if (!ALFWLoadWaveToBuffer(stream, m_buffer))
+	//	//{
+	//	//	out_error() << L"Failed to load AudioBuffer file from stream" << std::endl;
+	//	//	alDeleteBuffers(1, &m_buffer);
+	//	//	return false;
+	//	//}
+	//	return false;
+	//}
+
+	/*AudioBuffer* AudioBuffer::CreateFromFile(const System::string& path)
 	{
 		std::unique_ptr<AudioBuffer> buffer(new AudioBuffer);
 
@@ -106,5 +157,5 @@ namespace Audio
 		std::unique_ptr<AudioBuffer> buffer(new AudioBuffer);
 		buffer->Load(stream);
 		return buffer.release();
-	}
+	}*/
 }

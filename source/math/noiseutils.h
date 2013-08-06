@@ -1,3 +1,4 @@
+#ifdef USE_NOISE
 // noiseutils.h
 //
 // Copyright (C) 2003-2005 Jason Bevins
@@ -1285,7 +1286,7 @@ namespace noise
         void WriteDestFile ();
 
       protected:
-    
+
         /// Calculates the width of one horizontal line in the file, in bytes.
         ///
         /// @param width The width of the noise map, in points.
@@ -1364,7 +1365,7 @@ namespace noise
         /// If this method is successful, the destination noise map contains
         /// the coherent-noise values from the noise module specified by
         /// SetSourceModule().
-        virtual void Build () = 0;
+        virtual void Build () override;
 
         /// Returns the height of the destination noise map.
         ///
@@ -1726,7 +1727,7 @@ namespace noise
     /// origin.
     ///
     /// The x coordinate in the noise map represents the longitude.  The y
-    /// coordinate in the noise map represents the latitude.  
+    /// coordinate in the noise map represents the latitude.
     ///
     /// The application must provide the southern, northern, western, and
     /// eastern bounds of the noise map, in degrees.
@@ -1882,14 +1883,14 @@ namespace noise
     /// To set the intensity of the light source, call the SetLightIntensity()
     /// method.  A good intensity value is 2.0, although that value tends to
     /// "wash out" very light colors from the image.
-    /// 
+    ///
     /// To set the contrast amount between areas in light and areas in shadow,
     /// call the SetLightContrast() method.  Determining the correct contrast
     /// amount requires some trial and error, but if your application
     /// interprets the noise map as a height map that has its elevation values
     /// measured in meters and has a horizontal resolution of @a h meters, a
     /// good contrast amount to use is ( 1.0 / @a h ).
-    /// 
+    ///
     /// <b>Specify the background image</b>
     ///
     /// To specify a background image, pass an Image object to the
@@ -2213,7 +2214,7 @@ namespace noise
         /// EnableLight() method before calling the Render() method.
         void SetLightContrast (double lightContrast)
         {
-          if (lightContrast <= 0.0) {
+          if (lightContrast <override.0) {
             throw noise::ExceptionInvalidParam ();
           }
 
@@ -2513,7 +2514,7 @@ namespace noise
         /// elevation resolution.  For example, if your noise map has a
         /// spatial resolution of 30 meters and an elevation resolution of one
         /// meter, set the bump height to 1.0 / 30.0.
-        /// 
+        ///
         /// The spatial resolution and elevation resolution are determined by
         /// the application.
         Color CalcNormalColor (double nc, double nr, double nu,
@@ -2538,3 +2539,5 @@ namespace noise
 }
 
 #endif
+
+#endif //   USE_NOISE

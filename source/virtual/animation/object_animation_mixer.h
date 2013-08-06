@@ -4,7 +4,7 @@
 #include "../../config.h"
 #include "../../math/vec3.h"
 #include "../../math/quat.h"
-#include "animation_Mixer.h"
+#include "animation_mixer.h"
 #include <map>
 #include <memory>
 
@@ -15,7 +15,7 @@ namespace Virtual
 
 namespace Virtual
 {
-	class PUNK_ENGINE ObjectAnimationMixer : public AnimationMixer
+	class PUNK_ENGINE_API ObjectAnimationMixer : public AnimationMixer
 	{
 		typedef std::map<System::string, std::shared_ptr<Animation>> Type;
 		typedef std::map<System::string, bool> ActiveTracks;
@@ -39,8 +39,8 @@ namespace Virtual
 		void SetLooping(const System::string name, bool flag);
 		void SetTrackWeight(const System::string name, float value);
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+//		void Save(System::Buffer* buffer) const;
+//		void Load(System::Buffer* buffer);
 
 	private:
 		void NormalizeWeights();

@@ -1,6 +1,6 @@
 #include "gl_exceptions.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

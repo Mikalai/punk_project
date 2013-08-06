@@ -2,7 +2,7 @@
 #include "../../math/vec4.h"
 #include "pen.h"
 
-namespace GPU
+namespace Gpu
 {
 	struct Pen::PenImpl
 	{

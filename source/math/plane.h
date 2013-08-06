@@ -13,9 +13,9 @@
 
 namespace Math
 {    
-	class PUNK_ENGINE Line3D;
+    class Line3D;
 
-    class PUNK_ENGINE Plane
+    class PUNK_ENGINE_API Plane
     {        
     public:
 
@@ -28,51 +28,36 @@ namespace Math
         Plane(const vec3& point, const vec3& normal);
         Plane(const vec3& normal, float distances);
         Plane(const vec3& a, const vec3& b, const vec3& c);
+		Plane(float a, float b, float c, float d);
+		explicit Plane(const vec4& plane);
         
-		void Set(const vec3& normal, float dst) { (m_normal = normal, m_distance = dst); }
-		void Set(const vec4& value) 
-		{ 
-			(m_normal = value.XYZ(), m_distance = value.W()); 
-			float l = m_normal.Length();
-			m_normal.Normalize();
-			m_distance /= l;
-		}       		
-
-		void Set(const vec3& a, const vec3& b, const vec3& c);
+        Plane& Set(const vec3& normal, float dst);
+        Plane& Set(const Line3D& line, const Math::vec3& point);
+        Plane& Set(const vec4& value);
+        Plane& Set(float a, float b, float c, float d);
+        Plane& Set(const vec3& a, const vec3& b, const vec3& c);
 
         const Plane TransformNode(const mat4& matrix) const;
-		const vec3& GetNormal() const { return m_normal; }
-		float GetDistance() const { return m_distance; }
-		friend class PUNK_ENGINE Line3D;
+        const vec3 GetNormal() const;
+		float GetDistance() const;
+        friend class Line3D;
 
-		bool Save(std::ostream& stream) const;
-		bool Load(std::istream& stream);
+        Plane& Normalize();
 
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
+
+		const vec4& AsVector() const;
+
+        const System::string ToString() const;
 	private:
 
-		vec3 m_normal;
-        float m_distance;
+		vec4 m_plane;
     };   
 
-	inline float operator * (const Plane& plane, const vec3& v)
-	{
-		float res = plane.GetNormal().Dot(v) + plane.GetDistance();
-		return res;
-	}
-
-	inline float operator * (const Plane& plane, const vec4& v)
-	{
-		float res = plane.GetNormal().Dot(v.XYZ()) + plane.GetDistance()*v.W();
-		return res;
-	}
-
-	inline const Plane operator * (const mat4& m, const Plane& p)
-	{
-		const vec4 v(p.GetNormal(), p.GetDistance());
-		vec4 t = m * v;
-		Plane res(t.XYZ(), t.W());
-		return res;
-	}
+	float operator * (const Plane& plane, const vec3& v);
+	float operator * (const Plane& plane, const vec4& v);
+	const Plane operator * (const mat4& m, const Plane& p);
 }
 
 #endif

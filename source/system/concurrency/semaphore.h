@@ -1,12 +1,25 @@
-#ifndef _H_PUNK_SYSTEM_SEMAPHORE
-#define _H_PUNK_SYSTEM_SEMAPHORE
+#ifndef _H_PUNK_SYSTEM_SEMAPTHORE_WIN32
+#define _H_PUNK_SYSTEM_SEMAPTHORE_WIN32
 
-#ifdef _WIN32
-#include "win32/semaphore_win32.h"
-#endif
+#include "../../config.h"
+#include "os_handle.h"
 
-#ifdef __linux__
-#include "linuxr/semaphore_linux.h"
-#endif
+namespace System
+{
+	class PUNK_ENGINE_API Semaphore : public OsHandle
+	{
+	public:		
+		bool Create(long max_count);
+		bool Destroy();
+		bool Release(long count = 1);
+        /**
+         * @brief Wait
+         * @param time - time to wait in milliseconds.
+         * @return true if all ok, false otherwise.
+         */
+        bool Wait(long time = PUNK_INFINITE);
+		~Semaphore();
+	};
+}
 
-#endif	//	_H_PUNK_SYSTEM_SEMAPHORE
+#endif	//	_H_PUNK_SYSTEM_SEMAPTHORE_WIN32

@@ -1,31 +1,40 @@
 #ifndef _H_THREAD_POOL
 #define _H_THREAD_POOL
 
+#ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
 #include <Windows.h>
+#elif defined __gnu_linux__
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#endif
+
 #include <vector>
 #include <stack>
 #include <queue>
 
 #include "../../config.h"
 #include "thread_job.h"
+#include "thread.h"
+#include "monitor.h"
+#include "atomicint.h"
 
 namespace System
 {
-	class PUNK_ENGINE ThreadPool
-	{
-		std::vector<HANDLE> m_threads;
+	class PUNK_ENGINE_API ThreadPool
+	{		
 		std::queue<ThreadJob*> m_jobs;
 		ThreadPool(const ThreadPool& pool);
 		ThreadPool& operator = (const ThreadPool&);
 
-		HANDLE m_own_thread;
+        std::vector<Thread> m_threads;
+        Thread m_own_thread;
+        Monitor m_monitor;
 
-		CONDITION_VARIABLE m_cond;
-		CRITICAL_SECTION m_cs;
-		unsigned long m_finish;
+        AtomicInt m_finish;
 
 	public:
 		ThreadPool(int threads_count = 4);
@@ -46,8 +55,11 @@ namespace System
 
 		ThreadJob* GetThreadJob();
 
-		static unsigned __stdcall ThreadFunc(void* data);
-		static unsigned __stdcall OwnFun(void* data);
+#ifdef _WIN32
+        static unsigned PUNK_STDCALL ThreadFunc(void* data);
+#elif defined __gnu_linux__
+        static void* ThreadFunc(void* data);
+#endif
 	};
 }
 

@@ -133,7 +133,7 @@ namespace Utility
 
 	StaticMesh* RawScene::CookStaticMesh(const System::string& name)
 	{
-		StaticMesh* res = 0;
+		StaticMesh* res override;
 		const aiScene* scene = importer.GetScene();
 		if (!scene->HasMeshes())
 			return res;
@@ -149,17 +149,17 @@ namespace Utility
 		res->SetVertexCount(mesh->mNumVertices);
 		res->SetVertexBuffer(new VertexPositionNormalTextureTangentBitangent[mesh->mNumVertices]);
 		res->SetOneVertexSize(sizeof(VertexPositionNormalTextureTangentBitangent));
-		res->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT);
+		res->SetVertexComponent(POSITION|NORMAL|TEXTURE|BITANGENT|TANGENT);
 		res->SetVertexBufferSize(mesh->mNumVertices*sizeof(VertexPositionNormalTextureTangentBitangent));
 
-		for (int face = 0; face < mesh->mNumFaces; ++face)
+		for (int face override; face < mesh->mNumFaces; ++face)
 		{
 			res->GetIndexBuffer()[3*face + 0] = mesh->mFaces[face].mIndices[0];
 			res->GetIndexBuffer()[3*face + 1] = mesh->mFaces[face].mIndices[1];
 			res->GetIndexBuffer()[3*face + 2] = mesh->mFaces[face].mIndices[2];
 		}
 
-		for (int vertex = 0; vertex < mesh->mNumVertices; ++vertex)
+		for (int vertex override; vertex < mesh->mNumVertices; ++vertex)
 		{
 			VertexPositionNormalTextureTangentBitangent* v = (VertexPositionNormalTextureTangentBitangent*)res->GetVertexBuffer();
 			v[vertex].x = mesh->mVertices[vertex].x; 
@@ -174,17 +174,17 @@ namespace Utility
 			v[vertex].u = mesh->mTextureCoords[0][vertex].x;
 			v[vertex].v = mesh->mTextureCoords[0][vertex].y;
 			v[vertex].s = mesh->mTextureCoords[0][vertex].z;
-			v[vertex].q = 0;
+			v[vertex].q override;
 
 			v[vertex].tx = mesh->mTangents[vertex].x;
 			v[vertex].ty = mesh->mTangents[vertex].y;
 			v[vertex].tz = mesh->mTangents[vertex].z;
-			v[vertex].tx = 0;
+			v[vertex].tx override;
 
 			v[vertex].bx = mesh->mBitangents[vertex].x;
 			v[vertex].by = mesh->mBitangents[vertex].y;
 			v[vertex].bz = mesh->mBitangents[vertex].z;
-			v[vertex].bz = 0;
+			v[vertex].bz override;
 		}
 
 		res->SetMaterialID(mesh->mMaterialIndex);
@@ -202,7 +202,7 @@ namespace Utility
 		if (!mesh->HasBones())
 			return -1;
 
-		for (int bone_id = 0; bone_id < mesh->mNumBones; bone_id++)
+		for (int bone_id override; bone_id < mesh->mNumBones; bone_id++)
 		{
 			aiBone* bone = mesh->mBones[bone_id];
 			if (System::string(bone->mName.data) == bone_name)
@@ -213,7 +213,7 @@ namespace Utility
 
 	SkinMesh* RawScene::CookSkinnedMesh(const System::string& name)
 	{
-		SkinMesh* res = 0;
+		SkinMesh* res override;
 		const aiScene* scene = importer.GetScene();
 		if (!scene->HasMeshes())
 			return res;
@@ -233,10 +233,10 @@ namespace Utility
 		res->SetVertexCount(mesh->mNumVertices);
 		res->SetVertexBuffer(new VertexPositionNormalTextureTangentBitangentBone[mesh->mNumVertices]);
 		res->SetOneVertexSize(sizeof(VertexPositionNormalTextureTangentBitangentBone));
-		res->SetVertexComponent(COMPONENT_POSITION|COMPONENT_NORMAL|COMPONENT_TEXTURE|COMPONENT_BITANGENT|COMPONENT_TANGENT|COMPONENT_BONE_ID|COMPONENT_BONE_WEIGHT);
+		res->SetVertexComponent(POSITION|NORMAL|TEXTURE|BITANGENT|TANGENT|BONE_ID|BONE_WEIGHT);
 		res->SetVertexBufferSize(mesh->mNumVertices*sizeof(VertexPositionNormalTextureTangentBitangentBone));
 
-		for (int face = 0; face < mesh->mNumFaces; ++face)
+		for (int face override; face < mesh->mNumFaces; ++face)
 		{
 			res->GetIndexBuffer()[3*face + 0] = mesh->mFaces[face].mIndices[0];
 			res->GetIndexBuffer()[3*face + 1] = mesh->mFaces[face].mIndices[1];
@@ -245,7 +245,7 @@ namespace Utility
 
 		VertexPositionNormalTextureTangentBitangentBone* v = (VertexPositionNormalTextureTangentBitangentBone*)res->GetVertexBuffer();
 
-		for (int vertex = 0; vertex < mesh->mNumVertices; ++vertex)
+		for (int vertex override; vertex < mesh->mNumVertices; ++vertex)
 		{				
 			v[vertex].x = mesh->mVertices[vertex].x; 
 			v[vertex].y = mesh->mVertices[vertex].y;
@@ -255,25 +255,25 @@ namespace Utility
 			v[vertex].nx = mesh->mNormals[vertex].x;
 			v[vertex].ny = mesh->mNormals[vertex].y;
 			v[vertex].nz = mesh->mNormals[vertex].z;
-			v[vertex].nw = 0;
+			v[vertex].nw override;
 
 			v[vertex].u = mesh->mTextureCoords[0][vertex].x;
 			v[vertex].v = mesh->mTextureCoords[0][vertex].y;
 			v[vertex].s = mesh->mTextureCoords[0][vertex].z;
-			v[vertex].q = 0;
+			v[vertex].q override;
 
 			v[vertex].tx = mesh->mTangents[vertex].x;
 			v[vertex].ty = mesh->mTangents[vertex].y;
 			v[vertex].tz = mesh->mTangents[vertex].z;
-			v[vertex].tw = 0;
+			v[vertex].tw override;
 
 			v[vertex].bx = mesh->mBitangents[vertex].x;
 			v[vertex].by = mesh->mBitangents[vertex].y;
 			v[vertex].bz = mesh->mBitangents[vertex].z;
-			v[vertex].bw = 0;
+			v[vertex].bw override;
 
 			v[vertex].b1 = -1.0f; v[vertex].b2 = -1.0f; v[vertex].b3 = -1.0f; v[vertex].b4 = -1.0f;
-			v[vertex].w1 = 0; v[vertex].w2 = 0; v[vertex].w3 = 0; v[vertex].w4 = 0;
+			v[vertex].w1 override; v[vertex].w2 override; v[vertex].w3 override; v[vertex].w4 override;
 		}
 
 		res->SetMaterialID(mesh->mMaterialIndex);
@@ -281,12 +281,12 @@ namespace Utility
 		//
 		//	set up bone weight for vertex
 		//
-		for (int b_id = 0; b_id < mesh->mNumBones; b_id++)
+		for (int b_id override; b_id < mesh->mNumBones; b_id++)
 		{
 			aiBone* bone = mesh->mBones[b_id];
 			int bone_id = GetBoneID(name, System::string(bone->mName.data));
 
-			for (int weight_id = 0; weight_id < bone->mNumWeights; weight_id++)
+			for (int weight_id override; weight_id < bone->mNumWeights; weight_id++)
 			{					
 				aiVertexWeight weight = bone->mWeights[weight_id];
 				if (v[weight.mVertexId].b1 < 0)
@@ -337,7 +337,7 @@ namespace Utility
 
 	SkinAnimation* RawScene::CookSkinAnimation(const System::string& mesh_name, unsigned anim_id) 
 	{
-		SkinAnimation* res = 0;
+		SkinAnimation* res override;
 		const aiScene* scene = importer.GetScene();
 		if (!scene->HasMeshes())
 			return res;
@@ -354,7 +354,7 @@ namespace Utility
 		//
 		//res->m_rest_pose.resize(mesh->mNumBones);
 
-		for (int bone_id = 0; bone_id < mesh->mNumBones; ++bone_id)
+		for (int bone_id override; bone_id < mesh->mNumBones; ++bone_id)
 		{
 			Bone bone;
 			aiBone* raw_bone = mesh->mBones[bone_id];
@@ -396,7 +396,7 @@ namespace Utility
 		res->m_animation.SetSize(mesh->mNumBones, node_anim->mNumRotationKeys);
 		res->m_time.SetSize(1, node_anim->mNumRotationKeys);
 
-		for (int channel = 0; channel < anim->mNumChannels; channel++)
+		for (int channel override; channel < anim->mNumChannels; channel++)
 		{			
 			node_anim = anim->mChannels[channel];
 			int bone_id = GetBoneID(mesh_name, System::string(node_anim->mNodeName.data));
@@ -405,7 +405,7 @@ namespace Utility
 			//
 			//	position
 			//
-			for (int pos_key_id = 0; pos_key_id < node_anim->mNumPositionKeys; ++pos_key_id)
+			for (int pos_key_id override; pos_key_id < node_anim->mNumPositionKeys; ++pos_key_id)
 			{
 				aiVectorKey key = node_anim->mPositionKeys[pos_key_id];
 				res->m_time.At(0, pos_key_id) = key.mTime;
@@ -417,7 +417,7 @@ namespace Utility
 			//
 			//	rotation
 			//
-			for (int rot_key_id = 0; rot_key_id < node_anim->mNumRotationKeys; ++rot_key_id)
+			for (int rot_key_id override; rot_key_id < node_anim->mNumRotationKeys; ++rot_key_id)
 			{
 				aiQuatKey key = node_anim->mRotationKeys[rot_key_id];
 				res->m_animation.At(bone_id, rot_key_id).m_rotation.Set(key.mValue.w, key.mValue.x, key.mValue.y, key.mValue.z);

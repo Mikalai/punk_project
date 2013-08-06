@@ -10,20 +10,20 @@
 
 namespace System
 {
-	class PUNK_ENGINE Event
+	class PUNK_ENGINE_API Event
     {
     public:
         int eventCode;        
 		void* anyData;
 		void* reciever;
-        //virtual void Release() = 0;
-		char tmp[1024*1024];	//	dummy memory allocation to check memory leaks
+        //virtual void Release() override;
+        //char tmp[1024*1024];	//	dummy memory allocation to check memory leaks
 
 		virtual ~Event() {}
 
 		virtual string ToString()
 		{
-			return string::Format(L"Code: %d; NO_DESCRIPTION", eventCode);
+            return string("Code: {0}; NO_DESCRIPTION").arg(eventCode);
 		}
     };
 }

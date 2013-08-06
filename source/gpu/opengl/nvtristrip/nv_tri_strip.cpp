@@ -151,7 +151,7 @@ bool TestTriangle(const unsigned short v0, const unsigned short v1, const unsign
 	//hash this triangle
 	bool isLegit = false;
 	int ctr = v0 % NUMBINS;
-	for (unsigned k = 0; k < in_bins[ctr].size(); ++k)
+    for (unsigned k = 0; k < in_bins[ctr].size(); ++k)
 	{
 		//check triangles in this bin
 		if (SameTriangle(in_bins[ctr][k].m_v0, in_bins[ctr][k].m_v1, in_bins[ctr][k].m_v2,
@@ -164,7 +164,7 @@ bool TestTriangle(const unsigned short v0, const unsigned short v1, const unsign
 	if (!isLegit)
 	{
 		ctr = v1 % NUMBINS;
-		for (unsigned k = 0; k < in_bins[ctr].size(); ++k)
+        for (unsigned k = 0; k < in_bins[ctr].size(); ++k)
 		{
 			//check triangles in this bin
 			if (SameTriangle(in_bins[ctr][k].m_v0, in_bins[ctr][k].m_v1, in_bins[ctr][k].m_v2,
@@ -178,7 +178,7 @@ bool TestTriangle(const unsigned short v0, const unsigned short v1, const unsign
 		if (!isLegit)
 		{
 			ctr = v2 % NUMBINS;
-			for (unsigned k = 0; k < in_bins[ctr].size(); ++k)
+            for (unsigned k = 0; k < in_bins[ctr].size(); ++k)
 			{
 				//check triangles in this bin
 				if (SameTriangle(in_bins[ctr][k].m_v0, in_bins[ctr][k].m_v1, in_bins[ctr][k].m_v2,
@@ -212,7 +212,7 @@ bool GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 	//put data in format that the stripifier likes
 	WordVec tempIndices;
 	tempIndices.resize(in_numIndices);
-	unsigned short maxIndex = 0;
+    unsigned short maxIndex = 0;
 	unsigned short minIndex = 0xFFFF;
 	for(unsigned i = 0; i < in_numIndices; i++)
 	{
@@ -232,7 +232,7 @@ bool GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 
 	//stitch strips together
 	IntVec stripIndices;
-	unsigned int numSeparateStrips = 0;
+    unsigned int numSeparateStrips = 0;
 
 	if(bListsOnly)
 	{
@@ -242,7 +242,7 @@ bool GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 		PrimitiveGroup* primGroupArray = *primGroups;
 
 		//count the total number of indices
-		unsigned int numIndices = 0;
+        unsigned int numIndices = 0;
 		for(unsigned i = 0; i < tempStrips.size(); i++)
 		{
 			numIndices += tempStrips[i]->m_faces.size() * 3;
@@ -300,10 +300,10 @@ bool GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 		PrimitiveGroup* primGroupArray = *primGroups;
 
 		//first, the strips
-		int startingLoc = 0;
+        int startingLoc = 0;
 		for(unsigned stripCtr = 0; stripCtr < numSeparateStrips; stripCtr++)
 		{
-			int stripLength = 0;
+            int stripLength = 0;
 
 			if(!bStitchStrips)
 			{

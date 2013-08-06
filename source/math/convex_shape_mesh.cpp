@@ -11,46 +11,51 @@ namespace Math
 
 	bool ConvexShapeMesh::UpdateBoundingVolumes()
 	{
-		if (!m_bbox.Create((float*)&m_points[0], (int)m_points.size(), sizeof(m_points[0])))
+        if (!m_bbox.Create(m_points))
 			return (out_error() << "Can't create bounding box for convex shape" << std::endl, false);
 
-		if (!m_bsphere.Create((float*)&m_points[0], (int)m_points.size(), sizeof(m_points[0])))
+        if (!m_bsphere.Create(m_points))
 			return (out_error() << "Can't create bounding sphere for convex shape" << std::endl, false);
 
 		return true;
 	}
 
-	bool ConvexShapeMesh::Save(std::ostream& stream) const
+    void ConvexShapeMesh::Save(System::Buffer *buffer) const
 	{
 		if (m_points.empty() || m_faces.empty() || m_normals.empty())
-			return false;
+            throw System::PunkException("Unable to save convex shape");
 
 		int size = (int)m_points.size();		
-		stream.write((char*)&size, sizeof(size));
-		stream.write((char*)&m_points[0], sizeof(m_points[0])*size);
-		size = (int)m_faces.size();
-		stream.write((char*)&size, sizeof(size));
-		stream.write((char*)&m_faces[0], sizeof(m_faces[0])*size);
+        buffer->WriteSigned32(size);
+        for (auto& p : m_points)
+            p.Save(buffer);
+
+        size = (int)m_faces.size();
+        buffer->WriteSigned32(size);
+        for (auto& p : m_faces)
+            p.Save(buffer);
+
 		size = (int)m_normals.size();
-		stream.write((char*)&size, sizeof(size));
-		stream.write((char*)&m_normals[0], sizeof(m_normals[0])*size);
-		return true;
+        buffer->WriteSigned32(size);
+        for (auto& p : m_normals)
+            p.Save(buffer);
 	}
 
-	bool ConvexShapeMesh::Load(std::istream& stream)
+    void ConvexShapeMesh::Load(System::Buffer *buffer)
 	{
-		int size = 0;
-		stream.read((char*)&size, sizeof(size));
+        int size = buffer->ReadSigned32();
 		m_points.resize(size);
-		stream.read((char*)&m_points[0], sizeof(m_points[0])*size);
-		size = 0;		
-		stream.read((char*)&size, sizeof(size));
+        for (auto& p : m_points)
+            p.Load(buffer);
+
+        size = buffer->ReadSigned32();
 		m_faces.resize(size);
-		stream.read((char*)&m_faces[0], sizeof(m_faces[0])*size);
-		size = 0;
-		stream.read((char*)&size, sizeof(size));
+        for (auto& p : m_faces)
+            p.Load(buffer);
+
+        size = buffer->ReadSigned32();
 		m_normals.resize(size);
-		stream.read((char*)&m_normals[0], sizeof(m_normals[0])*size);
-		return true;
+        for (auto& p : m_normals)
+            p.Load(buffer);
 	}
 }

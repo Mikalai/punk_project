@@ -3,7 +3,7 @@
 #include "manager.h"
 #include "../math/math.h"
 #include "../utility/fonts/font_builder.h"
-#include "../system/keyboard.h"
+#include "../system/input/keyboard.h"
 #include "../system/window/module.h"
 #include "../system/event_manager.h"
 #include "gui_render.h"
@@ -11,7 +11,7 @@
 
 namespace GUI
 {
-	Widget::Widget(float x, float y, float width, float height, const System::string& text, Widget* parent) 
+	Widget::Widget(float x, float y, float width, float height, const System::string& text, Widget* parent)
 		: m_x(x)
 		, m_y(y)
 		, m_width(width)
@@ -33,7 +33,7 @@ namespace GUI
 		, m_back_color(m_back_color_0)
 		, m_text_color(m_text_color_0)
 		, m_animation(0)
-		, m_animation_duration(0.1f)		
+		, m_animation_duration(0.1f)
 		, m_next_widget(0)
 		, m_prev_widget(0)
 		, m_manager(0)
@@ -43,12 +43,12 @@ namespace GUI
 		, m_background_texture(nullptr)
 		, m_any_data(nullptr)
 	{
-		m_text_texture = new GPU::OpenGL::TextSurface;
-		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
-		m_text_texture->SetVerticalAlignment(GPU::OpenGL::TextSurface::VERTICAL_CENTER);
-		m_text_texture->SetHorizontalAlignment(GPU::OpenGL::TextSurface::HORIZONTAL_CENTER);
-		m_text_texture->SetText(m_text);
-		SetManager(GUI::Manager::Instance());	
+//        m_text_texture = new GPU::OpenGL::TextSurface(nullptr);
+//		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
+//		m_text_texture->SetVerticalAlignment(GPU::OpenGL::TextSurface::VERTICAL_CENTER);
+//		m_text_texture->SetHorizontalAlignment(GPU::OpenGL::TextSurface::HORIZONTAL_CENTER);
+//		m_text_texture->SetText(m_text);
+		SetManager(GUI::Manager::Instance());
 	}
 
 	Widget::~Widget()
@@ -61,7 +61,7 @@ namespace GUI
 		bool result = false;
 		m_text_texture->SetSize(int(GetWidth()*Manager::Instance()->GetWindow()->GetWidth()), int(GetHeight()*Manager::Instance()->GetWindow()->GetHeight()));
 		m_text_texture->SetText(m_text);
-		for each (Object* o in *this)
+		for (Object* o : *this)
 		{
 			Widget* child = As<Widget*>(o);
 			if (child)
@@ -75,7 +75,7 @@ namespace GUI
 	{
 		bool result = false;
 		bool child_processed = false;
-		for each (Object* o in *this)
+		for (Object* o : *this)
 		{
 			Widget* w = As<Widget*>(o);
 			if (w)
@@ -84,7 +84,7 @@ namespace GUI
 		}
 
 		if (!child_processed && IsVisible() && IsEnabled())
-		{			
+		{
 			bool wasIn = IsPointIn(Widget::WindowToViewport(float(e->x_prev), float(e->y_prev)));
 			bool isIn = IsPointIn(Widget::WindowToViewport(float(e->x), float(e->y)));
 			if (!wasIn && isIn)
@@ -101,14 +101,14 @@ namespace GUI
 				new_event->anyData = this;
 				Manager::Instance()->GetAdapter()->OnMouseLeaveEvent(new_event);
 				result = true;
-			}			
+			}
 
 			if (!child_processed && m_leftButtonDown && m_moveable)
 			{
 				m_x += (e->x - e->x_prev) / (float)Manager::Instance()->GetWindow()->GetWidth();
 				m_y += (e->y - e->y_prev) / (float)Manager::Instance()->GetWindow()->GetHeight();
 				result = true;
-			}			
+			}
 
 			if (isIn)
 			{
@@ -133,7 +133,6 @@ namespace GUI
 
 	bool Widget::OnMouseLeave(MouseLeaveEvent* e)
 	{
-		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
 			m_isCursorIn = false;
@@ -141,7 +140,7 @@ namespace GUI
 			m_rightButtonDown = false;
 			m_middleButtonDown = false;
 			m_OnMouseLeave(e);
-			for each(Object* o in *this)
+			for (Object* o : *this)
 			{
 				Widget* w = As<Widget*>(o);
 				if (w)
@@ -153,7 +152,6 @@ namespace GUI
 
 	bool Widget::OnMouseLeftButtonUp(System::MouseLeftButtonUpEvent* e)
 	{
-		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
 			if (m_isCursorIn)
@@ -164,7 +162,7 @@ namespace GUI
 					m_OnLeftClick(e);
 				}
 			}
-			for each (Object* o in *this)
+			for (Object* o : *this)
 			{
 				Widget* w = As<Widget*>(o);
 				if (w)
@@ -182,7 +180,7 @@ namespace GUI
 		bool result = false;
 		bool child_processed = false;
 
-		for each (Object* o in *this)
+		for (Object* o : *this)
 		{
 			Widget* w = As<Widget*>(o);
 			if (w)
@@ -210,7 +208,7 @@ namespace GUI
 		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
-			for each (Object* o in *this)
+			for (Object* o : *this)
 			{
 				Widget* w = As<Widget*>(o);
 				if (w)
@@ -225,7 +223,7 @@ namespace GUI
 		bool result = false;
 		if (IsVisible() && IsEnabled())
 		{
-			for each (Object* o in *this)
+			for (Object* o : *this)
 			{
 				Widget* w = As<Widget*>(o);
 				if (w)
@@ -236,7 +234,7 @@ namespace GUI
 	}
 
 	bool Widget::OnKeyDown(System::KeyDownEvent* event)
-	{ 
+	{
 		bool result = false;
 		if (m_isFocused)
 			m_OnKeyDown(event);
@@ -256,7 +254,7 @@ namespace GUI
 						GetManager()->SetFocusedWidget(m_next_widget);
 					}
 				}
-				else 
+				else
 				{
 					if (m_prev_widget)
 					{
@@ -270,7 +268,7 @@ namespace GUI
 	}
 
 	bool Widget::OnIdle(System::IdleEvent* e)
-	{		
+	{
 		bool result = false;
 		if (m_isFocused)
 			m_OnIdle(e);
@@ -279,7 +277,7 @@ namespace GUI
 		{
 			float time_in_s = float(e->elapsed_time_s);
 			if (m_isCursorIn)
-			{			
+			{
 				if (m_animation < m_animation_duration)
 				{
 					m_animation += time_in_s;
@@ -297,8 +295,8 @@ namespace GUI
 					m_back_color = Math::linear_interpolation(m_back_color_0, m_back_color_1, m_animation / m_animation_duration);
 					m_text_color = Math::linear_interpolation(m_text_color_0, m_text_color_1, m_animation / m_animation_duration);
 				}
-			}			
-			for each (Object* o in *this)
+			}
+			for (Object* o : *this)
 			{
 				Widget* w = As<Widget*>(o);
 				if (w)
@@ -330,14 +328,14 @@ namespace GUI
 
 	void Widget::SetText(const System::string& text)
 	{
-		m_text = text;		
+		m_text = text;
 		m_text_texture->SetText(m_text);
 		//m_textRender->SetText(m_text.c_str());
 	}
 
 	void Widget::SetFont(const System::string& font)
 	{
-		m_font = font;		
+		m_font = font;
 		m_text_texture->SetFont(font);
 		m_text_texture->SetText(m_text);
 	}
@@ -372,8 +370,8 @@ namespace GUI
 		}
 
 		c[0] = r;
-		c[1] = g; 
-		c[2] = b; 
+		c[1] = g;
+		c[2] = b;
 		c[3] = a;
 	}
 
@@ -425,17 +423,17 @@ namespace GUI
 		return GetY() * (float)Manager::Instance()->GetWindow()->GetHeight();
 	}
 
-	const GPU::OpenGL::Texture2D* Widget::GetBackgroundTexture() const
+	const Gpu::Texture2D* Widget::GetBackgroundTexture() const
 	{
 		return m_background_texture;
 	}
 
-	const GPU::OpenGL::Texture2D* Widget::GetTextTexture() const
+	const Gpu::Texture2D* Widget::GetTextTexture() const
 	{
 		return m_text_texture->GetTexture();
 	}
 
-	void Widget::SetBackgroundTexture(GPU::OpenGL::Texture2D* texture)
+	void Widget::SetBackgroundTexture(Gpu::Texture2D* texture)
 	{
 		m_background_texture = texture;
 	}
@@ -458,8 +456,8 @@ namespace GUI
 	}
 
 	Widget* Widget::GetFocused(float x, float y)
-	{		
-		for each (Object* o in *this)
+	{
+		for (Object* o : *this)
 		{
 			Widget* child = As<Widget*>(o);
 			if (child)
@@ -495,7 +493,7 @@ namespace GUI
 		if (p.X() < x || p.X() > x + w)
 			return false;
 		if (p.Y() < y || p.Y() > y + h)
-			return false;		
+			return false;
 		return true;
 	}
 
@@ -570,7 +568,7 @@ namespace GUI
 	}
 
 	void Widget::SetMouseLeftClickHandler(System::Handler onLeftClick)
-	{		
+	{
 		m_OnLeftClick = onLeftClick;
 	}
 

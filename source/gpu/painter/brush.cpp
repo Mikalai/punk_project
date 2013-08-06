@@ -3,14 +3,14 @@
 
 #include "brush.h"
 
-namespace GPU
+namespace Gpu
 {
 	struct Brush::BrushImpl
 	{
 		Math::vec4 m_color;
 		Math::mat3 m_transform;
 		int m_style;
-		const OpenGL::Texture2D* m_texture;
+		const Texture2D* m_texture;
 
 		void SetColor(const Math::vec4& value)
 		{
@@ -42,12 +42,12 @@ namespace GPU
 			return m_style;
 		}
 
-		void SetTexture(const OpenGL::Texture2D* texture)
+		void SetTexture(const Texture2D* texture)
 		{
 			m_texture = texture;
 		}
 
-		const OpenGL::Texture2D* GetTexture() const
+		const Texture2D* GetTexture() const
 		{
 			return m_texture;
 		}
@@ -104,12 +104,12 @@ namespace GPU
 		return impl->GetStyle();
 	}
 
-	void Brush::SetTexture(const OpenGL::Texture2D* texture)
+	void Brush::SetTexture(const Texture2D* texture)
 	{
 		impl->SetTexture(texture);
 	}
 
-	const OpenGL::Texture2D* Brush::GetTexture() const
+	const Texture2D* Brush::GetTexture() const
 	{
 		return impl->GetTexture();
 	}

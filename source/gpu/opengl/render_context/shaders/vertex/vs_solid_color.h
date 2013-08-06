@@ -1,16 +1,24 @@
 #ifndef _H_PUNK_OPENGL_VERTEX_SHADER_SOLID_3D
 #define _H_PUNK_OPENGL_VERTEX_SHADER_SOLID_3D
 
-#include "..\shader.h"
+#include "../shader.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
-		class VertexShaderSolid : public Shader
+        class VsSolid : public Shader
 		{
 		public:
-			VertexShaderSolid();
+            VsSolid();
+
+			virtual void InitUniforms() override;
+			virtual void BindParameters(const CoreState& params) override;
+            virtual int64_t GetRequiredAttributesSet() const override;
+
+		private:
+            unsigned uViewWorld;
+			unsigned uProjViewWorld;
 		};
 	}
 }

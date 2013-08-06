@@ -16,8 +16,7 @@
 
 #include <Windows.h>
 #include <dshow.h>
-#include "system\win32\camera_capture_win32.h"
-#pragma comment(lib, "strmiids")
+#include "system\input\camera_capture.h"
 
 void Init()
 {
@@ -48,18 +47,20 @@ void Release()
 
 #endif	//	_WIN32
 
-BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
-{	
+BOOL WINAPI DllMain(HINSTANCE, DWORD fdwReason, LPVOID)
+{
+#ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 	//_CrtSetBreakAlloc(160);
 	switch(fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
-		out_message() << "punk_engine.dll (" __DATE__" at "__TIME__") attached..." << std::endl;
+		//out_message() << "PUNK_ENGINE_API.dll (" __DATE__" at "__TIME__") attached..." << std::endl;
 		Init();
 		break;
 	case DLL_PROCESS_DETACH:
-		out_message() << "punk_engine.dll (" __DATE__" at "__TIME__") detached..." << std::endl;
+		//out_message() << "PUNK_ENGINE_API.dll (" __DATE__" at "__TIME__") detached..." << std::endl;
 	//	Release();
 		break;
 	}

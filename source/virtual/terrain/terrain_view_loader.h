@@ -27,7 +27,7 @@ namespace Virtual
 		TerrainManager* m_manager;
 	};
 
-	class PUNK_ENGINE TerrainViewLoader : public System::AbstractDataLoader
+	class PUNK_ENGINE_API TerrainViewLoader : public System::AbstractDataLoader
 	{
 	public:
 		/**

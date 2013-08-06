@@ -6,7 +6,7 @@
 
 namespace Math
 {
-	class PUNK_ENGINE Triangle2D
+	class PUNK_ENGINE_API Triangle2D
     {
         vec2 a;
         vec2 b;

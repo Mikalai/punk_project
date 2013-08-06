@@ -1,12 +1,52 @@
-#ifndef _H_PUNK_SYSTEM_CONSURRENCY_INTERLOCKED
-#define _H_PUNK_SYSTEM_CONSURRENCY_INTERLOCKED
+#ifndef _H_PUNK_SYSTEM_CONCURRENCY_INTERLOCKED
+#define _H_PUNK_SYSTEM_CONCURRENCY_INTERLOCKED
+
+#include <cstdint>
 
 #ifdef _WIN32
-#include "win32/atomic_win32.h"
+#include <intrin.h>
+#elif defined __gnu_linux__
+#include <pthread.h>
 #endif
 
-#ifdef __linux__
-#include "linux/"
+namespace System
+{
+    inline long AtomicCompareExchange(volatile int32_t* value, int32_t exchange, int32_t compare)
+	{
+#ifdef _WIN32
+		return _InterlockedCompareExchange((volatile long*)value, (long)exchange, (long)compare);
+#elif defined __gnu_linux__
 #endif
 
-#endif	//	_H_PUNK_SYSTEM_CONSURRENCY_INTERLOCKED
+	}
+
+    inline long AtomicIncrement32(volatile int32_t* value)
+	{
+#ifdef _WIN32
+		return _InterlockedIncrement((volatile long*)value);
+#endif
+	}
+
+    inline short AtomicIncrement16(volatile int16_t* value)
+	{
+#ifdef _WIN32
+		return _InterlockedIncrement16(value);
+#endif
+	}
+
+    inline long AtomicDecrement32(volatile int32_t* value)
+	{
+#ifdef _WIN32
+		return _InterlockedDecrement((volatile long*)value);
+#endif
+	}
+
+    inline long AtomicDecrement16(volatile int16_t* value)
+	{
+#ifdef _WIN32
+		return _InterlockedDecrement16(value);
+#endif
+	}
+}
+
+#endif	//	_H_PUNK_SYSTEM_CONCURRENCY_INTERLOCKED

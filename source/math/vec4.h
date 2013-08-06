@@ -3,8 +3,8 @@ MODULE FOR WORKING WITH 4 DIMENSIONAL VECTOR
 AUTHOR: Mikalai Abramau
 */
 
-#ifndef _H_VEC4_MATH
-#define _H_VEC4_MATH
+#ifndef _H_PUNK_MATH_VEC4
+#define _H_PUNK_MATH_VEC4
 
 #include <iosfwd>
 #include <stdio.h>
@@ -18,8 +18,10 @@ namespace Math
 {
 	template<class T>
 	class  Vector4
-	{
+	{		
+    protected:
 		static const int Size_c = 4;
+		static constexpr float Eps = 1e-3;
 		T m_v[Size_c];
 	public:
 
@@ -35,34 +37,39 @@ namespace Math
 
 		Vector4<T>(T x, T y, T z, T w)
 		{
-			m_v[0] = x;
-			m_v[1] = y;
-			m_v[2] = z;
-			m_v[3] = w;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(y) < Eps) ? 0 : y;
+			m_v[2] = (fabs(z) < Eps) ? 0 : z;
+			m_v[3] = (fabs(w) < Eps) ? 0 : w;
 		}
 
 		Vector4<T>(T x)
 		{
-			m_v[0] = x;
-			m_v[1] = x;
-			m_v[2] = x;
-			m_v[3] = x;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(x) < Eps) ? 0 : x;
+			m_v[2] = (fabs(x) < Eps) ? 0 : x;
+			m_v[3] = (fabs(x) < Eps) ? 0 : x;
 		}
 
 		Vector4<T>(const Vector4<T>& origin, const Vector4<T>& destination)
 		{
 			for (int i = 0; i < Size_c; i++)
 			{
-				m_v[i] = destination[i] - origin[i];
+				float v = destination[i] - origin[i];
+				m_v[i] = (fabs(v) < Eps) ? 0 : v;
 			}
 		}
 
 		Vector4<T>(const Vector3<T>& vec, T d)
 		{
-			m_v[0] = vec.X();
-			m_v[1] = vec.Y();
-			m_v[2] = vec.Z();
-			m_v[3] = d;
+			float x = vec.X();
+			float y = vec.Y();
+			float z = vec.Z();
+			float w = d;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(y) < Eps) ? 0 : y;
+			m_v[2] = (fabs(z) < Eps) ? 0 : z;
+			m_v[3] = (fabs(w) < Eps) ? 0 : w;
 		}
 
 		T& operator[] (int i)
@@ -122,18 +129,53 @@ namespace Math
 
 		Vector4<T>& operator = (const Vector4<T>& vec)
 		{
+#ifdef _WIN32
 			memcpy_s(m_v, sizeof(m_v), vec.m_v, sizeof(m_v));
+#else
+            memcpy(m_v, vec.m_v, sizeof(m_v));
+#endif
 			return *this;
 		}
 
 		Vector4<T>& operator /= (const T& v)
 		{
 			for (int i = 0; i < Size_c; i++)
-				m_v[i] /= v;
+			{
+                float t = m_v[i] / v;
+                m_v[i] = (fabs(v) < Eps) ? 0 : t;
+			}
 			return *this;
 		}
 
-		T Length()
+        Vector4<T>& operator += (const Vector4<T>& v)
+        {
+            for (int i = 0; i < Size_c; i++)
+            {
+                m_v[i] += v[i];
+            }
+            return *this;
+        }
+
+        Vector4<T>& operator -= (const Vector4<T>& v)
+        {
+            for (int i = 0; i < Size_c; i++)
+            {
+                m_v[i] -= v[i];
+            }
+            return *this;
+        }
+
+        Vector4<T>& operator *= (const T& v)
+        {
+            for (int i = 0; i < Size_c; i++)
+            {
+                float t = m_v[i] * v;
+                m_v[i] = (fabs(v) < Eps) ? 0 : t;
+            }
+            return *this;
+        }
+
+        T Length() const
 		{
 			//
 			//	it will always convert to float
@@ -151,244 +193,244 @@ namespace Math
 			return *this;
 		}
 
-		T Dot(const Vector4<T>& vec)
+		const T Dot(const Vector4<T>& vec) const
 		{
 			return m_v[0] * vec.m_v[0] + m_v[1] * vec.m_v[1] + m_v[2] * vec.m_v[2] + m_v[3] * vec.m_v[3];
 		}
 
 		void Set(T x)
 		{
-			m_v[0] = x;
-			m_v[1] = x;
-			m_v[2] = x;
-			m_v[3] = x;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(x) < Eps) ? 0 : x;
+			m_v[2] = (fabs(x) < Eps) ? 0 : x;
+			m_v[3] = (fabs(x) < Eps) ? 0 : x;
 		}
 
 		void Set(T x, T y, T z, T w)
 		{
-			m_v[0] = x;
-			m_v[1] = y;
-			m_v[2] = z;
-			m_v[3] = w;
+			m_v[0] = (fabs(x) < Eps) ? 0 : x;
+			m_v[1] = (fabs(y) < Eps) ? 0 : y;
+			m_v[2] = (fabs(z) < Eps) ? 0 : z;
+			m_v[3] = (fabs(w) < Eps) ? 0 : w;
 		}
 
-		Vector4<T> ComponentMul(const Vector4<T>& v)
+        const Vector4<T> ComponentMul(const Vector4<T>& v)
 		{
 			return Vector4<T>(m_v[0]*v[0], m_v[1]*v[1], m_v[2]*v[2], m_v[3]*v[3]);
 		}
 
-		System::string ToString() const
+        const System::string ToString() const
 		{
-			return System::string::Format(L"(%.3f; %.3f; %.3f; %.3f)", m_v[0], m_v[1], m_v[2], m_v[3]);
+            return System::string("({0:.3}; {1:.3}; {2:.3}; {3:.3})").arg(m_v[0]).arg(m_v[1]).arg(m_v[2]).arg(m_v[3]);
 		}
 
-		Vector2<T> XY() const
+        const Vector2<T> XY() const
 		{
 			return Vector2<T>(m_v[0], m_v[1]);
 		}
 
-		Vector2<T> YX() const 
+        const Vector2<T> YX() const
 		{
 			return Vector2<T>(m_v[1], m_v[0]);
 		}
 
-		Vector2<T> XZ() const
+        const Vector2<T> XZ() const
 		{
 			return Vector2<T>(m_v[0], m_v[2]);
 		}
 
-		Vector2<T> ZX() const
+        const Vector2<T> ZX() const
 		{
 			return Vector2<T>(m_v[2], m_v[0]);
 		}
 
-		Vector2<T> YZ() const
+        const Vector2<T> YZ() const
 		{
 			return Vector2<T>(m_v[1], m_v[2]);
 		}
 
-		Vector2<T> ZY() const
+        const Vector2<T> ZY() const
 		{
 			return Vector2<T>(m_v[2], m_v[1]);
 		}
 
-		Vector2<T> XW() const
+        const Vector2<T> XW() const
 		{
 			return Vector2<T>(m_v[0], m_v[3]);
 		}
 
-		Vector2<T> WX() const 
+        const Vector2<T> WX() const
 		{
 			return Vector2<T>(m_v[3], m_v[0]);
 		}
 
-		Vector2<T> WZ() const
+        const Vector2<T> WZ() const
 		{
 			return Vector2<T>(m_v[3], m_v[2]);
 		}
 
-		Vector2<T> ZW() const
+        const Vector2<T> ZW() const
 		{
 			return Vector2<T>(m_v[2], m_v[3]);
 		}
 
-		Vector2<T> YW() const
+        const Vector2<T> YW() const
 		{
 			return Vector2<T>(m_v[1], m_v[3]);
 		}
 
-		Vector2<T> WY() const
+        const Vector2<T> WY() const
 		{
 			return Vector2<T>(m_v[3], m_v[1]);
 		}
 
-		Vector3<T> XYZ() const
+        const Vector3<T> XYZ() const
 		{
 			return Vector3<T>(m_v[0], m_v[1], m_v[2]);
 		}
 
-		Vector3<T> XZY() const
+        const Vector3<T> XZY() const
 		{
 			return Vector3<T>(m_v[0], m_v[2], m_v[1]);
 		}
 
-		Vector3<T> YXZ() const
+        const Vector3<T> YXZ() const
 		{
 			return Vector3<T>(m_v[1], m_v[0], m_v[2]);
 		}
 
-		Vector3<T> YZX() const 
+        const Vector3<T> YZX() const
 		{
 			return Vector3<T>(m_v[1], m_v[2], m_v[0]);
 		}
 
-		Vector3<T> ZXY() const
+        const Vector3<T> ZXY() const
 		{
 			return Vector3<T>(m_v[2], m_v[0], m_v[1]);
 		}
 
-		Vector3<T> ZYX() const
+        const Vector3<T> ZYX() const
 		{
 			return Vector3<T>(m_v[2], m_v[1], m_v[0]);
 		}
 
-		Vector4<T> XYZW() const
+        const Vector4<T> XYZW() const
 		{
 			return Vector4<T>(m_v[0], m_v[1], m_v[2], m_v[3]);
 		}
 
-		Vector4<T> XYWZ() const
+        const Vector4<T> XYWZ() const
 		{
 			return Vector4<T>(m_v[0], m_v[1], m_v[3], m_v[2]);
 		}
 
-		Vector4<T> XZYW() const
+        const Vector4<T> XZYW() const
 		{
 			return Vector4<T>(m_v[0], m_v[2], m_v[1], m_v[3]);
 		}
 
-		Vector4<T> XZWY() const
+        const Vector4<T> XZWY() const
 		{
 			return Vector4<T>(m_v[0], m_v[2], m_v[3], m_v[1]);
 		}
 
-		Vector4<T> XWYZ() const
+        const Vector4<T> XWYZ() const
 		{
 			return Vector4<T>(m_v[0], m_v[3], m_v[1], m_v[2]);
 		}
 
-		Vector4<T> XWZY() const
+        const Vector4<T> XWZY() const
 		{
 			return Vector4<T>(m_v[0], m_v[3], m_v[2], m_v[1]);
 		}
 
-		Vector4<T> YXZW() const
+        const Vector4<T> YXZW() const
 		{
 			return Vector4<T>(m_v[1], m_v[0], m_v[2], m_v[3]);
 		}
 
-		Vector4<T> YXWZ() const
+        const Vector4<T> YXWZ() const
 		{
 			return Vector4<T>(m_v[1], m_v[0], m_v[3], m_v[2]);
 		}
 
-		Vector4<T> YZXW() const
+        const Vector4<T> YZXW() const
 		{
 			return Vector4<T>(m_v[1], m_v[2], m_v[0], m_v[3]);
 		}
 
-		Vector4<T> YZWX() const
+        const Vector4<T> YZWX() const
 		{
 			return Vector4<T>(m_v[1], m_v[2], m_v[3], m_v[0]);
 		}
 
-		Vector4<T> YWZX() const
+        const Vector4<T> YWZX() const
 		{
 			return Vector4<T>(m_v[1], m_v[3], m_v[2], m_v[0]);
 		}
 
-		Vector4<T> YWXZ() const
+        const Vector4<T> YWXZ() const
 		{
 			return Vector4<T>(m_v[1], m_v[3], m_v[0], m_v[2]);
 		}
 
 
-		Vector4<T> ZXYW() const
+        const Vector4<T> ZXYW() const
 		{
 			return Vector4<T>(m_v[2], m_v[0], m_v[1], m_v[3]);
 		}
 
-		Vector4<T> ZXWY() const
+        const Vector4<T> ZXWY() const
 		{
 			return Vector4<T>(m_v[2], m_v[0], m_v[3], m_v[1]);
 		}
 
-		Vector4<T> ZYXW() const
+        const Vector4<T> ZYXW() const
 		{
 			return Vector4<T>(m_v[2], m_v[1], m_v[0], m_v[3]);
 		}
 
-		Vector4<T> ZYWX() const
+        const Vector4<T> ZYWX() const
 		{
 			return Vector4<T>(m_v[2], m_v[1], m_v[3], m_v[0]);
 		}
 
-		Vector4<T> ZWXY() const
+        const Vector4<T> ZWXY() const
 		{
 			return Vector4<T>(m_v[2], m_v[3], m_v[0], m_v[1]);
 		}
 
-		Vector4<T> ZWYX() const
+        const Vector4<T> ZWYX() const
 		{
 			return Vector4<T>(m_v[2], m_v[3], m_v[1], m_v[0]);
 		}
 
-		Vector4<T> WXYZ() const
+        const Vector4<T> WXYZ() const
 		{
 			return Vector4<T>(m_v[3], m_v[0], m_v[1], m_v[2]);
 		}
 
-		Vector4<T> WXZY() const
+        const Vector4<T> WXZY() const
 		{
 			return Vector4<T>(m_v[3], m_v[0], m_v[2], m_v[1]);
 		}
 
-		Vector4<T> WYXZ() const
+        const Vector4<T> WYXZ() const
 		{
 			return Vector4<T>(m_v[3], m_v[1], m_v[0], m_v[2]);
 		}
 
-		Vector4<T> WYZX() const
+        const Vector4<T> WYZX() const
 		{
 			return Vector4<T>(m_v[3], m_v[1], m_v[2], m_v[0]);
 		}
 
-		Vector4<T> WZXY() const
+        const Vector4<T> WZXY() const
 		{
 			return Vector4<T>(m_v[3], m_v[2], m_v[0], m_v[1]);
 		}
 
-		Vector4<T> WZYX() const
+        const Vector4<T> WZYX() const
 		{
 			return Vector4<T>(m_v[3], m_v[2], m_v[1], m_v[0]);
 		}
@@ -499,27 +541,40 @@ namespace Math
 		return !(a == b);
 	}
 
-	class PUNK_ENGINE vec4 : public Vector4<float> 
+    class vec3;
+
+	class PUNK_ENGINE_API vec4 : public Vector4<float> 
 	{
 	public:
-		vec4() : Vector4<float>() {}
-		vec4(float x, float y, float z, float w) : Vector4<float>(x, y, z, w) {}
-		vec4(float x) : Vector4<float>(x) {}
-		vec4(const vec4& origin, const vec4& destination) : Vector4<float>(origin, destination) {}
-		vec4(const vec3& p, float d = 1) : Vector4<float>(p, d) {}
-		vec4(const vec4& vec) : Vector4<float>(vec) {}
-		vec4(const Vector4<float>& vec) : Vector4<float>(vec) {}
+        vec4();
+        vec4(float x, float y, float z, float w);
+        vec4(float x);
+        vec4(const vec4& origin, const vec4& destination);
+        vec4(const vec3& p, float d = 1);
+        vec4(const vec4& vec);
+        vec4(const Vector4<float>& vec);
+        const vec3 ToHomogeneus() const;
+        void Save(System::Buffer* buffer) const;
+        void Load(System::Buffer* buffer);
 	};
 
-	class PUNK_ENGINE ivec4 : public Vector4<int> 
+    PUNK_ENGINE_API const vec4 operator + (const vec4& a, const vec4& b);
+    PUNK_ENGINE_API const vec4 operator - (const vec4& a, const vec4& b);
+    PUNK_ENGINE_API const vec4 operator *(const vec4& a, float d);
+    PUNK_ENGINE_API const vec4 operator *(float d, const vec4& a);
+    PUNK_ENGINE_API const vec4 operator /(const vec4& a, double d);
+    PUNK_ENGINE_API bool operator ==(const vec4& a, const vec4& b);
+    PUNK_ENGINE_API bool operator !=(const vec4& a, const vec4& b);
+
+	class PUNK_ENGINE_API ivec4 : public Vector4<int> 
 	{
 	public:
-		ivec4() : Vector4<int>() {}
-		ivec4(int x, int y, int z, int w) : Vector4<int>(x, y, z, w) {}
-		ivec4(int x) : Vector4<int>(x) {}
-		ivec4(const ivec4& vec) : Vector4<int>(vec) {}
-		ivec4(const Vector4<int>& vec) : Vector4<int>(vec) {}
+        ivec4();
+        ivec4(int x, int y, int z, int w);
+        ivec4(int x);
+        ivec4(const ivec4& vec);
+        ivec4(const Vector4<int>& vec);
 	};	
 }
 
-#endif
+#endif  //  _H_PUNK_MATH_VEC4

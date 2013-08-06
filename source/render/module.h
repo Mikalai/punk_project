@@ -7,7 +7,8 @@ Description: Render of the scene
 #ifndef _H_PUNK_RENDER_MODULE
 #define _H_PUNK_RENDER_MODULE
 
-#include "v1/module.h"
+//#include "v1/module.h"
+#include "v2/module.h"
 
 //#include "renderable.h"
 //#include "simple_renderpipeline.h"

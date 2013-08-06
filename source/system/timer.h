@@ -1,18 +1,32 @@
-/*
-    File: timer.h
-    Author: Mikalaj Abramau
-    Desc: High resolution timer
-*/
+#ifndef _H_PUNK_SYSTEM_TIMER
+#define _H_PUNK_SYSTEM_TIMER
 
-#ifndef _H_PUNK_TIMER
-#define _H_PUNK_TIMER
+#include <memory>
+#include "../config.h"
 
-#ifdef _WIN32
-#include "win32/timer_win32.h"
-#endif
+namespace System
+{
+	/**
+	*	Timer is used for strict time count
+	*/
+	class PUNK_ENGINE_API Timer final
+    {
+    public:
+        Timer();
+		~Timer();
 
-#ifdef __linux__
-#include "linux/timer_linux.h"
-#endif
+        double GetCurrentTime() const;
+        double GetElapsedSeconds() const;
+		double GetElapsedMiliseconds() const;
+        double Reset();
+
+	private:
+		Timer(const Timer&);
+		Timer& operator = (const Timer&);
+
+		struct Impl;
+		Impl* impl;
+    };
+}
 
 #endif  //  _H_PUNK_TIMER
