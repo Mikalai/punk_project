@@ -125,6 +125,7 @@ namespace Gpu
 
             m_caps.IsMultisamplingEnabled = m_desc.config.use_multisampling && IsMultisamplingSupported(this);
             m_caps.IsCoverageSamplingEnabled = m_desc.config.use_coveragesampling && IsCoverageSamplingSupported(this);
+            m_caps.ShadowMapSize = m_desc.config.shadow_map_width;
             GetFrameBufferConfigs(m_fb_config, this);
         }
 
@@ -938,6 +939,7 @@ namespace Gpu
             glClearDepthf = (PFNGLCLEARDEPTHFPROC)GetGPUProcAddress("glClearDepthf");
             glClearDepth = (PFNGLCLEARDEPTHPROC)GetGPUProcAddress("glClearDepth");
             glRenderbufferStorageMultisampleCoverageNV = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC)GetGPUProcAddress("glRenderbufferStorageMultisampleCoverageNV");
+            glFramebufferTextureLayer = (PFNGLFRAMEBUFFERTEXTURELAYERPROC)GetGPUProcAddress("glFramebufferTextureLayer");
         }
 
         size_t VideoDriverImpl::GetFrameBufferConfigCount() const
@@ -958,6 +960,13 @@ namespace Gpu
             return buffer.release();
         }
 
+        FrameBuffer* VideoDriverImpl::CreateFrameBuffer()
+        {
+            std::unique_ptr<OpenGLFrameBuffer> buffer(new OpenGLFrameBuffer(this));
+            m_frame_buffer.push_back(buffer.get());
+            return buffer.release();
+        }
+
         Display* VideoDriverImpl::GetDisplay()
         {
             return m_display;
@@ -966,6 +975,14 @@ namespace Gpu
         Texture2D* VideoDriverImpl::CreateTexture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, ImageModule::DataType type, const void* data, bool use_mipmaps)
         {
             Texture2DImpl* res{new Texture2DImpl(width, height, internal_format, format, type, data, use_mipmaps, this) };
+            return res;
+        }
+
+        Texture2DArray* VideoDriverImpl::CreateTexture2DArray(int width, int height, int depth, ImageModule::ImageFormat internal_format,
+                                                              ImageModule::ImageFormat format, ImageModule::DataType type,
+                                                              const void* data, bool use_mipmaps)
+        {
+            Texture2DArrayImpl* res{new Texture2DArrayImpl(width, height, depth, internal_format, format, type, data, use_mipmaps, this)};
             return res;
         }
 

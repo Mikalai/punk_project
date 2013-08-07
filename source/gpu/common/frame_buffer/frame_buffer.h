@@ -1,13 +1,18 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
 
+#include <cstddef>
 #include "../../../config.h"
+#include "frame_buffer_target.h"
 
 namespace Gpu
 {
     class VideoDriver;
     class Texture2D;
+    class Texture2DArray;
     class FrameBufferConfig;
+    class ColorRenderBuffer;
+    class DepthRenderBuffer;
 
     class PUNK_ENGINE_API FrameBuffer
     {
@@ -19,7 +24,14 @@ namespace Gpu
         virtual void Bind();
         virtual void Unbind();
         virtual void Config(FrameBufferConfig *config);
-
+        virtual void AttachColorTarget(size_t index, Texture2D* buffer) = 0;
+        virtual void AttachColorTarget(size_t index, ColorRenderBuffer* buffer) = 0;
+        virtual void AttachDepthTarget(Texture2D* buffer) = 0;
+        virtual void AttachDepthTarget(DepthRenderBuffer* buffer) = 0;
+        virtual void AttachDepthTarget(Texture2DArray *buffer, size_t index) = 0;
+        virtual void SetRenderTarget(FrameBufferTarget value) = 0;
+        virtual void SetViewport(int x, int y, int width, int height) = 0;
+        virtual void Clear(bool color, bool depth, bool stencil) = 0;
         VideoDriver* GetVideoDriver();        
 
         Texture2D* GetColorTexture();

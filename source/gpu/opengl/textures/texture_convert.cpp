@@ -6,6 +6,28 @@ namespace Gpu
 {
     namespace OpenGL
     {      
+        size_t PixelSize(const ImageModule::ImageFormat& value)
+        {
+        }
+
+        GLenum Convert(const ImageModule::DataType& value)
+        {
+            switch (value)
+            {
+            case ImageModule::IMAGE_DATA_TYPE_BYTE:
+                return GL_UNSIGNED_BYTE;
+            case ImageModule::IMAGE_DATA_TYPE_FLOAT:
+                return GL_FLOAT;
+            case ImageModule::IMAGE_DATA_TYPE_SIGNED_INT:
+            case ImageModule::IMAGE_DATA_TYPE_UNSIGNED_INT:
+                return GL_UNSIGNED_INT;
+            case ImageModule::IMAGE_DATA_TYPE_SIGNED_SHORT:
+            case ImageModule::IMAGE_DATA_TYPE_UNSIGNED_SHORT:
+                return GL_UNSIGNED_SHORT;
+            }
+            throw System::PunkException("Invalid texture data type");
+        }
+
         GLenum Convert(const TextureFilter& value)
         {
             switch(value)

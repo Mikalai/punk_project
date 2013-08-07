@@ -1,6 +1,6 @@
 #include "render_batch.h"
-#include "gpu_state.h"
-#include "renderable.h"
+#include "../gpu_state.h"
+#include "../renderable.h"
 
 namespace Gpu
 {

@@ -2,7 +2,7 @@
 #define _H_PUNK_RENDER_BATCH
 
 #include <list>
-#include "../../system/poolable.h"
+#include "../../../system/poolable.h"
 
 namespace Gpu
 {

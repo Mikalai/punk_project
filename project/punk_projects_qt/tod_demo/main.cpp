@@ -27,6 +27,7 @@ namespace Demo
         Scene::Node* m_enemy_visible;
 
         Gpu::FrameBuffer* m_frame_buffer;
+        Gpu::ShadowMapRender* m_shadow_map_render;
 
         int m_killed_count;
         int m_horde_left;
@@ -123,6 +124,7 @@ namespace Demo
             //m_depth_buffer = GetVideoDriver()->CreateTexture2D(512, 512, ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT24, ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT, 0, false);
             //m_color_buffer = GetVideoDriver()->CreateTexture2D(512, 512, ImageModule::IMAGE_FORMAT_RGBA, ImageModule::IMAGE_FORMAT_RGBA, 0, false);
 
+            m_shadow_map_render = new Gpu::ShadowMapRender(GetVideoDriver());
         }
 
         virtual void OnDestroy() override
@@ -329,6 +331,12 @@ namespace Demo
                 render.RenderScene(m_scene, frame);
                 frame->DrawCircleXY(c.X(), c.Y(), c.Z(), 0.05f);
                 frame->DrawText2D(10, GetWindow()->GetHeight() - 30, L"PunkEngine");
+                Gpu::LightParameters l;
+                l.SetDirection(Math::vec3(0, 1, -1).Normalized());
+                l.SetDiffuseColor(1,1,1,1);
+                m_shadow_map_render->SetLight(l);
+                m_shadow_map_render->SetViewpoint(m_projection_matrix, m_view_matrix);
+                m_shadow_map_render->Run(frame);
 
                 frame->EndRendering();
             }
@@ -375,7 +383,7 @@ int main()
         Punk::Config cfg;
         cfg.gpu_config.view_width = 1920;
         cfg.gpu_config.view_height = 1200;
-        cfg.gpu_config.fullscreen = true;
+        cfg.gpu_config.fullscreen = false;
         app->Init(cfg);
         System::Mouse::Instance()->LockInWindow(false);
         app->Run();

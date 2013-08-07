@@ -152,6 +152,8 @@ namespace Gpu
 		void PopTextureState();
 
         VideoDriver* GetVideoDriver() const;
+        std::vector<Batch*>& GetBatches();
+
 	private:
 
 		CoreState* Top();

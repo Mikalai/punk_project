@@ -22,6 +22,7 @@ namespace Gpu
 
     class RenderTarget;
     class Texture2D;
+    class Texture2DArray;
 	class Frame;
     class FrameBufferConfig;
     class FrameBuffer;
@@ -37,6 +38,7 @@ namespace Gpu
         virtual void SetFullScreen(bool flag) = 0;
         virtual System::Window* GetWindow() = 0;
         virtual Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, ImageModule::DataType type, const void* data, bool use_mipmaps) = 0;
+        virtual Texture2DArray* CreateTexture2DArray(int width, int height, int depth, ImageModule::ImageFormat internal_format, ImageModule::ImageFormat format, ImageModule::DataType type, const void* data, bool use_mipmaps) = 0;
         virtual FrameBuffer* CreateFrameBuffer(FrameBufferConfig* config) = 0;
         virtual void SetViewport(float x, float y, float width, float height) = 0;
         virtual void SetClearColor(const Math::vec4& color) = 0;
@@ -46,6 +48,7 @@ namespace Gpu
         virtual const Config& GetConfig() const = 0;
         virtual size_t GetFrameBufferConfigCount() const = 0;
         virtual FrameBufferConfig* GetFrameBufferConfig(size_t index) = 0;
+        virtual FrameBuffer* CreateFrameBuffer() = 0;
         virtual const VideoDriverCaps& GetCaps() = 0;
 
         Texture2D* CreateTexture2D(int width, int height, ImageModule::ImageFormat format, const void* data, bool use_mipmaps);
@@ -57,7 +60,8 @@ namespace Gpu
         FrameBuffer* CreateFrameBuffer(int width, int height);
         FrameBuffer* CreateFrameBuffer(int width, int height, ImageModule::ImageFormat color_format, ImageModule::ImageFormat depth_color);
         FrameBuffer* CreateFrameBuffer(int width, int height, ImageModule::ImageFormat color_format, ImageModule::ImageFormat depth_color, int depth_samples);
-        FrameBuffer* CreateFrameBuffer(int width, int height, ImageModule::ImageFormat color_format, ImageModule::ImageFormat depth_color, int depth_samples, int coverage_samples);
+        FrameBuffer* CreateFrameBuffer(int width, int height, ImageModule::ImageFormat color_format, ImageModule::ImageFormat depth_color, int depth_samples, int coverage_samples);        
+
         Frame* BeginFrame();
         void EndFrame(Frame* value);
 

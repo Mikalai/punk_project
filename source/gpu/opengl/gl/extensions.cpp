@@ -186,5 +186,6 @@ namespace Gpu
         PFNGLCLEARDEPTHFPROC glClearDepthf;
         PFNGLCLEARDEPTHPROC glClearDepth;
         PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC glRenderbufferStorageMultisampleCoverageNV;
+        PFNGLFRAMEBUFFERTEXTURELAYERPROC glFramebufferTextureLayer;
     }
 }

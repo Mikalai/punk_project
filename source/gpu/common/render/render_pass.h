@@ -1,7 +1,7 @@
 #ifndef _H_PUNK_RENDER_PASS
 #define _H_PUNK_RENDER_PASS
 
-#include "../../config.h"
+#include "../../../config.h"
 #include <map>
 #include <vector>
 

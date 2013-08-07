@@ -229,6 +229,8 @@ namespace Gpu
 		extern PFNGLTEXTURESTORAGE2DEXTPROC glTextureStorage2DEXT;
 
         extern PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC glRenderbufferStorageMultisampleCoverageNV;
+
+        extern PFNGLFRAMEBUFFERTEXTURELAYERPROC glFramebufferTextureLayer;
 	}
 }
 

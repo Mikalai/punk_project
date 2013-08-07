@@ -37,6 +37,7 @@ namespace Gpu
             virtual void SetWrapMode(TextureWrapDirection dir, TextureWrapMode mode) override;
             virtual void SetCompareFunction(TextureCompareFunc value) override;
             virtual void SetCompareMode(TextureCompareMode value) override;
+            virtual VideoDriver* GetVideoDriver() override;
 
             size_t GetPixelSize(GLenum format);
             GLenum GetInternalFormat(GLenum format);

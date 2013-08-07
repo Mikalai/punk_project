@@ -140,7 +140,7 @@ namespace Gpu
 
                             try
                             {
-                                FrameBuffer frame_buffer(driver);
+                                OpenGLFrameBuffer frame_buffer(driver);
                                 frame_buffer.Config(&fb_config);
 
                                 if (fb_config.DepthSamples() > sample_index)

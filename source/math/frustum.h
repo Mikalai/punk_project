@@ -33,6 +33,7 @@ namespace Math
 
 	public:
 
+        Frustum();
         Frustum(const mat4& projection_matrix);
 
 		//void Set(float left, float right, float top, float bottom, float znear, float zfar);
@@ -46,8 +47,13 @@ namespace Math
         float GetNearPlane() const;
         float GetFarPlane() const;
 
-		const Plane& GetPlane(FrustumPlane value) const;
-		const Math::vec3& GetPoint(FrustumPoints value) const;
+        void SetFovY(float value);
+        void SetAspectRatio(float value);
+        void SetNearPlane(float value);
+        void SetFarPlane(float value);
+
+        const Plane& GetPlane(FrustumPlane value) const;
+        const Math::vec3& GetPoint(FrustumPoints value) const;
 
         //void Save(System::Buffer* buffer) const;
         //void Load(System::Buffer* buffer);
@@ -62,11 +68,12 @@ namespace Math
 
 		Math::vec3 m_points[8];
 
-        const mat4& m_projection_matrix;
-//		float m_fov;
-//		float m_aspect;
-//		float m_znear;
-//		float m_zfar;
+        mat4  m_projection_matrix;
+        float m_fov;
+        float m_aspect;
+        float m_znear;
+        float m_zfar;
+        bool m_need_update;
 
         //void UpdateMatrix();
 		void CalculatePlanes();

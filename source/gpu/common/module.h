@@ -11,11 +11,10 @@
 #include "video_driver.h"
 #include "renderable_builder.h"
 #include "primitive_type.h"
-#include "render_batch.h"
-#include "render_pass.h"
 #include "primitives/module.h"
 #include "frame_buffer/module.h"
 #include "texture/module.h"
+#include "render/module.h"
 
 namespace Gpu
 {

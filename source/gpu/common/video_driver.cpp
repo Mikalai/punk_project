@@ -119,7 +119,7 @@ namespace Gpu
         fb.DepthSamples(depth_samples);
         fb.CoverageSamples(coverage_samples);
         return CreateFrameBuffer(&fb);
-    }
+    }    
 
     Frame* VideoDriver::BeginFrame()
     {

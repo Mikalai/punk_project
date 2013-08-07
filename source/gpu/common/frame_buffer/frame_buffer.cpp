@@ -55,5 +55,5 @@ namespace Gpu
         if (m_config)
             delete m_config;
         m_config = new FrameBufferConfig(*config);
-    }
+    }       
 }

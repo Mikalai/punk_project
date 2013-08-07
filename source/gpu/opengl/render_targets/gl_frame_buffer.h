@@ -24,10 +24,14 @@ namespace Gpu
             virtual void Unbind() override;
             virtual void Config(FrameBufferConfig *config) override;
 
-            void AttachColorTarget(size_t index, Texture2D* buffer);
-            void AttachColorTarget(size_t index, OpenGLColorRenderBuffer* buffer);
-            void AttachDepthTarget(Texture2D* buffer);
-            void AttachDepthTarget(OpenGLDepthRenderBuffer* buffer);
+            virtual void AttachColorTarget(size_t index, Texture2D* buffer) override;
+            virtual void AttachColorTarget(size_t index, ColorRenderBuffer* buffer) override;
+            virtual void AttachDepthTarget(Texture2D* buffer) override;
+            virtual void AttachDepthTarget(DepthRenderBuffer* buffer) override;
+            virtual void AttachDepthTarget(Texture2DArray *buffer, size_t index) override;
+            virtual void SetRenderTarget(FrameBufferTarget value) override;
+            virtual void SetViewport(int x, int y, int width, int height) override;
+            virtual void Clear(bool color, bool depth, bool stencil) override;
 
         private:
             void Clear();

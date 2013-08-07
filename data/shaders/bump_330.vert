@@ -7,7 +7,7 @@ uniform mat3 uNormalMatrix;
 uniform vec3 uLightPosition;
 uniform mat4 uTextureMatrix;
 
-out vec2 Texcoord;
+out vec2 vTexture0;
 out vec3 ViewDirection;
 out vec3 LightDirection;
 
@@ -15,7 +15,7 @@ layout(location = 0) in vec4 rm_Vertex;
 layout(location = 1) in vec4 rm_Normal;
 layout(location = 2) in vec4 rm_Tangent;
 layout(location = 3) in vec4 rm_Binormal;
-layout(location = 5) in vec4 rm_Texcoord;
+layout(location = 5) in vec4 rm_Texture0;
 
 void main(void)
 {
@@ -40,5 +40,5 @@ void main(void)
 	ViewDirection = normalize(ViewDirection);
 	LightDirection = normalize(LightDirection);
 	
-	Texcoord = (uTextureMatrix * vec4(rm_Texcoord.xy, 0, 1)).xy; 
+        vTexture0 = (uTextureMatrix * vec4(rm_vTexture0.xy, 0, 1)).xy;
 }

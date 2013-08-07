@@ -7,6 +7,7 @@ namespace Gpu
     {
         bool IsMultisamplingEnabled;
         bool IsCoverageSamplingEnabled;
+        size_t ShadowMapSize;
     };
 }
 

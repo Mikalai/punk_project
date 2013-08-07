@@ -1,10 +1,10 @@
 #include "render_pass.h"
-#include "renderable.h"
+#include "../renderable.h"
 #include "render_batch.h"
-#include "abstract_render_context_policy.h"
-#include "video_driver.h"
-#include "gpu_state.h"
-#include "texture/module.h"
+#include "../abstract_render_context_policy.h"
+#include "../video_driver.h"
+#include "../gpu_state.h"
+#include "../texture/module.h"
 
 namespace Gpu
 {

@@ -475,9 +475,7 @@ SOURCES += ../../source/main.cpp \
 	   ../../source/virtual/objects/characters/human.cpp \
 	   ../../source/virtual/objects/characters/male_human.cpp \
 	   ../../source/virtual/objects/simple/solid_cube.cpp \	   
-	../../source/system/handler.cpp \	
-	../../source/gpu/common/render_batch.cpp	\
-	../../source/gpu/common/render_pass.cpp \	
+	../../source/system/handler.cpp \			
 	../../source/gpu/common/primitives/triangles.cpp \
         ../../source/gpu/common/primitives/triangle_strip.cpp \
         ../../source/gpu/common/primitives/triangle_fans.cpp \
@@ -599,7 +597,16 @@ SOURCES += ../../source/main.cpp \
     ../../source/gpu/common/texture/text_surface.cpp \
     ../../source/gpu/common/texture/texture2d.cpp \
     ../../source/gpu/opengl/textures/texture_convert.cpp \
-    ../../source/gpu/opengl/textures/texture2d_pbo_impl.cpp
+    ../../source/gpu/opengl/textures/texture2d_pbo_impl.cpp \
+    ../../source/gpu/opengl/render/gl_shadow_map_render.cpp \
+    ../../source/gpu/common/render/shadow_map_render.cpp \
+    ../../source/gpu/common/render/render_pass.cpp \
+    ../../source/gpu/common/render/render_batch.cpp \
+    ../../source/gpu/common/texture/texture2d_array.cpp \
+    ../../source/gpu/opengl/textures/gl_texture2d_array.cpp \
+    ../../source/gpu/common/texture/texture.cpp \
+    ../../source/gpu/common/frame_buffer/frame_buffer_target.cpp \
+    ../../source/gpu/opengl/render_targets/gl_frame_buffer_convert.cpp
 
 
 # Input
@@ -983,9 +990,7 @@ HEADERS += ../../source/config.h \
 	   ../../source/virtual/terrain/terrain_streamer.h \
 	   ../../source/virtual/terrain/terrain_view.h \
 	   ../../source/virtual/terrain/terrain_view_loader.h \
-	   ../../source/virtual/terrain/terrain_view_processor.h \
-    ../../source/gpu/common/render_pass.h \
-    ../../source/gpu/common/render_batch.h \    
+	   ../../source/virtual/terrain/terrain_view_processor.h \    
     ../../source/gpu/common/primitives/triangle_strip.h \
     ../../source/gpu/common/primitives/triangle_fans.h \
     ../../source/gpu/common/primitives/static_mesh.h \
@@ -1077,7 +1082,17 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/texture/texture_compare_func.h \
     ../../source/gpu/common/texture/texture_compare_mode.h \
     ../../source/gpu/opengl/textures/texture_convert.h \
-    ../../source/gpu/common/video_driver_caps.h
+    ../../source/gpu/common/video_driver_caps.h \
+    ../../source/gpu/opengl/render/gl_shadow_map_render.h \
+    ../../source/gpu/common/render/shadow_map_render.h \
+    ../../source/gpu/common/render/render_pass.h \
+    ../../source/gpu/common/render/render_batch.h \
+    ../../source/gpu/common/render/module.h \
+    ../../source/gpu/common/texture/texture2d_array.h \
+    ../../source/gpu/opengl/textures/gl_texture2d_array.h \
+    ../../source/gpu/common/texture/texture.h \
+    ../../source/gpu/common/frame_buffer/frame_buffer_target.h \
+    ../../source/gpu/opengl/render_targets/gl_frame_buffer_convert.h
 
 
 CONFIG += dll
@@ -1114,4 +1129,59 @@ win32:SDIR ~= s,/,\\,g
 #for(file, HEADERS) {
 #    QMAKE_POST_LINK += $$QMAKE_COPY $$quote($${SDIR}$${file}) $$quote($$DDIR) $$escape_expand(\\n\\t)
 #}
+
+OTHER_FILES += \
+    ../../data/shaders/text_color_330.frag \
+    ../../data/shaders/terrain_330.vert \
+    ../../data/shaders/terrain_330.frag \
+    ../../data/shaders/terrain_330 - Copy.vert \
+    ../../data/shaders/terrain_330 - Copy.frag \
+    ../../data/shaders/static_mesh_330.vert \
+    ../../data/shaders/static_mesh_330.frag \
+    ../../data/shaders/solid_vertex_color.vert \
+    ../../data/shaders/solid_vertex_color.frag \
+    ../../data/shaders/solid_textured_330.vert \
+    ../../data/shaders/solid_textured_330.frag \
+    ../../data/shaders/solid_color_3d_330.vert \
+    ../../data/shaders/solid_color_3d_330.frag \
+    ../../data/shaders/solid_color_2d_330.vert \
+    ../../data/shaders/solid_color_2d_330.frag \
+    ../../data/shaders/skinning_330.vert \
+    ../../data/shaders/skinning_330.frag \
+    ../../data/shaders/shaders.ini \
+    ../../data/shaders/quad_330.geom \
+    ../../data/shaders/per_vertex_lighting_tex_diffuse_330.vert \
+    ../../data/shaders/per_vertex_lighting_tex_diffuse_330.frag \
+    ../../data/shaders/per_vertex_lighting_diffuse_330.vert \
+    ../../data/shaders/per_vertex_lighting_diffuse_330.frag \
+    ../../data/shaders/per_vertex_lighting_330.vert \
+    ../../data/shaders/per_vertex_lighting_330.frag \
+    ../../data/shaders/per_fragment_lighting_tex_diffuse_330.vert \
+    ../../data/shaders/per_fragment_lighting_tex_diffuse_330.frag \
+    ../../data/shaders/per_fragment_lighting_diffuse_330.vert \
+    ../../data/shaders/per_fragment_lighting_diffuse_330.frag \
+    ../../data/shaders/particle_330.vert \
+    ../../data/shaders/particle_330.frag \
+    ../../data/shaders/painter_330.vert \
+    ../../data/shaders/painter_330.frag \
+    ../../data/shaders/normals_330.vert \
+    ../../data/shaders/normals_330.frag \
+    ../../data/shaders/line_330.vert \
+    ../../data/shaders/line_330.frag \
+    ../../data/shaders/line_3d_330.vert \
+    ../../data/shaders/line_3d_330.frag \
+    ../../data/shaders/line_2d_330.vert \
+    ../../data/shaders/line_2d_330.frag \
+    ../../data/shaders/gui_330.vert \
+    ../../data/shaders/gui_330.frag \
+    ../../data/shaders/grass_330.vert \
+    ../../data/shaders/grass_330.frag \
+    ../../data/shaders/draw_normals.vert \
+    ../../data/shaders/draw_normals.frag \
+    ../../data/shaders/depth.frag \
+    ../../data/shaders/bump_330.vert \
+    ../../data/shaders/bump_330.frag \
+    ../../data/shaders/bump_330_shadow_map.vert \
+    ../../data/shaders/bump_330_shadow_map.frag \
+    ../../data/shaders/shadow_single.frag
 

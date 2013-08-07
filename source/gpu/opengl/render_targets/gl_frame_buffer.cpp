@@ -1,6 +1,7 @@
 #include "../driver/module.h"
-#include "../textures/texture2d_pbo_impl.h"
+#include "../textures/module.h"
 #include "../../common/frame_buffer/frame_buffer_config.h"
+#include "gl_frame_buffer_convert.h"
 #include "gl_frame_buffer.h"
 
 namespace Gpu
@@ -140,8 +141,9 @@ namespace Gpu
             Unbind();
         }
 
-        void OpenGLFrameBuffer::AttachColorTarget(size_t index, OpenGLColorRenderBuffer* buffer)
+        void OpenGLFrameBuffer::AttachColorTarget(size_t index, ColorRenderBuffer* b)
         {
+            OpenGLColorRenderBuffer* buffer = dynamic_cast<OpenGLColorRenderBuffer*>(b);
             Bind();
             buffer->Bind();
             GL_CALL(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + index, GL_RENDERBUFFER, buffer->Index()));
@@ -159,13 +161,50 @@ namespace Gpu
             Unbind();
         }
 
-        void OpenGLFrameBuffer::AttachDepthTarget(OpenGLDepthRenderBuffer* buffer)
+        void OpenGLFrameBuffer::AttachDepthTarget(DepthRenderBuffer* b)
         {
+            OpenGLDepthRenderBuffer* buffer = dynamic_cast<OpenGLDepthRenderBuffer*>(b);
             Bind();
             buffer->Bind();
             GL_CALL(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, buffer->Index()));
             Check();
             Unbind();
+        }
+
+        void OpenGLFrameBuffer::AttachDepthTarget(Texture2DArray *b, size_t index)
+        {
+            Texture2DArrayImpl* buffer = dynamic_cast<Texture2DArrayImpl*>(b);
+            Bind();
+            GL_CALL(glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, buffer->GetId(), 0, index));
+            Check();
+            Unbind();
+        }
+
+        void OpenGLFrameBuffer::SetRenderTarget(FrameBufferTarget value)
+        {
+            Bind();
+            GL_CALL(glDrawBuffer(Convert(value)));
+            Unbind();
+        }
+
+        void OpenGLFrameBuffer::SetViewport(int x, int y, int width, int height)
+        {
+            Bind();
+            GL_CALL(glViewport(x, y, width, height));
+            Unbind();
+        }
+
+        void OpenGLFrameBuffer::Clear(bool color, bool depth, bool stencil)
+        {
+            Bind();
+            GLenum flag = 0;
+            if (color)
+                flag |= GL_COLOR_BUFFER_BIT;
+            if (depth)
+                flag |= GL_DEPTH_BUFFER_BIT;
+            if (stencil)
+                flag |= GL_STENCIL_BUFFER_BIT;
+            GL_CALL(glClear(flag));
         }
 
         void OpenGLFrameBuffer::Check()

@@ -135,6 +135,9 @@ namespace Gpu
 		Math::mat4 m_bone_world;
 		Math::mat4 m_texture_matrix;
 		Math::vec2 m_terran_position;
+        //  bounding volumes in local position
+        Math::BoundingBox m_bbox;
+        Math::BoundingSphere m_bsphere;
 
 		Material m_material;
 

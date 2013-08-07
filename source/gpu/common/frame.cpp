@@ -2,8 +2,7 @@
 #include "frame_buffer/module.h"
 #include "frame.h"
 #include "video_driver.h"
-#include "render_batch.h"
-#include "render_pass.h"
+#include "render/module.h"
 #include "renderable_builder.h"
 #include "primitive_type.h"
 #include "texture/texture2d.h"
@@ -717,5 +716,10 @@ namespace Gpu
     VideoDriver* Frame::GetVideoDriver() const
     {
         return m_driver;
+    }
+
+    std::vector<Batch*>& Frame::GetBatches()
+    {
+        return m_batches;
     }
 }

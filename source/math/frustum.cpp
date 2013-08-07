@@ -6,15 +6,52 @@
 
 namespace Math
 {
+    Frustum::Frustum()
+        : m_fov(0)
+        , m_zfar(0)
+        , m_znear(0)
+        , m_aspect(0)
+        , m_need_update(true)
+    {}
+
     Frustum::Frustum(const mat4 &projection_matrix)
         : m_projection_matrix(projection_matrix)
     {
+        m_fov = GetFovY();
+        m_zfar = GetFarPlane();
+        m_znear = GetNearPlane();
+        m_aspect = GetAspectRation();
+
         //		m_fov = PI/4.0f;
         //		m_zfar = 1000.0f;
         //		m_znear = 1.0f;
         //		m_aspect = 3.0f / 4.0f;
         //		UpdateMatrix();
         CalculatePlanes();
+    }
+
+    void Frustum::SetFovY(float value)
+    {
+        m_fov = value;
+        m_need_update = true;
+    }
+
+    void Frustum::SetAspectRatio(float value)
+    {
+        m_aspect = value;
+        m_need_update = true;
+    }
+
+    void Frustum::SetNearPlane(float value)
+    {
+        m_znear = value;
+        m_need_update = true;
+    }
+
+    void Frustum::SetFarPlane(float value)
+    {
+        m_zfar = value;
+        m_need_update = true;
     }
 
     const Plane& Frustum::GetPlane(FrustumPlane value) const
@@ -77,31 +114,6 @@ namespace Math
         //m_planes[PLANE_TOP].Set(vec3(0, -e/sqrt(e*e+a*a), -1/sqrt(e*e+a*a)), 0);
     }
 
-    /*void Frustum::Set(float left, float right, float top, float bottom, float znear, float zfar)
-    {
-        m_left = left;
-        m_right = right;
-        m_top = top;
-        m_bottom = bottom;
-        UpdateMatrix();
-        CalculatePlanes();
-    }
-*/
-    //void Frustum::Set(float fov, float width, float height, float znear, float zfar)
-    //{
-    //	Set(fov, height/width, znear, zfar);
-    //}
-
-    //	void Frustum::Set(float fov, float width, float height, float znear, float zfar)
-    //	{
-    //		m_fov = fov;
-    //		m_aspect = width / height;
-    //		m_znear = znear;
-    //		m_zfar = zfar;
-    //		UpdateMatrix();
-    //		CalculatePlanes();
-    //	}
-
     const mat4& Frustum::GetProjectionMatrix() const
     {
         return m_projection_matrix;
@@ -117,47 +129,6 @@ namespace Math
         }
         return res;
     }
-
-    //	void Frustum::UpdateMatrix()
-    //	{
-    //        m_projection_matrix = mat4::CreatePerspectiveProjection(m_fov, m_aspect, 1, m_znear, m_zfar);
-    //	}
-
-    //	bool Frustum::Save(std::ostream& stream) const
-    //	{
-    //		for (int i = 0; i < 6; ++i)
-    //			if (!m_planes[i].Save(stream))
-    //				return (out_error() << "Can't save frustum" << std::endl, false);
-
-    //		if (!m_projection_matrix.Save(stream))
-    //			return (out_error() << "Can't save frustum" << std::endl, false);
-
-    //		stream.write((char*)&m_fov, sizeof(m_fov));
-    //		stream.write((char*)&m_aspect, sizeof(m_aspect));
-    //		stream.write((char*)&m_znear, sizeof(m_znear));
-    //		stream.write((char*)&m_zfar, sizeof(m_zfar));
-
-    //		return true;
-    //	}
-
-    /*bool Frustum::Load(std::istream& stream)
-    {
-
-        for (int i = 0; i < 6; ++i)
-            if (!m_planes[i].Load(stream))
-                return (out_error() << "Can't load frustum" << std::endl, false);
-
-        if (!m_projection_matrix.Load(stream))
-            return (out_error() << "Can't load frustum" << std::endl, false);
-
-        stream.read((char*)&m_fov, sizeof(m_fov));
-        stream.read((char*)&m_aspect, sizeof(m_aspect));
-        stream.read((char*)&m_znear, sizeof(m_znear));
-        stream.read((char*)&m_zfar, sizeof(m_zfar));
-
-    //	return true;
-    }
-*/
 
     const Math::vec3& Frustum::GetPoint(FrustumPoints value) const
     {
@@ -273,8 +244,10 @@ namespace Math
     }
 
     void Frustum::Update()
-    {
+    {        
+        m_projection_matrix = mat4::CreatePerspectiveProjection(m_fov, m_aspect, 1, m_znear, m_zfar);
         CalculatePlanes();
+        m_need_update = false;
     }
 }
 

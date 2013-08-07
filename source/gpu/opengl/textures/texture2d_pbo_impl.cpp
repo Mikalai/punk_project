@@ -300,6 +300,11 @@ namespace Gpu
         {
             return m_texture_id != 0;
         }
+
+        VideoDriver* Texture2DImpl::GetVideoDriver()
+        {
+            return m_driver;
+        }
     }
 }
 

@@ -6,6 +6,7 @@
 namespace ImageModule
 {
     enum ImageFormat : unsigned;
+    enum DataType : unsigned;
 }
 
 namespace Gpu
@@ -24,6 +25,8 @@ namespace Gpu
         GLenum Convert(const TextureCompareFunc& value);
         GLenum Convert(const TextureCompareMode& value);
         GLenum Convert(const ImageModule::ImageFormat& format);
+        GLenum Convert(const ImageModule::DataType& value);
+        size_t PixelSize(const ImageModule::ImageFormat& value);
     }
 }
 
