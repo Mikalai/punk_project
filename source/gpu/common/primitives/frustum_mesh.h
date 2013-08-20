@@ -11,11 +11,12 @@ namespace Gpu
 	class VideoDriver;
 	class Renderable;
 
-    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::Frustum& value, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::FrustumCore& value, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable2(const Math::FrustumCore &value, VideoDriver *driver);
     PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::ClipSpace& value, VideoDriver* driver);
     PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::Line3D* value, size_t count, float scale, VideoDriver* driver);
     PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::vec3* value, size_t count, VideoDriver* driver);
-    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver);
+    PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::FrustumCore& frustum, VideoDriver* driver);
     PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::BoundingBox& value, VideoDriver* driver);
     PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const Math::BoundingSphere& value, VideoDriver* driver);
     PUNK_ENGINE_API Gpu::Renderable* AsRenderable(const AI::NaviMesh& value, VideoDriver* driver);

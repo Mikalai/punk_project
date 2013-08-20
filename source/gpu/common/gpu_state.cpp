@@ -1,4 +1,5 @@
 #include "gpu_state.h"
+#include "texture/texture2d_array.h"
 
 namespace Gpu
 {
@@ -16,8 +17,6 @@ namespace Gpu
 
 	TextureState::TextureState()
 	{
-		m_diffuse_map_1 = nullptr;
-		m_diffuse_map_0 = nullptr;
 		m_normal_map = nullptr;
 		m_height_map = nullptr;
 		m_specular_map = nullptr;
@@ -39,11 +38,16 @@ namespace Gpu
         m_enable_navi_mesh_rendering = false;
         m_enable_font_rendering = false;
         m_enable_shadows = false;
-        m_shadow_model = ShadowModel::ShadowMap;
+        m_shadow_model = ShadowModel::ShadowMapSingle;
         m_shadow_map_size.Set(512, 512);
 
        // m_enable_bump_maping_shading = false;
 	}
+
+    LightState::LightState()
+    {
+        m_used_lights = 1;
+    }
 
 	CoreState::CoreState()
 	{
@@ -57,7 +61,8 @@ namespace Gpu
 		m_color_buffer = nullptr;
 		m_depth_buffer = nullptr;
 		m_color_buffer = nullptr;
-		m_depth_buffer = nullptr;			
+        m_depth_buffer = nullptr;
+        m_shadow_maps = nullptr;
 	}
 
 	CoreState::CoreState(unsigned mode, CoreState *state)
@@ -86,6 +91,8 @@ namespace Gpu
 			texture_state = new TextureState(*state->texture_state);
 		else
 			(texture_state = state->texture_state, texture_state->Inc());
+
+        m_shadow_maps = state->m_shadow_maps;
 	}
 
 	CoreState::~CoreState()

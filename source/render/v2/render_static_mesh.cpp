@@ -20,7 +20,8 @@ namespace Render
         {
             if (geom->GetGpuCache().IsOnGpu())
             {
-                frame->Render(geom->GetGpuCache().GetGpuBuffer());
+                frame->SetBoundingSphere(frame->GetWorldMatrix() * geom->GetBoundingSphere());
+                frame->Render(geom->GetGpuCache().GetGpuBuffer());                
                 if (frame->IsEnabledBoundingBoxRendering())
                 {
                     const auto& bbox = geom->GetBoundingBox();
@@ -56,7 +57,7 @@ namespace Render
             }
             else
             {
-                if (!geom->GetCpuCache().IsOnCpu())
+                if (!geom->GetCpuCache().IsOnCpu())                    
                     geom->GetCpuCache().Update();
                 else
                     geom->GetGpuCache().Update(frame->GetVideoDriver());

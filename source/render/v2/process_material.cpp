@@ -32,14 +32,14 @@ namespace Render
                 else
                 {
                     if (material->GetTextureSlot(i)->IsDiffuseMapSlot())
-                        m_frame->SetDiffuseMap0(material->GetTextureSlot(i)->GetGpuCache().GetTexture());
+                        m_frame->SetDiffuseMap(0, material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 0);
                     if (material->GetTextureSlot(i)->IsNormalMapSlot())
                     {
-                        m_frame->SetNormalMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture());
+                        m_frame->SetNormalMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 1);
                         m_frame->SetLightModel(Gpu::LightModel::BumpMapping);
                     }
                     if (material->GetTextureSlot(i)->IsSpecularIntensityMapSlot())
-                        m_frame->SetSpecularMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture());
+                        m_frame->SetSpecularMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 2);
                 }
             }
         }

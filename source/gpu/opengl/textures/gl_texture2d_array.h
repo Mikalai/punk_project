@@ -11,7 +11,7 @@ namespace Gpu
     {
         class VideoDriverImpl;
 
-        class Texture2DArrayImpl : public Texture2DArray
+        class PUNK_ENGINE_LOCAL Texture2DArrayImpl : public Texture2DArray
         {
         public:
             Texture2DArrayImpl(const Texture2DArrayImpl&) = delete;
@@ -27,6 +27,7 @@ namespace Gpu
             virtual void SetCompareFunction(TextureCompareFunc value) override;
             virtual void SetCompareMode(TextureCompareMode value) override;
             virtual void Bind() override;
+            virtual void Bind(int slot) override;
             virtual void Unbind() override;
             virtual VideoDriver* GetVideoDriver() override;
             GLuint GetId() const;
@@ -38,6 +39,7 @@ namespace Gpu
             int m_width;
             int m_height;
             int m_depth;
+            int m_slot;
             GLenum m_internal_format;
             GLenum m_format;
             GLenum m_type;

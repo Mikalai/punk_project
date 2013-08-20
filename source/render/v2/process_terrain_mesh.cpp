@@ -42,7 +42,11 @@ namespace Render
             else
             {
                 if (geom->GetGpuCache().IsOnGpu())
+                {
+                    m_frame->SetBoundingSphere(m_frame->GetWorldMatrix() * geom->GetBoundingSphere());
+                    //m_frame->Render(Gpu::AsRenderable(geom->GetBoundingSphere(), m_frame->GetVideoDriver()));
                     m_frame->Render(geom->GetGpuCache().GetGpuBuffer());
+                }
                 else
                 {
                     if (!geom->GetCpuCache().IsOnCpu())

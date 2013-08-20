@@ -16,8 +16,7 @@ namespace Gpu
 			virtual void BindParameters(const CoreState& params) override;
             virtual int64_t GetRequiredAttributesSet() const override;
 
-		private:
-            unsigned uViewWorld;
+		private:            
 			unsigned uProjViewWorld;
 		};
 	}

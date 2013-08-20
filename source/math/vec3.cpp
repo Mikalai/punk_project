@@ -3,6 +3,14 @@
 
 namespace Math
 {
+    vec3::vec3(const std::initializer_list<float>& v)
+    {
+        for (int i = 0; i < v.size() && i < 3; ++i)
+        {
+            m_v[i] = *(v.begin() + i);
+        }
+    }
+
     void vec3::Save(System::Buffer *buffer) const
     {
         for (int i = 0; i != 3; ++i)

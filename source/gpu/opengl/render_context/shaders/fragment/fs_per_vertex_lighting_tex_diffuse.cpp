@@ -1,5 +1,5 @@
 #include "fs_per_vertex_lighting_tex_diffuse.h"
-#include "../shader_type.h"
+#include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 
@@ -23,7 +23,7 @@ namespace Gpu
         void FsPerVertexLightingTextureDiffuse::BindParameters(const CoreState& params)
         {
             m_rc->SetUniformVector4f(uDiffuseColor, params.batch_state->m_material.m_diffuse_color);
-            m_rc->SetUniformInt(uDiffuseMap, 0);
+            m_rc->SetUniformInt(uDiffuseMap, params.texture_state->m_diffuse_slot[0]);
         }
 
         int64_t FsPerVertexLightingTextureDiffuse::GetRequiredAttributesSet() const

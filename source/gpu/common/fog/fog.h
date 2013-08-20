@@ -18,6 +18,7 @@ namespace Gpu
 		void SetDensity(float value);
 		void SetStart(float value);
 		void SetEnd(float value);
+        void SetScale(float value);
 
 		bool IsEnabled() const;
         FogMode GetMode() const;
@@ -25,6 +26,7 @@ namespace Gpu
 		float GetDensity() const;
 		float GetStart() const;
 		float GetEnd() const;
+        float GetScale() const;
 
 	private:
 		bool m_enable;
@@ -33,6 +35,7 @@ namespace Gpu
 		float m_density;
 		float m_start;
 		float m_end;
+        float m_scale;
 	};
 }
 

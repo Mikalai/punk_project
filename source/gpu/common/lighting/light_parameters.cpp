@@ -10,6 +10,7 @@ namespace Gpu
         m_linear_attenuation = 0;
         m_quadric_attenuation = 0;
 		m_spot_exponent = 100.0;
+        m_diffuse_color.Set(1,1,1,1);
 	}
 
 	void LightParameters::SetPosition(float x, float y, float z)
@@ -150,5 +151,50 @@ namespace Gpu
     {
         Math::mat4 res = Math::mat4::CreateTargetCameraMatrix(m_position.XYZ(), (m_position + m_direction).XYZ(), Math::vec3(0, 0, 1));
         return res;
+    }
+
+    void LightParameters::SetShadowMatrix(size_t index, const Math::mat4& value)
+    {
+        m_shadow_matrix[index] = value;
+    }
+
+    const Math::mat4& LightParameters::GetShadowMatrix(size_t index) const
+    {
+        return m_shadow_matrix[index];
+    }
+
+    void LightParameters::SetFarDistance(size_t index, float value)
+    {
+        m_far_distance[index] = value;
+    }
+
+    float LightParameters::GetFarDistance(size_t index) const
+    {
+        return m_far_distance[index];
+    }
+
+    const Math::vec4& LightParameters::GetFarDistances() const
+    {
+        return m_far_distance;
+    }
+
+    void LightParameters::SetFarZ(float value)
+    {
+        m_zfar = value;
+    }
+
+    float LightParameters::GetFarZ() const
+    {
+        return m_zfar;
+    }
+
+    void LightParameters::SetNearZ(float value)
+    {
+        m_znear = value;
+    }
+
+    float LightParameters::GetNearZ() const
+    {
+        return m_znear;
     }
 }

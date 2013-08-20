@@ -41,12 +41,12 @@ namespace Gpu
 		void OpenGLRenderContext::Begin()
 		{
 			Init();
-			glUseProgram(m_program);
+            GL_CALL(glUseProgram(m_program));
 		}
 
 		void OpenGLRenderContext::End()
 		{
-			glUseProgram(0);
+            GL_CALL(glUseProgram(0));
 		}
 
 		void OpenGLRenderContext::Init()
@@ -57,62 +57,49 @@ namespace Gpu
 				{
 					if (m_program)
 					{
-						glDeleteProgram(m_program);
-						ValidateOpenGL(L"Unable to delete shader program");
+                        GL_CALL(glDeleteProgram(m_program));
 					}
-					m_program = glCreateProgram();
-					ValidateOpenGL(L"Unable to create shader program");
+                    GL_CALL(m_program = glCreateProgram());
 					if (m_vertex_shader)
 					{
-						glAttachShader(m_program, m_vertex_shader->GetIndex());
-						ValidateOpenGL(L"Unable to attach vertex shader to shader program");
+                        GL_CALL(glAttachShader(m_program, m_vertex_shader->GetIndex()));
 					}
 					else
 					{
-						out_error() << L"Vertex shader not set" << std::endl;
-						return;
+                        throw System::PunkException(L"Vertex shader not set");
 					}
 
 					if (m_fragment_shader)
 					{
-						glAttachShader(m_program, m_fragment_shader->GetIndex());
-						ValidateOpenGL(L"Unable to attach fragment shader to shader program");
+                        GL_CALL(glAttachShader(m_program, m_fragment_shader->GetIndex()));
 					}
 					else
 					{
-						out_error() << L"Fragment shader not set" << std::endl;
-						return;
+                        throw System::PunkException(L"Fragment shader not set");
 					}
 
 					if (m_geometry_shader)
 					{
-						glAttachShader(m_program, m_geometry_shader->GetIndex());				
-						ValidateOpenGL(L"Unable to attach geometry shader to shader program");
+                        GL_CALL(glAttachShader(m_program, m_geometry_shader->GetIndex()));
 					}
 
-					glLinkProgram(m_program);
-					ValidateOpenGL(L"Unable to link shader program");
+                    GL_CALL(glLinkProgram(m_program));
 
 					GLint status;
-					glGetProgramiv(m_program, GL_LINK_STATUS, &status);
-					ValidateOpenGL(L"Unable to get link status of the shader program");
+                    GL_CALL(glGetProgramiv(m_program, GL_LINK_STATUS, &status));
 					if (status == GL_TRUE)
 					{
-						glValidateProgram(m_program);
-						ValidateOpenGL(L"Unable to validate shader program");
-						glGetProgramiv(m_program, GL_VALIDATE_STATUS, &status);
-						ValidateOpenGL(L"Unable to get validation status of the shader program");
+                        GL_CALL(glValidateProgram(m_program));
+                        GL_CALL(glGetProgramiv(m_program, GL_VALIDATE_STATUS, &status));
 						if (status != GL_TRUE)
 						{
-							out_error() << L"Shader program validation failed" << std::endl;
-							return;
+                            throw System::PunkException(L"Shader program validation failed");
 						}
 
 					}
 					else
 					{
-						out_error() << L"Unable to link shader program" << std::endl;
-						return;
+                        throw System::PunkException(L"Unable to link shader program");
 					}
 					m_was_modified = false;
 
@@ -121,20 +108,18 @@ namespace Gpu
 			}
 			catch(...)
 			{
-				glDeleteProgram(m_program);
+                GL_CALL(glDeleteProgram(m_program));
 				m_program = 0;
-                throw System::PunkException(L"Failed to create render context");
+                throw;
 			}
 		}
 
 		bool OpenGLRenderContext::SetUniformVector4f(const char * name, const float* value)
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glUniform4fv(index, 1, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+            GL_CALL(glUniform4fv(index, 1, value));
 			return true;
 		}
 
@@ -146,9 +131,8 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformVector4f( int index, const float* value )
 		{
 			if (index == -1)
-				return false;
-			glUniform4fv(index, 1, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+            GL_CALL(glUniform4fv(index, 1, value));
 			return true;
 		}
 
@@ -159,12 +143,10 @@ namespace Gpu
 
 		bool OpenGLRenderContext::SetUniformVector3f(const char * name, const float* value )
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation(m_program, name));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glUniform3fv(index, 1, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+            GL_CALL(glUniform3fv(index, 1, value));
 			return true;
 		}
 
@@ -176,9 +158,8 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformVector3f(int index, const float* value)
 		{
 			if (index == -1)
-				return false;
-			glUniform3fv(index, 1, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+            GL_CALL(glUniform3fv(index, 1, value));
 			return true;
 		}
 
@@ -189,12 +170,10 @@ namespace Gpu
 
 		bool OpenGLRenderContext::SetUniformVector2f(const char * name, const float* value )
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glUniform2fv(index, 1, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+            GL_CALL(glUniform2fv(index, 1, value));
 			return true;
 		}
 
@@ -206,9 +185,8 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformVector2f(int index, const float* value )
 		{
 			if (index == -1)
-				return false;
-			glUniform2fv(index, 1, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+            GL_CALL(glUniform2fv(index, 1, value));
 			return true;
 		}
 
@@ -219,52 +197,44 @@ namespace Gpu
 
 		bool OpenGLRenderContext::SetUniformFloat(const char * name, float value)
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation(m_program, name));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glUniform1f(index, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+            GL_CALL(glUniform1f(index, value));
 			return true;
 		}
 
 		bool OpenGLRenderContext::SetUniformFloat(int index, float value)
 		{
 			if (index == -1)
-				return false;
-			glUniform1f ( index, value );
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+            GL_CALL(glUniform1f(index, value));
 			return true;
 		}
 
 		bool OpenGLRenderContext::SetUniformInt(const char * name, int value)
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glUniform1i ( index, value );
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+            GL_CALL(glUniform1i(index, value));
 			return true;
 		}
 
 		bool OpenGLRenderContext::SetUniformInt(int index, int value)
 		{
 			if (index == -1)
-				return false;
-			glUniform1i( index, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+            GL_CALL(glUniform1i( index, value));
 			return true;
 		}
 
 		bool OpenGLRenderContext::SetUniformMatrix2f(const char * name, const float* value)
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation(m_program, name));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glUniformMatrix2fv(index, 1, GL_FALSE, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed set uniform {0}").arg(name));
+            GL_CALL(glUniformMatrix2fv(index, 1, GL_FALSE, value));
 			return true;
 		}
 
@@ -273,12 +243,11 @@ namespace Gpu
             return SetUniformMatrix2f(name, &value[0]);
         }
 
-		bool OpenGLRenderContext::SetUniformMatrix2f( int index, const float* value)
+        bool OpenGLRenderContext::SetUniformMatrix2f(int index, const float* value)
 		{		
 			if (index == -1)
-				return false;
-			glUniformMatrix2fv(index, 1, GL_FALSE, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed set uniform {0}").arg(index));
+            GL_CALL(glUniformMatrix2fv(index, 1, GL_FALSE, value));
 			return true;
 		}
 
@@ -289,12 +258,10 @@ namespace Gpu
 
 		bool OpenGLRenderContext::SetUniformMatrix3f(const char * name, const float* value)
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation (m_program, name));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glUniformMatrix3fv(index, 1, GL_FALSE, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+            GL_CALL(glUniformMatrix3fv(index, 1, GL_FALSE, value));
 			return true;
 		}
 
@@ -306,9 +273,8 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformMatrix3f( int index, const float* value)
 		{		
 			if (index == -1)
-				return false;
-			glUniformMatrix3fv(index, 1, GL_FALSE, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed set uniform {0}").arg(index));
+            GL_CALL(glUniformMatrix3fv(index, 1, GL_FALSE, value));
 			return true;
 		}
 
@@ -319,12 +285,10 @@ namespace Gpu
 
 		bool OpenGLRenderContext::SetUniformMatrix4f(const char * name, const float* value)
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation (m_program, name));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glUniformMatrix4fv(index, 1, GL_FALSE, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed set uniform {0}").arg(name));
+            GL_CALL(glUniformMatrix4fv(index, 1, GL_FALSE, value));
 			return true;
 		}
 
@@ -336,9 +300,8 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformMatrix4f( int index, const float* value)
 		{
 			if (index == -1)
-				return false;
-			glUniformMatrix4fv(index, 1, GL_FALSE, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed set uniform {0}").arg(index));
+            GL_CALL(glUniformMatrix4fv(index, 1, GL_FALSE, value));
 			return true;
 		}
 
@@ -350,9 +313,8 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformArrayMatrix4f(int index, int count, const float* value)
 		{
 			if (index == -1)
-				return false;
-			glUniformMatrix4fv(index, count, GL_FALSE, value);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+            GL_CALL(glUniformMatrix4fv(index, count, GL_FALSE, value));
 			return true;
 		}
 
@@ -364,56 +326,51 @@ namespace Gpu
 
 		int OpenGLRenderContext::GetUniformLocation(const char * name)
 		{
-			GLint res = glGetUniformLocation(m_program, name);
-			ValidateOpenGL(L"Unable to get uniform location");
+            GL_CALL(GLint res = glGetUniformLocation(m_program, name));
+            if (res == -1)
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
 			return res;
 		}
 
 		void OpenGLRenderContext::GetUniformVector(const char * name, float* out)
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
-				return;
-			ValidateOpenGL(L"Unable to get uniform location");
-			glGetUniformfv(m_program, index, out);
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+            GL_CALL(glGetUniformfv(m_program, index, out));
 		}
 
 		bool OpenGLRenderContext::SetTexture(const char * name, int texUnit)
 		{
-			int index = glGetUniformLocation ( m_program, name );
+            GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
-				return false;
-			glUniform1i(index, texUnit);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed set texture {0}").arg(name));
+            GL_CALL(glUniform1i(index, texUnit));
 			return true;
 		}
 
 		bool OpenGLRenderContext::SetTexture(int index, int texUnit)
 		{
 			if (index == -1)
-				return false;
-			glUniform1i(index, texUnit);
-			ValidateOpenGL(L"Unable to set value");
+                throw System::PunkException(System::string("Failed set texture {0}").arg(texUnit));
+            GL_CALL(glUniform1i(index, texUnit));
 			return true;
 		}
 
 		bool OpenGLRenderContext::BindAttributeTo(int index, const char * name)
 		{
 			if (index == -1)
-				return false;
-			glBindAttribLocation(m_program, index, name);
-			ValidateOpenGL(L"Unable to bind attribute");
+                throw System::PunkException(System::string("Failed to bind attribute {0}").arg(name));
+            GL_CALL(glBindAttribLocation(m_program, index, name));
 			return true;
 		}
 
 		bool OpenGLRenderContext::SetAttribute(const char * name, const float* value)
 		{
-			int index = glGetAttribLocation(m_program, name);
+            GL_CALL(int index = glGetAttribLocation(m_program, name));
 			if (index == -1)
-				return false;
-			ValidateOpenGL(L"Unable to get attribute location");
-			glVertexAttrib4fv ( index, value );
-			ValidateOpenGL(L"Unable to set attribute");
+                throw System::PunkException(System::string("Failed to set attribute {0}").arg(name));
+            GL_CALL(glVertexAttrib4fv ( index, value ));
 			return true;
 		}
 
@@ -428,28 +385,25 @@ namespace Gpu
 
 		int OpenGLRenderContext::IndexForAttrName(const char * name)
 		{
-			int index = glGetAttribLocation(m_program, name);
+            GL_CALL(int index = glGetAttribLocation(m_program, name));
 			if (index == -1)
-				return -1;
-			ValidateOpenGL(L"Unable to get attribute index");
+                throw System::PunkException(System::string("Failed to get attribute {0}").arg(name));
 			return index;
 		}
 
 		void OpenGLRenderContext::GetAttribute(const char * name, float* out)
 		{
-			int index = glGetAttribLocation(m_program, name);
+            GL_CALL(int index = glGetAttribLocation(m_program, name));
 			if (index == -1)
-				return;
-			ValidateOpenGL(L"Unable to get attribute index");
-			glGetVertexAttribfv ( index, GL_CURRENT_VERTEX_ATTRIB, out);
-			ValidateOpenGL(L"Unable to get attribute value");
+                throw System::PunkException(System::string("Failed to get attribute {0}").arg(name));
+            GL_CALL(glGetVertexAttribfv ( index, GL_CURRENT_VERTEX_ATTRIB, out));
 		}
 
 		void OpenGLRenderContext::GetAttribute(int index, float* out)
 		{
 			if (index == -1)
 				return;
-			glGetVertexAttribfv ( index, GL_CURRENT_VERTEX_ATTRIB, out);
+            GL_CALL(glGetVertexAttribfv(index, GL_CURRENT_VERTEX_ATTRIB, out));
 		}
 
 		OpenGLRenderContext::~OpenGLRenderContext()
@@ -463,53 +417,46 @@ namespace Gpu
 
 			if (m_program)
 			{
-				glDeleteProgram(m_program);
-				ValidateOpenGL(L"Unable to delete shader program");
+                GL_CALL(glDeleteProgram(m_program));
 			}
 			m_program = 0;
 		}
 
 		void OpenGLRenderContext::SetUpOpenGL(const CoreState &state)
 		{
-            glLineWidth(state.render_state->m_line_width);
-            ValidateOpenGL(L"Can't set line width");
-            glPointSize(state.render_state->m_point_size);
-            ValidateOpenGL(L"Can't set point size");
+            GL_CALL(glLineWidth(state.render_state->m_line_width));
+            GL_CALL(glPointSize(state.render_state->m_point_size));
 
 			if (state.render_state->m_enable_wireframe)
 			{				
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				ValidateOpenGL(L"Can't change polygon mode");
+                GL_CALL(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
 			}
 			else
 			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				ValidateOpenGL(L"Can't change polygon mode");
+                GL_CALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
 			}
 
 			if (state.render_state->m_depth_test)
 			{
-				glEnable(GL_DEPTH_TEST);
-				ValidateOpenGL(L"Can't enable depth test");
+                GL_CALL(glEnable(GL_DEPTH_TEST));
 			}
 			else
 			{
-				glDisable(GL_DEPTH_TEST);
-				ValidateOpenGL(L"Can't disable depth test");
+                GL_CALL(glDisable(GL_DEPTH_TEST));
 			}
 
 			if (state.render_state->m_enable_blending)
 			{
-				glEnable(GL_BLEND);
+                GL_CALL(glEnable(GL_BLEND));
 				auto src = BlendFunctionToOpenGL(state.render_state->m_blend_src);
 				auto dst = BlendFunctionToOpenGL(state.render_state->m_blend_dst);
 				auto color = state.render_state->m_blend_color;
-				glBlendFunc(src, dst);
-				glBlendColor(color[0], color[1], color[2], color[3]);
+                GL_CALL(glBlendFunc(src, dst));
+                GL_CALL(glBlendColor(color[0], color[1], color[2], color[3]));
 			}
 			else
 			{
-				glDisable(GL_BLEND);
+                GL_CALL(glDisable(GL_BLEND));
 			}
 		}
 	}

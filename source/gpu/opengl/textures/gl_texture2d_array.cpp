@@ -19,6 +19,7 @@ namespace Gpu
             , m_type(Convert(type))
             , m_use_mip_maps(use_mipmaps)
             , m_texture_id(0)
+            , m_slot(0)
         {
             GL_CALL(glGenTextures(1, &m_texture_id));
             Bind();
@@ -82,8 +83,16 @@ namespace Gpu
             GL_CALL(glBindTexture(GL_TEXTURE_2D_ARRAY, m_texture_id));
         }
 
+        void Texture2DArrayImpl::Bind(int slot)
+        {
+            m_slot = slot;
+            GL_CALL(glActiveTexture(GL_TEXTURE0 + m_slot));
+            Bind();
+        }
+
         void Texture2DArrayImpl::Unbind()
         {
+            GL_CALL(glActiveTexture(GL_TEXTURE0 + m_slot));
             GL_CALL(glBindTexture(GL_TEXTURE_2D_ARRAY, 0));
         }
 

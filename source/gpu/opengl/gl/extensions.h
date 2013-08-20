@@ -204,6 +204,7 @@ namespace Gpu
 
 		extern PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D;
 		extern PFNGLPOLYGONMODEPROC glPolygonMode;
+        extern PFNGLPOLYGONOFFSETPROC glPolygonOffset;
 
 		extern PFNGLFENCESYNCPROC glFenceSync;
 		extern PFNGLWAITSYNCPROC glWaitSync;

@@ -37,7 +37,7 @@ namespace Virtual
         void SetPosition(float x, float y, float z);
 		const Math::vec3& GetPosition() const { return m_position; }
 		Math::vec3& GetPosition() { return m_position; }
-		const Math::mat4 GetProjectionMatrix() const;
+        const Math::mat4 GetProjectionMatrix();
 		const Math::mat4 GetViewMatrix() const;
 		const Math::vec3 GetDirection() const { return m_direction; }
 		const Math::vec3 GetUpVector() const { return m_up; }
@@ -63,8 +63,8 @@ namespace Virtual
 
 		const Math::vec3& GetRightVector() const { return m_right; }
 
-		Math::Frustum& GetFrustum() { return m_frustum; }
-		const Math::Frustum& GetFrustum() const { return m_frustum; }
+        Math::FrustumCore& GetFrustum() { return m_frustum; }
+        const Math::FrustumCore& GetFrustum() const { return m_frustum; }
 
 		const Math::Rect& GetViewport() const { return m_viewport; }
 		void SetViewport(float x, float y, float width, float height) { m_viewport.Set(x, y, width, height); }
@@ -78,7 +78,7 @@ namespace Virtual
 		Math::vec3 m_up;
 		Math::mat4 m_view_matrix;
         Math::mat4 m_proj_matrix;
-		Math::Frustum m_frustum;
+        Math::FrustumCore m_frustum;
 		Math::Rect m_viewport;
 
 		void UpdateInternals();

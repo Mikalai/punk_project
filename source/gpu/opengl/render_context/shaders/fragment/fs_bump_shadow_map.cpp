@@ -1,5 +1,5 @@
 #include "fs_bump_shadow_map.h"
-#include "../shader_type.h"
+#include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 
@@ -36,9 +36,9 @@ namespace Gpu
             Math::PerspectiveDecoder d(params.light_state->m_lights[0].GetProjectionMatrix());
             m_rc->SetUniformFloat(uNear, d.GetNearZ());
             m_rc->SetUniformFloat(uFar, d.GetFarZ());
-            m_rc->SetUniformInt(uDiffuseMap, 0);
-            m_rc->SetUniformInt(uNormalMap, 1);
-            m_rc->SetUniformInt(uDepthMap, 2);
+            m_rc->SetUniformInt(uDiffuseMap, params.texture_state->m_diffuse_slot[0]);
+            m_rc->SetUniformInt(uNormalMap, params.texture_state->m_normal_map_slot);
+            m_rc->SetUniformInt(uDepthMap, params.texture_state->m_shadow_map_slot);
         }
 
         int64_t FsBumpShadowMap::GetRequiredAttributesSet() const

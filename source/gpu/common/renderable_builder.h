@@ -3,6 +3,7 @@
 
 #include "../../config.h"
 #include "renderable.h"
+#include "../../math/bounding_shere.h"
 
 namespace Math
 {
@@ -39,6 +40,8 @@ namespace Gpu
 		void Normal3fv(const float* value);
 		void Normal3fv(const Math::vec3& value);
 		void End();
+
+        const Math::BoundingSphere GetBoundingSphere() const;
 
         bool IsValid() const;
 

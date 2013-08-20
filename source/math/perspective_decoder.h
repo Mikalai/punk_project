@@ -28,6 +28,7 @@ namespace Math
     private:
         const mat4& m_value;
     };
+
 }
 
 #endif // PERSPECTIVE_DECODER_H

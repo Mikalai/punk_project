@@ -15,10 +15,7 @@ namespace Gpu
             void BindParameters(const CoreState& params) override;
             int64_t GetRequiredAttributesSet() const override;
 
-        private:
-            unsigned uNear;
-            unsigned uFar;
-            unsigned uFilterType;
+        private:            
         };
     }
 }

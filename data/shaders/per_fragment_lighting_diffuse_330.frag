@@ -1,21 +1,24 @@
 #version 330
 
-#define MAX_LIGHTS 8
+const int MAX_LIGHTS = 8;
+
+struct Light
+{
+    vec4  direction;
+    vec4  position;
+    vec4  diffuse_color;
+    vec4  ambient_color;
+    float attenuation_constant;
+    float attenuation_linear;
+    float attenuation_quadric;
+    float spot;
+    int   type;                 //	0 - point, 1 - linear
+    int   attenuation_model;    //	0 - Constant, 1 - Linear, 2 - Quadric
+};
 
 uniform mat4 uView;
 uniform vec4 uDiffuseColor;
-
-uniform vec4 uLightPosition[MAX_LIGHTS];
-uniform vec4 uLightDirection[MAX_LIGHTS];
-uniform vec4 uLightDiffuse[MAX_LIGHTS];
-
-uniform float uConstantAttenuation[MAX_LIGHTS];
-uniform float uLinearAttenuation[MAX_LIGHTS];
-uniform float uQuadricAttenuation[MAX_LIGHTS];
-
-uniform int uMode[MAX_LIGHTS]; //	0 - Constant, 1 - Linear, 2 - Quadric
-uniform float uSpotExponent[MAX_LIGHTS];
-uniform int uType[MAX_LIGHTS];	//	0 - point, 1 - linear
+uniform Light uLight[MAX_LIGHTS];
 
 in vec3 normal;
 in vec3 position;
@@ -48,23 +51,23 @@ void main()
 	vec4 light_color = vec4(0,0,0,0);
 	for (i = 0; i != MAX_LIGHTS; ++i)
 	{
-		vec3 light_position = (uView * uLightPosition[i]).xyz;
+                vec3 light_position = (uView * uLight[i].position).xyz;
 		vec3 object_to_light = normalize(light_position - position);			
 		
 		float dst = length(light_position - position);
 				
 		float sc = 1;
-		if (uType[i] == 1)
+                if (uLight[i].type == 1)
 		{		
-			float p = uSpotExponent[i];
-			vec3 light_direction = normalize((uView * uLightDirection[i]).xyz);		
+                        float p = uLight[i].spot;
+                        vec3 light_direction = normalize((uView * uLight[i].direction).xyz);
 			sc = SpotAttenuation(light_direction, object_to_light, p);
 		}
 		
-		float k0 = uConstantAttenuation[i];
-		float k1 = uLinearAttenuation[i];
-		float k2 = uQuadricAttenuation[i];	
-		int mode = uMode[i];
+                float k0 = uLight[i].attenuation_constant;
+                float k1 = uLight[i].attenuation_linear;
+                float k2 = uLight[i].attenuation_quadric;
+                int mode = uLight[i].attenuation_model;
 		
 		float c = 1;
 		if (mode == 0)
@@ -74,7 +77,7 @@ void main()
 		else if (mode == 2)
 			c = AttenuationQuadric(k0, k1, k2, dst);
 			
-		light_color += sc * c * uLightDiffuse[i] * max(0.0, dot(object_to_light, normalize(normal)));		
+                light_color += uLight[i].ambient_color + sc * c * uLight[i].diffuse_color * max(0.0, dot(object_to_light, normalize(normal)));
 	}	
 	color = light_color * uDiffuseColor;
 }	

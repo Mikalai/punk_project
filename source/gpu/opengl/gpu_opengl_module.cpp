@@ -11,12 +11,12 @@ namespace Gpu
 #ifdef USE_SOLID_COLOR_RC
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsSolid, new FsShaderSolid, nullptr);
+                rc->SetShaders(new VsSolid, new FsSolid, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::Solid3D, rc);
             }
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsSolid, new FsDepth, nullptr);
+                rc->SetShaders(new VsDepth, new FsDepth, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::DepthRender, rc);
             }
 #endif
@@ -33,7 +33,7 @@ namespace Gpu
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
                 rc->SetShaders(new VsTexture3D, new FsSolidTextured3D, nullptr);
-                AbstractRenderPolicy::add(RenderPolicySet::SolidTextured3D, rc);
+                AbstractRenderPolicy::add(RenderPolicySet::SolidTextured2D, rc);
             }
 #endif	//	USE_SOLID_TEXTURE_3D_RC
 
@@ -46,7 +46,12 @@ namespace Gpu
 #endif	//	USE_LIGHT_PER_VERTEX_DIFFUSE
 
 #ifdef USE_LIGHT_PER_FRAGMENT_DIFFUSE
-            AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentDiffuse, new RenderContextPerFragmentDiffuseLight());
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsPerFragmentLightingDiffuse, new FsPerFragmentLightingDiffuse, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentDiffuse, rc);
+            }
+            //AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentDiffuse, new RenderContextPerFragmentDiffuseLight());
 #endif	//	USE_LIGHT_PER_VERTEX_DIFFUSE
 
 #ifdef USE_RC_PVRTDL
@@ -58,7 +63,11 @@ namespace Gpu
 #endif
 
 #ifdef USE_RC_PFRTDL
-            AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentTextureDiffuse, new RenderContextPerFragmentTextureDiffuseLight());
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsPerFragmentLightingTextureDiffuse, new FsPerFragmentLightingTextureDiffuse, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentTextureDiffuse, rc);
+            }
 #endif
 
 #ifdef USE_BUMP_MAPPING_RC
@@ -68,11 +77,11 @@ namespace Gpu
                 AbstractRenderPolicy::add(RenderPolicySet::BumpMapping, rc);
             }
 #   ifdef USE_SHADOW_MAPS
-            {
-                DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsBumpShadowMap, new FsBumpShadowMap, nullptr);
-                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingShadowing, rc);
-            }
+//            {
+//                DynamicRenderContext* rc = new DynamicRenderContext();
+//                rc->SetShaders(new VsBumpShadowMap, new FsBumpShadowMap, nullptr);
+//                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingShadowingSingle, rc);
+//            }
 #   endif  //   USE_SHADOW_MAPS
 #endif
 
@@ -80,13 +89,13 @@ namespace Gpu
             {
 #   ifdef USE_BUMP_MAPPING_RC
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsSkinning, new FsBumpMapping, nullptr);
+                rc->SetShaders(new VsSkinningBump, new FsBumpMapping, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::BumpMappingSkinning, rc);
 #   endif   //  USE_BUMP_MAPPING_RC                               
             }
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsSkinning, new FsDepth, nullptr);
+                rc->SetShaders(new VsSkinningDepth, new FsDepth, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::DepthRenderSkinning, rc);
             }
 #endif  //  USE_SKINNING_RC
@@ -96,6 +105,19 @@ namespace Gpu
                 rc->SetShaders(new VsTexture3D, new FsTextSolid, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::TextSolidColor, rc);
             }
+
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsPvltdShadowSingle, new FsShadowSingle, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::LightPerVertexTextureDiffuseShadowingSingle, rc);
+            }
+
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsTexture3D, new FsSolidTextured2DArray, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::SolidTextured2DArray, rc);
+            }
+
 #ifdef USE_GUI_RC
             AbstractRenderPolicy::add(RenderPolicySet::RC_GUI, new RenderContextGUI());
 #endif

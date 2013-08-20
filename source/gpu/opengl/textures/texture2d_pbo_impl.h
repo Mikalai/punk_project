@@ -14,7 +14,7 @@ namespace Gpu
 {
     namespace OpenGL
     {
-        class Texture2DImpl : public Texture2D
+        class PUNK_ENGINE_LOCAL Texture2DImpl : public Texture2D
         {
         public:
             Texture2DImpl(VideoDriver* driver);

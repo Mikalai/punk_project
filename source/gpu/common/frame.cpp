@@ -5,7 +5,7 @@
 #include "render/module.h"
 #include "renderable_builder.h"
 #include "primitive_type.h"
-#include "texture/texture2d.h"
+#include "texture/module.h"
 #include "texture/text_surface.h"
 
 namespace Gpu
@@ -51,6 +51,8 @@ namespace Gpu
     {
         if (!Top()->m_active_rendering)
             throw System::PunkException(L"Can't perform clear operation, because target is not specified");
+        GetVideoDriver()->SetClearColor(Top()->render_state->m_clear_color);
+        GetVideoDriver()->SetClearDepth(Top()->render_state->m_clear_depth);
         GetVideoDriver()->Clear(color, depth, stencil);
 //        m_current_target->SetClearColor(Top()->render_state->m_clear_color);
 //        m_current_target->SetClearDepth(Top()->render_state->m_clear_depth);
@@ -203,29 +205,28 @@ namespace Gpu
         Top()->batch_state->m_material.m_diffuse_color.Set(r, g, b, a);
     }
 
-    void Frame::SetDiffuseMap0(Texture2D* value)
+    void Frame::SetDiffuseMap(int index, Texture2D *value, int slot)
     {
-        Top()->texture_state->m_diffuse_map_0 = value;
+        Top()->texture_state->m_diffuse_map[index] = value;
+        Top()->texture_state->m_diffuse_slot[index] = slot;
     }
 
-    void Frame::SetNormalMap(Texture2D* value)
+    void Frame::SetNormalMap(Texture2D* value, int slot)
     {
         Top()->texture_state->m_normal_map = value;
+        Top()->texture_state->m_normal_map_slot = slot;
     }
 
-    void Frame::SetTextMap(Texture2D *value)
+    void Frame::SetTextMap(Texture2D *value, int slot)
     {
         Top()->texture_state->m_text_map = value;
-    }
+        Top()->texture_state->m_text_map_slot = slot;
+    }    
 
-    void Frame::SetDiffuseMap1(Texture2D* value)
-    {
-        Top()->texture_state->m_diffuse_map_1 = value;
-    }
-
-    void Frame::SetFontMap(Texture2D* value)
+    void Frame::SetFontMap(Texture2D* value, int slot)
     {
         Top()->texture_state->m_text_map = value;
+        Top()->texture_state->m_text_map_slot = slot;
     }
 
     void Frame::EnableDiffuseShading(bool value)
@@ -253,14 +254,16 @@ namespace Gpu
         Top()->batch_state->m_material.m_specular_color = value;
     }
 
-    void Frame::SetSpecularMap(Texture2D* value)
+    void Frame::SetSpecularMap(Texture2D* value, int slot)
     {
         Top()->texture_state->m_specular_map = value;
+        Top()->texture_state->m_specular_map_slot = slot;
     }
 
-    void Frame::SetBumpMap(Texture2D* value)
+    void Frame::SetBumpMap(Texture2D* value, int slot)
     {
         Top()->texture_state->m_normal_map = value;
+        Top()->texture_state->m_normal_map_slot = slot;
     }
 
     void Frame::CastShadows(bool value)
@@ -293,14 +296,9 @@ namespace Gpu
         return Top()->batch_state->m_material.m_diffuse_color;
     }
 
-    const Texture2D* Frame::GetDiffuseMap0() const
+    const Texture2D* Frame::GetDiffuseMap(int index) const
     {
-        return Top()->texture_state->m_diffuse_map_0;
-    }
-
-    const Texture2D* Frame::GetDiffuseMap1() const
-    {
-        return Top()->texture_state->m_diffuse_map_1;
+        return Top()->texture_state->m_diffuse_map[index];
     }
 
     const Math::mat4& Frame::GetBoneMatrix(int bone_index) const
@@ -379,6 +377,27 @@ namespace Gpu
         Top()->render_state->m_shadow_model = value;
     }
 
+    void Frame::SetTexture2DArray(Texture2DArray *value, int slot)
+    {
+        Top()->texture_state->m_texture_array = value;
+        Top()->texture_state->m_texture_array_slot = slot;
+    }
+
+    void Frame::SetShadowMapIndex(int shadow_map, int index)
+    {
+        Top()->texture_state->m_texture_array_shadow_map_layer[shadow_map] = index;
+    }
+
+    void Frame::SetDiffuseMapIndex(int diffuse_map, int index)
+    {
+        Top()->texture_state->m_texture_array_diffuse_map_layer[diffuse_map] = index;
+    }
+
+    void Frame::SetNormalMapIndex(int index)
+    {
+        Top()->texture_state->m_texture_array_normal_map_layer = index;
+    }
+
     void Frame::SetShadowMapSize(const Math::ivec2& value)
     {
         Top()->render_state->m_shadow_map_size = value;
@@ -429,9 +448,10 @@ namespace Gpu
         Top()->view_state->m_clip_space = value;
     }
 
-    void Frame::SetHeightMap(Texture2D* value)
+    void Frame::SetHeightMap(Texture2D* value, int slot)
     {
         Top()->texture_state->m_height_map = value;
+        Top()->texture_state->m_height_map_slot = slot;
     }
 
     void Frame::SetLineWidth(float value)
@@ -452,6 +472,11 @@ namespace Gpu
     void Frame::SetLocalMatrix(const Math::mat4& value)
     {
         Top()->batch_state->m_local = value;
+    }
+
+    void Frame::SetBoundingSphere(const Math::BoundingSphere &value)
+    {
+        Top()->batch_state->m_bsphere = value;
     }
 
     void Frame::EnableBoundBoxRendering(bool value)
@@ -630,12 +655,40 @@ namespace Gpu
         PopAllState();
     }
 
+    void Frame::DrawQuad(float x, float y, float width, float height)
+    {
+        PushAllState();
+        EnableLighting(false);
+        SetProjectionMatrix(Math::mat4::CreateOrthographicProjection(0, GetVideoDriver()->GetWindow()->GetWidth(),
+                                                                     0, GetVideoDriver()->GetWindow()->GetHeight(),
+                                                                     -1, 1));
+        RenderableBuilder b(GetVideoDriver());
+        b.Begin(PrimitiveType::QUADS);
+        b.TexCoord2f(0,0);
+        b.Vertex3f(x, y, 0);
+        b.TexCoord2f(1, 0);
+        b.Vertex3f(x+width, y, 0);
+        b.TexCoord2f(1,1);
+        b.Vertex3f(x+width, y+height,0);
+        b.TexCoord2f(0, 1);
+        b.Vertex3f(x, y+height, 0);
+        b.End();
+        Renderable* r(b.ToRenderable());
+        Render(r, true);
+        PopAllState();
+    }
+
+    void Frame::DrawQuad(const Math::Rect& rect)
+    {
+        DrawQuad(rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
+    }
+
     void Frame::DrawCircleXY(float x, float y, float z, float r)
     {
         PushAllState();
         EnableBlending(false);
         EnableLighting(false);
-        EnableDepthTest(false);
+        EnableDepthTest(false);        
         RenderableBuilder b(m_driver);
         b.Begin(PrimitiveType::LINES);
         int n = 32;
@@ -670,7 +723,7 @@ namespace Gpu
         surface->SetText(value);
         int text_width = surface->GetTexture()->GetWidth();
         int text_height = surface->GetTexture()->GetHeight();
-        SetTextMap(surface->GetTexture());
+        SetTextMap(surface->GetTexture(), 0);
         EnableDepthTest(false);
         EnableBlending(true);
         EnableTexturing(false);
@@ -721,5 +774,10 @@ namespace Gpu
     std::vector<Batch*>& Frame::GetBatches()
     {
         return m_batches;
+    }
+
+    void Frame::SetShadowMaps(Texture2DArray *value)
+    {
+        m_shadow_maps = value;
     }
 }

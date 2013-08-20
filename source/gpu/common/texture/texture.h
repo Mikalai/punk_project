@@ -22,6 +22,7 @@ namespace Gpu
         virtual void SetCompareFunction(TextureCompareFunc value) = 0;
         virtual void SetCompareMode(TextureCompareMode value) = 0;
         virtual void Bind() = 0;
+        virtual void Bind(int slot) = 0;
         virtual void Unbind() = 0;
         virtual VideoDriver* GetVideoDriver() = 0;
     };

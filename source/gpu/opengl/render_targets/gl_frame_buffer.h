@@ -32,6 +32,7 @@ namespace Gpu
             virtual void SetRenderTarget(FrameBufferTarget value) override;
             virtual void SetViewport(int x, int y, int width, int height) override;
             virtual void Clear(bool color, bool depth, bool stencil) override;
+            virtual void SetPolygonOffset(float a, float b) override;
 
         private:
             void Clear();
@@ -42,6 +43,7 @@ namespace Gpu
             OpenGLDepthRenderBuffer* m_depth_rb;
             OpenGLFrameBuffer* m_resolve_rb;
             GLuint m_fb;
+            GLuint m_prev_fb;
         };
     }
 }

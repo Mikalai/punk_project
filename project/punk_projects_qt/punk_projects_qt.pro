@@ -166,7 +166,6 @@ contains(DEFINES, USE_OPENGL) {
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_painter.h \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_particle.h \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_particle_system.h \
-           ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning.h \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_color.h \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_terrain.h \
            ../../source/gpu/opengl/render_context/shaders/vertex/vs_transform_3d.h \
@@ -195,7 +194,6 @@ SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp 
             ../../source/gpu/opengl/gl/extensions.cpp \
 	    ../../source/gpu/opengl/render_context/rc_dynamic.cpp \	    
 	    ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_vertex_color.cpp \
-	    ../../source/gpu/opengl/render_context/shaders/shader_type.cpp \
 	   ../../source/gpu/opengl/attribute_configer.cpp \
 	   ../../source/gpu/opengl/gpu_opengl_module.cpp \
 	   ../../source/gpu/opengl/module.cpp \
@@ -242,7 +240,6 @@ SOURCES +=  ../../source/gpu/opengl/render_context/rc_per_fragment_lighting.cpp 
 	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_painter.cpp \
 	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_particle.cpp \
 	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_particle_system.cpp \
-	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning.cpp \
 	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_solid_color.cpp \
 	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_terrain.cpp \
 	   ../../source/gpu/opengl/render_context/shaders/vertex/vs_transform_3d.cpp \
@@ -606,7 +603,23 @@ SOURCES += ../../source/main.cpp \
     ../../source/gpu/opengl/textures/gl_texture2d_array.cpp \
     ../../source/gpu/common/texture/texture.cpp \
     ../../source/gpu/common/frame_buffer/frame_buffer_target.cpp \
-    ../../source/gpu/opengl/render_targets/gl_frame_buffer_convert.cpp
+    ../../source/gpu/opengl/render_targets/gl_frame_buffer_convert.cpp \
+    ../../source/gpu/common/shaders/shader_builder.cpp \    
+    ../../source/gpu/common/shaders/shader_data_type.cpp \
+    ../../source/gpu/common/shaders/shader_uniform_table.cpp \
+    ../../source/gpu/common/shaders/shader_var_table.cpp \
+    ../../source/gpu/common/shaders/shader_function.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_shadow_single.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_pvltd_shadow.cpp \
+    ../../source/gpu/opengl/render_context/shaders/gl_shader_type.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_textured_2d_array.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_depth.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_tex_diffuse.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_tex_diffuse.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_diffuse.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_bump.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_depth.cpp
 
 
 # Input
@@ -1092,7 +1105,26 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/opengl/textures/gl_texture2d_array.h \
     ../../source/gpu/common/texture/texture.h \
     ../../source/gpu/common/frame_buffer/frame_buffer_target.h \
-    ../../source/gpu/opengl/render_targets/gl_frame_buffer_convert.h
+    ../../source/gpu/opengl/render_targets/gl_frame_buffer_convert.h \
+    ../../source/gpu/common/shaders/shader_builder.h \
+    ../../source/gpu/common/shaders/shader_type.h \
+    ../../source/gpu/common/shaders/module.h \
+    ../../source/gpu/common/shaders/shader_data_type.h \
+    ../../source/gpu/common/shaders/shader_uniform_table.h \
+    ../../source/gpu/common/shaders/shader_var_table.h \
+    ../../source/gpu/common/shaders/shader_function.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_shadow_single.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_pvltd_shadow.h \
+    ../../source/gpu/opengl/render_context/shaders/gl_shader_type.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_textured_2d_array.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_depth.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_tex_diffuse.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_tex_diffuse.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_diffuse.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_bump.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_depth.h \
+    ../../source/math/frustum_points.h
 
 
 CONFIG += dll
@@ -1146,7 +1178,6 @@ OTHER_FILES += \
     ../../data/shaders/solid_color_3d_330.frag \
     ../../data/shaders/solid_color_2d_330.vert \
     ../../data/shaders/solid_color_2d_330.frag \
-    ../../data/shaders/skinning_330.vert \
     ../../data/shaders/skinning_330.frag \
     ../../data/shaders/shaders.ini \
     ../../data/shaders/quad_330.geom \
@@ -1183,5 +1214,10 @@ OTHER_FILES += \
     ../../data/shaders/bump_330.frag \
     ../../data/shaders/bump_330_shadow_map.vert \
     ../../data/shaders/bump_330_shadow_map.frag \
-    ../../data/shaders/shadow_single.frag
+    ../../data/shaders/shadow_single.frag \
+    ../../data/shaders/shadow.vert \
+    ../../data/shaders/solid_texture_2d_array.frag \
+    ../../data/shaders/depth.vert \
+    ../../data/shaders/skinning_bump_330.vert \
+    ../../data/shaders/skinning_depth_330.vert
 

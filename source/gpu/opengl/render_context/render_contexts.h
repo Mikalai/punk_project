@@ -59,21 +59,21 @@ namespace Gpu
 //				ShaderCollection::No> {};
 //#endif	//
 
-#ifdef USE_RC_PFRTDL
-		class PUNK_ENGINE_API RenderContextPerFragmentTextureDiffuseLight final
-				: public RenderContextPolicy<
-				ShaderCollection::VertexLightPerFragmentTextureDiffuse,
-				ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
-				ShaderCollection::No> {};
-#endif	//
+//#ifdef USE_RC_PFRTDL
+//		class PUNK_ENGINE_API RenderContextPerFragmentTextureDiffuseLight final
+//				: public RenderContextPolicy<
+//				ShaderCollection::VertexLightPerFragmentTextureDiffuse,
+//				ShaderCollection::FragmentLightPerFragmentTextureDiffuse,
+//				ShaderCollection::No> {};
+//#endif	//
 
-#ifdef USE_LIGHT_PER_FRAGMENT_DIFFUSE
-		class PUNK_ENGINE_API RenderContextPerFragmentDiffuseLight final
-				: public RenderContextPolicy<
-				ShaderCollection::VertexLightPerFragmentDiffuse,
-				ShaderCollection::FragmentLightPerFragmentDiffuse,
-				ShaderCollection::No> {};
-#endif	//	USE_LIGHT_PER_VERTEX_DIFFUSE
+//#ifdef USE_LIGHT_PER_FRAGMENT_DIFFUSE
+//		class PUNK_ENGINE_API RenderContextPerFragmentDiffuseLight final
+//				: public RenderContextPolicy<
+//				ShaderCollection::VertexLightPerFragmentDiffuse,
+//				ShaderCollection::FragmentLightPerFragmentDiffuse,
+//				ShaderCollection::No> {};
+//#endif	//	USE_LIGHT_PER_VERTEX_DIFFUSE
 
 #ifdef USE_PAINTER_RC
 		class PUNK_ENGINE_API RenderContextPainter final : public RenderContextPolicy<VertexShaderPainter, FragmentShaderPainter, NoShader> {};

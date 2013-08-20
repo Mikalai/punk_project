@@ -1,5 +1,5 @@
 #include "vs_transformed_textured_3d.h"
-#include "../shader_type.h"
+#include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 

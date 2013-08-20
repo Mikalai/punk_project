@@ -8,8 +8,8 @@ uniform vec3 uLightPosition;
 uniform mat4 uTextureMatrix;
 
 out vec2 vTexture0;
-out vec3 ViewDirection;
-out vec3 LightDirection;
+out vec3 vViewDirection;
+out vec3 vLightDirection;
 
 layout(location = 0) in vec4 rm_Vertex;
 layout(location = 1) in vec4 rm_Normal;
@@ -23,22 +23,22 @@ void main(void)
 	
 	vec4 ObjectPosition = uView * uWorld * rm_Vertex;
 	vec3 ViewDir = normalize(ObjectPosition.xyz);
-	vec3 LightDir = normalize((uView*vec4(uLightPosition, 1.0)).xyz - ObjectPosition.xyz);
+        vec3 LightDir = normalize((uView * vec4(uLightPosition, 1.0)).xyz - ObjectPosition.xyz);
 	
 	vec3 Normal = normalize(uNormalMatrix * rm_Normal.xyz);
 	vec3 Tangent = normalize(uNormalMatrix * rm_Tangent.xyz);
 	vec3 Binormal = normalize(uNormalMatrix * rm_Binormal.xyz); // normalize(rm_Tangent.w * cross(Normal, Tangent));
 	
-	ViewDirection.x = dot(Tangent, ViewDir);
-	ViewDirection.y = dot(Binormal, ViewDir);
-	ViewDirection.z = dot(Normal, ViewDir);
+        vViewDirection.x = dot(Tangent, ViewDir);
+        vViewDirection.y = dot(Binormal, ViewDir);
+        vViewDirection.z = dot(Normal, ViewDir);
 	
-	LightDirection.x = dot(Tangent, LightDir);
-	LightDirection.y = dot(Binormal, LightDir);
-	LightDirection.z = dot(Normal, LightDir);
+        vLightDirection.x = dot(Tangent, LightDir);
+        vLightDirection.y = dot(Binormal, LightDir);
+        vLightDirection.z = dot(Normal, LightDir);
 	
-	ViewDirection = normalize(ViewDirection);
-	LightDirection = normalize(LightDirection);
+        vViewDirection = normalize(vViewDirection);
+        vLightDirection = normalize(vLightDirection);
 	
-        vTexture0 = (uTextureMatrix * vec4(rm_vTexture0.xy, 0, 1)).xy;
+        vTexture0 = (uTextureMatrix * vec4(rm_Texture0.xy, 0, 1)).xy;
 }

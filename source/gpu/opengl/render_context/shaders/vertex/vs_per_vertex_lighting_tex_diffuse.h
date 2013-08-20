@@ -23,18 +23,7 @@ namespace Gpu
             unsigned uView;
 			unsigned uTextureMatrix;
 
-            unsigned uLightPosition[MAX_LIGHTS];
-            unsigned uLightDirection[MAX_LIGHTS];
-            unsigned uLightDiffuse[MAX_LIGHTS];
-
-            unsigned uConstantAttenuation[MAX_LIGHTS];
-            unsigned uLinearAttenuation[MAX_LIGHTS];
-            unsigned uQuadricAttenuation[MAX_LIGHTS];
-
-            unsigned uMode[MAX_LIGHTS]; //	0 - Constant, 1 - Linear, 2 - Quadric
-            unsigned uSpotExponent[MAX_LIGHTS];
-            unsigned uType[MAX_LIGHTS];	//	0 - point, 1 - linear
-
+            LightSourceShaderParameters uLight[MAX_LIGHTS];
 		};
 	}
 }

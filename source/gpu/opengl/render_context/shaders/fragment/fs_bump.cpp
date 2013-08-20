@@ -1,5 +1,5 @@
 #include "fs_bump.h"
-#include "../shader_type.h"
+#include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 
@@ -30,8 +30,8 @@ namespace Gpu
             m_rc->SetUniformVector4f(uAmbient, params.batch_state->m_material.m_ambient_color);
             m_rc->SetUniformVector4f(uSpecular, params.batch_state->m_material.m_specular_color);
             m_rc->SetUniformFloat(uSpecularPower, params.batch_state->m_material.m_specular_factor);
-            m_rc->SetUniformInt(uDiffuseMap, 0);
-            m_rc->SetUniformInt(uNormalMap, 1);
+            m_rc->SetUniformInt(uDiffuseMap, params.texture_state->m_diffuse_slot[0]);
+            m_rc->SetUniformInt(uNormalMap, params.texture_state->m_normal_map_slot);
         }
 
         int64_t FsBumpMapping::GetRequiredAttributesSet() const

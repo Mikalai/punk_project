@@ -1,0 +1,33 @@
+function b = normalize(a)
+    b = a / norm(a);
+endfunction
+
+function c = cross(a, b)
+    x = a(2)*b(3)-a(3)*b(2);
+    y = a(3)*b(1)-a(1)*b(3); 
+    z = a(1)*b(2)-a(2)*b(1);
+    c = [x y z];
+endfunction
+
+function R = CreateViewMatrix(_eye, _center, _up)
+    F = _center - _eye;
+    _f = F / length(F);
+    up = _up / length(_up);
+    _s = cross(_f, _up);
+    u = cross(_s, _f);
+    M = [_s(1) _s(2) _s(3) 0; u(1) u(2) u(3) 0; -_f(1) -_f(2) -_f(3) 0; 0 0 0 1]
+    
+    T = [0 0 0 -_eye(1); 0 0 0 -_eye(2); 0 0 0 -_eye(3); 0 0 0 1]
+    R = M * T
+endfunction
+
+
+height = 50;
+view_point = [0 0 0];
+_eye = [0 0 height] + view_point + [0 50 0];
+_dir = normalize(view_point - _eye);
+up = [0 0 1];
+
+view = CreateViewMatrix(_eye, _eye + _dir, up);
+
+disp(view)

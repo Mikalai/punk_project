@@ -940,6 +940,7 @@ namespace Gpu
             glClearDepth = (PFNGLCLEARDEPTHPROC)GetGPUProcAddress("glClearDepth");
             glRenderbufferStorageMultisampleCoverageNV = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC)GetGPUProcAddress("glRenderbufferStorageMultisampleCoverageNV");
             glFramebufferTextureLayer = (PFNGLFRAMEBUFFERTEXTURELAYERPROC)GetGPUProcAddress("glFramebufferTextureLayer");
+            glPolygonOffset = (PFNGLPOLYGONOFFSETPROC)GetGPUProcAddress("glPolygonOffset");
         }
 
         size_t VideoDriverImpl::GetFrameBufferConfigCount() const

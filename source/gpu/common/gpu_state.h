@@ -19,6 +19,7 @@ namespace Gpu
 {
 	class CoreState;
 	class Texture2D;
+    class Texture2DArray;
 	class AbstractRenderPolicy;
 
 	/**
@@ -30,7 +31,7 @@ namespace Gpu
     class PUNK_ENGINE_API BaseState
 	{
 	public:
-		BaseState() : m_count(1), m_total(0) {}
+        BaseState() : m_index(0), m_count(1), m_total(0) {}
 
 		BaseState(const BaseState& state)
 		{
@@ -46,10 +47,10 @@ namespace Gpu
 	private:
 		///	Unique index of current state
 		unsigned m_index;
+        ///	Holds count of copies of current instance.
+        unsigned m_count;
 		///	Holds "total" count of instances created during current frame
-		mutable unsigned m_total;
-		///	Holds count of copies of current instance.
-		unsigned m_count;
+		mutable unsigned m_total;		
 
 		/// Copy operator is forbidden forever
 		BaseState& operator = (const BaseState&) = delete;
@@ -63,6 +64,9 @@ namespace Gpu
 		Math::mat4 m_view;
 		Math::ClipSpace m_clip_space;
 		Math::vec3 m_camera_position;
+        Math::vec4 m_far_distances;
+        float m_zfar;
+        float m_znear;
 
 		friend class CoreState;
 	};
@@ -70,9 +74,11 @@ namespace Gpu
     class PUNK_ENGINE_API LightState final : private BaseState, public System::Poolable<LightState>
 	{
 	public:
+        LightState();
 		LightModel m_light_model;
 		//	this pointers should not be deleted in destructor
 		LightParameters m_lights[MAX_LIGHTS];
+        unsigned m_used_lights;
 
 		friend class CoreState;
 	};
@@ -160,19 +166,27 @@ namespace Gpu
 	public:
 		TextureState();
 
-        Texture2D* m_diffuse_map_1;
-        Texture2D* m_diffuse_map_0;
-        Texture2D* m_normal_map;
-        Texture2D* m_height_map;
-        Texture2D* m_specular_map;
-        Texture2D* m_text_map;
-		Texture2D* m_shadow_map;
+        Texture2D* m_diffuse_map[4] = {nullptr, nullptr, nullptr, nullptr};
+        Texture2D* m_normal_map = nullptr;
+        Texture2D* m_height_map = nullptr;
+        Texture2D* m_specular_map = nullptr;
+        Texture2D* m_text_map = nullptr;
+        Texture2D* m_shadow_map = nullptr;
+        Texture2DArray* m_texture_array = nullptr;
+        int m_texture_array_diffuse_map_layer[4] = {-1, -1, -1, -1};
+        int m_texture_array_normal_map_layer = -1;
+        int m_texture_array_height_map_layer = -1;
+        int m_texture_array_specular_map_layer = -1;
+        int m_texture_array_text_map_layer = -1;
+        int m_texture_array_shadow_map_layer[4] = {-1, -1, -1, -1};
 
-		int m_diffuse_slot_0;
-		int m_diffuse_slot_1;
-		int m_normal_slot;
-		int m_text_slot;
-		int m_height_map_slot;
+        int m_diffuse_slot[4] = {-1, -1, -1, -1};
+        int m_normal_map_slot = -1;
+        int m_text_map_slot = -1;
+        int m_height_map_slot = -1;
+        int m_texture_array_slot = -1;
+        int m_shadow_map_slot = -1;
+        int m_specular_map_slot = -1;
 
 		friend class CoreState;
 
@@ -205,6 +219,8 @@ namespace Gpu
 		 */
 		Texture2D* m_color_buffer;
 		Texture2D* m_depth_buffer;
+
+        Texture2DArray* m_shadow_maps;
 
 		/**
 		 * @brief m_active_rendering

@@ -1,5 +1,5 @@
 #include "fs_text_solid.h"
-#include "../shader_type.h"
+#include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
 
@@ -23,7 +23,7 @@ namespace Gpu
         void FsTextSolid::BindParameters(const CoreState& params)
         {
             m_rc->SetUniformVector4f(uDiffuseColor, params.batch_state->m_material.m_text_color);
-            m_rc->SetUniformInt(uTextMap, 0);
+            m_rc->SetUniformInt(uTextMap, params.texture_state->m_text_map_slot);
         }
 
         int64_t FsTextSolid::GetRequiredAttributesSet() const

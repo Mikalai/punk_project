@@ -32,6 +32,7 @@ namespace Gpu
         virtual void SetRenderTarget(FrameBufferTarget value) = 0;
         virtual void SetViewport(int x, int y, int width, int height) = 0;
         virtual void Clear(bool color, bool depth, bool stencil) = 0;
+        virtual void SetPolygonOffset(float a, float b) = 0;
         VideoDriver* GetVideoDriver();        
 
         Texture2D* GetColorTexture();

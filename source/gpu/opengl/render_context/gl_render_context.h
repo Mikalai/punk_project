@@ -2,7 +2,7 @@
 #define _H_PUNK_OPENGL_DUMMY_RENDER_CONTEXT
 
 #include "../../common/abstract_render_context_policy.h"
-#include "shaders/shader_type.h"
+#include "shaders/gl_shader_type.h"
 #include "../../../math/vec4.h"
 #include "../../../math/mat4.h"
 

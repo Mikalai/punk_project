@@ -41,9 +41,9 @@ namespace System
          string(const std::wstring& s);
          explicit string(size_t length);
 
-         string& operator = (const string& s);
-         string& operator = (const wchar_t* s) { return *this; }
-         string& operator = (const char* s);
+         string& operator = (const string&);
+         string& operator = (const wchar_t*) { return *this; }
+         string& operator = (const char*);
          ~string();
 
          const std::string ToStdString() const;

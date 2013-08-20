@@ -9,71 +9,141 @@
 
 namespace Gpu
 {
-    Renderable* AsRenderable(const Math::Frustum &value, VideoDriver *driver)
+    Renderable* AsRenderable(const Math::FrustumCore &value, VideoDriver *driver)
     {
         RenderableBuilder b(driver);
         b.Begin(PrimitiveType::LINES);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FLB));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLB)]);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FLT));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLT)]);
 
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FLT));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLT)]);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FRT));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRT)]);
 
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FRT));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRT)]);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FRB));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRB)]);
 
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FRB));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRB)]);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FLB));
-
-
-        b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NLB));
-        b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NLT));
-
-        b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NLT));
-        b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NRT));
-
-        b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NRT));
-        b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NRB));
-
-        b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NRB));
-        b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NLB));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLB)]);
 
 
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NLB));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLB)]);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FLB));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLT)]);
 
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NLT));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLT)]);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FLT));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRT)]);
 
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NRT));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRT)]);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FRT));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRB)]);
 
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::NRB));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRB)]);
         b.Color3f(1,1,1);
-        b.Vertex3fv(value.GetPoint(Math::Frustum::FRB));
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLB)]);
+
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLB)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLB)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLT)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLT)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRT)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRT)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRB)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRB)]);
+        b.End();
+
+        return b.ToRenderable();
+    }
+
+    Renderable* AsRenderable2(const Math::FrustumCore &value, VideoDriver *driver)
+    {
+        RenderableBuilder b(driver);
+        b.Begin(PrimitiveType::LINES);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLB)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLT)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLT)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRT)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRT)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRB)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRB)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLB)]);
+
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLB)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLT)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLT)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRT)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRT)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRB)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRB)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLB)]);
+
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLB)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLB)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NLT)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FLT)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRT)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRT)]);
+
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::NRB)]);
+        b.Color3f(1,1,1);
+        b.Vertex3fv(value.point[Math::GetIndex(Math::FrustumPoints::FRB)]);
         b.End();
 
         return b.ToRenderable();
@@ -188,7 +258,7 @@ namespace Gpu
         return r.ToRenderable();
     }
 
-    Gpu::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::Frustum& frustum, VideoDriver* driver)
+    Gpu::Renderable* AsRenderable(const Math::Plane* planes, size_t count, const Math::FrustumCore& frustum, VideoDriver* driver)
     {
         return nullptr;
     }

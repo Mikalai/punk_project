@@ -18,6 +18,8 @@
 #include "convex_shape_mesh.h"
 #include "frustum.h"
 #include "triangle2d.h"
+#include "frustum_plane.h"
+#include "frustum_points.h"
 
 namespace Math
 {
@@ -111,12 +113,13 @@ namespace Math
 		return Relation::INSIDE;
 	}
 
-	Relation ClassifyPoint(const vec3& point, const Frustum& frustum)
+    Relation ClassifyPoint(const vec3& point, const FrustumCore& frustum)
 	{
+        Plane p[6];
+        ProjectionMatrixToPlanes(FrustumCreatePerspectiveProjectionMatrix(frustum), p);
 		for (int i = 0; i != 6; ++i)
-		{
-            FrustumPlane plane = (FrustumPlane)i;
-			if (ClassifyPoint(point, frustum.GetPlane(plane)) == Relation::BACK)
+		{            
+            if (ClassifyPoint(point, p[i]) == Relation::BACK)
 				return Relation::OUTSIDE;
 		}
 		return Relation::INSIDE;

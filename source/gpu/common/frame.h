@@ -28,46 +28,50 @@ namespace Gpu
 		void BeginRendering();
         //void BeginRendering(Texture2D* color_buffer, Texture2D* depth_buffer);
         void BeginRendering(FrameBuffer* target);
-		void Render(Renderable* value, bool destroy = false);
-		void MultWorldMatrix(const Math::mat4& value);		
-		void SetWorldMatrix(const Math::mat4& value);		
-		void SetViewMatrix(const Math::mat4& value);
-		void SetProjectionMatrix(const Math::mat4& value);
-		void SetDiffuseColor(const Math::vec4& value);
-		void SetDiffuseColor(float r, float g, float b, float a);
-        void SetDiffuseMap0(Texture2D* value);
-        void SetDiffuseMap1(Texture2D* value);
-        void SetHeightMap(Texture2D* value);
-        void SetNormalMap(Texture2D* value);
-        void SetTextMap(Texture2D* value);
-		void SetTextColor(const Math::vec4& value);
-        void SetTextColor(float r, float g, float b, float a);
-        void SetFontMap(Texture2D* value);
-		void SetBoneMatrix(int bone_index, const Math::mat4& value);
-		void SetSpecularColor(const Math::vec4& value);
-		void SetSpecularFactor(float value);
-		void SetAmbientColor(float value);
+		void Render(Renderable* value, bool destroy = false);		
+
 		void SetClipSpace(const Math::ClipSpace& value);		
+        const Math::ClipSpace& GetClipSpace() const;
 		void SetLineWidth(float value);
-		void SetPointSize(float value);
-		void SetTextureMatrix(const Math::mat4& value);
-		void SetLocalMatrix(const Math::mat4& value);
+		void SetPointSize(float value);		
+        void SetBoundingSphere(const Math::BoundingSphere& value);
 
-        void SetSpecularMap(Texture2D* value);
-        void SetBumpMap(Texture2D* value);
+        //  MATRIX
+        void SetBoneMatrix(int bone_index, const Math::mat4& value);
+        const Math::mat4& GetBoneMatrix(int bone_index) const;
+        void SetTextureMatrix(const Math::mat4& value);
+        void SetLocalMatrix(const Math::mat4& value);
+        void SetWorldMatrix(const Math::mat4& value);
+        void SetViewMatrix(const Math::mat4& value);
+        void SetProjectionMatrix(const Math::mat4& value);
+        void MultWorldMatrix(const Math::mat4& value);
+        const Math::mat4& GetWorldMatrix() const;
+        const Math::mat4& GetLocalMatrix() const;
+        const Math::mat4& GetViewMatrix() const;
+        const Math::mat4& GetProjectionMatrix() const;
 
-		const Math::mat4& GetWorldMatrix() const;		
-		const Math::mat4& GetLocalMatrix() const;
-		const Math::mat4& GetViewMatrix() const;
-		const Math::mat4& GetProjectionMatrix() const;
-		const Math::vec4& GetDiffuseColor() const;
-		const Texture2D* GetDiffuseMap0() const;
-		const Texture2D* GetDiffuseMap1() const;
-		const Math::mat4& GetBoneMatrix(int bone_index) const;
-		const Math::vec4& GetSpecularColor() const;
+        //  COLORS
+        void SetDiffuseColor(const Math::vec4& value);
+        void SetDiffuseColor(float r, float g, float b, float a);
+        void SetTextColor(const Math::vec4& value);
+        void SetTextColor(float r, float g, float b, float a);
+        void SetSpecularColor(const Math::vec4& value);
+        const Math::vec4& GetSpecularColor() const;
+        void SetSpecularFactor(float value);
+        void SetAmbientColor(float value);
+        const Math::vec4& GetDiffuseColor() const;
+
+        //  MAPS
+        void SetSpecularMap(Texture2D* value, int slot);
+        void SetBumpMap(Texture2D* value, int slot);
+        void SetDiffuseMap(int index, Texture2D* value, int slot);
+        void SetHeightMap(Texture2D* value, int slot);
+        void SetNormalMap(Texture2D* value, int slot);
+        void SetTextMap(Texture2D* value, int slot);
+        void SetFontMap(Texture2D* value, int slot);
+        const Texture2D* GetDiffuseMap(int index) const;
 		const Texture2D* GetSpecularMap() const;		
-		const Texture2D* GetBumpMap() const;		
-		const Math::ClipSpace& GetClipSpace() const;
+		const Texture2D* GetBumpMap() const;				
 		
         void CastShadows(bool value);
 		void ReceiveShadow(bool value);
@@ -100,6 +104,13 @@ namespace Gpu
         void SetShadowModel(ShadowModel value);
         void SetShadowMapSize(const Math::ivec2& value);
         void SetShadowMapSize(int width, int height);
+        void SetTexture2DArray(Texture2DArray* value, int slot);
+        //  index in current texture 2d array
+        void SetShadowMapIndex(int shadow_map, int index);
+        void SetDiffuseMapIndex(int diffuse_map, int index);
+        void SetNormalMapIndex(int index);
+        void SetShadowMaps(Texture2DArray* value);
+
 
         const Math::vec4 GetClearColor() const;
 
@@ -118,6 +129,8 @@ namespace Gpu
         void DrawPoint(float x, float y, float z);
         void DrawCircleXY(float x, float y, float z, float r);
         void DrawCircleXY(const Math::vec3& c, float r);
+        void DrawQuad(float x, float y, float width, float height);
+        void DrawQuad(const Math::Rect& rect);
         void DrawText2D(float x, float y, const System::string& value);
         void DrawText2D(float x, float y, float width, float height, const System::string& value);
         void DrawText2D(const Math::vec2& pos, const System::string& value);
@@ -169,6 +182,7 @@ namespace Gpu
 		std::vector<Batch*> m_batches;
         std::vector<TextSurface*> m_texts;
 
+        Texture2DArray* m_shadow_maps;
 	private:
 		//	driver can create frames
 		Frame(VideoDriver* driver);

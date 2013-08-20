@@ -7,10 +7,10 @@ namespace Gpu
 {
 	namespace OpenGL
 	{
-		class FsShaderSolid : public Shader
+		class FsSolid : public Shader
 		{
 		public:
-			FsShaderSolid();
+			FsSolid();
 
 			virtual void InitUniforms() override;
 			virtual void BindParameters(const CoreState& params) override;

@@ -76,4 +76,14 @@ namespace Gpu
 	{
 		return m_end;
 	}
+
+    void FogDescription::SetScale(float value)
+    {
+        m_scale = value;
+    }
+
+    float FogDescription::GetScale() const
+    {
+        return m_scale;
+    }
 }

@@ -1,0 +1,5 @@
+vertex model position - vModelPosition
+vertex view position - vViewModelPosition
+vertex projected position - vProjViewModelPosition
+vertex texture coord [x] - vTexture[x]
+

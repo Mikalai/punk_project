@@ -6,6 +6,7 @@
 
 namespace Gpu
 {
+    static int count = 0;
     namespace OpenGL
     {
         OpenGLFrameBuffer::OpenGLFrameBuffer(VideoDriver *driver)
@@ -14,8 +15,9 @@ namespace Gpu
             , m_depth_rb(nullptr)
             , m_resolve_rb(nullptr)
             , m_fb(0)
-        {
-            GL_CALL(glGenFramebuffers(1, &m_fb));
+        {            
+            count++;
+            GL_CALL(glGenFramebuffers(1, &m_fb));            
         }
 
         void OpenGLFrameBuffer::Config(FrameBufferConfig* config)
@@ -23,6 +25,7 @@ namespace Gpu
             Gpu::FrameBuffer::Config(config);
             Clear();
 
+            count++;
             GL_CALL(glGenFramebuffers(1, &m_fb));
 
             m_color_texture = GetVideoDriver()->CreateTexture2D(
@@ -36,11 +39,11 @@ namespace Gpu
                 m_resolve_rb = new OpenGLFrameBuffer(GetVideoDriver());
                 m_resolve_rb->AttachColorTarget(0, m_color_texture);
 
-                Bind();
+              //  Bind();
                 m_color_rb = new OpenGLColorRenderBuffer(config, GetVideoDriver());
                 AttachColorTarget(0, m_color_rb);
 
-                Bind();
+             //   Bind();
                 m_depth_rb = new OpenGLDepthRenderBuffer(config, GetVideoDriver());
                 AttachDepthTarget(m_depth_rb);
             }
@@ -108,19 +111,24 @@ namespace Gpu
                 m_resolve_rb = nullptr;
             }
             if (m_fb)
-            {
+            {                
                 GL_CALL(glDeleteFramebuffers(1, &m_fb));
+                count--;
                 m_fb = 0;
             }
         }
 
         void OpenGLFrameBuffer::Bind()
         {
-            GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, m_fb));
+            GL_CALL(glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint*)&m_prev_fb));
+            if (m_prev_fb != m_fb)
+            {
+                GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, m_fb));
+            }
         }
 
         void OpenGLFrameBuffer::Unbind()
-        {
+        {            
             GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
             if (m_resolve_rb)
             {
@@ -128,7 +136,10 @@ namespace Gpu
                 GL_CALL(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_resolve_rb->m_fb));
                 GL_CALL(glBlitFramebuffer(0, 0, Config()->Width(), Config()->Height(), 0, 0, Config()->Width(), Config()->Height(), GL_COLOR_BUFFER_BIT, GL_NEAREST));
             }
-            GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+            if (m_prev_fb != m_fb)
+            {
+                GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, m_prev_fb));
+            }
         }
 
         void OpenGLFrameBuffer::AttachColorTarget(size_t index, Texture2D* buffer)
@@ -204,7 +215,9 @@ namespace Gpu
                 flag |= GL_DEPTH_BUFFER_BIT;
             if (stencil)
                 flag |= GL_STENCIL_BUFFER_BIT;
-            GL_CALL(glClear(flag));
+            GL_CALL(glClearDepth(1));
+            GL_CALL(glClear(flag));            
+            Unbind();
         }
 
         void OpenGLFrameBuffer::Check()
@@ -232,6 +245,19 @@ namespace Gpu
                 throw System::PunkInvalidArgumentException(L"GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS is returned if any framebuffer attachment is layered, and any populated attachment is not layered, or if all populated color attachments are not from textures of the same target.");
             else
                 throw System::PunkInvalidArgumentException(L"Fuck");
+        }
+
+        void OpenGLFrameBuffer::SetPolygonOffset(float a, float b)
+        {
+            GL_CALL(glPolygonOffset(a, b));
+            if (a == 0 && b == 0)
+            {
+                GL_CALL(glDisable(GL_POLYGON_OFFSET_FILL));
+            }
+            else
+            {
+                GL_CALL(glEnable(GL_POLYGON_OFFSET_FILL));
+            }
         }
     }
 }

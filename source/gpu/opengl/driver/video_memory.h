@@ -20,7 +20,7 @@ namespace Gpu
 		*	textures and buffers.
 		*	This is a singletone class
 		*/
-		class VideoMemory final
+        class PUNK_ENGINE_LOCAL VideoMemory final
 		{
 		public:
 

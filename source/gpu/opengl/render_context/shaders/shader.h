@@ -4,7 +4,7 @@
 #include <memory>
 #include "../../gl/module.h"
 #include "../../error/module.h"
-#include "shader_type.h"
+#include "gl_shader_type.h"
 #include "../../../common/vertex_component.h"
 #include "../../../common/config.h"
 
@@ -16,6 +16,29 @@ namespace System
 namespace Gpu
 {
 	class CoreState;
+
+    struct FogShaderParameters
+    {
+        unsigned color;
+        unsigned density;
+        unsigned start;
+        unsigned end;
+        unsigned scale;
+    };
+
+    struct LightSourceShaderParameters
+    {
+        unsigned direction;
+        unsigned position;
+        unsigned diffuse_color;
+        unsigned ambient_color;
+        unsigned attenuation_constant;
+        unsigned attenuation_linear;
+        unsigned attenuation_quadric;
+        unsigned spot;
+        unsigned type;
+        unsigned attenuation_model;
+    };
 
 	namespace OpenGL
 	{

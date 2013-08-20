@@ -32,7 +32,7 @@ namespace Math
 		const vec3& operator [] (int index) const { return m_points[index]; }
 		vec3& operator [] (int index) { return m_points[index]; }
 
-		const vec3& GetNormal() const { return m_plane.GetNormal(); }
+        const vec3 GetNormal() const { return m_plane.GetNormal(); }
 		float GetDistance() const { return m_plane.GetDistance(); }
 
 	private:

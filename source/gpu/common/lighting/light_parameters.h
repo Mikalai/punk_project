@@ -20,6 +20,12 @@ namespace Gpu
 		void SetDirection(const Math::vec3& value);
 		const Math::vec4& GetDirection() const;
 
+        void SetFarZ(float value);
+        float GetFarZ() const;
+
+        void SetNearZ(float value);
+        float GetNearZ() const;
+
 		void SetDiffuseColor(float r, float g, float b, float a);
 		void SetDiffuseColor(const Math::vec4& value);
 		const Math::vec4& GetDiffuseColor() const;
@@ -49,6 +55,13 @@ namespace Gpu
         const Math::mat4 GetProjectionMatrix() const;
         const Math::mat4 GetViewMatrix() const;
 
+        void SetShadowMatrix(size_t index, const Math::mat4& value);
+        const Math::mat4& GetShadowMatrix(size_t index) const;
+
+        void SetFarDistance(size_t index, float value);
+        float GetFarDistance(size_t index) const;
+        const Math::vec4& GetFarDistances() const;
+
 	private:
 		LightType m_light_type;
 		LightAttenuation m_attenuation;
@@ -62,6 +75,10 @@ namespace Gpu
 		Math::vec4 m_direction;
 		Math::vec4 m_diffuse_color;
 		Math::vec4 m_ambient_color;
+        Math::mat4 m_shadow_matrix[4];
+        Math::vec4 m_far_distance;
+        float m_zfar;
+        float m_znear;
 	};
 }
 

@@ -24,7 +24,7 @@ namespace Math
 	class ConvexShapeMesh;
 	class Rect;
 	class Line2D;
-	class Frustum;
+	class FrustumCore;
 
     enum Relation { INTERSECT,
                     INTERSECT_1 = INTERSECT,
@@ -67,7 +67,7 @@ namespace Math
 	PUNK_ENGINE_API Relation ClassifyPoint(const vec3& point, const ConvexShapeMesh& mesh);
 	PUNK_ENGINE_API Relation ClassifyPoint(const vec3& point, const BoundingBox& mesh);
 	PUNK_ENGINE_API Relation ClassifyPoint(const vec3& point, const BoundingSphere& mesh);
-	PUNK_ENGINE_API Relation ClassifyPoint(const vec3& point, const Frustum& frustum);
+	PUNK_ENGINE_API Relation ClassifyPoint(const vec3& point, const FrustumCore& frustum);
 	PUNK_ENGINE_API Relation ClassifyPoint(const vec3& point, const ClipSpace& frustum);
 	PUNK_ENGINE_API Relation ClassifyPoint(const vec2& point, const Rect& rect);
     PUNK_ENGINE_API Relation ClassifyPoint(const vec3& point, const AxisAlignedBox& aabb);

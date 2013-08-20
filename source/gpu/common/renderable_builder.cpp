@@ -29,6 +29,8 @@ namespace Gpu
 
         bool IsValid() const;
 
+        const Math::BoundingSphere GetBoundingSphere() const;
+
 		void ValidateBegin();
 		void ValidateEnd();
 		void ValidateDraw();
@@ -429,6 +431,18 @@ namespace Gpu
 		return renderable;
 	}
 
+    const Math::BoundingSphere RenderableBuilderImpl::GetBoundingSphere() const
+    {
+        Math::BoundingSphere s;
+        std::vector<Math::vec3> p(m_vertex.size());
+        for (int i = 0; i != m_vertex.size(); ++i)
+        {
+            p[i] = m_vertex[i].XYZ();
+        }
+        s.Create(p);
+        return s;
+    }
+
     bool RenderableBuilderImpl::IsValid() const
     {
         return !m_vertex.empty();
@@ -523,4 +537,9 @@ namespace Gpu
 	{
 		impl->Normal3fv(value);
 	}
+
+    const Math::BoundingSphere RenderableBuilder::GetBoundingSphere() const
+    {
+        return impl->GetBoundingSphere();
+    }
 }

@@ -14,9 +14,15 @@ namespace Math
         Right = 3,
         Far = 4,
         Near = 5
-        };
+    };
 
+    PUNK_ENGINE_API bool IsAdjacent(FrustumPlane a, FrustumPlane b);
     PUNK_ENGINE_API const System::string AsString(const FrustumPlane& value);
+
+    constexpr int GetIndex(const FrustumPlane p)
+    {
+        return (int)p;
+    }
 }
 
 #endif // FRUSTUM_PLANE_H

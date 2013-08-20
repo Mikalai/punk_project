@@ -7,26 +7,27 @@ uniform float uSpecularPower;
 uniform sampler2D uDiffuseMap;
 uniform sampler2D uNormalMap;
 
-in vec2 Texcoord;
-in vec3 ViewDirection;
-in vec3 LightDirection;
-out vec4 FragColor;
+in vec2 vTexture0;
+in vec3 vViewDirection;
+in vec3 vLightDirection;
+
+out vec4 vFragmentColor;
 
 void main( void )
 {
-	vec3 LightDir = normalize(LightDirection);
+        vec3 LightDir = normalize(vLightDirection);
 	
-	vec3 Normal = normalize((texture(uNormalMap, Texcoord).xyz * 2.0) - 1.0);
+        vec3 Normal = normalize((texture(uNormalMap, vTexture0).xyz * 2.0) - 1.0);
 	
 	float NDotL = max(0.0, dot(Normal, LightDir));    
 	
 	vec3 Reflection = normalize(((2.0 * Normal)*NDotL) - LightDir); 
 	
-	vec3 ViewDir = normalize(ViewDirection );
+        vec3 ViewDir = normalize(vViewDirection );
 	
 	float RDotV = max(0.0, dot(Reflection, ViewDir));
 	
-	vec4 BaseColor = texture(uDiffuseMap, Texcoord);
+        vec4 BaseColor = texture(uDiffuseMap, vTexture0);
 	
 	vec4 TotalAmbient = uAmbient * BaseColor; 
 	
@@ -34,5 +35,5 @@ void main( void )
 	
 	vec4 TotalSpecular = uSpecular * (pow(RDotV, uSpecularPower));
 
-	FragColor = vec4((TotalAmbient + TotalDiffuse + TotalSpecular).xyz, 1);       	
+        vFragmentColor = vec4((TotalAmbient + TotalDiffuse + TotalSpecular).xyz, 1);
 }
