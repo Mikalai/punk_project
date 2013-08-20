@@ -45,60 +45,51 @@ namespace Math
         return res;
     }
 
-    const mat4 mat4::CreateTargetCameraMatrix(const vec3& eye, const vec3& target, const vec3& up)
+    const mat4 mat4::CreateTargetCameraMatrix(const vec3& _eye, const vec3& _target, const vec3& _up)
     {
-        vec3 zAxis = (eye - target);
-        zAxis.Normalize();
+        vec3 F = (_target - _eye);
+        vec3 f = F.Normalized();
 
-        vec3 xAxis = up.Cross(zAxis);
-        xAxis.Normalize();
+        vec3 up = _up.Normalized();
+        vec3 s = f.Cross(up).Normalized();
+        vec3 u = s.Cross(f);
 
-        vec3 yAxis = zAxis.Cross(xAxis);
-        yAxis.Normalize();
+        mat4 m;
+        m[0*4 + 0] = s[0];
+        m[1*4 + 0] = s[1];
+        m[2*4 + 0] = s[2];
+        m[3*4 + 0] = 0;
 
-        mat4 res;
-        float* m = res.m;
+        m[0*4 + 1] = u[0];
+        m[1*4 + 1] = u[1];
+        m[2*4 + 1] = u[2];
+        m[3*4 + 1] = 0;
 
-        /*m[0*4 + 0] = xAxis[0];
-        m[0*4 + 1] = xAxis[1];
-        m[0*4 + 2] = xAxis[2];
-        m[0*4 + 3] = -eye.Dot(xAxis);
-
-        m[1*4 + 0] = yAxis[0];
-        m[1*4 + 1] = yAxis[1];
-        m[1*4 + 2] = yAxis[2];
-        m[1*4 + 3] = -eye.Dot(yAxis);
-
-        m[2*4 + 0] = -zAxis[0];
-        m[2*4 + 1] = -zAxis[1];
-        m[2*4 + 2] = -zAxis[2];
-        m[2*4 + 3] = -eye.Dot(zAxis);
-
-        m[3*4 + 0] = 0.0f;
-        m[3*4 + 1] = 0.0f;
-        m[3*4 + 2] = 0.0f;
-        m[3*4 + 3] = 1.0f;*/
-
-        m[0*4 + 0] = xAxis[0];
-        m[1*4 + 0] = xAxis[1];
-        m[2*4 + 0] = xAxis[2];
-        m[3*4 + 0] = -eye.Dot(xAxis);
-
-        m[0*4 + 1] = yAxis[0];
-        m[1*4 + 1] = yAxis[1];
-        m[2*4 + 1] = yAxis[2];
-        m[3*4 + 1] = -eye.Dot(yAxis);
-
-        m[0*4 + 2] = zAxis[0];
-        m[1*4 + 2] = zAxis[1];
-        m[2*4 + 2] = zAxis[2];
-        m[3*4 + 2] = -eye.Dot(zAxis);
+        m[0*4 + 2] = -f[0];
+        m[1*4 + 2] = -f[1];
+        m[2*4 + 2] = -f[2];
+        m[3*4 + 2] = 0;
 
         m[0*4 + 3] = 0.0f;
         m[1*4 + 3] = 0.0f;
         m[2*4 + 3] = 0.0f;
         m[3*4 + 3] = 1.0f;/**/
-        return res;
+        m = m * CreateTranslate(-_eye.X(), -_eye.Y(), -_eye.Z());
+        return m;
+    }
+
+    const mat4 mat4::CreateTranslate(float x, float y, float z)
+    {
+        mat4 m;
+        m[12] = x;
+        m[13] = y;
+        m[14] = z;
+        return m;
+    }
+
+    const mat4 mat4::CreateTranslate(const vec3 &v)
+    {
+        return CreateTranslate(v[0], v[1], v[2]);
     }
 
     const mat4 mat4::Inversed() const
@@ -413,5 +404,36 @@ namespace Math
         {
             m[i] = buffer->ReadReal32();
         }
+    }
+
+    const mat4 mat4::CreateOrthographicProjection(float left, float right, float bottom, float top, float _near, float _far)
+    {
+        mat4 res;
+
+        float tx = - (right + left) / (right - left);
+        float ty = - (top + bottom) / (top - bottom);
+        float tz = - (_far + _near) / (_far - _near);
+
+        res[0] = 2.0f / (right - left);
+        res[1] = 0;
+        res[2] = 0;
+        res[3] = 0;
+
+        res[4] = 0;
+        res[5] = 2.0f / (top - bottom);
+        res[6] = 0;
+        res[7] = 0;
+
+        res[8] = 0;
+        res[9] = 0;
+        res[10] = -2.0f / (_far - _near);
+        res[11] = 0;
+
+        res[12] = tx;
+        res[13] = ty;
+        res[14] = tz;
+        res[15] = 1;
+
+        return res;
     }
 }

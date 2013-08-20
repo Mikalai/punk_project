@@ -102,7 +102,7 @@ namespace Math
             return Matrix4x4<T>();
         }
 
-        static Matrix4x4<T> CreateOrthographicProjection(float left, float right, float top, float bottom, float _near, float _far)
+        static Matrix4x4<T> CreateOrthographicProjection(float left, float right, float bottom, float top, float _near, float _far)
         {
             Matrix4x4<T> result;
             result.SetColumn(0, Vector4<T>(T(2)/(right - left), 0, 0, 0));
@@ -770,6 +770,10 @@ namespace Math
 
         static const mat4 CreateTargetCameraMatrix(const vec3& eye, const vec3& target, const vec3& up);
         static const mat4 CreatePerspectiveProjection(float fovy, float width, float height, float znear, float zfar);
+        static const mat4 CreateOrthographicProjection(float left, float right, float bottom, float top, float _near, float _far);
+        static const mat4 CreateTranslate(float x, float y, float z);
+        static const mat4 CreateTranslate(const vec3& v);
+
         const mat4 Inversed() const;
         void Save(System::Buffer* buffer) const;
         void Load(System::Buffer* buffer);
