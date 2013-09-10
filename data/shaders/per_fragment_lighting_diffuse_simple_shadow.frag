@@ -4,6 +4,8 @@
 uniform vec4 uFarDistance;
 uniform sampler2DArray uShadowTextureArray;
 uniform mat4 uShadowMatrix[4];
+uniform vec4 uDiffuseColor;
+uniform float uShadowFactor = 0.8;
 
 in vec4 vWorldPosition;
 
@@ -34,14 +36,15 @@ vec2 shadowCoef()
 
     float diff = shadow_d - depth;
     // smoothen the result a bit, to avoid aliasing at shadow contact point
-    return vec2(clamp( diff*250.0 + 1.0, 0.0, 1.0));
+    return clamp( diff*250.0 + 1.0, 0.0, 1.0);
 }
 
 out vec4 vFragmentColor;
 
 void main()
 {
-    vec2 p = shadowCoef();
-    vFragmentColor = vec4(p.x, p.x, p.x ,1);
-    return;
+    float p = shadowCoef();
+    vFragmentColor = uDiffuseColor * mix(p, 1.0, uShadowFactor);
+    vFragmentColor = vec4(1,0,0,1);
+
 }

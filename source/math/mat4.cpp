@@ -1,3 +1,5 @@
+#include <limits>
+#include "frustum.h"
 #include "mat4.h"
 
 namespace Math
@@ -436,4 +438,92 @@ namespace Math
 
         return res;
     }
+
+    const Math::mat4 mat4::CreateOrthographicProjection2(float xmin, float xmax, float ymin, float ymax, float zmin, float zmax)
+    {
+        Math::mat4 m;
+        m[0] = 2.0 / (xmax - xmin);
+        m[1] = 0;
+        m[2] = 0;
+        m[3] = 0;
+
+        m[4] = 0;
+        m[5] = 2.0 / (ymax - ymin);
+        m[6] = 0;
+        m[7] = 0;
+
+        m[8] = 0;
+        m[9] = 0;
+        m[10] = -2.0 / zmax;
+        m[11] = 0;
+
+        m[12] = - (xmax + xmin) / (xmax - xmin);
+        m[13] = - (ymax + ymin) / (ymax - ymin);
+        m[14] = -1;
+        m[15] = 1;
+        return m;
+    }
+
+    const Math::mat4 mat4::CreateTextureBiasMatrix()
+    {
+        const float bias[16] = {	0.5f, 0.0f, 0.0f, 0.0f,
+                                    0.0f, 0.5f, 0.0f, 0.0f,
+                                    0.0f, 0.0f, 0.5f, 0.0f,
+                                    0.5f, 0.5f, 0.5f, 1.0f	};
+        Math::mat4 b;
+        for (int i = 0; i != 16; ++i)
+        {
+            b[i] = bias[i];
+        }
+
+        return b;
+    }
+
+    const Math::mat4 mat4::CreateCropMatrix(const Math::FrustumCore &frustum, const Math::mat4 &shadow_view, const Math::mat4& shadow_proj, float& min_x, float& max_x, float& min_y, float& max_y)
+    {
+        max_x = -std::numeric_limits<float>::infinity();
+        min_x = std::numeric_limits<float>::infinity();
+        max_y = -std::numeric_limits<float>::infinity();
+        min_y = std::numeric_limits<float>::infinity();
+        auto shadow_proj_view = shadow_proj * shadow_view;
+
+        // find the extends of the frustum slice as projected in light's homogeneous coordinates
+        for (int j = 0; j < 8; ++j)
+        {
+            auto transf = shadow_proj_view * Math::vec4(frustum.point[j], 1.0f);
+            float x = transf.X() / transf.W();
+            float y = transf.Y() / transf.W();
+
+            if (x > max_x)
+                max_x = x;
+            if (x < min_x)
+                min_x = x;
+            if (y > max_y)
+                max_y = y;
+            if (y < min_y)
+                min_y = y;
+        }
+
+        float scaleX = 2.0f / (max_x - min_x);
+        float scaleY = 2.0f / (max_y - min_y);
+        float offsetX = -0.5f * (max_x + min_x) * scaleX;
+        float offsetY = -0.5f * (max_y + min_y) * scaleY;
+
+        Math::mat4 crop_matrix;
+        crop_matrix[0] = scaleX;
+        crop_matrix[1 * 4 + 1] = scaleY;
+        crop_matrix[3] = offsetX;
+        crop_matrix[1 * 4 + 3] = offsetY;
+        crop_matrix = crop_matrix.Transposed();
+        return crop_matrix;
+    }
+
+    const Math::mat4 mat4::CreateLightProjectionMatrix(const Math::vec2& z_range)
+    {
+        // set the projection matrix with the new z-bounds
+        // note the inversion because the light looks at the neg.
+        auto projection = CreateOrthographicProjection2(-1.0, 1.0, -1.0, 1.0, -z_range[1], -z_range[0]);
+        return projection;
+    }
+
 }

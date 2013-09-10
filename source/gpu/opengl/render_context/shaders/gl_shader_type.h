@@ -36,7 +36,8 @@ namespace Gpu
             FragmentTextSolidColor,
             FragmentDepth,
             VertexDepth,
-            VertexShadow,
+            VsPerVertexDiffuseLightingShadowSimple,
+            FsPerVertexDiffuseLightingShadowSimple,
             FragmentShadowSingle
         };
 

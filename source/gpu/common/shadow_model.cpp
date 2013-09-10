@@ -4,7 +4,8 @@ namespace Gpu
 {
     using ShadowModelDesc = std::pair<ShadowModel, System::string>;
     static const ShadowModelDesc g_shadow_models[] = {
-        ShadowModelDesc(ShadowModel::ShadowMapSingle, L"ShadowMap")
+        ShadowModelDesc(ShadowModel::ShadowMapSimple, L"ShadowMapSimple"),
+        ShadowModelDesc(ShadowModel::ShadowMapCascade, L"ShadowMapCascade")
     };
 
     const System::string AsString(ShadowModel value)
@@ -16,6 +17,4 @@ namespace Gpu
         }
         return L"ERROR";
     }
-
-
 }

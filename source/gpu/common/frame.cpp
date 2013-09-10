@@ -776,8 +776,29 @@ namespace Gpu
         return m_batches;
     }
 
+    const std::vector<Batch*>& Frame::GetBatches() const
+    {
+        return m_batches;
+    }
+
     void Frame::SetShadowMaps(Texture2DArray *value)
     {
         m_shadow_maps = value;
+    }
+
+    const Math::vec2 Frame::FindZRange(const Math::mat4 &view) const
+    {
+        float min = std::numeric_limits<float>::infinity();
+        float max = -std::numeric_limits<float>::infinity();
+
+        for (Batch* o : GetBatches())
+        {
+            auto transf = view*o->m_state->batch_state->m_bsphere.GetCenter();
+            if (transf.Z() + o->m_state->batch_state->m_bsphere.GetRadius() > max)
+                max = transf.Z() + o->m_state->batch_state->m_bsphere.GetRadius();
+            if (transf.Z() - o->m_state->batch_state->m_bsphere.GetRadius() < min)
+                min = transf.Z() - o->m_state->batch_state->m_bsphere.GetRadius();
+        }
+        return Math::vec2(min, max);
     }
 }

@@ -11,7 +11,8 @@ namespace Gpu
 		PerFragmentDiffuse,
 		PerVertexDiffuseSpecular,
 		PerFragmentlDiffuseSpecular,
-		BumpMapping
+        BumpMappingDiffuse,
+        BumpMappingDiffuseSpecular
 	};
 
 	enum class LightAttenuation {
@@ -22,7 +23,8 @@ namespace Gpu
 
 	enum class LightType {
 		Point,
-		Spot
+        Direction,
+        Spot
 	};
 
 	extern PUNK_ENGINE_API const System::string AsString(LightModel value);

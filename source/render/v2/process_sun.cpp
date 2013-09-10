@@ -24,13 +24,14 @@ namespace Render
         {
             Math::vec3 pos(0,0,0);
             Math::vec4 dir(0, 0, -1, 0);
-            dir = m_frame->GetWorldMatrix() * dir;
+            dir = (m_frame->GetWorldMatrix() * dir).Normalized();
             pos = m_frame->GetWorldMatrix() * pos;
+            m_frame->Light(0).Enable();
             m_frame->Light(0).SetDiffuseColor(sun->GetColor());
-            m_frame->Light(0).SetType(Gpu::LightType::Point);
+            m_frame->Light(0).SetType(Gpu::LightType::Direction);
            // m_frame->Light(0).SetPosition(m_frame->GetWorldMatrix().TranslationPart());
             m_frame->Light(0).SetPosition(pos);
-            m_frame->Light(0).SetDirection(dir.XYZ());
+            m_frame->Light(0).SetDirection(Math::vec3(dir.XYZ()).Normalized());
             m_frame->SetLightModel(Gpu::LightModel::PerFragmentDiffuse);
             render->AddLight(m_frame->Light(0));
 

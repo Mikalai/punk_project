@@ -596,7 +596,6 @@ SOURCES += ../../source/main.cpp \
     ../../source/gpu/opengl/textures/texture_convert.cpp \
     ../../source/gpu/opengl/textures/texture2d_pbo_impl.cpp \
     ../../source/gpu/opengl/render/gl_shadow_map_render.cpp \
-    ../../source/gpu/common/render/shadow_map_render.cpp \
     ../../source/gpu/common/render/render_pass.cpp \
     ../../source/gpu/common/render/render_batch.cpp \
     ../../source/gpu/common/texture/texture2d_array.cpp \
@@ -610,7 +609,6 @@ SOURCES += ../../source/main.cpp \
     ../../source/gpu/common/shaders/shader_var_table.cpp \
     ../../source/gpu/common/shaders/shader_function.cpp \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_shadow_single.cpp \
-    ../../source/gpu/opengl/render_context/shaders/vertex/vs_pvltd_shadow.cpp \
     ../../source/gpu/opengl/render_context/shaders/gl_shader_type.cpp \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_textured_2d_array.cpp \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_depth.cpp \
@@ -619,7 +617,18 @@ SOURCES += ../../source/main.cpp \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_diffuse.cpp \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse.cpp \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_bump.cpp \
-    ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_depth.cpp
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_depth.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_pfl_diffuse_simple_shadow.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_pfl_diffuse_simple_shadow.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_diffuse_shadow_simple.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_vertex_lighting_diffuse_shadow_simple.cpp \
+    ../../source/gpu/common/render/abstract_shadowmap_render.cpp \
+    ../../source/gpu/common/render/cascade_shadow_map_render.cpp \
+    ../../source/gpu/common/render/simple_shadowmap_render.cpp \
+    ../../source/gpu/common/render/shadow_map_render_type.cpp \
+    ../../source/gpu/common/render/abstract_shadow_map_debug_visualizer.cpp \
+    ../../source/gpu/common/render/cascade_shadow_map_debug_visualizer.cpp \
+    ../../source/gpu/common/render/shadow_render_common.cpp
 
 
 # Input
@@ -725,11 +734,8 @@ HEADERS += ../../source/config.h \
 	   ../../source/render/solid_object_render.h \
 	   ../../source/scene/interface.h \
 	   ../../source/scene/module.h \
-	   ../../source/scene/node.h \
-	   ../../source/scene/scene_events.h \
-	   ../../source/scene/scene_graph.h \	   
-	   ../../source/scene/storage.h \
-	   ../../source/scene/visitor.h \
+	   ../../source/scene/node.h \	   
+	   ../../source/scene/scene_graph.h \	   	   
 	   ../../source/string/string.h \
 	   ../../source/system/allocator.h \           
 	   ../../source/system/binary_file.h \
@@ -1097,7 +1103,6 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/opengl/textures/texture_convert.h \
     ../../source/gpu/common/video_driver_caps.h \
     ../../source/gpu/opengl/render/gl_shadow_map_render.h \
-    ../../source/gpu/common/render/shadow_map_render.h \
     ../../source/gpu/common/render/render_pass.h \
     ../../source/gpu/common/render/render_batch.h \
     ../../source/gpu/common/render/module.h \
@@ -1114,7 +1119,6 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/shaders/shader_var_table.h \
     ../../source/gpu/common/shaders/shader_function.h \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_shadow_single.h \
-    ../../source/gpu/opengl/render_context/shaders/vertex/vs_pvltd_shadow.h \
     ../../source/gpu/opengl/render_context/shaders/gl_shader_type.h \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_solid_textured_2d_array.h \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_depth.h \
@@ -1124,7 +1128,18 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse.h \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_bump.h \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_skinning_depth.h \
-    ../../source/math/frustum_points.h
+    ../../source/math/frustum_points.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_pfl_diffuse_simple_shadow.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_pfl_diffuse_simple_shadow.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_diffuse_shadow_simple.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_vertex_lighting_diffuse_shadow_simple.h \
+    ../../source/gpu/common/render/abstract_shadowmap_render.h \
+    ../../source/gpu/common/render/cascade_shadow_map_render.h \
+    ../../source/gpu/common/render/simple_shadowmap_render.h \
+    ../../source/gpu/common/render/shadow_map_render_type.h \
+    ../../source/gpu/common/render/abstract_shadow_map_debug_visualizer.h \
+    ../../source/gpu/common/render/cascade_shadow_map_debug_visualizer.h \
+    ../../source/gpu/common/render/shadow_render_common.h
 
 
 CONFIG += dll
@@ -1214,10 +1229,12 @@ OTHER_FILES += \
     ../../data/shaders/bump_330.frag \
     ../../data/shaders/bump_330_shadow_map.vert \
     ../../data/shaders/bump_330_shadow_map.frag \
-    ../../data/shaders/shadow_single.frag \
-    ../../data/shaders/shadow.vert \
     ../../data/shaders/solid_texture_2d_array.frag \
     ../../data/shaders/depth.vert \
     ../../data/shaders/skinning_bump_330.vert \
-    ../../data/shaders/skinning_depth_330.vert
+    ../../data/shaders/skinning_depth_330.vert \
+    ../../data/shaders/per_fragment_lighting_diffuse_simple_shadow.vert \
+    ../../data/shaders/per_fragment_lighting_diffuse_simple_shadow.frag \
+    ../../data/shaders/per_vertex_lighting_diffuse_simple_shadow.vert \
+    ../../data/shaders/per_vertex_lighting_diffuse_simple_shadow.frag
 

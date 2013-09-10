@@ -180,4 +180,14 @@ namespace Render
     {
         m_all_lights.push_back(light);
     }
+
+    size_t Render2::GetLightsCount()
+    {
+        return m_all_lights.size();
+    }
+
+    const Gpu::LightParameters& Render2::GetLight(int index)
+    {
+        return m_all_lights[index];
+    }
 }

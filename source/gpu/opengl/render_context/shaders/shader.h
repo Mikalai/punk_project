@@ -28,6 +28,7 @@ namespace Gpu
 
     struct LightSourceShaderParameters
     {
+        unsigned enabled;
         unsigned direction;
         unsigned position;
         unsigned diffuse_color;

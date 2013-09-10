@@ -62,6 +62,11 @@ namespace Gpu
         float GetFarDistance(size_t index) const;
         const Math::vec4& GetFarDistances() const;
 
+        void SetEnable(bool value);
+        bool IsEnabled() const;
+        void Enable();
+        void Disable();
+
 	private:
 		LightType m_light_type;
 		LightAttenuation m_attenuation;
@@ -79,6 +84,7 @@ namespace Gpu
         Math::vec4 m_far_distance;
         float m_zfar;
         float m_znear;
+        bool m_enabled;
 	};
 }
 

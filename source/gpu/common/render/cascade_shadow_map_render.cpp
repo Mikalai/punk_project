@@ -2,7 +2,7 @@
 #include "../renderable.h"
 #include "../../../math/perspective_decoder.h"
 #include "../frame_buffer/module.h"
-#include "shadow_map_render.h"
+#include "cascade_shadow_map_render.h"
 #include "render_batch.h"
 #include "../frame.h"
 #include "../video_driver.h"
@@ -11,25 +11,27 @@
 #include "../abstract_render_context_policy.h"
 #include "../video_driver.h"
 #include "../gpu_state.h"
+#include "shadow_render_common.h"
 
 namespace Gpu
 {
-    ShadowMapRender::Debug::Debug(ShadowMapRender& m)
+    CascadeShadowMapRender::Debug::Debug(CascadeShadowMapRender& m)
         : m_frustum(m.m_frustum)
         , m_shadow_view(m.m_shadow_view)
         , m_shadow_crop(m.m_shadow_crop)
         , m_shadow_mvp(m.m_shadow_mvp)
         , m_shadow_proj(m.m_shadow_proj)
         , m_projection(m.m_projection)
-        , m_view(m.m_view)
+        , m_view(m.m_view)        
     {}
 
-    ShadowMapRender::ShadowMapRender(VideoDriver* driver)
+    CascadeShadowMapRender::CascadeShadowMapRender(VideoDriver* driver)
         : m_debug(*this)
         , m_driver(driver)
         , m_shadow_maps(nullptr)
         , m_fb(nullptr)
         , m_splits_count(4)
+        , m_visualizer(new CascadeShadowMapDebugVisualizer(this))
     {
         auto size = m_driver->GetCaps().ShadowMapSize;
         m_shadow_maps = m_driver->CreateTexture2DArray(size, size, m_splits_count,
@@ -48,93 +50,18 @@ namespace Gpu
         m_fb->SetViewport(0, 0, size, size);
     }
 
-    ShadowMapRender::~ShadowMapRender()
+    CascadeShadowMapRender::~CascadeShadowMapRender()
     {
         safe_delete(m_shadow_maps);
         safe_delete(m_fb);
     }
 
-    void ShadowMapRender::SetLight(const LightParameters &value)
+    void CascadeShadowMapRender::SetLight(const LightParameters &value)
     {
         m_light = value;
-    }
+    }    
 
-    void FindZRange(const Math::FrustumCore& frustum, const Math::mat4& shadow_view, Frame* frame, Math::vec2& z_range)
-    {
-        // find the z-range of the current frustum as seen from the light
-        // in order to increase precision
-        Math::vec4 transf = shadow_view * Math::vec4(frustum.point[0], 1.0f);
-        float min_z = transf.Z();
-        float max_z = transf.Z();
-
-        for (int j = 1; j < 8; ++j)
-        {
-            transf = shadow_view * Math::vec4(frustum.point[j], 1.0f);
-            if (transf.Z() > max_z)
-                max_z = transf.Z();
-            if (transf.Z() < min_z)
-                min_z = transf.Z();
-        }
-
-        for (Batch* o : frame->GetBatches())
-        {
-            transf = shadow_view*o->m_state->batch_state->m_bsphere.GetCenter();
-            if (transf.Z() + o->m_state->batch_state->m_bsphere.GetRadius() > max_z)
-                max_z = transf.Z() + o->m_state->batch_state->m_bsphere.GetRadius();
-//            if (transf.Z() - o->m_state->batch_state->m_bsphere.GetRadius() < min_z)
-//                min_z = transf.Z() - o->m_state->batch_state->m_bsphere.GetRadius();
-        }
-        z_range.Set(min_z, max_z);
-    }
-
-    const Math::mat4 FindLightProjectionMatrix(const Math::vec2& z_range)
-    {
-        // set the projection matrix with the new z-bounds
-        // note the inversion because the light looks at the neg.
-        auto projection = Math::mat4::CreateOrthographicProjection(-1.0, 1.0, -1.0, 1.0, -z_range[1], -z_range[0]);
-        return projection;
-    }
-
-    const Math::mat4 FindCropMatrix(const Math::FrustumCore &frustum, const Math::mat4 &shadow_view, const Math::mat4& shadow_proj, float& min_x, float& max_x, float& min_y, float& max_y)
-    {
-        max_x = -std::numeric_limits<float>::infinity();
-        min_x = std::numeric_limits<float>::infinity();
-        max_y = -std::numeric_limits<float>::infinity();
-        min_y = std::numeric_limits<float>::infinity();
-        auto shadow_proj_view = shadow_proj * shadow_view;
-
-        // find the extends of the frustum slice as projected in light's homogeneous coordinates
-        for (int j = 0; j < 8; ++j)
-        {
-            auto transf = shadow_proj_view * Math::vec4(frustum.point[j], 1.0f);
-            float x = transf.X() / transf.W();
-            float y = transf.Y() / transf.W();
-
-            if (x > max_x)
-                max_x = x;
-            if (x < min_x)
-                min_x = x;
-            if (y > max_y)
-                max_y = y;
-            if (y < min_y)
-                min_y = y;
-        }
-
-        float scaleX = 2.0f / (max_x - min_x);
-        float scaleY = 2.0f / (max_y - min_y);
-        float offsetX = -0.5f * (max_x + min_x) * scaleX;
-        float offsetY = -0.5f * (max_y + min_y) * scaleY;
-
-        Math::mat4 crop_matrix;
-        crop_matrix[0] = scaleX;
-        crop_matrix[1 * 4 + 1] = scaleY;
-        crop_matrix[3] = offsetX;
-        crop_matrix[1 * 4 + 3] = offsetY;
-        crop_matrix = crop_matrix.Transposed();
-        return crop_matrix;
-    }
-
-    void ShadowMapRender::UpdateSplits(Math::FrustumCore frustum[MaxSplits], float n, float f)
+    void CascadeShadowMapRender::UpdateSplits(Math::FrustumCore frustum[MaxSplits], float n, float f)
     {
         float lambda = SplitWeight;
         float ratio = f/n;
@@ -163,53 +90,13 @@ namespace Gpu
         //frustum[m_splits_count-1].Update();
     }
 
-    const Math::mat4 GetBiasMatrix()
-    {
-        const float bias[16] = {	0.5f, 0.0f, 0.0f, 0.0f,
-                                    0.0f, 0.5f, 0.0f, 0.0f,
-                                    0.0f, 0.0f, 0.5f, 0.0f,
-                                    0.5f, 0.5f, 0.5f, 1.0f	};
-        Math::mat4 b;
-        for (int i = 0; i != 16; ++i)
-        {
-            b[i] = bias[i];
-        }
-
-        return b;
-    }
-
-    const Math::mat4 CreateProjectionMatrix2(float xmin, float xmax, float ymin, float ymax, float zmin, float zmax)
-    {
-        Math::mat4 m;
-        m[0] = 2.0 / (xmax - xmin);
-        m[1] = 0;
-        m[2] = 0;
-        m[3] = 0;
-
-        m[4] = 0;
-        m[5] = 2.0 / (ymax - ymin);
-        m[6] = 0;
-        m[7] = 0;
-
-        m[8] = 0;
-        m[9] = 0;
-        m[10] = -2.0 / zmax;
-        m[11] = 0;
-
-        m[12] = - (xmax + xmin) / (xmax - xmin);
-        m[13] = - (ymax + ymin) / (ymax - ymin);
-        m[14] = -1;
-        m[15] = 1;
-        return m;
-    }
-
-    void ShadowMapRender::Run(Frame *frame)
+    void CascadeShadowMapRender::Run(Frame *frame)
     {
         m_frame = frame;
         auto batches = m_frame->GetBatches();
         for (int i = 0; i < m_splits_count; ++i)
         {
-            m_shadow_view[i] = Math::mat4::CreateTargetCameraMatrix(Math::vec3(0,0,0), m_light.GetDirection().XYZ(), Math::vec3(-1, 0, 0));
+            m_shadow_view[i] = Math::mat4::CreateTargetCameraMatrix(Math::vec3(0,0,0), m_light.GetDirection().XYZ().Normalized(), Math::vec3(-1, 0, 0));
         }
 
         UpdateSplits(m_frustum, m_near, m_far);
@@ -221,8 +108,8 @@ namespace Gpu
             Math::FrustumTransform(m_frustum[i], m_cam_center, m_cam_dir, m_cam_up);
 
             FindZRange(m_frustum[i], m_shadow_view[i], m_frame, m_z_range[i]);
-            m_shadow_proj[i] = FindLightProjectionMatrix(m_z_range[i]);
-            m_shadow_crop[i] = FindCropMatrix(m_frustum[i], m_shadow_view[i], m_shadow_proj[i], m_min_x[i], m_max_x[i], m_min_y[i], m_max_y[i]);
+            m_shadow_proj[i] = Math::mat4::CreateLightProjectionMatrix(m_z_range[i]);
+            m_shadow_crop[i] = Math::mat4::CreateCropMatrix(m_frustum[i], m_shadow_view[i], m_shadow_proj[i], m_min_x[i], m_max_x[i], m_min_y[i], m_max_y[i]);
 
             //m_shadow_proj[i] = CreateProjectionMatrix2(m_min_x[i], m_max_x[i], m_min_y[i], m_max_y[i], m_z_range[i][0], m_z_range[i][1]);
 
@@ -230,7 +117,7 @@ namespace Gpu
             m_fb->SetRenderTarget(Gpu::FrameBufferTarget::TargetNone);
             m_fb->Clear(false, true, false);
             m_fb->Bind();            
-            m_fb->SetPolygonOffset(1.0f, 4096.0f);
+           // m_fb->SetPolygonOffset(1.0f, 4096.0f);
             auto policy = AbstractRenderPolicy::find(RenderPolicySet::DepthRender);
             policy->Begin();
             for (Batch* batch : batches)
@@ -270,12 +157,12 @@ namespace Gpu
         }
     }
 
-    Texture2DArray* ShadowMapRender::GetShadowMaps()
+    Texture* CascadeShadowMapRender::GetShadowMap()
     {
         return m_shadow_maps;
     }
 
-    void ShadowMapRender::SetViewProperties(float fov, float aspect, float n, float f, const Math::vec3 &center, const Math::vec3 &dir, const Math::vec3 &up)
+    void CascadeShadowMapRender::SetViewProperties(float fov, float aspect, float n, float f, const Math::vec3 &center, const Math::vec3 &dir, const Math::vec3 &up)
     {
         m_cam_center = center;
         m_cam_dir = dir;
@@ -292,13 +179,23 @@ namespace Gpu
         }        
     }
 
-    int ShadowMapRender::GetSplitCount() const
+    int CascadeShadowMapRender::GetSplitCount() const
     {
         return m_splits_count;
     }
 
-    void ShadowMapRender::SetSplitCount(int value)
+    void CascadeShadowMapRender::SetSplitCount(int value)
     {
         m_splits_count = value;
+    }
+
+    VideoDriver* CascadeShadowMapRender::GetVideoDriver()
+    {
+        return m_driver;
+    }
+
+    AbstractShadowMapDebugVisualizer* CascadeShadowMapRender::GetDebugVisualizer()
+    {
+        return m_visualizer;
     }
 }

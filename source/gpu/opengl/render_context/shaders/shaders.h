@@ -16,7 +16,7 @@
 #include "vertex/vs_per_vertex_lighting_diffuse.h"
 #include "vertex/vs_per_vertex_lighting_tex_diffuse.h"
 #include "vertex/vs_bump_shadow_map.h"
-#include "vertex/vs_pvltd_shadow.h"
+#include "vertex/vs_per_vertex_lighting_diffuse_shadow_simple.h"
 #include "vertex/vs_depth.h"
 #include "vertex/vs_per_fragment_lighting_tex_diffuse.h"
 #include "vertex/vs_per_fragment_lighting_diffuse.h"
@@ -36,9 +36,10 @@
 #include "fragment/fs_text_solid.h"
 #include "fragment/fs_depth.h"
 #include "fragment/fs_bump_shadow_map.h"
-#include "fragment/fs_shadow_single.h"
+//#include "fragment/fs_shadow_single.h"
 #include "fragment/fs_solid_textured_2d_array.h"
 #include "fragment/fs_per_fragment_lighting_tex_diffuse.h"
 #include "fragment/fs_per_fragment_lighting_diffuse.h"
+#include "fragment/fs_per_vertex_lighting_diffuse_shadow_simple.h"
 
 #endif	//	_H_PUNK_OPENGL_SHADERS

@@ -38,6 +38,7 @@ namespace Gpu
 			bool SetUniformFloat(int index, float value);
 			bool SetUniformInt(const char * name, int value);
 			bool SetUniformInt(int index, int value);
+            bool SetUniformBool(int index, bool value);
 			bool SetUniformMatrix2f(const char * name, const float* value);
             bool SetUniformMatrix2f(const char * name, const Math::mat2& value);
 			bool SetUniformMatrix2f( int index, const float* value);

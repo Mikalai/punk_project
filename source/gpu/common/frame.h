@@ -166,6 +166,9 @@ namespace Gpu
 
         VideoDriver* GetVideoDriver() const;
         std::vector<Batch*>& GetBatches();
+        const std::vector<Batch*>& GetBatches() const;
+
+        const Math::vec2 FindZRange(const Math::mat4& view) const;
 
 	private:
 

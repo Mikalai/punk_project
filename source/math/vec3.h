@@ -63,6 +63,20 @@ namespace Math
             return m_v[0];
         }
 
+        T Length() const
+        {
+            auto sqr_l = m_v[0]*m_v[0] + m_v[1]*m_v[1] + m_v[2]*m_v[2];
+            auto res = sqrt(sqr_l);
+            return res;
+        }
+
+        const Vector3<T> Normalized() const
+        {
+            auto p = *this;
+            auto l = Length();
+            return p / l;
+        }
+
         const T& Y() const
         {
             return m_v[1];
@@ -96,6 +110,7 @@ namespace Math
 
             return *this;
         }
+
 
         Vector3<T>& Chop(T eps = T(0.00001))
         {

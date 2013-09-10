@@ -41,6 +41,7 @@ namespace Gpu
 	using LightTypeDesc = std::pair<LightType, System::string>;
 	static const LightTypeDesc g_light_types[] = {
 		LightTypeDesc(LightType::Point, L"Point"),
+        LightTypeDesc(LightType::Direction, L"Direction"),
 		LightTypeDesc(LightType::Spot, L"Spot")
 	};
 

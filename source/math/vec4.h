@@ -183,6 +183,14 @@ namespace Math
 			return static_cast<T>(sqrtf(float(m_v[0]*m_v[0]+m_v[1]*m_v[1]+m_v[2]*m_v[2]+m_v[3]*m_v[3])));
 		}
 
+        const Vector4<T> Normalized() const
+        {
+            T length = Length();
+            Vector4<T> res(*this);
+            res *= T(1) / length;
+            return res;
+        }
+
 		Vector4<T>& Normalize()
 		{
 			double length = Length();

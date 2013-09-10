@@ -114,11 +114,19 @@ namespace Gpu
 			}
 		}
 
+#define STRICT 0
+
 		bool OpenGLRenderContext::SetUniformVector4f(const char * name, const float* value)
 		{
             GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
+            {
+#if STRICT == 1
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform4fv(index, 1, value));
 			return true;
 		}
@@ -131,7 +139,13 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformVector4f( int index, const float* value )
 		{
 			if (index == -1)
+            {
+#if STRICT == 1
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform4fv(index, 1, value));
 			return true;
 		}
@@ -145,7 +159,13 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetUniformLocation(m_program, name));
 			if (index == -1)
+            {
+#if STRICT == 1
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform3fv(index, 1, value));
 			return true;
 		}
@@ -158,7 +178,13 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformVector3f(int index, const float* value)
 		{
 			if (index == -1)
+            {
+#if STRICT == 1
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform3fv(index, 1, value));
 			return true;
 		}
@@ -172,7 +198,13 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
+            {
+#if STRICT == 1
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform2fv(index, 1, value));
 			return true;
 		}
@@ -185,7 +217,13 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformVector2f(int index, const float* value )
 		{
 			if (index == -1)
+            {
+#if STRICT == 1
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform2fv(index, 1, value));
 			return true;
 		}
@@ -199,7 +237,13 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetUniformLocation(m_program, name));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform1f(index, value));
 			return true;
 		}
@@ -207,7 +251,13 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformFloat(int index, float value)
 		{
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform1f(index, value));
 			return true;
 		}
@@ -216,7 +266,13 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform1i(index, value));
 			return true;
 		}
@@ -224,16 +280,42 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformInt(int index, int value)
 		{
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform1i( index, value));
 			return true;
 		}
+
+        bool OpenGLRenderContext::SetUniformBool(int index, bool value)
+        {
+            if (index == -1)
+            {
+#if STRICT
+                throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
+            GL_CALL(glUniform1i( index, (int)value));
+            return true;
+        }
 
 		bool OpenGLRenderContext::SetUniformMatrix2f(const char * name, const float* value)
 		{
             GL_CALL(int index = glGetUniformLocation(m_program, name));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed set uniform {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniformMatrix2fv(index, 1, GL_FALSE, value));
 			return true;
 		}
@@ -246,7 +328,13 @@ namespace Gpu
         bool OpenGLRenderContext::SetUniformMatrix2f(int index, const float* value)
 		{		
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed set uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniformMatrix2fv(index, 1, GL_FALSE, value));
 			return true;
 		}
@@ -259,8 +347,14 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformMatrix3f(const char * name, const float* value)
 		{
             GL_CALL(int index = glGetUniformLocation (m_program, name));
-			if (index == -1)
+            if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniformMatrix3fv(index, 1, GL_FALSE, value));
 			return true;
 		}
@@ -273,7 +367,13 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformMatrix3f( int index, const float* value)
 		{		
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed set uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniformMatrix3fv(index, 1, GL_FALSE, value));
 			return true;
 		}
@@ -287,7 +387,13 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetUniformLocation (m_program, name));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed set uniform {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniformMatrix4fv(index, 1, GL_FALSE, value));
 			return true;
 		}
@@ -300,7 +406,13 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformMatrix4f( int index, const float* value)
 		{
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed set uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniformMatrix4fv(index, 1, GL_FALSE, value));
 			return true;
 		}
@@ -313,7 +425,13 @@ namespace Gpu
 		bool OpenGLRenderContext::SetUniformArrayMatrix4f(int index, int count, const float* value)
 		{
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(index));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniformMatrix4fv(index, count, GL_FALSE, value));
 			return true;
 		}
@@ -328,7 +446,13 @@ namespace Gpu
 		{
             GL_CALL(GLint res = glGetUniformLocation(m_program, name));
             if (res == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+#else
+                return -1;
+#endif
+            }
 			return res;
 		}
 
@@ -336,7 +460,13 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed get uniform {0}").arg(name));
+#else
+                ;
+#endif
+            }
             GL_CALL(glGetUniformfv(m_program, index, out));
 		}
 
@@ -344,7 +474,13 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetUniformLocation ( m_program, name ));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed set texture {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform1i(index, texUnit));
 			return true;
 		}
@@ -352,7 +488,13 @@ namespace Gpu
 		bool OpenGLRenderContext::SetTexture(int index, int texUnit)
 		{
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed set texture {0}").arg(texUnit));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glUniform1i(index, texUnit));
 			return true;
 		}
@@ -360,7 +502,13 @@ namespace Gpu
 		bool OpenGLRenderContext::BindAttributeTo(int index, const char * name)
 		{
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed to bind attribute {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glBindAttribLocation(m_program, index, name));
 			return true;
 		}
@@ -369,7 +517,13 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetAttribLocation(m_program, name));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed to set attribute {0}").arg(name));
+#else
+                return false;
+#endif
+            }
             GL_CALL(glVertexAttrib4fv ( index, value ));
 			return true;
 		}
@@ -387,15 +541,27 @@ namespace Gpu
 		{
             GL_CALL(int index = glGetAttribLocation(m_program, name));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed to get attribute {0}").arg(name));
-			return index;
+#else
+                return -1;
+#endif
+            }
+            return index;
 		}
 
 		void OpenGLRenderContext::GetAttribute(const char * name, float* out)
 		{
             GL_CALL(int index = glGetAttribLocation(m_program, name));
 			if (index == -1)
+            {
+#if STRICT
                 throw System::PunkException(System::string("Failed to get attribute {0}").arg(name));
+#else
+                ;
+#endif
+            }
             GL_CALL(glGetVertexAttribfv ( index, GL_CURRENT_VERTEX_ATTRIB, out));
 		}
 

@@ -213,5 +213,27 @@ namespace Math
     {
         return Math::mat4::CreatePerspectiveProjection(f.fov, f.ratio, 1, f.neard, f.fard);
     }
+
+    const Math::vec2 FrustumFindZRange(const FrustumCore& f, const Math::mat4& view)
+    {
+        // find the z-range of the current frustum as seen from the light
+        // in order to increase precision
+        Math::vec4 transf = view * Math::vec4(f.point[0], 1.0f);
+        transf.Normalize();
+
+        float min_z = transf.Z();
+        float max_z = transf.Z();
+
+        for (int j = 1; j < 8; ++j)
+        {
+            transf = view * Math::vec4(f.point[j], 1.0f);
+            transf.Normalize();
+            if (transf.Z() > max_z)
+                max_z = transf.Z();
+            if (transf.Z() < min_z)
+                min_z = transf.Z();
+        }
+        return vec2(min_z, max_z);
+    }
 }
 

@@ -38,7 +38,7 @@ namespace Gpu
         m_enable_navi_mesh_rendering = false;
         m_enable_font_rendering = false;
         m_enable_shadows = false;
-        m_shadow_model = ShadowModel::ShadowMapSingle;
+        m_shadow_model = ShadowModel::ShadowMapSimple;
         m_shadow_map_size.Set(512, 512);
 
        // m_enable_bump_maping_shading = false;

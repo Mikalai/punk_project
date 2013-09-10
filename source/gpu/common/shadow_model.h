@@ -6,7 +6,7 @@
 
 namespace Gpu
 {
-    enum class ShadowModel { ShadowMapSingle };
+    enum class ShadowModel { ShadowMapSimple, ShadowMapCascade };
 
     extern PUNK_ENGINE_API const System::string AsString(ShadowModel value);
 }

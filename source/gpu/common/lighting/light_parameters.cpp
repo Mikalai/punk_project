@@ -10,6 +10,7 @@ namespace Gpu
         m_linear_attenuation = 0;
         m_quadric_attenuation = 0;
 		m_spot_exponent = 100.0;
+        m_enabled = false;
         m_diffuse_color.Set(1,1,1,1);
 	}
 
@@ -196,5 +197,25 @@ namespace Gpu
     float LightParameters::GetNearZ() const
     {
         return m_znear;
+    }
+
+    void LightParameters::SetEnable(bool value)
+    {
+        m_enabled = value;
+    }
+
+    bool LightParameters::IsEnabled() const
+    {
+        return m_enabled;
+    }
+
+    void LightParameters::Enable()
+    {
+        m_enabled = true;
+    }
+
+    void LightParameters::Disable()
+    {
+        m_enabled = false;
     }
 }

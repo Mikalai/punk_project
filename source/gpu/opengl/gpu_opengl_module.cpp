@@ -108,14 +108,20 @@ namespace Gpu
 
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsPvltdShadowSingle, new FsShadowSingle, nullptr);
-                AbstractRenderPolicy::add(RenderPolicySet::LightPerVertexTextureDiffuseShadowingSingle, rc);
+                rc->SetShaders(new VsPerVertexLightingDiffuseShadowSimple, new FsPerVertexLightingDiffuseSimpleShadow, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::LightPerVertexTextureDiffuseShadowingSimple, rc);
             }
 
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
                 rc->SetShaders(new VsTexture3D, new FsSolidTextured2DArray, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::SolidTextured2DArray, rc);
+            }
+
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsPerVertexLightingDiffuseShadowSimple, new FsPerVertexLightingDiffuseSimpleShadow, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::LightPerVertexDiffuseShadowingSimple, rc);
             }
 
 #ifdef USE_GUI_RC

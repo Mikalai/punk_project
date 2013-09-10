@@ -1,6 +1,8 @@
 #ifndef SHADOW_MAP_RENDER_H
 #define SHADOW_MAP_RENDER_H
 
+#include "abstract_shadowmap_render.h"
+#include "cascade_shadow_map_debug_visualizer.h"
 #include "../../../math/frustum.h"
 #include "../../../math/mat4.h"
 #include "../lighting/module.h"
@@ -12,24 +14,27 @@ namespace Gpu
     class Texture2DArray;
     class VideoDriver;
 
-    class ShadowMapRender
+    class CascadeShadowMapRender : public AbstractShadowMapRender
     {
     public:
         static const int MaxSplits = 4;
         static constexpr float SplitWeight = 0.75f;
 
-        ShadowMapRender(VideoDriver* driver);
-        ~ShadowMapRender();
-        void SetLight(const LightParameters& value);
-        void SetViewProperties(float fov, float aspect, float n, float f, const Math::vec3& center, const Math::vec3& dir, const Math::vec3& up);
-        void Run(Frame* frame);
-        Texture2DArray* GetShadowMaps();
+        CascadeShadowMapRender(VideoDriver* driver);
+        virtual ~CascadeShadowMapRender();
+        virtual Texture* GetShadowMap() override;
+        virtual void Run(Frame* frame) override;
+        virtual void SetLight(const LightParameters& value) override;
+        virtual void SetViewProperties(float fov, float aspect, float n, float f, const Math::vec3& center, const Math::vec3& dir, const Math::vec3& up) override;
+        virtual AbstractShadowMapDebugVisualizer* GetDebugVisualizer() override;
+        virtual VideoDriver* GetVideoDriver() override;
+
         int GetSplitCount() const;
         void SetSplitCount(int value);
 
         struct Debug
         {
-            Debug(ShadowMapRender& m);
+            Debug(CascadeShadowMapRender& m);
 
             Math::FrustumCore (&m_frustum)[MaxSplits];
             Math::mat4 (&m_shadow_view)[MaxSplits];
@@ -71,6 +76,7 @@ namespace Gpu
         float m_far;
 
         friend struct Debug;
+        CascadeShadowMapDebugVisualizer* m_visualizer;
     };
 }
 

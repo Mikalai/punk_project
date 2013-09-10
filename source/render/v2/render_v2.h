@@ -37,6 +37,8 @@ namespace Render
         void RegisterRenderProcessor(unsigned type, void (*F)(Render2*, Scene::Node*, System::Object*));
 
         void AddLight(const Gpu::LightParameters& light);
+        size_t GetLightsCount();
+        const Gpu::LightParameters& GetLight(int index);
 
     private:        
         std::stack<Math::mat4> m_local_matrix;

@@ -36,8 +36,8 @@ namespace Demo
         Scene::Node* m_enemy_visible;
         Gpu::Texture2D* m_texture;
 
-      //  Gpu::FrameBuffer* m_frame_buffer;
-        Gpu::ShadowMapRender* m_shadow_map_render;
+        //  Gpu::FrameBuffer* m_frame_buffer;
+        Gpu::AbstractShadowMapRender* m_shadow_map_render;
 
         int m_killed_count;
         int m_horde_left;
@@ -95,9 +95,9 @@ namespace Demo
 
 
         virtual void OnInit(const Punk::Config&) override
-        {            
+        {
             m_camera.SetPosition(3, 3, 3);
-            m_camera.SetYawRollPitch(0, 0, -0.3);            
+            m_camera.SetYawRollPitch(0, 0, -0.3);
 
 
             float width = GetWindow()->GetWidth();
@@ -110,49 +110,49 @@ namespace Demo
             m_scene = Cast<Scene::SceneGraph*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"level_3.pmd"));
             if (!m_scene)
                 return;
-//            m_tower_node = m_scene->Find(L"tower_node_transform", true);
-//            m_sun_node = m_scene->Find(L"Sun.sun", true);
-//            m_sun_transform = m_scene->Find(L"Sun_transform", true);
-//            if (!m_tower_node)
-//                return;
-//            auto m1 = Scene::GetGlobalMatrix(m_tower_node);
-//            auto m2 = Scene::GetGlobalMatrix(m_sun_transform);
-//            m_scene->Remove(m_tower_node, true);
-//            // m_sun_node->Add(m_tower_node);
-//            // m_tower_node->SetLocalMatrix(m2.Inversed()*m1);
-//            auto res = m_scene->FindAll(L"road_curve", true, false);
-//            for (auto o : res)
-//            {
-//                Scene::Node* n = As<Scene::Node*>(o);
-//                if (n)
-//                    m_paths.push_back(n);
-//            }
+            //            m_tower_node = m_scene->Find(L"tower_node_transform", true);
+            //            m_sun_node = m_scene->Find(L"Sun.sun", true);
+            //            m_sun_transform = m_scene->Find(L"Sun_transform", true);
+            //            if (!m_tower_node)
+            //                return;
+            //            auto m1 = Scene::GetGlobalMatrix(m_tower_node);
+            //            auto m2 = Scene::GetGlobalMatrix(m_sun_transform);
+            //            m_scene->Remove(m_tower_node, true);
+            //            // m_sun_node->Add(m_tower_node);
+            //            // m_tower_node->SetLocalMatrix(m2.Inversed()*m1);
+            //            auto res = m_scene->FindAll(L"road_curve", true, false);
+            //            for (auto o : res)
+            //            {
+            //                Scene::Node* n = As<Scene::Node*>(o);
+            //                if (n)
+            //                    m_paths.push_back(n);
+            //            }
 
-//            m_enemy_visible = m_scene->Find(L"enemy_transform", true);
-//            m_scene->Remove(m_enemy_visible, true);
-//            for (size_t i = 0; i != m_paths.size(); ++i)
-//            {
-//                Scene::Node* path_node = m_paths[i];
-//                AI::CurvePath* path = As<AI::CurvePath*>(path_node->GetData());
-//                if (!path)
-//                {
-//                    path = Cast<AI::CurvePath*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + path_node->GetName()));
-//                    if (path)
-//                        path_node->SetData(path);
-//                }
-//            }
+            //            m_enemy_visible = m_scene->Find(L"enemy_transform", true);
+            //            m_scene->Remove(m_enemy_visible, true);
+            //            for (size_t i = 0; i != m_paths.size(); ++i)
+            //            {
+            //                Scene::Node* path_node = m_paths[i];
+            //                AI::CurvePath* path = As<AI::CurvePath*>(path_node->GetData());
+            //                if (!path)
+            //                {
+            //                    path = Cast<AI::CurvePath*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + path_node->GetName()));
+            //                    if (path)
+            //                        path_node->SetData(path);
+            //                }
+            //            }
 
             //m_armature_node = As<Scene::ArmatureNode*>(m_scene->Find(L"male_armature_2", true));
             //m_paths[0]->SetVisibleData(m_enemy_visible);
 
-           // m_frame_buffer = GetVideoDriver()->CreateFrameBuffer(GetWindow()->GetWidth(), GetWindow()->GetHeight());
+            // m_frame_buffer = GetVideoDriver()->CreateFrameBuffer(GetWindow()->GetWidth(), GetWindow()->GetHeight());
             //m_depth_buffer = GetVideoDriver()->CreateTexture2D(512, 512, ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT24, ImageModule::IMAGE_FORMAT_DEPTH_COMPONENT, 0, false);
             //m_color_buffer = GetVideoDriver()->CreateTexture2D(512, 512, ImageModule::IMAGE_FORMAT_RGBA, ImageModule::IMAGE_FORMAT_RGBA, 0, false);
 
             ImageModule::Importer imp;
             std::unique_ptr<ImageModule::Image> image(imp.LoadAnyImage(System::Environment::Instance()->GetTextureFolder() + L"door16.png"));
             m_texture = GetVideoDriver()->CreateTexture2D(*image, true);
-            m_shadow_map_render = new Gpu::ShadowMapRender(GetVideoDriver());
+            m_shadow_map_render = Gpu::CreateShadowMapRender(Gpu::ShadowMapRenderType::SimpleRender, GetVideoDriver());
         }
 
         virtual void OnDestroy() override
@@ -257,15 +257,15 @@ namespace Demo
 
             Math::vec2 p(m_mouse_x, m_mouse_y);
             Math::vec2 s(GetWindow()->GetWidth(), GetWindow()->GetHeight());
-//            Scene::Selector selector(m_projection_matrix, m_view_matrix, p, s, 5);
-//            selector.m_check_bounding_box = true;
-//            selector.Select(m_scene);
-//            m_selection = selector.m_selections;
-//            m_world_screen_point = selector.m_world_screen_point;
-//            if (!m_selection.empty())
-//            {
-//                c = m_selection[0].GetPoints()[0];
-//            }
+            //            Scene::Selector selector(m_projection_matrix, m_view_matrix, p, s, 5);
+            //            selector.m_check_bounding_box = true;
+            //            selector.Select(m_scene);
+            //            m_selection = selector.m_selections;
+            //            m_world_screen_point = selector.m_world_screen_point;
+            //            if (!m_selection.empty())
+            //            {
+            //                c = m_selection[0].GetPoints()[0];
+            //            }
 
 
             m_mouse_x = event->x;
@@ -295,8 +295,8 @@ namespace Demo
             if (event->key == System::PUNK_KEY_SPACE)
             {
                 alternative_view = !alternative_view;
-//                m_p1 = m_view_matrix.Inversed() * Math::vec3(0,0,0);
-//                m_p2 = m_p1 + (m_world_screen_point - m_p1).Normalized() * 5;
+                //                m_p1 = m_view_matrix.Inversed() * Math::vec3(0,0,0);
+                //                m_p2 = m_p1 + (m_world_screen_point - m_p1).Normalized() * 5;
             }
         }
 
@@ -316,7 +316,7 @@ namespace Demo
 
             //m_color_buffer->Resize(event->width, event->height);
 
-           // if (m_frame_buffer->Config()->Width() != event->width && m_frame_buffer->Config()->Height() != event->height)
+            // if (m_frame_buffer->Config()->Width() != event->width && m_frame_buffer->Config()->Height() != event->height)
         }
 
         virtual void OnIdle(System::IdleEvent *event)
@@ -359,26 +359,26 @@ namespace Demo
             //m_armature_node->GetArmatureAnimationMixer()->SetTrackTime(time);
             time += event->elapsed_time_s;
 
-//            int t = int(time*1000);
-//            if (m_horde_left && m_active_count < m_max_on_map)
-//            {
-//                if (!m_paths.empty())
-//                {
-//                    auto path = m_paths[rand() % m_paths.size()]->GetData();
-//                    if (path)
-//                    {
-//                        Enemy* e = new Enemy;
-//                        e->OnKilled(System::EventHandler(this, &Game::OnKill));
-//                        e->OnReached(System::EventHandler(this, &Game::OnReach));
-//                        e->OnActivate(System::EventHandler(this, &Game::OnActivate));
-//                        e->SetVisibleData(m_enemy_visible->Clone());
-//                        e->SetPath(As<AI::CurvePath*>(path));
-//                        e->Activate();
-//                        m_enemy.push_back(e);
-//                        m_horde_left--;
-//                    }
-//                }
-//            }
+            //            int t = int(time*1000);
+            //            if (m_horde_left && m_active_count < m_max_on_map)
+            //            {
+            //                if (!m_paths.empty())
+            //                {
+            //                    auto path = m_paths[rand() % m_paths.size()]->GetData();
+            //                    if (path)
+            //                    {
+            //                        Enemy* e = new Enemy;
+            //                        e->OnKilled(System::EventHandler(this, &Game::OnKill));
+            //                        e->OnReached(System::EventHandler(this, &Game::OnReach));
+            //                        e->OnActivate(System::EventHandler(this, &Game::OnActivate));
+            //                        e->SetVisibleData(m_enemy_visible->Clone());
+            //                        e->SetPath(As<AI::CurvePath*>(path));
+            //                        e->Activate();
+            //                        m_enemy.push_back(e);
+            //                        m_horde_left--;
+            //                    }
+            //                }
+            //            }
 
             //m_camera.SetPosition(m_camera.GetPosition() + m_camera_move);
         }
@@ -388,61 +388,61 @@ namespace Demo
             Gpu::LightParameters l;
             l.SetDiffuseColor(1,1,1,1);
             frame->PushAllState();
-//            {
-//                if (!alternative_view)
-//                {
-//                    frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(m_cam_pos, m_cam_pos + m_cam_dir, m_cam_up));
-//                    frame->SetProjectionMatrix(m_projection_matrix);
-//                }
-//                else
-//                {
-//                    frame->SetViewMatrix(m_view_matrix_a);
-//                    frame->SetProjectionMatrix(m_proj_matrix_a);
-//                }
+            //            {
+            //                if (!alternative_view)
+            //                {
+            //                    frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(m_cam_pos, m_cam_pos + m_cam_dir, m_cam_up));
+            //                    frame->SetProjectionMatrix(m_projection_matrix);
+            //                }
+            //                else
+            //                {
+            //                    frame->SetViewMatrix(m_view_matrix_a);
+            //                    frame->SetProjectionMatrix(m_proj_matrix_a);
+            //                }
 
-//                {
-//                    auto view = Math::mat4::CreateTargetCameraMatrix(m_cam_pos, m_cam_pos + m_cam_dir, m_cam_up);
-//                    Math::FrustumCore f(Math::FrustumCreateFromProjectionMatrix(m_projection_matrix));
-//                    Math::FrustumTransform(f, m_cam_pos, m_cam_dir, m_cam_up);
-//                    frame->SetWorldMatrix(Math::mat4::CreateIdentity());
-//                    Math::mat4 m = m_projection_matrix * view;
-//                    float y = -f.neard * tan(f.fov / 2.0);
-//                    float x = y * f.ratio;
-//                    Math::vec3 p {x, y, -f.neard };
-//                    p = view.Inversed() * p;
-//                    p =  m * p;
-//                    {
-//                        auto pp = m_cam_pos + m_cam_dir.Normalized();
-//                        pp = view * pp;
-//                        Math::vec3 p = m_cam_pos + m_cam_dir.Normalized() * f.neard;
-//                        auto r = m_cam_dir.Cross(m_cam_up).Normalized();
-//                        auto u = r.Cross(m_cam_dir).Normalized();
-//                        p = p - r * f.neard * tan(f.fov / 2.0) * f.ratio - u * f.neard * tan(f.fov/2.0);
-//                        p = m * p;
-//                        p = p;
-//                    }
-//                    frame->SetDiffuseColor(0, 1, 0, 1);
-//                    frame->BeginRendering();
-//                    frame->SetClearColor(.5, 0.6, 0.7, 1.0);
-//                    frame->Clear(true, true, false);
-//                    GetVideoDriver()->SetViewport(0, 0, GetWindow()->GetWidth(), GetWindow()->GetHeight());
-//                    frame->Render(Gpu::AsRenderable2(f, GetVideoDriver()), true);
-//                    frame->EndRendering();
-//                }
-//            }
-//            frame->PopAllState();
-//            return;
+            //                {
+            //                    auto view = Math::mat4::CreateTargetCameraMatrix(m_cam_pos, m_cam_pos + m_cam_dir, m_cam_up);
+            //                    Math::FrustumCore f(Math::FrustumCreateFromProjectionMatrix(m_projection_matrix));
+            //                    Math::FrustumTransform(f, m_cam_pos, m_cam_dir, m_cam_up);
+            //                    frame->SetWorldMatrix(Math::mat4::CreateIdentity());
+            //                    Math::mat4 m = m_projection_matrix * view;
+            //                    float y = -f.neard * tan(f.fov / 2.0);
+            //                    float x = y * f.ratio;
+            //                    Math::vec3 p {x, y, -f.neard };
+            //                    p = view.Inversed() * p;
+            //                    p =  m * p;
+            //                    {
+            //                        auto pp = m_cam_pos + m_cam_dir.Normalized();
+            //                        pp = view * pp;
+            //                        Math::vec3 p = m_cam_pos + m_cam_dir.Normalized() * f.neard;
+            //                        auto r = m_cam_dir.Cross(m_cam_up).Normalized();
+            //                        auto u = r.Cross(m_cam_dir).Normalized();
+            //                        p = p - r * f.neard * tan(f.fov / 2.0) * f.ratio - u * f.neard * tan(f.fov/2.0);
+            //                        p = m * p;
+            //                        p = p;
+            //                    }
+            //                    frame->SetDiffuseColor(0, 1, 0, 1);
+            //                    frame->BeginRendering();
+            //                    frame->SetClearColor(.5, 0.6, 0.7, 1.0);
+            //                    frame->Clear(true, true, false);
+            //                    GetVideoDriver()->SetViewport(0, 0, GetWindow()->GetWidth(), GetWindow()->GetHeight());
+            //                    frame->Render(Gpu::AsRenderable2(f, GetVideoDriver()), true);
+            //                    frame->EndRendering();
+            //                }
+            //            }
+            //            frame->PopAllState();
+            //            return;
             {
                 UpdateViewMatrix();
-                auto s = m_shadow_map_render->GetShadowMaps();
-                frame->SetShadowMaps(s);
+                auto s = m_shadow_map_render->GetShadowMap();
+                //frame->SetShadowMaps(s);
                 frame->SetClearColor(Math::vec4(0.5, 0.5, 0.5, 1));
                 frame->EnableDiffuseShading(true);
                 frame->EnableTexturing(true);
                 frame->EnableLighting(true);
                 frame->EnableShadows(true);
                 frame->SetLightModel(Gpu::LightModel::PerVertexDiffuse);
-                frame->SetShadowModel(Gpu::ShadowModel::ShadowMapSingle);
+                frame->SetShadowModel(Gpu::ShadowModel::ShadowMapSimple);
                 if (!alternative_view)
                 {
                     frame->SetViewMatrix(m_view_matrix);
@@ -454,47 +454,47 @@ namespace Demo
                     frame->SetProjectionMatrix(m_proj_matrix_a);
                 }
 
-             //   frame->SetProjectionMatrix(m_projection_matrix);
+                //   frame->SetProjectionMatrix(m_projection_matrix);
 
-//                Math::mat4 m = Math::mat4::CreateScaling(1,1,1);
-//                frame->SetWorldMatrix(m);
-                 ::Render::Render2 render(GetAsyncParser());
-                 render.RenderScene(m_scene, frame);
-//                frame->SetDiffuseMap(0, m_texture, 0);
-//                Gpu::RenderableBuilder b(GetVideoDriver());
-//                b.Begin(Gpu::PrimitiveType::QUADS);
-//                b.TexCoord2f(0,0);
-//                b.Vertex3f(-10, -10, 0);
-//                b.TexCoord2f(0, 10);
-//                b.Vertex3f(10, -10, 0);
-//                b.TexCoord2f(10,10);
-//                b.Vertex3f(10, 10,0);
-//                b.TexCoord2f(0, 10);
-//                b.Vertex3f(-10, 10, 0);
-//                b.End();
-//                Math::BoundingSphere sphere = b.GetBoundingSphere();
-//                frame->SetBoundingSphere(m*sphere);
+                //                Math::mat4 m = Math::mat4::CreateScaling(1,1,1);
+                //                frame->SetWorldMatrix(m);
+                ::Render::Render2 render(GetAsyncParser());
+                render.RenderScene(m_scene, frame);
+                //                frame->SetDiffuseMap(0, m_texture, 0);
+                //                Gpu::RenderableBuilder b(GetVideoDriver());
+                //                b.Begin(Gpu::PrimitiveType::QUADS);
+                //                b.TexCoord2f(0,0);
+                //                b.Vertex3f(-10, -10, 0);
+                //                b.TexCoord2f(0, 10);
+                //                b.Vertex3f(10, -10, 0);
+                //                b.TexCoord2f(10,10);
+                //                b.Vertex3f(10, 10,0);
+                //                b.TexCoord2f(0, 10);
+                //                b.Vertex3f(-10, 10, 0);
+                //                b.End();
+                //                Math::BoundingSphere sphere = b.GetBoundingSphere();
+                //                frame->SetBoundingSphere(m*sphere);
 
-//                frame->Render(Gpu::AsRenderable(sphere, GetVideoDriver()), true);
-//                frame->Render(b.ToRenderable(), true);
+                //                frame->Render(Gpu::AsRenderable(sphere, GetVideoDriver()), true);
+                //                frame->Render(b.ToRenderable(), true);
 
                 static float a = 0;
                 auto light_dir = Math::vec3(0, sin(a), cos(a)).Normalized();
-                for (int i = 0; i != 3; ++i)
-                {
-                    if (light_dir[i] < 0.2)
-                        light_dir[i] = 1.0;
-                }
+                //                for (int i = 0; i != 3; ++i)
+                //                {
+                //                    if (light_dir[i] < 0.2)
+                //                        light_dir[i] = 1.0;
+                //                }
                 light_dir.Normalize();
-                light_dir.Set(0.2f, 0, -0.99f);
+                light_dir.Set(0.2f, 0.3f, -0.99f);
                 light_dir.Normalize();
                 l.SetDirection(light_dir);
-              //  l.SetDirection(Math::vec3(0, 1, -1).Normalized());
+                //  l.SetDirection(Math::vec3(0, 1, -1).Normalized());
                 Math::vec4 sky_color(0.8f, light_dir[0]*0.1f + 0.7f, light_dir[1]*0.4f + 0.5f, 1.0f);
                 l.SetDiffuseColor(sky_color);
                 l.SetPosition({0, 0, 1});
                 a+= 0.001;
-                m_shadow_map_render->SetLight(l);
+                m_shadow_map_render->SetLight(l);//render.GetLight(0));
                 float w = GetWindow()->GetWidth();
                 float h = GetWindow()->GetHeight();
                 m_shadow_map_render->SetViewProperties(fov, w / h, near_d, far_d, m_cam_pos, m_cam_dir, m_cam_up);
@@ -510,128 +510,36 @@ namespace Demo
                 frame->EnableDepthTest(true);
                 //frame->BeginRendering();
                 frame->SetClearColor(.5, 0.6, 0.7, 1.0);
-                frame->Clear(true, true, false);                
+                frame->Clear(true, true, false);
                 // render.SetCamera(&m_camera);
                 //frame->EnableBoundBoxRendering(true);
                 //frame->EnableBoundingSphereRendering(true);
-                //frame->EnableNaviMeshRendering(true);                
-          //      frame->DrawCircleXY(c.X(), c.Y(), c.Z(), 0.05f);
-          //      frame->DrawText2D(10, GetWindow()->GetHeight() - 30, L"PunkEngine");
+                //frame->EnableNaviMeshRendering(true);
+                //      frame->DrawCircleXY(c.X(), c.Y(), c.Z(), 0.05f);
+                //      frame->DrawText2D(10, GetWindow()->GetHeight() - 30, L"PunkEngine");
 
-              //  frame->GetVideoDriver()->SetViewport(0, 0, GetWindow()->GetWidth(), GetWindow()->GetHeight());
+                //  frame->GetVideoDriver()->SetViewport(0, 0, GetWindow()->GetWidth(), GetWindow()->GetHeight());
                 frame->EndRendering();
 
             }
             frame->PopAllState();
 
-            //draw shadow maps
-            frame->BeginRendering();
-            frame->PushAllState();
-            frame->EnableTexturing(true);
-            frame->EnableLighting(false);
-            frame->SetTexture2DArray(m_shadow_map_render->GetShadowMaps(), 0);
-            frame->SetViewMatrix(Math::mat4::CreateIdentity());
-            frame->SetProjectionMatrix(Math::mat4::CreateOrthographicProjection(0, GetWindow()->GetWidth(), 0, GetWindow()->GetHeight(), -1, 1));
-            for (int i = 0; i < m_shadow_map_render->GetSplitCount(); ++i)
-            {
-                frame->SetDiffuseMapIndex(0, i);
-                frame->EnableTexturing(true);
-                frame->DrawQuad(10 + 260*i, 10, 256, 256);
-            }
-            frame->PopAllState();
-            frame->EndRendering();
+            auto r = m_shadow_map_render->GetDebugVisualizer();
+            if (r)
+                r->Draw(frame);
 
-            frame->BeginRendering();
-            frame->PushAllState();
-            frame->EnableTexturing(false);
-            frame->EnableLighting(false);
-            frame->SetTexture2DArray(nullptr, -1);
-            for (int i = 0; i < m_shadow_map_render->GetSplitCount(); ++i)
-            {
-                if (i == 0)
-                    frame->SetDiffuseColor(1, 0, 0, 1);
-                else if (i == 1)
-                    frame->SetDiffuseColor(0, 1, 0, 1);
-                else if (i == 2)
-                    frame->SetDiffuseColor(0, 0, 1, 1);
-                else if (i == 3)
-                    frame->SetDiffuseColor(1, 1, 0, 1);
+            frame->SetProjectionMatrix(m_projection_matrix);
 
+            if (!alternative_view)
+            {
+                frame->SetViewMatrix(m_view_matrix);
                 frame->SetProjectionMatrix(m_projection_matrix);
-
-                if (!alternative_view)
-                {
-                    frame->SetViewMatrix(m_view_matrix);
-                    frame->SetProjectionMatrix(m_projection_matrix);
-                }
-                else
-                {
-                    frame->SetViewMatrix(m_view_matrix_a);
-                    frame->SetProjectionMatrix(m_proj_matrix_a);
-                }
-
-                {
-                    Math::FrustumCore f(Math::FrustumCreateFromProjectionMatrix(m_projection_matrix));
-                    Math::FrustumTransform(f, m_cam_pos, m_cam_dir, m_cam_up);
-                    frame->SetWorldMatrix(Math::mat4::CreateIdentity());
-                    frame->SetDiffuseColor(0, 1, 0, 1);
-                    frame->Render(Gpu::AsRenderable2(f, GetVideoDriver()), true);
-                }
-
-                if (!alternative_view)
-                {
-                    frame->SetViewMatrix(m_view_matrix);
-                    frame->SetProjectionMatrix(m_projection_matrix);
-                }
-                else
-                {
-                    frame->SetViewMatrix(m_view_matrix_a);
-                    frame->SetProjectionMatrix(m_proj_matrix_a);
-                }
-
-                frame->SetDiffuseColor(1, 0, 0, 1);
-                  frame->SetWorldMatrix(Math::mat4::CreateIdentity());
-                  frame->Render(Gpu::AsRenderable2(m_shadow_map_render->m_debug.m_frustum[i], GetVideoDriver()), true);
-//                frame->SetPointSize(10);
-//                {
-//                    Gpu::RenderableBuilder b(GetVideoDriver());
-//                    b.Begin(Gpu::PrimitiveType::POINTS);
-//                    for (int j = 0; j != 8; ++j)
-//                    {
-//                        b.Vertex3fv(m_shadow_map_render->m_debug.m_frustum[i].GetPoint((Math::Frustum::FrustumPoints)j));
-//                    }
-//                    b.End();
-//                    frame->Render(b.ToRenderable(), true);
-//                }
-
-
-                frame->SetWorldMatrix(Math::mat4::CreateIdentity());
-                frame->SetPointSize(10);
-                Gpu::RenderableBuilder b(GetVideoDriver());
-                b.Begin(Gpu::PrimitiveType::POINTS);
-                for (int j = 0; j != 8; ++j)
-                {
-                    b.Vertex3fv(m_shadow_map_render->m_debug.m_frustum[i].point[j]);
-                }
-                b.End();
-                frame->Render(b.ToRenderable(), true);
-
-                if (!alternative_view)
-                {
-                    frame->SetViewMatrix(m_view_matrix);
-                    frame->SetProjectionMatrix(m_projection_matrix);
-                }
-                else
-                {
-                    frame->SetViewMatrix(m_view_matrix_a);
-                    frame->SetProjectionMatrix(m_proj_matrix_a);
-                }
-               // frame->SetProjectionMatrix(m_projection_matrix);
-                frame->SetWorldMatrix(m_shadow_map_render->m_debug.m_shadow_view[i].Inversed());
-                Math::FrustumCore f(Math::FrustumCreateFromProjectionMatrix(m_shadow_map_render->m_debug.m_shadow_crop[i] * m_shadow_map_render->m_debug.m_shadow_proj[i]));
-                frame->Render(Gpu::AsRenderable(f, GetVideoDriver()), true);
             }
-            frame->PopAllState();
+            else
+            {
+                frame->SetViewMatrix(m_view_matrix_a);
+                frame->SetProjectionMatrix(m_proj_matrix_a);
+            }
 
             frame->PushAllState();
             frame->SetProjectionMatrix(m_projection_matrix);
@@ -678,25 +586,25 @@ namespace Demo
             //                frame->BeginRendering();
             //                frame->Clear(true, true, true);
             //                frame->SetProjectionMatrix(Math::mat4::CreateIdentity());
-//                frame->SetViewMatrix(Math::mat4::CreateIdentity());
-//                frame->SetWorldMatrix(Math::mat4::CreateIdentity());
-//                frame->SetDiffuseMap0(m_frame_buffer->GetColorTexture());
+            //                frame->SetViewMatrix(Math::mat4::CreateIdentity());
+            //                frame->SetWorldMatrix(Math::mat4::CreateIdentity());
+            //                frame->SetDiffuseMap0(m_frame_buffer->GetColorTexture());
 
-//                Gpu::RenderableBuilder b(GetVideoDriver());
-//                b.Begin(Gpu::PrimitiveType::QUADS);
-//                b.TexCoord2f(0,0);
-//                b.Vertex3f(-1,-1,0);
-//                b.TexCoord2f(0,1);
-//                b.Vertex3f(-1,1,0);
-//                b.TexCoord2f(1,1);
-//                b.Vertex3f(1,1,0);
-//                b.TexCoord2f(1,0);
-//                b.Vertex3f(1,-1,0);
-//                b.End();
-//                frame->Render(b.ToRenderable(), true);
-//                frame->EndRendering();
-//            }
-//            frame->PopAllState();
+            //                Gpu::RenderableBuilder b(GetVideoDriver());
+            //                b.Begin(Gpu::PrimitiveType::QUADS);
+            //                b.TexCoord2f(0,0);
+            //                b.Vertex3f(-1,-1,0);
+            //                b.TexCoord2f(0,1);
+            //                b.Vertex3f(-1,1,0);
+            //                b.TexCoord2f(1,1);
+            //                b.Vertex3f(1,1,0);
+            //                b.TexCoord2f(1,0);
+            //                b.Vertex3f(1,-1,0);
+            //                b.End();
+            //                frame->Render(b.ToRenderable(), true);
+            //                frame->EndRendering();
+            //            }
+            //            frame->PopAllState();
 
         }
     };

@@ -35,7 +35,8 @@ namespace Gpu
             ShaderFile(ShaderCollection::FragmentTextSolidColor, L"text_color_330.frag"),
             ShaderFile(ShaderCollection::FragmentDepth, L"depth.frag"),
             ShaderFile(ShaderCollection::VertexDepth, L"depth.vert"),
-            ShaderFile(ShaderCollection::VertexShadow, L"shadow.vert"),
+            ShaderFile(ShaderCollection::VsPerVertexDiffuseLightingShadowSimple, L"per_vertex_lighting_diffuse_simple_shadow.vert"),
+            ShaderFile(ShaderCollection::FsPerVertexDiffuseLightingShadowSimple, L"per_vertex_lighting_diffuse_simple_shadow.frag"),
             ShaderFile(ShaderCollection::FragmentShadowSingle, L"shadow_single.frag"),
             ShaderFile(ShaderCollection::No, L"")
         };

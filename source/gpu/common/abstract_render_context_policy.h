@@ -14,27 +14,105 @@ namespace Gpu
         SolidTextured2DArray,
 		GUI,
 		Terrain,
-		Skinning,
-		BumpMapping,
-        BumpMappingSkinning,
-        BumpMappingShadowingSingle,
-        BumpMappingSkinningShadowingSingle,
-		Painter,
-		SolidVertexColor,
-		LightPerFragmentDiffuse,
-		LightPerFragmentTextureDiffuse,
+        Painter,
+        SolidVertexColor,
+
+        BumpMappingDiffuse,
+        BumpMappingDiffuseShadowingSimple,
+        BumpMappingDiffuseShadowingCascade,
+
+        BumpMappingDiffuseSkinning,
+        BumpMappingDiffuseSkinningShadowingSimple,
+        BumpMappingDiffuseSkinningShadowingCascade,
+
+        BumpMappingDiffuseSpecular,
+        BumpMappingDiffuseSpecularShadowingSimple,
+        BumpMappingDiffuseSpecularShadowingCascade,
+
+        BumpMappingDiffuseSpecularSkinning,
+        BumpMappingDiffuseSpecularSkinningShadowingSimple,
+        BumpMappingDiffuseSpecularSkinningShadowingCascade,
+
+        BumpMappingTextureDiffuse,
+        BumpMappingTextureDiffuseShadowingSimple,
+        BumpMappingTextureDiffuseShadowingCascade,
+
+        BumpMappingTextureDiffuseSkinning,
+        BumpMappingTextureDiffuseSkinningShadowingSimple,
+        BumpMappingTextureDiffuseSkinningShadowingCascade,
+
+        BumpMappingTextureDiffuseSpecular,
+        BumpMappingTextureDiffuseSpecularShadowingSimple,
+        BumpMappingTextureDiffuseSpecularShadowingCascade,
+
+        BumpMappingTextureDiffuseSpecularSkinning,
+        BumpMappingTextureDiffuseSpecularSkinningShadowingSimple,
+        BumpMappingTextureDiffuseSpecularSkinningShadowingCascade,
+
+        LightPerFragmentDiffuse,
+        LightPerFragmentDiffuseShadowingSimple,
+        LightPerFragmentDiffuseShadowingCascade,
+
+        LightPerFragmentDiffuseSkinning,
+        LightPerFragmentDiffuseSkinningShadowingSimple,
+        LightPerFragmentDiffuseSkinningShadowingCascade,
+
+        LightPerFragmentDiffuseSpecular,
+        LightPerFragmentDiffuseSpecularShadowingSimple,
+        LightPerFragmentDiffuseSpecularShadowingCascade,
+
+        LightPerFragmentDiffuseSpecularSkinning,
+        LightPerFragmentDiffuseSpecularSkinningShadowingSimple,
+        LightPerFragmentDiffuseSpecularSkinningShadowingCascade,
+
+        LightPerFragmentTextureDiffuse,
+        LightPerFragmentTextureDiffuseShadowingSimple,
+        LightPerFragmentTextureDiffuseShadowingCascade,
+
         LightPerFragmentTextureDiffuseSkinning,
-		LightPerVertexDiffuse,
-		LightPerVertexTextureDiffuse,
-        LightPerVertexTextureDiffuseSkinning,
-		LightPerFragmentDiffuseSpecular,
+        LightPerFragmentTextureDiffuseSkinningShadowingSimple,
+        LightPerFragmentTextureDiffuseSkinningShadowingCascade,
+
+        LightPerFragmentTextureDiffuseSpecular,
+        LightPerFragmentTextureDiffuseSpecularShadowingSimple,
+        LightPerFragmentTextureDiffuseSpecularShadowingCascade,
+
+        LightPerFragmentTextureDiffuseSpecularSkinning,
+        LightPerFragmentTextureDiffuseSpecularSkinningShadowingSimple,
+        LightPerFragmentTextureDiffuseSpecularSkinningShadowingCascade,
+
+        LightPerVertexDiffuse,
+        LightPerVertexDiffuseShadowingCascade,
+        LightPerVertexDiffuseShadowingSimple,
+
+        LightPerVertexDiffuseSkinning,
+        LightPerVertexDiffuseSkinningShadowingCascade,
+        LightPerVertexDiffuseSkinningShadowingSimple,
+
         LightPerVertexDiffuseSpecular,
-        LightPerFragmentDiffuseShadowingSingle,
-        LightPerFragmentTextureDiffuseShadowingSingle,
-        LightPerVertexDiffuseShadowingSingle,
-        LightPerVertexTextureDiffuseShadowingSingle,
-        LightPerFragmentDiffuseSpecularShadowingSingle,
-        LightPerVertexDiffuseSpecularShadowingSingle,
+        LightPerVertexDiffuseSpecularShadowingSimple,
+        LightPerVertexDiffuseSpecularShadowingCascade,
+
+        LightPerVertexDiffuseSpecularSkinning,
+        LightPerVertexDiffuseSpecularSkinningShadowingSimple,
+        LightPerVertexDiffuseSpecularSkinningShadowingCascade,
+
+        LightPerVertexTextureDiffuse,
+        LightPerVertexTextureDiffuseShadowingSimple,
+        LightPerVertexTextureDiffuseShadowingCascade,
+
+        LightPerVertexTextureDiffuseSkinning,
+        LightPerVertexTextureDiffuseSkinningShadowingSimple,
+        LightPerVertexTextureDiffuseSkinningShadowingCascade,
+
+        LightPerVertexTextureDiffuseSpecular,
+        LightPerVertexTextureDiffuseSpecularShadowingSimple,
+        LightPerVertexTextureDiffuseSpecularShadowingCascade,
+
+        LightPerVertexTextureDiffuseSpecularSkinning,
+        LightPerVertexTextureDiffuseSpecularSkinningShadowingSimple,
+        LightPerVertexTextureDiffuseSpecularSkinningShadowingCascade,
+
         TextSolidColor,
         DepthRender,
         DepthRenderSkinning

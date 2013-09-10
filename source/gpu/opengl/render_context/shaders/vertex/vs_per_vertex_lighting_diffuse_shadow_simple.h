@@ -1,5 +1,5 @@
-#ifndef VS_SHADOW_H
-#define VS_SHADOW_H
+#ifndef VS_PER_VERTEX_LIGHTING_DIFFUSE_SHADOW_SIMPLE
+#define VS_PER_VERTEX_LIGHTING_DIFFUSE_SHADOW_SIMPLE
 
 #include "../shader.h"
 
@@ -8,19 +8,19 @@ namespace Gpu
     namespace OpenGL
     {
         //  Vertex shader: per vertex lighting with diffuse texture and single shadowing
-        class VsPvltdShadowSingle : public Shader
+        class VsPerVertexLightingDiffuseShadowSimple : public Shader
         {
         public:
-            VsPvltdShadowSingle();
+            VsPerVertexLightingDiffuseShadowSimple();
             virtual void InitUniforms() override;
             virtual void BindParameters(const CoreState& params) override;
             virtual int64_t GetRequiredAttributesSet() const override;
 
         private:
-            unsigned uProjViewWorld;
-            unsigned uWorld;
-            unsigned uViewModel;
             unsigned uProj;
+            unsigned uView;
+            unsigned uWorld;
+            unsigned uProjViewWorld;            
             unsigned uNormalMatrix;
             unsigned uDiffuseColor;
             unsigned uLightsCount;
@@ -29,4 +29,4 @@ namespace Gpu
     }
 }
 
-#endif // VS_SHADOW_H
+#endif // VS_PER_VERTEX_LIGHTING_DIFFUSE_SHADOW_SIMPLE
