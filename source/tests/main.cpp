@@ -24,14 +24,15 @@
 #include "test20.h"
 #include "test0.h"
 #include "test21.h"
+#include "test22.h"
 
 int main()
 {
     std::cout << "Size of wchar_t: " << sizeof(wchar_t) << std::endl;
     std::cout << "Size of short: " << sizeof(short) << std::endl;
 
-    int TestNumber = 14;
-    int max_test = 21;
+    int TestNumber = 21;
+    int max_test = 22;
     while (TestNumber < max_test)
     {
         ++TestNumber;
@@ -166,6 +167,12 @@ int main()
             //        Test21::Test test;
             //        test.Run();
             //        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 22)
+        {
+            Test22::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
         }
     }
     return 0;

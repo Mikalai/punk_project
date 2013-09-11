@@ -25,8 +25,8 @@ namespace Gpu
         StaticMesh(const StaticMesh&) = delete;
         StaticMesh& operator = (const StaticMesh&) = delete;
 
-        class StaticMeshImpl;
-        StaticMeshImpl* impl;
+        Renderable* impl;
+        VideoDriver* m_driver;
 	};
 }
 

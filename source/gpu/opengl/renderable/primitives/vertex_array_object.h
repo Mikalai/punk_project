@@ -279,7 +279,7 @@ namespace Gpu
 				return true;
 			}
 
-            bool HasData()
+            virtual bool HasData() const override
             {
                 return m_index_buffer != nullptr && m_vertex_buffer != nullptr;
             }
@@ -296,4 +296,5 @@ namespace Gpu
 		};
 	};
 }
+
 #endif

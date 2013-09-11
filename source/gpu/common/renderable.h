@@ -36,6 +36,11 @@ namespace Gpu
             throw GPUException(L"GetMemoryUsage() not implemented");
         }
 
+        virtual bool HasData() const
+        {
+            throw GPUException(L"HasData() not implemented");
+        }
+
 	protected:
 
 		int m_primitive_type;
