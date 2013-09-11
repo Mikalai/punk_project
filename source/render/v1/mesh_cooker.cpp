@@ -33,12 +33,12 @@
 ////			Virtual::SkinGeometry::validate();
 ////			Virtual::SkinGeometry* geom = Virtual::SkinGeometry::find(node->GetStorageName());
 
-////			GPU::SkinMesh* mesh = nullptr;
+////			Gpu::SkinMesh* mesh = nullptr;
 ////			if (geom->IsCacheValid())
-////				mesh = nullptr;	//	Cast<GPU::SkinMesh*>(geom->GetGPUBufferCache());
+////				mesh = nullptr;	//	Cast<Gpu::SkinMesh*>(geom->GetGPUBufferCache());
 ////			else
 ////			{
-////				mesh = nullptr;	//	 new GPU::SkinMesh;
+////				mesh = nullptr;	//	 new Gpu::SkinMesh;
 ////				try
 ////				{
 ////					mesh->Cook(geom, m_current_armature);
@@ -79,10 +79,10 @@
 
 //			Gpu::StaticMesh* mesh override;
 ////			if (geom->IsGPUCacheValid())
-////				mesh = nullptr;	//	Cast<GPU::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
+////				mesh = nullptr;	//	Cast<Gpu::OpenGL::StaticMesh*>(geom->GetGPUBufferCache());
 ////			else
 ////			{
-////				mesh = nullptr;	//new GPU::OpenGL::StaticMesh;
+////				mesh = nullptr;	//new Gpu::OpenGL::StaticMesh;
 ////				try
 ////				{
 ////					mesh->Cook(geom);

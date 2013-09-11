@@ -36,7 +36,7 @@ namespace Render
                     if (material->GetTextureSlot(i)->IsNormalMapSlot())
                     {
                         m_frame->SetNormalMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 1);
-                        m_frame->SetLightModel(Gpu::LightModel::BumpMapping);
+                        m_frame->SetLightModel(Gpu::LightModel::BumpMappingDiffuse);
                     }
                     if (material->GetTextureSlot(i)->IsSpecularIntensityMapSlot())
                         m_frame->SetSpecularMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 2);

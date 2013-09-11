@@ -1,7 +1,7 @@
 #ifdef USE_PAINTER_RC
 #include "rc_painter.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

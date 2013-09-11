@@ -96,13 +96,13 @@
 //	{
 ////		RenderSphere(node->GetBoundingSphere().GetCenter(), node->GetBoundingSphere().GetRadius(), Math::vec4(0,1,0,1));
 ////		m_frame->PushAllState();
-////		GPU::Renderable* mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
+////		Gpu::Renderable* mesh = As<Gpu::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
 ////		if (!mesh)
 ////		{
-////			GPU::StaticMesh* m = nullptr;//	new GPU::OpenGL::StaticMesh();
+////			Gpu::StaticMesh* m = nullptr;//	new Gpu::OpenGL::StaticMesh();
 ////			m->Cook(node->GetStaticGeometry());
 ////			node->GetStaticGeometry()->SetGPUBufferCache(m);
-////			mesh = As<GPU::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
+////			mesh = As<Gpu::Renderable*>(node->GetStaticGeometry()->GetGPUBufferCache());
 ////		}
 
 ////		m_frame->Render(mesh);
@@ -114,7 +114,7 @@
 //	{
 //		m_frame->PushAllState();
 //		m_frame->EnableSkinning(true);
-//		Gpu::SkinMesh* mesh = nullptr;	// Cast<GPU::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
+//		Gpu::SkinMesh* mesh = nullptr;	// Cast<Gpu::OpenGL::SkinMesh*>(node->GetSkinGeometry()->GetGPUBufferCache());
 //		m_frame->Render(mesh);
 //		m_frame->PopAllState();
 //		return true;
@@ -180,10 +180,10 @@
 ////		if (m->GetCache().m_normal_texture_cache == nullptr)
 ////			m->GetCache().m_normal_texture_cache = nullptr; // m_driver->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + m->GetNormalMap(), true);
 
-////		m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(m->GetCache().m_diffuse_texture_cache));
-////		m_frame->SetBumpMap(Cast<GPU::Texture2D*>(m->GetCache().m_normal_texture_cache));
+////		m_frame->SetDiffuseMap0(Cast<Gpu::Texture2D*>(m->GetCache().m_diffuse_texture_cache));
+////		m_frame->SetBumpMap(Cast<Gpu::Texture2D*>(m->GetCache().m_normal_texture_cache));
 ////		m_frame->SetSpecularColor(material->GetSpecularColor());
-////		m_frame->SetSpecularMap(Cast<GPU::Texture2D*>(node->GetMaterial()->GetCache().m_specular_texture_cache));
+////		m_frame->SetSpecularMap(Cast<Gpu::Texture2D*>(node->GetMaterial()->GetCache().m_specular_texture_cache));
 ////		m_frame->SetAmbientColor(material->GetAmbient());
 ////		m_frame->SetSpecularFactor(material->GetSpecularFactor());
 
@@ -288,9 +288,9 @@
 //			m_frame->SetTextureMatrix(Math::mat4::CreateTranslate(terrain_position.X() / m_grid.GetTotalWidth()
 //				, terrain_position.Y() / m_grid.GetTotalHeight(), 0));
 ////			m_frame->SetHeightMap(view->GetHeightMap());
-////			m_frame->SetDiffuseMap0(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
-////			m_frame->SetDiffuseMap1(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
-////			m_frame->SetBumpMap(Cast<GPU::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
+////			m_frame->SetDiffuseMap0(Cast<Gpu::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache));
+////			m_frame->SetDiffuseMap1(Cast<Gpu::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_diffuse_texture_cache_2));
+////			m_frame->SetBumpMap(Cast<Gpu::Texture2D*>(node->GetTerrainObserver()->GetTerrainView()->GetTerrain()->GetMaterial()->GetCache().m_normal_texture_cache));
 ////			m_frame->EnableWireframe(false);
 ////			m_frame->EnableDepthTest(true);
 ////			m_frame->SetLineWidth(1);
@@ -403,7 +403,7 @@
 //		if (m_paint_engine)
 //		{
 //			RenderText(0, 0, L"SDFGSDFGS DFGSDFG SDF", Math::vec4(1,1,1,1));
-//			//GPU::OpenGL::OpenGLPaintEngine* device = Cast<GPU::OpenGL::OpenGLPaintEngine*>(m_paint_engine);
+//			//Gpu::OpenGL::OpenGLPaintEngine* device = Cast<Gpu::OpenGL::OpenGLPaintEngine*>(m_paint_engine);
 //			///RenderTexturedQuad(0, 0, 1, 1, device->GetRenderTarget()->GetColorBuffer());
 //		}
 //		m_frame->EndRendering();
@@ -416,9 +416,9 @@
 //	{
 //		m_terrain_slices = 63;
 //		m_time override;
-////		GPU::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
+////		Gpu::OpenGL::RenderTargetBackBuffer::RenderTargetBackBufferProperties p;
 //        m_tc = new Gpu::TextureContext;
-//    //	m_rt = new GPU::OpenGL::RenderTargetBackBuffer;
+//    //	m_rt = new Gpu::OpenGL::RenderTargetBackBuffer;
 //    //	m_rt->Init(&p);
 //		m_scene = scene;
 ////		if (m_scene)

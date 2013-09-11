@@ -6,7 +6,7 @@
 #include "shaders/vertex/vs_grass.h"
 #include "shaders/fragment/fs_grass.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

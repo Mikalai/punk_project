@@ -65,13 +65,13 @@ namespace Test16
             {
                 System::string s = L"Hełło world šæźžćđš¶ŧŋ";
                 std::ofstream stream("test.string");
-                s.Save(stream);
+                //s.Save(stream);
             }
 
             {
                 std::ifstream stream("test.string");
                 System::string s;
-                s.Load(stream);
+                //s.Load(stream);
                 std::wcout << s << std::endl;
             }
         }

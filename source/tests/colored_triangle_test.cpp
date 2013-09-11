@@ -8,7 +8,7 @@
 //		TestApp()
 //		{}
 
-//		virtual void OnRender(GPU::Frame* frame) override
+//		virtual void OnRender(Gpu::Frame* frame) override
 //		{
 //			frame->SetClearColor(Math::vec4(0.7, .7, .7, 1));
 //			frame->EnableDiffuseShading(true);
@@ -20,8 +20,8 @@
 //			frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, 4.0/3.0, 0.1, 100.0));
 
 //			frame->SetDiffuseColor(Math::vec4(1,1,1,1));
-//			GPU::RenderableBuilder builder(GetVideoDriver());
-//			builder.Begin(GPU::PrimitiveType::TRIANGLES);
+//			Gpu::RenderableBuilder builder(GetVideoDriver());
+//			builder.Begin(Gpu::PrimitiveType::TRIANGLES);
 //			builder.Color3f(1, 0, 0);
 //			builder.Vertex3f(0, 1, 0);
 //			builder.Color3f(0, 1, 0);
@@ -30,12 +30,12 @@
 //			builder.Vertex3f(1, -1, 0);
 //			builder.End();
 
-//			std::unique_ptr<GPU::Renderable> r(builder.ToRenderable());
+//			std::unique_ptr<Gpu::Renderable> r(builder.ToRenderable());
 //			frame->Render(r.get());
 
 //			frame->SetWorldMatrix(Math::mat4::CreateTranslate(1.5, 0, -6));
-//			GPU::RenderableBuilder b(GetVideoDriver());
-//			b.Begin(GPU::PrimitiveType::TRIANGLES);
+//			Gpu::RenderableBuilder b(GetVideoDriver());
+//			b.Begin(Gpu::PrimitiveType::TRIANGLES);
 //			b.Color3f(0.5, 0.5, 1.0);
 //			b.Vertex3f(-1, 1, 0);
 //			b.Color3f(0.5, 0.5, 1.0);
@@ -51,7 +51,7 @@
 //			b.Vertex3f(-1, 1, 0);
 //			b.End();
 
-//			std::unique_ptr<GPU::Renderable> r2(b.ToRenderable());
+//			std::unique_ptr<Gpu::Renderable> r2(b.ToRenderable());
 //			frame->Render(r2.get());
 
 //			frame->EndRendering();

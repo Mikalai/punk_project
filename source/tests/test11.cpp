@@ -7,30 +7,30 @@ namespace Test11
 		float m_x;
 		float m_y;
 		float m_z;
-		GPU::Renderable* m_renderable;
+		Gpu::Renderable* m_renderable;
 		static const unsigned max_model = 2;
 		static const unsigned max_atten = 3;
-		GPU::LightModel m_model[2];
+		Gpu::LightModel m_model[2];
 		unsigned m_cur_model;
-		GPU::LightAttenuation m_attenuation[3];
+		Gpu::LightAttenuation m_attenuation[3];
 		unsigned m_cur_attent;
 		float m_specular;
 		bool m_use_texture;
 		bool m_use_transparency;
-		GPU::Texture2D* m_opaque_texture;
-		GPU::Texture2D* m_transparent_texture;
-		GPU::Texture2D* m_texture;
+		Gpu::Texture2D* m_opaque_texture;
+		Gpu::Texture2D* m_transparent_texture;
+		Gpu::Texture2D* m_texture;
 	public:
 		TestApp()
 		{
 			m_cur_attent = 0;
 			m_cur_model = 1;
-			m_model[0] = GPU::LightModel::PerVertexDiffuse;
-			m_model[1] = GPU::LightModel::PerFragmentDiffuse;
+			m_model[0] = Gpu::LightModel::PerVertexDiffuse;
+			m_model[1] = Gpu::LightModel::PerFragmentDiffuse;
 
-			m_attenuation[0] = GPU::LightAttenuation::Constant;
-			m_attenuation[1] = GPU::LightAttenuation::Linear;
-			m_attenuation[2] = GPU::LightAttenuation::Quadratic;
+			m_attenuation[0] = Gpu::LightAttenuation::Constant;
+			m_attenuation[1] = Gpu::LightAttenuation::Linear;
+			m_attenuation[2] = Gpu::LightAttenuation::Quadratic;
 
 			m_x = 0;
 			m_y = 0;
@@ -47,7 +47,7 @@ namespace Test11
             Virtual::Material* m = Cast<Virtual::Material*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"bridge_material.material"));
 
             Virtual::StaticGeometry* g = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"bridge_mesh.static"));            
-			GPU::StaticMesh* mesh(new GPU::StaticMesh(GetVideoDriver()));
+			Gpu::StaticMesh* mesh(new Gpu::StaticMesh(GetVideoDriver()));
 			mesh->Cook(g);
 			delete g;
 
@@ -103,7 +103,7 @@ namespace Test11
 		}
 
 
-		virtual void OnRender(GPU::Frame* frame) override
+		virtual void OnRender(Gpu::Frame* frame) override
 		{
 			if (m_use_transparency)
 			{
@@ -122,7 +122,7 @@ namespace Test11
 			frame->SetClearColor(Math::vec4(0, 0, 0, 1));
 			frame->EnableDiffuseShading(true);
 			frame->EnableTexturing(m_use_texture);
-			frame->SetDiffuseMap0(m_texture);
+            frame->SetDiffuseMap(0, m_texture, 0);
 
 			frame->SetTextureMatrix(Math::mat4::CreateIdentity());
             float width = GetWindow()->GetWidth();
@@ -154,7 +154,7 @@ namespace Test11
 			frame->Light(0).SetLightAttenuation(m_attenuation[m_cur_attent]);
 			frame->Light(0).SetLightLinearAttenuation(0.1);
 			frame->Light(0).SetLightQuadricAttenuation(0.05);
-			frame->Light(0).SetType(GPU::LightType::Spot);
+			frame->Light(0).SetType(Gpu::LightType::Spot);
 			frame->Light(0).SetSpotExponent(m_specular);
 
 			frame->SetLightModel(m_model[m_cur_model]);

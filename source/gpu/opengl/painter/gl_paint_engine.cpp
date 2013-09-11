@@ -20,7 +20,7 @@ namespace Gpu
 
 			VideoDriver* m_driver;
 //			RenderTargetTextureColorDepth* m_rt;
-			//System::StateManager<GPU::CoreState> m_states;
+			//System::StateManager<Gpu::CoreState> m_states;
 			Gpu::AbstractRenderPolicy* m_solid_rc;
 			Math::vec4 m_color;
 			Math::vec4 m_fill_color;
@@ -49,7 +49,7 @@ namespace Gpu
 			{
 				try
 				{
-					//auto props = GPU::OpenGL::RenderTargetTexture::RenderTargetTextureProperties();
+					//auto props = Gpu::OpenGL::RenderTargetTexture::RenderTargetTextureProperties();
 
 					//m_rt->Init(&props);
 					//m_rt->SetClearColor(0.5f, 0.2f, 0.1f, 1.0f);

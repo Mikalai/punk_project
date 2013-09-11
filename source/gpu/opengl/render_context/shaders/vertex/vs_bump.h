@@ -7,10 +7,10 @@ namespace Gpu
 {
 	namespace OpenGL
 	{
-        class VsBumpMapping : public Shader
+        class VsBumpMappingTextureDiffuse : public Shader
 		{
 		public:
-            VsBumpMapping();
+            VsBumpMappingTextureDiffuse();
 
             virtual void InitUniforms() override;
             virtual void BindParameters(const CoreState& params) override;

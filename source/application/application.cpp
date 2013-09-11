@@ -92,7 +92,7 @@ namespace Punk
             }
 
             {
-                //			m_paint_engine = new GPU::OpenGL::OpenGLPaintEngine;
+                //			m_paint_engine = new Gpu::OpenGL::OpenGLPaintEngine;
                 //			m_paint_engine->SetSurfaceSize(GetWindow()->GetWidth(), GetWindow()->GetHeight());
             }
         }

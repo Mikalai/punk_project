@@ -2,7 +2,7 @@
 
 //#include "rc_skinning.h"
 
-//namespace GPU
+//namespace Gpu
 //{
 //	namespace OpenGL
 //	{

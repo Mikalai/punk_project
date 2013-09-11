@@ -5,7 +5,7 @@
 class MyApp : public Punk::Application
 {
 public:
-    void OnRender(GPU::Frame *frame) override
+    void OnRender(Gpu::Frame *frame) override
     {
         frame->SetClearColor(Math::vec4(1, 0, 0, 1));
 		frame->SetClearDepth(1.0f);

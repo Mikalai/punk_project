@@ -7,7 +7,7 @@
 #include "shaders/vertex/vs_painter.h"
 #include "shaders/fragment/fs_painter.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

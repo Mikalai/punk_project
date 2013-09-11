@@ -53,7 +53,7 @@
 //		Gpu::ScaledGridObject m_grid;
 //		float m_time;
 //		int m_terrain_slices;
-//		//System::StateManager<GPU::CoreState> m_states;
+//		//System::StateManager<Gpu::CoreState> m_states;
 
 //		//	next pointers should be destroyed in destructor
 //		Gpu::RenderTarget* m_rt;

@@ -8,7 +8,7 @@
 #include "shaders/fragment/fs_terrain.h"
 #include "shaders/shader_template.h"
 
-namespace GPU
+namespace Gpu
 {
 namespace OpenGL
 {

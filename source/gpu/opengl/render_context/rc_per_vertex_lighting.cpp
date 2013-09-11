@@ -4,7 +4,7 @@
 //#include "../gl/module.h"
 //#include "../../common/vertex.h"
 
-//namespace GPU
+//namespace Gpu
 //{
 //	namespace OpenGL
 //	{

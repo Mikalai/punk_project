@@ -189,14 +189,14 @@ namespace System
 	}
 
 	//
-	GPU::OpenCL::Platform g_platform;
-	GPU::OpenCL::Device g_device;
-	GPU::OpenCL::Context g_context;
-	GPU::OpenCL::Program g_program;
-	GPU::OpenCL::CommandQueue g_command;
-	GPU::OpenCL::Buffer g_inp;
-	GPU::OpenCL::Buffer g_out;
-	GPU::OpenCL::Kernel g_kernel;
+	Gpu::OpenCL::Platform g_platform;
+	Gpu::OpenCL::Device g_device;
+	Gpu::OpenCL::Context g_context;
+	Gpu::OpenCL::Program g_program;
+	Gpu::OpenCL::CommandQueue g_command;
+	Gpu::OpenCL::Buffer g_inp;
+	Gpu::OpenCL::Buffer g_out;
+	Gpu::OpenCL::Kernel g_kernel;
 
 	//
 
@@ -210,8 +210,8 @@ namespace System
 		if (!g_program.CreateFromFile(System::Environment::Instance()->GetOpenCLFolder() + L"yuy2_to_rgb.cl"))
 			exit(-1);
 
-		g_inp.Init(g_context, g_command, GPU::OpenCL::Buffer::READ_WRITE, 640*480*2);
-		g_out.Init(g_context, g_command, GPU::OpenCL::Buffer::READ_WRITE, 640*480*4);
+		g_inp.Init(g_context, g_command, Gpu::OpenCL::Buffer::READ_WRITE, 640*480*2);
+		g_out.Init(g_context, g_command, Gpu::OpenCL::Buffer::READ_WRITE, 640*480*4);
 
 		if (!g_program.GetKernel(L"yuy2_to_rgb", g_kernel))
 			exit(-1);

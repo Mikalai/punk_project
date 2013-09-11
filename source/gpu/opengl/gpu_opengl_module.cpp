@@ -73,8 +73,8 @@ namespace Gpu
 #ifdef USE_BUMP_MAPPING_RC
             {
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsBumpMapping, new FsBumpMapping, nullptr);
-                AbstractRenderPolicy::add(RenderPolicySet::BumpMapping, rc);
+                rc->SetShaders(new VsBumpMappingTextureDiffuse, new FsBumpMappingTextureDiffuse, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingTextureDiffuse, rc);
             }
 #   ifdef USE_SHADOW_MAPS
 //            {
@@ -89,8 +89,8 @@ namespace Gpu
             {
 #   ifdef USE_BUMP_MAPPING_RC
                 DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsSkinningBump, new FsBumpMapping, nullptr);
-                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingSkinning, rc);
+                rc->SetShaders(new VsSkinningBump, new FsBumpMappingTextureDiffuse, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingTextureDiffuseSkinning, rc);
 #   endif   //  USE_BUMP_MAPPING_RC                               
             }
             {

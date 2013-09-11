@@ -4,16 +4,16 @@ namespace Test12
 {
 	class TestApp : public Punk::Application
 	{
-		GPU::Renderable* m_renderable;
+		Gpu::Renderable* m_renderable;
         Math::mat4 m_projection;
-		Math::Frustum m_frustum;
+        Math::FrustumCore m_frustum;
 		float m_a;
 		float a, b, h;
 		float m_rz;
 	public:
-		TestApp()
-            : m_frustum(m_projection)
+		TestApp()            
 		{
+            m_frustum = Math::FrustumCreateFromProjectionMatrix(m_projection);
 			m_renderable = nullptr;
             m_a = Math::PI / 2.0f - 0.01f;
 			a = 20;
@@ -30,10 +30,10 @@ namespace Test12
 				delete m_renderable;
 			if (GetVideoDriver())
 			{
-				Math::ClipSpace space = Math::BuildClipSpaceFromPoint(
-											m_frustum,
-											Math::vec3(sin(m_a)*a, h, b*cos(m_a)));
-				m_renderable = GPU::AsRenderable(space, GetVideoDriver());
+                Math::ClipSpace space = Math::FrustumBuildClipSpaceFromPoint(
+                            m_frustum,
+                            Math::vec3(sin(m_a)*a, h, b*cos(m_a)));
+				m_renderable = Gpu::AsRenderable(space, GetVideoDriver());
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace Test12
 //			if (m_renderable)
 //				delete m_renderable;
 //			if (GetVideoDriver())
-//				m_renderable = GPU::AsRenderable(m_frustum, GetVideoDriver());
+//				m_renderable = Gpu::AsRenderable(m_frustum, GetVideoDriver());
 		}
 
 		virtual void OnKeyDown(System::KeyDownEvent *event) override
@@ -64,7 +64,7 @@ namespace Test12
 			else if (event->key == System::PUNK_KEY_RIGHT)
 				m_a += 0.01;
 
-			Math::ClipSpace space = Math::BuildClipSpaceFromPoint(
+            Math::ClipSpace space = Math::FrustumBuildClipSpaceFromPoint(
 										m_frustum,
 										Math::vec3(sin(m_a)*a, h, b*cos(m_a)));
 			delete m_renderable;
@@ -79,12 +79,12 @@ namespace Test12
 			space2.Add(Math::Plane(0, -1, 0, 5));
 			space2.Add(Math::Plane(0, 0, 1, 5));
 			space2.Add(Math::Plane(0, 0, -1, 5));
-			//m_renderable = GPU::AsRenderable(m_frustum, GetVideoDriver());
-			m_renderable = GPU::AsRenderable(space, GetVideoDriver());
+			//m_renderable = Gpu::AsRenderable(m_frustum, GetVideoDriver());
+			m_renderable = Gpu::AsRenderable(space, GetVideoDriver());
 		}
 
 
-		virtual void OnRender(GPU::Frame* frame) override
+		virtual void OnRender(Gpu::Frame* frame) override
 		{
 			frame->SetClearColor(Math::vec4(0.5, 0.5, 0.5, 1));
 			frame->EnableDiffuseShading(true);

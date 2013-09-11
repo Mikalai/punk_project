@@ -79,11 +79,11 @@ namespace Test13
     class TestApp : public Punk::Application
     {
         std::map<int, std::map<int, std::pair<int, Math::Line3D>>> result;
-        GPU::Renderable* m_renderable;
-        GPU::Renderable* m_renderable2;
-        GPU::Renderable* m_renderable3;
-        GPU::Renderable* m_renderable4;
-        Math::Frustum m_frustum;
+        Gpu::Renderable* m_renderable;
+        Gpu::Renderable* m_renderable2;
+        Gpu::Renderable* m_renderable3;
+        Gpu::Renderable* m_renderable4;
+        Math::FrustumCore m_frustum;
         Math::mat4 m_projection;
         float m_a;
         float a, b, h;
@@ -334,9 +334,9 @@ namespace Test13
             }
         }
 
-        TestApp()
-            : m_frustum(m_projection)
+        TestApp()            
         {
+            m_frustum = Math::FrustumCreateFromProjectionMatrix(m_projection);
             m_renderable = nullptr;
             m_renderable2 = nullptr;
             m_renderable3 = nullptr;
@@ -349,7 +349,7 @@ namespace Test13
 
 
             m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, 800, 600, 1, 10.0);
-            m_frustum.Update();
+            m_frustum = Math::FrustumCreateFromProjectionMatrix(m_projection);
 
             //            Math::Plane p0(0.875370000000000, 0, -0.483454000000000, 0);
             //            Math::Plane p1(0, 0, 1, 10);
@@ -361,7 +361,7 @@ namespace Test13
             //            Math::Plane p7(-0.575987000000000, 0, 0.817459000000000, 11.355700000000000);
 
             //Math::Plane p[] = { p0, p1, p2, p3, p4, p5, p6, p7 };
-            auto p = m_frustum.ToClipSpace();
+            auto p = Math::FrustumToClipSpace(m_frustum);
             size_t size = p.size();
 
             for (int i = 0; i != size; ++i)
@@ -398,10 +398,10 @@ namespace Test13
             return res;
         }
 
-        const std::vector<Math::Line3D> RecalcLines(const Math::Frustum& frustum, const Math::vec3& point)
+        const std::vector<Math::Line3D> RecalcLines(const Math::FrustumCore& frustum, const Math::vec3& point)
         {
             std::vector<Math::Line3D> lines;
-            Math::ClipSpace space = Math::BuildClipSpaceFromPoint(frustum, point);
+            Math::ClipSpace space = Math::FrustumBuildClipSpaceFromPoint(frustum, point);
             auto p = space;
             size_t size = p.size();
             for (int i = 0; i != size; ++i)
@@ -438,19 +438,19 @@ namespace Test13
         virtual void OnInit(const Punk::Config&) override
         {
             m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, 800, 600, 1, 10.0);
-            m_frustum.Update();
+            m_frustum = Math::FrustumCreateFromProjectionMatrix(m_projection);
 
             if (m_renderable)
                 delete m_renderable;
             if (GetVideoDriver())
             {
-                Math::ClipSpace space = Math::BuildClipSpaceFromPoint(m_frustum, GetLightPosition());
+                Math::ClipSpace space = Math::FrustumBuildClipSpaceFromPoint(m_frustum, GetLightPosition());
                 auto lines = RecalcLines(m_frustum, GetLightPosition());
                 auto points = RecalcPoints(lines);
-                m_renderable = GPU::AsRenderable(&lines[0], lines.size(), 100.0f, GetVideoDriver());
-                m_renderable2 = GPU::AsRenderable(m_frustum, GetVideoDriver());
-                m_renderable3 = GPU::AsRenderable(space, GetVideoDriver());
-                m_renderable4 = GPU::AsRenderable(&points[0], points.size(), GetVideoDriver());
+                m_renderable = Gpu::AsRenderable(&lines[0], lines.size(), 100.0f, GetVideoDriver());
+                m_renderable2 = Gpu::AsRenderable(m_frustum, GetVideoDriver());
+                m_renderable3 = Gpu::AsRenderable(space, GetVideoDriver());
+                m_renderable4 = Gpu::AsRenderable(&points[0], points.size(), GetVideoDriver());
             }
         }
 
@@ -467,12 +467,12 @@ namespace Test13
         virtual void OnResize(System::WindowResizeEvent *event) override
         {
             m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, event->width, event->height, 1, 10.0);
-            m_frustum.Update();
+            m_frustum = Math::FrustumCreateFromProjectionMatrix(m_projection);
 
             if (m_renderable2)
             {
                 delete m_renderable2;
-                m_renderable2 = GPU::AsRenderable(m_frustum, GetVideoDriver());
+                m_renderable2 = Gpu::AsRenderable(m_frustum, GetVideoDriver());
             }
         }
 
@@ -499,7 +499,7 @@ namespace Test13
             space2.Add(Math::Plane(0, 0, 1, 5));
             space2.Add(Math::Plane(0, 0, -1, 5));
 
-            Math::ClipSpace space = Math::BuildClipSpaceFromPoint(m_frustum, GetLightPosition());
+            Math::ClipSpace space = Math::FrustumBuildClipSpaceFromPoint(m_frustum, GetLightPosition());
             auto lines = RecalcLines(m_frustum, GetLightPosition());
 //            std::vector<Math::Line3D> lll;
 //            static int kk = 0;
@@ -541,14 +541,14 @@ namespace Test13
 			auto points = RecalcPoints(lines);
 
 			points = FilterPoints(points, space);
-			m_renderable = GPU::AsRenderable(&lines[0], lines.size(), 100.0f, GetVideoDriver());
-            m_renderable3 = GPU::AsRenderable(space, GetVideoDriver());
+			m_renderable = Gpu::AsRenderable(&lines[0], lines.size(), 100.0f, GetVideoDriver());
+            m_renderable3 = Gpu::AsRenderable(space, GetVideoDriver());
             if (!points.empty())
-                m_renderable4 = GPU::AsRenderable(&points[0], points.size(), GetVideoDriver());
+                m_renderable4 = Gpu::AsRenderable(&points[0], points.size(), GetVideoDriver());
         }
 
 
-        virtual void OnRender(GPU::Frame* frame) override
+        virtual void OnRender(Gpu::Frame* frame) override
         {
             frame->SetClearColor(Math::vec4(0.5, 0.5, 0.5, 1));
             frame->EnableDiffuseShading(true);
@@ -558,7 +558,7 @@ namespace Test13
             frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(-50, -50, -50), Math::vec3(0, 0, 0), Math::vec3(0, 1, 0)));
             frame->EnableDepthTest(false);
             frame->EnableBlending(true);
-            //frame->SetBlendFunc(GPU::BlendFunction::);
+            //frame->SetBlendFunc(Gpu::BlendFunction::);
             frame->PushAllState();
 
             frame->BeginRendering();

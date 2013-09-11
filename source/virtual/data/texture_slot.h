@@ -21,12 +21,12 @@ namespace Virtual
             Gpu::Texture2D* GetTexture();
 
             /**
-             * @brief Drop - removes data from GPU
+             * @brief Drop - removes data from Gpu
              */
             void Drop();
 
             /**
-             * @brief Update - sends data to GPU throug the specified driver
+             * @brief Update - sends data to Gpu throug the specified driver
              */
             void Update(Gpu::VideoDriver* driver);
 

@@ -22,7 +22,7 @@ namespace Gpu
 			{
 				Clear();
 				cl_int res = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &m_device, nullptr);
-				CHECK_CL_ERROR(res, L"Can't get GPU device id");
+				CHECK_CL_ERROR(res, L"Can't get Gpu device id");
 				return true;
 			}
 

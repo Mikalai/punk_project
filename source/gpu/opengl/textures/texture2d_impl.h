@@ -4,7 +4,7 @@
 //#include "../../../images/module.h"
 //#include "../gl/module.h"
 
-//namespace GPU
+//namespace Gpu
 //{
 //	namespace OpenGL
 //	{

@@ -2,7 +2,7 @@
 
 #include "rc_terrain.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

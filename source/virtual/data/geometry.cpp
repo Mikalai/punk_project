@@ -48,12 +48,12 @@ namespace Virtual
 //		return m_cache.m_gpu_buffer != nullptr;
 //	}
 
-//	void Geometry::SetGPUBufferCache(GPU::Renderable* value)
+//	void Geometry::SetGPUBufferCache(Gpu::Renderable* value)
 //	{
 //		m_cache.m_gpu_buffer = value;
 //	}
 
-//	GPU::Renderable* Geometry::GetGPUBufferCache()
+//	Gpu::Renderable* Geometry::GetGPUBufferCache()
 //	{
 //		return m_cache.m_gpu_buffer;
 //	}

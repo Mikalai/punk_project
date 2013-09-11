@@ -8,7 +8,7 @@
 //#include "../../common/config.h"
 //#include "gl_render_context.h"
 
-//namespace GPU
+//namespace Gpu
 //{
 
 //	namespace OpenGL

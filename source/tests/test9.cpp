@@ -10,8 +10,8 @@ namespace Test9
 		float m_x;
 		float m_y;
 		float m_z;
-		std::unique_ptr<GPU::Renderable> m_renderable;
-		std::unique_ptr<GPU::Texture2D> m_texture;
+		std::unique_ptr<Gpu::Renderable> m_renderable;
+		std::unique_ptr<Gpu::Texture2D> m_texture;
 		static const int c_num_particles = 50;
 		bool m_twinkle;
 		bool m_t;
@@ -38,10 +38,16 @@ namespace Test9
 			m_twinkle = false;
 		}
 
+        virtual void OnDestroy() override
+        {
+            m_renderable.reset(nullptr);
+            m_texture.reset(nullptr);
+        }
+
 		virtual void OnInit(const Punk::Config&) override
 		{
-			GPU::RenderableBuilder b(GetVideoDriver());
-			b.Begin(GPU::PrimitiveType::QUADS);
+			Gpu::RenderableBuilder b(GetVideoDriver());
+			b.Begin(Gpu::PrimitiveType::QUADS);
 			{
 				// Front Face
 				b.TexCoord2f(0.0f, 0.0f); b.Vertex3f(-1.0f,-1.0f, 0.0f);
@@ -87,21 +93,21 @@ namespace Test9
 		}
 
 
-		virtual void OnRender(GPU::Frame* frame) override
+		virtual void OnRender(Gpu::Frame* frame) override
 		{
-            frame->SetClearColor(0, 0, 0, 0.5f);
-			frame->Clear(true, true, true);
+            frame->SetClearColor(0, 0, 0, 0.5f);			
 			frame->EnableTexturing(true);
 			frame->EnableDiffuseShading(true);
 			frame->EnableBlending(true);
             frame->EnableDepthTest(false);
             frame->SetBlendColor(1,1,1,1);
-			frame->SetBlendFunc(GPU::BlendFunction::SourceAlpha, GPU::BlendFunction::One);
-			frame->SetDiffuseMap0(m_texture.get());
+			frame->SetBlendFunc(Gpu::BlendFunction::SourceAlpha, Gpu::BlendFunction::One);
+            frame->SetDiffuseMap(0, m_texture.get(), 0);
             float width = GetWindow()->GetWidth();
             float height = GetWindow()->GetHeight();
             frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
 			frame->BeginRendering();
+            frame->Clear(true, true, true);
 			for (int i = 0; i < c_num_particles; ++i)
 			{
 				float DegToRad = Math::PI / 180.0f;

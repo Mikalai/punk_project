@@ -25,144 +25,148 @@
 #include "test0.h"
 #include "test21.h"
 
-static const int TestNumber = 21;
-
 int main()
 {
     std::cout << "Size of wchar_t: " << sizeof(wchar_t) << std::endl;
     std::cout << "Size of short: " << sizeof(short) << std::endl;
 
-    if (TestNumber == 0)
+    int TestNumber = 14;
+    int max_test = 21;
+    while (TestNumber < max_test)
     {
-        Test0::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        ++TestNumber;
+        if (TestNumber == 0)
+        {
+            Test0::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 1)
+        {
+            Test1::Test test1;
+            test1.Run();
+            std::cout << "Result " << (test1.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 2)
+        {
+            Test2::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 3)
+        {
+            Test3::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 4)
+        {
+            Test4::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 5)
+        {
+            Test5::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 6)
+        {
+            Test6::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 7)
+        {
+            Test7::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 8)
+        {
+            Test8::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 9)
+        {
+            Test9::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 10)
+        {
+            Test10::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 11)
+        {
+            Test11::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 12)
+        {
+            Test12::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 13)
+        {
+            Test13::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 14)
+        {
+            Test14::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 15)
+        {
+            Test15::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 16)
+        {
+            Test16::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 17)
+        {
+            Test17::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 18)
+        {
+            Test18::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 19)
+        {
+            //        Test19::Test test;
+            //        test.Run();
+            //        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 20)
+        {
+            Test20::Test test;
+            test.Run();
+            std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
+        else if (TestNumber == 21)
+        {
+            //        Test21::Test test;
+            //        test.Run();
+            //        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
+        }
     }
-    else if (TestNumber == 1)
-	{
-        Test1::Test test1;
-		test1.Run();
-		std::cout << "Result " << (test1.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 2)
-	{
-		Test2::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 3)
-	{
-		Test3::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}	
-	else if (TestNumber == 4)
-	{
-		Test4::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 5)
-	{
-		Test5::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 6)
-	{
-		Test6::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 7)
-	{
-		Test7::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 8)
-	{
-		Test8::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 9)
-	{
-		Test9::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 10)
-	{
-		Test10::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 11)
-	{
-		Test11::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-	else if (TestNumber == 12)
-	{
-		Test12::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-    else if (TestNumber == 13)
-    {
-        Test13::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-    }
-	else if (TestNumber == 14)
-	{
-		Test14::Test test;
-		test.Run();
-		std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-	}
-    else if (TestNumber == 15)
-    {
-        Test15::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-    }
-    else if (TestNumber == 16)
-    {
-        Test16::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-    }
-    else if (TestNumber == 17)
-    {
-        Test17::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-    }
-    else if (TestNumber == 18)
-    {
-        Test18::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-    }
-    else if (TestNumber == 19)
-    {
-        Test19::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-    }
-    else if (TestNumber == 20)
-    {
-        Test20::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-    }
-    else if (TestNumber == 21)
-    {
-        Test21::Test test;
-        test.Run();
-        std::cout << "Result " << (test.Succeed()? "Pass" : "Failed") << std::endl;
-    }
-	return 0;
+    return 0;
 }

@@ -2,7 +2,7 @@
 
 //#include "rc_bump_mapping.h"
 
-//namespace GPU
+//namespace Gpu
 //{
 //	namespace OpenGL
 //	{

@@ -7,14 +7,14 @@ namespace Gpu
 {
     namespace OpenGL
     {
-        VsBumpMapping::VsBumpMapping()
+        VsBumpMappingTextureDiffuse::VsBumpMappingTextureDiffuse()
             : Shader(ShaderType::Vertex)
         {
             CookFromFile(System::Environment::Instance()->GetShaderFolder()
                          + GetShaderFile(ShaderCollection::VertexBumpMapping));
         }
 
-        void VsBumpMapping::InitUniforms()
+        void VsBumpMappingTextureDiffuse::InitUniforms()
         {
             uWorld = m_rc->GetUniformLocation("uWorld");
             uView = m_rc->GetUniformLocation("uView");
@@ -24,7 +24,7 @@ namespace Gpu
             uTextureMatrix = m_rc->GetUniformLocation("uTextureMatrix");
         }
 
-        void VsBumpMapping::BindParameters(const CoreState& params)
+        void VsBumpMappingTextureDiffuse::BindParameters(const CoreState& params)
         {
             const Math::mat3 normal_matrix = (params.view_state->m_view * params.batch_state->m_world).RotationPart().Transposed().Inversed();
             m_rc->SetUniformMatrix4f(uWorld, params.batch_state->m_world);
@@ -35,7 +35,7 @@ namespace Gpu
             m_rc->SetUniformMatrix4f(uTextureMatrix, params.batch_state->m_texture_matrix);
         }
 
-        int64_t VsBumpMapping::GetRequiredAttributesSet() const
+        int64_t VsBumpMappingTextureDiffuse::GetRequiredAttributesSet() const
         {
             return VertexComponent::Position::Value()
                     | VertexComponent::Normal::Value()

@@ -10,7 +10,7 @@ namespace Test7
 		float m_x;
 		float m_y;
 		float m_z;
-		std::unique_ptr<GPU::Renderable> m_renderable;
+		std::unique_ptr<Gpu::Renderable> m_renderable;
 	public:
 		TestApp()
 		{
@@ -19,10 +19,15 @@ namespace Test7
 			m_z = 0;
 		}
 
+        virtual void OnDestroy() override
+        {
+            m_renderable.reset(0);
+        }
+
 		virtual void OnInit(const Punk::Config&) override
 		{
-			GPU::RenderableBuilder b(GetVideoDriver());
-			b.Begin(GPU::PrimitiveType::QUADS);
+			Gpu::RenderableBuilder b(GetVideoDriver());
+			b.Begin(Gpu::PrimitiveType::QUADS);
 			{
 				// Front Face
 				b.Normal3f( 0.0f, 0.0f, 1.0f); b.TexCoord2f(0.0f, 0.0f); b.Vertex3f(-1.0f, -1.0f,  1.0f);  // Point 1 (Front)
@@ -61,7 +66,7 @@ namespace Test7
 
 		}
 
-		virtual void OnRender(GPU::Frame* frame) override
+		virtual void OnRender(Gpu::Frame* frame) override
 		{
 			frame->SetClearColor(Math::vec4(0.7, .7, .7, 1));
 			frame->EnableDiffuseShading(true);

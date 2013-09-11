@@ -8,7 +8,7 @@ namespace Gpu
 		LightModelDesc(LightModel::PerFragmentDiffuse, L"Per-pixel diffuse"),
 		LightModelDesc(LightModel::PerVertexDiffuseSpecular, L"Per-vertex diffuse+specular"),
 		LightModelDesc(LightModel::PerFragmentlDiffuseSpecular, L"Per-pixel diffuse+specular"),
-		LightModelDesc(LightModel::BumpMapping, L"Bump mapping"),
+        LightModelDesc(LightModel::BumpMappingDiffuse, L"Bump mapping diffuse"),
 	};
 
 	const System::string AsString(const LightModel& v)

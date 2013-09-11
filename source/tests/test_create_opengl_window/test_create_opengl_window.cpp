@@ -5,7 +5,7 @@ namespace Test1
 class MyApp : public Punk::Application
 {
 public:
-    virtual void OnRender(GPU::Frame*) override
+    virtual void OnRender(Gpu::Frame*) override
     {
 
     }

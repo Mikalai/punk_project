@@ -7,7 +7,7 @@
 //#include "shaders/vertex/vs_skinning.h"
 //#include "shaders/fragment/fs_skinning.h"
 
-//namespace GPU
+//namespace Gpu
 //{
 //	namespace OpenGL
 //	{

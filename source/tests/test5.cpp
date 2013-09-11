@@ -14,7 +14,7 @@ namespace Test5
 			m_quad = 0;
 		}
 
-		virtual void OnRender(GPU::Frame* frame) override
+		virtual void OnRender(Gpu::Frame* frame) override
 		{
 			frame->SetClearColor(Math::vec4(0.7, .7, .7, 1));
 			frame->EnableDiffuseShading(true);
@@ -30,8 +30,8 @@ namespace Test5
             frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
 
 			frame->SetDiffuseColor(Math::vec4(1,1,1,1));
-			GPU::RenderableBuilder builder(GetVideoDriver());
-			builder.Begin(GPU::PrimitiveType::TRIANGLES);
+			Gpu::RenderableBuilder builder(GetVideoDriver());
+			builder.Begin(Gpu::PrimitiveType::TRIANGLES);
 			{
 				builder.Color3f(1.0f,0.0f,0.0f);          // Red
 				builder.Vertex3f( 0.0f, 1.0f, 0.0f);          // Top Of Triangle (Front)
@@ -63,13 +63,13 @@ namespace Test5
 			}
 			builder.End();
 
-			std::unique_ptr<GPU::Renderable> r(builder.ToRenderable());
+			std::unique_ptr<Gpu::Renderable> r(builder.ToRenderable());
 			frame->Render(r.get());
 
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(1.5, 0, -6));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_quad));
-			GPU::RenderableBuilder b(GetVideoDriver());
-			b.Begin(GPU::PrimitiveType::QUADS);
+			Gpu::RenderableBuilder b(GetVideoDriver());
+			b.Begin(Gpu::PrimitiveType::QUADS);
 			{
 				b.Color3f(0.0f,1.0f,0.0f);          // Set The Color To Green
 				b.Vertex3f( 1.0f, 1.0f,-1.0f);          // Top Right Of The Quad (Top)
@@ -127,7 +127,7 @@ namespace Test5
 			}
 			b.End();
 
-			std::unique_ptr<GPU::Renderable> r2(b.ToRenderable());
+			std::unique_ptr<Gpu::Renderable> r2(b.ToRenderable());
 			frame->Render(r2.get());
 
 			frame->EndRendering();

@@ -7,7 +7,7 @@
 //#include "shaders/vertex/vs_bump.h"
 //#include "shaders/fragment/fs_bump.h"
 
-//namespace GPU
+//namespace Gpu
 //{
 //	namespace OpenGL
 //	{

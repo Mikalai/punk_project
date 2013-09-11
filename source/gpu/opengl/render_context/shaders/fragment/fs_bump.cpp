@@ -7,14 +7,14 @@ namespace Gpu
 {
 	namespace OpenGL
 	{
-        FsBumpMapping::FsBumpMapping()
+        FsBumpMappingTextureDiffuse::FsBumpMappingTextureDiffuse()
             : Shader(ShaderType::Fragment)
         {
             CookFromFile(System::Environment::Instance()->GetShaderFolder()
                          + GetShaderFile(ShaderCollection::FragmentBumpMapping));
         }
 
-        void FsBumpMapping::InitUniforms()
+        void FsBumpMappingTextureDiffuse::InitUniforms()
         {
             uAmbient = m_rc->GetUniformLocation("uAmbient");
             uSpecular = m_rc->GetUniformLocation("uSpecular");
@@ -24,7 +24,7 @@ namespace Gpu
             uNormalMap = m_rc->GetUniformLocation("uNormalMap");
         }
 
-        void FsBumpMapping::BindParameters(const CoreState& params)
+        void FsBumpMappingTextureDiffuse::BindParameters(const CoreState& params)
         {
             m_rc->SetUniformVector4f(uDiffuse, params.batch_state->m_material.m_diffuse_color);
             m_rc->SetUniformVector4f(uAmbient, params.batch_state->m_material.m_ambient_color);
@@ -34,7 +34,7 @@ namespace Gpu
             m_rc->SetUniformInt(uNormalMap, params.texture_state->m_normal_map_slot);
         }
 
-        int64_t FsBumpMapping::GetRequiredAttributesSet() const
+        int64_t FsBumpMappingTextureDiffuse::GetRequiredAttributesSet() const
         {
             return 0;
         }

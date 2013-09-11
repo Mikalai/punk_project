@@ -2,7 +2,7 @@
 
 #include "rc_gui.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{

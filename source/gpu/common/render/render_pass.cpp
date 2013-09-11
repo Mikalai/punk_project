@@ -215,6 +215,16 @@ namespace Gpu
         return nullptr;
     }
 
+    AbstractRenderPolicy* RenderLightingWithShadowsCascadeTextured(CoreState* state)
+    {
+        return nullptr;
+    }
+
+    AbstractRenderPolicy* RenderLightingWithShadowsCascadeSolid(CoreState* state)
+    {
+        return nullptr;
+    }
+
     AbstractRenderPolicy* RenderLightingWithShadows(CoreState* state)
     {
         if (state->render_state->m_shadow_model == ShadowModel::ShadowMapSimple)

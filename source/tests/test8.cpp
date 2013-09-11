@@ -10,30 +10,30 @@ namespace Test8
 		float m_x;
 		float m_y;
 		float m_z;
-		std::unique_ptr<GPU::Renderable> m_renderable;
+		std::unique_ptr<Gpu::Renderable> m_renderable;
 		static const unsigned max_model = 2;
 		static const unsigned max_atten = 3;
-		GPU::LightModel m_model[2];
+		Gpu::LightModel m_model[2];
 		unsigned m_cur_model;
-		GPU::LightAttenuation m_attenuation[3];
+		Gpu::LightAttenuation m_attenuation[3];
 		unsigned m_cur_attent;
 		float m_specular;
 		bool m_use_texture;
 		bool m_use_transparency;
-		std::unique_ptr<GPU::Texture2D> m_opaque_texture;
-		std::unique_ptr<GPU::Texture2D> m_transparent_texture;
-		GPU::Texture2D* m_texture;
+		std::unique_ptr<Gpu::Texture2D> m_opaque_texture;
+		std::unique_ptr<Gpu::Texture2D> m_transparent_texture;
+		Gpu::Texture2D* m_texture;
 	public:
 		TestApp()
 		{
 			m_cur_attent = 0;
 			m_cur_model = 1;
-			m_model[0] = GPU::LightModel::PerVertexDiffuse;
-			m_model[1] = GPU::LightModel::PerFragmentDiffuse;
+			m_model[0] = Gpu::LightModel::PerVertexDiffuse;
+			m_model[1] = Gpu::LightModel::PerFragmentDiffuse;
 
-			m_attenuation[0] = GPU::LightAttenuation::Constant;
-			m_attenuation[1] = GPU::LightAttenuation::Linear;
-			m_attenuation[2] = GPU::LightAttenuation::Quadratic;
+			m_attenuation[0] = Gpu::LightAttenuation::Constant;
+			m_attenuation[1] = Gpu::LightAttenuation::Linear;
+			m_attenuation[2] = Gpu::LightAttenuation::Quadratic;
 
 			m_x = 0;
 			m_y = 0;
@@ -45,10 +45,17 @@ namespace Test8
 			m_specular = 32;
 		}
 
+        virtual void OnDestroy() override
+        {
+            m_renderable.reset(nullptr);
+            m_opaque_texture.reset(nullptr);
+            m_transparent_texture.reset(nullptr);
+        }
+
 		virtual void OnInit(const Punk::Config&) override
 		{
-			GPU::RenderableBuilder b(GetVideoDriver());
-			b.Begin(GPU::PrimitiveType::QUADS);
+			Gpu::RenderableBuilder b(GetVideoDriver());
+			b.Begin(Gpu::PrimitiveType::QUADS);
 			{
 				// Front Face
 				b.Normal3f( 0.0f, 0.0f, 1.0f); b.TexCoord2f(0.0f, 0.0f); b.Vertex3f(-1.0f, -1.0f,  1.0f);  // Point 1 (Front)
@@ -128,7 +135,7 @@ namespace Test8
 		}
 
 
-		virtual void OnRender(GPU::Frame* frame) override
+		virtual void OnRender(Gpu::Frame* frame) override
 		{
 			if (m_use_transparency)
 			{
@@ -147,7 +154,7 @@ namespace Test8
 			frame->SetClearColor(Math::vec4(0, 0, 0, 1));
 			frame->EnableDiffuseShading(true);
 			frame->EnableTexturing(m_use_texture);
-			frame->SetDiffuseMap0(m_texture);
+            frame->SetDiffuseMap(0, m_texture, 0);
 
 			frame->SetTextureMatrix(Math::mat4::CreateIdentity());
             float width = GetWindow()->GetWidth();
@@ -170,7 +177,7 @@ namespace Test8
 			frame->Light(0).SetLightAttenuation(m_attenuation[m_cur_attent]);
 			frame->Light(0).SetLightLinearAttenuation(0.1);
 			frame->Light(0).SetLightQuadricAttenuation(0.05);
-			frame->Light(0).SetType(GPU::LightType::Spot);
+			frame->Light(0).SetType(Gpu::LightType::Spot);
 			frame->Light(0).SetSpotExponent(m_specular);
 
 			frame->SetLightModel(m_model[m_cur_model]);
@@ -196,7 +203,7 @@ namespace Test8
 			m_y += 0.0002f;
 			m_z += 0.0004f;
 
-           // auto fan = new GPU::TriangleFan<GPU::Vertex<GPU::VertexComponent::Position>>(GetVideoDriver());
+           // auto fan = new Gpu::TriangleFan<Gpu::Vertex<Gpu::VertexComponent::Position>>(GetVideoDriver());
            // fan->Bind(0);
 		}
 	};

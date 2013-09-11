@@ -24,7 +24,7 @@ namespace Render
 
 	private:
 		Math::vec4 m_selection_color_delta;
-		//System::StateManager<GPU::CoreState> m_states;
+		//System::StateManager<Gpu::CoreState> m_states;
 
 		//	next pointers should be destroyed in destructor		
         Gpu::TextureContext* m_tc;

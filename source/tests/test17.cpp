@@ -9,9 +9,9 @@ namespace Test17
         float m_z;
         static const unsigned max_model = 3;
         static const unsigned max_atten = 3;
-        GPU::LightModel m_model[3];
+        Gpu::LightModel m_model[3];
         unsigned m_cur_model;
-        GPU::LightAttenuation m_attenuation[3];
+        Gpu::LightAttenuation m_attenuation[3];
         unsigned m_cur_attent;
         float m_specular;
         bool m_use_texture;
@@ -24,13 +24,13 @@ namespace Test17
         {
             m_cur_attent = 0;
             m_cur_model = 2;
-            m_model[0] = GPU::LightModel::PerVertexDiffuse;
-            m_model[1] = GPU::LightModel::PerFragmentDiffuse;
-            m_model[2] = GPU::LightModel::BumpMapping;
+            m_model[0] = Gpu::LightModel::PerVertexDiffuse;
+            m_model[1] = Gpu::LightModel::PerFragmentDiffuse;
+            m_model[2] = Gpu::LightModel::BumpMappingDiffuse;
 
-            m_attenuation[0] = GPU::LightAttenuation::Constant;
-            m_attenuation[1] = GPU::LightAttenuation::Linear;
-            m_attenuation[2] = GPU::LightAttenuation::Quadratic;
+            m_attenuation[0] = Gpu::LightAttenuation::Constant;
+            m_attenuation[1] = Gpu::LightAttenuation::Linear;
+            m_attenuation[2] = Gpu::LightAttenuation::Quadratic;
 
             m_x = 0;
             m_y = 0;
@@ -94,7 +94,7 @@ namespace Test17
         }
 
 
-        virtual void OnRender(GPU::Frame* frame) override
+        virtual void OnRender(Gpu::Frame* frame) override
         {
             if (!m_geometry->GetGpuCache().IsOnGpu())
                 m_geometry->GetGpuCache().Update(GetVideoDriver());
@@ -106,9 +106,9 @@ namespace Test17
                     slot->GetGpuCache().Update(GetVideoDriver());
 
                 if (m_material->GetTextureSlot(i)->IsDiffuseMapSlot())
-                    frame->SetDiffuseMap0(m_material->GetTextureSlot(i)->GetGpuCache().GetTexture());
+                    frame->SetDiffuseMap(0, m_material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 0);
                 else if (m_material->GetTextureSlot(i)->IsNormalMapSlot())
-                    frame->SetNormalMap(m_material->GetTextureSlot(i)->GetGpuCache().GetTexture());
+                    frame->SetNormalMap(m_material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 1);
             }
 
             frame->SetClearColor(Math::vec4(0, 0, 0, 1));
@@ -145,7 +145,7 @@ namespace Test17
             frame->Light(0).SetLightAttenuation(m_attenuation[m_cur_attent]);
             frame->Light(0).SetLightLinearAttenuation(0.1);
             frame->Light(0).SetLightQuadricAttenuation(0.05);
-            frame->Light(0).SetType(GPU::LightType::Spot);
+            frame->Light(0).SetType(Gpu::LightType::Spot);
             frame->Light(0).SetSpotExponent(m_specular);
 
             frame->SetLightModel(m_model[m_cur_model]);

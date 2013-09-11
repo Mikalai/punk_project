@@ -8,12 +8,12 @@ public:
     /**
     *   Runs current test
     */
-    virtual void Run() override;
+    virtual void Run() = 0;
 
     /**
     *   \return true if test passed, false otherwise
     */
-    virtual bool Succeed() override;
+    virtual bool Succeed() = 0;
 };
 
 #endif // _H_PUNK_TEST_INTERFACE

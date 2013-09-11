@@ -7,8 +7,8 @@ namespace Test6
 		float m_x;
 		float m_y;
 		float m_z;
-		std::unique_ptr<GPU::Texture2D> m_texture;
-		std::unique_ptr<GPU::Renderable> m_renderable;
+		std::unique_ptr<Gpu::Texture2D> m_texture;
+		std::unique_ptr<Gpu::Renderable> m_renderable;
 	public:
 		TestApp()
 		{
@@ -17,10 +17,19 @@ namespace Test6
 			m_z = 0;
 		}
 
+        ~TestApp()
+        {}
+
+        virtual void OnDestroy() override
+        {
+            m_texture.reset(0);
+            m_renderable.reset(0);
+        }
+
 		virtual void OnInit(const Punk::Config&) override
 		{		
-			GPU::RenderableBuilder b(GetVideoDriver());
-			b.Begin(GPU::PrimitiveType::QUADS);
+			Gpu::RenderableBuilder b(GetVideoDriver());
+			b.Begin(Gpu::PrimitiveType::QUADS);
 			{
 				// Front Face
 				b.TexCoord2f(0.0f, 0.0f); b.Vertex3f(-1.0f, -1.0f,  1.0f);  // Bottom Left Of The Texture and Quad
@@ -60,7 +69,7 @@ namespace Test6
 			m_texture.reset(GetVideoDriver()->CreateTexture2D(System::Environment::Instance()->GetTextureFolder() + L"pahonia.png", true));
 		}
 
-		virtual void OnRender(GPU::Frame* frame) override
+		virtual void OnRender(Gpu::Frame* frame) override
 		{
 			frame->SetClearColor(Math::vec4(0.7, .7, .7, 1));
 			frame->EnableDiffuseShading(true);
@@ -70,7 +79,7 @@ namespace Test6
 
 			frame->BeginRendering();
 			frame->Clear(true, true, true);
-			frame->SetDiffuseMap0(m_texture.get());
+            frame->SetDiffuseMap(0, m_texture.get(), 0);
             float width = GetWindow()->GetWidth();
             float height = GetWindow()->GetHeight();
             frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));

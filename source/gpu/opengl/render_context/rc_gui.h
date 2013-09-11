@@ -7,7 +7,7 @@
 #include "shaders/vertex/vs_gui.h"
 #include "shaders/fragment/fs_gui.h"
 
-namespace GPU
+namespace Gpu
 {
 	namespace OpenGL
 	{
