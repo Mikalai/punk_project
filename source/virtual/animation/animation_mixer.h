@@ -16,8 +16,8 @@ namespace Virtual
         AnimationMixer& operator = (const AnimationMixer&) = delete;
 		virtual ~AnimationMixer();
 
-        virtual void SetTrackTime(float time) {}
-        virtual float GetTrackTime() const {}
+        virtual void SetTrackTime(float /*time*/) {}
+        virtual float GetTrackTime() const {return 0;}
         virtual void SetLooping(size_t, bool) {}
 
         PUNK_OBJECT(AnimationMixer)

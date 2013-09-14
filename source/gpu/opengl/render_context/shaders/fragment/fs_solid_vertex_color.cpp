@@ -18,7 +18,7 @@ namespace Gpu
 		{
 		}
 
-		void FsSolidVertexColor::BindParameters(const CoreState& params)
+        void FsSolidVertexColor::BindParameters(const CoreState&)
 		{
 		}
 

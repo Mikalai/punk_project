@@ -13,7 +13,7 @@ namespace Punk
 		Gpu::Config gpu_config;
 		Render::Config render_config;
 		Audio::Config audio_config;
-		Physics::Config physics_config;
+		Physics::Config physics_config;        
 	};
 }
 

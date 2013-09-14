@@ -7,12 +7,12 @@ uniform mat4 uProjViewWorld;
 layout(location = 0) in vec4 rm_Vertex;
 layout(location = 1) in vec4 rm_Normal;
 
-out vec3 normal;
-out vec3 position;
+out vec3 vViewVertexNormal;
+out vec3 vViewVertexPosition;
 
 void main()
 {	
-	gl_Position = uProjViewWorld * vec4(rm_Vertex.xyz, 1.0);
-	position = (uViewWorld * vec4(rm_Vertex.xyz, 1.0)).xyz;
-	normal = normalize(uNormalMatrix * rm_Normal.xyz);	
+    gl_Position = uProjViewWorld * vec4(rm_Vertex.xyz, 1.0);
+    vViewVertexPosition = (uViewWorld * vec4(rm_Vertex.xyz, 1.0)).xyz;
+    vViewVertexNormal = normalize(uNormalMatrix * rm_Normal.xyz);
 }

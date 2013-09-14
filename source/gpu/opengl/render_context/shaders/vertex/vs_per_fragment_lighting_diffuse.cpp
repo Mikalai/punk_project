@@ -13,7 +13,7 @@ namespace Gpu
             : Shader(ShaderType::Vertex)
         {
             CookFromFile(System::Environment::Instance()->GetShaderFolder()
-                         + GetShaderFile(ShaderCollection::VertexLightPerFragmentTextureDiffuse));
+                         + GetShaderFile(ShaderCollection::VertexLightPerFragmentDiffuse));
         }
 
         void VsPerFragmentLightingDiffuse::InitUniforms()

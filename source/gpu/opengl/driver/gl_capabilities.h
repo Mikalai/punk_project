@@ -12,6 +12,7 @@ namespace Gpu
 
         bool IsMultisamplingSupported(VideoDriverImpl* driver);
         bool IsCoverageSamplingSupported(VideoDriverImpl* driver);
+        bool IsShaderIncludeSupported(VideoDriverImpl* driver);
         int GetMaxMultisampleDepth(VideoDriverImpl* driver);
         int GetCoverageSampleConfigsCount(VideoDriverImpl* driver);
         void GetCoverageConfigs(std::vector<int>& value, VideoDriverImpl* driver);

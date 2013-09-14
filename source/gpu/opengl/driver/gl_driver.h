@@ -19,6 +19,8 @@ namespace Gpu
 
     namespace OpenGL
     {
+        class VirtualFileSystem;
+
         class PUNK_ENGINE_LOCAL VideoDriverImpl : public VideoDriver
         {
         public:
@@ -60,8 +62,10 @@ namespace Gpu
             void ShutdownLinuxDriver();
 #endif
 
-            OpenGL::VideoMemory* GetVideoMemory();
-            const OpenGL::VideoMemory* GetVideoMemory() const;
+            VideoMemory* GetVideoMemory();
+            const VideoMemory* GetVideoMemory() const;
+            VirtualFileSystem* GetVirtualFileSystem();
+            const VirtualFileSystem* GetVirtualFileSystem() const;
 
             Display* GetDisplay();
 
@@ -92,6 +96,7 @@ namespace Gpu
             std::vector<FrameBufferConfig> m_fb_config;
             std::vector<OpenGL::OpenGLFrameBuffer*> m_frame_buffer;
             VideoDriverCaps m_caps;
+            VirtualFileSystem* m_vfs;
 
         private:
             void Init();

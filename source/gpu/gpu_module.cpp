@@ -3,21 +3,19 @@
 
 namespace Gpu
 {
-	bool GPU_INIT(const Config& data)
+    VideoDriver* Init(const VideoDriverDesc& data)
 	{
-		bool flag = true;
-		flag &= GPU_COMMON_INIT(data);
-		flag &= OpenGL::GPU_OPENGL_INIT(data);
-		return flag;
+        OpenGL::VideoDriverImpl* driver = new OpenGL::VideoDriverImpl(data);
+        OpenGL::InitOpenGL(driver);
+        return driver;
 	}
 
-	bool GPU_DESTROY()
+    void Destroy(VideoDriver *driver)
 	{		
 		Frame::ClearPool();
 		TextureContext::ClearPool();
 		CoreState::ClearPool();
-		OpenGL::GPU_OPENGL_DESTROY();
-		return true;
+        OpenGL::DestroyOpenGL();
+        delete driver;
 	}
-
 }

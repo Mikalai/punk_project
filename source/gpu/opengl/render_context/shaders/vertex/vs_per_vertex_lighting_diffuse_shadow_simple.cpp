@@ -1,6 +1,8 @@
 #include "vs_per_vertex_lighting_diffuse_shadow_simple.h"
 #include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
+#include "../../../../../system/folder.h"
+#include "../../../../../system/binary_file.h"
 #include "../../rc_dynamic.h"
 
 
@@ -11,8 +13,10 @@ namespace Gpu
         VsPerVertexLightingDiffuseShadowSimple::VsPerVertexLightingDiffuseShadowSimple()
             : Shader(ShaderType::Vertex)
         {
-            CookFromFile(System::Environment::Instance()->GetShaderFolder()
-                         + GetShaderFile(ShaderCollection::VsPerVertexDiffuseLightingShadowSimple));
+            System::Folder f;
+            f.Open(System::Environment::Instance()->GetShaderFolder());
+            const char* names[] = {"/light.glsl"};
+            CookFromFileWithHeaders(GetShaderFile(ShaderCollection::VsPerVertexDiffuseLightingShadowSimple), 1, names);
         }
 
         void VsPerVertexLightingDiffuseShadowSimple::InitUniforms()

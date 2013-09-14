@@ -9,8 +9,8 @@
 
 namespace Gpu
 {
-    extern bool PUNK_ENGINE_API GPU_INIT(const Config& data);
-    extern bool PUNK_ENGINE_API GPU_DESTROY();
+    extern VideoDriver* Init(const VideoDriverDesc& data);
+    extern void Destroy(VideoDriver* driver);
 }
 
 #endif	//	_H_GPU_H

@@ -41,6 +41,11 @@ namespace Gpu
             return IsSupported("GL_NV_framebuffer_multisample_coverage", driver);
         }
 
+        bool IsShaderIncludeSupported(VideoDriverImpl *driver)
+        {
+            return IsSupported("GL_ARB_shading_language_include", driver);
+        }
+
         int GetMaxMultisampleDepth(VideoDriverImpl* driver)
         {
             if (!IsMultisamplingSupported(driver))

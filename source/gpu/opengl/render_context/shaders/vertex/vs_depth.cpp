@@ -1,4 +1,5 @@
 #include "vs_depth.h"
+#include "../../../../../system/folder.h"
 #include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
 #include "../../rc_dynamic.h"
@@ -10,8 +11,10 @@ namespace Gpu
         VsDepth::VsDepth()
             : Shader(ShaderType::Vertex)
         {
-            CookFromFile(System::Environment::Instance()->GetShaderFolder()
-                         + GetShaderFile(ShaderCollection::VertexDepth));
+            System::Folder f;
+            f.Open(System::Environment::Instance()->GetShaderFolder());
+            CookFromFile(GetShaderFile(ShaderCollection::VertexDepth));
+            f.Close();
         }
 
         void VsDepth::InitUniforms()

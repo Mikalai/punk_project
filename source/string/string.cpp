@@ -63,6 +63,15 @@ namespace System
 #endif
     }
 
+    const string string::FromUtf8(const char *buffer)
+    {
+        size_t outp_size;
+        ConvertByteArray("UTF8", "WCHAR_T", (void*)buffer, strlen(buffer), 0, &outp_size);
+        std::vector<wchar_t> outp(outp_size);
+        ConvertByteArray("UTF8", "WCHAR_T", (void*)buffer, strlen(buffer), (void*)&outp[0], &outp_size);
+        return string(&buffer[0], outp_size);
+    }
+
     string& string::Erase(int start, int len)
 	{
         erase(begin() + start, begin() + start + len);

@@ -628,7 +628,10 @@ SOURCES += ../../source/main.cpp \
     ../../source/gpu/common/render/shadow_map_render_type.cpp \
     ../../source/gpu/common/render/abstract_shadow_map_debug_visualizer.cpp \
     ../../source/gpu/common/render/cascade_shadow_map_debug_visualizer.cpp \
-    ../../source/gpu/common/render/shadow_render_common.cpp
+    ../../source/gpu/common/render/shadow_render_common.cpp \
+    ../../source/gpu/opengl/driver/gl_vfs.cpp \
+    ../../source/math/recount.cpp \
+    ../../source/math/spherical.cpp
 
 
 # Input
@@ -1139,7 +1142,10 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/render/shadow_map_render_type.h \
     ../../source/gpu/common/render/abstract_shadow_map_debug_visualizer.h \
     ../../source/gpu/common/render/cascade_shadow_map_debug_visualizer.h \
-    ../../source/gpu/common/render/shadow_render_common.h
+    ../../source/gpu/common/render/shadow_render_common.h \
+    ../../source/gpu/opengl/driver/gl_vfs.h \
+    ../../source/math/recount.h \
+    ../../source/math/spherical.h
 
 
 CONFIG += dll
@@ -1236,5 +1242,6 @@ OTHER_FILES += \
     ../../data/shaders/per_fragment_lighting_diffuse_simple_shadow.vert \
     ../../data/shaders/per_fragment_lighting_diffuse_simple_shadow.frag \
     ../../data/shaders/per_vertex_lighting_diffuse_simple_shadow.vert \
-    ../../data/shaders/per_vertex_lighting_diffuse_simple_shadow.frag
+    ../../data/shaders/per_vertex_lighting_diffuse_simple_shadow.frag \
+    ../../data/shaders/light.glsl
 

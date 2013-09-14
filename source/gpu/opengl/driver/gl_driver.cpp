@@ -941,6 +941,27 @@ namespace Gpu
             glRenderbufferStorageMultisampleCoverageNV = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC)GetGPUProcAddress("glRenderbufferStorageMultisampleCoverageNV");
             glFramebufferTextureLayer = (PFNGLFRAMEBUFFERTEXTURELAYERPROC)GetGPUProcAddress("glFramebufferTextureLayer");
             glPolygonOffset = (PFNGLPOLYGONOFFSETPROC)GetGPUProcAddress("glPolygonOffset");
+
+            // GL_ARB_shading_language_include
+            if (IsShaderIncludeSupported(this))
+            {
+                glNamedStringARB = (PFNGLNAMEDSTRINGARBPROC)GetGPUProcAddress("glNamedStringARB");
+                glDeleteNamedStringARB = (PFNGLDELETENAMEDSTRINGARBPROC)GetGPUProcAddress("glDeleteNamedStringARB");
+                glCompileShaderIncludeARB = (PFNGLCOMPILESHADERINCLUDEARBPROC)GetGPUProcAddress("glCompileShaderIncludeARB");
+                glIsNamedStringARB = (PFNGLISNAMEDSTRINGARBPROC)GetGPUProcAddress("glIsNamedStringARB");
+                glGetNamedStringARB = (PFNGLGETNAMEDSTRINGARBPROC)GetGPUProcAddress("glGetNamedStringARB");
+                glGetNamedStringivARB = (PFNGLGETNAMEDSTRINGIVARBPROC)GetGPUProcAddress("glGetNamedStringivARB");
+            }
+        }
+
+        VirtualFileSystem* VideoDriverImpl::GetVirtualFileSystem()
+        {
+            return m_vfs;
+        }
+
+        const VirtualFileSystem* VideoDriverImpl::GetVirtualFileSystem() const
+        {
+            return m_vfs;
         }
 
         size_t VideoDriverImpl::GetFrameBufferConfigCount() const

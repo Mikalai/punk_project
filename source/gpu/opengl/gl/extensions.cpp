@@ -188,5 +188,14 @@ namespace Gpu
         PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC glRenderbufferStorageMultisampleCoverageNV;
         PFNGLFRAMEBUFFERTEXTURELAYERPROC glFramebufferTextureLayer;
         PFNGLPOLYGONOFFSETPROC glPolygonOffset;
+
+        //GL_ARB_shading_language_include
+
+        PFNGLNAMEDSTRINGARBPROC glNamedStringARB;
+        PFNGLDELETENAMEDSTRINGARBPROC glDeleteNamedStringARB;
+        PFNGLCOMPILESHADERINCLUDEARBPROC glCompileShaderIncludeARB;
+        PFNGLISNAMEDSTRINGARBPROC glIsNamedStringARB;
+        PFNGLGETNAMEDSTRINGARBPROC glGetNamedStringARB;
+        PFNGLGETNAMEDSTRINGIVARBPROC glGetNamedStringivARB;
     }
 }

@@ -1,12 +1,27 @@
 #include "module.h"
+#include "../../system/binary_file.h"
+#include "../../system/folder.h"
+#include "../../system/environment.h"
 
 namespace Gpu
 {
     namespace OpenGL
     {
-        bool PUNK_ENGINE_API GPU_OPENGL_INIT(const Config& data)
+        void InitVfs(VideoDriverImpl* impl)
         {
-            (void)data;
+            auto vfs = impl->GetVirtualFileSystem();
+            {
+                System::Folder f;
+                f.Open(System::Environment::Instance()->GetShaderFolder());
+                System::Buffer buffer;
+                System::BinaryFile::Load("light.glsl", buffer); //  TODO: Do something better
+                vfs->RegisterNamedString("/light.glsl", (char*)buffer.StartPointer(), buffer.GetSize());
+            }
+        }
+
+        bool PUNK_ENGINE_API InitOpenGL(VideoDriverImpl* impl)
+        {
+            InitVfs(impl);
 
 #ifdef USE_SOLID_COLOR_RC
             {
@@ -144,7 +159,7 @@ namespace Gpu
             return true;
         }
 
-        bool PUNK_ENGINE_API GPU_OPENGL_DESTROY()
+        bool PUNK_ENGINE_API DestroyOpenGL()
         {
             for (auto it = AbstractRenderPolicy::_begin(); it != AbstractRenderPolicy::_end(); ++it)
                 safe_delete(it->second);

@@ -80,6 +80,11 @@ namespace Math
         return m;
     }
 
+    const mat4 mat4::CreateFreeCameraMatrix(const vec3& eye, const vec3& dir, const vec3& up)
+    {
+        return CreateTargetCameraMatrix(eye, eye + dir, up);
+    }
+
     const mat4 mat4::CreateTranslate(float x, float y, float z)
     {
         mat4 m;

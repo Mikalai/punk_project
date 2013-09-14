@@ -29,5 +29,7 @@
 #include "bounding_shere.h"
 #include "graph/module.h"
 #include "perspective_decoder.h"
+#include "recount.h"
+#include "spherical.h"
 
 #endif

@@ -27,8 +27,7 @@ namespace Punk
     {
         safe_delete(m_async_parser);
         OnDestroy();
-		safe_delete(m_font_builder);
-		Gpu::GPU_DESTROY();
+		safe_delete(m_font_builder);        
         Virtual::StaticGeometry::Info.DestroyAllInstances();
         Virtual::SkinGeometry::Info.DestroyAllInstances();
         Virtual::Armature::Info.DestroyAllInstances();
@@ -37,7 +36,7 @@ namespace Punk
 //		GUI::Manager::Destroy();
 		safe_delete(m_terrain_manager);
 		safe_delete(m_simulator);
-		safe_delete(m_video_driver);
+        Gpu::Destroy(m_video_driver);
 		safe_delete(m_window);
 		safe_delete(m_event_manager);
     }
@@ -61,11 +60,7 @@ namespace Punk
                 desc.event_manager = m_event_manager;
                 desc.window = m_window;
                 desc.font_builder = m_font_builder;
-                m_video_driver = new Gpu::OpenGL::VideoDriverImpl(desc);
-            }
-
-            {
-                Gpu::GPU_INIT(data.gpu_config);
+                m_video_driver = Gpu::Init(desc);
             }
 
             //		{

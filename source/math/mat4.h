@@ -769,6 +769,7 @@ namespace Math
         mat4(const Matrix4x4<float>& m);
 
         static const mat4 CreateTargetCameraMatrix(const vec3& eye, const vec3& target, const vec3& up);
+        static const mat4 CreateFreeCameraMatrix(const vec3& eye, const vec3& dir, const vec3& up);
         static const mat4 CreatePerspectiveProjection(float fovy, float width, float height, float znear, float zfar);
         static const mat4 CreateOrthographicProjection(float left, float right, float bottom, float top, float _near, float _far);
         static const mat4 CreateOrthographicProjection2(float xmin, float xmax, float ymin, float ymax, float zmin, float zmax);

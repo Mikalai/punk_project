@@ -232,6 +232,14 @@ namespace Gpu
         extern PFNGLRENDERBUFFERSTORAGEMULTISAMPLECOVERAGENVPROC glRenderbufferStorageMultisampleCoverageNV;
 
         extern PFNGLFRAMEBUFFERTEXTURELAYERPROC glFramebufferTextureLayer;
+
+        //GL_ARB_shading_language_include
+        extern PFNGLNAMEDSTRINGARBPROC glNamedStringARB;
+        extern PFNGLDELETENAMEDSTRINGARBPROC glDeleteNamedStringARB;
+        extern PFNGLCOMPILESHADERINCLUDEARBPROC glCompileShaderIncludeARB;
+        extern PFNGLISNAMEDSTRINGARBPROC glIsNamedStringARB;
+        extern PFNGLGETNAMEDSTRINGARBPROC glGetNamedStringARB;
+        extern PFNGLGETNAMEDSTRINGIVARBPROC glGetNamedStringivARB;
 	}
 }
 

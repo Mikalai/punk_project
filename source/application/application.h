@@ -74,7 +74,7 @@ namespace Punk
         virtual void OnDestroy();
         virtual void OnIdle(System::IdleEvent* event);
 
-		void Init(const Config& value);
+        void Init(const Config& value);
 	private:
 		void Clear();
 	private:

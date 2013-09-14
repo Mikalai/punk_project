@@ -10,11 +10,11 @@ namespace Gpu
 
 		void DynamicRenderContext::SetShaders(Shader *vs, Shader *fs, Shader *gs)
 		{
-            if (m_vertex_shader = vs)
+            if ((m_vertex_shader = vs))
 				m_vertex_shader->Connect(this);
-            if (m_fragment_shader = fs)
+            if ((m_fragment_shader = fs))
 				m_fragment_shader->Connect(this);
-            if (m_geometry_shader = gs)
+            if ((m_geometry_shader = gs))
 				m_geometry_shader->Connect(this);
 			Init();
 		}

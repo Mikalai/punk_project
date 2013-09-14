@@ -59,6 +59,29 @@ namespace Gpu
 			}
 		}
 
+        void Shader::CookFromStringWithHeaders(const char *data, unsigned length, int count, const char **names)
+        {
+            GL_CALL(m_shader_index = glCreateShader(m_type));
+            const char * body = data;
+            int len = length;
+            GLint compileStatus;
+            GL_CALL(glShaderSource(m_shader_index, 1, (const char**)&body,  &len));
+            GL_CALL(glCompileShaderIncludeARB(m_shader_index, count, names, nullptr));
+            GL_CALL(glGetShaderiv(m_shader_index, GL_COMPILE_STATUS, &compileStatus));
+            if (compileStatus == GL_TRUE)
+            {
+                out_message() << L"Shader has been compiled successfully" << std::endl;
+            }
+            else
+            {
+                GLint logLength;
+                GL_CALL(glGetShaderiv(m_shader_index, GL_INFO_LOG_LENGTH, &logLength));
+                std::vector<char> buffer(logLength);
+                GL_CALL(glGetShaderInfoLog(m_shader_index, logLength, NULL, &buffer[0]));
+                throw System::PunkException(L"Can't create vertex shader: \n" + System::string(&buffer[0], buffer.size()) + L'\n');
+            }
+        }
+
 		void Shader::CookFromFile(const System::string& filename)
 		{
 			System::Buffer shader_data;
@@ -69,6 +92,17 @@ namespace Gpu
 			int len = shader_data.GetSize();
             CookFromString(body, len);
 		}
+
+        void Shader::CookFromFileWithHeaders(const System::string &filename, int count, const char **names)
+        {
+            System::Buffer shader_data;
+            System::BinaryFile::Load(filename, shader_data);
+            GL_CALL(m_shader_index = glCreateShader(m_type));
+            out_message() << L"Loading vertex shader " + filename << std::endl;
+            const char* body = (const char*)shader_data.StartPointer();
+            int len = shader_data.GetSize();
+            CookFromStringWithHeaders(body, len, count, names);
+        }
 
 		unsigned Shader::GetIndex() const
 		{

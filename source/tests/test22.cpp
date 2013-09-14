@@ -18,9 +18,14 @@ namespace Test22
         bool m_use_transparency;
         Virtual::StaticGeometry* m_geom;
 
+        float m_phi, m_psy;
+        Math::vec3 m_dir;
     public:
         TestApp()
         {
+            m_phi = 0;
+            m_psy = 0;
+            m_dir.Set(-1,0,0);
             m_cur_attent = 0;
             m_cur_model = 2;
             m_model[0] = Gpu::LightModel::PerVertexDiffuse;
@@ -43,7 +48,7 @@ namespace Test22
 
         virtual void OnInit(const Punk::Config&) override
         {
-            m_geom = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"Cube.static"));
+            m_geom = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"Suzanne.static"));
             if (m_geom)
             {
                 m_geom->GetGpuCache().Update(GetVideoDriver());
@@ -61,6 +66,26 @@ namespace Test22
 
             if (m_specular < 1)
                 m_specular = 1;
+        }
+
+        virtual void OnMouseMove(System::MouseMoveEvent *event)
+        {
+            if (event->leftButton)
+            {
+                m_phi += (event->x - event->x_prev);
+                m_psy += (event->y - event->y_prev);
+                if (m_phi < -180)
+                    m_phi = 180;
+                if (m_phi > 180)
+                    m_phi = -180;
+
+                if (m_psy > 89)
+                    m_psy = 89;
+                if (m_psy < -89)
+                    m_psy = -89;
+
+                m_dir = Math::Recount::SphericalToCartesian(Math::Recount::DegToRad(m_phi), Math::Recount::DegToRad(m_psy));
+            }
         }
 
         virtual void OnKeyDown(System::KeyDownEvent *event)
@@ -102,13 +127,14 @@ namespace Test22
             float width = GetWindow()->GetWidth();
             float height = GetWindow()->GetHeight();
             frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
-            frame->SetViewMatrix(Math::mat4::CreateTargetCameraMatrix(Math::vec3(5, 5, 5), Math::vec3(0, 0, 0), Math::vec3(0, 0, 1)));
+            frame->SetViewMatrix(Math::mat4::CreateFreeCameraMatrix(Math::vec3(5, 5, 5), m_dir, Math::vec3(0, 0, 1)));
 
             frame->PushAllState();
             frame->EnableLighting(true);
 
             frame->SetDiffuseColor(Math::vec4(1,1,1,1));
 
+            frame->Light(0).Enable();
             frame->Light(0).SetPosition(2, 2, 10);
             frame->Light(0).SetDirection(Math::vec3(-2,-2,-7).Normalize());
             frame->Light(0).SetDiffuseColor(1, 1, 1, 1);
@@ -123,11 +149,6 @@ namespace Test22
             frame->Clear(true, true, true);
             frame->Render(m_geom->GetGpuCache().GetGpuBuffer());
             frame->EndRendering();
-
-            m_x += 0.03f;
-            m_y += 0.02f;
-            m_z += 0.01f;
-
         }
     };
 

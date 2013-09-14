@@ -30,6 +30,8 @@
 #include "oct_tree.h"
 #include "helper.h"
 #include "perspective_decoder.h"
+#include "spherical.h"
+#include "recount.h"
 #include <exception>
 
 #endif // MATH_H

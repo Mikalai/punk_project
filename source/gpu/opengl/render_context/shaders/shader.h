@@ -52,7 +52,9 @@ namespace Gpu
 			~Shader();
 
 			void CookFromFile(const System::string& filename);
+            void CookFromFileWithHeaders(const System::string& filename, int count, const char** names);
 			void CookFromString(const char* filename, unsigned length);
+            void CookFromStringWithHeaders(const char* data, unsigned length, int count, const char** names);
 
 			unsigned GetIndex() const;
 

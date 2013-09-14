@@ -1,6 +1,8 @@
 #include "fs_per_fragment_lighting_diffuse.h"
 #include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
+#include "../../../../../system/folder.h"
+#include "../../../../../system/binary_file.h"
 #include "../../rc_dynamic.h"
 
 namespace Gpu
@@ -8,18 +10,27 @@ namespace Gpu
     namespace OpenGL
     {
         FsPerFragmentLightingDiffuse::FsPerFragmentLightingDiffuse()
-            : Shader(ShaderType::Fragment)
+            : Shader{ShaderType::Fragment}
         {
-            CookFromFile(System::Environment::Instance()->GetShaderFolder()
-                         + GetShaderFile(ShaderCollection::FragmentLightPerFragmentDiffuse));
+            System::Folder f;
+            f.Open(System::Environment::Instance()->GetShaderFolder());
+            const char* names[] = {"/light.glsl"};
+            CookFromFileWithHeaders(GetShaderFile(ShaderCollection::FragmentLightPerFragmentDiffuse), 1, names);
         }
 
         void FsPerFragmentLightingDiffuse::InitUniforms()
         {
+
             uDiffuseColor = m_rc->GetUniformLocation("uDiffuseColor");
             uView = m_rc->GetUniformLocation("uView");
             for (int i = 0; i != MAX_LIGHTS; ++i)
             {
+                {
+                    std::stringstream stream;
+                    stream << "uLight[" << i << "].enabled";
+                    uLight[i].enabled = m_rc->GetUniformLocation(stream.str().c_str());
+                }
+
                 {
                     std::stringstream stream;
                     stream << "uLight[" << i << "].ambient_color";
@@ -89,16 +100,20 @@ namespace Gpu
 
             for (unsigned i = 0; i != params.light_state->m_used_lights; ++i)
             {
-                m_rc->SetUniformVector4f(uLight[i].direction, params.light_state->m_lights[i].GetDirection());
-                m_rc->SetUniformVector4f(uLight[i].position, params.light_state->m_lights[i].GetPosition());
-                m_rc->SetUniformVector4f(uLight[i].diffuse_color, params.light_state->m_lights[i].GetDiffuseColor());
-                m_rc->SetUniformVector4f(uLight[i].ambient_color, params.light_state->m_lights[i].GetAmbientColor());
-                m_rc->SetUniformFloat(uLight[i].attenuation_constant, params.light_state->m_lights[i].GetLightConstantAttenuation());
-                m_rc->SetUniformFloat(uLight[i].attenuation_linear, params.light_state->m_lights[i].GetLightLinearAttenuation());
-                m_rc->SetUniformFloat(uLight[i].attenuation_quadric, params.light_state->m_lights[i].GetLightQuadricAttenuation());
-                m_rc->SetUniformFloat(uLight[i].spot, params.light_state->m_lights[i].GetSpotExponent());
-                m_rc->SetUniformInt(uLight[i].type, (int)params.light_state->m_lights[i].GetType());
-                m_rc->SetUniformInt(uLight[i].attenuation_model, (int)params.light_state->m_lights[i].GetLightAttenuation());
+                m_rc->SetUniformInt(uLight[i].enabled, params.light_state->m_lights[i].IsEnabled());
+                if (params.light_state->m_lights[i].IsEnabled())
+                {
+                    m_rc->SetUniformVector4f(uLight[i].direction, params.light_state->m_lights[i].GetDirection());
+                    m_rc->SetUniformVector4f(uLight[i].position, params.light_state->m_lights[i].GetPosition());
+                    m_rc->SetUniformVector4f(uLight[i].diffuse_color, params.light_state->m_lights[i].GetDiffuseColor());
+                    m_rc->SetUniformVector4f(uLight[i].ambient_color, params.light_state->m_lights[i].GetAmbientColor());
+                    m_rc->SetUniformFloat(uLight[i].attenuation_constant, params.light_state->m_lights[i].GetLightConstantAttenuation());
+                    m_rc->SetUniformFloat(uLight[i].attenuation_linear, params.light_state->m_lights[i].GetLightLinearAttenuation());
+                    m_rc->SetUniformFloat(uLight[i].attenuation_quadric, params.light_state->m_lights[i].GetLightQuadricAttenuation());
+                    m_rc->SetUniformFloat(uLight[i].spot, params.light_state->m_lights[i].GetSpotExponent());
+                    m_rc->SetUniformInt(uLight[i].type, (int)params.light_state->m_lights[i].GetType());
+                    m_rc->SetUniformInt(uLight[i].attenuation_model, (int)params.light_state->m_lights[i].GetLightAttenuation());
+                }
             }
         }
 
