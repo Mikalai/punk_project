@@ -17,6 +17,8 @@ namespace Punk
         , m_async_parser(new Utility::AsyncParser)
 	{
 		m_paint_engine = nullptr;
+        m_keymap = new System::KeyMap;
+        m_event_manager = new System::EventManager();
 	}
 
 	Application::~Application()
@@ -39,14 +41,14 @@ namespace Punk
         Gpu::Destroy(m_video_driver);
 		safe_delete(m_window);
 		safe_delete(m_event_manager);
+        safe_delete(m_keymap);
     }
 
 
     void Application::Init(const Config& data)
-    {
+    {        
         m_font_builder = new Utility::FontBuilder;
 
-        m_event_manager = new System::EventManager();
         System::WindowDesc wnd_desc;
         wnd_desc.m_width = data.gpu_config.view_width;
         wnd_desc.m_height = data.gpu_config.view_height;
@@ -347,26 +349,142 @@ namespace Punk
 
 	void Application::MouseWheel(System::MouseWheelEvent *event)
 	{
+        auto map = GetKeyMap();
+        //  process hold keyboard
+        {
+            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_KEYBOARD_HOLD_BUTTON);
+            for (System::KeyMap::ActionsCollection::const_iterator it = actions.begin(); it != actions.end(); ++it)
+            {
+                int key = (*it).first;
+                if (key == event->delta)
+                {
+                    for (const auto& handler : (*it).second)
+                    {
+                        handler(event);
+                    }
+                }
+            }
+        }
+
 		OnMouseWheel(event);
 	}
 
 	void Application::MouseMove(System::MouseMoveEvent *event)
 	{
+        auto map = GetKeyMap();
+        //  process hold keyboard
+        {
+            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_MOUSE_MOVE);
+            for (System::KeyMap::ActionsCollection::const_iterator it = actions.begin(); it != actions.end(); ++it)
+            {
+                int key = (*it).first;
+                if (key == -1)
+                {
+                    for (const auto& handler : (*it).second)
+                    {
+                        handler(event);
+                    }
+                }
+                else if (key == System::Mouse::LEFT_BUTTON && event->leftButton)
+                {
+                    for (const auto& handler : (*it).second)
+                    {
+                        handler(event);
+                    }
+                }
+                else if (key == System::Mouse::RIGHT_BUTTON && event->rightButton)
+                {
+                    for (const auto& handler : (*it).second)
+                    {
+                        handler(event);
+                    }
+                }
+                else if (key == System::Mouse::MIDDLE_BUTTON && event->middleButton)
+                {
+                    for (const auto& handler : (*it).second)
+                    {
+                        handler(event);
+                    }
+                }
+            }
+        }
+
 		OnMouseMove(event);
 	}
 
     void Application::MouseLeftButtonDown(System::MouseLeftButtonDownEvent* event)
     {
+        auto map = GetKeyMap();
+        //  process hold keyboard
+        {
+            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_MOUSE_LBUTTON_DOWN);
+            for (System::KeyMap::ActionsCollection::const_iterator it = actions.begin(); it != actions.end(); ++it)
+            {
+                for (const auto& handler : (*it).second)
+                {
+                    handler(event);
+                }
+            }
+        }
         OnMouseLeftButtonDown(event);
     }
 
     void Application::Idle(System::IdleEvent *event)
     {
+        auto map = GetKeyMap();
+        //  process hold keyboard
+        {
+            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_KEYBOARD_HOLD_BUTTON);
+            for (System::KeyMap::ActionsCollection::const_iterator it = actions.begin(); it != actions.end(); ++it)
+            {
+                int key = (*it).first;
+                if (System::Keyboard::Instance()->GetKeyState(key))
+                {
+                    for (const auto& handler : (*it).second)
+                    {
+                        handler(event);
+                    }
+                }
+            }
+        }
+        //  process hold mouse
+        {
+            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_MOUSE_HOLD_BUTTON);
+            for (System::KeyMap::ActionsCollection::const_iterator it = actions.begin(); it != actions.end(); ++it)
+            {
+                int key = (*it).first;
+                if (System::Mouse::Instance()->GetButtonState((System::Mouse::MouseButtons)key))
+                {
+                    for (const auto& handler : (*it).second)
+                    {
+                        handler(event);
+                    }
+                }
+            }
+        }
+
         OnIdle(event);
     }
 
     void Application::MouseRightButtonDown(System::MouseRightButtonDownEvent *event)
     {
+        auto map = GetKeyMap();
+        //  process hold keyboard
+        {
+            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_MOUSE_RBUTTON_DOWN);
+            for (System::KeyMap::ActionsCollection::const_iterator it = actions.begin(); it != actions.end(); ++it)
+            {
+                for (const auto& handler : (*it).second)
+                {
+                    handler(event);
+                }
+            }
+        }
         OnMouseRightButtonDown(event);
+    }
+
+    System::KeyMap* Application::GetKeyMap()
+    {
+        return m_keymap;
     }
 }

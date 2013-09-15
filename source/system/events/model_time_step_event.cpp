@@ -4,7 +4,7 @@ namespace System
 {
 	ModelTimeStepEvent::ModelTimeStepEvent()
     {
-		eventCode = EVENT_MODEL_TIME_STEP;
+//		eventCode = EVENT_MODEL_TIME_STEP;
     }
 
 	string ModelTimeStepEvent::ToString()

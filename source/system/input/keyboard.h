@@ -19,6 +19,12 @@ namespace System
 
 		static Keyboard* Instance();
 		static void Destroy();
+
+        bool (*GetKeyStates())[256]
+        {
+            return &m_keys;
+        }
+
 	private:
 		static Keyboard* m_instance;
 		bool m_keys[256];		

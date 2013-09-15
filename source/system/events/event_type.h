@@ -98,34 +98,36 @@ namespace System
 
 	const long MAX_EVENTS_COUNT = 0x0800;
 
-	const long EVENT_IDLE	 = 0x0000;
-	const long EVENT_MOUSE_MOVE	 = 0x0001;
-	const long EVENT_MOUSE_WHEEL = 0x0002;
-	const long EVENT_KEY_DOWN = 0x0003;
-	const long EVENT_KEY_UP = 0x0004;
-    const long EVENT_KEY_CHAR = 0x0005;
-	const long EVENT_MOUSE_LBUTTON_DOWN = 0x0006;
-	const long EVENT_MOUSE_LBUTTON_UP = 0x0007;
-	const long EVENT_MOUSE_RBUTTON_DOWN = 0x0008;
-	const long EVENT_MOUSE_RBUTTON_UP = 0x0009;
-	const long EVENT_MOUSE_MBUTTON_DOWN = 0x000A;
-	const long EVENT_MOUSE_MBUTTON_UP = 0x000B;
-	const long EVENT_WINDOW_RESIZE		= 0x000C;
-	const long EVENT_MOUSE_ENTER		= 0x000D;
-	const long EVENT_MOUSE_LEAVE		= 0x000E;
-	const long EVENT_SET_FOCUSED		= 0x000F;
-	const long EVENT_SET_UNFOCUSED		= 0x0010;
-	const long EVENT_KEY_WCHAR			= 0x0011;
-	const long EVENT_MOUSE_HOOVER		= 0x0012;
-	const long EVENT_LAST_EVENT			= 0x0013;
+    const long EVENT_IDLE                   = 0x0000;
+    const long EVENT_MOUSE_MOVE             = 0x0001;
+    const long EVENT_MOUSE_WHEEL            = 0x0002;
+    const long EVENT_KEY_DOWN               = 0x0003;
+    const long EVENT_KEY_UP                 = 0x0004;
+    const long EVENT_KEY_CHAR               = 0x0005;
+    const long EVENT_MOUSE_LBUTTON_DOWN     = 0x0006;
+    const long EVENT_MOUSE_LBUTTON_UP       = 0x0007;
+    const long EVENT_MOUSE_RBUTTON_DOWN     = 0x0008;
+    const long EVENT_MOUSE_RBUTTON_UP       = 0x0009;
+    const long EVENT_MOUSE_MBUTTON_DOWN     = 0x000A;
+    const long EVENT_MOUSE_MBUTTON_UP       = 0x000B;
+    const long EVENT_WINDOW_RESIZE          = 0x000C;
+    const long EVENT_MOUSE_ENTER            = 0x000D;
+    const long EVENT_MOUSE_LEAVE            = 0x000E;
+    const long EVENT_SET_FOCUSED            = 0x000F;
+    const long EVENT_SET_UNFOCUSED          = 0x0010;
+    const long EVENT_KEY_WCHAR              = 0x0011;
+    const long EVENT_MOUSE_HOOVER           = 0x0012;
+    const long EVENT_MOUSE_HOLD_BUTTON      = 0x0013;
+    const long EVENT_KEYBOARD_HOLD_BUTTON   = 0x0014;
+    const long EVENT_LAST_EVENT             = 0x0015;
 
-	const long EVENT_INSTANCE_CHANGED_LOCATION = 0x0014;
-	const long EVENT_INSTANCE_DESTROYED = 0x0015;
-	const long EVENT_INSTANCE_CHANGED_parent = 0x0016;
-	const long EVENT_INSTANCE_APPEARED = 0x0017;
+//	const long EVENT_INSTANCE_CHANGED_LOCATION = 0x0014;
+//	const long EVENT_INSTANCE_DESTROYED = 0x0015;
+//	const long EVENT_INSTANCE_CHANGED_parent = 0x0016;
+//	const long EVENT_INSTANCE_APPEARED = 0x0017;
 
-	const long EVENT_MODEL_TIME_STEP	= 0x0018;
-	const long EVENT_MODULE_LOGIC_EVENTS = 0x0100;
+//	const long EVENT_MODEL_TIME_STEP	= 0x0018;
+//	const long EVENT_MODULE_LOGIC_EVENTS = 0x0100;
 }
 
 #endif // EVENT_TYPE_H

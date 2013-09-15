@@ -631,7 +631,9 @@ SOURCES += ../../source/main.cpp \
     ../../source/gpu/common/render/shadow_render_common.cpp \
     ../../source/gpu/opengl/driver/gl_vfs.cpp \
     ../../source/math/recount.cpp \
-    ../../source/math/spherical.cpp
+    ../../source/math/spherical.cpp \
+    ../../source/application/viewer_application.cpp \
+    ../../source/system/keymap.cpp
 
 
 # Input
@@ -1145,7 +1147,9 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/common/render/shadow_render_common.h \
     ../../source/gpu/opengl/driver/gl_vfs.h \
     ../../source/math/recount.h \
-    ../../source/math/spherical.h
+    ../../source/math/spherical.h \
+    ../../source/application/viewer_application.h \
+    ../../source/system/keymap.h
 
 
 CONFIG += dll

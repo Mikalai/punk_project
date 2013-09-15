@@ -71,7 +71,7 @@ namespace Test4
 
 		}
 
-		void WndOnResizeEvent(System::WindowResizeEvent *event) override
+        void WndOnResizeEvent(System::WindowResizeEvent*) override
 		{
 
 		}

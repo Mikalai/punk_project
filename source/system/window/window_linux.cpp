@@ -35,7 +35,6 @@ namespace System
         ::Window m_window;
         // Screen* m_screen;
         Colormap m_color_map;
-        bool m_buttons[256];
         WindowAdapter* m_adapter;
         bool m_exit_main_loop;
         XSetWindowAttributes m_swa;
@@ -92,6 +91,9 @@ namespace System
         int y_prev;
         int x;
         int y;
+        bool m_left_button;
+        bool m_right_button;
+        bool m_middle_button;
 
         Display* m_display;
     };
@@ -100,8 +102,10 @@ namespace System
     {
         x_prev = 0;
         y_prev = 0;
-        x = 0;
         y = 0;
+        m_left_button = false;
+        m_right_button = false;
+        m_middle_button = false;
         m_exit_main_loop = false;
         m_adapter = adapter;
         m_display = XOpenDisplay(NULL);
@@ -233,6 +237,8 @@ namespace System
 
     int Window::Impl::DecodeKey(KeySym keysym, int& charKey, bool press)
     {
+        bool (*buttons)[256] = System::Keyboard::Instance()->GetKeyStates();    //  TODO: Something better should be here
+        bool* m_buttons = *buttons;
         int key;
         switch (keysym)
         {
@@ -676,13 +682,13 @@ namespace System
                 e->x = event->xbutton.x;
                 e->y = GetHeight() - event->xbutton.y;
                 e->x_prev = x_prev;
-                e->y_prev = y_prev;
+                e->y_prev = y_prev;                
                 x_prev = e->x;
                 y_prev = GetHeight() - event->xbutton.y;
                 //event->controlKey = (wParam & MK_CONTROL) != 0;
-                //event->leftButton = (wParam & MK_LBUTTON) != 0;
-                //event->middleButton = (wParam & MK_MBUTTON) != 0;
-                //event->rightButton = (wParam & MK_RBUTTON) != 0;
+                e->leftButton = m_left_button = true;
+                e->middleButton = m_middle_button;
+                e->rightButton = m_right_button;
                 //event->shiftButton = (wParam & MK_SHIFT) != 0;
                 //event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 //event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
@@ -696,12 +702,13 @@ namespace System
                 e->y = GetHeight() - event->xbutton.y;
                 e->x_prev = x_prev;
                 e->y_prev = y_prev;
+                e->leftButton = m_left_button = false;
                 x_prev = e->x;
                 y_prev = GetHeight() - event->xbutton.y;
                 //event->controlKey = (wParam & MK_CONTROL) != 0;
-                //event->leftButton = (wParam & MK_LBUTTON) != 0;
-                //event->middleButton = (wParam & MK_MBUTTON) != 0;
-                //event->rightButton = (wParam & MK_RBUTTON) != 0;
+                e->leftButton = m_left_button = false;
+                e->middleButton = m_middle_button;
+                e->rightButton = m_right_button;
                 //event->shiftButton = (wParam & MK_SHIFT) != 0;
                 //event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 //event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
@@ -721,9 +728,9 @@ namespace System
                 x_prev = e->x;
                 y_prev = GetHeight() - event->xbutton.y;
                 //event->controlKey = (wParam & MK_CONTROL) != 0;
-                //event->leftButton = (wParam & MK_LBUTTON) != 0;
-                //event->middleButton = (wParam & MK_MBUTTON) != 0;
-                //event->rightButton = (wParam & MK_RBUTTON) != 0;
+                e->leftButton = m_left_button;
+                e->middleButton = m_middle_button = true;
+                e->rightButton = m_right_button;
                 //event->shiftButton = (wParam & MK_SHIFT) != 0;
                 //event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 //event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
@@ -740,9 +747,9 @@ namespace System
                 x_prev = e->x;
                 y_prev = GetHeight() - event->xbutton.y;
                 //event->controlKey = (wParam & MK_CONTROL) != 0;
-                //event->leftButton = (wParam & MK_LBUTTON) != 0;
-                //event->middleButton = (wParam & MK_MBUTTON) != 0;
-                //event->rightButton = (wParam & MK_RBUTTON) != 0;
+                e->leftButton = m_left_button;
+                e->middleButton = m_middle_button = false;
+                e->rightButton = m_right_button;
                 //event->shiftButton = (wParam & MK_SHIFT) != 0;
                 //event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 //event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
@@ -761,9 +768,9 @@ namespace System
                 x_prev = e->x;
                 y_prev = GetHeight() - event->xbutton.y;
                 //event->controlKey = (wParam & MK_CONTROL) != 0;
-                //event->leftButton = (wParam & MK_LBUTTON) != 0;
-                //event->middleButton = (wParam & MK_MBUTTON) != 0;
-                //event->rightButton = (wParam & MK_RBUTTON) != 0;
+                e->leftButton = m_left_button;
+                e->middleButton = m_middle_button;
+                e->rightButton = m_right_button = true;
                 //event->shiftButton = (wParam & MK_SHIFT) != 0;
                 //event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 //event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
@@ -780,9 +787,9 @@ namespace System
                 x_prev = e->x;
                 y_prev = GetHeight() - event->xbutton.y;
                 //event->controlKey = (wParam & MK_CONTROL) != 0;
-                //event->leftButton = (wParam & MK_LBUTTON) != 0;
-                //event->middleButton = (wParam & MK_MBUTTON) != 0;
-                //event->rightButton = (wParam & MK_RBUTTON) != 0;
+                e->leftButton = m_left_button;
+                e->middleButton = m_middle_button;
+                e->rightButton = m_right_button = false;
                 //event->shiftButton = (wParam & MK_SHIFT) != 0;
                 //event->xbutton1 = (wParam & MK_XBUTTON1) != 0;
                 //event->xbutton2 = (wParam & MK_XBUTTON2) != 0;
@@ -797,11 +804,11 @@ namespace System
             e->x = event->xbutton.x;
             e->y = GetHeight() - event->xbutton.y;
             e->delta = 1;
-            /*event->controlKey = (bool)(wParam & MK_CONTROL);
-event->leftButton = (bool)(wParam & MK_LBUTTON);
-event->middleButton = (bool)(wParam & MK_MBUTTON);
-event->rightButton = (bool)(wParam & MK_RBUTTON);
-event->shiftButton = (bool)(wParam & MK_SHIFT);
+            /*event->controlKey = (bool)(wParam & MK_CONTROL);*/
+            e->leftButton = m_left_button;
+            e->middleButton = m_middle_button;
+            e->rightButton = m_right_button;
+/*event->shiftButton = (bool)(wParam & MK_SHIFT);
 event->xbutton1 = (bool)(wParam & MK_XBUTTON1);
 event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
             MouseWheelProc(e);
@@ -813,10 +820,10 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
             e->x = event->xbutton.x;
             e->y = GetHeight() - event->xbutton.y;
             e->delta = -1;
-            /*event->controlKey = (bool)(wParam & MK_CONTROL);
-event->leftButton = (bool)(wParam & MK_LBUTTON);
-event->middleButton = (bool)(wParam & MK_MBUTTON);
-event->rightButton = (bool)(wParam & MK_RBUTTON);
+            e->leftButton = m_left_button;
+            e->middleButton = m_middle_button;
+            e->rightButton = m_right_button;
+            /*event->controlKey = (bool)(wParam & MK_CONTROL);            
 event->shiftButton = (bool)(wParam & MK_SHIFT);
 event->xbutton1 = (bool)(wParam & MK_XBUTTON1);
 event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
@@ -886,6 +893,9 @@ event->xbutton2 = (bool)(wParam & MK_XBUTTON2);*/
                     e->y = GetHeight() - event.xmotion.y;
                     x_prev = event.xmotion.x;
                     y_prev = GetHeight() - event.xmotion.y;
+                    e->leftButton = m_left_button;
+                    e->middleButton = m_middle_button;
+                    e->rightButton = m_right_button;
                     /*event->controlKey = (bool)(wParam & MK_CONTROL);
 event->leftButton = (bool)(wParam & MK_LBUTTON);
 event->middleButton = (bool)(wParam & MK_MBUTTON);

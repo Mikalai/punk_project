@@ -14,9 +14,11 @@ namespace System
         void* method;
 		void* reciever;
 
-        void operator() (Event* params);
-        bool operator == (const Handler& handler);
+        void operator() (Event* params) const;
+        bool operator == (const Handler& handler);        
     };
+
+    bool operator < (const Handler& l, const Handler& r);
 
     template<class T> Handler EventHandler(T* object, void (T::*method)(Event*))
     {

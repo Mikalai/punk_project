@@ -32,6 +32,7 @@ namespace Punk
 		Gpu::PaintEngine* GetPaintEngine();
         System::Mouse* GetMouse();
         Utility::AsyncParser* GetAsyncParser();
+        System::KeyMap* GetKeyMap();
 
 		int Run();
 		void SetTimeScale(int64_t nominator, int64_t denominator);
@@ -79,6 +80,7 @@ namespace Punk
 		void Clear();
 	private:
 
+        System::KeyMap* m_keymap;
         Utility::AsyncParser* m_async_parser;
         Utility::FontBuilder* m_font_builder;
 		Gpu::PaintEngine* m_paint_engine;

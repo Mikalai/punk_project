@@ -6,26 +6,20 @@ namespace Math
 {
     const vec3 Recount::SphericalToCartesian(float phi, float theta)
     {
-        float x = sin(theta)*cos(phi);
-        float y = sin(theta)*sin(phi);
-        float z = cos(theta);
-        return vec3(x, y, z);
+        return SphericalToCartesian(phi, theta, 1);
     }
 
     const vec3 Recount::SphericalToCartesian(float phi, float theta, float r)
     {
-        float x = r*sin(theta)*cos(phi);
-        float y = r*sin(theta)*sin(phi);
-        float z = r*cos(theta);
+        float x = r*cos(theta)*cos(phi);
+        float y = r*cos(theta)*sin(phi);
+        float z = r*sin(theta);
         return vec3(x, y, z);
     }
 
     const vec3 Recount::SphericalToCartesian(const SphericalCoordinate& p)
     {
-        float x = sin(p.Theta())*cos(p.Phi());
-        float y = sin(p.Theta())*sin(p.Phi());
-        float z = cos(p.Theta());
-        return vec3(x, y, z);
+        return SphericalToCartesian(p.Phi(), p.Theta(), p.R());
     }
 
     const SphericalCoordinate Recount::CartesianToSpherical(float x, float y, float z)

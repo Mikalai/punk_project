@@ -11,7 +11,7 @@ namespace System
 	class PUNK_ENGINE_API Mouse
 	{
 	public:
-		enum MouseButtons { LEFT_BUTTON, RIGHT_BUTTON, MIDDLE_BUTTON };
+        enum MouseButtons { LEFT_BUTTON = 0, RIGHT_BUTTON, MIDDLE_BUTTON };
 
 	private:
 		

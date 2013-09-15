@@ -2,11 +2,8 @@
 
 namespace Test22
 {
-    class TestApp : public Punk::Application
+    class TestApp : public Punk::ViewerApplication
     {
-        float m_x;
-        float m_y;
-        float m_z;
         static const unsigned max_model = 3;
         static const unsigned max_atten = 3;
         Gpu::LightModel m_model[3];
@@ -18,14 +15,9 @@ namespace Test22
         bool m_use_transparency;
         Virtual::StaticGeometry* m_geom;
 
-        float m_phi, m_psy;
-        Math::vec3 m_dir;
     public:
         TestApp()
         {
-            m_phi = 0;
-            m_psy = 0;
-            m_dir.Set(-1,0,0);
             m_cur_attent = 0;
             m_cur_model = 2;
             m_model[0] = Gpu::LightModel::PerVertexDiffuse;
@@ -36,10 +28,6 @@ namespace Test22
             m_attenuation[1] = Gpu::LightAttenuation::Linear;
             m_attenuation[2] = Gpu::LightAttenuation::Quadratic;
 
-            m_x = 0;
-            m_y = 0;
-            m_z = 0;
-
             m_use_texture = true;
             m_use_transparency = false;
 
@@ -48,7 +36,7 @@ namespace Test22
 
         virtual void OnInit(const Punk::Config&) override
         {
-            m_geom = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"Suzanne.static"));
+            m_geom = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"Cube.static"));
             if (m_geom)
             {
                 m_geom->GetGpuCache().Update(GetVideoDriver());
@@ -68,28 +56,8 @@ namespace Test22
                 m_specular = 1;
         }
 
-        virtual void OnMouseMove(System::MouseMoveEvent *event)
-        {
-            if (event->leftButton)
-            {
-                m_phi += (event->x - event->x_prev);
-                m_psy += (event->y - event->y_prev);
-                if (m_phi < -180)
-                    m_phi = 180;
-                if (m_phi > 180)
-                    m_phi = -180;
-
-                if (m_psy > 89)
-                    m_psy = 89;
-                if (m_psy < -89)
-                    m_psy = -89;
-
-                m_dir = Math::Recount::SphericalToCartesian(Math::Recount::DegToRad(m_phi), Math::Recount::DegToRad(m_psy));
-            }
-        }
-
         virtual void OnKeyDown(System::KeyDownEvent *event)
-        {
+        {            
             if (event->key == System::PUNK_KEY_A)
             {
                 m_cur_attent = (m_cur_attent + 1) % max_atten;
@@ -127,7 +95,7 @@ namespace Test22
             float width = GetWindow()->GetWidth();
             float height = GetWindow()->GetHeight();
             frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));
-            frame->SetViewMatrix(Math::mat4::CreateFreeCameraMatrix(Math::vec3(5, 5, 5), m_dir, Math::vec3(0, 0, 1)));
+            frame->SetViewMatrix(GetViewMatrix());
 
             frame->PushAllState();
             frame->EnableLighting(true);

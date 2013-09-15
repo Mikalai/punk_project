@@ -96,7 +96,7 @@ namespace Test6
 
 		}
 
-		void WndOnResizeEvent(System::WindowResizeEvent *event) override
+        void WndOnResizeEvent(System::WindowResizeEvent *) override
 		{
 
 		}

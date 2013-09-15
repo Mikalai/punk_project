@@ -21,5 +21,6 @@
 #include "resource.h"
 #include "profiler.h"
 #include "object.h"
+#include "keymap.h"
 
 #endif	//	_H_PUNK_SYSTEM_MODULE
