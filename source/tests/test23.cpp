@@ -1,6 +1,6 @@
-#include "test22.h"
+#include "test23.h"
 
-namespace Test22
+namespace Test23
 {
     class TestApp : public Punk::ViewerApplication
     {
@@ -36,7 +36,8 @@ namespace Test22
 
         virtual void OnInit(const Punk::Config&) override
         {
-            m_geom = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder() + L"Cube.static"));
+            m_geom = Cast<Virtual::StaticGeometry*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder()
+                                                                           + L"Suzanne.static"));
             if (m_geom)
             {
                 m_geom->GetGpuCache().Update(GetVideoDriver());
@@ -64,7 +65,7 @@ namespace Test22
 
 
         virtual void OnKeyDown(System::KeyDownEvent *event)
-        {            
+        {
             if (event->key == System::PUNK_KEY_A)
             {
 
@@ -96,6 +97,7 @@ namespace Test22
 
             frame->SetClearColor(Math::vec4(0.5, 0.5, 0.5, 1));
             frame->EnableDiffuseShading(true);
+            frame->EnableSpecularShading(true);
             frame->EnableTexturing(false);
 
             frame->SetTextureMatrix(Math::mat4::CreateIdentity());
@@ -107,7 +109,8 @@ namespace Test22
             frame->PushAllState();
             frame->EnableLighting(true);
 
-            frame->SetDiffuseColor(Math::vec4(1,1,1,1));
+            frame->SetSpecularFactor(128);
+            frame->SetDiffuseColor(Math::vec4(1,1,1,1));            
 
             frame->Light(0).Enable();
             frame->Light(0).SetPosition(2, 2, 10);

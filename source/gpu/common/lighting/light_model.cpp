@@ -6,8 +6,6 @@ namespace Gpu
 	static const LightModelDesc g_light_models[] = {
 		LightModelDesc(LightModel::PerVertexDiffuse, L"Per-vertex diffuse"),
 		LightModelDesc(LightModel::PerFragmentDiffuse, L"Per-pixel diffuse"),
-		LightModelDesc(LightModel::PerVertexDiffuseSpecular, L"Per-vertex diffuse+specular"),
-		LightModelDesc(LightModel::PerFragmentlDiffuseSpecular, L"Per-pixel diffuse+specular"),
         LightModelDesc(LightModel::BumpMappingDiffuse, L"Bump mapping diffuse"),
 	};
 

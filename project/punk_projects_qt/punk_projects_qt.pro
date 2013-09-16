@@ -633,7 +633,10 @@ SOURCES += ../../source/main.cpp \
     ../../source/math/recount.cpp \
     ../../source/math/spherical.cpp \
     ../../source/application/viewer_application.cpp \
-    ../../source/system/keymap.cpp
+    ../../source/system/keymap.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_diffuse_specular.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_diffuse_specular.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse_specular.cpp
 
 
 # Input
@@ -1149,7 +1152,10 @@ HEADERS += ../../source/config.h \
     ../../source/math/recount.h \
     ../../source/math/spherical.h \
     ../../source/application/viewer_application.h \
-    ../../source/system/keymap.h
+    ../../source/system/keymap.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_vertex_lighting_diffuse_specular.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_diffuse_specular.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse_specular.h
 
 
 CONFIG += dll
@@ -1247,5 +1253,8 @@ OTHER_FILES += \
     ../../data/shaders/per_fragment_lighting_diffuse_simple_shadow.frag \
     ../../data/shaders/per_vertex_lighting_diffuse_simple_shadow.vert \
     ../../data/shaders/per_vertex_lighting_diffuse_simple_shadow.frag \
-    ../../data/shaders/light.glsl
+    ../../data/shaders/light.glsl \
+    ../../data/shaders/per_fragment_lighting_diffuse_specular_330.vert \
+    ../../data/shaders/per_fragment_lighting_diffuse_specular_330.frag \
+    ../../data/shaders/material.glsl
 

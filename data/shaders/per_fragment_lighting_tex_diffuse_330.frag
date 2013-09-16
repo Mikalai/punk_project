@@ -1,32 +1,16 @@
 #version 330
 
-const int MAX_LIGHTS = 8;
-
-struct Light
-{
-    vec4  direction;
-    vec4  position;
-    vec4  diffuse_color;
-    vec4  ambient_color;
-    float attenuation_constant;
-    float attenuation_linear;
-    float attenuation_quadric;
-    float spot;
-    int   type;                 //	0 - point, 1 - linear
-    int   attenuation_model;    //	0 - Constant, 1 - Linear, 2 - Quadric
-};
-
+#extension GL_ARB_shading_language_include : require
+#include "/light.glsl"
 
 uniform mat4 uView;
 uniform vec4 uDiffuseColor;
-uniform sampler2D uDiffuseMap;
 uniform Light uLight[MAX_LIGHTS];
 
-in vec3 normal;
-in vec3 position;
-in vec2 tex_coord0;
+in vec3 vViewVertexNormal;
+in vec3 vViewVertexPosition;
 
-out vec4 color;
+out vec4 vFragmentColor;
 
 float AttenuationConstant(float k0)
 {
@@ -54,10 +38,13 @@ void main()
     vec4 light_color = vec4(0,0,0,0);
     for (i = 0; i != MAX_LIGHTS; ++i)
     {
-        vec3 light_position = (uView * uLight[i].position).xyz;
-        vec3 object_to_light = normalize(light_position - position);
+        if (uLight[i].enabled == 0)
+            continue;
 
-        float dst = length(light_position - position);
+        vec3 light_position = (uView * uLight[i].position).xyz;
+        vec3 object_to_light = normalize(light_position - vViewVertexPosition);
+
+        float dst = length(light_position - vViewVertexPosition);
 
         float sc = 1;
         if (uLight[i].type == 1)
@@ -79,9 +66,10 @@ void main()
             c = AttenuationLinear(k0, k1, dst);
         else if (mode == 2)
             c = AttenuationQuadric(k0, k1, k2, dst);
-        c = min(1, c);
-        light_color += uLight[i].ambient_color + sc * c * uLight[i].diffuse_color * max(0, dot(object_to_light, normalize(normal)));
+
+        light_color += uLight[i].ambient_color + sc * c * uLight[i].diffuse_color * max(0.0, dot(object_to_light, normalize(vViewVertexNormal)));
+        //light_color += max(0.0, dot(object_to_light, normalize(vViewVertexNormal)));
     }
-    vec4 diffuse_color = texture(uDiffuseMap, tex_coord0);
-    color = light_color * uDiffuseColor * diffuse_color;
-}	
+    vFragmentColor = light_color * uDiffuseColor;
+    //vFragmentColor = vec4(object_to_light, 1);
+}

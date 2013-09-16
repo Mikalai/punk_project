@@ -234,6 +234,11 @@ namespace Gpu
         Top()->render_state->m_enable_diffuse_shading = value;
     }
 
+    void Frame::EnableSpecularShading(bool value)
+    {
+        Top()->render_state->m_enable_specular_shading = value;
+    }
+
     //    void Frame::EnableBumpMapping(bool value)
     //    {
     //        Top()->render_state->m_enable_bump_maping_shading = value;

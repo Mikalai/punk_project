@@ -8,6 +8,7 @@ struct Light
     vec4  position;
     vec4  diffuse_color;
     vec4  ambient_color;
+    vec4  specular_color;
     float attenuation_constant;
     float attenuation_linear;
     float attenuation_quadric;

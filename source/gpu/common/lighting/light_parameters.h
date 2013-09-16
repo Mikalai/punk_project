@@ -62,6 +62,9 @@ namespace Gpu
         float GetFarDistance(size_t index) const;
         const Math::vec4& GetFarDistances() const;
 
+        void SetSpecularColor(const Math::vec4& value);
+        const Math::vec4& GetSpecularColor() const;
+
         void SetEnable(bool value);
         bool IsEnabled() const;
         void Enable();
@@ -82,6 +85,7 @@ namespace Gpu
 		Math::vec4 m_ambient_color;
         Math::mat4 m_shadow_matrix[4];
         Math::vec4 m_far_distance;
+        Math::vec4 m_specular_color;
         float m_zfar;
         float m_znear;
         bool m_enabled;

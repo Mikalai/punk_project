@@ -16,6 +16,8 @@ namespace Gpu
                 System::Buffer buffer;
                 System::BinaryFile::Load("light.glsl", buffer); //  TODO: Do something better
                 vfs->RegisterNamedString("/light.glsl", (char*)buffer.StartPointer(), buffer.GetSize());
+                System::BinaryFile::Load("material.glsl", buffer);
+                vfs->RegisterNamedString("/material.glsl", (char*)buffer.StartPointer(), buffer.GetSize());
             }
         }
 
@@ -137,6 +139,12 @@ namespace Gpu
                 DynamicRenderContext* rc = new DynamicRenderContext();
                 rc->SetShaders(new VsPerVertexLightingDiffuseShadowSimple, new FsPerVertexLightingDiffuseSimpleShadow, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::LightPerVertexDiffuseShadowingSimple, rc);
+            }
+
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsPerFragmentLightingDiffuseSpecular, new FsPerFragmentLightingDiffuseSpecular, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentDiffuseSpecular, rc);
             }
 
 #ifdef USE_GUI_RC

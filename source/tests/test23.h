@@ -1,16 +1,16 @@
 /*
-    Tests:
-        Perfragment lighting diffuse
-        Feature id: 7
-*/
+ *  Solid color + per vertex light + specular + no shadows
+ *  Feature id: 23
+ */
 
-#ifndef TEST22_H
-#define TEST22_H
+
+#ifndef TEST23_H
+#define TEST23_H
 
 #include "../punk_engine.h"
 #include "test_interface.h"
 
-namespace Test22
+namespace Test23
 {
     class Test : public TestInterface
     {
@@ -23,4 +23,5 @@ namespace Test22
     };
 }
 
-#endif // TEST10_H
+
+#endif // TEST23_H

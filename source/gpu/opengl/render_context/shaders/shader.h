@@ -32,6 +32,7 @@ namespace Gpu
         unsigned direction;
         unsigned position;
         unsigned diffuse_color;
+        unsigned specular_color;
         unsigned ambient_color;
         unsigned attenuation_constant;
         unsigned attenuation_linear;
@@ -39,6 +40,15 @@ namespace Gpu
         unsigned spot;
         unsigned type;
         unsigned attenuation_model;
+    };
+
+    struct MaterialShaderParameters
+    {
+        unsigned emission;
+        unsigned ambient;
+        unsigned diffuse;
+        unsigned specular;
+        unsigned shininess;
     };
 
 	namespace OpenGL

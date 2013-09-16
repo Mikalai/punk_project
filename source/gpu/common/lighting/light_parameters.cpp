@@ -12,6 +12,7 @@ namespace Gpu
 		m_spot_exponent = 100.0;
         m_enabled = false;
         m_diffuse_color.Set(1,1,1,1);
+        m_specular_color.Set(1,1,1,1);
 	}
 
 	void LightParameters::SetPosition(float x, float y, float z)
@@ -217,5 +218,15 @@ namespace Gpu
     void LightParameters::Disable()
     {
         m_enabled = false;
+    }
+
+    void LightParameters::SetSpecularColor(const Math::vec4& value)
+    {
+        m_specular_color = value;
+    }
+
+    const Math::vec4& LightParameters::GetSpecularColor() const
+    {
+        return m_specular_color;
     }
 }

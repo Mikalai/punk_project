@@ -80,6 +80,7 @@ namespace Gpu
 		void EnableBlending(bool value);
 		void EnableDepthTest(bool value);		
         void EnableDiffuseShading(bool value);
+        void EnableSpecularShading(bool value);
         //void EnableBumpMapping(bool value);
 		void EnableSkinning(bool value);
 		void EnableWireframe(bool value);

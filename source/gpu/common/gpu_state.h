@@ -109,6 +109,7 @@ namespace Gpu
 		bool m_enable_shadows;
 		bool m_enable_lighting;
 		bool m_enable_diffuse_shading;
+        bool m_enable_specular_shading;
 		bool m_enable_texture;
 		bool m_enable_font_rendering;
 		bool m_enable_vertex_color;

@@ -339,6 +339,22 @@ namespace Punk
 
 	void Application::KeyDown(System::KeyDownEvent *event)
 	{
+        auto map = GetKeyMap();
+        //  process hold keyboard
+        {
+            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_KEY_DOWN);
+            for (System::KeyMap::ActionsCollection::const_iterator it = actions.begin(); it != actions.end(); ++it)
+            {
+                int key = (*it).first;
+                if (key == event->key)
+                {
+                    for (const auto& handler : (*it).second)
+                    {
+                        handler(event);
+                    }
+                }
+            }
+        }
 		OnKeyDown(event);
 	}
 
@@ -352,7 +368,7 @@ namespace Punk
         auto map = GetKeyMap();
         //  process hold keyboard
         {
-            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_KEYBOARD_HOLD_BUTTON);
+            const System::KeyMap::ActionsCollection& actions = map->Actions(System::EVENT_MOUSE_WHEEL);
             for (System::KeyMap::ActionsCollection::const_iterator it = actions.begin(); it != actions.end(); ++it)
             {
                 int key = (*it).first;
