@@ -123,7 +123,7 @@ namespace Test23
             frame->Light(0).SetLightConstantAttenuation(1);
             frame->Light(0).SetLightLinearAttenuation(0);
             frame->Light(0).SetLightQuadricAttenuation(0);
-            frame->Light(0).SetSpotExponent(30);
+            frame->Light(0).SetSpotExponent(1);
             frame->Light(0).SetType(Gpu::LightType::Spot);
             frame->Light(0).SetSpotExponent(m_specular);
             frame->Light(0).SetDiffuseColor(1,0,0,1);

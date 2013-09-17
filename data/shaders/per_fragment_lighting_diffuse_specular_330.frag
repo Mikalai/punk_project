@@ -17,8 +17,6 @@ out vec4 vFragmentColor;
 
 void main()
 {
-    int i;
-    vec4 light_color = vec4(0,0,0,0);
     vec4 primary = vec4(0,0,0,0);
     vec4 secondary = vec4(0,0,0,0);
     vec3 n = normalize(vWorldVertexNormal); //  normal in world space
@@ -26,46 +24,14 @@ void main()
     vec3 l; //  vector from object to light in world space
     vec3 h; //  half vector in world space
 
-    for (i = 0; i != MAX_LIGHTS; ++i)
+    for (int i = 0; i != MAX_LIGHTS; ++i)
     {
         if (uLight[i].enabled == 0)
-            continue;   
-        float k0 = uLight[i].attenuation_constant;
-        float k1 = uLight[i].attenuation_linear;
-        float k2 = uLight[i].attenuation_quadric;
-        int mode = uLight[i].attenuation_model;
+            continue;
 
-        float c = 1; //  attenuation constant
-        if (uLight[i].type == POINT_LIGHT)
-        {
-            l = uLight[i].position.xyz - vWorldVertexPosition;
-            float dst = length(l);
-            l = normalize(l);
-            if (mode == ATTENUATION_CONSTANT)
-                c = AttenuationConstant(k0);
-            else if (mode == ATTENUATION_LINEAR)
-                c = AttenuationLinear(k0, k1, dst);
-            else if (mode == ATTENUATION_QUADRIC)
-                c = AttenuationQuadric(k0, k1, k2, dst);
-        }
-        else if (uLight[i].type == DIRECTION_LIGHT)
-        {
-            l = normalize(-uLight[i].direction.xyz);
-        }
-        else if (uLight[i].type == SPOT_LIGHT)
-        {            
-            float p  = uLight[i].spot;
-            l = uLight[i].position.xyz - vWorldVertexPosition;
-            float dst = length(l);
-            l = normalize(l);
-            float sc = SpotAttenuation(normalize(uLight[i].direction.xyz), l, p);
-            if (mode == ATTENUATION_CONSTANT)
-                c = sc*AttenuationConstant(k0);
-            else if (mode == ATTENUATION_LINEAR)
-                c = sc*AttenuationLinear(k0, k1, dst);
-            else if (mode == ATTENUATION_QUADRIC)
-                c = sc*AttenuationQuadric(k0, k1, k2, dst);
-        }
+        AttenuationResult a = LightAttenuation(uLight[i], vWorldVertexPosition); //  attenuation constant
+        float c = a.c;
+        vec3 l = a.l;
 
         vec3 h = normalize(v + l);
         float d = max(0.0, dot(l, n));

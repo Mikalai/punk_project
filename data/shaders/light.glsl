@@ -25,6 +25,13 @@ struct Light
     int   attenuation_model;    //	0 - Constant, 1 - Linear, 2 - Quadric
 };
 
+struct AttenuationResult
+{
+    vec3 l; //  point to light
+    vec3 d; //  light direction
+    float c;    //  attenuation factor
+};
+
 float AttenuationConstant(float k0)
 {
     return 1.0 / k0;
@@ -43,4 +50,44 @@ float AttenuationQuadric(float k0, float k1, float k2, float dst)
 float SpotAttenuation(vec3 r, vec3 l, float p)
 {
     return pow(max(dot(-r, l), 0), p);
+}
+
+AttenuationResult LightAttenuation(Light light, vec3 vertex_position)
+{
+    AttenuationResult res;
+    float k0 = light.attenuation_constant;
+    float k1 = light.attenuation_linear;
+    float k2 = light.attenuation_quadric;
+    int mode = light.attenuation_model;
+    if (light.type == POINT_LIGHT)
+    {
+        res.l = light.position.xyz - vertex_position;
+        float dst = length(res.l);
+        res.l = normalize(res.l);
+        if (mode == ATTENUATION_CONSTANT)
+            res.c = AttenuationConstant(k0);
+        else if (mode == ATTENUATION_LINEAR)
+            res.c = AttenuationLinear(k0, k1, dst);
+        else if (mode == ATTENUATION_QUADRIC)
+            res.c = AttenuationQuadric(k0, k1, k2, dst);
+    }
+    else if (light.type == DIRECTION_LIGHT)
+    {
+        res.l = normalize(-light.direction.xyz);
+    }
+    else if (light.type == SPOT_LIGHT)
+    {
+        float p  = light.spot;
+        res.l = light.position.xyz - vertex_position;
+        float dst = length(res.l);
+        res.l = normalize(res.l);
+        float sc = SpotAttenuation(normalize(light.direction.xyz), res.l, p);
+        if (mode == ATTENUATION_CONSTANT)
+            res.c = sc*AttenuationConstant(k0);
+        else if (mode == ATTENUATION_LINEAR)
+            res.c = sc*AttenuationLinear(k0, k1, dst);
+        else if (mode == ATTENUATION_QUADRIC)
+            res.c = sc*AttenuationQuadric(k0, k1, k2, dst);
+    }
+    return res;
 }
