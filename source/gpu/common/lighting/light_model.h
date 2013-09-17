@@ -9,7 +9,7 @@ namespace Gpu
 	enum class LightModel {
 		PerVertexDiffuse,
 		PerFragmentDiffuse,
-        BumpMappingDiffuse,
+        BumpMappingDiffuse
 	};
 
 	enum class LightAttenuation {

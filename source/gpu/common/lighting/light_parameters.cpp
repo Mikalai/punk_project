@@ -225,6 +225,11 @@ namespace Gpu
         m_specular_color = value;
     }
 
+    void LightParameters::SetSpecularColor(float r, float g, float b, float a)
+    {
+        m_specular_color.Set(r, g, b, a);
+    }
+
     const Math::vec4& LightParameters::GetSpecularColor() const
     {
         return m_specular_color;

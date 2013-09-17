@@ -5,34 +5,15 @@
 #include "/material.glsl"
 
 uniform mat4 uView;
+uniform vec3 uCameraWorldPosition;
 
 uniform Material uMaterial;
 uniform Light uLight[MAX_LIGHTS];
 
-in vec3 vViewVertexNormal;
-in vec3 vViewVertexPosition;
+in vec3 vWorldVertexNormal;
+in vec3 vWorldVertexPosition;
 
 out vec4 vFragmentColor;
-
-float AttenuationConstant(float k0)
-{
-    return 1.0 / k0;
-}
-
-float AttenuationLinear(float k0, float k1, float dst)
-{
-    return 1.0f / (k0 + k1 * dst);
-}
-
-float AttenuationQuadric(float k0, float k1, float k2, float dst)
-{
-    return 1.0f / (k0 + k1 * dst + k2 * dst * dst);
-}
-
-float SpotAttenuation(vec3 r, vec3 l, float p)
-{
-    return pow(max(dot(-r, l), 0), p);
-}
 
 void main()
 {
@@ -40,53 +21,60 @@ void main()
     vec4 light_color = vec4(0,0,0,0);
     vec4 primary = vec4(0,0,0,0);
     vec4 secondary = vec4(0,0,0,0);
+    vec3 n = normalize(vWorldVertexNormal); //  normal in world space
+    vec3 v = normalize(uCameraWorldPosition - vWorldVertexPosition); //  point to eye vector in world space
+    vec3 l; //  vector from object to light in world space
+    vec3 h; //  half vector in world space
 
-   // vec3 l = normalize(vViewVertexPosition);
-    vec3 n = normalize(vViewVertexNormal);
-
-    vec3 l;
     for (i = 0; i != MAX_LIGHTS; ++i)
     {
         if (uLight[i].enabled == 0)
-            continue;
-
-        vec3 light_position = (uView * uLight[i].position).xyz;
-        l = normalize(light_position - vViewVertexPosition);
-        vec3 h = normalize(vec3(0,0,1) + l);
-
-        float dst = length(light_position - vViewVertexPosition);
-
-        float sc = 1;
-        if (uLight[i].type == 1)
-        {
-            float p = uLight[i].spot;
-            vec3 light_direction = normalize((uView * uLight[i].direction).xyz);
-            sc = SpotAttenuation(light_direction, l, p);
-        }
-
+            continue;   
         float k0 = uLight[i].attenuation_constant;
         float k1 = uLight[i].attenuation_linear;
         float k2 = uLight[i].attenuation_quadric;
         int mode = uLight[i].attenuation_model;
 
-        float c = 1;
-        if (mode == 0)
-            c = AttenuationConstant(k0);
-        else if (mode == 1)
-            c = AttenuationLinear(k0, k1, dst);
-        else if (mode == 2)
-            c = AttenuationQuadric(k0, k1, k2, dst);
+        float c = 1; //  attenuation constant
+        if (uLight[i].type == POINT_LIGHT)
+        {
+            l = uLight[i].position.xyz - vWorldVertexPosition;
+            float dst = length(l);
+            l = normalize(l);
+            if (mode == ATTENUATION_CONSTANT)
+                c = AttenuationConstant(k0);
+            else if (mode == ATTENUATION_LINEAR)
+                c = AttenuationLinear(k0, k1, dst);
+            else if (mode == ATTENUATION_QUADRIC)
+                c = AttenuationQuadric(k0, k1, k2, dst);
+        }
+        else if (uLight[i].type == DIRECTION_LIGHT)
+        {
+            l = normalize(-uLight[i].direction.xyz);
+        }
+        else if (uLight[i].type == SPOT_LIGHT)
+        {            
+            float p  = uLight[i].spot;
+            l = uLight[i].position.xyz - vWorldVertexPosition;
+            float dst = length(l);
+            l = normalize(l);
+            float sc = SpotAttenuation(normalize(uLight[i].direction.xyz), l, p);
+            if (mode == ATTENUATION_CONSTANT)
+                c = sc*AttenuationConstant(k0);
+            else if (mode == ATTENUATION_LINEAR)
+                c = sc*AttenuationLinear(k0, k1, dst);
+            else if (mode == ATTENUATION_QUADRIC)
+                c = sc*AttenuationQuadric(k0, k1, k2, dst);
+        }
 
+        vec3 h = normalize(v + l);
         float d = max(0.0, dot(l, n));
-
         float s = pow(dot(n, h), uMaterial.shininess);
 
-        light_color += uLight[i].ambient_color + sc * c * uLight[i].diffuse_color * s;
         //light_color += max(0.0, dot(object_to_light, normalize(vViewVertexNormal)));
-        primary = uLight[i].diffuse_color * max(dot(n,l), 0);
-        secondary = uLight[i].specular_color * pow(max(dot(n,h),0), uMaterial.shininess);
+        primary = c*uLight[i].diffuse_color * max(dot(n,l), 0);
+        secondary = c*uLight[i].specular_color * pow(max(dot(n,h),0), uMaterial.shininess);
     }
 
-    vFragmentColor = uMaterial.specular * secondary + uMaterial.diffuse * primary;
-    //vFragmentColor = vec4(object_to_light, 1);
+    vFragmentColor = uMaterial.specular * secondary + uMaterial.diffuse * primary;    
 }

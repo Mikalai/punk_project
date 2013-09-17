@@ -188,6 +188,7 @@ namespace Gpu
     void Frame::SetViewMatrix(const Math::mat4& value)
     {
         Top()->view_state->m_view = value;
+        Top()->view_state->m_camera_position = value.Inversed() * Math::vec3(0,0,0);
     }
 
     void Frame::SetProjectionMatrix(const Math::mat4& value)

@@ -20,6 +20,7 @@ namespace Gpu
 
         private:
             unsigned uView;
+            unsigned uCameraWorldPosition;
             MaterialShaderParameters uMaterial;
             LightSourceShaderParameters uLight[MAX_LIGHTS];
         };

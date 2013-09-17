@@ -63,6 +63,7 @@ namespace Gpu
         const Math::vec4& GetFarDistances() const;
 
         void SetSpecularColor(const Math::vec4& value);
+        void SetSpecularColor(float r, float y, float b, float a);
         const Math::vec4& GetSpecularColor() const;
 
         void SetEnable(bool value);

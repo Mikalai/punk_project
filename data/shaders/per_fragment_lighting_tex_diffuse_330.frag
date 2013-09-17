@@ -12,26 +12,6 @@ in vec3 vViewVertexPosition;
 
 out vec4 vFragmentColor;
 
-float AttenuationConstant(float k0)
-{
-    return 1.0 / k0;
-}
-
-float AttenuationLinear(float k0, float k1, float dst)
-{
-    return 1.0f / (k0 + k1 * dst);
-}
-
-float AttenuationQuadric(float k0, float k1, float k2, float dst)
-{
-    return 1.0f / (k0 + k1 * dst + k2 * dst * dst);
-}
-
-float SpotAttenuation(vec3 r, vec3 l, float p)
-{
-    return pow(max(dot(-r, l), 0), p);
-}
-
 void main()
 {
     int i;

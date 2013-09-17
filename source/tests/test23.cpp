@@ -112,15 +112,22 @@ namespace Test23
             frame->SetSpecularFactor(128);
             frame->SetDiffuseColor(Math::vec4(1,1,1,1));            
 
+            static float angle = 0;
+            angle += 0.1f;
             frame->Light(0).Enable();
-            frame->Light(0).SetPosition(2, 2, 10);
+            frame->Light(0).SetPosition(2*sin(angle), 2*cos(angle), 0);
             frame->Light(0).SetDirection(Math::vec3(-2,-2,-7).Normalize());
+            frame->Light(0).SetDirection(Math::vec3(1, 0, 0).Normalized());
             frame->Light(0).SetDiffuseColor(1, 1, 1, 1);
             frame->Light(0).SetLightAttenuation(m_attenuation[m_cur_attent]);
-            frame->Light(0).SetLightLinearAttenuation(0.0001);
+            frame->Light(0).SetLightConstantAttenuation(1);
+            frame->Light(0).SetLightLinearAttenuation(0);
             frame->Light(0).SetLightQuadricAttenuation(0);
-            frame->Light(0).SetType(Gpu::LightType::Point);
+            frame->Light(0).SetSpotExponent(30);
+            frame->Light(0).SetType(Gpu::LightType::Spot);
             frame->Light(0).SetSpotExponent(m_specular);
+            frame->Light(0).SetDiffuseColor(1,0,0,1);
+            frame->Light(0).SetSpecularColor(0,1,0,1);
             frame->SetLightModel(Gpu::LightModel::PerFragmentDiffuse);
 
             frame->BeginRendering();

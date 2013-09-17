@@ -17,8 +17,8 @@ namespace Gpu
             virtual int64_t GetRequiredAttributesSet() const override;
 
         private:
-            unsigned uNormalMatrix;
-            unsigned uViewWorld;
+            unsigned uWorldTransposedInversed;
+            unsigned uWorld;
             unsigned uProjViewWorld;
         };
 

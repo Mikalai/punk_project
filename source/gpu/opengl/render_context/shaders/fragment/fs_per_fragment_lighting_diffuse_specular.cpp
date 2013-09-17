@@ -20,7 +20,7 @@ namespace Gpu
 
         void FsPerFragmentLightingDiffuseSpecular::InitUniforms()
         {
-
+            uCameraWorldPosition = m_rc->GetUniformLocation("uCameraWorldPosition");
             uMaterial.diffuse = m_rc->GetUniformLocation("uMaterial.diffuse");
             uMaterial.shininess = m_rc->GetUniformLocation("uMaterial.shininess");
             uMaterial.specular = m_rc->GetUniformLocation("uMaterial.specular");
@@ -104,6 +104,7 @@ namespace Gpu
 
         void FsPerFragmentLightingDiffuseSpecular::BindParameters(const CoreState& params)
         {
+            m_rc->SetUniformVector3f(uCameraWorldPosition, params.view_state->m_camera_position);
             m_rc->SetUniformVector4f(uMaterial.diffuse, params.batch_state->m_material.m_diffuse_color);
             m_rc->SetUniformVector4f(uMaterial.specular, params.batch_state->m_material.m_specular_color);
             m_rc->SetUniformFloat(uMaterial.shininess, params.batch_state->m_material.m_specular_factor);
