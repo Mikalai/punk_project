@@ -28,6 +28,7 @@ enum EngineObject
     PUNK_TERRAIN_MESH,
     PUNK_SUN,
     PUNK_RIVER,
+    PUNK_TRANSFORM_NODE,
     PUNK_LAST_ENGINE_OBJECT
 };
 

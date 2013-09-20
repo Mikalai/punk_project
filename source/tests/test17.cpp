@@ -157,7 +157,7 @@ namespace Test17
             frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_x));
             frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_y));
             frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 0, 1, m_z));
-            frame->Render(m_geometry->GetGpuCache().GetGpuBuffer());
+            frame->Submit(m_geometry->GetGpuCache().GetGpuBuffer());
             frame->PopAllState();
 
             //frame->SetDiffuseColor(Math::vec4(1,1,1,1));

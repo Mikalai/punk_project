@@ -23,7 +23,7 @@ namespace Punk
 	public:
 		Application();
 		virtual ~Application();
-		System::Window* GetWindow();
+        System::Window* GetWindow() const;
 		System::EventManager* GetEventManager();
 		Gpu::VideoDriver* GetVideoDriver();
 		Virtual::TerrainManager* GetTerrainManager();

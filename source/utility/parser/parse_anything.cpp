@@ -122,7 +122,7 @@ namespace Utility
                 return river.release();
             }
             case WORD_SCENETEXT:
-            {                
+            {
                 std::unique_ptr<Scene::SceneGraph> graph(new Scene::SceneGraph);
                 ParseSceneGraph(buffer, *graph);
                 return graph.release();

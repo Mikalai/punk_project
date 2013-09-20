@@ -62,12 +62,14 @@ namespace Utility
     extern bool ParseVector2i(System::Buffer& buffer, Math::ivec2& value);
     extern bool ParseVector3i(System::Buffer& buffer, Math::ivec3& value);
     extern bool ParseVector4i(System::Buffer& buffer, Math::ivec4& value);
+    extern bool ParseQuaternionf(System::Buffer& buffer, Math::quat& value);
     extern bool ParseMatrix4x4f(System::Buffer& buffer, Math::mat4& value);
     extern bool ParseString(System::Buffer& buffer, System::string& value);
     extern bool ParseBlockedString(System::Buffer& buffer, System::string& value);
     extern bool ParseBlockedFloat(System::Buffer& buffer, float& value);
     extern bool ParseBlockedInteger(System::Buffer& buffer, int& value);
     extern bool ParseBlockedVector3f(System::Buffer& buffer, Math::vec3& value);
+    extern bool ParseBlockedQuaternionf(System::Buffer& buffer, Math::quat& value);
     extern bool ParseBlockedVector4f(System::Buffer& buffer, Math::vec4& value);
     extern bool ParseBlockedVector2i(System::Buffer& buffer, Math::ivec2& value);
     extern bool ParseBlockedVector2f(System::Buffer& buffer, Math::vec2& value);
@@ -123,6 +125,7 @@ namespace Utility
     PUNK_ENGINE_LOCAL bool ParsePathNode(System::Buffer& buffer, Scene::Node& value);
     PUNK_ENGINE_LOCAL bool ParseTerrainNode(System::Buffer& buffer, Scene::Node& value);
     PUNK_ENGINE_LOCAL bool ParseRiverNode(System::Buffer& buffer, Scene::Node& value);
+    PUNK_ENGINE_LOCAL bool ParseSceneTransformNode(System::Buffer &buffer, Scene::TransformNode *node);
 }
 
 #endif // PARSE_FUNCTIONS_H

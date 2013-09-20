@@ -40,7 +40,7 @@ namespace Test3
 			builder.End();
 
 			std::unique_ptr<Gpu::Renderable> r(builder.ToRenderable());
-			frame->Render(r.get());
+			frame->Submit(r.get());
 
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(1.5, 0, -6));
 			Gpu::RenderableBuilder b(GetVideoDriver());
@@ -61,7 +61,7 @@ namespace Test3
 			b.End();
 
 			std::unique_ptr<Gpu::Renderable> r2(b.ToRenderable());
-			frame->Render(r2.get());
+			frame->Submit(r2.get());
 
 			frame->EndRendering();
 

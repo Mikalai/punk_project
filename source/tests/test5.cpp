@@ -64,7 +64,7 @@ namespace Test5
 			builder.End();
 
 			std::unique_ptr<Gpu::Renderable> r(builder.ToRenderable());
-			frame->Render(r.get());
+			frame->Submit(r.get());
 
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(1.5, 0, -6));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_quad));
@@ -128,7 +128,7 @@ namespace Test5
 			b.End();
 
 			std::unique_ptr<Gpu::Renderable> r2(b.ToRenderable());
-			frame->Render(r2.get());
+			frame->Submit(r2.get());
 
 			frame->EndRendering();
 

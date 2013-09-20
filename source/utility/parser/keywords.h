@@ -149,6 +149,8 @@ namespace Utility
         WORD_FLOW_DIRECTION,
         WORD_SKINMESH_TEXT,
         WORD_NODE,
+        WORD_ROTATION,
+        WORD_ENTITY_NAME
 	};
 
 	struct Record
@@ -302,7 +304,9 @@ namespace Utility
         { WORD_FLOW_SPEED,              "*flow_speed" },
         { WORD_FLOW_DIRECTION,          "*flow_direction" },
         { WORD_SKINMESH_TEXT,           "SKINMESHTEXT" },
-        { WORD_NODE,                    "*node" }
+        { WORD_NODE,                    "*node" },
+        { WORD_ROTATION,                "*rotation" },
+        { WORD_ENTITY_NAME,             "*entity_name" }
 	};
 }
 

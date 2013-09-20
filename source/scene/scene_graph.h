@@ -3,6 +3,8 @@
 
 #include "node.h"
 
+namespace Utility { class AsyncParser; }
+
 namespace Scene
 {
     class PUNK_ENGINE_API SceneGraph : public Node
@@ -10,9 +12,15 @@ namespace Scene
 	public:
         SceneGraph();
         SceneGraph(const SceneGraph&) = delete;
-        SceneGraph& operator = (const SceneGraph&) = delete;
-        virtual const System::string ToString() const;
+        SceneGraph& operator = (const SceneGraph&) = delete;        
 		virtual ~SceneGraph();
+
+        virtual const System::string ToString() const override;
+
+        Utility::AsyncParser* AsyncParser();
+        void UpdateTransform();
+    private:
+        Utility::AsyncParser* m_parser;
 
     public:
 

@@ -92,4 +92,9 @@ namespace Punk
         auto pos = m_camera_view + dir * m_distance;
         return Math::mat4::CreateTargetCameraMatrix(pos, m_camera_view, Math::vec3(0, 0, 1));
     }
+
+    const Math::mat4 ViewerApplication::GetProjectionMatrix() const
+    {
+        return Math::mat4::CreatePerspectiveProjection(Math::PI / 4, GetWindow()->GetWidth(), GetWindow()->GetHeight(), 1, 100);
+    }
 }

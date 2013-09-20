@@ -100,7 +100,7 @@ namespace Gpu
             m_current_frame_buffer->Unbind();
     }
 
-    void Frame::Render(Renderable* value, bool destroy)
+    void Frame::Submit(Renderable* value, bool destroy)
     {
         if (!value)
             return;
@@ -573,7 +573,7 @@ namespace Gpu
         b.Vertex3fv(end);
         b.End();
         Renderable* r(b.ToRenderable());
-        Render(r, true);
+        Submit(r, true);
         PopAllState();
     }
 
@@ -605,7 +605,7 @@ namespace Gpu
         b.Vertex3fv(p2);
         b.End();
         Renderable* r(b.ToRenderable());
-        Render(r, true);
+        Submit(r, true);
         PopAllState();
     }
 
@@ -629,7 +629,7 @@ namespace Gpu
         b.Vertex3fv(p1);
         b.End();
         Renderable* r(b.ToRenderable());
-        Render(r, true);
+        Submit(r, true);
         PopAllState();
     }
 
@@ -643,7 +643,7 @@ namespace Gpu
         b.Vertex3fv(Math::vec3(x, y, z));
         b.End();
         Renderable* r(b.ToRenderable());
-        Render(r, true);
+        Submit(r, true);
         PopAllState();
     }
 
@@ -657,7 +657,7 @@ namespace Gpu
         b.Vertex3fv(v);
         b.End();
         Renderable* r(b.ToRenderable());
-        Render(r, true);
+        Submit(r, true);
         PopAllState();
     }
 
@@ -680,7 +680,7 @@ namespace Gpu
         b.Vertex3f(x, y+height, 0);
         b.End();
         Renderable* r(b.ToRenderable());
-        Render(r, true);
+        Submit(r, true);
         PopAllState();
     }
 
@@ -714,7 +714,7 @@ namespace Gpu
                 b.Vertex3f(xx, yy, zz);
             }
         }
-        Render(b.ToRenderable(), true);
+        Submit(b.ToRenderable(), true);
         PopAllState();
     }
 
@@ -754,7 +754,7 @@ namespace Gpu
         b.Vertex3f(x, y+text_height, 0);
         b.End();
 
-        Render(b.ToRenderable(), true);
+        Submit(b.ToRenderable(), true);
 
         PopAllState();
         m_texts.push_back(surface.release());

@@ -50,6 +50,15 @@ namespace Utility
         return true;
     }
 
+    bool ParseQuaternionf(System::Buffer &buffer, Math::quat &value)
+    {
+        value[0] = buffer.ReadWord().ToFloat();
+        value[1] = buffer.ReadWord().ToFloat();
+        value[2] = buffer.ReadWord().ToFloat();
+        value[3] = buffer.ReadWord().ToFloat();
+        return true;
+    }
+
     bool ParseVector4f(System::Buffer& buffer, Math::vec4& value)
     {
         value[0] = buffer.ReadWord().ToFloat();
@@ -129,6 +138,15 @@ namespace Utility
         CHECK_START(buffer);
         if (!ParseVector3f(buffer, value))
             throw System::PunkInvalidArgumentException(L"Unable to parse blocked vec3f");
+        CHECK_END(buffer);
+        return true;
+    }
+
+    bool ParseBlockedQuaternionf(System::Buffer &buffer, Math::quat &value)
+    {
+        CHECK_START(buffer);
+        if (!ParseQuaternionf(buffer, value))
+            throw System::PunkInvalidArgumentException(L"Unable to parse blocked quat");
         CHECK_END(buffer);
         return true;
     }

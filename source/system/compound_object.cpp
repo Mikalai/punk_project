@@ -100,7 +100,11 @@ namespace System
     const string CompoundObject::ToString() const
     {
         std::wstringstream stream;
-        stream << '[' << GetLocalIndex() << ' ' << Info.Type.GetName() << ']';
+        stream << '[' << GetLocalIndex() << ' ' << Info.Type.GetName() << ']' << std::endl;
+        for (auto o : m_children)
+        {
+            stream << o->ToString() << std::endl;
+        }
         return string(stream.str());
     }
 

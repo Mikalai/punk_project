@@ -123,14 +123,14 @@ namespace Test9
 					frame->SetDiffuseColor(star[(c_num_particles-i)-1].r / 255.0f,
 							star[(c_num_particles-i)-1].g / 255.0f,
 							star[(c_num_particles-i)-1].b / 255.0f, 1.0f);
-					frame->Render(m_renderable.get());
+					frame->Submit(m_renderable.get());
 				}
 				frame->MultWorldMatrix(Math::mat4::CreateRotation(0.0f,0.0f,1.0f, spin*DegToRad));
 				// Assign A Color Using Bytes
 				frame->SetDiffuseColor(star[i].r / 255.0f,
 									   star[i].g / 255.0f,
 									   star[i].b / 255.0f, 1.0f);
-				frame->Render(m_renderable.get());
+				frame->Submit(m_renderable.get());
 
 				spin += 0.01f;                    // Used To Spin The Stars
 				star[i].angle += float(i)/c_num_particles;      // Changes The Angle Of A Star

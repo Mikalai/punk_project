@@ -132,7 +132,7 @@ namespace Test23
 
             frame->BeginRendering();
             frame->Clear(true, true, true);
-            frame->Render(m_geom->GetGpuCache().GetGpuBuffer());
+            frame->Submit(m_geom->GetGpuCache().GetGpuBuffer());
             frame->EndRendering();
         }
     };

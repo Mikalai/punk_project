@@ -22,7 +22,6 @@ namespace Math
 //	PUNK_ENGINE_API const mat4 Scale(vec3 scale);
 //	PUNK_ENGINE_API const mat4 TargetCamera(vec3 eye, vec3 pos, vec3 up);
 //	PUNK_ENGINE_API const mat4 FreeCamera(vec3 pos, vec3 dir, vec3 up);
-	PUNK_ENGINE_API const mat4 RotationMatrixFromQuaternion(const quat& q);
 	PUNK_ENGINE_API const mat3 NormalMatrixFromWorldView(const mat4& worldView);
 
 	//	used to find ceter of the mass of the object

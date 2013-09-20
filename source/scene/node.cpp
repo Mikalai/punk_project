@@ -1,4 +1,5 @@
 #include <iostream>
+#include "scene_graph.h"
 #include "../string/string.h"
 #include "../virtual/module.h"
 #include "../utility/module.h"
@@ -14,7 +15,7 @@ namespace Scene
     Node::Node()
         : m_data(nullptr)
         , m_task(nullptr)
-    {
+    {        
         Info.Add(this);
     }
 
@@ -27,7 +28,7 @@ namespace Scene
     Node* Node::Clone()
     {
         std::unique_ptr<Node> node{new Node};
-        node->SetName(GetName());
+        node->Name(Name());
         node->SetBoundingBox(GetBoundingBox());
         node->SetBoundingSphere(GetBoundingSphere());
         node->SetData(GetData());
@@ -51,14 +52,65 @@ namespace Scene
         m_data = value;
     }
 
-    SceneGraph* Node::GetSceneGraph() const
+    SceneGraph* Node::Graph() const
     {
         return m_graph;
     }
 
+    void Node::Graph(SceneGraph* graph)
+    {
+        m_graph = graph;
+    }
+
     System::Object* Node::GetData()
     {
+        if (m_data == nullptr)
+        {
+            m_data = System::HasInstance<System::Object>(m_entity_name);
+        }
         return m_data;
+    }
+
+    System::Object* Node::GetOrLoadData()
+    {
+        if (m_data)
+            return m_data;
+
+        if (!Task())
+        {
+            //  no data cached
+            if (m_data == nullptr)
+            {
+                //  try to find
+                m_data = System::HasInstance<System::Object>(m_entity_name);
+                if (m_data) //  fond - ok - return
+                    return m_data;
+            }
+
+            //  if node has got no data and there was no task to load data, than try to load data into the node
+            auto name = EntityName();
+            Graph()->AsyncParser()->Add(Task(new Utility::AsyncParserTask(Utility::FindPath(name))));
+        }
+        else
+        {
+            //  node has got no data and we assigned loading task to the node
+            if (Task()->State() == Utility::AsyncParserTask::AsyncSuccess)
+            {
+                //  if loading complete succesfull, move object from task to node data
+                SetData(Task()->Release());
+                //  delete node task (now we have and object). If something will delete object from
+                //  the node, we will create it again, because the will not be any tasks assigned to
+                //  the node
+                Task(nullptr);
+            }
+            else if (Task()->State() == Utility::AsyncParserTask::AsyncFailed)
+            {
+                //  if loading failed to complete there is no reason to continue work.
+                //  TODO: Maybe it is possible to continue work, when failed to load
+                throw System::PunkException(L"Failed to load resource: " + Task()->Path());
+            }
+        }
+        return nullptr;
     }
 
     const System::Object* Node::GetData() const
@@ -73,16 +125,6 @@ namespace Scene
         return System::string(stream.str());
     }
 
-    void Node::SetName(const System::string& value)
-    {
-        m_name = value;
-    }
-
-    const System::string& Node::GetName() const
-    {
-        return m_name;
-    }
-
     bool Node::Remove(const System::string& name, bool depth)
     {
         return System::CompoundObject::Remove(Find(name, depth), depth);
@@ -93,7 +135,7 @@ namespace Scene
         for (Object* o : m_children)
         {
             Node* n = As<Node*>(o);
-            if (n && (n->GetName() == name))
+            if (n && (n->Name() == name))
                 return n;
         }
         if (in_depth)
@@ -118,7 +160,7 @@ namespace Scene
         for (const Object* o : m_children)
         {
             const Node* n = As<const Node*>(o);
-            if (n && (n->GetName() == name))
+            if (n && (n->Name() == name))
                 return index;
             index++;
         }
@@ -132,7 +174,7 @@ namespace Scene
             Node* node = As<Node*>(o);
             if (node)
             {
-                if (node->GetName() == name)
+                if (node->Name() == name)
                     return node;
                 if (in_depth)
                 {
@@ -153,14 +195,14 @@ namespace Scene
             Node* n = As<Node*>(o);
             if (strict_compare)
             {
-                if (n && (n->GetName() == name))
+                if (n && (n->Name() == name))
                 {
                     res.push_back(n);
                 }
             }
             else
             {
-                if (n && (n->GetName().find(name) != System::string::npos))
+                if (n && (n->Name().find(name) != System::string::npos))
                 {
                     res.push_back(n);
                 }
@@ -187,5 +229,199 @@ namespace Scene
         if (m_task)
             delete m_task;
         return m_task = value;
+    }
+
+    void Node::LocalPosition(const Math::vec3& value)
+    {
+        m_local_position = value;
+        m_need_transform_update = true;
+    }
+
+    const Math::vec3& Node::LocalPosition() const
+    {
+        return m_local_position;
+    }
+
+    Math::vec3& Node::LocalPosition()
+    {
+        return m_local_position;
+    }
+
+    const Math::vec3& Node::GlobalPosition() const
+    {
+        return m_global_position;
+    }
+
+    Math::vec3& Node::GlobalPosition()
+    {
+        UpdateGlobalPosition();
+        return m_global_position;
+    }
+
+    void Node::UpdateGlobalPosition()
+    {
+        Node* parent = (Node*)GetOwner();
+        if (!parent)
+            m_global_position = m_local_position;
+        else
+            m_global_position = parent->GlobalPosition() + parent->GlobalRotation().Rotate(m_local_position);
+    }
+
+    void Node::LocalRotation(const Math::quat& value)
+    {
+        m_local_rotation = value;
+        m_need_transform_update = true;
+    }
+
+    const Math::quat& Node::LocalRotation() const
+    {
+        return m_local_rotation;
+    }
+
+    Math::quat& Node::LocalRotation()
+    {
+        return m_local_rotation;
+    }
+
+    const Math::quat& Node::GlobalRotation() const
+    {
+        return m_global_rotation;
+    }
+
+    Math::quat& Node::GlobalRotation()
+    {
+        UpdateGlobalRotation();
+        return m_global_rotation;
+    }
+
+    void Node::UpdateGlobalRotation()
+    {
+        Node* parent = (Node*)GetOwner();
+        if (!parent)
+            m_global_rotation = m_local_rotation;
+        else
+            m_global_rotation = parent->GlobalRotation()*m_local_rotation;
+    }
+
+    void Node::LocalScale(const Math::vec3& value)
+    {
+        m_local_scale = value;
+        m_need_transform_update = true;
+    }
+
+    const Math::vec3& Node::LocalScale() const
+    {
+        return m_local_scale;
+    }
+
+    Math::vec3& Node::LocalScale()
+    {
+        return m_local_scale;
+    }
+
+    const Math::vec3& Node::GlobalScale() const
+    {
+        return m_global_scale;
+    }
+
+    Math::vec3& Node::GlobalScale()
+    {
+        UpdateGlobalScale();
+        return m_global_scale;
+    }
+
+    void Node::UpdateGlobalScale()
+    {
+        Node* parent = (Node*)GetOwner();
+        if (!parent)
+            m_global_scale = m_local_scale;
+        else
+            m_global_scale = parent->GlobalScale().ComponentMult(m_local_scale);
+    }
+
+    const Math::mat4 Node::GetLocalMatrix() const
+    {
+        return Math::mat4::CreateTranslate(m_local_position)*Math::mat4::CreateFromQuaternion(m_local_rotation);
+    }
+
+    const Math::mat3 Node::GetLocalRotationMatrix() const
+    {
+        return Math::mat3::CreateFromQuaternion(m_local_rotation);
+    }
+
+    const Math::mat4 Node::GetGlobalMatrix() const
+    {
+        return Math::mat4::CreateTranslate(m_global_position)*Math::mat4::CreateFromQuaternion(m_global_rotation);
+    }
+
+    const Math::mat3 Node::GetGlobalRotationMatrix() const
+    {
+        return Math::mat3::CreateFromQuaternion(m_global_rotation);
+    }
+
+    const Math::vec3 Node::LocalTransform(const Math::vec3& value) const
+    {
+        return m_local_rotation.Rotate(value) + m_local_position;
+    }
+
+    const Math::vec3 Node::LocalInversedTransform(const Math::vec3& value) const
+    {
+        Math::quat q(m_local_rotation.Conjugated());
+        return q.Rotate(value - m_local_position);
+    }
+
+    const Math::vec3 Node::GlobalTransform(const Math::vec3& value) const
+    {
+        return m_global_rotation.Rotate(value) + m_global_position;
+    }
+
+    const Math::vec3 Node::GlobalInversedTransform(const Math::vec3& value) const
+    {
+        Math::quat q(m_global_rotation.Conjugated());
+        return q.Rotate(value - m_global_position);
+    }
+
+    void Node::EntityName(const System::string& value)
+    {
+        m_entity_name = value;
+    }
+
+    const System::string& Node::EntityName() const
+    {
+        return m_entity_name;
+    }
+
+    bool Node::NeedTransformUpdate() const
+    {
+        return m_need_transform_update;
+    }
+
+    void Node::UpdateGlobalTransform()
+    {
+        //  use const, because it is supposed that upper nodes already have valid transform
+        const Node* parent = (const Node*)GetOwner();
+        if (!parent)
+        {
+            m_global_position = m_local_position;
+            m_global_rotation = m_local_rotation;
+        }
+        else
+        {
+            m_global_position = parent->GlobalPosition() + parent->GlobalRotation().Rotate(m_local_position);
+            m_global_rotation = parent->GlobalRotation()*m_local_rotation;
+        }
+    }
+
+    void UpdateUpToDown(Node *node)
+    {
+        node->UpdateGlobalTransform();
+        for (System::Object* o : *node)
+        {
+            if (o->GetType()->GetId() == PUNK_NODE)
+            {
+                Node* child = (Node*)o;
+                UpdateUpToDown(child);
+            }
+        }
     }
 }

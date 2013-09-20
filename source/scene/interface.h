@@ -6,6 +6,7 @@ namespace Scene
 {
     class Node;
     class SceneGraph;
+    class TransformNode;
 }
 
 

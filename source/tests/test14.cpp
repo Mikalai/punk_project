@@ -502,7 +502,7 @@ namespace Test14
 		   // frame->Render(m_renderable2);
 			frame->SetLineWidth(3);
 			frame->SetDiffuseColor(0,0,1,0.5);
-			frame->Render(m_renderable3);
+			frame->Submit(m_renderable3);
 			frame->SetPointSize(10);
 			frame->SetDiffuseColor(0, 1, 0, 0.5);
 			if (m_renderable4)

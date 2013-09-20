@@ -20,6 +20,8 @@ namespace Punk
         void DecreaseDistance(System::Event* event);
 
         const Math::mat4 GetViewMatrix() const;
+        const Math::mat4 GetProjectionMatrix() const;
+
     private:
         Math::SphericalCoordinate m_camera_direction;
         Math::vec3 m_camera_view;

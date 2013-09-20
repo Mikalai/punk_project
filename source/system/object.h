@@ -47,9 +47,13 @@ namespace System
         virtual void Save(Buffer* buffer) const;
         virtual void Load(Buffer* buffer);
 
+        const string& Name() const;
+        void Name(const string& value);
+
 	private:
 		Object* m_owner;
         unsigned m_id;
+        System::string m_name;
 
     public:
         static unsigned m_id_next;

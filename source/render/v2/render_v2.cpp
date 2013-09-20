@@ -20,10 +20,8 @@
 namespace Render
 {
 
-    Render2::Render2(Utility::AsyncParser* parser)
-        : m_camera(nullptr)
-        , m_armature_mixer(nullptr)
-        , m_parser(parser)
+    Render2::Render2()
+        : m_armature_mixer(nullptr)
     {
         RegisterRenderProcessor(Virtual::StaticGeometry::Info.Type.GetId(), ProcessStaticMesh);
         RegisterRenderProcessor(Virtual::SkinGeometry::Info.Type.GetId(), ProcessSkinMesh);
@@ -45,17 +43,14 @@ namespace Render
         return m_frame;
     }
 
-    void Render2::RenderScene(Scene::SceneGraph* value, Gpu::Frame* frame)
+    void Render2::RenderScene(Scene::SceneGraph *value, const Math::mat4 &view, const Math::mat4 &projection, Gpu::Frame *frame)
     {
         m_all_lights.clear();
         m_all_lights.reserve(16);
         m_frame = frame;
         m_frame->PushViewState();
-        if (m_camera)
-        {
-            m_frame->SetViewMatrix(m_camera->GetViewMatrix());
-            m_frame->SetProjectionMatrix(m_camera->GetProjectionMatrix());
-        }
+        m_frame->SetViewMatrix(view);
+        m_frame->SetProjectionMatrix(projection);
         for (auto object : *value)
         {
             Scene::Node* node = Cast<Scene::Node*>(object);
@@ -68,7 +63,8 @@ namespace Render
 
     void Render2::Process(Scene::Node *node)
     {
-        System::Object* o = node->GetData();
+        System::Object* o = node->GetOrLoadData();
+        m_frame->SetWorldMatrix(node->GetGlobalMatrix());
         if (o)
         {
             void (*F)(Render2*, Scene::Node*, System::Object*) = m_render_processor.at(o->GetType()->GetId());
@@ -81,11 +77,6 @@ namespace Render
                 ProcessChildren(node);
             }
         }
-        else
-        {
-            LoadObject(node);
-            ProcessChildren(node);
-        }
     }
 
     void Render2::ProcessChildren(Scene::Node *node)
@@ -97,11 +88,6 @@ namespace Render
                 continue;
             Process(n);
         }
-    }
-
-    void Render2::SetCamera(Virtual::Camera *value)
-    {
-        m_camera = value;
     }
 
     void Render2::SetCurrentArmatureAnimationMixer(Virtual::ArmatureAnimationMixer* value)
@@ -128,46 +114,6 @@ namespace Render
     {
         return m_local_matrix.top();
     }
-
-    Utility::AsyncParser* Render2::AsyncParser()
-    {
-        return m_parser;
-    }
-
-    void Render2::AsyncParser(Utility::AsyncParser* parser)
-    {
-        m_parser = parser;
-    }
-
-    void Render2::LoadObject(Scene::Node *node)
-    {
-        if (!node->Task())
-        {
-            //  if node has got no data and there was no task to load data, than try to load data into the node
-            auto name = node->GetName();
-            AsyncParser()->Add(node->Task(new Utility::AsyncParserTask(Utility::FindPath(name))));
-        }
-        else
-        {
-            //  node has got no data and we assigned loading task to the node
-            if (node->Task()->State() == Utility::AsyncParserTask::AsyncSuccess)
-            {
-                //  if loading complete succesfull, move object from task to node data
-                node->SetData(node->Task()->Release());
-                //  delete node task (now we have and object). If something will delete object from
-                //  the node, we will create it again, because the will not be any tasks assigned to
-                //  the node
-                node->Task(nullptr);
-            }
-            else if (node->Task()->State() == Utility::AsyncParserTask::AsyncFailed)
-            {
-                //  if loading failed to complete there is no reason to continue work.
-                //  TODO: Maybe it is possible to continue work, when failed to load
-                throw System::PunkException(L"Failed to load resource: " + node->Task()->Path());
-            }
-        }
-    }
-
 
     void Render2::RegisterRenderProcessor(unsigned type, void (*F)(Render2 *, Scene::Node *, System::Object *))
     {

@@ -1,5 +1,6 @@
 #include "render_river.h"
 #include "render_v2.h"
+#include "../../scene/module.h"
 #include "../../utility/module.h"
 #include "../../virtual/module.h"
 
@@ -20,7 +21,7 @@ namespace Render
                 if (!river->Task())
                 {
                     auto name = river->GetStaticMeshFilename();
-                    render->AsyncParser()->Add(river->Task(new Utility::AsyncParserTask(Utility::FindPath(name))));
+                    node->Graph()->AsyncParser()->Add(river->Task(new Utility::AsyncParserTask(Utility::FindPath(name))));
                 }
                 else
                 {
@@ -48,7 +49,7 @@ namespace Render
                     frame->EnableBlending(true);
                     frame->SetDiffuseColor(0, 0, 1, 0.5);
                     frame->SetTextureMatrix(Math::mat4::CreateTranslate(river->GetStreamPosition()));
-                    frame->Render(geom->GetGpuCache().GetGpuBuffer());
+                    frame->Submit(geom->GetGpuCache().GetGpuBuffer());
                     frame->PopBatchState();
                 }
                 else

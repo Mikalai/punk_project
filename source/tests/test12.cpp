@@ -101,7 +101,7 @@ namespace Test12
 //			frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_x));
 //			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_y));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_rz));
-			frame->Render(m_renderable);
+			frame->Submit(m_renderable);
 			frame->PopAllState();
 
 			frame->EndRendering();

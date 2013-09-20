@@ -59,4 +59,14 @@ namespace System
 
     void Object::Load(Buffer* buffer)
     {}
+
+    const string& Object::Name() const
+    {
+        return m_name;
+    }
+
+    void Object::Name(const string& value)
+    {
+        m_name = value;
+    }
 }

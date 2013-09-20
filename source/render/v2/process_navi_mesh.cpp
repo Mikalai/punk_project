@@ -21,7 +21,7 @@ namespace Render
                 m_frame->EnableLighting(false);
                 m_frame->EnableBlending(true);
                 m_frame->SetDiffuseColor(0, 0, 1.0, .5);
-                m_frame->Render(r, true);
+                m_frame->Submit(r, true);
                 m_frame->PopAllState();
             }
         }

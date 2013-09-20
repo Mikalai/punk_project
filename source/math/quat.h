@@ -17,7 +17,7 @@ namespace Math
 		Vector3<T> m_vec;
 	public:
 
-		Quaternion() : m_scalar(0), m_vec(0,0,0) {}
+        Quaternion() : m_scalar(0), m_vec(1,0,0) {}
 		Quaternion(T w, T x, T y, T z) : m_scalar(w), m_vec(x, y, z) {}
 
 		Quaternion(T w, const Vector3<T>& vec)

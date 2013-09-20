@@ -17,6 +17,7 @@ namespace Utility
             case WORD_NODE:
             {
                 std::unique_ptr<Scene::Node> node(new Scene::Node);
+                node->Graph(&value);
                 ParseSceneNode(buffer, node.get());
                 value.Add(node.release());
             }

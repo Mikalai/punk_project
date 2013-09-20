@@ -111,6 +111,14 @@ namespace Math
             return *this;
         }
 
+        const Vector3<T> Cross(const Vector3<T>& vec) const
+        {
+            Vector3<T> v(
+                        m_v[1] * vec.m_v[2] - m_v[2] * vec.m_v[1],
+                    m_v[2] * vec.m_v[0] - m_v[0] * vec.m_v[2],
+                    m_v[0] * vec.m_v[1] - m_v[1] * vec.m_v[0]);
+            return v;
+        }
 
         Vector3<T>& Chop(T eps = T(0.00001))
         {
@@ -353,40 +361,10 @@ namespace Math
         vec3(float x, float y, float z) : Vector3<float>(x, y, z) {}
         vec3(const vec3& vec) : Vector3<float>(vec) {}
         vec3(const Vector3<float>& vec) : Vector3<float>(vec) {}
-
-        float Length() const
-        {
-            return sqrtf(m_v[0]*m_v[0]+m_v[1]*m_v[1]+m_v[2]*m_v[2]);
-        }
-
-        const vec3 Normalized() const
-        {
-            float length = Length();
-            if (length == 0)
-                return *this;
-            return *this / length;
-        }
-
-        vec3& Normalize()
-        {
-            float length = Length();
-            if (length == 0)
-                return *this;
-            m_v[0] /= length;
-            m_v[1] /= length;
-            m_v[2] /= length;
-            return *this;
-        }
-
-        const vec3 Cross(const vec3& vec) const
-        {
-            vec3 v(
-                        m_v[1] * vec.m_v[2] - m_v[2] * vec.m_v[1],
-                    m_v[2] * vec.m_v[0] - m_v[0] * vec.m_v[2],
-                    m_v[0] * vec.m_v[1] - m_v[1] * vec.m_v[0]);
-            return v;
-        }
-
+        float Length() const;
+        const vec3 Normalized() const;
+        vec3& Normalize();
+        const vec3 Cross(const vec3& vec) const;
         void Save(System::Buffer* buffer) const;
         void Load(System::Buffer* buffer);
 

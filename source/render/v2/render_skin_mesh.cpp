@@ -34,12 +34,12 @@ namespace Render
                 {
                     frame->SetBoneMatrix(bone_index, render->GetLocalMatrix().Inversed() * mixer->GetAnimatedGlobalMatrix(bone_index) * render->GetLocalMatrix());
                 }
-                frame->Render(geom->GetGpuCache().GetGpuBuffer());
+                frame->Submit(geom->GetGpuCache().GetGpuBuffer());
                 frame->EnableSkinning(false);
                 if (frame->IsEnabledBoundingBoxRendering())
                 {
                     const auto& bbox = geom->GetBoundingBox();
-                    frame->Render(Gpu::AsRenderable(bbox, frame->GetVideoDriver()), true);
+                    frame->Submit(Gpu::AsRenderable(bbox, frame->GetVideoDriver()), true);
                     Math::mat4 t;
                     t.SetColumn(0, Math::vec4(bbox.GetR(), 0));
                     t.SetColumn(1, Math::vec4(bbox.GetS(), 0));
@@ -68,7 +68,7 @@ namespace Render
                 }
                 if (frame->IsEnabledBoundingSphereRendering())
                 {
-                    frame->Render(Gpu::AsRenderable(geom->GetBoundingSphere(), frame->GetVideoDriver()), true);
+                    frame->Submit(Gpu::AsRenderable(geom->GetBoundingSphere(), frame->GetVideoDriver()), true);
                 }
             }
             else

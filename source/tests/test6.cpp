@@ -87,7 +87,7 @@ namespace Test6
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(1, 0, 0, m_x));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_y));
 			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 0, 1, m_z));
-			frame->Render(m_renderable.get());
+			frame->Submit(m_renderable.get());
 			frame->EndRendering();
 
 			m_x += 0.0003f;

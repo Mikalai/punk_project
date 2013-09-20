@@ -42,5 +42,39 @@ namespace Math
             m_v[i] = buffer->ReadSigned32();
         }
     }
+
+    float vec3::Length() const
+    {
+        return sqrtf(m_v[0]*m_v[0]+m_v[1]*m_v[1]+m_v[2]*m_v[2]);
+    }
+
+    const vec3 vec3::Normalized() const
+    {
+        float length = Length();
+        if (length == 0)
+            return *this;
+        return *this / length;
+    }
+
+    vec3& vec3::Normalize()
+    {
+        float length = Length();
+        if (length == 0)
+            return *this;
+        m_v[0] /= length;
+        m_v[1] /= length;
+        m_v[2] /= length;
+        return *this;
+    }
+
+    const vec3 vec3::Cross(const vec3& vec) const
+    {
+        vec3 v(
+                    m_v[1] * vec.m_v[2] - m_v[2] * vec.m_v[1],
+                m_v[2] * vec.m_v[0] - m_v[0] * vec.m_v[2],
+                m_v[0] * vec.m_v[1] - m_v[1] * vec.m_v[0]);
+        return v;
+    }
+
 }
 

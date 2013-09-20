@@ -28,7 +28,7 @@ namespace Gpu
 		void BeginRendering();
         //void BeginRendering(Texture2D* color_buffer, Texture2D* depth_buffer);
         void BeginRendering(FrameBuffer* target);
-		void Render(Renderable* value, bool destroy = false);		
+		void Submit(Renderable* value, bool destroy = false);		
 
 		void SetClipSpace(const Math::ClipSpace& value);		
         const Math::ClipSpace& GetClipSpace() const;

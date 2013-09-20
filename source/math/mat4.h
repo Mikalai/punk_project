@@ -20,6 +20,8 @@ namespace System
 
 namespace Math
 {
+    class quat;
+
 	template<class T>
 	class Matrix4x4
 	{
@@ -778,6 +780,7 @@ namespace Math
         static const mat4 CreateTextureBiasMatrix();
         static const mat4 CreateCropMatrix(const Math::FrustumCore &frustum, const Math::mat4 &shadow_view, const Math::mat4& shadow_proj, float& min_x, float& max_x, float& min_y, float& max_y);
         static const mat4 CreateLightProjectionMatrix(const Math::vec2& z_range);
+        static const mat4 CreateFromQuaternion(const quat& value);
 
         const mat4 Inversed() const;
         void Save(System::Buffer* buffer) const;

@@ -19,7 +19,7 @@ namespace Render
                 if (!terrain->Task())
                 {
                     auto name = terrain->GetStaticMeshFilename();
-                    render->AsyncParser()->Add(terrain->Task(new Utility::AsyncParserTask(Utility::FindPath(name))));
+                    node->Graph()->AsyncParser()->Add(terrain->Task(new Utility::AsyncParserTask(Utility::FindPath(name))));
                 }
                 else
                 {
@@ -45,7 +45,7 @@ namespace Render
                 {
                     m_frame->SetBoundingSphere(m_frame->GetWorldMatrix() * geom->GetBoundingSphere());
                     //m_frame->Render(Gpu::AsRenderable(geom->GetBoundingSphere(), m_frame->GetVideoDriver()));
-                    m_frame->Render(geom->GetGpuCache().GetGpuBuffer());
+                    m_frame->Submit(geom->GetGpuCache().GetGpuBuffer());
                 }
                 else
                 {

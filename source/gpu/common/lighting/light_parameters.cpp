@@ -4,7 +4,9 @@ namespace Gpu
 {
 
 	LightParameters::LightParameters()
-	{
+    {
+        m_direction.Set(1, 0, 0, 0);
+        m_light_type = LightType::Direction;
 		m_attenuation = LightAttenuation::Constant;
         m_constant_attenuation = 1;
         m_linear_attenuation = 0;

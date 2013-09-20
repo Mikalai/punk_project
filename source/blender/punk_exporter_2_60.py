@@ -80,6 +80,23 @@ def export_collision_mesh(f, object):
         export_vertex_position(f, object.data)
         end_block(f)
     return
+
+def export_object_matrix(f, object):
+    if (object.parent != None):
+        q1 = object.parent.rotation_quaternion
+        p1 = object.parent.location
+        q2 = object.rotation_quaternion;
+        p2 = object.location;
+        q = q2.conjugated()*q1;
+        p = (p1 - p2)*q2.conjugated().to_matrix();
+        export_vec3(f, "*location", p)
+        export_quat(f, "*rotation", q)
+        export_vec3(f, "*scale", object.scale)
+    else:
+        export_vec3(f, "*location", object.location)
+        export_quat(f, "*rotation", object.rotation_quaternion)
+        export_vec3(f, "*scale", object.scale)
+    return
    
 #
 #   used to export animation data
@@ -190,7 +207,6 @@ def export_transform(f, object):
         export_string(f, "*name", object.parent_bone)
     start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
-    export_local_matrix(f, object)
     export_children(f, object)        
     end_block(f)
     if object.parent_bone != '':
@@ -217,14 +233,13 @@ def export_static_mesh_node(f, object):
      
     start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
-    export_local_matrix(f, object)
+    export_object_matrix(f, object)
 
     if type(object.data) == bpy.types.Mesh:
-        start_block(f, "*node")
-        export_string(f, "*name", object.data.name + ".static")
+        export_string(f, "*entity_name", object.data.name + ".static")
         export_bounding_box(f, object)
         push_entity("*static_mesh", object)
-        end_block(f)    #   static_mesh_node        
+    export_children(f, object)      
     end_block(f) #  transform
     
     if not((mesh == None) or (len(mesh.materials) == 0)):
@@ -247,11 +262,10 @@ def export_skin_mesh_node(f, object):
     export_local_matrix(f, object)
 
     if type(object.data) == bpy.types.Mesh:
-        start_block(f, "*node")
-        export_string(f, "*name", object.data.name + ".skin")
+        export_string(f, "*entity_name", object.data.name + ".skin")
         export_bounding_box(f, object)
         push_entity("*skin_mesh", object)
-        end_block(f)    #   *skin_mesh_node
+    export_children(f, object)
     end_block(f) #  transform
     
     if not((mesh == None) or (len(mesh.materials) == 0)):

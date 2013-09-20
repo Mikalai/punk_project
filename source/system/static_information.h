@@ -69,7 +69,7 @@ namespace System
     {
         for (auto o : T::Info.Instances)
         {
-            if (o->GetName() == name)
+            if (o->Name() == name)
                 return o;
         }
         return nullptr;

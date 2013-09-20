@@ -217,7 +217,7 @@ namespace Punk
 		return m_window->Loop();
 	}
 
-	System::Window* Application::GetWindow()
+    System::Window* Application::GetWindow() const
 	{
 		return m_window;
 	}

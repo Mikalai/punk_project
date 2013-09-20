@@ -23,6 +23,7 @@ namespace Utility
             case WORD_NODE:
             {
                 std::unique_ptr<Scene::Node> child(new Scene::Node);
+                child->Graph(node->Graph());
                 ParseSceneNode(buffer, child.get());
                 node->Add(child.release());
             }
@@ -31,16 +32,35 @@ namespace Utility
             {
                 System::string name;
                 ParseBlockedString(buffer, name);
-                node->SetName(name);
+                node->Name(name);
             }
                 break;
-            case WORD_LOCAL_MATRIX:
+            case WORD_LOCATION:
             {
-                Math::mat4 m;
-                ParseBlockedMatrix4x4f(buffer, m);
-                std::unique_ptr<Virtual::Transform> t(new Virtual::Transform);
-                t->Set(m);
-                node->SetData(t.release());
+                Math::vec3 value;
+                ParseBlockedVector3f(buffer, value);
+                node->LocalPosition(value);
+            }
+                break;
+            case WORD_ROTATION:
+            {
+                Math::quat value;
+                ParseBlockedQuaternionf(buffer, value);
+                node->LocalRotation(value);
+            }
+                break;
+            case WORD_SCALE:
+            {
+                Math::vec3 value;
+                ParseBlockedVector3f(buffer, value);
+                node->LocalScale(value);
+            }
+                break;
+            case WORD_ENTITY_NAME:
+            {
+                System::string value;
+                ParseBlockedString(buffer, value);
+                node->EntityName(value);
             }
                 break;
             case WORD_BOUNDING_BOX:
@@ -50,7 +70,7 @@ namespace Utility
                 node->SetBoundingBox(bbox);
                 node->SetBoundingSphere(bbox.ToBoundingSphere());
             }
-                break;
+                break;            
             default:
                 throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);
             }

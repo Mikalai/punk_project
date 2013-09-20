@@ -41,7 +41,7 @@ namespace Render
             {
                 Math::vec3 pos(0,0,0);
                 Math::vec4 dir(0, 0, -1, 0);
-                m_frame->Render(Gpu::AsRenderable(pos, pos + dir.XYZ(), m_frame->GetVideoDriver()), true);
+                m_frame->Submit(Gpu::AsRenderable(pos, pos + dir.XYZ(), m_frame->GetVideoDriver()), true);
             }
             m_frame->PopAllState();
         }

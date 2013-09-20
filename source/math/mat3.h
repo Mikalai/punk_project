@@ -17,6 +17,8 @@
 namespace System { class Buffer; }
 namespace Math
 {
+    class quat;
+
 	template<class T>
 	class  Matrix3x3
 	{
@@ -607,6 +609,7 @@ namespace Math
 		mat3(T m0, T m1, T m2, T m3, T m4, T m5, T m6, T m7, T m8) : Matrix3x3<float>(m0, m1, m2, m3, m4, m5, m6, m7, m8) {}
         void Save(System::Buffer* buffer) const;
         void Load(System::Buffer* buffer);
+        static const mat3 CreateFromQuaternion(const quat& value);
 	};
 
 }
