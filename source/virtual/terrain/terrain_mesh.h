@@ -42,6 +42,8 @@ namespace Virtual
         Utility::AsyncParserTask* m_task;
         PUNK_OBJECT(TerrainMesh)
     };
+
+    PUNK_OBJECT_UTIL(TerrainMesh)
 }
 
 #endif // TERRAIN_MESH_H

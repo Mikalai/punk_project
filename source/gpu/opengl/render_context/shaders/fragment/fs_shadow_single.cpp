@@ -1,3 +1,4 @@
+#include <sstream>
 #include "fs_shadow_single.h"
 #include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"

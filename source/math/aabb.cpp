@@ -129,23 +129,23 @@ namespace Math
 //			return false;
 //		else
 //			return true;
-//	}
-
-    void AxisAlignedBox::Save(System::Buffer *buffer) const
-	{
-        m_min.Save(buffer);
-        m_max.Save(buffer);
-	}
-
-    void AxisAlignedBox::Load(System::Buffer *buffer)
-	{
-        m_min.Save(buffer);
-        m_max.Save(buffer);
-	}
+//	}    
 
     void AxisAlignedBox::Set(const vec3& min_point, const vec3& max_point)
     {
         m_min = max_point;
         m_max = min_point;
+    }
+
+    void SaveBoundingBox(System::Buffer *buffer, const AxisAlignedBox& value)
+    {
+        SaveVector3f(buffer, value.m_min);
+        SaveVector3f(buffer, value.m_max);
+    }
+
+    void LoadBoundingBox(System::Buffer *buffer, AxisAlignedBox& value)
+    {
+        LoadVector3f(buffer, value.m_min);
+        LoadVector3f(buffer, value.m_max);
     }
 }

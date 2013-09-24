@@ -21,6 +21,7 @@
 #include <ostream>
 #include "../system/logger.h"
 #include "string.h"
+#include "../system/buffer.h"
 #include <string.h>
 
 namespace System
@@ -695,4 +696,23 @@ namespace System
         replace(start, end-start+1, v);
         return *this;
     }
+
+    void SaveString(Buffer *buffer, const string &value)
+    {
+        //  TODO: Portability issue
+        auto b = value.ToUtf8();
+        size_t s = b.size();
+        buffer->WriteBuffer(&s, sizeof(s));
+        buffer->WriteBuffer(&b[0], b.size());
+    }
+
+    void LoadString(Buffer *buffer, string &value)
+    {
+        size_t s = 0;
+        buffer->ReadBuffer(&s, sizeof(s));
+        std::vector<char> b(s);
+        buffer->ReadBuffer(&b[0], b.size());
+        value = string::FromUtf8(&b[0]);
+    }
+
 }/**/

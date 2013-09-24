@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 
+#include <array>
 #include "../../string/string.h"
 #include "../../math/bounding_box.h"
 #include "../../system/aop/aop.h"
@@ -24,7 +25,7 @@ namespace Virtual
 	{
 	public:		
 		typedef std::map<int, std::map<System::string, float>> BoneWeights;
-        typedef std::map<System::string, std::vector<Math::Vector4<Math::vec2>>> TextureMeshes;
+        typedef std::map<System::string, std::vector<std::array<Math::vec2, 4>>> TextureMeshes;
 
 	public:
 
@@ -71,7 +72,6 @@ namespace Virtual
 
             void Save(System::Buffer *buffer) const;
             void Load(System::Buffer *buffer);
-
         private:
             SkinGeometry& m_geom;
             Vertices m_vertices;
@@ -88,9 +88,6 @@ namespace Virtual
         SkinGeometry(const SkinGeometry&) = delete;
         SkinGeometry& operator = (const SkinGeometry&) = delete;
         virtual ~SkinGeometry();
-
-        virtual void Save(System::Buffer *buffer) const override;
-        virtual void Load(System::Buffer *buffer) override;
 
         virtual Vertices& GetVertexArray() override;
         virtual Normals& GetNormalArray() override;
@@ -140,8 +137,10 @@ namespace Virtual
         friend class CpuCache;
         friend class GpuCache;
 
-        PUNK_OBJECT(SkinGeometry)
+        PUNK_OBJECT(SkinGeometry)        
 	};
+
+    PUNK_OBJECT_UTIL(SkinGeometry)
 }
 
 #endif	//	_H_PUNK_VIRTUAL_SKIN_GEOMETRY

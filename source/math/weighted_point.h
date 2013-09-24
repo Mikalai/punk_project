@@ -28,6 +28,9 @@ namespace Math
     private:
         float m_weight;
         vec4 m_point;
+
+        friend void SaveWeightedPoint(System::Buffer* buffer, const WeightedPoint& value);
+        friend void LoadWeightedPoint(System::Buffer* buffer, WeightedPoint& value);
     };
 
     PUNK_ENGINE_API const WeightedPoint operator + (const WeightedPoint& l, const WeightedPoint& r);
@@ -36,6 +39,9 @@ namespace Math
     PUNK_ENGINE_API const WeightedPoint operator * (float l, const WeightedPoint& r);
     PUNK_ENGINE_API const WeightedPoint operator / (const WeightedPoint& l, float r);
     PUNK_ENGINE_API const WeightedPoint operator / (float l, const WeightedPoint& r);
+
+    PUNK_ENGINE_API void SaveWeightedPoint(System::Buffer* buffer, const WeightedPoint& value);
+    PUNK_ENGINE_API void LoadWeightedPoint(System::Buffer* buffer, WeightedPoint& value);
 }
 
 #endif // WEIGHTED_POINT_H

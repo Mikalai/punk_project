@@ -26,6 +26,8 @@ namespace Scene
 
         PUNK_OBJECT(SceneGraph)
 	};
+
+    PUNK_OBJECT_UTIL(SceneGraph)
 }
 
 #endif	//	_H_PUNK_SCENE_MAIN_HEADER

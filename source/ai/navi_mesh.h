@@ -50,6 +50,7 @@ namespace AI
         PUNK_OBJECT(NaviMesh)
 	};
 
+    PUNK_OBJECT_UTIL(NaviMesh)
 
 }
 

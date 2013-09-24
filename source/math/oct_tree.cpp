@@ -1,4 +1,5 @@
-﻿#include "oct_tree.h"
+﻿#include "../system/buffer.h"
+#include "oct_tree.h"
 #include "aabb.h"
 #include "line3d.h"
 #include "triangle3d.h"
@@ -176,147 +177,141 @@ namespace Math
         return FaceList();
     }
 
-    void OctTree::Save(System::Buffer *buffer) const
+    void SaveOctTree(System::Buffer* buffer, const OctTree& value)
     {
-        buffer->WriteSigned32(m_cur_depth);
-        m_bbox.Save(buffer);
-        buffer->WriteSigned32(m_is_finale);
-        buffer->WriteSigned32(m_face_count);
-        int has_data = (int)m_face_list.size();
+        buffer->WriteSigned32(value.m_cur_depth);
+        SaveBoundingBox(buffer, value.m_bbox);
+        buffer->WriteSigned32(value.m_is_finale);
+        buffer->WriteSigned32(value.m_face_count);
+        int has_data = (int)value.m_face_list.size();
         buffer->WriteSigned32(has_data);
-        if (m_face_count && has_data)
-            for (auto& p : m_face_list)
-                p.Save(buffer);
+        if (value.m_face_count && has_data)
+            for (auto& p : value.m_face_list)
+                SaveVector3i(buffer, p);
 
-        if (m_is_finale)
+        if (value.m_is_finale)
             return;
 
-        int flag = m_right_front_up.get() != 0;
+        int flag = value.m_right_front_up.get() != 0;
         buffer->WriteSigned32(flag);
         if (flag)
-            m_right_front_up->Save(buffer);
+            SaveOctTree(buffer, *value.m_right_front_up);
 
-        flag = m_right_front_down.get() != 0;
+        flag = value.m_right_front_down.get() != 0;
         buffer->WriteSigned32(flag);
         if (flag)
-            m_right_front_down->Save(buffer);
+            SaveOctTree(buffer, *value.m_right_front_down);
 
-        flag = m_right_back_up.get() != 0;
+        flag = value.m_right_back_up.get() != 0;
         buffer->WriteSigned32(flag);
         if (flag)
-            m_right_back_up->Save(buffer);
+            SaveOctTree(buffer, *value.m_right_back_up);
 
-        //flag = m_right_back_up.get() != 0;
-        //buffer.write((char*)&flag, sizeof(flag));
-        //if (flag)
-        //	m_right_back_up->Save(buffer);
-
-        flag = m_right_back_down.get() != 0;
+        flag = value.m_right_back_down.get() != 0;
         buffer->WriteSigned32(flag);
         if (flag)
-            m_right_back_down->Save(buffer);
+            SaveOctTree(buffer, *value.m_right_back_down);
 
-        flag = m_left_front_up.get() != 0;
+        flag = value.m_left_front_up.get() != 0;
         buffer->WriteSigned32(flag);
         if (flag)
-            m_left_front_up->Save(buffer);
+            SaveOctTree(buffer, *value.m_left_front_up);
 
-        flag = m_left_front_down.get() != 0;
+        flag = value.m_left_front_down.get() != 0;
         buffer->WriteSigned32(flag);
         if (flag)
-            m_left_front_down->Save(buffer);
+            SaveOctTree(buffer, *value.m_left_front_down);
 
-        flag = m_left_back_up.get() != 0;
+        flag = value.m_left_back_up.get() != 0;
         buffer->WriteSigned32(flag);
         if (flag)
-            m_left_back_up->Save(buffer);
+            SaveOctTree(buffer, *value.m_left_back_up);
 
-        flag = m_left_back_down.get() != 0;
+        flag = value.m_left_back_down.get() != 0;
         buffer->WriteSigned32(flag);
         if (flag)
-            m_left_back_down->Save(buffer);
-
+            SaveOctTree(buffer, *value.m_left_back_down);
     }
 
-    void OctTree::Load(System::Buffer *buffer)
+    void LoadOctTree(System::Buffer* buffer, OctTree& value)
     {
-        m_cur_depth = buffer->ReadSigned32();
-        m_bbox.Load(buffer);
-        m_is_finale = buffer->ReadSigned32();
-        m_face_count = buffer->ReadSigned32();
+        value.m_cur_depth = buffer->ReadSigned32();
+        LoadBoundingBox(buffer, value.m_bbox);
+        value.m_is_finale = buffer->ReadSigned32();
+        value.m_face_count = buffer->ReadSigned32();
         int has_data = buffer->ReadSigned32();
-        if (m_face_count && has_data)
+        if (value.m_face_count && has_data)
         {
-            m_face_list.resize(m_face_count);
-            for (auto& p : m_face_list)
-                p.Load(buffer);
+            value.m_face_list.resize(value.m_face_count);
+            for (auto& p : value.m_face_list)
+                LoadVector3i(buffer, p);
         }
 
-        if (m_is_finale)
+        if (value.m_is_finale)
             return;
 
         int flag = buffer->ReadSigned32();
         if (flag)
         {
-            m_right_front_up.reset(new OctTree);
-            m_right_front_up->m_parent = this;
-            m_right_front_up->Load(buffer);
+            value.m_right_front_up.reset(new OctTree);
+            value.m_right_front_up->m_parent = &value;
+            LoadOctTree(buffer, *value.m_right_front_up);
         }
 
         flag = buffer->ReadSigned32();
         if (flag)
         {
-            m_right_front_down.reset(new OctTree);
-            m_right_front_down->m_parent = this;
-            m_right_front_down->Load(buffer);
+            value.m_right_front_down.reset(new OctTree);
+            value.m_right_front_down->m_parent = &value;
+            LoadOctTree(buffer, *value.m_right_front_down);
         }
 
         flag = buffer->ReadSigned32();
         if (flag)
         {
-            m_right_back_up.reset(new OctTree);
-            m_right_back_up->m_parent = this;
-            m_right_back_up->Load(buffer);
+            value.m_right_back_up.reset(new OctTree);
+            value.m_right_back_up->m_parent = &value;
+            LoadOctTree(buffer, *value.m_right_back_up);
         }
 
         flag = buffer->ReadSigned32();
         if (flag)
         {
-            m_right_back_down.reset(new OctTree);
-            m_right_back_down->m_parent = this;
-            m_right_back_down->Load(buffer);
+            value.m_right_back_down.reset(new OctTree);
+            value.m_right_back_down->m_parent = &value;
+            LoadOctTree(buffer, *value.m_right_back_down);
         }
 
         flag = buffer->ReadSigned32();
         if (flag)
         {
-            m_left_front_up.reset(new OctTree);
-            m_left_front_up->m_parent = this;
-            m_left_front_up->Load(buffer);
+            value.m_left_front_up.reset(new OctTree);
+            value.m_left_front_up->m_parent = &value;
+            LoadOctTree(buffer, *value.m_left_front_up);
         }
 
         flag = buffer->ReadSigned32();
         if (flag)
         {
-            m_left_front_down.reset(new OctTree);
-            m_left_front_down->m_parent = this;
-            m_left_front_down->Load(buffer);
+            value.m_left_front_down.reset(new OctTree);
+            value.m_left_front_down->m_parent = &value;
+            LoadOctTree(buffer, *value.m_left_front_down);
         }
 
         flag = buffer->ReadSigned32();
         if (flag)
         {
-            m_left_back_up.reset(new OctTree);
-            m_left_back_up->m_parent = this;
-            m_left_back_up->Load(buffer);
+            value.m_left_back_up.reset(new OctTree);
+            value.m_left_back_up->m_parent = &value;
+            LoadOctTree(buffer, *value.m_left_back_up);
         }
 
         flag = buffer->ReadSigned32();
         if (flag)
         {
-            m_left_back_down.reset(new OctTree);
-            m_left_back_down->m_parent = this;
-            m_left_back_down->Load(buffer);
+            value.m_left_back_down.reset(new OctTree);
+            value.m_left_back_down->m_parent = &value;
+            LoadOctTree(buffer, *value.m_left_back_down);
         }
     }
 }

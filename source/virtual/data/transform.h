@@ -5,8 +5,6 @@
 #include "../../math/mat4.h"
 #include "../../system/compound_object.h"
 
-namespace Utility { class ObjectDesc; }
-
 namespace Virtual
 {
     class PUNK_ENGINE_API Transform : public System::Object
@@ -28,7 +26,13 @@ namespace Virtual
 
 	private:        
         PUNK_OBJECT(Transform)
+
+        friend void SaveTransform(System::Buffer* buffer, const System::Object* o);
+        friend void LoadTransform(System::Buffer* buffer, System::Object* o);
 	};
+
+    PUNK_ENGINE_API void SaveTransform(System::Buffer* buffer, const System::Object* o);
+    PUNK_ENGINE_API void LoadTransform(System::Buffer* buffer, System::Object* o);
 }
 
 #endif	//	_H_PUNK_VIRTUAL_TRANSFORM

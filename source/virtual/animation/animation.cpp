@@ -54,19 +54,21 @@ namespace Virtual
         m_name = value;
     }
 
-    void Animation::Save(System::Buffer* buffer) const
+    void SaveAnimation(System::Buffer *buffer, const System::Object *o)
     {
-        Object::Save(buffer);
-        m_pos_track.Save(buffer);
-        m_rot_track.Save(buffer);
-        buffer->WriteString(m_name);
+        System::SaveObject(buffer, o);
+        const Animation* animation = Cast<const Animation*>(o);
+        SaveAnimationTrack(buffer, animation->m_pos_track);
+        SaveAnimationTrack(buffer, animation->m_rot_track);
+        System::SaveString(buffer, animation->m_name);
     }
 
-    void Animation::Load(System::Buffer* buffer)
+    void LoadAnimation(System::Buffer *buffer, System::Object *o)
     {
-        Object::Load(buffer);
-        m_pos_track.Load(buffer);
-        m_rot_track.Load(buffer);
-        m_name = buffer->ReadString();
+        System::LoadObject(buffer, o);
+        Animation* animation = Cast<Animation*>(o);
+        LoadAnimationTrack(buffer, animation->m_pos_track);
+        LoadAnimationTrack(buffer, animation->m_rot_track);
+        System::LoadString(buffer, animation->m_name);
     }
 }

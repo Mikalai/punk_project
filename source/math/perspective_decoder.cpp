@@ -1,4 +1,5 @@
 #include "perspective_decoder.h"
+#include "vec3.h"
 #include "mat4.h"
 #include "plane.h"
 #include "frustum_plane.h"
@@ -47,24 +48,24 @@ namespace Math
         {
         case FrustumPlane::Bottom:
             v = m_value.GetRow(3) + m_value.GetRow(1);
-        break;
+            break;
         case FrustumPlane::Far:
             v = m_value.GetRow(3) - m_value.GetRow(2);
-        break;
+            break;
         case FrustumPlane::Left:
             v = m_value.GetRow(3) + m_value.GetRow(0);
-        break;
+            break;
         case FrustumPlane::Near:
             v = m_value.GetRow(3) + m_value.GetRow(2);
-        break;
+            break;
         case FrustumPlane::Right:
             v = m_value.GetRow(3) - m_value.GetRow(0);
-        break;
+            break;
         case FrustumPlane::Top:
             v = m_value.GetRow(3) - m_value.GetRow(1);
-        break;
+            break;
         default:
-        return Plane();
+            return Plane();
         }
         Plane result;
         float l = vec3(v.XYZ()).Length();

@@ -47,10 +47,6 @@ namespace Virtual
 
         void PrintDebug(Bone* parent, int level = 0);
 
-        virtual void Save(System::Buffer *buffer) const override;
-        virtual void Load(System::Buffer *buffer) override;
-
-
 		virtual void UpdateHierarchy();
 	private:
 		void CacheBones(Bone* b);
@@ -63,8 +59,10 @@ namespace Virtual
         Actions m_supported_actions;
         System::string m_name;
 
-        PUNK_OBJECT(Armature)
+        PUNK_OBJECT(Armature)               
 	};
+
+    PUNK_OBJECT_UTIL(Armature)
 }
 
 //REGISTER_MANAGER(L"resource.armatures", L"*.armature", System::Environment::Instance()->GetModelFolder(), System::ObjectType::ARMATURE, Virtual, Armature, return, return);

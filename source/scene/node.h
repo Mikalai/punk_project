@@ -5,7 +5,7 @@
 #include "../system/compound_object.h"
 #include "../string/string.h"
 #include "../math/bounding_box.h"
-#include "../math/bounding_shere.h"
+#include "../math/bounding_sphere.h"
 #include "../math/quat.h"
 
 namespace Utility { class AsyncParserTask; }
@@ -114,7 +114,13 @@ namespace Scene
         bool m_need_transform_update;
     public:
         PUNK_OBJECT(Node)
+
+        friend void SaveNode(System::Buffer* buffer, const System::Object* object);
+        friend void LoadNode(System::Buffer* buffer, System::Object* object);
 	};
+
+    PUNK_ENGINE_API void SaveNode(System::Buffer* buffer, const System::Object* object);
+    PUNK_ENGINE_API void LoadNode(System::Buffer* buffer, System::Object* object);
 
     void UpdateUpToDown(Node* node);
 }

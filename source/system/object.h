@@ -18,10 +18,16 @@ public:\
     unsigned GetLocalIndex() const { return m_local_index; }\
     void SetLocalIndex(unsigned value) { m_local_index = value; }\
     static System::StaticInormation<TYPE> Info; \
-    static Object* Create() { return new TYPE; }
+    static Object* Create() { return new TYPE; } \
+    friend void Save##TYPE(System::Buffer* buffer, const System::Object* o); \
+    friend void Load##TYPE(System::Buffer* buffer, System::Object* o);
 
-#define PUNK_OBJECT_REG(TYPE, NAME, CODE, PARENT) \
-    System::StaticInormation<TYPE> TYPE::Info{NAME, CODE, PARENT}
+#define PUNK_OBJECT_UTIL(TYPE)\
+    PUNK_ENGINE_API void Save##TYPE(System::Buffer* buffer, const System::Object* o);\
+    PUNK_ENGINE_API void Load##TYPE(System::Buffer* buffer, System::Object* o);
+
+#define PUNK_OBJECT_REG(TYPE, NAME, CODE, SAVE, LOAD, PARENT) \
+    System::StaticInormation<TYPE> TYPE::Info{NAME, CODE, SAVE, LOAD, PARENT}
 
 namespace System
 {
@@ -40,12 +46,7 @@ namespace System
         Object* GetOwner();
 
         unsigned GetId() const;
-
-
-        virtual const string ToString() const;
-
-        virtual void Save(Buffer* buffer) const;
-        virtual void Load(Buffer* buffer);
+        virtual const string ToString() const;        
 
         const string& Name() const;
         void Name(const string& value);
@@ -60,6 +61,8 @@ namespace System
 
         PUNK_OBJECT(Object)
 	};
+
+    PUNK_OBJECT_UTIL(Object)
 }
 
 template<class T>

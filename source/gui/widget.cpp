@@ -1,3 +1,4 @@
+#include "../system/logger.h"
 #include <algorithm>
 #include "widget.h"
 #include "manager.h"

@@ -3,7 +3,7 @@
 namespace Utility
 {
 
-    bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::vec2>>>& value)
+    bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<std::array<Math::vec2, 4>>>& value)
     {
         CHECK_START(buffer);
 

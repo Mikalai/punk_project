@@ -1,3 +1,5 @@
+#include "../system/buffer.h"
+#include "vec3.h"
 #include "curve.h"
 
 namespace Math
@@ -44,5 +46,27 @@ namespace Math
     float Curve::GetTotalLength() const
     {
         return m_total_length;
+    }
+
+    void SaveCurve(System::Buffer* buffer, const Curve& o)
+    {
+        buffer->WriteReal32(o.m_total_length);
+        unsigned size = o.m_splines.size();
+        buffer->WriteUnsigned32(size);
+        for (auto& s : o.m_splines)
+        {
+            SaveSpline(buffer, s);
+        }
+    }
+
+    void LoadCurve(System::Buffer* buffer, Curve& o)
+    {
+        o.m_total_length = buffer->ReadReal32();
+        unsigned size = buffer->ReadUnsigned32();
+        o.m_splines.resize(size);
+        for (auto& s : o.m_splines)
+        {
+            LoadSpline(buffer, s);
+        }
     }
 }

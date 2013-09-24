@@ -3,7 +3,7 @@
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(HumanArmature, "Virtual.HumanArmature", PUNK_HUMAN_ARMATURE, &HumanArmature::Info.Type);
+    PUNK_OBJECT_REG(HumanArmature, "Virtual.HumanArmature", PUNK_HUMAN_ARMATURE, SaveHumanArmature, LoadHumanArmature, &Armature::Info.Type);
 
 	struct HumanArmaturePartAdapter
 	{
@@ -84,5 +84,17 @@ namespace Virtual
     HumanArmature::~HumanArmature()
     {
         Info.Remove(this);
+    }
+
+    void SaveHumanArmature(System::Buffer *buffer, const System::Object *o)
+    {
+        SaveArmature(buffer, o);
+    }
+
+    void LoadHumanArmature(System::Buffer *buffer, System::Object *o)
+    {
+        LoadArmature(buffer, o);
+        HumanArmature* a = Cast<HumanArmature*>(o);
+        a->UpdateHierarchy();
     }
 }

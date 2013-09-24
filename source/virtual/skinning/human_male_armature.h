@@ -16,6 +16,8 @@ namespace Virtual
     private:
         PUNK_OBJECT(HumanMaleArmature)
 	};
+
+    PUNK_OBJECT_UTIL(HumanMaleArmature)
 };
 
 #endif	//	_H_PUNK_VIRTUAL_HUMAN_MALE_ARMATURE

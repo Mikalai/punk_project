@@ -16,7 +16,13 @@ namespace Virtual
         virtual ~Light();
 
         PUNK_OBJECT(Light)
+
+        friend void SaveLight(System::Buffer* buffer, const System::Object* object);
+        friend void LoadLight(System::Buffer* buffer, System::Object* object);
 	};
+
+    PUNK_ENGINE_API void SaveLight(System::Buffer* buffer, const System::Object* object);
+    PUNK_ENGINE_API void LoadLight(System::Buffer* buffer, System::Object* object);
 }
 
 #endif

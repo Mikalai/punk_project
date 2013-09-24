@@ -10,7 +10,7 @@
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(Armature, "Virtual.Armature", PUNK_ARMATURE, &System::Object::Info.Type);
+    PUNK_OBJECT_REG(Armature, "Virtual.Armature", PUNK_ARMATURE, SaveArmature, LoadArmature, &System::Object::Info.Type);
 
 	Armature::Armature()
 	{
@@ -108,34 +108,8 @@ namespace Virtual
 
 	}
 
-    void Armature::Save(System::Buffer *buffer) const
-    {
-        System::Object::Save(buffer);
-        unsigned count = (unsigned)m_root_bones.size();
-        buffer->WriteUnsigned32(count);
-        for (auto root : m_cache)
-        {
-            root->Save(buffer);
-        }
-    }
 
-    void Armature::Load(System::Buffer *buffer)
-    {
-        Clear();
-        System::Object::Load(buffer);
-
-        unsigned count = buffer->ReadUnsigned32();
-
-        for (unsigned i = 0; i != count; ++i)
-        {
-            std::unique_ptr<Bone> bone(new Bone);
-            bone->Load(buffer);
-            CacheBones(bone.get());
-            m_root_bones.push_back(bone.release());
-        }
-    }
-
-	void Armature::Clear()
+    void Armature::Clear()
 	{
 		for (auto bone : m_root_bones)
 			delete bone;
@@ -172,62 +146,31 @@ namespace Virtual
     {
         return m_supported_actions;
     }
+
+    void SaveArmature(System::Buffer *buffer, const System::Object* o)
+    {
+        System::SaveObject(buffer, 0);
+        const Armature* a = Cast<const Armature*>(o);
+        unsigned count = (unsigned)a->m_root_bones.size();
+        buffer->WriteUnsigned32(count);
+        for (auto root : a->m_cache)
+        {
+            SaveBone(buffer, *root);
+        }
+    }
+
+    void LoadArmature(System::Buffer *buffer, System::Object* o)
+    {
+        System::LoadObject(buffer, o);
+        Armature* a = Cast<Armature*>(o);
+        a->Clear();
+        unsigned count = buffer->ReadUnsigned32();
+        for (unsigned i = 0; i != count; ++i)
+        {
+            std::unique_ptr<Bone> bone(new Bone);
+            LoadBone(buffer, *bone);
+            a->CacheBones(bone.get());
+            a->m_root_bones.push_back(bone.release());
+        }
+    }
 }
-
-//bool Armature::BuildSkeleton(const std::vector<Utility::BoneDesc*>& bones)
-//{
-//	bool result = false;
-//	m_cache.clear();
-//	m_named_cache.clear();
-
-//	for (auto root_it : bones)
-//	{
-//		if (root_it->m_parent == L"")
-//		{
-
-//			std::auto_ptr<Bone> root(new Bone(*root_it));
-//			root->SetParent(nullptr);
-//			root->SetArmature(this);
-//			root->SetIndexInArmature(0);
-
-//			//	insert first cache record
-//			m_cache.push_back(root.get());
-//			m_named_cache[root->GetName()] = root.get();
-
-//			if (!BuildBone(root.get(), bones))
-//			{
-//				out_error() << "Error occured while building bone hierarchy" << std::endl;
-//				return false;
-//			}
-
-//			m_root_bones.push_back(root.get());
-//			root.release();
-//			result = true;
-//		}
-//	}
-//	return result;
-//}
-
-//bool Armature::BuildBone(Bone* parent, const std::vector<Utility::BoneDesc*>& bones)
-//{
-//	for (auto desc : bones)
-//	{
-//		if (desc->m_parent == parent->GetName())
-//		{
-
-//			std::unique_ptr<Bone> bone(new Bone(*desc));
-//			bone->SetParent(parent);
-//			bone->SetArmature(this);
-//			bone->SetIndexInArmature(m_cache.size());
-//			m_cache.push_back(bone.get());;
-//			m_named_cache[bone->GetName()] = bone.get();
-//			parent->AddChild(bone.get());
-
-//			if (!BuildBone(bone.get(), bones))
-//				return false;
-
-//			bone.release();
-//		}
-//	}
-//	return true;
-//}

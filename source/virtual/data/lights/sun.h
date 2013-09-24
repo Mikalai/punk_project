@@ -31,6 +31,8 @@ namespace Virtual
 
         PUNK_OBJECT(Sun)
     };
+
+    PUNK_OBJECT_UTIL(Sun)
 }
 
 #endif // PUNK_VIRTUAL_SUN_H

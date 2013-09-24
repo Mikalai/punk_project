@@ -26,7 +26,7 @@ namespace Virtual
 		return m_tracks[name].get();
 	}
 
-	const Math::Vector3<float> ObjectAnimationMixer::GetPosition(float frame)
+    const Math::vec3 ObjectAnimationMixer::GetPosition(float frame)
 	{
 		Math::vec3 res;
 		for (auto it = m_tracks.begin(); it != m_tracks.end(); ++it)
@@ -39,7 +39,7 @@ namespace Virtual
 		return res;
 	}
 
-	const Math::Quaternion<float> ObjectAnimationMixer::GetRotation(float frame)
+    const Math::quat ObjectAnimationMixer::GetRotation(float frame)
 	{
 		Math::quat res;
 		for (auto it = m_tracks.begin(); it != m_tracks.end(); ++it)

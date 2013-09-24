@@ -23,7 +23,7 @@ namespace Test4
 
 			frame->BeginRendering();
 			frame->SetWorldMatrix(Math::mat4::CreateTranslate(-1.5, 0, -6));
-			frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_tr));
+            frame->MultWorldMatrix(Math::mat4::CreateRotation(0, 1, 0, m_tr));
             float width = GetWindow()->GetWidth();
             float height = GetWindow()->GetHeight();
             frame->SetProjectionMatrix(Math::mat4::CreatePerspectiveProjection(Math::PI/4.0, width, height, 0.1, 100.0));

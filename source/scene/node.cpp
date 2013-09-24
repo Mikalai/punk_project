@@ -1,4 +1,5 @@
 #include <iostream>
+#include "../math/mat4.h"
 #include "scene_graph.h"
 #include "../string/string.h"
 #include "../virtual/module.h"
@@ -10,7 +11,45 @@
 
 namespace Scene
 {
-    PUNK_OBJECT_REG(Node, "Scene.Node", PUNK_NODE, &System::CompoundObject::Info.Type);
+    PUNK_OBJECT_REG(Node, "Scene.Node", PUNK_NODE, SaveNode, LoadNode, &System::CompoundObject::Info.Type);
+
+    void SaveNode(System::Buffer* buffer, const System::Object* object)
+    {
+        System::SaveCompoundObject(buffer, object);
+        const Node* node = Cast<const Node*>(object);
+        //  SceneGraph* m_graph - SKIP
+        System::Factory::Save(buffer, node->m_data);
+        System::SaveString(buffer, node->m_entity_name);
+        Math::SaveBoundingBox(buffer, node->m_bbox);
+        Math::SaveBoundingSphere(buffer, node->m_bsphere);
+        //  Utility::AsyncParserTask* m_task - SKIP
+        Math::SaveVector3f(buffer, node->m_local_position);
+        Math::SaveQuaternion(buffer, node->m_local_rotation);
+        Math::SaveVector3f(buffer, node->m_local_scale);
+        Math::SaveVector3f(buffer, node->m_global_position);
+        Math::SaveQuaternion(buffer, node->m_global_rotation);
+        Math::SaveVector3f(buffer, node->m_global_scale);
+        buffer->WriteBoolean(node->m_need_transform_update);
+    }
+
+    void LoadNode(System::Buffer* buffer, System::Object* object)
+    {
+        System::LoadCompoundObject(buffer, object);
+        Node* node = Cast<Node*>(object);
+        //  SceneGraph* m_graph - SKIP
+        node->m_data = System::Factory::Load(buffer);
+        System::LoadString(buffer, node->m_entity_name);
+        Math::LoadBoundingBox(buffer, node->m_bbox);
+        Math::LoadBoundingSphere(buffer, node->m_bsphere);
+        //  Utility::AsyncParserTask* m_task - SKIP
+        Math::LoadVector3f(buffer, node->m_local_position);
+        Math::LoadQuaternion(buffer, node->m_local_rotation);
+        Math::LoadVector3f(buffer, node->m_local_scale);
+        Math::LoadVector3f(buffer, node->m_global_position);
+        Math::LoadQuaternion(buffer, node->m_global_rotation);
+        Math::LoadVector3f(buffer, node->m_global_scale);
+        node->m_need_transform_update = buffer->ReadBoolean();
+    }
 
     Node::Node()
         : m_data(nullptr)

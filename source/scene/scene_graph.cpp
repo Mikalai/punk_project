@@ -6,7 +6,7 @@
 
 namespace Scene
 {
-    PUNK_OBJECT_REG(SceneGraph, "Scene.SceneGraph", PUNK_SCENE_GRAPH, &Node::Info.Type);
+    PUNK_OBJECT_REG(SceneGraph, "Scene.SceneGraph", PUNK_SCENE_GRAPH, SaveSceneGraph, LoadSceneGraph, &Node::Info.Type);
 
     SceneGraph::SceneGraph()
         : m_parser(new Utility::AsyncParser)
@@ -34,5 +34,15 @@ namespace Scene
     Utility::AsyncParser* SceneGraph::AsyncParser()
     {
         return m_parser;
+    }
+
+    void SaveSceneGraph(System::Buffer *buffer, const System::Object *o)
+    {
+        SaveNode(buffer, o);
+    }
+
+    void LoadSceneGraph(System::Buffer *buffer, System::Object *o)
+    {
+        LoadNode(buffer, o);
     }
 }

@@ -20,9 +20,6 @@ namespace Math
 	public:
 		bool SetPoints(const PointsCollection& points);
 
-        void Save(System::Buffer* buffer) const;
-        void Load(System::Buffer* buffer);
-
 		iterator begin() { return m_points.begin(); }
 		const_iterator begin() const { return m_points.begin(); }
 		iterator end() { return m_points.end(); }
@@ -40,10 +37,15 @@ namespace Math
 		Plane m_plane;
 
 		friend PUNK_ENGINE_API const Portal operator * (const mat4& m, const Portal& p);
+        friend void SaveBoundingBox(System::Buffer* buffer, const Portal& value);
+        friend void LoadBoundingBox(System::Buffer* buffer, Portal& value);
 	};
 
 	//	transforms portal to other space
 	PUNK_ENGINE_API const Portal operator * (const mat4& m, const Portal& p);
+    PUNK_ENGINE_API void SaveBoundingBox(System::Buffer* buffer, const Portal& value);
+    PUNK_ENGINE_API void LoadBoundingBox(System::Buffer* buffer, Portal& value);
+
 }
 
 #endif	//	_H_PUNK_MATH_PORTAL

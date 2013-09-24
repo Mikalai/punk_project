@@ -80,6 +80,8 @@ namespace Virtual
 
         PUNK_OBJECT(HumanArmature)
 	};
+
+    PUNK_OBJECT_UTIL(HumanArmature)
 }
 
 #endif	//	_H_PUNK_VIRTUAL_HUMAN_ARMATURE

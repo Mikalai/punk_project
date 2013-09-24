@@ -639,7 +639,8 @@ SOURCES += ../../source/main.cpp \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse_specular.cpp \
     ../../source/scene/transform_graph.cpp \
     ../../source/utility/parser/parse_transform_node.cpp \
-    ../../source/scene/transform_node.cpp
+    ../../source/scene/transform_node.cpp \
+    ../../source/virtual/animation/animation_track.cpp
 
 
 # Input
@@ -678,7 +679,6 @@ HEADERS += ../../source/config.h \
 	   ../../source/math/aabb.h \
 	   ../../source/math/astar.h \
 	   ../../source/math/bounding_box.h \
-	   ../../source/math/bounding_shere.h \
 	   ../../source/math/catmull_rom_spline.h \
 	   ../../source/math/clip_space.h \
 	   ../../source/math/complex.h \
@@ -1160,7 +1160,8 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_diffuse_specular.h \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse_specular.h \
     ../../source/scene/transform_graph.h \
-    ../../source/scene/transform_node.h
+    ../../source/scene/transform_node.h \
+    ../../source/math/bounding_sphere.h
 
 
 CONFIG += dll

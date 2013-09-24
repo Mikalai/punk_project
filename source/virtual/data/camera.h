@@ -41,10 +41,7 @@ namespace Virtual
 		const Math::mat4 GetViewMatrix() const;
 		const Math::vec3 GetDirection() const { return m_direction; }
 		const Math::vec3 GetUpVector() const { return m_up; }
-		const Math::ClipSpace ToClipSpace() const;
-
-        void Save(System::Buffer* buffer) const override;
-        void Load(System::Buffer* buffer) override;
+		const Math::ClipSpace ToClipSpace() const;        
 
 //		Camera* CreateFromFile(const System::string& path);
 //		Camera* CreateFromStream(std::istream& stream);
@@ -82,7 +79,13 @@ namespace Virtual
 		Math::Rect m_viewport;
 
 		void UpdateInternals();
+
+        friend void SaveCamera(System::Buffer* buffer, const Object* value);
+        friend void LoadCamera(System::Buffer* buffer, Object* value);
 	};
+
+    PUNK_ENGINE_API void SaveCamera(System::Buffer* buffer, const System::Object* value);
+    PUNK_ENGINE_API void LoadCamera(System::Buffer* buffer, System::Object* value);
 }
 
 #endif

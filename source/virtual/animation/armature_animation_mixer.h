@@ -49,10 +49,7 @@ namespace Virtual
         void SetTrackWeight(size_t track, float value);        
         bool GetBoneMatrix(size_t bone, Math::mat4& matrix);
 
-        const Math::mat4& GetAnimatedGlobalMatrix(size_t bone) const;
-
-        virtual void Save(System::Buffer* buffer) const override;
-        virtual void Load(System::Buffer* buffer) override;		
+        const Math::mat4& GetAnimatedGlobalMatrix(size_t bone) const;        
 
         Armature* GetArmature();
 
@@ -104,7 +101,13 @@ namespace Virtual
         Armature* m_armature;
 
         PUNK_OBJECT(ArmatureAnimationMixer)
+
+        friend void SaveArmatureAnimationMixer(System::Buffer* buffer, const Object* value);
+        friend void LoadArmatureAnimationMixer(System::Buffer* buffer, Object* value);
 	};
+
+    PUNK_ENGINE_API void SaveArmatureAnimationMixer(System::Buffer* buffer, const System::Object* value);
+    PUNK_ENGINE_API void LoadArmatureAnimationMixer(System::Buffer* buffer, System::Object* value);
 }
 
 #endif

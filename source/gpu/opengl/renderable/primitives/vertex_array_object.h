@@ -2,9 +2,10 @@
 #define _H_PUNK_OPENGL_ARCHITECTURE_VERTEX_ARRAY_OBJECT
 
 #include <vector>
+#include "../../../../system/logger.h"
 #include "../../../common/module.h"
 #include "../../../../math/bounding_box.h"
-#include "../../../../math/bounding_shere.h"
+#include "../../../../math/bounding_sphere.h"
 #include "../../buffers/module.h"
 #include "../../driver/module.h"
 #include "../../attribute_configer.h"

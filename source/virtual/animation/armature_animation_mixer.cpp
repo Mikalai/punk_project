@@ -13,7 +13,7 @@
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(ArmatureAnimationMixer, "Virtual.ArmatureAnimationMixer", PUNK_ARMATURE_ANIMATION_MIXER, &AnimationMixer::Info.Type);
+    PUNK_OBJECT_REG(ArmatureAnimationMixer, "Virtual.ArmatureAnimationMixer", PUNK_ARMATURE_ANIMATION_MIXER, SaveArmatureAnimationMixer, LoadArmatureAnimationMixer, &AnimationMixer::Info.Type);
 
     ArmatureAnimationMixer::ArmatureAnimationMixer()
         : m_current_time(0)
@@ -32,7 +32,7 @@ namespace Virtual
         try
         {
             Math::mat4 pos = Math::mat4::CreateTranslate(m_result[GetBoneIndex(bone)].m_position);
-            Math::mat4 rot = Math::QuaternionToMatrix4x4(m_result[GetBoneIndex(bone)].m_rotation);
+            Math::mat4 rot = Math::mat4::CreateFromQuaternion(m_result[GetBoneIndex(bone)].m_rotation);
             matrix = pos*rot;
             return true;
         }
@@ -112,16 +112,6 @@ namespace Virtual
         m_options[GetTrackIndex(track_name)].m_loop = flag;
     }
 
-    void ArmatureAnimationMixer::Save(System::Buffer *buffer) const
-    {
-        AnimationMixer::Save(buffer);
-    }
-
-    void ArmatureAnimationMixer::Load(System::Buffer *buffer)
-    {
-        AnimationMixer::Load(buffer);
-    }
-
     size_t ArmatureAnimationMixer::GetTrackIndex(const System::string& value)
     {
         for (size_t i = 0; i != m_tracks.size(); ++i)
@@ -161,7 +151,7 @@ namespace Virtual
     bool ArmatureAnimationMixer::GetBoneMatrix(size_t bone, Math::mat4& matrix)
     {
         Math::mat4 pos = Math::mat4::CreateTranslate(m_result[bone].m_position);
-        Math::mat4 rot = Math::QuaternionToMatrix4x4(m_result[bone].m_rotation);
+        Math::mat4 rot = Math::mat4::CreateFromQuaternion(m_result[bone].m_rotation);
         matrix = pos*rot;
         return true;
     }
@@ -235,6 +225,16 @@ namespace Virtual
                 m_options[0].m_enable = true;
             SetTrackTime(0);
         }
+    }
+
+    void SaveArmatureAnimationMixer(System::Buffer *buffer, const System::Object *value)
+    {
+        SaveAnimationMixer(buffer, value);
+    }
+
+    void LoadArmatureAnimationMixer(System::Buffer *buffer, System::Object *value)
+    {
+        LoadAnimationMixer(buffer, value);
     }
 
 //    void ArmatureAnimationMixer::AddBoneAnimation(const System::string &track_name, const System::string &bone_name, BoneAnimation *anim)

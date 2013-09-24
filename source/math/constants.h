@@ -6,7 +6,7 @@
 namespace Math
 {
 	const float PI = atanf(1.0f)*4.0f;
-	const float EPS = 1e-4f;
+    const float Eps = 1e-4f;
 }
 
 #endif

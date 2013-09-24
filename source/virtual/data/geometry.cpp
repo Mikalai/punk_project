@@ -3,7 +3,7 @@
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(Geometry, "Virtual.Geometry", PUNK_GEOMETRY, &System::Object::Info.Type);
+    PUNK_OBJECT_REG(Geometry, "Virtual.Geometry", PUNK_GEOMETRY, SaveGeometry, LoadGeometry, &System::Object::Info.Type);
 
     Geometry::Geometry()
     {
@@ -35,6 +35,16 @@ namespace Virtual
     const Math::BoundingSphere& Geometry::GetBoundingSphere() const
     {
         return m_sphere;
+    }
+
+    void SaveGeometry(System::Buffer* buffer, const System::Object* o)
+    {
+        System::SaveObject(buffer, o);
+    }
+
+    void LoadGeometry(System::Buffer* buffer, System::Object* o)
+    {
+        System::LoadObject(buffer, o);
     }
 
 //	void Geometry::DropGPUCache()

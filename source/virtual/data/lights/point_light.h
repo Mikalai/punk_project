@@ -48,6 +48,8 @@ namespace Virtual
 
         PUNK_OBJECT(PointLight)
 	};
+
+    PUNK_OBJECT_UTIL(PointLight)
 }
 
 #endif	//	_H_PUNK_VIRTUAL_POINT_LIGHT

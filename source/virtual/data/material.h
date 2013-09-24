@@ -91,10 +91,7 @@ namespace Virtual
         void AddTextureSlot(TextureSlot* value);
         TextureSlot* GetTextureSlot(size_t index);
         const TextureSlot* GetTextureSlot(size_t index) const;
-        size_t GetTextureSlotCount() const;
-
-		virtual void Save(System::Buffer* buffer) const;
-		virtual void Load(System::Buffer* buffer);
+        size_t GetTextureSlotCount() const;		
 
 		static Material* CreateFromFile(const System::string& path);
 		static Material* CreateFromStream(std::istream& stream);
@@ -124,7 +121,13 @@ namespace Virtual
         std::vector<TextureSlot*> m_texture_slots;
 
         PUNK_OBJECT(Material)
+
+        friend void SaveMaterial(System::Buffer* buffer, const Object* o);
+        friend void LoadMaterial(System::Buffer* buffer, Object* o);
 	};
+
+    PUNK_ENGINE_API void SaveMaterial(System::Buffer* buffer, const System::Object* o);
+    PUNK_ENGINE_API void LoadMaterial(System::Buffer* buffer, System::Object* o);
 
 	typedef std::map<System::string, Material> Materials;
 }

@@ -5,7 +5,7 @@
 #include "../config.h"
 #include "vec3.h"
 #include "plane.h"
-#include "bounding_shere.h"
+#include "bounding_sphere.h"
 
 namespace Math
 {
@@ -24,11 +24,7 @@ namespace Math
 		const vec3& GetCenter() const { return m_center; }
 		const vec3& GetMassCenter() const { return m_center_of_mass; }
         const vec3& GetMinCorner() const { return m_min_corner; }
-
 		const Plane& GetPlane(int index) const { return m_plane[index]; }
-        void Save(System::Buffer* buffer) const;
-        void Load(System::Buffer* buffer);
-
         const BoundingSphere ToBoundingSphere();
 	private:
 
@@ -48,27 +44,14 @@ namespace Math
 		Plane m_plane[6];
 
 		friend const BoundingBox operator * (const mat4& m, const BoundingBox& bbox);
+        friend void SaveBoundingBox(System::Buffer* buffer, const BoundingBox& value);
+        friend void LoadBoundingBox(System::Buffer* buffer, BoundingBox& value);
 	};
 
-	inline const BoundingBox operator * (const mat4& m, const BoundingBox& bbox)
-	{
-		BoundingBox res;
-		mat4 plane_matrix = m.Inversed().Transposed();
-		mat3 normal_matrix = plane_matrix.RotationPart();
+    PUNK_ENGINE_API const BoundingBox operator * (const mat4& m, const BoundingBox& bbox);
+    PUNK_ENGINE_API void SaveBoundingBox(System::Buffer* buffer, const BoundingBox& value);
+    PUNK_ENGINE_API void LoadBoundingBox(System::Buffer* buffer, BoundingBox& value);
 
-		res.m_center_of_mass = m * bbox.m_center_of_mass;
-		res.m_center = m * bbox.m_center;
-		res.m_r = normal_matrix * bbox.m_r;
-		res.m_s = normal_matrix * bbox.m_s;
-		res.m_t = normal_matrix * bbox.m_t;
-
-		for (int i = 0; i < 6; ++i)
-		{
-			res.m_plane[i] = plane_matrix * bbox.m_plane[i];
-		}
-
-		return res;
-	}
 }
 
 #endif	//	_H_PUNK_MATH_BOUNDING_BOX

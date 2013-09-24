@@ -1,10 +1,12 @@
 #ifndef _H_PUNK_VIRTUAL_STATIC_GEOMETRY
 #define _H_PUNK_VIRTUAL_STATIC_GEOMETRY
 
+#include <array>
 #include <vector>
 #include <map>
 
 #include "../../math/bounding_box.h"
+#include "../../math/vec2.h"
 #include "../../system/aop/aop.h"
 #include "geometry.h"
 
@@ -18,7 +20,7 @@ namespace Virtual
     class PUNK_ENGINE_API StaticGeometry : public Geometry
     {
     public:
-        typedef std::map<System::string, std::vector<Math::Vector4<Math::vec2>>> TextureMeshes;
+        typedef std::map<System::string, std::vector<std::array<Math::vec2, 4>>> TextureMeshes;
 
         struct GpuCache
         {
@@ -121,6 +123,8 @@ namespace Virtual
 
         PUNK_OBJECT(StaticGeometry)
     };
+
+    PUNK_OBJECT_UTIL(StaticGeometry)
 }
 
 #endif

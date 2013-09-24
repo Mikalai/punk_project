@@ -7,33 +7,34 @@
 
 namespace System
 {
+    class Buffer;
     class Object;
 
     class Factory
     {
     public:
-        static Object* Create(unsigned id) { return m_creator[id](); }
-        static void Add(unsigned id, Object* (*F)())
-        {
-            if (id == 0)
-                return;
-            if (id >= m_creator.size())
-                m_creator.resize(id);
-            m_creator[id-1] = F;
-        }
-
+        static Object* Create(unsigned id);
+        static void Save(Buffer* buffer, const Object* o);
+        static Object* Load(Buffer* buffer);
+        static void Add(unsigned id, Object* (*F)());
+        static void Add(unsigned id, void (*F)(Buffer*, const Object*));
+        static void Add(unsigned id, void (*F)(Buffer*, Object*));
     private:
         static std::vector<Object*(*)()> m_creator;
+        static std::vector<void (*)(Buffer*, const Object*)> m_saver;
+        static std::vector<void (*)(Buffer*, Object*)> m_loader;
     };
 
     template<class T>
     struct StaticInormation
     {
         typedef std::vector<T*> InstanceCollection;
-        StaticInormation<T>(const string& name, unsigned uid, const Rtti* parent)
+        StaticInormation<T>(const string& name, unsigned uid, void (*Save)(Buffer*, const Object*), void (*Load)(Buffer*, Object*), const Rtti* parent)
             : Type(name, uid, parent)
         {
             Factory::Add(Type.GetId(), T::Create);
+            Factory::Add(Type.GetId(), Save);
+            Factory::Add(Type.GetId(), Load);
         }
 
         void Add(T* value)

@@ -21,8 +21,11 @@ namespace AI
     private:
         System::string m_name;
     private:
-        PUNK_OBJECT(CurvePath);
+
+        PUNK_OBJECT(CurvePath)
     };
+
+    PUNK_OBJECT_UTIL(CurvePath)
 }
 
 #endif // CURVEPATH_H

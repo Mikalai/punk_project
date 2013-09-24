@@ -6,7 +6,7 @@
 #include "../config.h"
 #include "vec3.h"
 #include "bounding_box.h"
-#include "bounding_shere.h"
+#include "bounding_sphere.h"
 
 namespace Math
 {
@@ -28,10 +28,7 @@ namespace Math
 		const FacesCollection& GetFaces() const { return m_faces; }
 		FacesCollection& GetFaces() { return m_faces; }
 		const NormalsCollection& GetNormals() const { return m_normals; }
-		NormalsCollection& GetNormals() { return m_normals; }
-
-		void Save(System::Buffer* buffer) const;
-		void Load(System::Buffer* buffer);
+		NormalsCollection& GetNormals() { return m_normals; }		
 
 		bool UpdateBoundingVolumes();
 
@@ -45,7 +42,13 @@ namespace Math
 		PointsCollection m_points;
 		FacesCollection m_faces;
 		NormalsCollection m_normals;
+
+        friend void SaveBoundingBox(System::Buffer* buffer, const ConvexShapeMesh& value);
+        friend void LoadBoundingBox(System::Buffer* buffer, ConvexShapeMesh& value);
 	};
+
+    PUNK_ENGINE_API void SaveBoundingBox(System::Buffer* buffer, const ConvexShapeMesh& value);
+    PUNK_ENGINE_API void LoadBoundingBox(System::Buffer* buffer, ConvexShapeMesh& value);
 }
 
 #endif	//	_H_PUNK_MATH_SHAPE_MESH

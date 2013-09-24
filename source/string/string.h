@@ -18,6 +18,8 @@
 
 namespace System
 {
+    class Buffer;
+
     //class  StringError : public std::exception
     //{
     //public:
@@ -113,7 +115,13 @@ namespace System
         bool StartWith(const string& value) const;
 
         const string ToLower() const;
+
+        friend void SaveString(System::Buffer* buffer, const string& value);
+        friend void LoadString(System::Buffer* buffer, string& value);
     };
+
+    PUNK_ENGINE_API void SaveString(System::Buffer* buffer, const string& value);
+    PUNK_ENGINE_API void LoadString(System::Buffer* buffer, string& value);
 
     bool operator == (const string& l, const string& r);
     const string operator + (const string& l, const string& r);

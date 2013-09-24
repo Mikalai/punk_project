@@ -41,6 +41,7 @@ namespace System
 		float ReadReal32();
 		double ReadReal64();
 		void ReadBuffer(void* buffer, int size);
+        bool ReadBoolean();
 
         void WriteSigned64(int64_t value);
         void WriteUnsigned64(uint64_t value);
@@ -53,6 +54,7 @@ namespace System
 		void WriteString(const string& value);
 		void WriteReal32(float value);
 		void WriteReal64(double value);
+        void WriteBoolean(bool value);
 		void WriteBuffer(const void* buffer, int size);
 
 		void* Release();

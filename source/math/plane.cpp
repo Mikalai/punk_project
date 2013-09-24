@@ -61,16 +61,6 @@ namespace Math
 		return Plane(res);
     }
 
-    void Plane::Save(System::Buffer *buffer) const
-	{
-        m_plane.Save(buffer);
-	}
-
-    void Plane::Load(System::Buffer *buffer)
-	{
-        m_plane.Load(buffer);
-	}
-
     Plane& Plane::Set(float a, float b, float c, float d)
 	{		
         m_plane.Set(a, b, c, d);
@@ -141,4 +131,15 @@ namespace Math
         m_plane *= f;
         return *this;
     }
+
+    void SavePlane(System::Buffer *buffer, const Plane &value)
+    {
+        SaveVector4f(buffer, value.m_plane);
+    }
+
+    void LoadPlane(System::Buffer *buffer, Plane &value)
+    {
+        LoadVector4f(buffer, value.m_plane);
+    }
+
 }

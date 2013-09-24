@@ -1,6 +1,8 @@
 ﻿#include <ostream>
 #include <istream>
 
+#include "mat4.h"
+#include "mat3.h"
 #include "../system/logger.h"
 #include "bounding_box.h"
 #include "mat3.h"
@@ -8,28 +10,6 @@
 
 namespace Math
 {
-    void BoundingBox::Save(System::Buffer *buffer) const
-    {
-        m_center_of_mass.Save(buffer);
-        m_center.Save(buffer);
-        m_r.Save(buffer);
-        m_s.Save(buffer);
-        m_t.Save(buffer);
-        for (int i = 0; i < 6; ++i)
-            m_plane[i].Save(buffer);
-    }
-
-    void BoundingBox::Load(System::Buffer *buffer)
-    {
-        m_center_of_mass.Load(buffer);
-        m_center.Load(buffer);
-        m_r.Load(buffer);
-        m_s.Load(buffer);
-        m_t.Load(buffer);
-        for (int i = 0; i < 6; ++i)
-            m_plane[i].Load(buffer);
-    }
-
     bool BoundingBox::Create(const std::vector<vec3>& vertex)
     {
         //	check input data
@@ -109,5 +89,47 @@ namespace Math
         BoundingSphere s;
         s.Create(p);
         return s;
+    }
+
+    const BoundingBox operator * (const mat4& m, const BoundingBox& bbox)
+    {
+        BoundingBox res;
+        mat4 plane_matrix = m.Inversed().Transposed();
+        mat3 normal_matrix = plane_matrix.RotationPart();
+
+        res.m_center_of_mass = m * bbox.m_center_of_mass;
+        res.m_center = m * bbox.m_center;
+        res.m_r = normal_matrix * bbox.m_r;
+        res.m_s = normal_matrix * bbox.m_s;
+        res.m_t = normal_matrix * bbox.m_t;
+
+        for (int i = 0; i < 6; ++i)
+        {
+            res.m_plane[i] = plane_matrix * bbox.m_plane[i];
+        }
+
+        return res;
+    }
+
+    void SaveBoundingBox(System::Buffer *buffer, const BoundingBox& value)
+    {
+        SaveVector3f(buffer, value.m_center_of_mass);
+        SaveVector3f(buffer, value.m_center);
+        SaveVector3f(buffer, value.m_r);
+        SaveVector3f(buffer, value.m_s);
+        SaveVector3f(buffer, value.m_t);
+        for (int i = 0; i < 6; ++i)
+            SavePlane(buffer, value.m_plane[i]);
+    }
+
+    void LoadBoundingBox(System::Buffer *buffer, BoundingBox& value)
+    {
+        LoadVector3f(buffer, value.m_center_of_mass);
+        LoadVector3f(buffer, value.m_center);
+        LoadVector3f(buffer, value.m_r);
+        LoadVector3f(buffer, value.m_s);
+        LoadVector3f(buffer, value.m_t);
+        for (int i = 0; i < 6; ++i)
+            LoadPlane(buffer, value.m_plane[i]);
     }
 }

@@ -1,3 +1,4 @@
+#include <sstream>
 #include "vs_per_vertex_lighting_diffuse.h"
 #include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"

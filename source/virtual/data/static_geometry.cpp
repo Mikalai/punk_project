@@ -8,7 +8,7 @@
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(StaticGeometry,"Virtual.StaticGeometry", PUNK_STATIC_GEOMETRY, &Geometry::Info.Type);
+    PUNK_OBJECT_REG(StaticGeometry,"Virtual.StaticGeometry", PUNK_STATIC_GEOMETRY, SaveStaticGeometry, LoadStaticGeometry, &Geometry::Info.Type);
 
     StaticGeometry::GpuCache::GpuCache(StaticGeometry& value)
         : m_geom(value)
@@ -376,5 +376,23 @@ namespace Virtual
     const System::string& StaticGeometry::GetName() const
     {
         return m_name;
+    }
+
+    void SaveStaticGeometry(System::Buffer *buffer, const System::Object *o)
+    {
+        SaveGeometry(buffer, o);
+        const StaticGeometry* g = Cast<const StaticGeometry*>(o);
+        System::SaveString(buffer, g->m_name);
+        System::SaveString(buffer, g->m_filename);
+        Math::SaveMatrix4f(buffer, g->m_world_offset);
+    }
+
+    void LoadStaticGeometry(System::Buffer *buffer, System::Object *o)
+    {
+        LoadGeometry(buffer, o);
+        StaticGeometry* g = Cast<StaticGeometry*>(o);
+        System::LoadString(buffer, g->m_name);
+        System::LoadString(buffer, g->m_filename);
+        Math::LoadMatrix4f(buffer, g->m_world_offset);
     }
 }

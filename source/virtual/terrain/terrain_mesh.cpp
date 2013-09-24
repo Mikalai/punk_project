@@ -5,7 +5,7 @@
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(TerrainMesh, "Virtual.TerrainMesh", PUNK_TERRAIN_MESH, &System::Object::Info.Type);
+    PUNK_OBJECT_REG(TerrainMesh, "Virtual.TerrainMesh", PUNK_TERRAIN_MESH, SaveTerrainMesh, LoadTerrainMesh, &System::Object::Info.Type);
 
     TerrainMesh::TerrainMesh()
         : m_geometry(nullptr)
@@ -67,4 +67,21 @@ namespace Virtual
         return m_task = value;
     }
 
+    void SaveTerrainMesh(System::Buffer *buffer, const System::Object *o)
+    {
+        System::SaveObject(buffer, o);
+        const TerrainMesh* m = Cast<const TerrainMesh*>(o);
+        System::SaveString(buffer, m->m_name);
+        System::SaveString(buffer, m->m_filename);
+        System::Factory::Save(buffer, m->m_geometry);
+    }
+
+    void LoadTerrainMesh(System::Buffer *buffer, System::Object *o)
+    {
+        System::LoadObject(buffer, o);
+        TerrainMesh* m = Cast<TerrainMesh*>(o);
+        System::LoadString(buffer, m->m_name);
+        System::LoadString(buffer, m->m_filename);
+        m->m_geometry = Cast<StaticGeometry*>(System::Factory::Load(buffer));
+    }
 }

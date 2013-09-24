@@ -1,4 +1,10 @@
 #include "../../system/buffer.h"
+#include "../../math/vec3.h"
+#include "../../math/vec2.h"
+#include "../../math/vec4.h"
+#include "../../math/mat4.h"
+#include "../../math/mat3.h"
+#include "../../math/mat2.h"
 #include "parse_functions.h"
 
 namespace Utility
@@ -254,7 +260,7 @@ namespace Utility
         throw System::PunkInvalidArgumentException(L"Unable to parse vector of vec4i");
     }
 
-    bool ParseVector4Vector2iv(System::Buffer& buffer, std::vector<Math::Vector4<Math::vec2>>& value)
+    bool ParseVector4Vector2iv(System::Buffer& buffer, std::vector<std::array<Math::vec2, 4>>& value)
     {
         CHECK_START(buffer);
         while (1)
@@ -273,7 +279,7 @@ namespace Utility
             float u4 = buffer.ReadWord().ToFloat();
             float v4 = buffer.ReadWord().ToFloat();
 
-            Math::Vector4<Math::vec2> v;
+            std::array<Math::vec2, 4> v;
             v[0].Set(u1, v1);
             v[1].Set(u2, v2);
             v[2].Set(u3, v3);

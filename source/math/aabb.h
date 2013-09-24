@@ -18,9 +18,6 @@ namespace Math
 
 	class PUNK_ENGINE_API AxisAlignedBox
 	{
-		vec3 m_min;
-		vec3 m_max;
-
 	public:
 		
 		void Create(const float* data, unsigned offset, int count);
@@ -30,14 +27,22 @@ namespace Math
 		vec3& MinPoint();
 		vec3& MaxPoint();		
 
-        void Save(System::Buffer* buffer) const;
-		void Load(System::Buffer* buffer);
-
         void Set(const vec3& min_point, const vec3& max_point);
 
+    private:
+        vec3 m_min;
+        vec3 m_max;
+
+        friend void SaveBoundingBox(System::Buffer* buffer, const AxisAlignedBox& value);
+        friend void LoadBoundingBox(System::Buffer* buffer, AxisAlignedBox& value);
 	};
 
 	PUNK_ENGINE_API AxisAlignedBox Merge(const AxisAlignedBox* b1, const AxisAlignedBox* b2);
+
+
+    PUNK_ENGINE_API void SaveBoundingBox(System::Buffer* buffer, const AxisAlignedBox& value);
+    PUNK_ENGINE_API void LoadBoundingBox(System::Buffer* buffer, AxisAlignedBox& value);
+
 
 }
 

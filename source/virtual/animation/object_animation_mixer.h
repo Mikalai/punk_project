@@ -29,8 +29,8 @@ namespace Virtual
 
 		Animation* GetOrCreateTrack(const System::string& name);
 
-		const Math::Vector3<float> GetPosition(float frame);
-		const Math::Quaternion<float> GetRotation(float frame);
+        const Math::vec3 GetPosition(float frame);
+        const Math::quat GetRotation(float frame);
 
 		bool HasAnimation();
 

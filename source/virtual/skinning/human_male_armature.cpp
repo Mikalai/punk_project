@@ -3,7 +3,7 @@
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(HumanMaleArmature, "Virtual.HumanMaleArmature", PUNK_HUMAN_MALE_ARMATURE, &HumanArmature::Info.Type);
+    PUNK_OBJECT_REG(HumanMaleArmature, "Virtual.HumanMaleArmature", PUNK_HUMAN_MALE_ARMATURE, SaveHumanMaleArmature, LoadHumanMaleArmature, &HumanArmature::Info.Type);
 
     HumanMaleArmature::HumanMaleArmature()
     {
@@ -13,5 +13,15 @@ namespace Virtual
     HumanMaleArmature::~HumanMaleArmature()
     {
         Info.Remove(this);
+    }
+
+    void SaveHumanMaleArmature(System::Buffer *buffer, const System::Object *o)
+    {
+        SaveHumanArmature(buffer, o);
+    }
+
+    void LoadHumanMaleArmature(System::Buffer *buffer, System::Object *o)
+    {
+        LoadHumanArmature(buffer, o);
     }
 }

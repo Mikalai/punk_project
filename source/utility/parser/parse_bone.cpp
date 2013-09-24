@@ -1,4 +1,5 @@
 #include "../../virtual/skinning/module.h"
+#include "../../system/buffer.h"
 #include "parse_functions.h"
 
 namespace Utility

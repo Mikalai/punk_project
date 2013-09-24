@@ -21,7 +21,13 @@ namespace Virtual
         virtual void SetLooping(size_t, bool) {}
 
         PUNK_OBJECT(AnimationMixer)
+
+        friend void SaveAnimationMixer(System::Buffer* buffer, const Object* anim);
+        friend void LoadAnimationMixer(System::Buffer* buffer, Object* anim);
 	};
+
+    PUNK_ENGINE_API void SaveAnimationMixer(System::Buffer* buffer, const System::Object* anim);
+    PUNK_ENGINE_API void LoadAnimationMixer(System::Buffer* buffer, System::Object* anim);
 }
 
 #endif

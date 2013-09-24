@@ -10,7 +10,7 @@
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(SkinGeometry, "Virtual.SkinGeometry", PUNK_SKIN_GEOMETRY, &Geometry::Info.Type);
+    PUNK_OBJECT_REG(SkinGeometry, "Virtual.SkinGeometry", PUNK_SKIN_GEOMETRY, SaveSkinGeometry, LoadSkinGeometry, &Geometry::Info.Type);
 
     SkinGeometry::GpuCache::GpuCache(SkinGeometry& value)
         : m_geom(value)
@@ -212,15 +212,15 @@ namespace Virtual
 
         buffer->WriteSigned32((int)m_vertices.size());
         for (auto& v : m_vertices)
-            v.Save(buffer);
+            Math::SaveVector3f(buffer, v);
 
         buffer->WriteSigned32((int)m_faces.size());
         for (auto& v : m_faces)
-            v.Save(buffer);
+            Math::SaveVector3i(buffer, v);
 
         buffer->WriteSigned32((int)m_normals.size());
         for (auto& v : m_normals)
-            v.Save(buffer);
+            Math::SaveVector3f(buffer, v);
 
         int count = (int)m_tex_coords.size();
         buffer->WriteSigned32(count);
@@ -256,23 +256,23 @@ namespace Virtual
         int size = buffer->ReadSigned32();
         m_vertices.resize(size);
         for (int i = 0; i != size; ++i)
-            m_vertices[i].Load(buffer);
+            Math::LoadVector3f(buffer, m_vertices[i]);
 
         size = buffer->ReadSigned32();
         m_faces.resize(size);
         for (int i = 0; i != size; ++i)
-            m_faces[i].Load(buffer);
+            Math::LoadVector3i(buffer, m_faces[i]);
 
         size = buffer->ReadSigned32();
         for (int i = 0; i != size; ++i)
-            m_normals[i].Load(buffer);
+            Math::LoadVector3f(buffer, m_normals[i]);
 
         int count = buffer->ReadSigned32();
         for (int i = 0; i < count; ++i)
         {
             System::string name = buffer->ReadString();
             size = buffer->ReadSigned32();
-            std::vector<Math::Vector4<Math::vec2>> v;
+            std::vector<std::array<Math::vec2, 4>> v;
             v.resize(size);
             for (auto& p : v)
                 for (int j = 0; j != 4; ++j)
@@ -305,26 +305,6 @@ namespace Virtual
     SkinGeometry::~SkinGeometry()
     {
         Info.Remove(this);
-    }
-
-    void SkinGeometry::Save(System::Buffer *buffer) const
-    {
-        Geometry::Save(buffer);
-        buffer->WriteString(m_armature_name);
-        buffer->WriteString(m_name);
-        buffer->WriteString(m_filename);
-        m_world_offset.Save(buffer);
-        m_cpu_cache.Save(buffer);
-    }
-
-    void SkinGeometry::Load(System::Buffer *buffer)
-    {
-        Geometry::Load(buffer);
-        m_armature_name = buffer->ReadString();
-        m_name = buffer->ReadString();
-        m_filename = buffer->ReadString();
-        m_world_offset.Load(buffer);
-        m_cpu_cache.Load(buffer);
     }
 
     SkinGeometry::Vertices& SkinGeometry::GetVertexArray()
@@ -455,5 +435,27 @@ namespace Virtual
     const System::string& SkinGeometry::GetName() const
     {
         return m_name;
+    }
+
+    void SaveSkinGeometry(System::Buffer* buffer, const System::Object* object)
+    {
+        SaveGeometry(buffer, object);
+        const SkinGeometry* s = Cast<const SkinGeometry*>(object);
+        System::SaveString(buffer, s->m_armature_name);
+        System::SaveString(buffer, s->m_name);
+        System::SaveString(buffer, s->m_filename);
+        Math::SaveMatrix4f(buffer, s->m_world_offset);
+        s->m_cpu_cache.Save(buffer);
+    }
+
+    void LoadSkinGeometry(System::Buffer* buffer, System::Object* object)
+    {
+        LoadGeometry(buffer, object);
+        SkinGeometry* s = Cast<SkinGeometry*>(object);
+        System::LoadString(buffer, s->m_armature_name);
+        System::LoadString(buffer, s->m_name);
+        System::LoadString(buffer, s->m_filename);
+        Math::LoadMatrix4f(buffer, s->m_world_offset);
+        s->m_cpu_cache.Load(buffer);
     }
 }

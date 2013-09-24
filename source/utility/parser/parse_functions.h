@@ -4,6 +4,8 @@
 #include <map>
 #include <vector>
 
+#include "../../system/buffer.h"
+#include "../../system/logger.h"
 #include "../../system/errors/module.h"
 #include "../../string/string.h"
 #include "../../scene/interface.h"
@@ -77,8 +79,8 @@ namespace Utility
     extern bool ParseVector3fv(System::Buffer& buffer, std::vector<Math::vec3>& value);
     extern bool ParseVector3iv(System::Buffer& buffer, std::vector<Math::ivec3>& value);
     extern bool ParseVector4iv(System::Buffer& buffer, std::vector<Math::ivec4>& value);
-    extern bool ParseVector4Vector2iv(System::Buffer& buffer, std::vector<Math::Vector4<Math::vec2>>& value);
-    extern bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<Math::Vector4<Math::vec2>>>& value);
+    extern bool ParseVector4Vector2iv(System::Buffer& buffer, std::vector<std::array<Math::vec2, 4>>& value);
+    extern bool ParseTextures(System::Buffer& buffer, std::map<System::string, std::vector<std::array<Math::vec2, 4>>>& value);
     extern bool ParseBonesWeights(System::Buffer& buffer, std::map<int, std::map<System::string, float>>& value);
     extern bool ParseWorld(System::Buffer& buffer, Scene::SceneGraph* scene);    
     extern bool ParseMaterials(System::Buffer& buffer, Scene::SceneGraph* scene);

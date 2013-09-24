@@ -77,15 +77,6 @@ namespace Virtual
         UpdateInternals();;
     }
 
-    void Camera::Save(System::Buffer *buffer) const
-	{        
-	}
-
-    void Camera::Load(System::Buffer *buffer)
-	{
-
-	}
-
 	void Camera::UpdateInternals()
 	{
 		Math::YawPitchRollToUpDirection(m_yrp[0], m_yrp[1], m_yrp[2], m_up, m_direction);
@@ -125,4 +116,14 @@ namespace Virtual
 		ray.SetOriginDestination(view_pos, mouse_in_world);
 		return ray;
 	}
+
+    void SaveCamera(System::Buffer* buffer, const System::Object* value)
+    {
+        System::SaveObject(buffer, value);
+    }
+
+    void LoadCamera(System::Buffer* buffer, System::Object* value)
+    {
+        System::LoadObject(buffer, value);
+    }
 }

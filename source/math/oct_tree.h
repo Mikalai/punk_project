@@ -42,11 +42,14 @@ namespace Math
 		void SetData(const FaceList& fl, const VertexList& vl);
 		OctTree* Build(const FaceList& fl, const VertexList& vertexList);
 		FaceList Cross(const Line3D& line);
-		FaceList CrossAll(const Line3D& line) const;
+		FaceList CrossAll(const Line3D& line) const;		
 
-		void Save(System::Buffer* buffer) const;
-		void Load(System::Buffer* buffer);
+        friend void SaveOctTree(System::Buffer* buffer, const OctTree& value);
+        friend void LoadOctTree(System::Buffer* buffer, OctTree& value);
 	};
+
+    PUNK_ENGINE_API void SaveOctTree(System::Buffer* buffer, const OctTree& value);
+    PUNK_ENGINE_API void LoadOctTree(System::Buffer* buffer, OctTree& value);
 }
 
 #endif

@@ -45,7 +45,13 @@ namespace Virtual
         Math::BoundingSphere m_sphere;    
 
         PUNK_OBJECT(Geometry)
+
+        friend void SaveGeometry(System::Buffer* buffer, const Object* o);
+        friend void LoadGeometry(System::Buffer* buffer, Object* o);
 	};
+
+    PUNK_ENGINE_API void SaveGeometry(System::Buffer* buffer, const System::Object* o);
+    PUNK_ENGINE_API void LoadGeometry(System::Buffer* buffer, System::Object* o);
 }
 
 #endif // _H_PUNK_VIRTUAL_GEOMETRY

@@ -1,3 +1,4 @@
+#include "../system/errors/module.h"
 #include "../system/logger.h"
 #include "portal.h"
 
@@ -17,28 +18,7 @@ namespace Math
 		m_plane.Set(p0, p1, p2);
 
 		return true;
-	}
-
-    void Portal::Save(System::Buffer *buffer) const
-	{
-		if (m_points.empty())
-            throw System::PunkException("Can't save bad portal");
-
-		int size = (int)m_points.size();
-        buffer->WriteSigned32(size);
-        for (auto& p : m_points)
-            p.Save(buffer);
-        m_plane.Save(buffer);
-	}
-
-    void Portal::Load(System::Buffer *buffer)
-	{
-        int size = buffer->ReadSigned32();
-		m_points.resize(size);
-        for (auto& p : m_points)
-            p.Load(buffer);
-        m_plane.Load(buffer);
-	}
+	}    
 
 	const Portal operator * (const mat4& m, const Portal& p)
 	{
@@ -51,4 +31,25 @@ namespace Math
 		result.SetPoints(points);
 		return result;
 	}
+
+    void SaveBoundingBox(System::Buffer *buffer, const Portal& value)
+    {
+        if (value.m_points.empty())
+            throw System::PunkException("Can't save bad portal");
+
+        int size = (int)value.m_points.size();
+        buffer->WriteSigned32(size);
+        for (auto& p : value.m_points)
+            SaveVector3f(buffer, p);
+        SavePlane(buffer, value.m_plane);
+    }
+
+    void LoadBoundingBox(System::Buffer *buffer, Portal& value)
+    {
+        int size = buffer->ReadSigned32();
+        value.m_points.resize(size);
+        for (auto& p : value.m_points)
+            LoadVector3f(buffer, p);
+        LoadPlane(buffer, value.m_plane);
+    }
 }

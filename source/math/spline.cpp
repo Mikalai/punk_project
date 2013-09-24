@@ -1,3 +1,4 @@
+#include "../system/buffer.h"
 #include "spline.h"
 
 namespace Math
@@ -56,5 +57,27 @@ namespace Math
         float x = (cur_length  - req_length) / (m_points[index].GetPoint() - m_points[index-1].GetPoint()).Length();
         auto res = m_points[index - 1] * x + m_points[index] * (1.0f - x);
         return res;
+    }
+
+    void SaveSpline(System::Buffer* buffer, const Spline& spline)
+    {
+        buffer->WriteReal32(spline.m_total_length);
+        unsigned size = spline.m_points.size();
+        buffer->WriteUnsigned32(size);
+        for (auto& p : spline.m_points)
+        {
+            SaveWeightedPoint(buffer, p);
+        }
+    }
+
+    void LoadSpline(System::Buffer* buffer, Spline& spline)
+    {
+        spline.m_total_length = buffer->ReadReal32();
+        unsigned size = buffer->ReadUnsigned32();
+        spline.m_points.resize(size);
+        for (auto& p : spline.m_points)
+        {
+            LoadWeightedPoint(buffer, p);
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace Utility
             float y = buffer.ReadWord().ToFloat();
             float z = buffer.ReadWord().ToFloat();
 
-            Math::Quaternion<float> v;
+            Math::quat v;
             v.Set(w,x,y,z);
 
             value.AddKey(frame, v);

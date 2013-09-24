@@ -1,4 +1,5 @@
 #include <algorithm>
+#include "../system/logger.h"
 #include "helper.h"
 #include "root_find.h"
 

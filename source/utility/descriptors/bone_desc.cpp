@@ -10,7 +10,7 @@ namespace Utility
 		stream << Tab() << "Name: " << m_name.Data() << std::endl;
 		stream << Tab() << "Parent: " << m_parent.Data() << std::endl;
 		stream << Tab() << "Length: " << m_length << std::endl;
-		stream << Tab() << "Local matrix: \n" << m_local << std::endl;
+        stream << Tab() << "Local matrix: \n" << m_local.ToString() << std::endl;
 		stream << Tab::Dec() << typeid(*this).name();
 		return stream;
 	}

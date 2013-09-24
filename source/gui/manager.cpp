@@ -1,4 +1,5 @@
 #include "../system/event_manager.h"
+#include "../system/logger.h"
 #include "../system/window/module.h"
 #include <stdexcept>
 #include <memory>

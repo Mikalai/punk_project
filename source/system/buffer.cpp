@@ -188,6 +188,13 @@ namespace System
 		return res;
 	}
 
+    bool Buffer::ReadBoolean()
+    {
+        bool res;
+        ReadBuffer(&res, sizeof(res));
+        return res;
+    }
+
 	void Buffer::ReadBuffer(void* buffer, int size)
 	{
 		memcpy(buffer, m_current, size);
@@ -292,4 +299,9 @@ namespace System
 #endif	//	_WIN32
 		m_current += size;
 	}
+
+    void Buffer::WriteBoolean(bool value)
+    {
+        WriteData(&value, sizeof(value));
+    }
 }

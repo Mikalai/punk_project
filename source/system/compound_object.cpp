@@ -1,4 +1,5 @@
 #include <algorithm>
+#include "buffer.h"
 #include "logger.h"
 #include "compound_object.h"
 #include "factory.h"
@@ -6,7 +7,7 @@
 
 namespace System
 {
-    StaticInormation<CompoundObject> CompoundObject::Info{"System.CompoundObject", PUNK_COMPOUND_OBJECT, &Object::Info.Type};
+    PUNK_OBJECT_REG(CompoundObject, "System.CompoundObject", PUNK_COMPOUND_OBJECT, System::SaveCompoundObject, System::LoadCompoundObject, &Object::Info.Type);
 
     CompoundObject::CompoundObject()
     {
@@ -108,27 +109,27 @@ namespace System
         return string(stream.str());
     }
 
-    void CompoundObject::Save(Buffer* buffer) const
+    void SaveCompoundObject(Buffer *buffer, const Object *o)
     {
-        Object::Save(buffer);
-        unsigned count = m_children.size();
+        SaveObject(buffer, o);
+        const CompoundObject* value = dynamic_cast<const CompoundObject*>(o);
+        unsigned count = value->m_children.size();
         buffer->WriteUnsigned32(count);
-        for (auto child : m_children)
+        for (Object* child : value->m_children)
         {
-            child->Save(buffer);
+            Factory::Save(buffer, child);
         }
     }
 
-    void CompoundObject::Load(Buffer* buffer)
+    void LoadCompoundObject(Buffer *buffer, Object *o)
     {
-        Object::Load(buffer);
+        LoadObject(buffer, o);
+        CompoundObject* value = Cast<CompoundObject*>(o);
         unsigned count{buffer->ReadUnsigned32()};
         for (auto i = 0; i != count; ++i)
         {
-            unsigned code = buffer->ReadUnsigned32();
-            Object* object{Factory::Create(code)};
-            object->Load(buffer);
-            Add(object);
+            Object* object = Factory::Load(buffer);
+            value->Add(object);
         }
     }
 }

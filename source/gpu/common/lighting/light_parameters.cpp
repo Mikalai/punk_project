@@ -1,3 +1,4 @@
+#include "../../../math/vec3.h"
 #include "light_parameters.h"
 
 namespace Gpu
@@ -146,7 +147,7 @@ namespace Gpu
         }
         else
         {
-            Math::mat4 res = Math::mat4::CreateOrthographicProjection(-16, 16, -16, 16, 0.1, 100.0);
+            Math::mat4 res = Math::mat4::CreateOrthographicProjection2(-16, 16, -16, 16, 0.1, 100.0);
             return res;
         }
     }

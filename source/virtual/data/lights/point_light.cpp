@@ -1,12 +1,16 @@
 #include <fstream>
 #include <memory>
+#include "../../../system/buffer.h"
+#include "../../../math/vec2.h"
+#include "../../../math/vec3.h"
+#include "../../../math/vec4.h"
 #include "point_light.h"
 #include "../../../utility/descriptors/light_desc.h"
 #include "../../../engine_objects.h"
 
 namespace Virtual
 {
-    PUNK_OBJECT_REG(PointLight, "Virtual.PointLight", PUNK_POINT_LIGHT, &Light::Info.Type);
+    PUNK_OBJECT_REG(PointLight, "Virtual.PointLight", PUNK_POINT_LIGHT, SavePointLight, LoadPointLight, &Light::Info.Type);
 
 	PointLight::PointLight()
 	{
@@ -34,29 +38,6 @@ namespace Virtual
 		return m_position;
 	}
 
-//	bool PointLight::Save(std::ostream& stream) const
-//	{
-//		Light::Save(stream);
-//		m_position.Save(stream);
-//		m_color.Save(stream);
-//		stream.write((char*)&m_distance, sizeof(m_distance));
-//		stream.write((char*)&m_energy, sizeof(m_energy));
-//		stream.write((char*)&m_linear_attenuation, sizeof(m_linear_attenuation));
-//		stream.write((char*)&m_quadratic_attenuation, sizeof(m_quadratic_attenuation));
-//		return true;
-//	}
-
-//	bool PointLight::Load(std::istream& stream)
-//	{
-//		Light::Load(stream);
-//		m_position.Load(stream);
-//		m_color.Load(stream);
-//		stream.read((char*)&m_distance, sizeof(m_distance));
-//		stream.read((char*)&m_energy, sizeof(m_energy));
-//		stream.read((char*)&m_linear_attenuation, sizeof(m_linear_attenuation));
-//		stream.read((char*)&m_quadratic_attenuation, sizeof(m_quadratic_attenuation));
-//		return true;
-//	}
 
 //	PointLight* PointLight::CreateFromFile(const System::string& path)
 //	{
@@ -77,4 +58,28 @@ namespace Virtual
 	{
 		m_position = value;
 	}
+
+    void SavePointLight(System::Buffer *buffer, const System::Object *o)
+    {
+        SaveLight(buffer, o);
+        const PointLight* p = Cast<const PointLight*>(o);
+        Math::SaveVector3f(buffer, p->m_position);
+        Math::SaveVector4f(buffer, p->m_color);
+        buffer->WriteReal32(p->m_distance);
+        buffer->WriteReal32(p->m_energy);
+        buffer->WriteReal32(p->m_linear_attenuation);
+        buffer->WriteReal32(p->m_quadratic_attenuation);
+    }
+
+    void LoadPointLight(System::Buffer *buffer, System::Object *o)
+    {
+        SaveLight(buffer, o);
+        PointLight* p = Cast<PointLight*>(o);
+        Math::LoadVector3f(buffer, p->m_position);
+        Math::LoadVector3f(buffer, p->m_color);
+        p->m_distance = buffer->ReadReal32();
+        p->m_energy = buffer->ReadReal32();
+        p->m_linear_attenuation = buffer->ReadReal32();
+        p->m_quadratic_attenuation = buffer->ReadReal32();
+    }
 }

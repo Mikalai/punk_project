@@ -41,23 +41,23 @@ namespace Math
         const vec3 GetNormal() const;
 		float GetDistance() const;
         friend class Line3D;
-
-        Plane& Normalize();
-
-        void Save(System::Buffer* buffer) const;
-        void Load(System::Buffer* buffer);
-
+        Plane& Normalize();        
 		const vec4& AsVector() const;
-
         const System::string ToString() const;
 	private:
 
 		vec4 m_plane;
+
+        friend void SavePlane(System::Buffer* buffer, const Plane& value);
+        friend void LoadPlane(System::Buffer* buffer, Plane& value);
     };   
 
-	float operator * (const Plane& plane, const vec3& v);
-	float operator * (const Plane& plane, const vec4& v);
-	const Plane operator * (const mat4& m, const Plane& p);
+    PUNK_ENGINE_API float operator * (const Plane& plane, const vec3& v);
+    PUNK_ENGINE_API float operator * (const Plane& plane, const vec4& v);
+    PUNK_ENGINE_API const Plane operator * (const mat4& m, const Plane& p);
+
+    PUNK_ENGINE_API void SavePlane(System::Buffer* buffer, const Plane& value);
+    PUNK_ENGINE_API void LoadPlane(System::Buffer* buffer, Plane& value);
 }
 
 #endif

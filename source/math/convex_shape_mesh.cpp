@@ -1,61 +1,63 @@
 #include "../system/logger.h"
+#include "../system/errors/module.h"
 #include "convex_shape_mesh.h"
 
 namespace Math
 {
-	void ConvexShapeMesh::SetPoints(const ConvexShapeMesh::PointsCollection& value)
-	{
-		m_points = value;
-		UpdateBoundingVolumes();
-	}
+    void ConvexShapeMesh::SetPoints(const ConvexShapeMesh::PointsCollection& value)
+    {
+        m_points = value;
+        UpdateBoundingVolumes();
+    }
 
-	bool ConvexShapeMesh::UpdateBoundingVolumes()
-	{
+    bool ConvexShapeMesh::UpdateBoundingVolumes()
+    {
         if (!m_bbox.Create(m_points))
-			return (out_error() << "Can't create bounding box for convex shape" << std::endl, false);
+            return (out_error() << "Can't create bounding box for convex shape" << std::endl, false);
 
         if (!m_bsphere.Create(m_points))
-			return (out_error() << "Can't create bounding sphere for convex shape" << std::endl, false);
+            return (out_error() << "Can't create bounding sphere for convex shape" << std::endl, false);
 
-		return true;
-	}
+        return true;
+    }
 
-    void ConvexShapeMesh::Save(System::Buffer *buffer) const
-	{
-		if (m_points.empty() || m_faces.empty() || m_normals.empty())
+    void SaveBoundingBox(System::Buffer* buffer, const ConvexShapeMesh& value)
+    {
+        if (value.m_points.empty() || value.m_faces.empty() || value.m_normals.empty())
             throw System::PunkException("Unable to save convex shape");
 
-		int size = (int)m_points.size();		
+        int size = (int)value.m_points.size();
         buffer->WriteSigned32(size);
-        for (auto& p : m_points)
-            p.Save(buffer);
+        for (auto& p : value.m_points)
+            SaveVector3f(buffer, p);
 
-        size = (int)m_faces.size();
+        size = (int)value.m_faces.size();
         buffer->WriteSigned32(size);
-        for (auto& p : m_faces)
-            p.Save(buffer);
+        for (auto& p : value.m_faces)
+            SaveVector3i(buffer, p);
 
-		size = (int)m_normals.size();
+        size = (int)value.m_normals.size();
         buffer->WriteSigned32(size);
-        for (auto& p : m_normals)
-            p.Save(buffer);
-	}
+        for (auto& p : value.m_normals)
+            SaveVector3f(buffer, p);
+    }
 
-    void ConvexShapeMesh::Load(System::Buffer *buffer)
-	{
+    void LoadBoundingBox(System::Buffer* buffer, ConvexShapeMesh& value)
+    {
         int size = buffer->ReadSigned32();
-		m_points.resize(size);
-        for (auto& p : m_points)
-            p.Load(buffer);
+        value.m_points.resize(size);
+        for (auto& p : value.m_points)
+            LoadVector3f(buffer, p);
 
         size = buffer->ReadSigned32();
-		m_faces.resize(size);
-        for (auto& p : m_faces)
-            p.Load(buffer);
+        value.m_faces.resize(size);
+        for (auto& p : value.m_faces)
+            SaveVector3i(buffer, p);
 
         size = buffer->ReadSigned32();
-		m_normals.resize(size);
-        for (auto& p : m_normals)
-            p.Load(buffer);
-	}
+        value.m_normals.resize(size);
+        for (auto& p : value.m_normals)
+            LoadVector3f(buffer, p);
+
+    }
 }

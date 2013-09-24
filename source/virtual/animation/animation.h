@@ -39,9 +39,12 @@ namespace Virtual
         const System::string& GetName() const;
         void SetName(const System::string& value);
 
-        virtual void Save(System::Buffer* buffer) const override;
-        virtual void Load(System::Buffer* buffer) override;
+        friend void SaveAnimation(System::Buffer* buffer, const Object* o);
+        friend void LoadAnimation(System::Buffer* buffer, Object* o);
 	};
+
+    PUNK_ENGINE_API void SaveAnimation(System::Buffer* buffer, const System::Object* o);
+    PUNK_ENGINE_API void LoadAnimation(System::Buffer* buffer, System::Object* o);
 }
 
 #endif

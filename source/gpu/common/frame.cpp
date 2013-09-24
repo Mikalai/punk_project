@@ -665,7 +665,7 @@ namespace Gpu
     {
         PushAllState();
         EnableLighting(false);
-        SetProjectionMatrix(Math::mat4::CreateOrthographicProjection(0, GetVideoDriver()->GetWindow()->GetWidth(),
+        SetProjectionMatrix(Math::mat4::CreateOrthographicProjection2(0, GetVideoDriver()->GetWindow()->GetWidth(),
                                                                      0, GetVideoDriver()->GetWindow()->GetHeight(),
                                                                      -1, 1));
         RenderableBuilder b(GetVideoDriver());
@@ -739,7 +739,7 @@ namespace Gpu
         SetWorldMatrix(Math::mat4::CreateTranslate(x, y, 0));
         int width = GetVideoDriver()->GetWindow()->GetWidth();
         int height = GetVideoDriver()->GetWindow()->GetHeight();
-        SetProjectionMatrix(Math::mat4::CreateOrthographicProjection(0, width, 0, height, -1, 1));
+        SetProjectionMatrix(Math::mat4::CreateOrthographicProjection2(0, width, 0, height, -1, 1));
         SetViewMatrix(Math::mat4::CreateIdentity());
 
         RenderableBuilder b(GetVideoDriver());

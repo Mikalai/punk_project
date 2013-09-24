@@ -6,6 +6,9 @@
 
 namespace System
 {
+    class Buffer;
+    class Object;
+
     class PUNK_ENGINE_API Rtti
     {
     public:
@@ -17,7 +20,7 @@ namespace System
         bool IsEqual(const Rtti* value) const;
         bool IsDerived(const Rtti* value) const;
         const string ToString() const;
-    private:
+    private:        
         string m_name;
         const Rtti* m_parent;
         unsigned m_id;        

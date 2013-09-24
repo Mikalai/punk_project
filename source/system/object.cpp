@@ -5,7 +5,7 @@
 
 namespace System
 {
-    StaticInormation<Object> Object::Info{"System.Object", PUNK_OBJECT, 0};
+    StaticInormation<Object> Object::Info{"System.Object", PUNK_OBJECT, SaveObject, LoadObject, 0};
     unsigned Object::m_id_next= 0;
 
     Object::Object()
@@ -47,19 +47,6 @@ namespace System
         return m_id;
     }
 
-    void Object::Save(Buffer* buffer) const
-    {
-        /*
-         *  We write type code, as a tag for factory, that should be able
-         *  to create an object from code
-         */
-        auto id = Info.Type.GetId();
-        buffer->WriteUnsigned32(id);
-    }
-
-    void Object::Load(Buffer* buffer)
-    {}
-
     const string& Object::Name() const
     {
         return m_name;
@@ -69,4 +56,18 @@ namespace System
     {
         m_name = value;
     }
+
+
+    void SaveObject(Buffer *buffer, const Object *o)
+    {
+        /*
+         *  We write type code, as a tag for factory, that should be able
+         *  to create an object from code. It will not be read from Load.
+         */
+        auto id = o->Info.Type.GetId();
+        buffer->WriteUnsigned32(id);
+    }
+
+    void LoadObject(Buffer *buffer, Object *o)
+    {}
 }

@@ -50,6 +50,8 @@ namespace Virtual
         System::string m_name;
         PUNK_OBJECT(River)
     };
+
+    PUNK_OBJECT_UTIL(River)
 }
 
 #endif // PUNK_VIRTUAL_RIVER_H

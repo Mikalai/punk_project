@@ -3,7 +3,7 @@
 
 #include "../../config.h"
 #include "renderable.h"
-#include "../../math/bounding_shere.h"
+#include "../../math/bounding_sphere.h"
 
 namespace Math
 {

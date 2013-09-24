@@ -1,21 +1,23 @@
 #include <limits>
+#include "../system/buffer.h"
 #include "frustum.h"
 #include "quat.h"
+#include "mat3.h"
 #include "mat4.h"
 
 namespace Math
 {
     mat4::mat4()
-        : Matrix4x4<float>()
+        : m{0,0,0,0
+            ,0,0,0,0
+            ,0,0,0,0
+            ,0,0,0,0}
     {}
 
-    mat4::mat4(const mat4& m)
-        : Matrix4x4<float>(m)
-    {}
-
-    mat4::mat4(const Matrix4x4<float>& m)
-        : Matrix4x4<float>(m)
-    {}
+    mat4::mat4(const mat4& mm)
+    {
+        memcpy(m, mm.m, sizeof(mm));
+    }
 
     const mat4 mat4::CreatePerspectiveProjection(float fovy, float width, float height, float znear, float zfar)
     {
@@ -95,9 +97,63 @@ namespace Math
         return m;
     }
 
+    float& mat4::operator [] (int i)
+    {
+        return m[i];
+    }
+
+    const float& mat4::operator [] (int i) const
+    {
+        return m[i];
+    }
+
     const mat4 mat4::CreateTranslate(const vec3 &v)
     {
         return CreateTranslate(v[0], v[1], v[2]);
+    }
+
+    const vec4 mat4::GetRow(int row) const
+    {
+        return vec4(m[0 * 4 + row],
+                m[1 * 4 + row],
+                m[2 * 4 + row],
+                m[3 * 4 + row]);
+    }
+
+    void mat4::SetColumn(int column, const vec4& v)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            m[column * 4 + i] = v[i];
+        }
+    }
+
+    mat4& mat4::operator *= (const mat4& b)
+    {
+        mat4 a = *this;
+
+        SetColumn(0, vec4(
+                      b[0] * a[0] + b[1] * a[4] + b[2] * a[8] + b[3] * a[12],
+                b[0] * a[1] + b[1] * a[5] + b[2] * a[9] + b[3] * a[13],
+                b[0] * a[2] + b[1] * a[6] + b[2] * a[10] + b[3] * a[14],
+                b[0] * a[3] + b[1] * a[7] + b[2] * a[11] + b[3] * a[15]));
+        SetColumn(1, vec4(
+                      b[4] * a[0] + b[5] * a[4] + b[6] * a[8] + b[7] * a[12],
+                b[4] * a[1] + b[5] * a[5] + b[6] * a[9] + b[7] * a[13],
+                b[4] * a[2] + b[5] * a[6] + b[6] * a[10] + b[7] * a[14],
+                b[4] * a[3] + b[5] * a[7] + b[6] * a[11] + b[7] * a[15]));
+        SetColumn(2, vec4(
+                      b[8] * a[0] + b[9] * a[4] + b[10] * a[8] + b[11] * a[12],
+                b[8] * a[1] + b[9] * a[5] + b[10] * a[9] + b[11] * a[13],
+                b[8] * a[2] + b[9] * a[6] + b[10] * a[10] + b[11] * a[14],
+                b[8] * a[3] + b[9] * a[7] + b[10] * a[11] + b[11] * a[15]));
+        SetColumn(3, vec4(
+                      b[12] * a[0] + b[13] * a[4] + b[14] * a[8] + b[15] * a[12],
+                b[12] * a[1] + b[13] * a[5] + b[14] * a[9] + b[15] * a[13],
+                b[12] * a[2] + b[13] * a[6] + b[14] * a[10] + b[15] * a[14],
+                b[12] * a[3] + b[13] * a[7] + b[14] * a[11] + b[15] * a[15]));
+
+        return *this;
     }
 
     const mat4 mat4::Inversed() const
@@ -120,8 +176,8 @@ namespace Math
         r0 [3] = MAT(m,0,3);
         r0 [4] = 1;
         r0 [5] =
-            r0 [6] =
-            r0 [7] = 0;
+                r0 [6] =
+                r0 [7] = 0;
 
         r1 [0] = MAT(m,1,0);
         r1 [1] = MAT(m,1,1);
@@ -129,17 +185,17 @@ namespace Math
         r1 [3] = MAT(m,1,3);
         r1 [5] = 1;
         r1 [4] =
-            r1 [6] =
-            r1 [7] = 0,
+                r1 [6] =
+                r1 [7] = 0,
 
-            r2 [0] = MAT(m,2,0);
+                r2 [0] = MAT(m,2,0);
         r2 [1] = MAT(m,2,1);
         r2 [2] = MAT(m,2,2);
         r2 [3] = MAT(m,2,3);
         r2 [6] = 1;
         r2 [4] =
-            r2 [5] =
-            r2 [7] = 0;
+                r2 [5] =
+                r2 [7] = 0;
 
         r3 [0] = MAT(m,3,0);
         r3 [1] = MAT(m,3,1);
@@ -147,8 +203,8 @@ namespace Math
         r3 [3] = MAT(m,3,3);
         r3 [7] = 1;
         r3 [4] =
-            r3 [5] =
-            r3 [6] = 0;
+                r3 [5] =
+                r3 [6] = 0;
 
         // choose pivot - or die
         if ( fabs (r3 [0] )> fabs ( r2 [0] ) )
@@ -265,8 +321,8 @@ namespace Math
         // eliminate third variable
         m3     = r3[2]/r2[2];
         r3[3] -= m3 * r2[3], r3[4] -= m3 * r2[4],
-            r3[5] -= m3 * r2[5], r3[6] -= m3 * r2[6],
-            r3[7] -= m3 * r2[7];
+                r3[5] -= m3 * r2[5], r3[6] -= m3 * r2[6],
+                r3[7] -= m3 * r2[7];
 
         // last check
         if ( r3 [3] == 0 )
@@ -281,30 +337,30 @@ namespace Math
         m2    = r2[3];
         s     = 1.0f/r2[2];
         r2[4] = s * (r2[4] - r3[4] * m2), r2[5] = s * (r2[5] - r3[5] * m2),
-            r2[6] = s * (r2[6] - r3[6] * m2), r2[7] = s * (r2[7] - r3[7] * m2);
+                r2[6] = s * (r2[6] - r3[6] * m2), r2[7] = s * (r2[7] - r3[7] * m2);
         m1     = r1[3];
         r1[4] -= r3[4] * m1, r1[5] -= r3[5] * m1,
-            r1[6] -= r3[6] * m1, r1[7] -= r3[7] * m1;
+                r1[6] -= r3[6] * m1, r1[7] -= r3[7] * m1;
 
         m0     = r0[3];
         r0[4] -= r3[4] * m0, r0[5] -= r3[5] * m0,
-            r0[6] -= r3[6] * m0, r0[7] -= r3[7] * m0;
+                r0[6] -= r3[6] * m0, r0[7] -= r3[7] * m0;
 
         // now back substitute row 1
         m1    = r1[2];
         s     = 1.0f/r1[1];
         r1[4] = s * (r1[4] - r2[4] * m1), r1[5] = s * (r1[5] - r2[5] * m1),
-            r1[6] = s * (r1[6] - r2[6] * m1), r1[7] = s * (r1[7] - r2[7] * m1);
+                r1[6] = s * (r1[6] - r2[6] * m1), r1[7] = s * (r1[7] - r2[7] * m1);
 
         m0     = r0[2];
         r0[4] -= r2[4] * m0, r0[5] -= r2[5] * m0,
-            r0[6] -= r2[6] * m0, r0[7] -= r2[7] * m0;
+                r0[6] -= r2[6] * m0, r0[7] -= r2[7] * m0;
 
         // now back substitute row 0
         m0    = r0[1];
         s     = 1.0f/r0[0];
         r0[4] = s * (r0[4] - r1[4] * m0), r0[5] = s * (r0[5] - r1[5] * m0),
-            r0[6] = s * (r0[6] - r1[6] * m0), r0[7] = s * (r0[7] - r1[7] * m0);
+                r0[6] = s * (r0[6] - r1[6] * m0), r0[7] = s * (r0[7] - r1[7] * m0);
 
         mat4 res;
         float* out = res.m;
@@ -396,22 +452,6 @@ namespace Math
         for (int i = 0; i < 16; i++)
             res[i] = m[i]*v;
         return res;
-    }
-
-    void mat4::Save(System::Buffer* buffer) const
-    {
-        for (int i = 0; i != 16; ++i)
-        {
-            buffer->WriteReal32(m[i]);
-        }
-    }
-
-    void mat4::Load(System::Buffer* buffer)
-    {
-        for (int i = 0; i != 16; ++i)
-        {
-            m[i] = buffer->ReadReal32();
-        }
     }
 
     const mat4 mat4::CreateOrthographicProjection(float left, float right, float bottom, float top, float _near, float _far)
@@ -551,5 +591,82 @@ namespace Math
         m[3*4 + 0] = m[3*4 + 1] = m[3*4 + 2] = 0;
         m[3*4 + 3] = 1;
         return mat;
+    }
+
+    const mat4 mat4::CreateRotation(float x, float y, float z, float angle)
+    {
+        float inversed_length = 1.0f/sqrtf(x*x+y*y+z*z);
+
+        x *= inversed_length;
+        y *= inversed_length;
+        z *= inversed_length;
+
+        mat4 result;
+        float c = std::cos(angle);
+        float s = std::sin(angle);
+        result.SetColumn(0, vec4(c+(1-c)*x*x, (1-c)*x*y+s*z, (1-c)*x*z-s*y, 0));
+        result.SetColumn(1, vec4((1-c)*x*y-s*z, c+(1-c)*y*y, (1-c)*y*z+s*x, 0));
+        result.SetColumn(2, vec4((1-c)*x*z+s*y, (1-c)*y*z-s*x, c+(1-c)*z*z, 0));
+        result.SetColumn(3, vec4(0,0,0,1));
+        return result;
+    }
+
+    const mat4 mat4::CreateIdentity()
+    {
+        return mat4();
+    }
+
+    const mat4 mat4::Transposed() const
+    {
+        mat4 res;
+        res.SetColumn(0, vec4(m[0], m[4], m[8], m[12]));
+        res.SetColumn(1, vec4(m[1], m[5], m[9], m[13]));
+        res.SetColumn(2, vec4(m[2], m[6], m[10], m[14]));
+        res.SetColumn(3, vec4(m[3], m[7], m[11], m[15]));
+
+        return res;
+    }
+
+    const vec3 mat4::TranslationPart() const
+    {
+        return vec3(m[12], m[13], m[14]);
+    }
+
+    const mat3 mat4::RotationPart() const
+    {
+        mat3 res;
+        res.SetColumn(0, vec3(m[0], m[1], m[2]));
+        res.SetColumn(1, vec3(m[4], m[5], m[6]));
+        res.SetColumn(2, vec3(m[8], m[9], m[10]));
+        return res;
+    }
+
+    const mat4 mat4::RotationPart4x4() const
+    {
+        mat4 res;
+        res.SetColumn(0, vec4(m[0], m[1], m[2], 0));
+        res.SetColumn(1, vec4(m[4], m[5], m[6], 0));
+        res.SetColumn(2, vec4(m[8], m[9], m[10], 0));
+        res.SetColumn(3, vec4(0, 0, 0, 1));
+        return res;
+    }
+
+    const System::string mat4::ToString() const
+    {
+        return System::string(L"{0} {1} {2} {3}\n {4} {5} {6} {7} \n {8} {9} {10} {11}\n {12} {13} {14} {15}\n").
+                arg(m[0]).arg(m[4]).arg(m[8]).arg(m[12]).
+                arg(m[1]).arg(m[5]).arg(m[9]).arg(m[13]).
+                arg(m[2]).arg(m[6]).arg(m[10]).arg(m[14]).
+                arg(m[3]).arg(m[7]).arg(m[11]).arg(m[15]);
+    }
+
+    void SaveMatrix4f(System::Buffer* buffer, const mat4& value)
+    {
+        buffer->WriteBuffer(&value[0], sizeof(value));
+    }
+
+    void LoadMatrix4f(System::Buffer* buffer, mat4& value)
+    {
+        buffer->ReadBuffer(&value[0], sizeof(value));
     }
 }

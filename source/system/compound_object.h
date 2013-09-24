@@ -24,9 +24,6 @@ namespace System
         Object* Find(int index);        
         const Object* Find(int index) const;        
 
-        virtual void Save(Buffer* buffer) const;
-        virtual void Load(Buffer* buffer);
-
 	public:
 		typedef std::vector<Object*> CollectionType;
 		typedef CollectionType::iterator iterator;
@@ -49,12 +46,13 @@ namespace System
         PUNK_OBJECT(CompoundObject)
 	};
 
+    PUNK_OBJECT_UTIL(CompoundObject)
+
     /**
       * if child had parent, it will be replaced, and from
       * previous parent child will be removed
       */
     void PUNK_ENGINE_API Bind(CompoundObject* parent, Object* child);
-
 }
 
 #endif	//	_H_PUNK_SYSTEM_COMPOUND_OBJECT

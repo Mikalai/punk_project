@@ -46,7 +46,7 @@ namespace Utility
             {
                 System::string word = buffer.ReadWord();
                 {
-                    auto value = Virtual::Action::find(word);
+                    auto value = System::HasInstance<Virtual::Action>(word);
                     if (value)
                         return value;
                 }
@@ -56,7 +56,6 @@ namespace Utility
                 else
                     action.reset(new Virtual::Action);
                 ParseAction(buffer, action.get());
-                Virtual::Action::add(word, action.get());
                 return action.release();
             }
             case WORD_STATICMESHTEXT:

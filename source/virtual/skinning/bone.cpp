@@ -3,7 +3,7 @@
 #include "bone.h"
 #include "armature.h"
 #include "../../system/logger.h"
-#include "../../system/hresource.h"
+#include "../../system/buffer.h"
 #include "../../math/quat.h"
 #include "../../math/mat4.h"
 #include "../../math/vec3.h"
@@ -234,39 +234,7 @@ namespace Virtual
 //		m_need_update_global_matrix = true;
 //	}
 
-    void Bone::Save(System::Buffer *buffer) const
-	{
-        buffer->WriteString(m_name);
-        buffer->WriteString(m_parent_name);
-        m_global_matrix.Save(buffer);
-        m_bone_matrix.Save(buffer);
-
-        unsigned children_count = m_children.size();
-        buffer->WriteUnsigned32(children_count);
-		for (auto bone : m_children)
-		{
-            bone->Save(buffer);
-		}
-	}
-
-    void Bone::Load(System::Buffer *buffer)
-	{
-		Clear();
-        m_name = buffer->ReadString();
-        m_parent_name = buffer->ReadString();
-        m_global_matrix.Load(buffer);
-        m_bone_matrix.Load(buffer);
-
-        unsigned children_count = buffer->ReadUnsigned32();
-        for (unsigned i = 0; i != children_count; ++i)
-		{
-			std::unique_ptr<Bone> child(new Bone);
-            child->Load(buffer);
-			AddChild(child.release());
-		}		
-	}
-
-	int Bone::GetIndex() const
+    int Bone::GetIndex() const
 	{
 		return m_index;
 	}
@@ -295,4 +263,36 @@ namespace Virtual
     {
         return m_local_matrix;
     }    
+
+    void SaveBone(System::Buffer* buffer, const Bone& b)
+    {
+        System::SaveString(buffer, b.m_name);
+        System::SaveString(buffer, b.m_parent_name);
+        Math::SaveMatrix4f(buffer, b.m_global_matrix);
+        Math::SaveMatrix4f(buffer, b.m_bone_matrix);
+
+        unsigned children_count = b.m_children.size();
+        buffer->WriteUnsigned32(children_count);
+        for (auto bone : b.m_children)
+        {
+            SaveBone(buffer, *bone);
+        }
+    }
+
+    void LoadBone(System::Buffer* buffer, Bone& bone)
+    {
+        bone.Clear();
+        System::LoadString(buffer, bone.m_name);
+        System::LoadString(buffer, bone.m_parent_name);
+        Math::LoadMatrix4f(buffer, bone.m_global_matrix);
+        Math::LoadMatrix4f(buffer, bone.m_bone_matrix);
+
+        unsigned children_count = buffer->ReadUnsigned32();
+        for (unsigned i = 0; i != children_count; ++i)
+        {
+            std::unique_ptr<Bone> child(new Bone);
+            LoadBone(buffer, *child);
+            bone.AddChild(child.release());
+        }
+    }
 }

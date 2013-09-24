@@ -19,39 +19,19 @@ namespace Math
 		float GetRadius() const { return m_radius; }
 		const vec3& GetCenter() const { return m_center; }
 
-		friend const Sphere operator * (const mat4& m, const Sphere& s);
-
-		void Save(System::Buffer* buffer) const;
-		void Load(System::Buffer* buffer);
-		
 	private:
 		vec3 m_center;
 		float m_radius;
+
+        friend const Sphere operator * (const mat4& m, const Sphere& s);
+        friend void SaveSphere(System::Buffer* buffer, const Sphere& value);
+        friend void LoadSphere(System::Buffer* buffer, Sphere& value);
 	};
 
-	inline const Sphere operator * (const mat4& m, const Sphere& s)
-	{
-		Sphere res;
-		res.m_center = m * s.GetCenter();
-		//	consider that transform do not effect the radius
-		res.m_radius = s.GetRadius();
-		return res;
-	}
-
-	inline const Sphere operator + (const Sphere& a, const Sphere& b)
-	{
-		float d = (a.GetCenter() - b.GetCenter()).Length();
-		if (d + a.GetRadius() <= b.GetRadius())
-			return b;
-		if (d + b.GetRadius() <= a.GetRadius())
-			return a;
-
-		Sphere res;		
-        float r = 0.5f * (d + a.GetRadius() + b.GetRadius());
-		res.SetRadius(r);
-		res.SetCenter(a.GetCenter() + (r - a.GetRadius()) / d * (b.GetCenter() - a.GetCenter()));
-		return res;
-	}
+    PUNK_ENGINE_API const Sphere operator * (const mat4& m, const Sphere& s);
+    PUNK_ENGINE_API const Sphere operator + (const Sphere& a, const Sphere& b);
+    PUNK_ENGINE_API void SaveSphere(System::Buffer* buffer, const Sphere& value);
+    PUNK_ENGINE_API void LoadSphere(System::Buffer* buffer, Sphere& value);
 }
 
 #endif

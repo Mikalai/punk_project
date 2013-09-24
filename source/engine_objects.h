@@ -29,6 +29,7 @@ enum EngineObject
     PUNK_SUN,
     PUNK_RIVER,
     PUNK_TRANSFORM_NODE,
+    PUNK_ACTION,
     PUNK_LAST_ENGINE_OBJECT
 };
 

@@ -1,4 +1,7 @@
 #include <set>
+#include "../system/logger.h"
+#include "vec2.h"
+#include "mat2.h"
 #include "low_level_math.h"
 #include <limits>
 #include "relations.h"
@@ -30,12 +33,12 @@ namespace Math
 		const vec3 p = point;
 
 		float cosa = (p-org).Dot(dst);
-		if (Math::Abs(1.0f - Math::Abs(cosa)) < EPS)
+        if (Math::Abs(1.0f - Math::Abs(cosa)) < Eps)
 		{
 			float t = (p - org).Length() / (dst - org).Length();
-			if (Math::Abs(t) < EPS)
+            if (Math::Abs(t) < Eps)
 				return Relation::START;
-			if (Math::Abs(1 - t) < EPS)
+            if (Math::Abs(1 - t) < Eps)
 				return Relation::END;
 			if (t < 0)
 				return Relation::FRONT;
@@ -49,9 +52,9 @@ namespace Math
 	Relation ClassifyPoint(const vec3& p, const Plane& plane)
 	{
 		auto s = plane * p;
-		if (s < -EPS)
+        if (s < -Eps)
 			return Relation::BACK;
-		if (s > EPS)
+        if (s > Eps)
 			return Relation::FRONT;
 		return Relation::ON;
 	}
@@ -63,24 +66,24 @@ namespace Math
 
 		float dst = p.Dot(n) + org_dst;
 
-		if (Math::Abs(dst) < EPS)	//	point on the same plane as triangle
+        if (Math::Abs(dst) < Eps)	//	point on the same plane as triangle
 		{
 			float w0, w1, w2;
 			triangle.GetBarycentric(p, w0, w1, w2);
 
-			if (w0 < -EPS || w1 < -EPS || w2 < -EPS)
+            if (w0 < -Eps || w1 < -Eps || w2 < -Eps)
 				return Relation::OUTSIDE;
-			if (Math::Abs(1.0f - w0) < EPS)
+            if (Math::Abs(1.0f - w0) < Eps)
 				return Relation::A;
-			if (Math::Abs(1.0f - w1) < EPS)
+            if (Math::Abs(1.0f - w1) < Eps)
 				return Relation::B;
-			if (Math::Abs(1.0f - w2) < EPS)
+            if (Math::Abs(1.0f - w2) < Eps)
 				return Relation::C;
-			if (Math::Abs(w0) < EPS)
+            if (Math::Abs(w0) < Eps)
 				return Relation::BC;
-			if (Math::Abs(w1) < EPS)
+            if (Math::Abs(w1) < Eps)
 				return Relation::CA;
-			if (Math::Abs(w2) < EPS)
+            if (Math::Abs(w2) < Eps)
 				return Relation::AB;
 			if (w0 > 0 && w1 > 0 && w2 > 0)
 				return Relation::INSIDE;
@@ -168,10 +171,10 @@ namespace Math
 		const vec3 dir = line.GetDirection();
 		float v = n.Dot(dir);
 
-		if (Math::Abs(v) < EPS)
+        if (Math::Abs(v) < Eps)
 		{
 			float dst = n.Dot(line.GetOrigin()) + org_dst;
-			if (Math::Abs(dst) < EPS)
+            if (Math::Abs(dst) < Eps)
 				return Relation::ON;
 			if (dst < 0)
 				return Relation::BACK;
@@ -195,10 +198,10 @@ namespace Math
 		const vec3 dir = line.GetDirection();
 		float v = n.Dot(dir);
 
-		if (Math::Abs(v) < EPS)
+        if (Math::Abs(v) < Eps)
 		{
 			float dst = n.Dot(org) + org_dst;
-			if (Math::Abs(dst) < EPS)
+            if (Math::Abs(dst) < Eps)
 				return Relation::ON;
 			if (dst < 0)
 				return Relation::BACK;
@@ -340,9 +343,9 @@ namespace Math
 		float v = p * vec4(dir, 0);
 		float distance = p * org;
 
-		if (Math::Abs(v) < EPS)
+        if (Math::Abs(v) < Eps)
 		{
-			if (Math::Abs(distance) < EPS)
+            if (Math::Abs(distance) < Eps)
 				return Relation::ON;
 			if (distance < 0)
 				return Relation::BACK;
@@ -369,10 +372,10 @@ namespace Math
         const vec3 dir = line.GetDestination() - line.GetOrigin();
 		float v = n.Dot(dir);
 
-		if (Math::Abs(v) < EPS)
+        if (Math::Abs(v) < Eps)
 		{
 			float dst = n.Dot(org) + org_dst;
-			if (Math::Abs(dst) < EPS)
+            if (Math::Abs(dst) < Eps)
 				return Relation::ON;
 			if (dst < 0)
 				return Relation::BACK;
@@ -588,7 +591,7 @@ namespace Math
 		const vec3 n1 = a.GetNormal();
 		const vec3 n2 = b.GetNormal();
 
-        if (fabs(n1.Dot(n2)) > 1.0f - Math::EPS)
+        if (fabs(n1.Dot(n2)) > 1.0f - Math::Eps)
             return NOT_INTERSECT;
 
 		vec3 dir = n1.Cross(n2).Normalized();
@@ -604,7 +607,7 @@ namespace Math
 
 		float det = m.Determinant();
 
-		if (Math::Abs(det) < Math::EPS)
+        if (Math::Abs(det) < Math::Eps)
 			return Relation::NOT_INTERSECT;
 
 		vec3 p(-a.GetDistance(), -b.GetDistance(), -c.GetDistance());
@@ -699,11 +702,11 @@ namespace Math
 		float ss2 = splitter.GetNormal().Dot(t[2]) + splitter.GetDistance();
 		int s0, s1, s2;
 
-		if (Math::Abs(ss0) < Math::EPS)
+        if (Math::Abs(ss0) < Math::Eps)
 			s0 = 0;
-		if (Math::Abs(ss1) < Math::EPS)
+        if (Math::Abs(ss1) < Math::Eps)
             s1 = 0;
-		if (Math::Abs(ss2) < Math::EPS)
+        if (Math::Abs(ss2) < Math::Eps)
             s2 = 0;
 
 		if (s0 == 0 && s1 == 0 && s2 == 0)
@@ -1122,7 +1125,7 @@ namespace Math
         float tmax = std::numeric_limits<float>::max();
         for (int i = 0; i < 3; ++i)
         {
-            if (fabs(d[i]) < EPS)
+            if (fabs(d[i]) < Eps)
             {
                 if (p[i] < a.MinPoint()[i] || p[i] > a.MaxPoint()[i])
                     return Relation::NOT_INTERSECT;
