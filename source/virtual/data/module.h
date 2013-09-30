@@ -7,6 +7,8 @@
 
 #include "light.h"
 #include "lights/point_light.h"
+#include "lights/directional_light.h"
+#include "lights/spot_light.h"
 #include "lights/sun.h"
 
 #include "entity.h"

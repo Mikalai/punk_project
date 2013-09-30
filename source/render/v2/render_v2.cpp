@@ -1,4 +1,5 @@
 #include "../../system/module.h"
+#include "../../gpu/common/lighting/light_parameters.h"
 #include "../../scene/module.h"
 #include "../../virtual/module.h"
 #include "../../gpu/module.h"
@@ -28,6 +29,9 @@ namespace Render
         RegisterRenderProcessor(Virtual::Transform::Info.Type.GetId(), ProcessTransform);
         RegisterRenderProcessor(Virtual::ArmatureAnimationMixer::Info.Type.GetId(), ProcessArmature);
         RegisterRenderProcessor(Virtual::Light::Info.Type.GetId(), ProcessLight);
+        RegisterRenderProcessor(Virtual::PointLight::Info.Type.GetId(), ProcessLight);
+        RegisterRenderProcessor(Virtual::DirectionalLight::Info.Type.GetId(), ProcessLight);
+        RegisterRenderProcessor(Virtual::SpotLight::Info.Type.GetId(), ProcessLight);
         RegisterRenderProcessor(Virtual::Material::Info.Type.GetId(), ProcessMaterial);
         RegisterRenderProcessor(Virtual::TerrainMesh::Info.Type.GetId(), ProcessTerrainMesh);
         RegisterRenderProcessor(Virtual::Sun::Info.Type.GetId(), ProcessSun);
@@ -45,8 +49,9 @@ namespace Render
 
     void Render2::RenderScene(Scene::SceneGraph *value, const Math::mat4 &view, const Math::mat4 &projection, Gpu::Frame *frame)
     {
-        m_all_lights.clear();
-        m_all_lights.reserve(16);
+        m_graph = value;
+        //m_all_lights.clear();
+        //m_all_lights.reserve(16);
         m_frame = frame;
         m_frame->PushViewState();
         m_frame->SetViewMatrix(view);
@@ -122,18 +127,80 @@ namespace Render
         m_render_processor[type] = F;
     }
 
-    void Render2::AddLight(const Gpu::LightParameters &light)
+//    void Render2::AddLight(const Gpu::LightParameters &light)
+//    {
+//        m_all_lights.push_back(light);
+//    }
+
+//    size_t Render2::GetLightsCount()
+//    {
+//        return m_all_lights.size();
+//    }
+
+//    const Gpu::LightParameters& Render2::GetLight(int index)
+//    {
+//        return m_all_lights[index];
+//    }
+
+//    int Render2::GetNearestLight(const Math::vec3& p)
+//    {
+//        if (m_all_lights.empty())
+//            return -1;
+//        size_t best = 0;
+//        Gpu::LightParameters l = m_all_lights[0];
+//        float length = (l.GetPosition() - p).Length();
+//        for (size_t i = 1, max_i = m_all_lights.size(); i < max_i; ++i)
+//        {
+//            float l = (m_all_lights[i].GetPosition() - p).Length();
+//            if (l < length)
+//            {
+//                length = l;
+//                best = i;
+//            }
+//        }
+//        return best;
+//    }
+
+    void Render2::SetLight(int slot, Gpu::Frame *frame, Virtual::Light *light, Scene::Node* node)
     {
-        m_all_lights.push_back(light);
+        auto& l = frame->Light(slot);
+        l.Enable();
+        if (light->GetType()->IsEqual(&Virtual::PointLight::Info.Type))
+        {
+            Virtual::PointLight* p = Cast<Virtual::PointLight*>(light);
+            l.SetType(Gpu::LightType::Point);
+            l.SetDiffuseColor(p->GetColor());
+            l.SetLightAttenuation(Gpu::LightAttenuation::Quadratic);
+            l.SetLightConstantAttenuation(1);
+            l.SetLightLinearAttenuation(p->GetLinearAttenuation());
+            l.SetLightQuadricAttenuation(p->GetQuadraticAttenuation());
+            l.SetPosition(node->GlobalPosition());
+        }
+        else if (light->GetType()->IsEqual(&Virtual::DirectionalLight::Info.Type))
+        {
+            Virtual::DirectionalLight* p = Cast<Virtual::DirectionalLight*>(light);
+            l.SetType(Gpu::LightType::Direction);
+            l.SetDiffuseColor(p->GetColor());
+            l.SetLightAttenuation(Gpu::LightAttenuation::Constant);
+            l.SetLightConstantAttenuation(1);
+            l.SetDirection(node->GlobalRotation().Rotate(p->GetDirection()));
+        }
+        else if (light->GetType()->IsEqual(&Virtual::SpotLight::Info.Type))
+        {
+//            Virtual::SpotLight* p = Cast<Virtual::SpotLight*>(light);
+//            l.SetType(Gpu::LightType::Direction);
+//            l.SetDiffuseColor(p->GetColor());
+//            l.SetLightAttenuation(Gpu::LightAttenuation::Quadratic);
+//            l.SetLightConstantAttenuation(1);
+//            l.SetPosition(node->GlobalPosition());
+//            l.SetLightLinearAttenuation(p->GetLinearAttenuation());
+//            l.SetLightQuadricAttenuation(p->GetQuadraticAttenuation());
+//            l.SetDirection(node->GlobalRotation().Rotate(Math::vec3{0,0,1}));
+        }
     }
 
-    size_t Render2::GetLightsCount()
+    const Scene::SceneGraph* Render2::GetSceneGraph() const
     {
-        return m_all_lights.size();
-    }
-
-    const Gpu::LightParameters& Render2::GetLight(int index)
-    {
-        return m_all_lights[index];
+        return m_graph;
     }
 }

@@ -26,8 +26,19 @@ namespace Math
     }
 
     quat::quat()
-        : m_v{0, 0, 0, 0}
+        : m_v{1, 0, 0, 0}
     {}
+
+    quat::quat(std::initializer_list<float> list)
+    {
+        int i = 0;
+        for (auto v : list)
+        {
+            m_v[i++] = v;
+            if (i == 4)
+                break;
+        }
+    }
 
     quat::quat(float w, float x, float y, float z)
         : m_v{w, x, y, z}
@@ -509,6 +520,17 @@ namespace Math
         default:
             throw System::PunkException(L"Can't convert matrix to quaternion");
         }
+    }
+
+    bool quat::IsEqual(const quat &q, float eps)
+    {
+        float a = fabs(X() - q.X());
+        float b = fabs(Y() - q.Y());
+        float c = fabs(Z() - q.Z());
+        float d = fabs(W() - q.W());
+        if (a < eps && b < eps && c < eps && d < eps)
+            return true;
+        return false;
     }
 
     std::wostream& operator << (std::wostream& stream, const quat& q)

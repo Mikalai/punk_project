@@ -54,7 +54,7 @@ namespace Scene
     Node::Node()
         : m_data(nullptr)
         , m_task(nullptr)
-    {        
+    {
         Info.Add(this);
     }
 
@@ -159,9 +159,10 @@ namespace Scene
 
     const System::string Node::ToString() const
     {
-        std::wstringstream stream;
-        stream << L'[' << GetLocalIndex() << L' ' << Info.Type.GetName() << L']';
-        return System::string(stream.str());
+        return System::string("{0} ({1}); {2} ({3}); {4} ({5})").arg(m_local_position.ToString())
+                .arg(m_global_position.ToString()).arg(m_local_rotation.ToString())
+                .arg(m_global_rotation.ToString()).arg(m_local_scale.ToString())
+                .arg(m_global_scale.ToString());
     }
 
     bool Node::Remove(const System::string& name, bool depth)
@@ -299,7 +300,7 @@ namespace Scene
 
     void Node::UpdateGlobalPosition()
     {
-        Node* parent = (Node*)GetOwner();
+        Node* parent = Cast<Node*>(GetOwner());
         if (!parent)
             m_global_position = m_local_position;
         else
@@ -447,7 +448,7 @@ namespace Scene
         else
         {
             m_global_position = parent->GlobalPosition() + parent->GlobalRotation().Rotate(m_local_position);
-            m_global_rotation = parent->GlobalRotation()*m_local_rotation;
+            m_global_rotation = parent->GlobalRotation() * m_local_rotation;
         }
     }
 
@@ -462,5 +463,15 @@ namespace Scene
                 UpdateUpToDown(child);
             }
         }
+    }
+
+    void Node::Rotate(const Math::quat &q)
+    {
+        m_local_rotation = q * m_local_rotation;
+    }
+
+    void Node::Translate(const Math::vec3 &p)
+    {
+        m_local_position += p;
     }
 }

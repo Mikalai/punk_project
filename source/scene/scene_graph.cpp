@@ -45,4 +45,58 @@ namespace Scene
     {
         LoadNode(buffer, o);
     }
+
+
+    void UpdateLight(Node* node, std::vector<Node*>& nodes)
+    {
+        if (!node)
+            return;
+        auto o = node->GetData();
+        if (o)
+        {
+            if (o->GetType()->IsDerived(&Virtual::Light::Info.Type))
+            {
+                nodes.push_back(node);
+            }
+        }
+
+        for (auto child : *node)
+        {
+            Node* n = Cast<Node*>(child);
+            UpdateLight(n, nodes);
+        }
+    }
+
+    void SceneGraph::UpdateLights()
+    {
+        UpdateLight(this, m_lights);
+    }
+
+    void SceneGraph::UpdateTransform()
+    {
+        UpdateUpToDown(this);
+    }
+
+    void SceneGraph::Update()
+    {
+        UpdateTransform();
+        UpdateLights();
+    }
+
+    Node* SceneGraph::GetNearestLight(const Math::vec3 &point) const
+    {
+        if (m_lights.empty())
+            return nullptr;
+        size_t best = 0;
+        for (size_t i = 1, max_i = m_lights.size(); i < max_i; ++i)
+        {
+            const auto& p1 = m_lights[i]->GlobalPosition();
+            const auto& p2 = m_lights[best]->GlobalPosition();
+            float a = (p1 - point).Length();
+            float b = (p2 - point).Length();
+            if (a < b)
+                best = i;
+        }
+        return m_lights[best];
+    }
 }

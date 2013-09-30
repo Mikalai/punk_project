@@ -1,12 +1,13 @@
 #include <fstream>
 #include <memory>
+#include "../../../utility/descriptors/light_desc.h"
+#include "../../../engine_objects.h"
 #include "../../../system/buffer.h"
 #include "../../../math/vec2.h"
 #include "../../../math/vec3.h"
 #include "../../../math/vec4.h"
 #include "point_light.h"
-#include "../../../utility/descriptors/light_desc.h"
-#include "../../../engine_objects.h"
+
 
 namespace Virtual
 {

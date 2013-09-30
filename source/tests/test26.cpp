@@ -1,6 +1,6 @@
-#include "test24.h"
+#include "test26.h"
 
-namespace Test24
+namespace Test26
 {
     class TestApp : public Punk::ViewerApplication
     {
@@ -14,6 +14,7 @@ namespace Test24
 
         virtual void OnInit(const Punk::Config&) override
         {
+            SetCameraSpeed(5);
             m_node = Cast<Scene::SceneGraph*>(Utility::ParsePunkFile(System::Environment::Instance()->GetModelFolder()
                                                                         + L"simple_scene.pmd"));
             std::cout << m_node->ToString() << std::endl;
@@ -29,35 +30,46 @@ namespace Test24
             std::cout << m_node->ToString() << std::endl;
         }
 
+        virtual void OnIdle(System::IdleEvent *event) override
+        {
+            Scene::Node* n = m_node->Find(L"Lamp_transform", true);
+            if (n)
+            {
+                n->Rotate(Math::quat::CreateFromAngleAxis(event->elapsed_time_s, {1,0,0}));
+            }
+
+            n = m_node->Find(L"parent_transform", true);
+            if (n)
+            {
+           //     n->Rotate(Math::quat::CreateFromAngleAxis(event->elapsed_time_s, {1,0,0}));
+            }
+        }
+
         virtual void OnRender(Gpu::Frame* frame) override
         {
-            Scene::UpdateUpToDown(m_node);
+            //Scene::UpdateUpToDown(m_node);
+            m_node->Update();
             Math::vec3 point_light{2, 2, 2};
-            Render::Render2 render;
+            Render::Render2 render;                        
             frame->EnableDiffuseShading(true);
             frame->EnableLighting(true);
-            frame->SetLightModel(Gpu::LightModel::PerFragmentDiffuse);
             frame->EnableSpecularShading(true);
-            frame->Light(0).Enable();
-            frame->Light(0).SetType(Gpu::LightType::Point);
-            frame->Light(0).SetPosition(point_light);
+            frame->SetLightModel(Gpu::LightModel::PerFragmentDiffuse);
+
             frame->PushAllState();
             render.RenderScene(m_node, GetViewMatrix(), GetProjectionMatrix(), frame);
             frame->PopAllState();
-            frame->BeginRendering();            
+            frame->BeginRendering();
             frame->SetClearColor(0.4, 0.4, 0.4, 1);
             frame->Clear(true, true, true);
-
-            frame->SetWorldMatrix(Math::mat4());
-            frame->SetViewMatrix(GetViewMatrix());
-            frame->SetProjectionMatrix(GetProjectionMatrix());
-            frame->SetPointSize(10);
-            frame->SetDiffuseColor(1,0,0,1);
-            frame->DrawPoint(point_light);
-            frame->SetDiffuseColor(1,1,0,1);
-            frame->DrawPoint(-3, 1, 6);
-            frame->SetDiffuseColor(1,1,1,1);
-            frame->DrawPoint(0, 0, 0);
+            frame->PushAllState();
+            {
+                frame->SetWorldMatrix(Math::mat4::CreateIdentity());
+                frame->SetViewMatrix(GetViewMatrix());
+                frame->SetProjectionMatrix(GetProjectionMatrix());
+                frame->DrawAxis();
+            }
+            frame->PopAllState();
             frame->EndRendering();
         }
     };

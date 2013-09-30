@@ -21,7 +21,22 @@ namespace Render
             if (geom->GetGpuCache().IsOnGpu())
             {
                 frame->SetBoundingSphere(frame->GetWorldMatrix() * geom->GetBoundingSphere());
-                frame->Submit(geom->GetGpuCache().GetGpuBuffer());                
+                if (frame->IsLightingEnabled())
+                {
+                    Scene::Node* n = render->GetSceneGraph()->GetNearestLight(node->GlobalPosition());
+                    Virtual::Light* light = Cast<Virtual::Light*>(n->GetData());
+                    if (light)
+                    {
+                        render->SetLight(0, frame, light, n);
+                    }
+                    frame->Submit(geom->GetGpuCache().GetGpuBuffer());
+                    frame->PushAllState();
+                    {
+                        frame->DrawAxis(3);
+                    }
+                    frame->PopAllState();
+                }
+
                 if (frame->IsEnabledBoundingBoxRendering())
                 {
                     const auto& bbox = geom->GetBoundingBox();
@@ -33,7 +48,7 @@ namespace Render
                     t.SetColumn(3, Math::vec4(bbox.GetCenter().X()
                                               , bbox.GetCenter().Y()
                                               , bbox.GetCenter().Z()
-                                              ,1));
+                                              , 1));
 
                     frame->PushAllState();
                     Math::vec3 p (0,0,0);
@@ -57,7 +72,7 @@ namespace Render
             }
             else
             {
-                if (!geom->GetCpuCache().IsOnCpu())                    
+                if (!geom->GetCpuCache().IsOnCpu())
                     geom->GetCpuCache().Update();
                 else
                     geom->GetGpuCache().Update(frame->GetVideoDriver());

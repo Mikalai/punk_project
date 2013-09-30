@@ -32,7 +32,7 @@ namespace Test10
         m_result = true;
 		TestApp app;
 		try
-		{
+		{            
 			app.Run();
 		}
 		catch(System::PunkException& e)

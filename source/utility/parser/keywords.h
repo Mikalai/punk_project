@@ -150,7 +150,9 @@ namespace Utility
         WORD_SKINMESH_TEXT,
         WORD_NODE,
         WORD_ROTATION,
-        WORD_ENTITY_NAME
+        WORD_ENTITY_NAME,
+        WORD_DIRECTION,
+        WORD_DIRLIGHTTEXT
 	};
 
 	struct Record
@@ -306,7 +308,9 @@ namespace Utility
         { WORD_SKINMESH_TEXT,           "SKINMESHTEXT" },
         { WORD_NODE,                    "*node" },
         { WORD_ROTATION,                "*rotation" },
-        { WORD_ENTITY_NAME,             "*entity_name" }
+        { WORD_ENTITY_NAME,             "*entity_name" },
+        { WORD_DIRECTION,               "*direction" },
+        { WORD_DIRLIGHTTEXT,            "DIRLAMPTEXT" }
 	};
 }
 

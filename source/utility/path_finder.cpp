@@ -16,8 +16,12 @@ namespace Utility
                 || filename.EndWith(L"armature")
                 || filename.EndWith(L".action")
                 || filename.EndWith(L".path")
-                || filename.EndWith(L".navi_mesh"))
+                || filename.EndWith(L".navi_mesh")
+                || filename.EndWith(L".dir_lamp")
+                || filename.EndWith(L".point_lamp")
+                || filename.EndWith(L".spot_lamp"))
             return System::Environment::Instance()->GetModelFolder() + filename;
+
         if (filename.EndWith(L".jpg")
                 || filename.EndWith(L".png")
                 || filename.EndWith(L".tif"))

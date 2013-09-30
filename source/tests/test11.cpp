@@ -23,6 +23,7 @@ namespace Test11
 	public:
 		TestApp()
 		{
+            GetWindow()->SetTitle("Test11");
 			m_cur_attent = 0;
 			m_cur_model = 1;
 			m_model[0] = Gpu::LightModel::PerVertexDiffuse;

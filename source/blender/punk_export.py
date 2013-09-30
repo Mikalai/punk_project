@@ -39,6 +39,13 @@ def export_vec3(f, name, value):
     end_block(f)
     return
 
+def export_quat(f, name, value):
+    start_block(f, name)
+    make_offset(f)
+    f.write("{0} {1} {2} {3}\n".format(value[0], value[1], value[2], value[3]))
+    end_block(f)
+    return
+
 #   export single string
 def export_string(f, name, value):
     start_block(f, name)
@@ -715,4 +722,66 @@ def export_action(f, action):
     end_block(f)    # *action   
     
     text_offset = old
+    return
+
+
+#
+#   export lamps from the scene
+#
+def export_point_lamp(object):
+    global text_offset
+    old = text_offset 
+    text_offset = 0
+    file = object.data.name + ".point_lamp"
+    print(file)
+    f = open(file, "w")
+    f.write("POINTLAMPTEXT\n") 
+    lamp = object.data        
+    start_block(f, lamp.name)
+    export_vec3(f, "*color", lamp.color)
+    export_float(f, "*distance", lamp.distance)
+    export_float(f, "*energy", lamp.energy)
+    export_float(f, "*linear_attenuation", lamp.linear_attenuation)
+    export_float(f, "*quadratic_attenuation", lamp.quadratic_attenuation)
+    end_block(f);
+    f.close()            
+    text_offset = old
+    return
+         
+         
+def export_point_lamps(f):
+    if not ("*point_lamp" in used_entities.keys()):
+        return
+    for object in used_entities["*point_lamp"]:
+        data = object.data
+        if data != None:
+            export_point_lamp(object)
+    return
+
+def export_directional_light(object):
+    global text_offset
+    old = text_offset 
+    text_offset = 0
+    file = object.data.name + ".dir_lamp"
+    print(file)
+    f = open(file, "w")
+    f.write("DIRLAMPTEXT\n") 
+    lamp = object.data        
+    start_block(f, lamp.name)
+    export_vec3(f, "*color", lamp.color)
+    export_float(f, "*distance", lamp.distance)
+    export_float(f, "*energy", lamp.energy)
+    export_vec3(f, "*direction", [0, 0, 1])
+    end_block(f);
+    f.close()            
+    text_offset = old
+    return
+
+def export_dir_lamps(f):
+    if not ("*directional_lamp" in used_entities.keys()):
+        return
+    for object in used_entities["*directional_lamp"]:
+        data = object.data
+        if data != None:
+            export_directional_light(object)
     return

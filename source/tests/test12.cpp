@@ -13,6 +13,7 @@ namespace Test12
 	public:
 		TestApp()            
 		{
+            GetWindow()->SetTitle("Test11");
             m_frustum = Math::FrustumCreateFromProjectionMatrix(m_projection);
 			m_renderable = nullptr;
             m_a = Math::PI / 2.0f - 0.01f;

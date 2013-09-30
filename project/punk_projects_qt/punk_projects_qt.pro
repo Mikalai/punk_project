@@ -640,7 +640,10 @@ SOURCES += ../../source/main.cpp \
     ../../source/scene/transform_graph.cpp \
     ../../source/utility/parser/parse_transform_node.cpp \
     ../../source/scene/transform_node.cpp \
-    ../../source/virtual/animation/animation_track.cpp
+    ../../source/virtual/animation/animation_track.cpp \
+    ../../source/virtual/data/lights/directional_light.cpp \
+    ../../source/utility/parser/parse_directional_light.cpp \
+    ../../source/virtual/data/lights/spot_light.cpp
 
 
 # Input
@@ -1161,7 +1164,9 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_diffuse_specular.h \
     ../../source/scene/transform_graph.h \
     ../../source/scene/transform_node.h \
-    ../../source/math/bounding_sphere.h
+    ../../source/math/bounding_sphere.h \
+    ../../source/virtual/data/lights/directional_light.h \
+    ../../source/virtual/data/lights/spot_light.h
 
 
 CONFIG += dll

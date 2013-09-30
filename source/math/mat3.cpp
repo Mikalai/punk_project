@@ -57,6 +57,17 @@ namespace Math
         m[0] = m[4] = m[8] = float(1);
     }
 
+    mat3::mat3(std::initializer_list<float> v)
+    {
+        int i = 0;
+        for (auto e : v)
+        {
+            m[i++] = e;
+            if (i == 9)
+                break;
+        }
+    }
+
     mat3::mat3(const mat3& mat)
     {
         if (this != &mat)
@@ -533,6 +544,17 @@ namespace Math
             if (l[i] != r[i])
                 return false;
         return true;;
+    }
+
+    bool mat3::IsEqual(const mat3& v, float eps) const
+    {
+        for (int i = 0; i < 9; ++i)
+        {
+            float a = fabs(v[i] - m[i]);
+            if (a > eps)
+                return false;
+        }
+        return true;
     }
 }
 

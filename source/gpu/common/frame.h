@@ -86,6 +86,7 @@ namespace Gpu
 		void EnableWireframe(bool value);
 		void EnableTerrainRendering(bool value);
 		void EnableLighting(bool value);
+        bool IsLightingEnabled() const;
         void EnableShadows(bool value);
 		void EnableTexturing(bool value);
 		void EnableFontRendering(bool value);        
@@ -138,7 +139,7 @@ namespace Gpu
         void DrawText2D(const Math::vec2& pos, const Math::vec2& size, const System::string& value);
         void DrawText3D(float x, float y, float z, const System::string& value);
         void DrawText3D(const Math::vec3& pos, const System::string& value);
-
+        void DrawAxis(float scale = 10);
 
 		void SetBlendColor(const Math::vec4& value);
 		void SetBlendColor(float r, float g, float b, float a);

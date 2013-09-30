@@ -128,6 +128,7 @@ namespace Utility
     PUNK_ENGINE_LOCAL bool ParseTerrainNode(System::Buffer& buffer, Scene::Node& value);
     PUNK_ENGINE_LOCAL bool ParseRiverNode(System::Buffer& buffer, Scene::Node& value);
     PUNK_ENGINE_LOCAL bool ParseSceneTransformNode(System::Buffer &buffer, Scene::TransformNode *node);
+    PUNK_ENGINE_LOCAL bool ParseDirectionalLight(System::Buffer& buffer, Virtual::DirectionalLight* value);
 }
 
 #endif // PARSE_FUNCTIONS_H

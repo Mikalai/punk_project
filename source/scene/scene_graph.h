@@ -3,6 +3,7 @@
 
 #include "node.h"
 
+namespace Virtual { class Light; }
 namespace Utility { class AsyncParser; }
 
 namespace Scene
@@ -18,9 +19,20 @@ namespace Scene
         virtual const System::string ToString() const override;
 
         Utility::AsyncParser* AsyncParser();
-        void UpdateTransform();
+
+        const std::vector<Node*>& GetLights() { return m_lights; }
+
+        void Update();
+
+        Node* GetNearestLight(const Math::vec3& point) const;
+
     private:
+
+        void UpdateTransform();
+        void UpdateLights();
+
         Utility::AsyncParser* m_parser;
+        std::vector<Node*> m_lights;
 
     public:
 

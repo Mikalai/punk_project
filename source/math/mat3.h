@@ -7,6 +7,7 @@
 #ifndef _H_MAT3X3_MATH
 #define _H_MAT3X3_MATH
 
+#include <initializer_list>
 #include "../config.h"
 
 namespace System
@@ -26,6 +27,7 @@ namespace Math
     {
     public:
         mat3();
+        mat3(std::initializer_list<float> v);
         mat3(const mat3& m);
         mat3(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8);
         mat3(const vec3& column0, const vec3& column1, const vec3& column2);
@@ -56,6 +58,7 @@ namespace Math
         const System::string ToString() const;
         const mat3 Transposed() const;
         mat3& Transpose();
+        bool IsEqual(const mat3& m, float eps = 1e-6) const;
         static const mat3 Null();
         static const mat3 Create2DTranslate(float dx, float dy);
         static const mat3 Create2DTranslate(const vec2& v);

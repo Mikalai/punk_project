@@ -74,6 +74,8 @@ AttenuationResult LightAttenuation(Light light, vec3 vertex_position)
     else if (light.type == DIRECTION_LIGHT)
     {
         res.l = normalize(-light.direction.xyz);
+        res.d = light.direction.xyz;
+        res.c = 1;
     }
     else if (light.type == SPOT_LIGHT)
     {

@@ -5,28 +5,49 @@
 
 namespace Render
 {
+    void ProcessPointLight(Render2 *render, Scene::Node *node, System::Object *o)
+    {
+        auto m_frame = render->GetCurrentFrame();
+        m_frame->PushLightState();
+        render->ProcessChildren(node);
+        m_frame->PopLightState();
+    }
+
+    void ProcessDirectionalLight(Render2 *render, Scene::Node *node, System::Object *o)
+    {
+        auto m_frame = render->GetCurrentFrame();
+        m_frame->PushLightState();
+        render->GetCurrentFrame()->DrawPoint(node->GlobalPosition());
+        Virtual::DirectionalLight* l = Cast<Virtual::DirectionalLight*>(o);
+        m_frame->Submit(Gpu::AsRenderable(node->GlobalPosition(), node->GlobalPosition() + 3 * node->GlobalRotation().Rotate(l->GetDirection()),
+                          render->GetCurrentFrame()->GetVideoDriver()), true);
+        render->ProcessChildren(node);
+        m_frame->PopLightState();
+    }
+
+    void ProcessSpotLight(Render2 *render, Scene::Node *node, System::Object *o)
+    {
+        auto m_frame = render->GetCurrentFrame();
+        m_frame->PushLightState();
+        render->ProcessChildren(node);
+        m_frame->PopLightState();
+    }
+
     void ProcessLight(Render2 *render, Scene::Node *node, System::Object *o)
     {
         if (!o)
             return;
-        Virtual::Light* light = (Virtual::Light*)o;
-        auto m_frame = render->GetCurrentFrame();
-        m_frame->PushLightState();
-        if (light)
-        {
-            Virtual::PointLight* p = Cast<Virtual::PointLight*>(light);
-            if (p)
-            {
-                m_frame->Light(0).SetDiffuseColor(p->GetColor());
-                m_frame->Light(0).SetLightAttenuation(Gpu::LightAttenuation::Quadratic);
-                m_frame->Light(0).SetLightConstantAttenuation(0);
-                m_frame->Light(0).SetLightLinearAttenuation(p->GetLinearAttenuation());
-                m_frame->Light(0).SetLightQuadricAttenuation(p->GetQuadraticAttenuation());
-                m_frame->Light(0).SetType(Gpu::LightType::Point);
-                m_frame->Light(0).SetPosition(m_frame->GetWorldMatrix().TranslationPart());
-            }
-        }
-        render->ProcessChildren(node);
-        m_frame->PopLightState();
+        if (o->GetType()->IsEqual(&Virtual::PointLight::Info.Type))
+            ProcessPointLight(render, node, o);
+        else if (o->GetType()->IsEqual(&Virtual::DirectionalLight::Info.Type))
+            ProcessDirectionalLight(render, node, o);
+        else if (o->GetType()->IsEqual(&Virtual::SpotLight::Info.Type))
+            ProcessSpotLight(render, node, o);
+        auto frame = render->GetCurrentFrame();
+        frame->PushAllState();
+        frame->SetWorldMatrix(Math::mat4());
+        frame->SetPointSize(10);
+        frame->SetDiffuseColor(1, 1, 0, 1);
+        frame->PopAllState();
     }
 }

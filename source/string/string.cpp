@@ -115,6 +115,7 @@ namespace System
         std::vector<char> buffer(outp_size);
         if (!ConvertByteArray("WCHAR_T", "UTF8", inp, inp_size, (void*)&buffer[0], &outp_size))
             return std::vector<char>();
+        buffer.push_back(0);
         return buffer;
     }
 

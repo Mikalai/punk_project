@@ -82,20 +82,13 @@ def export_collision_mesh(f, object):
     return
 
 def export_object_matrix(f, object):
-    if (object.parent != None):
-        q1 = object.parent.rotation_quaternion
-        p1 = object.parent.location
-        q2 = object.rotation_quaternion;
-        p2 = object.location;
-        q = q2.conjugated()*q1;
-        p = (p1 - p2)*q2.conjugated().to_matrix();
-        export_vec3(f, "*location", p)
-        export_quat(f, "*rotation", q)
-        export_vec3(f, "*scale", object.scale)
-    else:
-        export_vec3(f, "*location", object.location)
-        export_quat(f, "*rotation", object.rotation_quaternion)
-        export_vec3(f, "*scale", object.scale)
+    m = object.matrix_local
+    p = m.to_translation()
+    r = m.to_quaternion()
+    s = m.to_scale()
+    export_vec3(f, "*location", p)
+    export_quat(f, "*rotation", q)
+    export_vec3(f, "*scale", object.scale)
     return
    
 #
@@ -177,26 +170,19 @@ def export_properties(f, object):
 #        
 #    end_block(f)
 
-#
-#   export lamps from the scene
-#
-def export_point_lamp(f, lamp):
-    start_block(f, "*point_light")
-    export_string(f, "*name", lamp.name)
-    export_vec3(f, "*color", lamp.color)
-    export_float(f, "*distance", lamp.distance)
-    export_float(f, "*energy", lamp.energy)
-    export_float(f, "*linear_attenuation", lamp.linear_attenuation)
-    export_float(f, "*quadratic_attenuation", lamp.quadratic_attenuation)
-    end_block(f);
-         
-def export_light(f, object):
+def export_light_node(f, object):
     start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
-    export_local_matrix(f, object)
-    export_bounding_box(f, object)
+    export_object_matrix(f, object)
     if type(object.data) == bpy.types.PointLamp:
-        export_point_lamp(f, object.data)
+        push_entity("*point_lamp", object)
+        export_string(f, "*entity_name", object.data.name + ".point_lamp")
+    elif type(object.data) == bpy.types.SunLamp:
+        push_entity("*directional_lamp", object)
+        export_string(f, "*entity_name", object.data.name + ".dir_lamp")
+    elif type(object.data) == bpy.types.SpotLamp:
+        push_entity("*spot_lamp", object)
+        export_string(f, "*entity_name", object.data.name + ".spot_lamp")
     end_block(f)
     return
  
@@ -229,7 +215,8 @@ def export_static_mesh_node(f, object):
     if not((mesh == None) or (len(mesh.materials) == 0)):
         start_block(f, "*node")
         push_entity("*material", mesh.materials[0])
-        export_string(f, "*name", mesh.materials[0].name + ".material")
+        export_string(f, "*name", mesh.materials[0].name)
+        export_string(f, "*entity_name", mesh.materials[0].name + ".material")
      
     start_block(f, "*node")
     export_string(f, "*name", object.name + "_transform")
@@ -361,16 +348,14 @@ def export_sun_node(f, object):
     if object.data == None:
         return
     
-    start_block(f, "*node")
+#    start_block(f, "*node")
     
-    export_string(f, "*name", object.name + "_transform")
-    export_local_matrix(f, object)
-    start_block(f, "*node")
-    export_string(f, "*name", object.data.name + ".sun")
-    push_entity("*sun", object)
-    export_children(f, object)
-    end_block(f)    #   sun
-    end_block(f) #  transform    
+#    export_string(f, "*name", object.name + "_transform")
+#    export_object_matrix(f, object)
+#    start_block(f, "*node")
+#    export_string(f, "*name", object.data.name + ".sun")
+#    end_block(f)    #   sun
+#    end_block(f) #  transform    
     return
 
 def export_navi_mesh_node(f, object):
@@ -479,7 +464,7 @@ def export_object(f, object):
         export_location_indoor(f, object)
     elif object.punk_entity_type == "TRANSFORM":
         export_transform(f, object)
-    elif object.punk_entity_type == "SUN":
+    elif object.punk_entity_type == "SUN":      
         export_sun_node(f, object)
     elif object.punk_entity_type == "TERRAIN":
         export_terrain_node(f, object)
@@ -490,7 +475,7 @@ def export_object(f, object):
     elif object.punk_entity_type == "HUMAN_ARMATURE":
         export_armature_node(f, object)
     elif object.punk_entity_type == "LIGHT":
-        export_light(f, object)
+        export_light_node(f, object)
     elif object.punk_entity_type == "PORTAL":
         export_portal(f, object)
     elif object.punk_entity_type == "STATIC":
@@ -536,6 +521,8 @@ def export_model(context, filepath, anim_in_separate_file):
         export_rivers(f)
         export_paths(f)
         export_cameras(f)
+        export_point_lamps(f)
+        export_dir_lamps(f)
         f.close()
         return {'FINISHED'}
     finally:

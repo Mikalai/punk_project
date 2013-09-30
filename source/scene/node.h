@@ -89,8 +89,12 @@ namespace Scene
         Utility::AsyncParserTask* Task() const;
         Utility::AsyncParserTask* Task(Utility::AsyncParserTask* value);
 
+        void Rotate(const Math::quat& q);
+        void Translate(const Math::vec3& p);
+
         bool NeedTransformUpdate() const;
-        void UpdateGlobalTransform();
+        void UpdateGlobalTransform();        
+
     private:
         void CloneInternals(Node *dst);
         void LoadObject();
@@ -114,13 +118,9 @@ namespace Scene
         bool m_need_transform_update;
     public:
         PUNK_OBJECT(Node)
-
-        friend void SaveNode(System::Buffer* buffer, const System::Object* object);
-        friend void LoadNode(System::Buffer* buffer, System::Object* object);
 	};
 
-    PUNK_ENGINE_API void SaveNode(System::Buffer* buffer, const System::Object* object);
-    PUNK_ENGINE_API void LoadNode(System::Buffer* buffer, System::Object* object);
+    PUNK_OBJECT_UTIL(Node)
 
     void UpdateUpToDown(Node* node);
 }

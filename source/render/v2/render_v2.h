@@ -29,18 +29,22 @@ namespace Render
         void PushLocalMatrix(const Math::mat4 value);
         void PopLocalMatrix();
         const Math::mat4 GetLocalMatrix();
+        const Scene::SceneGraph* GetSceneGraph() const;
 
         void RegisterRenderProcessor(unsigned type, void (*F)(Render2*, Scene::Node*, System::Object*));
 
-        void AddLight(const Gpu::LightParameters& light);
-        size_t GetLightsCount();
-        const Gpu::LightParameters& GetLight(int index);
+//        int GetNearestLight(const Math::vec3& p);
+//        void AddLight(const Gpu::LightParameters& light);
+//        size_t GetLightsCount();
+//        const Gpu::LightParameters& GetLight(int index);
 
+        void SetLight(int slot, Gpu::Frame* frame, Virtual::Light* light, Scene::Node* node);
     private:
         std::stack<Math::mat4> m_local_matrix;
         Gpu::Frame* m_frame;
         Virtual::ArmatureAnimationMixer* m_armature_mixer;
-        std::vector<Gpu::LightParameters> m_all_lights;
+//        std::vector<Gpu::LightParameters> m_all_lights;
+        Scene::SceneGraph* m_graph;
 
         std::vector<void (*)(Render2*, Scene::Node*, System::Object*)> m_render_processor;
     };

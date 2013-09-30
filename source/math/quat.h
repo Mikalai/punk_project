@@ -1,6 +1,7 @@
 #ifndef _H_QUAT_MATH
 #define _H_QUAT_MATH
 
+#include <initializer_list>
 #include <iosfwd>
 #include <cmath>
 #include <stdexcept>
@@ -17,6 +18,7 @@ namespace Math
 	{
 	public:
         quat();
+        quat(std::initializer_list<float> list);
         quat(float w, float x, float y, float z);
         quat(float w, const vec3& v);
         quat(const quat& q);
@@ -49,6 +51,7 @@ namespace Math
         const vec3 Rotate(const vec3& v) const;
         const quat operator - () const;
         float Dot(const quat& q) const;
+        bool IsEqual(const quat& q, float eps = 1e-5);
 
         quat& operator -= (const quat& v);
         quat& operator += (const quat& v);

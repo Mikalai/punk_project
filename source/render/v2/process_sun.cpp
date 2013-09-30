@@ -33,7 +33,7 @@ namespace Render
             m_frame->Light(0).SetPosition(pos);
             m_frame->Light(0).SetDirection(Math::vec3(dir.XYZ()).Normalized());
             m_frame->SetLightModel(Gpu::LightModel::PerFragmentDiffuse);
-            render->AddLight(m_frame->Light(0));
+            //render->AddLight(m_frame->Light(0));
 
             m_frame->PushAllState();
             m_frame->EnableTexturing(false);

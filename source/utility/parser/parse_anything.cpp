@@ -162,6 +162,18 @@ namespace Utility
                 ParseSkinMesh(buffer, mesh.get());
                 return mesh.release();
             }
+            case WORD_DIRLIGHTTEXT:
+            {
+                System::string word = buffer.ReadWord();
+                {
+                    auto light = System::HasInstance<Virtual::DirectionalLight>(word);
+                    if (light)
+                        return light;
+                }
+                std::unique_ptr<Virtual::DirectionalLight> light(new Virtual::DirectionalLight);
+                ParseDirectionalLight(buffer, light.get());
+                return light.release();
+            }
             default:
                 throw System::PunkInvalidArgumentException(L"Unexpected keyword " + word);
             }

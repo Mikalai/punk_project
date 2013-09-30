@@ -4,6 +4,7 @@ namespace Punk
 {
     ViewerApplication::ViewerApplication()
         : m_distance(5)
+        , m_speed(1)
     {
         GetKeyMap()->Add(System::EVENT_MOUSE_MOVE, System::Mouse::LEFT_BUTTON, System::EventHandler(this, &ViewerApplication::UpdateCameraDirection));
         GetKeyMap()->Add(System::EVENT_KEYBOARD_HOLD_BUTTON, System::PUNK_KEY_W, System::EventHandler(this, &ViewerApplication::MoveCameraForward));
@@ -48,14 +49,14 @@ namespace Punk
     {
         auto dir = Math::Recount::SphericalToCartesian(m_camera_direction).Negated();
         auto e = (System::IdleEvent*)event;
-        m_camera_view += dir * e->elapsed_time_s;
+        m_camera_view += dir * e->elapsed_time_s * m_speed;
     }
 
     void ViewerApplication::MoveCameraBackward(System::Event* event)
     {
         auto dir = Math::Recount::SphericalToCartesian(m_camera_direction);
         auto e = (System::IdleEvent*)event;
-        m_camera_view += dir * e->elapsed_time_s;
+        m_camera_view += dir * e->elapsed_time_s * m_speed;
     }
 
     void ViewerApplication::MoveCameraLeft(System::Event* event)
@@ -63,14 +64,14 @@ namespace Punk
         auto dir = Math::Recount::SphericalToCartesian(m_camera_direction);
         auto left = Math::vec3(0,0,1).Cross(dir);
         auto e = (System::IdleEvent*)event;
-        m_camera_view += left * e->elapsed_time_s;
+        m_camera_view += left * e->elapsed_time_s * m_speed;
     }
 
     void ViewerApplication::MoveCameraRight(System::Event* event)
     {        auto dir = Math::Recount::SphericalToCartesian(m_camera_direction).Negated();
              auto left = Math::vec3(0,0,1).Cross(dir);
              auto e = (System::IdleEvent*)event;
-             m_camera_view += left * e->elapsed_time_s;
+             m_camera_view += left * e->elapsed_time_s * m_speed;
 
     }
 
@@ -96,5 +97,10 @@ namespace Punk
     const Math::mat4 ViewerApplication::GetProjectionMatrix() const
     {
         return Math::mat4::CreatePerspectiveProjection(Math::PI / 4, GetWindow()->GetWidth(), GetWindow()->GetHeight(), 1, 100);
+    }
+
+    void ViewerApplication::SetCameraSpeed(float value)
+    {
+        m_speed = value;
     }
 }

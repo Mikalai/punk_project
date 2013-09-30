@@ -19,6 +19,8 @@ namespace Virtual
 	class World;
     class TextureSlot;
     class Sun;
+    class PointLight;
+    class DirectionalLight;
 }
 
 #endif	//	_H_PUNK_VIRTUAL_DATA_MODULE_INTERFACE

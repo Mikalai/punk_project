@@ -335,7 +335,7 @@ namespace Test13
         }
 
         TestApp()            
-        {
+        {            
             m_frustum = Math::FrustumCreateFromProjectionMatrix(m_projection);
             m_renderable = nullptr;
             m_renderable2 = nullptr;
@@ -437,6 +437,7 @@ namespace Test13
 
         virtual void OnInit(const Punk::Config&) override
         {
+            GetWindow()->SetTitle("Test13");
             m_projection = Math::mat4::CreatePerspectiveProjection(Math::PI / 4.0f, 800, 600, 1, 10.0);
             m_frustum = Math::FrustumCreateFromProjectionMatrix(m_projection);
 

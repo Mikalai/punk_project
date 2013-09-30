@@ -107,7 +107,9 @@ namespace System
 #ifdef _WIN32
         SetCurrentDirectory(m_prev_folder_name.ToStdWString().c_str());
 #elif defined __gnu_linux__
-        chdir(&m_prev_folder_name.ToUtf8()[0]);
+        auto buffer = m_prev_folder_name.ToUtf8();
+        if (chdir(&buffer[0]))
+            throw System::PunkException(L"Can't close folder" + m_folder_name);
 #endif
     }
 

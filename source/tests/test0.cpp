@@ -9,6 +9,7 @@ namespace Test0
         try
         {
             System::Window wnd(nullptr);
+            wnd.SetTitle("Test0");
             wnd.Loop();
             std::cout << "Window has been closed" << std::endl;
         }

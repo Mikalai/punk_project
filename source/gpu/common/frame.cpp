@@ -429,6 +429,11 @@ namespace Gpu
         Top()->render_state->m_enable_lighting = value;
     }
 
+    bool Frame::IsLightingEnabled() const
+    {
+        return Top()->render_state->m_enable_lighting;
+    }
+
     void Frame::EnableShadows(bool value)
     {
         Top()->render_state->m_enable_shadows = value;
@@ -806,5 +811,18 @@ namespace Gpu
                 min = transf.Z() - o->m_state->batch_state->m_bsphere.GetRadius();
         }
         return Math::vec2(min, max);
+    }
+
+    void Frame::DrawAxis(float scale)
+    {
+        PushAllState();
+        EnableDepthTest(false);
+        SetDiffuseColor(1, 0, 0, 1);
+        DrawLine(Math::vec3{0, 0, 0}, Math::vec3{scale + 1, 0, 0});
+        SetDiffuseColor(0, 1, 0, 1);
+        DrawLine(Math::vec3{0, 0, 0}, Math::vec3{0, scale + 1, 0});
+        SetDiffuseColor(0, 0, 1, 1);
+        DrawLine(Math::vec3{0, 0, 0}, Math::vec3{0, 0, scale + 1});
+        PopAllState();
     }
 }
