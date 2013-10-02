@@ -1,5 +1,5 @@
 #include <sstream>
-#include "fs_per_fragment_lighting_diffuse_specular.h"
+#include "fs_per_fragment_lighting_tex_diffuse_specular.h"
 #include "../gl_shader_type.h"
 #include "../../../../../system/environment.h"
 #include "../../../../../system/folder.h"
@@ -10,20 +10,23 @@ namespace Gpu
 {
     namespace OpenGL
     {
-        FsPerFragmentLightingDiffuseSpecular::FsPerFragmentLightingDiffuseSpecular()
+        FsPerFragmentLightingTextureDiffuseSpecular::FsPerFragmentLightingTextureDiffuseSpecular()
             : Shader{ShaderType::Fragment}
         {
             System::Folder f;
             f.Open(System::Environment::Instance()->GetShaderFolder());
             const char* names[] = {"/light.glsl", "/material.glsl"};
-            CookFromFileWithHeaders(GetShaderFile(ShaderCollection::FragmentLightPerFragmentDiffuseSpecular), 2, names);
+            CookFromFileWithHeaders(
+                        GetShaderFile(ShaderCollection::FragmentLightPerFragmentTextureDiffuseSpecular),
+                        2, names);
         }
 
-        void FsPerFragmentLightingDiffuseSpecular::InitUniforms()
+        void FsPerFragmentLightingTextureDiffuseSpecular::InitUniforms()
         {
             uCameraWorldPosition = m_rc->GetUniformLocation("uCameraWorldPosition");
             uView = m_rc->GetUniformLocation("uView");
             uMaterial = m_rc->GetUniformaMaterialLocation("uMaterial");
+            uDiffuseMap = m_rc->GetUniformLocation("uDiffuseMap");
 
             for (int i = 0; i != MAX_LIGHTS; ++i)
             {
@@ -33,11 +36,11 @@ namespace Gpu
             }
         }
 
-        void FsPerFragmentLightingDiffuseSpecular::BindParameters(const CoreState& params)
+        void FsPerFragmentLightingTextureDiffuseSpecular::BindParameters(const CoreState& params)
         {
-            m_rc->SetUniformVector3f(uCameraWorldPosition, params.view_state->m_camera_position);                                
+            m_rc->SetUniformVector3f(uCameraWorldPosition, params.view_state->m_camera_position);
             m_rc->SetUniformMatrix4f(uView, params.view_state->m_view);
-
+            m_rc->SetUniformInt(uDiffuseMap, params.texture_state->m_diffuse_slot[0]);
             m_rc->SetUniformMaterial(uMaterial, params.batch_state->m_material);
 
             for (unsigned i = 0; i != params.light_state->m_used_lights; ++i)
@@ -46,7 +49,7 @@ namespace Gpu
             }
         }
 
-        int64_t FsPerFragmentLightingDiffuseSpecular::GetRequiredAttributesSet() const
+        int64_t FsPerFragmentLightingTextureDiffuseSpecular::GetRequiredAttributesSet() const
         {
             return 0;
         }

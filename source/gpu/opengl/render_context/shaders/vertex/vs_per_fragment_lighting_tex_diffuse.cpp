@@ -20,7 +20,7 @@ namespace Gpu
             uProjViewWorld = m_rc->GetUniformLocation("uProjViewWorld");
             uNormalMatrix = m_rc->GetUniformLocation("uNormalMatrix");
             uViewWorld = m_rc->GetUniformLocation("uViewWorld");
-            uTextureMatrix = m_rc->GetUniformLocation("uTextureMatrix");
+            uTextureMatrix = m_rc->GetUniformLocation("uTextureMatrix");            
         }
 
         void VsPerFragmentLightingTextureDiffuse::BindParameters(const CoreState& params)

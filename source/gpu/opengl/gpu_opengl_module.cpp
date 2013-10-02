@@ -147,6 +147,12 @@ namespace Gpu
                 AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentDiffuseSpecular, rc);
             }
 
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsPerFragmentLightingTextureDiffuseSpecular, new FsPerFragmentLightingTextureDiffuseSpecular, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentTextureDiffuseSpecular, rc);
+            }
+
 #ifdef USE_GUI_RC
             AbstractRenderPolicy::add(RenderPolicySet::RC_GUI, new RenderContextGUI());
 #endif

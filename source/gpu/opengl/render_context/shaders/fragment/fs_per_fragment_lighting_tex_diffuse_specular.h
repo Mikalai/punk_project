@@ -1,5 +1,5 @@
-#ifndef FS_PER_FRAGMENT_LIGHTING_DIFFUSE_SPECULAR_H
-#define FS_PER_FRAGMENT_LIGHTING_DIFFUSE_SPECULAR_H
+#ifndef FS_PER_FRAGMENT_LIGHTING_TEX_DIFFUSE_SPECULAR_H
+#define FS_PER_FRAGMENT_LIGHTING_TEX_DIFFUSE_SPECULAR_H
 
 #include "../shader.h"
 #include "../material_parameters.h"
@@ -9,10 +9,10 @@ namespace Gpu
 {
     namespace OpenGL
     {
-        class FsPerFragmentLightingDiffuseSpecular : public Shader
+        class FsPerFragmentLightingTextureDiffuseSpecular : public Shader
         {
         public:
-            FsPerFragmentLightingDiffuseSpecular();
+            FsPerFragmentLightingTextureDiffuseSpecular();
 
         private:
 
@@ -25,8 +25,9 @@ namespace Gpu
             unsigned uCameraWorldPosition;
             MaterialShaderParameters uMaterial;
             LightSourceShaderParameters uLight[MAX_LIGHTS];
+            unsigned uDiffuseMap;
         };
     }
 }
 
-#endif // FS_PER_FRAGMENT_LIGHTING_DIFFUSE_SPECULAR_H
+#endif // FS_PER_FRAGMENT_LIGHTING_TEX_DIFFUSE_SPECULAR_H

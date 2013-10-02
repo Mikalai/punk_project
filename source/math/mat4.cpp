@@ -575,21 +575,18 @@ namespace Math
     const mat4 mat4::CreateFromQuaternion(const quat& q)
     {
         float wx, wy, wz, xx, yy, yz, xy, xz, zz, x2, y2, z2;
-        x2 = q[0] + q[0];
-        y2 = q[1] + q[1];
-        z2 = q[2] + q[2];
-        xx = q[0] * x2;   xy = q[0] * y2;   xz = q[0] * z2;
-        yy = q[1] * y2;   yz = q[1] * z2;   zz = q[2] * z2;
-        wx = q[3] * x2;   wy = q[3] * y2;   wz = q[3] * z2;
+        x2 = q.X() + q.X();
+        y2 = q.Y() + q.Y();
+        z2 = q.Z() + q.Z();
+        xx = q.X() * x2;   xy = q.X() * y2;   xz = q.X() * z2;
+        yy = q.Y() * y2;   yz = q.Y() * z2;   zz = q.Z() * z2;
+        wx = q.W() * x2;   wy = q.W() * y2;   wz = q.W() * z2;
         mat4 mat;
         float* m = &mat[0];
-        m[0*4 + 0]=1.0f-(yy+zz); m[0*4 + 1]=xy-wz;        m[0*4 + 2]=xz+wy;
-        m[1*4 + 0]=xy+wz;        m[1*4 + 1]=1.0f-(xx+zz); m[1*4 + 2]=yz-wx;
-        m[2*4 + 0]=xz-wy;        m[2*4 + 1]=yz+wx;        m[2*4 + 2]=1.0f-(xx+yy);
+        m[0*4 + 0]=1.0f-(yy+zz); m[1*4 + 0]=xy-wz;        m[2*4 + 0]=xz+wy;
+        m[0*4 + 1]=xy+wz;        m[1*4 + 1]=1.0f-(xx+zz); m[2*4 + 1]=yz-wx;
+        m[0*4 + 2]=xz-wy;        m[1*4 + 2]=yz+wx;        m[2*4 + 2]=1.0f-(xx+yy);
 
-        m[0*4 + 3] = m[1*4 + 3] = m[2*4 + 3] = 0;
-        m[3*4 + 0] = m[3*4 + 1] = m[3*4 + 2] = 0;
-        m[3*4 + 3] = 1;
         return mat;
     }
 

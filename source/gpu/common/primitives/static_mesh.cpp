@@ -400,7 +400,7 @@ namespace Gpu
 
 	bool StaticMesh::Cook(Virtual::StaticGeometry* mesh)
 	{
-        if (!mesh->GetVertices().empty() && !mesh->GetTextureMeshes().empty() && mesh->GetNormals().empty())
+        if (!mesh->GetVertices().empty() && !mesh->GetTextureMeshes().empty() && !mesh->GetNormals().empty())
         {
             delete impl;
             auto p = new StaticMeshPositionNormalTangentBitangentTexture0(m_driver);

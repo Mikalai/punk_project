@@ -467,7 +467,7 @@ namespace Scene
 
     void Node::Rotate(const Math::quat &q)
     {
-        m_local_rotation = q * m_local_rotation;
+        m_local_rotation = m_local_rotation * q;
     }
 
     void Node::Translate(const Math::vec3 &p)

@@ -17,40 +17,6 @@ namespace Gpu
 {
 	class CoreState;
 
-    struct FogShaderParameters
-    {
-        unsigned color;
-        unsigned density;
-        unsigned start;
-        unsigned end;
-        unsigned scale;
-    };
-
-    struct LightSourceShaderParameters
-    {
-        unsigned enabled;
-        unsigned direction;
-        unsigned position;
-        unsigned diffuse_color;
-        unsigned specular_color;
-        unsigned ambient_color;
-        unsigned attenuation_constant;
-        unsigned attenuation_linear;
-        unsigned attenuation_quadric;
-        unsigned spot;
-        unsigned type;
-        unsigned attenuation_model;
-    };
-
-    struct MaterialShaderParameters
-    {
-        unsigned emission;
-        unsigned ambient;
-        unsigned diffuse;
-        unsigned specular;
-        unsigned shininess;
-    };
-
 	namespace OpenGL
 	{
 		class DynamicRenderContext;
@@ -71,9 +37,9 @@ namespace Gpu
 			void Connect(DynamicRenderContext* rc);
 			virtual void InitUniforms() {}
             virtual void BindParameters(const CoreState&) {}
-			virtual int64_t GetRequiredAttributesSet() const { return 0; }
+			virtual int64_t GetRequiredAttributesSet() const { return 0; }            
 
-		protected:
+        protected:
 			DynamicRenderContext* m_rc;
 			GLuint m_shader_index;
 			GLenum m_type;

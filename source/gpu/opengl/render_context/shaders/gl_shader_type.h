@@ -35,6 +35,8 @@ namespace Gpu
             FragmentLightPerVertexTextureDiffuse,
             VertexLightPerFragmentTextureDiffuse,
             FragmentLightPerFragmentTextureDiffuse,
+            FragmentLightPerFragmentTextureDiffuseSpecular,
+            VertexLightPerFragmentTextureDiffuseSpecular,
             VertexSkinningBump,
             VertexSkinningDepth,
             FragmentTextSolidColor,

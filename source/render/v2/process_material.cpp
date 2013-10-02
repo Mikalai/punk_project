@@ -25,22 +25,35 @@ namespace Render
         {
             m_frame->SetAmbientColor(material->GetAmbient());
             m_frame->SetDiffuseColor(material->GetDiffuseColor());
+            bool enable_textures = false;
             for (size_t i = 0; i != material->GetTextureSlotCount(); ++i)
             {
                 if (!material->GetTextureSlot(i)->GetGpuCache().IsOnGpu())
-                    material->GetTextureSlot(i)->GetGpuCache().Update(m_frame->GetVideoDriver());
+                {
+                    material->GetTextureSlot(i)->GetGpuCache().Update(m_frame->GetVideoDriver());                    
+                }
                 else
                 {
                     if (material->GetTextureSlot(i)->IsDiffuseMapSlot())
+                    {
                         m_frame->SetDiffuseMap(0, material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 0);
+                        enable_textures = true;
+                    }
                     if (material->GetTextureSlot(i)->IsNormalMapSlot())
                     {
                         m_frame->SetNormalMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 1);
-                        m_frame->SetLightModel(Gpu::LightModel::BumpMappingDiffuse);
+                        m_frame->SetLightModel(Gpu::LightModel::BumpMappingDiffuse);                        
                     }
                     if (material->GetTextureSlot(i)->IsSpecularIntensityMapSlot())
+                    {
                         m_frame->SetSpecularMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 2);
+                        enable_textures = true;
+                    }
                 }
+            }
+            if (enable_textures)    //  check force texturing flag
+            {
+                m_frame->EnableTexturing(enable_textures);
             }
         }
         render->ProcessChildren(node);

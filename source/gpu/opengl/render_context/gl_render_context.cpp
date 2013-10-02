@@ -1,3 +1,4 @@
+#include <sstream>
 #include "../../../system/environment.h"
 #include "gl_render_context.h"
 #include "shaders/shader.h"
@@ -441,6 +442,31 @@ namespace Gpu
             return SetUniformArrayMatrix4f(index, count, (float*)value);
         }
 
+        bool OpenGLRenderContext::SetUniformLight(const LightSourceShaderParameters &light, const LightParameters &value)
+        {
+            SetUniformInt(light.enabled, value.IsEnabled());
+            if (value.IsEnabled())
+            {
+                SetUniformVector4f(light.direction, value.GetDirection());
+                SetUniformVector4f(light.position, value.GetPosition());
+                SetUniformVector4f(light.diffuse_color, value.GetDiffuseColor());
+                SetUniformVector4f(light.ambient_color, value.GetAmbientColor());
+                SetUniformFloat(light.attenuation_constant, value.GetLightConstantAttenuation());
+                SetUniformFloat(light.attenuation_linear, value.GetLightLinearAttenuation());
+                SetUniformFloat(light.attenuation_quadric, value.GetLightQuadricAttenuation());
+                SetUniformFloat(light.spot, value.GetSpotExponent());
+                SetUniformInt(light.type, (int)value.GetType());
+                SetUniformInt(light.attenuation_model, (int)value.GetLightAttenuation());
+            }
+            return true;
+        }
+
+        bool OpenGLRenderContext::SetUniformMaterial(const MaterialShaderParameters &material, const Material &value)
+        {
+            SetUniformVector4f(material.diffuse, value.m_diffuse_color);
+            SetUniformVector4f(material.specular, value.m_specular_color);
+            SetUniformFloat(material.shininess, value.m_specular_factor);
+        }
 
 		int OpenGLRenderContext::GetUniformLocation(const char * name)
 		{
@@ -625,5 +651,112 @@ namespace Gpu
                 GL_CALL(glDisable(GL_BLEND));
 			}
 		}
+
+        const LightSourceShaderParameters OpenGLRenderContext::GetUniformLightLocation(const char* name)
+        {
+            LightSourceShaderParameters uLight;
+            {
+                std::stringstream stream;
+                stream << name << ".ambient_color";
+                uLight.ambient_color = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".attenuation_constant";
+                uLight.attenuation_constant = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".attenuation_linear";
+                uLight.attenuation_linear = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".attenuation_model";
+                uLight.attenuation_model = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".attenuation_quadric";
+                uLight.attenuation_quadric = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".diffuse_color";
+                uLight.diffuse_color = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".direction";
+                uLight.direction = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".position";
+                uLight.position = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".spot";
+                uLight.spot = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".type";
+                uLight.type = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".enabled";
+                uLight.enabled = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".specular_color";
+                uLight.specular_color = GetUniformLocation(stream.str().c_str());
+            }
+            return uLight;
+        }
+
+        const MaterialShaderParameters OpenGLRenderContext::GetUniformaMaterialLocation(const char* name)
+        {
+            MaterialShaderParameters material;
+            {
+                std::stringstream stream;
+                stream << name << ".diffuse";
+                material.diffuse = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".shininess";
+                material.shininess = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".specular";
+                material.specular = GetUniformLocation(stream.str().c_str());
+            }
+
+            return material;
+        }
+
+        const FogShaderParameters OpenGLRenderContext::GetUniformFogLocation(const char* name)
+        {
+            FogShaderParameters fog;
+            return fog;
+        }
 	}
 }

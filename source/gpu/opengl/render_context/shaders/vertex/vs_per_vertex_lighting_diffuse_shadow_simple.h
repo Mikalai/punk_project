@@ -2,6 +2,7 @@
 #define VS_PER_VERTEX_LIGHTING_DIFFUSE_SHADOW_SIMPLE
 
 #include "../shader.h"
+#include "../light_source_parameters.h"
 
 namespace Gpu
 {

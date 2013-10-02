@@ -5,10 +5,12 @@
 
 uniform mat4 uView;
 uniform vec4 uDiffuseColor;
+uniform sampler2D uDiffuseMap;
 uniform Light uLight[MAX_LIGHTS];
 
 in vec3 vViewVertexNormal;
 in vec3 vViewVertexPosition;
+in vec2 vVertexTextureCoord0;
 
 out vec4 vFragmentColor;
 
@@ -27,7 +29,7 @@ void main()
         float dst = length(light_position - vViewVertexPosition);
 
         float sc = 1;
-        if (uLight[i].type == 1)
+        if (uLight[i].type == DIRECTION_LIGHT)
         {
             float p = uLight[i].spot;
             vec3 light_direction = normalize((uView * uLight[i].direction).xyz);
@@ -40,16 +42,16 @@ void main()
         int mode = uLight[i].attenuation_model;
 
         float c = 1;
-        if (mode == 0)
+        if (mode == ATTENUATION_CONSTANT)
             c = AttenuationConstant(k0);
-        else if (mode == 1)
+        else if (mode == ATTENUATION_LINEAR)
             c = AttenuationLinear(k0, k1, dst);
-        else if (mode == 2)
+        else if (mode == ATTENUATION_QUADRIC)
             c = AttenuationQuadric(k0, k1, k2, dst);
 
         light_color += uLight[i].ambient_color + sc * c * uLight[i].diffuse_color * max(0.0, dot(object_to_light, normalize(vViewVertexNormal)));
         //light_color += max(0.0, dot(object_to_light, normalize(vViewVertexNormal)));
     }
-    vFragmentColor = light_color * uDiffuseColor;
-    //vFragmentColor = vec4(object_to_light, 1);
+    vec4 diffuse_texture = texture2D(uDiffuseMap, vVertexTextureCoord0);
+    vFragmentColor = light_color * uDiffuseColor * diffuse_texture;
 }

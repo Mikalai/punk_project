@@ -2,6 +2,7 @@
 #define FS_PER_FRAGMENT_LIGHTING_DIFFUSE_H
 
 #include "../shader.h"
+#include "../light_source_parameters.h"
 
 namespace Gpu
 {

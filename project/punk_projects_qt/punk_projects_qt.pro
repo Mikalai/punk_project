@@ -643,7 +643,9 @@ SOURCES += ../../source/main.cpp \
     ../../source/virtual/animation/animation_track.cpp \
     ../../source/virtual/data/lights/directional_light.cpp \
     ../../source/utility/parser/parse_directional_light.cpp \
-    ../../source/virtual/data/lights/spot_light.cpp
+    ../../source/virtual/data/lights/spot_light.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_tex_diffuse_specular.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_tex_diffuse_specular.cpp
 
 
 # Input
@@ -1166,7 +1168,12 @@ HEADERS += ../../source/config.h \
     ../../source/scene/transform_node.h \
     ../../source/math/bounding_sphere.h \
     ../../source/virtual/data/lights/directional_light.h \
-    ../../source/virtual/data/lights/spot_light.h
+    ../../source/virtual/data/lights/spot_light.h \
+    ../../source/gpu/opengl/render_context/shaders/light_source_parameters.h \
+    ../../source/gpu/opengl/render_context/shaders/fog_parameters.h \
+    ../../source/gpu/opengl/render_context/shaders/material_parameters.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_tex_diffuse_specular.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_tex_diffuse_specular.h
 
 
 CONFIG += dll
@@ -1267,5 +1274,7 @@ OTHER_FILES += \
     ../../data/shaders/light.glsl \
     ../../data/shaders/per_fragment_lighting_diffuse_specular_330.vert \
     ../../data/shaders/per_fragment_lighting_diffuse_specular_330.frag \
-    ../../data/shaders/material.glsl
+    ../../data/shaders/material.glsl \
+    ../../data/shaders/per_fragment_lighting_tex_diffuse_specular_330.vert \
+    ../../data/shaders/per_fragment_lighting_tex_diffuse_specular_330.frag
 

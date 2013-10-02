@@ -465,14 +465,14 @@ namespace Gpu
 
         if (policy)
         {
-            tc.Bind();
+       //     tc.Bind();
             policy->Begin();
             policy->BindParameters(*state);
             renderable->Bind(policy->GetRequiredAttributesSet());
             renderable->Render();
             renderable->Unbind();
             policy->End();
-            tc.Unbind();
+       //     tc.Unbind();
         }
 
     }

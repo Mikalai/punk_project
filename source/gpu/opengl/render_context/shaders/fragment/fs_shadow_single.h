@@ -2,6 +2,7 @@
 #define SHADOW_SINGLE_H
 
 #include "../shader.h"
+#include "../fog_parameters.h"
 
 namespace Gpu
 {

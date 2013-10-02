@@ -34,6 +34,8 @@ namespace Gpu
             ShaderFile(ShaderCollection::FragmentLightPerVertexTextureDiffuse, L"per_vertex_lighting_tex_diffuse_330.frag"),
             ShaderFile(ShaderCollection::VertexLightPerFragmentTextureDiffuse, L"per_fragment_lighting_tex_diffuse_330.vert"),
             ShaderFile(ShaderCollection::FragmentLightPerFragmentTextureDiffuse, L"per_fragment_lighting_tex_diffuse_330.frag"),
+            ShaderFile(ShaderCollection::FragmentLightPerFragmentTextureDiffuseSpecular, L"per_fragment_lighting_tex_diffuse_specular_330.frag"),
+            ShaderFile(ShaderCollection::VertexLightPerFragmentTextureDiffuseSpecular, L"per_fragment_lighting_tex_diffuse_specular_330.vert"),
             ShaderFile(ShaderCollection::VertexSkinningBump, L"skinning_bump_330.vert"),
             ShaderFile(ShaderCollection::VertexSkinningDepth, L"skinning_depth_330.vert"),
             ShaderFile(ShaderCollection::FragmentTextSolidColor, L"text_color_330.frag"),

@@ -30,6 +30,20 @@ namespace Test26
             std::cout << m_node->ToString() << std::endl;
         }
 
+        virtual void OnKeyDown(System::KeyDownEvent *event)
+        {
+            auto n = m_node->Find(L"parent_transform", true);
+            switch(event->key)
+            {
+            case System::PUNK_KEY_Q:
+                n->Rotate(Math::quat::CreateFromAngleAxis(0.1, {1, 0, 0}));
+                break;
+            case System::PUNK_KEY_E:
+                n->Rotate(Math::quat::CreateFromAngleAxis(-0.1, {1, 0, 0}));
+                break;
+            }
+        }
+
         virtual void OnIdle(System::IdleEvent *event) override
         {
             Scene::Node* n = m_node->Find(L"Lamp_transform", true);
@@ -41,7 +55,10 @@ namespace Test26
             n = m_node->Find(L"parent_transform", true);
             if (n)
             {
-           //     n->Rotate(Math::quat::CreateFromAngleAxis(event->elapsed_time_s, {1,0,0}));
+                static float angle = 0;
+                angle += event->elapsed_time_s;
+                n->Rotate(Math::quat::CreateFromAngleAxis(event->elapsed_time_s, {-1,0,0}));
+         //       n->Translate({sin(angle)*0.5f, cos(angle)*0.5f, 0});
             }
         }
 
@@ -57,7 +74,9 @@ namespace Test26
             frame->SetLightModel(Gpu::LightModel::PerFragmentDiffuse);
 
             frame->PushAllState();
-            render.RenderScene(m_node, GetViewMatrix(), GetProjectionMatrix(), frame);
+            Math::mat4 m = Math::mat4::CreateTargetCameraMatrix({0, -15, 0}, {0, 0, 0}, {0, 0, 1});
+            m = GetViewMatrix();
+            render.RenderScene(m_node, m, GetProjectionMatrix(), frame);
             frame->PopAllState();
             frame->BeginRendering();
             frame->SetClearColor(0.4, 0.4, 0.4, 1);
@@ -65,7 +84,7 @@ namespace Test26
             frame->PushAllState();
             {
                 frame->SetWorldMatrix(Math::mat4::CreateIdentity());
-                frame->SetViewMatrix(GetViewMatrix());
+                frame->SetViewMatrix(m);
                 frame->SetProjectionMatrix(GetProjectionMatrix());
                 frame->DrawAxis();
             }

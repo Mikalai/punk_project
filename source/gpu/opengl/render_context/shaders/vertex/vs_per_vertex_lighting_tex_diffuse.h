@@ -2,6 +2,7 @@
 #define _H_PUNK_OPENGL_PER_VERTEX_LIGHTING_TEXTURE_DIFFUSE
 
 #include "../shader.h"
+#include "../light_source_parameters.h"
 
 namespace Gpu
 {

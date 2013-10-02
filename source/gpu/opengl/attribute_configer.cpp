@@ -31,7 +31,7 @@ namespace Gpu
 			VertexComponent::Texture0>>::AttributeConfiger(int64_t available)
 		{
 			static const int64_t Code = CurrentVertex::Value();
-			int64_t components = Code & available;
+            int64_t components = Code & available;
 
 			if (components == Vertex<VertexComponent::Position>::Value())
 			{				

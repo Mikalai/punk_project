@@ -175,11 +175,22 @@ namespace Math
 
     quat& quat::Normalize()
     {
-        float l = 1.0f / Length();
+        float a = Length();
+        if (a == 0.0f)
+        {
+            m_v[0] = 0.0f;
+            m_v[1] = 1.0f;
+            m_v[2] = 0.0f;
+            m_v[3] = 0.0f;
+        }
+        else
+        {
+        float l = 1.0f / a;
         m_v[0] *= l;
         m_v[1] *= l;
         m_v[2] *= l;
         m_v[3] *= l;
+        }
 
         return *this;
     }
@@ -187,7 +198,15 @@ namespace Math
     const quat quat::Normalized() const
     {
         float l = Length();
-        return quat(m_v[0] / l, m_v[1] / l, m_v[2] / l, m_v[3] / l);
+        if (l == 0)
+        {
+            return quat(0, 1, 0, 0);
+        }
+        else
+        {
+
+            return quat(m_v[0] / l, m_v[1] / l, m_v[2] / l, m_v[3] / l);
+        }
     }
 
     float quat::Length() const
@@ -219,8 +238,15 @@ namespace Math
     const quat quat::Inversed() const
     {
         float l = SquareLength();
-        quat q = Conjugated();
-        return q / l;
+        if (l == 0.0f)
+        {
+            return quat(0,0,0,0);
+        }
+        else
+        {
+            quat q = Conjugated();
+            return q / l;
+        }
     }
 
     const quat quat::operator - () const

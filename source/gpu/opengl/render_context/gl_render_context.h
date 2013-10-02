@@ -3,6 +3,9 @@
 
 #include "../../common/abstract_render_context_policy.h"
 #include "shaders/gl_shader_type.h"
+#include "shaders/light_source_parameters.h"
+#include "shaders/material_parameters.h"
+#include "shaders/fog_parameters.h"
 #include "../../../math/vec4.h"
 #include "../../../math/mat4.h"
 
@@ -53,7 +56,12 @@ namespace Gpu
             bool SetUniformMatrix4f( int index, const Math::mat4& value);
 			bool SetUniformArrayMatrix4f(int index, int count, const float* value);
             bool SetUniformArrayMatrix4f(int index, int count, const Math::mat4* value);
+            bool SetUniformLight(const LightSourceShaderParameters& light, const LightParameters& value);
+            bool SetUniformMaterial(const MaterialShaderParameters& material, const Material& value);
 			int  GetUniformLocation(const char * name);
+            const LightSourceShaderParameters GetUniformLightLocation(const char* name);
+            const MaterialShaderParameters GetUniformaMaterialLocation(const char* name);
+            const FogShaderParameters GetUniformFogLocation(const char* name);
 			void GetUniformVector(const char * name, float* out);
 			bool SetTexture(const char * name, int texUnit);
 			bool SetTexture(int index, int texUnit);
