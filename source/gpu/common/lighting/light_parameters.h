@@ -66,6 +66,12 @@ namespace Gpu
         void SetSpecularColor(float r, float y, float b, float a);
         const Math::vec4& GetSpecularColor() const;
 
+        void SetViewDirection(const Math::vec3& value);
+        const Math::vec4& GetViewDirection() const;
+
+        void SetViewPosition(const Math::vec3& value);
+        const Math::vec4& GetViewPosition() const;
+
         void SetEnable(bool value);
         bool IsEnabled() const;
         void Enable();
@@ -82,6 +88,8 @@ namespace Gpu
 		Math::vec4 m_position;
         /// World light direction
 		Math::vec4 m_direction;
+        Math::vec4 m_view_position;
+        Math::vec4 m_view_direction;
 		Math::vec4 m_diffuse_color;
 		Math::vec4 m_ambient_color;
         Math::mat4 m_shadow_matrix[4];

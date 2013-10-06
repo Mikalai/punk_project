@@ -26,6 +26,7 @@ namespace Render
             m_frame->SetAmbientColor(material->GetAmbient());
             m_frame->SetDiffuseColor(material->GetDiffuseColor());
             bool enable_textures = false;
+            bool enable_bump = false;
             for (size_t i = 0; i != material->GetTextureSlotCount(); ++i)
             {
                 if (!material->GetTextureSlot(i)->GetGpuCache().IsOnGpu())
@@ -42,7 +43,8 @@ namespace Render
                     if (material->GetTextureSlot(i)->IsNormalMapSlot())
                     {
                         m_frame->SetNormalMap(material->GetTextureSlot(i)->GetGpuCache().GetTexture(), 1);
-                        m_frame->SetLightModel(Gpu::LightModel::BumpMappingDiffuse);                        
+                        enable_bump = true;
+
                     }
                     if (material->GetTextureSlot(i)->IsSpecularIntensityMapSlot())
                     {
@@ -51,9 +53,22 @@ namespace Render
                     }
                 }
             }
-            if (enable_textures)    //  check force texturing flag
+            if (enable_textures)    //  TODO: check force texturing flag
             {
                 m_frame->EnableTexturing(enable_textures);
+            }
+            else
+            {
+                m_frame->EnableTexturing(enable_textures);
+            }
+
+            if (enable_bump)        //  TODO: check force bump enable flag
+            {
+                m_frame->SetLightModel(Gpu::LightModel::BumpMappingDiffuse);
+            }
+            else
+            {
+                m_frame->SetLightModel(Gpu::LightModel::PerFragmentDiffuse);
             }
         }
         render->ProcessChildren(node);

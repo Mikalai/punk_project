@@ -64,6 +64,7 @@ namespace Gpu
 		Math::mat4 m_view;
 		Math::ClipSpace m_clip_space;
 		Math::vec3 m_camera_position;
+        Math::vec3 m_camera_view_position;
         Math::vec4 m_far_distances;
         float m_zfar;
         float m_znear;

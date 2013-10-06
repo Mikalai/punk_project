@@ -86,5 +86,24 @@ Material.002
     0.0
   }
 
+  *texture_slot
+  {
+    *scale
+    {
+      1.0 1.0 1.0
+    }
+
+    *image
+    {
+      cr_normal.png
+    }
+
+    *normal_map
+    {
+      1.0
+    }
+
+  }
+
 }
 

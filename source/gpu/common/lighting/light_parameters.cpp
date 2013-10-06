@@ -237,4 +237,25 @@ namespace Gpu
     {
         return m_specular_color;
     }
+
+    void LightParameters::SetViewDirection(const Math::vec3& value)
+    {
+        m_view_direction = value;
+    }
+
+    const Math::vec4& LightParameters::GetViewDirection() const
+    {
+        return m_view_direction;
+    }
+
+    void LightParameters::SetViewPosition(const Math::vec3& value)
+    {
+        m_view_position = value;
+    }
+
+    const Math::vec4& LightParameters::GetViewPosition() const
+    {
+        return m_view_position;
+    }
+
 }

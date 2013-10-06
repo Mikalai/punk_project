@@ -449,6 +449,8 @@ namespace Gpu
             {
                 SetUniformVector4f(light.direction, value.GetDirection());
                 SetUniformVector4f(light.position, value.GetPosition());
+                SetUniformVector4f(light.view_direction, value.GetViewDirection());
+                SetUniformVector4f(light.view_position, value.GetViewPosition());
                 SetUniformVector4f(light.diffuse_color, value.GetDiffuseColor());
                 SetUniformVector4f(light.ambient_color, value.GetAmbientColor());
                 SetUniformFloat(light.attenuation_constant, value.GetLightConstantAttenuation());
@@ -701,6 +703,18 @@ namespace Gpu
                 std::stringstream stream;
                 stream << name << ".position";
                 uLight.position = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".view_direction";
+                uLight.view_direction = GetUniformLocation(stream.str().c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << name << ".view_position";
+                uLight.view_position = GetUniformLocation(stream.str().c_str());
             }
 
             {

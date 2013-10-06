@@ -57,7 +57,7 @@ namespace Test26
             {
                 static float angle = 0;
                 angle += event->elapsed_time_s;
-                n->Rotate(Math::quat::CreateFromAngleAxis(event->elapsed_time_s, {-1,0,0}));
+             //   n->Rotate(Math::quat::CreateFromAngleAxis(event->elapsed_time_s, {-1,0,0}));
          //       n->Translate({sin(angle)*0.5f, cos(angle)*0.5f, 0});
             }
         }

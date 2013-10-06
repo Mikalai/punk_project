@@ -88,11 +88,11 @@ namespace Gpu
 #endif
 
 #ifdef USE_BUMP_MAPPING_RC
-            {
-                DynamicRenderContext* rc = new DynamicRenderContext();
-                rc->SetShaders(new VsBumpMappingTextureDiffuse, new FsBumpMappingTextureDiffuse, nullptr);
-                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingTextureDiffuse, rc);
-            }
+//            {
+//                DynamicRenderContext* rc = new DynamicRenderContext();
+//                rc->SetShaders(new VsBumpMappingTextureDiffuse, new FsBumpMappingTextureDiffuse, nullptr);
+//                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingTextureDiffuse, rc);
+//            }
 #   ifdef USE_SHADOW_MAPS
 //            {
 //                DynamicRenderContext* rc = new DynamicRenderContext();
@@ -151,6 +151,24 @@ namespace Gpu
                 DynamicRenderContext* rc = new DynamicRenderContext();
                 rc->SetShaders(new VsPerFragmentLightingTextureDiffuseSpecular, new FsPerFragmentLightingTextureDiffuseSpecular, nullptr);
                 AbstractRenderPolicy::add(RenderPolicySet::LightPerFragmentTextureDiffuseSpecular, rc);
+            }
+
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsBumpMappingDiffuseColorSpecular, new FsBumpMappingDiffuseColorSpecular, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingDiffuseSpecular, rc);
+            }
+
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsBumpMappingDiffuseColor, new FsBumpMappingDiffuseColor, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingDiffuse, rc);
+            }
+
+            {
+                DynamicRenderContext* rc = new DynamicRenderContext();
+                rc->SetShaders(new VsBumpMappingTextureDiffuseSpecular, new FsBumpMappingTextureDiffuseSpecular, nullptr);
+                AbstractRenderPolicy::add(RenderPolicySet::BumpMappingTextureDiffuseSpecular, rc);
             }
 
 #ifdef USE_GUI_RC

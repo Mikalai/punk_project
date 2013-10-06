@@ -645,7 +645,15 @@ SOURCES += ../../source/main.cpp \
     ../../source/utility/parser/parse_directional_light.cpp \
     ../../source/virtual/data/lights/spot_light.cpp \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_tex_diffuse_specular.cpp \
-    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_tex_diffuse_specular.cpp
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_tex_diffuse_specular.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_diffuse_color.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_diffuse_color.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_diffuse_color_specular.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_tex_diffuse.cpp \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_tex_diffuse_specular.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_tex_diffuse.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_tex_diffuse_specular.cpp \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_diffuse_color_specular.cpp
 
 
 # Input
@@ -1173,7 +1181,15 @@ HEADERS += ../../source/config.h \
     ../../source/gpu/opengl/render_context/shaders/fog_parameters.h \
     ../../source/gpu/opengl/render_context/shaders/material_parameters.h \
     ../../source/gpu/opengl/render_context/shaders/vertex/vs_per_fragment_lighting_tex_diffuse_specular.h \
-    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_tex_diffuse_specular.h
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_per_fragment_lighting_tex_diffuse_specular.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_diffuse_color.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_diffuse_color.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_diffuse_color_specular.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_tex_diffuse.h \
+    ../../source/gpu/opengl/render_context/shaders/fragment/fs_bump_tex_diffuse_specular.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_tex_diffuse.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_tex_diffuse_specular.h \
+    ../../source/gpu/opengl/render_context/shaders/vertex/vs_bump_diffuse_color_specular.h
 
 
 CONFIG += dll
@@ -1276,5 +1292,13 @@ OTHER_FILES += \
     ../../data/shaders/per_fragment_lighting_diffuse_specular_330.frag \
     ../../data/shaders/material.glsl \
     ../../data/shaders/per_fragment_lighting_tex_diffuse_specular_330.vert \
-    ../../data/shaders/per_fragment_lighting_tex_diffuse_specular_330.frag
+    ../../data/shaders/per_fragment_lighting_tex_diffuse_specular_330.frag \
+    ../../data/shaders/bump_tex_diffuse_330.frag \
+    ../../data/shaders/bump_tex_diffuse_330.vert \
+    ../../data/shaders/bump_tex_diffuse_specular_330.vert \
+    ../../data/shaders/bump_tex_diffuse_specular_330.frag \
+    ../../data/shaders/bump_diffuse_color_330.frag \
+    ../../data/shaders/bump_diffuse_color_330.vert \
+    ../../data/shaders/bump_diffuse_color_specular_330.frag \
+    ../../data/shaders/bump_diffuse_color_specular_330.vert
 

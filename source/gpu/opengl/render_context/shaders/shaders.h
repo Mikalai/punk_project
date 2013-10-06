@@ -22,6 +22,10 @@
 #include "vertex/vs_per_fragment_lighting_diffuse.h"
 #include "vertex/vs_per_fragment_lighting_diffuse_specular.h"
 #include "vertex/vs_per_fragment_lighting_tex_diffuse_specular.h"
+#include "vertex/vs_bump_diffuse_color.h"
+#include "vertex/vs_bump_diffuse_color_specular.h"
+#include "vertex/vs_bump_tex_diffuse.h"
+#include "vertex/vs_bump_tex_diffuse_specular.h"
 
 #include "fragment/fs_bump.h"
 #include "fragment/fs_grass.h"
@@ -44,5 +48,9 @@
 #include "fragment/fs_per_vertex_lighting_diffuse_shadow_simple.h"
 #include "fragment/fs_per_fragment_lighting_diffuse_specular.h"
 #include "fragment/fs_per_fragment_lighting_tex_diffuse_specular.h"
+#include "fragment/fs_bump_diffuse_color.h"
+#include "fragment/fs_bump_diffuse_color_specular.h"
+#include "fragment/fs_bump_tex_diffuse.h"
+#include "fragment/fs_bump_tex_diffuse_specular.h"
 
 #endif	//	_H_PUNK_OPENGL_SHADERS

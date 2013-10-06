@@ -8,6 +8,8 @@ namespace Gpu
         unsigned enabled;
         unsigned direction;
         unsigned position;
+        unsigned view_direction;
+        unsigned view_position;
         unsigned diffuse_color;
         unsigned specular_color;
         unsigned ambient_color;

@@ -167,6 +167,7 @@ namespace Render
         l.Enable();
         if (light->GetType()->IsEqual(&Virtual::PointLight::Info.Type))
         {
+            auto global_pos = node->GlobalPosition();
             Virtual::PointLight* p = Cast<Virtual::PointLight*>(light);
             l.SetType(Gpu::LightType::Point);
             l.SetDiffuseColor(p->GetColor());
@@ -174,16 +175,20 @@ namespace Render
             l.SetLightConstantAttenuation(1);
             l.SetLightLinearAttenuation(p->GetLinearAttenuation());
             l.SetLightQuadricAttenuation(p->GetQuadraticAttenuation());
-            l.SetPosition(node->GlobalPosition());
+            l.SetPosition(global_pos);
+            l.SetViewPosition(frame->GetViewMatrix() * global_pos);
         }
         else if (light->GetType()->IsEqual(&Virtual::DirectionalLight::Info.Type))
         {
             Virtual::DirectionalLight* p = Cast<Virtual::DirectionalLight*>(light);
+            auto dir = node->GlobalRotation().Rotate(p->GetDirection());
+            auto vector_transform = frame->GetViewMatrix().RotationPart().Inversed().Transposed();
             l.SetType(Gpu::LightType::Direction);
             l.SetDiffuseColor(p->GetColor());
             l.SetLightAttenuation(Gpu::LightAttenuation::Constant);
             l.SetLightConstantAttenuation(1);
-            l.SetDirection(node->GlobalRotation().Rotate(p->GetDirection()));
+            l.SetDirection(dir);
+            l.SetViewDirection(vector_transform * dir);
         }
         else if (light->GetType()->IsEqual(&Virtual::SpotLight::Info.Type))
         {

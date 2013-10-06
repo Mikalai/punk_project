@@ -12,8 +12,10 @@ const int ATTENUATION_QUADRIC = 2;
 struct Light
 {
     int   enabled;
-    vec4  direction;
+    vec4  direction;    
     vec4  position;
+    vec4  view_direction;
+    vec4  view_position;
     vec4  diffuse_color;
     vec4  ambient_color;
     vec4  specular_color;
@@ -50,6 +52,30 @@ float AttenuationQuadric(float k0, float k1, float k2, float dst)
 float SpotAttenuation(vec3 r, vec3 l, float p)
 {
     return pow(max(dot(-r, l), 0), p);
+}
+
+vec3 LightDirection(Light light, vec3 vertex_position)
+{
+    if (light.type == POINT_LIGHT)
+        return normalize(light.position.xyz - vertex_position);
+    else if (light.type == DIRECTION_LIGHT)
+        return normalize(-light.direction.xyz);
+    else if (light.type == SPOT_LIGHT)
+        return normalize(light.position.xyz - vertex_position);
+    else
+        return vec3(0, 0, 1);
+}
+
+vec3 LightViewDirection(Light light, vec3 vertex_position)
+{
+    if (light.type == POINT_LIGHT)
+        return normalize(light.view_position.xyz - vertex_position);
+    else if (light.type == DIRECTION_LIGHT)
+        return normalize(-light.view_direction.xyz);
+    else if (light.type == SPOT_LIGHT)
+        return normalize(light.view_position.xyz - vertex_position);
+    else
+        return vec3(0, 0, 1);
 }
 
 AttenuationResult LightAttenuation(Light light, vec3 vertex_position)
